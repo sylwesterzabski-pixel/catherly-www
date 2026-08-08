@@ -28,6 +28,7 @@ sprzeczności wygrywa.
 | 017 | Brak panelu administracyjnego strony | [017](017-brak-panelu-administracyjnego.md) |
 | 018 | **Prymat nieodwracalnego (NADRZĘDNY)** | [018](018-prymat-nieodwracalnego.md) |
 | 019 | Standardowy toolchain Next.js jako część stacku języka | [019](019-toolchain-jezyka-poza-adr-016.md) |
+| 020 | Main zawsze zielony — merge tylko przy komplecie zielonych bramek | [020](020-main-zawsze-zielony.md) |
 
 Seed 001–018 pochodzi z rejestru w PLAN.md (sekcja 8). PLAN.md pozostaje
 niezmieniony — jego suma SHA-256 jest sumą odniesienia; ADR-y od 019

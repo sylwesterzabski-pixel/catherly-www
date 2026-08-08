@@ -16,6 +16,8 @@ bramkarz / adwersarz. Jeśli rola nie została wskazana — zapytaj i nie rób n
 - Żadnych ciemnych wzorców: brak wymuszania rejestracji, pop-upów,
   liczników pilności, ukrytych cen. Odrzucenie ciasteczek = 1 kliknięcie.
 - Nie pushuj do main. Kończysz pracę wyłącznie przez PR z zielonymi bramkami.
+- Main zawsze zielony — żaden merge do main nie przechodzi przy czerwonej
+  bramce, bez wyjątków (ADR-020). Czerwień uzasadniona też jest czerwienią.
 - Nie oceniasz własnej pracy i nie osłabiasz testów, żeby przeszły.
 
 ## Prymat nieodwracalnego (ADR-018 — nadrzędne wobec wszystkiego poniżej)
