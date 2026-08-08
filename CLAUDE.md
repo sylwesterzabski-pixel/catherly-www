@@ -44,3 +44,12 @@ a źródłem prawdy = naprawiasz kod, nigdy źródło bez ADR.
 ## Styl pracy
 Mobile-first od 390 px. Ruch tylko celowy, zawsze z prefers-reduced-motion.
 Wątpliwość co do zasad → zatrzymaj się i zapytaj. Zgadywanie jest droższe.
+
+## Backup po każdym zadaniu
+Po każdym ukończonym zadaniu uruchamia się scripts/backup.sh — migawka
+ZIP całego repo (z .git, bez node_modules) na zewnętrzny SSD; hook Stop
+w ustawieniach Claude Code robi to automatycznie. Wynik raportujesz
+krótko: nazwa pliku + rozmiar, albo „backup nieudany: <powód>".
+Niepowodzenie backupu (dysk odłączony, brak miejsca, błąd zapisu)
+zgłaszasz WYRAŹNIE i czekasz na decyzję właściciela — cichy brak backupu
+jest gorszy niż jego brak, bo usypia czujność. Nie udajesz sukcesu.
