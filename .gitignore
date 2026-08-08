@@ -1,0 +1,16 @@
+# Sekrety — nigdy w repozytorium (granica bezwzględna, sekcja 2 promptu startowego)
+.env
+.env.*
+!.env.example
+
+# Zależności i artefakty budowania
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+.vercel/
+
+# Systemowe
+.DS_Store
