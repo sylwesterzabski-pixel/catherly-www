@@ -1,0 +1,159 @@
+# Bramki CI (PLAN.md sekcja 5). Wszystkie blokujące — czerwona bramka
+# blokuje merge. Czerwień na pustym repo to stan oczekiwany (Faza 0):
+# „Pierwszy tydzień z czerwonym CI na pustym repo jest tańszy niż jeden
+# dzień zielonego CI, które nic nie sprawdza."
+name: bramki
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build (fundament pozostałych bramek)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next/
+          include-hidden-files: true
+
+  bramka-kontrakt-tokenow:
+    name: "Bramka: Kontrakt tokenów (0 rozjazdów strona↔aplikacja)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run bramka:kontrakt
+
+  bramka-tokeny-linter:
+    name: "Bramka: Linter tokenów (wartości wizualne tylko z tokens.json)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run bramka:tokeny
+
+  bramka-parytet:
+    name: "Bramka: Parytet językowy (identyczne drzewa pl/en/de)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run bramka:parytet
+
+  bramka-prawdziwosc:
+    name: "Bramka: Prawdziwość (każda liczba ↔ facts.json)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run bramka:liczby
+      # Soczewka 5 (agent `claude -p` na wyrenderowanej stronie) dochodzi
+      # w Fazie 6 — wymaga klucza API po stronie właściciela (ADR-016).
+
+  bramka-cennik:
+    name: "Bramka: Cennik (snapshot Stripe ↔ strona, tryb testowy)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run bramka:cennik
+        env:
+          STRIPE_TEST_SECRET_KEY: ${{ secrets.STRIPE_TEST_SECRET_KEY }}
+
+  bramka-linki:
+    name: "Bramka: Linki (0 martwych linków wewnętrznych)"
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: next-build, path: .next/ }
+      - run: npm run bramka:linki
+
+  bramka-nojs:
+    name: "Bramka: No-JS (treść czytelna bez JavaScriptu)"
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: next-build, path: .next/ }
+      - run: npm run bramka:nojs
+
+  bramka-dostepnosc:
+    name: "Bramka: Dostępność (axe 0 błędów + klawiatura)"
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: next-build, path: .next/ }
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test e2e/axe.spec.ts e2e/klawiatura.spec.ts
+
+  bramka-e2e:
+    name: "Bramka: E2E (cennik → płatność → konto → aplikacja)"
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: next-build, path: .next/ }
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test e2e/sciezka-zakupu.spec.ts
+
+  bramka-wydajnosc:
+    name: "Bramka: Wydajność (LCP < 1,8 s · CLS < 0,1 · TBT < 200 ms)"
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: next-build, path: .next/ }
+      # Docelowo pomiar na preview Vercel (integracja po stronie
+      # właściciela); do tego czasu lokalny build produkcyjny, te same progi.
+      - run: npx lhci autorun
+
+  bramka-nieodwracalne:
+    name: "Bramka: Nieodwracalne (ADR-018 — raport audytu dla commita)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run bramka:nieodwracalne

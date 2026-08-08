@@ -11,6 +11,8 @@ coverage/
 playwright-report/
 test-results/
 .vercel/
+.lighthouseci/
+next-env.d.ts
 
 # Systemowe
 .DS_Store

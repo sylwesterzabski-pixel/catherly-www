@@ -1,0 +1,11 @@
+{
+  "_opis": "Jedyne źródło prawdy dla każdej liczby użytej na stronie (Prawo 1, PLAN.md sekcja 2). Komponent liczby IMPORTUJE wartość stąd — literalna liczba w JSX nie przechodzi lintera (bramka:liczby). Format wpisu: klucz → { wartosc, zrodlo, data_pomiaru }.",
+  "_przyklad_formatu": {
+    "liczba-jezykow": {
+      "wartosc": 0,
+      "zrodlo": "OPIS ŹRÓDŁA I METODY POMIARU",
+      "data_pomiaru": "RRRR-MM-DD"
+    }
+  },
+  "fakty": {}
+}

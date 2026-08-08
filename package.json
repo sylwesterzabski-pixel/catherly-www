@@ -1,0 +1,43 @@
+{
+  "name": "catherly-www",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Strona marketingowa catherly.com — zasady: CLAUDE.md, plan: docs/PLAN.md",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "prepare": "git config core.hooksPath .githooks",
+    "bramka:tokeny": "node scripts/lint-tokeny.mjs",
+    "bramka:liczby": "node scripts/lint-liczby.mjs",
+    "bramka:parytet": "node scripts/check-parytet.mjs",
+    "bramka:kontrakt": "node scripts/check-kontrakt-tokenow.mjs",
+    "bramka:linki": "node scripts/check-linki.mjs",
+    "bramka:nojs": "node scripts/check-nojs.mjs",
+    "bramka:cennik": "node scripts/stripe-snapshot.mjs",
+    "bramka:nieodwracalne": "node scripts/check-audyt.mjs",
+    "test:e2e": "playwright test",
+    "test:axe": "playwright test e2e/axe.spec.ts"
+  },
+  "dependencies": {
+    "next": "^15.5.23",
+    "next-intl": "^4.13.5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@eslint/eslintrc": "^3.3.6",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.0",
+    "stripe": "^22.4.0",
+    "style-dictionary": "^4.4.0",
+    "typescript": "^6.0.3"
+  }
+}

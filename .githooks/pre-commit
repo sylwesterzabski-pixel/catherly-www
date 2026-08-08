@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Hooki lokalne (PLAN.md sekcja 5): axe + linter tokenów + linter liczb.
+# Aktywacja: `npm install` (skrypt "prepare" ustawia core.hooksPath).
+# Pomijanie hooka (--no-verify) jest zakazane (CLAUDE.md: nie osłabiasz
+# zabezpieczeń, żeby przeszły).
+set -euo pipefail
+
+echo "pre-commit: linter tokenów (pliki w indeksie)…"
+node scripts/lint-tokeny.mjs --staged
+
+echo "pre-commit: linter liczb (pliki w indeksie)…"
+node scripts/lint-liczby.mjs --staged
+
+if git diff --cached --name-only | grep -q "^src/"; then
+  echo "pre-commit: zmiany w src/ — axe na zbudowanej stronie…"
+  node scripts/axe-precommit.mjs
+fi
+
+echo "pre-commit: zielony."
