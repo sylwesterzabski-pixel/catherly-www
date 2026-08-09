@@ -7,9 +7,10 @@ name: bramki
 on:
   pull_request:
   push:
-    branches: [main]
-  # Ręczne uruchomienie na gałęzi fazy — pełna fotografia bramek przed
-  # pierwszym PR-em (gałęzie faz nie mają własnego wyzwalacza push).
+    # Gałęzie faz: fotografia bramek przy każdym pushu, zanim powstanie
+    # pierwszy PR (ADR-020 kumuluje fazy na gałęziach; workflow_dispatch
+    # nie zadziała, dopóki plik nie istnieje na main).
+    branches: [main, "faza-*/**"]
   workflow_dispatch:
 
 jobs:
