@@ -94,3 +94,14 @@ telegraficzna) i W4 (systemocentryzm) są strukturalne dla ich kątów.
 Wymagają potwierdzenia w tabeli obietnic (inwentarz funkcji od
 właściciela): „prowadzi kontakty i rozliczenia" (A), „widzisz, co
 z tego wyszło" (B). Do tego czasu oba pakiety = KANDYDAT.
+
+## DECYZJA 3 (właściciel, 2026-08-09)
+
+Wybrany **Pakiet A**: H1 „Rozmawiasz z ludźmi — Catherly prowadzi
+kontakty i rozliczenia." + podtytuł 120 zn + wezwanie „Sprawdź, jak
+działa". Status: **KANDYDAT** do potwierdzenia obietnicy „prowadzi
+kontakty i rozliczenia" w tabeli obietnic z inwentarza funkcji.
+
+Obraz z Pakietu B — „wieczorem widzisz, co z tego wyszło" — zachowany
+decyzją właściciela jako materiał do sekcji niższych (naturalny kandydat:
+sekcja rytmu dnia pracy, STRATEGIA pkt 21). Nie kasować.
