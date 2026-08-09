@@ -1,10 +1,15 @@
 # image-style.md — prompt bazowy warstwy obrazów (Higgsfield)
 
-**Status: PROJEKT — zaakceptowany w przeglądzie właściciela 2026-08-09**
-(w całości, łącznie z zakazem ludzi i twarzy: obecność ludzka wyłącznie
-przez przedmioty — kubek, notes). Pozostaje PROJEKTEM do czasu testów
-generacji w Higgsfield po autoryzacji konektora; dopiero one zdejmują
-ten status.
+**Status: OBOWIĄZUJE — od 2026-08-09.** Przegląd właściciela (w całości,
+łącznie z zakazem ludzi i twarzy: obecność ludzka wyłącznie przez
+przedmioty — kubek, notes) oraz test generacji w Higgsfield (konektor
+MCP na claude.ai) kierunkowo ZDANY: paleta i nastrój zgodne z ADR-013.
+
+**Prompt bazowy do iteracji w Fazie 4** — uwaga właściciela z testu:
+potrzeba „więcej charakteru" (ślady życia w kadrze, odwaga plastyczna);
+doprecyzowanie iteracjami przy produkcji obrazów. Kanał generacji do
+czasu naprawy OAuth dla CLI: konektor Higgsfield w rozmowie claude.ai
+(por. ADR-021, szkic).
 
 Zasady nadrzędne: ADR-011 (wyłącznie warstwa dekoracyjna, nigdy
 pseudo-zrzuty), ADR-013 (ciepła jakość), ADR-001 (izolacja marki),
