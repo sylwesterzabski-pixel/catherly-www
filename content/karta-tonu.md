@@ -1,6 +1,12 @@
 # Karta tonu głosu — catherly.com
 
-**Status: PROJEKT — do akceptu właściciela (Faza 2, DECYZJA 1).**
+**Status: AKTYWNA — zaakceptowana przez właściciela 2026-08-09
+(DECYZJA 1), łącznie z pod-decyzjami: polskie „ty" małą literą,
+niemieckie „du" z kompensacją rzetelnością.**
+
+**Zakres obowiązywania:** wszędzie, gdzie marka mówi — treść strony,
+przyszłe e-maile transakcyjne i powitalne (Resend/React Email), teksty
+pomocy, komunikaty błędów. Karta nie zna wyjątku „to tylko e-mail".
 
 Źródła nadrzędne: ADR-013 (ciepła jakość), STRATEGIA pkt 3 (nic, co
 odpycha), 17–19 (dzień odbiorczyni, definicja), 24 (obawy), PLAN.md 3.2
@@ -48,13 +54,17 @@ nie onieśmielać. Reakcja graniczna z ADR-013 działa też dla tekstu:
 3. Forma bezpośrednia **„ty" małą literą** — bliskość bez listownej
    sztywności. Nigdy „Państwo", nigdy bezosobowo tam, gdzie mówimy
    do niej.
-4. Każda liczba pochodzi z `content/facts.json` — bez wyjątku (bramka).
-5. Superlatyw bez pokrycia w faktach nie istnieje. „Najlepszy",
+4. **Konsekwentna forma żeńska w polskim**: strona mówi do niej —
+   „gotowa", „zdecydowałaś", „użytkowniczka", „klientka". Formy męskie
+   lub „męskie domyślne" nie występują w treści; jeśli dokument prawny
+   wymaga innej formy, rozstrzyga to ADR, nie nawyk.
+5. Każda liczba pochodzi z `content/facts.json` — bez wyjątku (bramka).
+6. Superlatyw bez pokrycia w faktach nie istnieje. „Najlepszy",
    „jedyny", „niezastąpiony" — wypadają zawsze.
-6. **Wykrzyknik nie występuje** w tekście strony.
-7. Pytania retoryczne straszące nie występują („Tracisz klientki?") —
+7. **Wykrzyknik nie występuje** w tekście strony.
+8. Pytania retoryczne straszące nie występują („Tracisz klientki?") —
    pkt 18: rozpoznanie, nie wyrzut i nie strach.
-8. Obietnica ma pokrycie w inwentarzu funkcji aplikacji — tekst
+9. Obietnica ma pokrycie w inwentarzu funkcji aplikacji — tekst
    o funkcji powstaje z tabeli obietnic, nie z wyobraźni.
 
 ## 5. Słownik zakazany i zamienniki (lista otwarta, rozszerzana w fazie)
@@ -91,7 +101,11 @@ selling bez korporacyjnego żargonu (no „empowerment", no „game-changer");
 uzasadnienie: społeczność sprzedaży bezpośredniej w DACH mówi sobie
 per „du", a marka-koleżanka na „Sie" przeczy własnemu głosowi; „du"
 pisane małą literą, współcześnie. Mniej lekkości niż w PL — ciepło
-przez rzetelność, nie swobodę.
+przez rzetelność, nie swobodę. **Formy żeńskie wszędzie, gdzie
+gramatyka je zaznacza**: rzeczowniki osobowe żeńskie („Nutzerin",
+„Kollegin", „Vertriebspartnerin", „Kundin"), nigdy generyczne męskie;
+w drugiej osobie („du bist bereit") niemiecki rodzaju nie zaznacza —
+tam zasada realizuje się sama.
 
 ## 8. Test odbioru tekstu (analog testu 30 sekund)
 
