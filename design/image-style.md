@@ -1,7 +1,10 @@
 # image-style.md — prompt bazowy warstwy obrazów (Higgsfield)
 
-**Status: PROJEKT do przeglądu właściciela.** Testy generacji w Higgsfield
-dojdą po autoryzacji konektora; do tego czasu dokument nie jest zatwierdzony.
+**Status: PROJEKT — zaakceptowany w przeglądzie właściciela 2026-08-09**
+(w całości, łącznie z zakazem ludzi i twarzy: obecność ludzka wyłącznie
+przez przedmioty — kubek, notes). Pozostaje PROJEKTEM do czasu testów
+generacji w Higgsfield po autoryzacji konektora; dopiero one zdejmują
+ten status.
 
 Zasady nadrzędne: ADR-011 (wyłącznie warstwa dekoracyjna, nigdy
 pseudo-zrzuty), ADR-013 (ciepła jakość), ADR-001 (izolacja marki),
