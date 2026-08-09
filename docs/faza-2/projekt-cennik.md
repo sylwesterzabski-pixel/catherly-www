@@ -1,6 +1,13 @@
 # Projekt struktury /cennik (Faza 2, Etap C; STRATEGIA pkt 32)
 
-**Status: PROJEKT — do DECYZJI 4 właściciela.**
+**Status: OBOWIĄZUJE — DECYZJA 4 właściciela 2026-08-09.**
+Rozstrzygnięcia: (1) tylko PLN na stronie pl, EUR w FAQ; EUR jako
+główna w adaptacjach en/de w Etapie D; (2) oszczędność roczna kwotowo
+w zł, wyliczana, z groszami jeśli wychodzą; (3) sekcja 1 i zdania
+„dla kogo" trybem skróconym (1 wariant + panel); (4) odstępstwa
+zaakceptowane WARUNKOWO — tabela bez limitów i FAQ bez faktury tylko
+do powrotu Z1/Z2; oba zlecenia rozstrzygnięte przed zamknięciem
+Fazy 2 (teksty: docs/faza-2/zlecenia-okno-aplikacji.md).
 Data: 2026-08-09.
 Źródła: STRATEGIA pkt 23, 32, 41 · tabela obietnic (OBOWIĄZUJE) ·
 inwentarz funkcji · content/cennik-snapshot.json (migawka Stripe).
