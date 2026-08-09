@@ -1,6 +1,6 @@
 # Tabela obietnic — catherly.com
 
-**Status: PROJEKT — do akceptu właściciela (DECYZJA 2).**
+**Status: OBOWIĄZUJE — zaakceptowana przez właściciela 2026-08-09 (DECYZJA 2).**
 Źródło: content/inwentarz-funkcji.md (git 61a69c9c, 2026-08-09).
 Gramatyka: DZIAŁA → tryb dokonany · klucz → język kierunku (bez
 dokonanego) · zgoda platformy → zdanie z zastrzeżeniem · SZKIELET

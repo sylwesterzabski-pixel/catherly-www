@@ -95,13 +95,22 @@ Wymagają potwierdzenia w tabeli obietnic (inwentarz funkcji od
 właściciela): „prowadzi kontakty i rozliczenia" (A), „widzisz, co
 z tego wyszło" (B). Do tego czasu oba pakiety = KANDYDAT.
 
-## DECYZJA 3 (właściciel, 2026-08-09)
+## DECYZJA 3 ostateczna (właściciel, 2026-08-09)
 
-Wybrany **Pakiet A**: H1 „Rozmawiasz z ludźmi — Catherly prowadzi
-kontakty i rozliczenia." + podtytuł 120 zn + wezwanie „Sprawdź, jak
-działa". Status: **KANDYDAT** do potwierdzenia obietnicy „prowadzi
-kontakty i rozliczenia" w tabeli obietnic z inwentarza funkcji.
+Wybrany **Pakiet A2** (korekta po weryfikacji inwentarzem):
+- H1: „Rozmawiasz z ludźmi — Catherly prowadzi kontakty i wyniki." (62 zn)
+  Zmiana: „rozliczenia" → „wyniki" (filar Rozliczenia = 0 działających
+  end-to-end; filar Wyniki = Pulpit + Magic Wrapped + Świadectwo, DZIAŁA).
+  Powrót do „rozliczeń" gdy zyskają pokrycie — aktualizacja inwentarza
+  przed premierą.
+- Podtytuł: „Catherly to system do własnej sprzedaży bezpośredniej —
+  kontakty, treści, zespół, wyniki i rozliczenia w jednym miejscu." (120 zn)
+- Wezwanie: „Sprawdź, jak działa"
+
+Status: **OBOWIĄZUJE** (DECYZJA 3, potwierdzona przez DECYZJA 2 — tabela
+obietnic).
 
 Obraz z Pakietu B — „wieczorem widzisz, co z tego wyszło" — zachowany
 decyzją właściciela jako materiał do sekcji niższych (naturalny kandydat:
-sekcja rytmu dnia pracy, STRATEGIA pkt 21). Nie kasować.
+sekcja rytmu dnia pracy, STRATEGIA pkt 21). Spięty z filarem „wyniki"
+w H1. Nie kasować.
