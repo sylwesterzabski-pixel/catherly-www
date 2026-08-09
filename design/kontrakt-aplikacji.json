@@ -1,0 +1,24 @@
+{
+  "_zakres": "MINIMALNY — wyłącznie szew przejścia strona → aplikacja (ekrany logowania). Decyzja właściciela 2026-08-09.",
+  "_stan_ds_aplikacji": "System rozproszony: tokeny w konfiguracji Tailwind + arkusz 751 linii, bez eksportu i mechanizmu synchronizacji. Brak jednego koloru marki: akcent motywu jasnego #1D6CC4, ciemnego #FF8C42 (deltaE do terakoty strony odpowiednio 106,4 i 22,9). Pełny kontrakt strona↔aplikacja ŚWIADOMIE ODROCZONY do uporządkowania design systemu aplikacji — kontrakt pełny dziś byłby fikcją bez detekcji rozjazdu.",
+  "odczyt": {
+    "data": "2026-08-09",
+    "metoda": "ręczny odczyt właściciela z kodu aplikacji (ekrany logowania, wartości na sztywno, poza motywami)",
+    "detekcja_zmian_aplikacji": false,
+    "_obowiazek": "Zmiana palety ekranów logowania po stronie aplikacji wymaga ręcznej aktualizacji tego pliku przez właściciela — bramka nie widzi repozytorium aplikacji."
+  },
+  "szew_logowania": {
+    "tlo": "#F7F3EA",
+    "zielen": "#3E6630",
+    "zielen_ciemna": "#243E1A",
+    "_uwaga": "Zielenie logowania żyją wyłącznie po stronie aplikacji; kontrast zieleni na tle logowania 6,02:1 (AA)."
+  },
+  "wymaganie_szwu": {
+    "opis": "Tło strony i tło ekranu logowania pozostają w jednej rodzinie ciepłych kremów — przejście strona → aplikacja bez zgrzytu barwnego.",
+    "strona_tlo_odniesienia": "#eee6e0",
+    "metryka": "deltaE CIE76 w przestrzeni CIELAB (D65)",
+    "prog": 5.0,
+    "_kotwica_progu": "Próg nie jest arbitralny: równy (z zaokrągleniem) odległości tło strony ↔ neutralna-50 (4,9) — największej relacji tło↔powierzchnia akceptowanej wewnątrz samej strony. Szew nie może być bardziej odczuwalny niż wewnętrzne przejścia strony.",
+    "zmierzone_2026_08_09": 4.7
+  }
+}
