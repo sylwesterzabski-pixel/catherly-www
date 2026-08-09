@@ -1,0 +1,27 @@
+/* Wartości wizualne wyłącznie przez var() z tokenów (ADR-004, ADR-015).
+   Surowe hexy/px w tym pliku nie przejdą lintera tokenów. */
+
+@import "../styles/generated/tokeny.css";
+
+:root {
+  color-scheme: light; /* jeden motyw — ADR-009 */
+}
+
+body {
+  margin: 0;
+  background: var(--kolor-rola-tlo-strony);
+  color: var(--kolor-rola-tekst-podstawowy);
+}
+
+a {
+  color: var(--kolor-rola-link);
+}
+
+a:hover,
+a:active {
+  color: var(--kolor-rola-link-aktywny);
+}
+
+:focus-visible {
+  outline-color: var(--kolor-rola-fokus);
+}

@@ -5,7 +5,9 @@
   "description": "Strona marketingowa catherly.com — zasady: CLAUDE.md, plan: docs/PLAN.md",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run tokeny:build",
     "build": "next build",
+    "tokeny:build": "style-dictionary build --config design/style-dictionary.config.mjs",
     "start": "next start",
     "lint": "eslint .",
     "prepare": "git config core.hooksPath .githooks",
@@ -31,13 +33,13 @@
     "@eslint/eslintrc": "^3.3.6",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.62.1",
-    "@types/node": "^26.2.0",
+    "@types/node": "^20.19.43",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.3.0",
+    "eslint-config-next": "^15.5.23",
     "stripe": "^22.4.0",
     "style-dictionary": "^4.4.0",
-    "typescript": "^6.0.3"
+    "typescript": "^5.9.3"
   }
 }
