@@ -1,0 +1,94 @@
+{
+  "plany": [
+    {
+      "id": "prod_V2b85w08qLIdUr",
+      "nazwa": "Pro",
+      "ceny": [
+        {
+          "id": "price_1U2VwgLZgQYyI36HJz8WByWx",
+          "waluta": "pln",
+          "kwota_brutto": 39900,
+          "interwal": "month"
+        },
+        {
+          "id": "price_1U2VwhLZgQYyI36Has2DKwof",
+          "waluta": "eur",
+          "kwota_brutto": 85500,
+          "interwal": "year"
+        },
+        {
+          "id": "price_1U2VwhLZgQYyI36HnojDOmyR",
+          "waluta": "pln",
+          "kwota_brutto": 359000,
+          "interwal": "year"
+        },
+        {
+          "id": "price_1U2VwhLZgQYyI36HO8amq4xh",
+          "waluta": "eur",
+          "kwota_brutto": 9500,
+          "interwal": "month"
+        }
+      ]
+    },
+    {
+      "id": "prod_V2b8nDIVqls3oZ",
+      "nazwa": "Starter",
+      "ceny": [
+        {
+          "id": "price_1U2VwDLZgQYyI36HaJmDpUki",
+          "waluta": "pln",
+          "kwota_brutto": 9900,
+          "interwal": "month"
+        },
+        {
+          "id": "price_1U2VwDLZgQYyI36Hgbs5612d",
+          "waluta": "pln",
+          "kwota_brutto": 89000,
+          "interwal": "year"
+        },
+        {
+          "id": "price_1U2VwELZgQYyI36HA8K0mrjB",
+          "waluta": "eur",
+          "kwota_brutto": 22500,
+          "interwal": "year"
+        },
+        {
+          "id": "price_1U2VwELZgQYyI36HJnI5Z4Iz",
+          "waluta": "eur",
+          "kwota_brutto": 2500,
+          "interwal": "month"
+        }
+      ]
+    },
+    {
+      "id": "prod_V2b8tkUyiajh2P",
+      "nazwa": "Growth",
+      "ceny": [
+        {
+          "id": "price_1U2VwbLZgQYyI36HlONiLpmM",
+          "waluta": "pln",
+          "kwota_brutto": 179000,
+          "interwal": "year"
+        },
+        {
+          "id": "price_1U2VwcLZgQYyI36HphRhDuoi",
+          "waluta": "eur",
+          "kwota_brutto": 4900,
+          "interwal": "month"
+        },
+        {
+          "id": "price_1U2VwFLZgQYyI36HzI1Iylm3",
+          "waluta": "pln",
+          "kwota_brutto": 19900,
+          "interwal": "month"
+        },
+        {
+          "id": "price_1U2VwgLZgQYyI36HuZ2xXa3u",
+          "waluta": "eur",
+          "kwota_brutto": 43900,
+          "interwal": "year"
+        }
+      ]
+    }
+  ]
+}
