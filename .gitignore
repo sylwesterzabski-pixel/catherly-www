@@ -14,5 +14,8 @@ test-results/
 .lighthouseci/
 next-env.d.ts
 
+# Lokalne ustawienia Claude Code (per maszyna, poza repo)
+.claude/settings.local.json
+
 # Systemowe
 .DS_Store
