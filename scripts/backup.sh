@@ -31,7 +31,10 @@ if ! zip -r -q "$CEL/$PLIK" . \
   -x "out/*" \
   -x "test-results/*" \
   -x "playwright-report/*" \
-  -x ".lighthouseci/*"; then
+  -x ".lighthouseci/*" \
+  -x ".env" \
+  -x ".env.*" \
+  -x ".vercel/*"; then
   rm -f "$CEL/$PLIK"
   blad "zip zakończył się błędem (brak miejsca albo błąd zapisu)"
 fi
