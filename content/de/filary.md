@@ -1,7 +1,7 @@
 # Cztery filary — DE (adaptacja STRATEGIA pkt 20)
 
-**Status: PROJEKT — adaptacja po panelu DE (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/filary.md (OBOWIĄZUJE).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu DE, Prawo 2).** Źródło: content/pl/filary.md (OBOWIĄZUJE).
 Korekty panelu: konkret 1 Kontakte („ohne lange zu überlegen"),
 konkret 3 Inhalte („eine Bewertung" zamiast „einen Wert").
 Nazwy: słowniczek docs/faza-2/slownik-nazw.md (wymaga potwierdzenia

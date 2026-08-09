@@ -1,7 +1,7 @@
 # Cztery filary — EN (adaptacja STRATEGIA pkt 20)
 
-**Status: PROJEKT — adaptacja po panelu EN (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/filary.md (OBOWIĄZUJE).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu EN, Prawo 2).** Źródło: content/pl/filary.md (OBOWIĄZUJE).
 Werdykt panelu: PRZESZEDŁ bez poprawek. Nazwy: słowniczek
 docs/faza-2/slownik-nazw.md (wymaga potwierdzenia z aplikacją).
 

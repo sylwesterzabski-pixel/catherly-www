@@ -1,6 +1,7 @@
 # Treść /cennik — PL (STRATEGIA pkt 32; struktura wg DECYZJI 4)
 
-**Status: PROJEKT — synteza po panelu, czeka na akceptację właściciela.**
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09.**
+Flaga „Pierwsze 90 Dni" (Para 1 obaw) dopisana do zlecenia Z1.
 Protokół: docs/faza-2/panel-cennik.md. Struktura:
 docs/faza-2/projekt-cennik.md (OBOWIĄZUJE).
 Ceny i oszczędności: wyłącznie z migawki Stripe ({placeholdery}),

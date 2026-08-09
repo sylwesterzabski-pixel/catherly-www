@@ -4,7 +4,8 @@
 **Mechanika:** tryb skrócony wg DECYZJI 4 — 1 wariant autorski →
 osobny agent-panel (Prawo 2) → synteza. Struktura strony:
 docs/faza-2/projekt-cennik.md (OBOWIĄZUJE).
-**Status: PROJEKT — synteza czeka na akceptację właściciela.**
+**Status: ROZSTRZYGNIĘTY — synteza zaakceptowana przez właściciela
+2026-08-09.** Flaga „Pierwsze 90 Dni" → pytanie w zleceniu Z1.
 
 ---
 

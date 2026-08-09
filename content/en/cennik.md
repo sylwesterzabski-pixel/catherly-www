@@ -1,7 +1,7 @@
 # Treść /pricing — EN (adaptacja; struktura wg DECYZJI 4)
 
-**Status: PROJEKT — adaptacja po panelu EN (Prawo 2); zależna od
-akceptacji PL cennika (też PROJEKT).** Źródło: content/pl/cennik.md.
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu EN, Prawo 2); cennik PL OBOWIĄZUJE.** Źródło: content/pl/cennik.md.
 WALUTA GŁÓWNA: EUR (DECYZJA 4). WARUNEK PANELU do bramki parytetu:
 strona EN musi renderować ceny EUR z migawki Stripe — inaczej
 odpowiedź FAQ o walucie kłamie. Karta Pro i limity [CZEKA NA Z1];

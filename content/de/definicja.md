@@ -1,7 +1,7 @@
 # Definicja Catherly — DE (adaptacja STRATEGIA pkt 19)
 
-**Status: PROJEKT — adaptacja po panelu DE (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/definicja.md (OBOWIĄZUJE).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu DE, Prawo 2).** Źródło: content/pl/definicja.md (OBOWIĄZUJE).
 Werdykt panelu: PRZESZEDŁ bez poprawek („Gedächtnis deines Vertriebs"
 = wierne „pamięci twojej sprzedaży").
 

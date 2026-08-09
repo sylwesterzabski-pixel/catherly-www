@@ -1,7 +1,7 @@
 # Treść /preise — DE (adaptacja; struktura wg DECYZJI 4)
 
-**Status: PROJEKT — adaptacja po panelu DE (Prawo 2); zależna od
-akceptacji PL cennika (też PROJEKT).** Źródło: content/pl/cennik.md.
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu DE, Prawo 2); cennik PL OBOWIĄZUJE.** Źródło: content/pl/cennik.md.
 WALUTA GŁÓWNA: EUR (DECYZJA 4). Warunek jak w EN: strona DE renderuje
 ceny EUR z migawki Stripe. Karta Pro i limity [CZEKA NA Z1]; FAQ bez
 faktury [CZEKA NA Z2]. Korekta panelu: Puls — „abspringen könnte"

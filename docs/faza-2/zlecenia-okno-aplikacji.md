@@ -1,7 +1,9 @@
 # Zlecenia do okna aplikacji (blokują zamknięcie Fazy 2)
 
-Status: OTWARTE. Warunek DECYZJI 4: tabela porównawcza /cennik bez
-limitów i FAQ bez faktury obowiązują TYLKO do powrotu Z1/Z2.
+Status: OTWARTE — Z1, Z2, Z3, Z4. Warunek DECYZJI 4: tabela
+porównawcza /cennik bez limitów i FAQ bez faktury obowiązują TYLKO
+do powrotu Z1/Z2. Z3 (kontrakt nazw) i Z4 (lokalizacja danych)
+dodane decyzją właściciela 2026-08-09.
 
 ---
 
@@ -23,6 +25,13 @@ Inwentarz funkcji (sekcja 2) podaje: „Bramka planu (GROWTH/PRO) —
    (jakie funkcje/limity są bramkowane wyłącznie na PRO). Jeśli
    niczym — napisz to wprost, bo wtedy karta planu Pro na stronie
    nie ma czym się różnić i to jest decyzja produktowa, nie treściowa.
+4. Kto przechodzi program „Pierwsze 90 Dni": czy fazy i misje
+   uruchamiają się dla KAŻDEJ nowej użytkowniczki po rejestracji,
+   czy wyłącznie dla osoby wprowadzanej do zespołu przez liderkę?
+   Odpowiedź rozstrzyga treść sekcji obaw na stronie (Para 1 mówi
+   dziś: „Pierwsze 90 Dni dają ci gotowy plan na start" — jeśli
+   program działa tylko dla członkiń zespołu, to zdanie wymaga
+   korekty).
 
 Formatuj jak inwentarz: tabela funkcja → bramka → miejsce w kodzie.
 Zero szacunków — tylko to, co widać w kodzie.
@@ -49,11 +58,68 @@ Wynik wraca jako: DZIAŁA (z dowodem) / NIE DZIAŁA / DECYZJA.
 
 ---
 
+## Z3 — tekst do wklejenia (kontrakt szwu: nazwy funkcji app ↔ www)
+
+Strona www używa nazw funkcji w trzech językach. Nazwy na stronie
+i w aplikacji muszą być IDENTYCZNE — rozjazd oznacza, że
+użytkowniczka nie odnajdzie po zalogowaniu tego, co obiecała strona.
+Potrzebuję:
+
+1. Listy nazw funkcji widocznych w interfejsie aplikacji (dokładnie
+   tak, jak widzi je użytkowniczka) dla języków, które aplikacja
+   obsługuje: PL na pewno; czy istnieje i18n EN i DE? Jeśli tak —
+   pełne odpowiedniki z plików tłumaczeń.
+2. Weryfikacji przeciwko tabeli www (poniżej): potwierdź zgodność
+   albo zwróć faktyczne nazwy z aplikacji dla każdej pozycji.
+3. Jeśli aplikacja NIE ma i18n EN/DE — napisz to wprost. Wtedy
+   decyzja właściciela: nazwy ze strony www stają się wzorcem dla
+   przyszłego i18n aplikacji (kontrakt w drugą stronę).
+
+Tabela www (PL → EN → DE):
+Tarcza → Shield → Schutzschild · Pieczęć Etyczna → Ethical Seal →
+Ethik-Siegel · Puls → Pulse → Puls · Pulpit → Dashboard → Dashboard ·
+Świadectwo → Record → Nachweis · Kreator wdrożeniowy → onboarding
+wizard → Einstiegsassistent · Pierwsze 90 Dni → First 90 Days →
+Die ersten 90 Tage · DMO — Dzienny Plan Działania → DMO — Daily
+Method of Operation → Tagesplan (DMO) · Studio → Studio → Studio ·
+Symulator rozmów → Conversation Simulator → Gesprächssimulator ·
+Formularz zgłoszeniowy → Sign-up form → Anmeldeformular · Paszport
+zgodności → Compliance Passport → Compliance-Pass · Magic Wrapped
+i Wall of Proof — bez zmian we wszystkich językach.
+
+Dodatkowo: czy routing aplikacji przewiduje ścieżki rejestracji
+per język (/rejestracja, /register, /registrierung), czy jeden
+uniwersalny adres? Strona buduje CTA „Wybierz plan" wg odpowiedzi.
+
+---
+
+## Z4 — tekst do wklejenia (lokalizacja danych + szyfrowanie)
+
+Do potwierdzeń pod hero i cennikiem, sekcji obaw oraz przyszłej
+podstrony /bezpieczenstwo potrzebuję FAKTÓW z mechanizmem (nie
+zapewnień). Sprawdź w konfiguracji Supabase (dashboard projektu),
+nie w dokumentacji ogólnej:
+
+1. Region bazy danych: jaki dokładnie region Supabase jest
+   skonfigurowany dla projektu (np. eu-central-1 Frankfurt)?
+   Zrzut/odczyt z ustawień projektu jako dowód.
+2. Szyfrowanie: czy dane są szyfrowane w spoczynku (at rest)
+   i w tranzycie (TLS)? Co dokładnie zapewnia plan Supabase,
+   na którym jest projekt?
+3. Kopie zapasowe: czy są włączone, gdzie leżą (region), jak długo
+   są trzymane?
+4. Dostęp: kto ma dostęp do produkcyjnej bazy (konta, role,
+   service keys)? Czy klucze serwisowe są poza repozytorium?
+
+Wynik per punkt: FAKT (z miejscem odczytu) / NIE WIEM. Bez „NIE
+WIEM" zamienionego na przypuszczenie. Od odpowiedzi na pkt 1 zależy,
+czy strona może napisać „Dane w UE" — dziś tego nie pisze.
+
+---
+
 ## Powiązane, zgłoszone wcześniej (nie blokują /cennik po stronie www)
 
-- **Z3 — rozjazd kalendarza**: prisma/seed.ts:86 wymienia „Integracja
+- **Z5 — rozjazd kalendarza**: prisma/seed.ts:86 wymienia „Integracja
   kalendarza" jako wyróżnik Growth, a kalendarz nie ma bramki i działa
   na Starterze. Strona już stosuje regułę twardą (kalendarz w każdym
   planie); kod/seed do wyrównania po stronie aplikacji.
-- **Z4 — lokalizacja danych + szyfrowanie**: do potwierdzeń pod
-  cennikiem, sekcji obaw i /bezpieczenstwo. Właściciel zleca osobno.

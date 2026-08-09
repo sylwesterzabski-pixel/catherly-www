@@ -16,10 +16,14 @@ wyniki (Pulpit+Magic Wrapped+Świadectwo — DZIAŁA).
 
 ## Podtytuł
 
-Catherly to system do własnej sprzedaży bezpośredniej — kontakty, treści,
-zespół, wyniki i rozliczenia w jednym miejscu.
+Catherly to system do własnej sprzedaży bezpośredniej — kontakty,
+treści, zespół i wyniki w jednym miejscu.
 
-**120 znaków.** Kotwica definicyjna wg STRATEGIA pkt 19.
+**107 znaków.** Kotwica definicyjna wg STRATEGIA pkt 19.
+KOREKTA LUSTRZANA — decyzja właściciela 2026-08-09: „rozliczenia"
+wypadają z podtytułu we wszystkich językach (tabela obietnic:
+0 pokrycia; podtytuł nie może obiecywać tego, co wypadło z H1).
+Powrót razem z powrotem „rozliczeń" do H1 (po pokryciu).
 
 ## Wezwanie (główny przycisk)
 

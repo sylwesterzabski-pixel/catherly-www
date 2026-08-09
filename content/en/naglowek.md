@@ -1,7 +1,7 @@
 # Hero — EN (adaptacja STRATEGIA pkt 17)
 
-**Status: PROJEKT — adaptacja po panelu EN (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/naglowek.md (OBOWIĄZUJE).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu EN, Prawo 2).** Źródło: content/pl/naglowek.md (OBOWIĄZUJE).
 Protokół: docs/faza-2/panel-adaptacja-en.md.
 
 ---
@@ -15,14 +15,13 @@ You do the talking — Catherly keeps track of contacts and results.
 ## Podtytuł
 
 Catherly is a system for running your own direct selling — contacts,
-content, team, results, and billing in one place.
+content, team, and results in one place.
 
-**118 znaków.** Korekta panelu: „billing" zamiast „earnings" autora
-(„earnings" = zarobki → obietnica śledzenia prowizji bez pokrycia).
-Zastrzeżenie panelu do decyzji właściciela: „billing" może być
-odczytany jako fakturowanie klientek; bezpieczniejsza byłaby korekta
-lustrzana (usunięcie piątego elementu), ale zmienia kotwicę
-definicyjną pkt 19 — decyzja poza mandatem panelu.
+**109 znaków.** KOREKTA LUSTRZANA — decyzja właściciela 2026-08-09:
+piąty element wypada we wszystkich językach (0 pokrycia rozliczeń);
+spór „billing/earnings" znika razem ze słowem. Historia: autor dał
+„earnings" (naruszenie — obietnica prowizji), panel poprawił na
+„billing" z zastrzeżeniem; właściciel wybrał korektę lustrzaną.
 
 ## Wezwanie (główny przycisk)
 

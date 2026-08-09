@@ -1,7 +1,7 @@
 # Problem przed rozwiązaniem — EN (adaptacja STRATEGIA pkt 18)
 
-**Status: PROJEKT — adaptacja po panelu EN (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/problem.md (OBOWIĄZUJE).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu EN, Prawo 2).** Źródło: content/pl/problem.md (OBOWIĄZUJE).
 Werdykt panelu: PRZESZEDŁ bez poprawek (najmocniejsza sekcja adaptacji).
 
 ---

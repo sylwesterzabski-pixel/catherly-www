@@ -1,7 +1,7 @@
 # Hero — DE (adaptacja STRATEGIA pkt 17)
 
-**Status: PROJEKT — adaptacja po panelu DE (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/naglowek.md (OBOWIĄZUJE).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu DE, Prawo 2).** Źródło: content/pl/naglowek.md (OBOWIĄZUJE).
 Protokół: docs/faza-2/panel-adaptacja-de.md.
 
 ---
@@ -15,12 +15,14 @@ Du sprichst mit Menschen – Catherly führt deine Kontakte und Ergebnisse.
 ## Podtytuł
 
 Catherly ist ein System für deinen eigenen Direktvertrieb – Kontakte,
-Inhalte, Team, Ergebnisse und Abrechnung an einem Ort.
+Inhalte, Team und Ergebnisse an einem Ort.
 
-**124 znaki.** Korekta panelu: „ein System" zamiast „das System"
-(deklaracja jedyności bez pokrycia). „Abrechnung" WYŁĄCZNIE w liczbie
-pojedynczej — zakaz „Abrechnungen"/„Provisionen" (0 działających
-funkcji rozliczeń; plural sugeruje rozliczenia prowizyjne).
+**112 znaków.** Korekta panelu: „ein System" zamiast „das System"
+(deklaracja jedyności bez pokrycia). KOREKTA LUSTRZANA — decyzja
+właściciela 2026-08-09: „Abrechnung" wypada z podtytułu we wszystkich
+językach (0 pokrycia rozliczeń). Przy ewentualnym powrocie obowiązuje
+zastrzeżenie panelu: wyłącznie liczba pojedyncza, zakaz
+„Abrechnungen"/„Provisionen".
 
 ## Wezwanie (główny przycisk)
 

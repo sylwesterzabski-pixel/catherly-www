@@ -1,7 +1,7 @@
 # Sześć obaw — DE (adaptacja STRATEGIA pkt 24)
 
-**Status: PROJEKT — adaptacja po panelu DE (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/obawy.md (OBOWIĄZUJE).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu DE, Prawo 2).** Źródło: content/pl/obawy.md (OBOWIĄZUJE).
 Korekta panelu: O2 — naturalny szyk („Als vCard kannst du sie
 jederzeit exportieren").
 

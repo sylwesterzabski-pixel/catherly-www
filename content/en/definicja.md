@@ -1,10 +1,9 @@
 # Definicja Catherly — EN (adaptacja STRATEGIA pkt 19)
 
-**Status: PROJEKT — adaptacja po panelu EN (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/definicja.md (OBOWIĄZUJE).
-Korekta panelu: „memory of your selling" zamiast „memory of your
-business" autora („business" rozszerzał metaforę na obszary bez
-pokrycia). Wariant do wyboru właściciela: „memory of your sales" (36).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09: „memory of
+your selling".** Źródło: content/pl/definicja.md (OBOWIĄZUJE).
+Korekta panelu: „selling" zamiast „business" autora („business"
+rozszerzał metaforę na obszary bez pokrycia).
 
 ---
 

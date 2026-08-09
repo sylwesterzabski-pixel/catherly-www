@@ -1,7 +1,7 @@
 # Sześć obaw — EN (adaptacja STRATEGIA pkt 24)
 
-**Status: PROJEKT — adaptacja po panelu EN (Prawo 2), czeka na
-akceptację właściciela.** Źródło: content/pl/obawy.md (OBOWIĄZUJE).
+**Status: OBOWIĄZUJE — decyzja właściciela 2026-08-09 (adaptacja po
+panelu EN, Prawo 2).** Źródło: content/pl/obawy.md (OBOWIĄZUJE).
 Korekta panelu: O2 „export them to vCard" (precyzja — vCard niesie
 kontakty, nie wszystkie dane; ADR-018: niedoobiecywanie).
 

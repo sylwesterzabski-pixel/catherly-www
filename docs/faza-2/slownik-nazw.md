@@ -1,9 +1,9 @@
 # Słownik nazw produktowych PL → EN → DE (Faza 2, Etap D)
 
-**Status: PROJEKT — wymaga potwierdzenia właściciela, że nazwy
-zgadzają się z interfejsem aplikacji (i18n).** Rozjazd strona↔aplikacja
-w nazwach funkcji = obietnica, której użytkowniczka nie odnajdzie
-po zalogowaniu.
+**Status: PROJEKT — weryfikacja zgodności z i18n aplikacji zlecona
+jako Z3 (docs/faza-2/zlecenia-okno-aplikacji.md), decyzja właściciela
+2026-08-09.** Rozjazd strona↔aplikacja w nazwach funkcji = obietnica,
+której użytkowniczka nie odnajdzie po zalogowaniu (kontrakt szwu).
 
 | PL | EN | DE | Uwagi |
 |---|---|---|---|
