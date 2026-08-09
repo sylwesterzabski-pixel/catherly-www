@@ -36,10 +36,14 @@ darmowego dostępu.
 
 ## Stałe sekcji (poza konkursem)
 
-Trzy potwierdzenia pod hero:
-- Dane w UE
-- RODO
+Potwierdzenia pod hero (panel po Z4, 2026-08-09):
+- Dane przechowywane w UE *(23 zn — FAKT: Supabase eu-central-1
+  + hosting fra1; raport Z4)*
 - Rezygnacja w każdej chwili
+
+„RODO" usunięte (panel F4): twierdzenie o procesach bez audytu —
+wróci po weryfikacji jako fakt z mechanizmem na /bezpieczenstwo
+(rejestr warunków powrotu).
 
 ---
 

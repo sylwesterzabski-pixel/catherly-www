@@ -19,7 +19,7 @@ Du hast einen Plan für den Tag und eine Kontaktbasis, die wächst,
 während du Gespräche führst. *(94 zn)*
 
 ### Konkrety
-1. Der Tagesplan (DMO) ordnet deine Gespräche – du startest in den Tag, ohne lange zu überlegen. *(93 zn — korekta panelu)*
+1. Der Tägliche Aktionsplan (DMO) ordnet deine Gespräche – du startest, ohne lange zu überlegen. *(93 zn — nazwa wg aplikacji, Z3)*
 2. Eine Erinnerung kurz vor dem Termin – du bist vorbereitet, nicht überrascht. *(76 zn)*
 3. Jede empfohlene Person bringt ihre Spur mit – du weißt, wer sie empfohlen hat. *(78 zn)*
 
@@ -28,7 +28,7 @@ während du Gespräche führst. *(94 zn)*
 ## Filar 2 — INHALTE
 
 ### H2
-Du schreibst. Der Schutzschild prüft. Das Siegel bestätigt. *(59 zn)*
+Du schreibst. Der Schild prüft. Das Siegel bestätigt. *(53 zn — nazwa wg aplikacji, Z3)*
 
 ### Korzyść
 Das Studio lernt deine Stimme und achtet darauf, dass kein Inhalt
@@ -36,7 +36,7 @@ deine Regeln verletzt. *(88 zn)*
 
 ### Konkrety
 1. Das Studio liefert fertige Formate und Vorlagen – du beginnst nicht mit einem leeren Blatt. *(91 zn)*
-2. Der Schutzschild markiert riskante Formulierungen, bevor du auf „Senden“ tippst. *(80 zn)*
+2. Der Schild markiert riskante Formulierungen, bevor du auf „Senden“ tippst. *(74 zn)*
 3. Das Ethik-Siegel gibt dir eine Bewertung und ein Zertifikat – ein Beleg, nicht nur ein Gefühl. *(94 zn — korekta panelu)*
 
 ---
@@ -67,9 +67,9 @@ Das Dashboard zeigt den heutigen Stand – und deine Ergebnisse haben
 einen Beleg, der bleibt. *(92 zn)*
 
 ### Konkrety
-1. Magic Wrapped fasst deinen Zeitraum zusammen – du siehst, was du wirklich geschafft hast. *(89 zn)*
+1. Dein Wrapped fasst den Zeitraum zusammen – du siehst, was du wirklich geschafft hast. *(85 zn — nazwa wg aplikacji, Z3)*
 2. Dein Ziel mit Meilensteinen zeigt, wie weit du gekommen bist und was als Nächstes kommt. *(88 zn)*
-3. Der Nachweis mit digitalem Fingerabdruck bleibt – deine Ergebnisse lassen sich überprüfen. *(90 zn)*
+3. Das Zeugnis mit digitalem Fingerabdruck bleibt – deine Ergebnisse lassen sich überprüfen. *(89 zn — nazwa wg aplikacji, Z3)*
 
 ---
 

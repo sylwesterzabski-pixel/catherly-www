@@ -32,11 +32,13 @@ Sieh dir an, wie es funktioniert
 
 ## Stałe sekcji
 
+Potwierdzenia pod hero (panel po Z4, 2026-08-09):
+- Daten in der EU gespeichert *(27 zn — FAKT: Supabase eu-central-1
+  + Hosting fra1; raport Z4; karta tonu DE: fakt z miejscem,
+  nie zapewnienie)*
 - Kündigung jederzeit
-- Pozostałe potwierdzenia (EU/DSGVO): **[CZEKA NA Z4]** — zakaz
-  „Daten in der EU" do weryfikacji właściciela. Uwaga karty tonu:
-  rynek DACH waży bezpieczeństwo danych najmocniej — Z4 ma tu
-  najwyższy priorytet.
+
+DSGVO: nie na potwierdzeniach (panel F4) — rejestr warunków powrotu.
 
 ## Materiał do sekcji pkt 21
 

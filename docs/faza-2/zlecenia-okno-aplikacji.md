@@ -1,9 +1,12 @@
-# Zlecenia do okna aplikacji (blokują zamknięcie Fazy 2)
+# Zlecenia do okna aplikacji
 
-Status: OTWARTE — Z1, Z2, Z3, Z4. Warunek DECYZJI 4: tabela
-porównawcza /cennik bez limitów i FAQ bez faktury obowiązują TYLKO
-do powrotu Z1/Z2. Z3 (kontrakt nazw) i Z4 (lokalizacja danych)
-dodane decyzją właściciela 2026-08-09.
+Status: **Z1–Z4 WYKONANE i ROZSTRZYGNIĘTE 2026-08-09** (wykonane
+odczytowo za zgodą właściciela na repo aplikacji; raport z dowodami:
+docs/faza-2/raport-zlecen-z1-z4.md; rozstrzygnięcia właściciela +
+panel: docs/faza-2/projekt-zmian-po-z1-z4.md). Warunek DECYZJI 4
+spełniony — tabela /cennik ma limity (egzekwowane), FAQ-faktura
+rozstrzygnięta jako milczenie warunkowe (rejestr warunków powrotu).
+Z5 pozostaje OTWARTE po stronie aplikacji.
 
 ---
 

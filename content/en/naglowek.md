@@ -31,9 +31,11 @@ See how it works
 
 ## Stałe sekcji
 
+Potwierdzenia pod hero (panel po Z4, 2026-08-09):
+- Data stored in the EU *(21 zn — FAKT: raport Z4)*
 - Cancel at any time
-- Pozostałe potwierdzenia (EU/GDPR): **[CZEKA NA Z4]** — zakaz
-  „data in the EU" do weryfikacji właściciela.
+
+GDPR: nie na potwierdzeniach (panel F4) — rejestr warunków powrotu.
 
 ## Materiał do sekcji pkt 21
 

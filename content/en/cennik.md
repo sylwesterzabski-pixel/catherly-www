@@ -29,33 +29,40 @@ every day. *(68 zn)*
 - Dashboard — one screen where you see your contacts and results *(62 zn)*
 - DMO — a Daily Method of Operation that tells you what to do today *(65 zn)*
 - Sign-up form with a public page — submissions go straight into your contact base *(80 zn — korekta panelu)*
-- Conversation Simulator — practice the hard answers before they come up for real *(79 zn)*
+- Training Room — practice the hard answers before they come up for real *(70 zn)*
 - Shield — catches risky wording before you send it *(49 zn)*
 
-CTA: Choose plan → /register?plan=starter
+CTA: Choose plan → /login (plan wybierany w aplikacji — ADR-023)
 
 ### Growth — {price.growth} €
 For whom: For you if you're building a team and want to see how each
 of your people is doing. *(83 zn)*
 
 Everything in Starter, plus:
-- Pulse — you see the signs someone may be stepping back, with a ready line to open the conversation *(98 zn)*
+- Team Pulse — you see the signs someone may be stepping back, with a ready line to open the conversation *(103 zn)*
 - You see the full tree of your team structure *(44 zn)*
 
-CTA: Choose plan → /register?plan=growth
+CTA: Choose plan → /login (ADR-023)
 
 ### Pro — {price.pro} €
 For whom: For you if you run a large structure and want to hand part
 of the work to others. *(81 zn)*
 
-Lista pozycji: **[CZEKA NA Z1]**.
+Everything in Growth, plus:
+- Leaderboard — see where you stand among other users *(51 zn)*
+- API keys and webhooks — connect Catherly to your own tools *(58 zn)*
+- No limits on contacts, team, posts, and training sessions *(57 zn)*
+- Clean export — your materials without a referral signature *(58 zn)*
 
-CTA: Choose plan → /register?plan=pro
+CTA: Choose plan → /login (ADR-023)
 
 ## 4. Tabela porównawcza
 
-Jak PL: bramki potwierdzone (Pulse, drzewo — Growth); kalendarz
-„in every plan". Limity: [CZEKA NA Z1].
+Jak PL (Z1 + panel): Contacts 50/200/no limit · Team 10/50/no limit ·
+Posts per month 20/100/no limit · Training Room sessions per month
+5/30/no limit. Bramki: Team Pulse i structure tree — Growth;
+Leaderboard, API keys, webhooks — Pro. Calendar — in every plan.
+Wykluczone jak PL (F1–F3) → rejestr warunków powrotu.
 
 ## 5. FAQ
 
@@ -73,12 +80,13 @@ in Polish złoty — you see the currency before you pay. *(116 zn)*
 **O4:** You export contacts to vCard and download your log as CSV —
 everything is yours. *(80 zn)*
 
-Faktura: **[CZEKA NA Z2]**.
+Faktura: MILCZENIE (Z2 — warunek powrotu w rejestrze).
 
 ## 6. Potwierdzenia
 
 - Cancel at any time *(18 zn)*
 - Data export, always available: vCard and CSV *(44 zn)*
+- Data stored in the EU *(21 zn — Z4)*
 
 ## 7. Zamknięcie
 

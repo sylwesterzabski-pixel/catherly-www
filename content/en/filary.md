@@ -65,9 +65,9 @@ The Dashboard shows where things stand today, and your results carry
 proof that lasts. *(86 zn)*
 
 ### Konkrety
-1. Magic Wrapped sums up the period — you see what you actually got done. *(70 zn)*
+1. Your Wrapped sums up the period — you see what you actually got done. *(69 zn — nazwa wg aplikacji, Z3)*
 2. A goal with milestones tells you how far you've come and what's next. *(69 zn)*
-3. The Record with its digital fingerprint stays — others can verify your results. *(79 zn)*
+3. The Testimony with its digital fingerprint stays — others can verify your results. *(82 zn — nazwa wg aplikacji, Z3)*
 
 ---
 

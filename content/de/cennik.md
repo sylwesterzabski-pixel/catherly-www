@@ -28,35 +28,42 @@ wyliczane z migawki Stripe.
 Für wen: Für dich, wenn du anfängst und einen klaren Plan für jeden
 Tag haben willst. *(76 zn)*
 - Dashboard – ein Bildschirm, auf dem du deine Kontakte und Ergebnisse siehst *(75 zn)*
-- Tagesplan (DMO) – sagt dir, was heute zu tun ist *(48 zn)*
+- Täglicher Aktionsplan (DMO) – sagt dir, was heute zu tun ist *(60 zn)*
 - Anmeldeformular mit öffentlicher Seite – Kontakte landen direkt in deiner Kontaktbasis *(86 zn)*
-- Gesprächssimulator – du übst schwierige Antworten, bevor sie wirklich fallen *(76 zn)*
-- Schutzschild – prüft riskante Formulierungen, bevor du sie abschickst *(69 zn)*
+- Trainingsraum – du übst schwierige Antworten, bevor sie wirklich fallen *(71 zn)*
+- Schild – prüft riskante Formulierungen, bevor du sie abschickst *(63 zn)*
 
-CTA: Plan wählen → /registrierung?plan=starter
+CTA: Plan wählen → /login (plan wybierany w aplikacji — ADR-023)
 
 ### Growth — {Preis.growth} €
 Für wen: Für dich, wenn du ein Team aufbaust und sehen willst, wie
 jede deiner Partnerinnen vorankommt. *(94 zn)*
 
 Alles aus Starter, dazu:
-- Puls – du siehst Signale, dass eine Partnerin abspringen könnte, und bekommst einen fertigen Satz für den Gesprächseinstieg *(123 zn — korekta panelu)*
+- Team-Puls – du siehst Signale, dass eine Partnerin abspringen könnte, und bekommst einen fertigen Satz für den Gesprächseinstieg *(128 zn)*
 - Du siehst den ganzen Strukturbaum deines Teams *(46 zn)*
 
-CTA: Plan wählen → /registrierung?plan=growth
+CTA: Plan wählen → /login (ADR-023)
 
 ### Pro — {Preis.pro} €
 Für wen: Für dich, wenn du eine große Struktur führst und einen Teil
 der Arbeit an andere abgeben willst. *(96 zn)*
 
-Lista pozycji: **[CZEKA NA Z1]**.
+Alles aus Growth, dazu:
+- Rangliste – du siehst, wo du im Vergleich zu anderen Nutzerinnen stehst *(71 zn)*
+- API-Schlüssel und Webhooks – du verbindest Catherly mit deinen eigenen Werkzeugen *(81 zn)*
+- Keine Limits bei Kontakten, Team, Posts und Trainingseinheiten *(62 zn)*
+- Sauberer Export – deine Materialien ohne Empfehlungssignatur *(60 zn)*
 
-CTA: Plan wählen → /registrierung?plan=pro
+CTA: Plan wählen → /login (ADR-023)
 
 ## 4. Tabela porównawcza
 
-Jak PL: bramki potwierdzone (Puls, Strukturbaum — Growth); kalendarz
-„in jedem Plan". Limity: [CZEKA NA Z1].
+Jak PL (Z1 + panel): Kontakte 50/200/ohne Limit · Team 10/50/ohne
+Limit · Posts pro Monat 20/100/ohne Limit · Trainingsraum-Einheiten
+pro Monat 5/30/ohne Limit. Bramki: Team-Puls i Strukturbaum — Growth;
+Rangliste, API-Schlüssel, Webhooks — Pro. Kalender — in jedem Plan.
+Wykluczone jak PL (F1–F3) → rejestr warunków powrotu.
 
 ## 5. FAQ
 
@@ -74,12 +81,13 @@ einen Preis in Złoty – die Währung siehst du vor der Zahlung. *(123 zn)*
 **O4:** Du exportierst deine Kontakte als vCard und lädst das Register
 als CSV herunter – alles gehört dir. *(99 zn)*
 
-Faktura: **[CZEKA NA Z2]**.
+Faktura: MILCZENIE (Z2 — warunek powrotu w rejestrze).
 
 ## 6. Potwierdzenia
 
 - Kündigung jederzeit *(19 zn)*
 - Datenexport jederzeit: vCard und CSV *(36 zn)*
+- Daten in der EU gespeichert *(27 zn — Z4)*
 
 ## 7. Zamknięcie
 

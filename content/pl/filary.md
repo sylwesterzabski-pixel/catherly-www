@@ -82,7 +82,7 @@ Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje.
 **74 znaki.**
 
 ### Konkrety
-1. Magic Wrapped składa podsumowanie okresu — widzisz, co naprawdę zrobiłaś. *(73 zn)*
+1. Twój Wrapped składa podsumowanie okresu — widzisz, co naprawdę zrobiłaś. *(72 zn — nazwa wg aplikacji, Z3)*
 2. Cel z kamieniami milowymi mówi, jak daleko zaszłaś i co jest następne. *(70 zn)*
 3. Świadectwo z cyfrowym odciskiem zostaje — ktoś może zweryfikować twoje wyniki. *(78 zn)*
 
@@ -103,6 +103,6 @@ mierzenie.
 Wszystkie funkcje w trybie dokonanym mają status DZIAŁA: DMO,
 przypomnienia, ślad polecenia, Studio + szablony, uczenie głosu, Tarcza,
 Pieczęć Etyczna + certyfikat, Kreator wdrożeniowy, Pierwsze 90 Dni,
-osiągnięcia i odznaki, Pulpit, Magic Wrapped, cele z kamieniami
-milowymi, Świadectwo. Zero funkcji z listy MILCZENIE. Puls/sygnały
+osiągnięcia i odznaki, Pulpit, Twój Wrapped (d. Magic Wrapped),
+cele z kamieniami milowymi, Świadectwo. Zero funkcji z listy MILCZENIE. Puls/sygnały
 ryzyka odejścia — nieobecne (wymagałyby „W planie Growth").

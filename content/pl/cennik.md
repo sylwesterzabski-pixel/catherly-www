@@ -5,8 +5,10 @@ Flaga „Pierwsze 90 Dni" (Para 1 obaw) dopisana do zlecenia Z1.
 Protokół: docs/faza-2/panel-cennik.md. Struktura:
 docs/faza-2/projekt-cennik.md (OBOWIĄZUJE).
 Ceny i oszczędności: wyłącznie z migawki Stripe ({placeholdery}),
-nigdy literały. Karta Pro bez listy wyróżników do powrotu Z1;
-FAQ bez faktury do powrotu Z2 (warunek DECYZJI 4).
+nigdy literały. Z1/Z2 ROZSTRZYGNIĘTE (2026-08-09): karta Pro
+uzupełniona; FAQ-faktura i trial = milczenie (rejestr warunków
+powrotu); CTA → /login (ADR-023). Panel zmian:
+docs/faza-2/projekt-zmian-po-z1-z4.md.
 
 ---
 
@@ -31,34 +33,45 @@ każdy dzień. *(68 zn)*
 - Pulpit — jeden ekran, na którym widzisz swoje kontakty i wyniki *(63 zn)*
 - DMO — Dzienny Plan Działania, który mówi, co dziś zrobić *(56 zn)*
 - Formularz zgłoszeniowy z publiczną stroną — kontakty trafiają prosto do bazy *(76 zn)*
-- Symulator rozmów — ćwiczysz trudne odpowiedzi, zanim padną naprawdę *(67 zn)*
+- Sala Treningowa — ćwiczysz trudne odpowiedzi, zanim padną naprawdę *(66 zn)*
 - Tarcza — sprawdza ryzykowne sformułowania, zanim je wyślesz *(59 zn)*
 
-CTA: Wybierz plan → /rejestracja?plan=starter
+CTA: Wybierz plan → /login (plan wybierasz w aplikacji po
+zalogowaniu — ADR-023)
 
 ### Growth — {cena.growth} zł
 Dla kogo: Dla ciebie, jeśli budujesz zespół i chcesz widzieć, jak
 radzi sobie każda z twoich osób. *(88 zn)*
 
 Wszystko ze Startera, a do tego:
-- Puls — widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę *(84 zn)*
+- Puls zespołu — widzisz sygnały ryzyka odejścia i dostajesz zdanie otwierające rozmowę *(85 zn)*
 - Widzisz całe drzewo struktury swojego zespołu *(45 zn)*
 
-CTA: Wybierz plan → /rejestracja?plan=growth
+CTA: Wybierz plan → /login (ADR-023)
 
 ### Pro — {cena.pro} zł
 Dla kogo: Dla ciebie, jeśli prowadzisz dużą strukturę i część pracy
 chcesz przekazać innym. *(81 zn)*
 
-Lista pozycji: **[CZEKA NA Z1]** — bez zmyślonych różnic.
+Wszystko z Growth, a do tego:
+- Ranking — widzisz swoje miejsce na tle innych użytkowniczek *(59 zn)*
+- Klucze API i webhooki — łączysz Catherly z własnymi narzędziami *(63 zn)*
+- Zniesione limity kontaktów, zespołu, postów i sesji treningowych *(64 zn)*
+- Czysty eksport — twoje materiały bez sygnatury polecającej *(58 zn)*
 
-CTA: Wybierz plan → /rejestracja?plan=pro
+CTA: Wybierz plan → /login (ADR-023)
 
 ## 4. Pełna tabela porównawcza
 
-Wg struktury (projekt-cennik.md sekcja 4): wiersze grupowane
-filarami; bramki potwierdzone (Puls, drzewo — Growth); kalendarz
-w wierszu „w każdym planie". Limity liczbowe: [CZEKA NA Z1].
+Wiersze limitów (Z1 — wyłącznie egzekwowane w kodzie; panel
+2026-08-09): Kontakty 50/200/bez limitu · Zespół 10/50/bez limitu ·
+Posty miesięcznie 20/100/bez limitu · Sesje Sali Treningowej
+miesięcznie 5/30/bez limitu. Wiersze bramek: Puls zespołu i drzewo
+struktury — Growth; Ranking, klucze API i webhooki — Pro.
+Kalendarz — w każdym planie. Wykluczone (decyzja właściciela +
+panel F1–F3): strony www (limit nieegzekwowany), PDF (generator
+martwy), przestrzeń na pliki (Storage martwy), wywołania AI (klucz
+pusty), platformy social (zgody platform) → rejestr warunków powrotu.
 
 ## 5. FAQ — pytania o płatność
 
@@ -76,14 +89,14 @@ w euro — walutę widzisz przed płatnością. *(98 zn)*
 **O4:** Eksportujesz kontakty do vCard, pobierasz CSV z rejestrem —
 wszystko jest twoje. *(80 zn)*
 
-Pytanie o fakturę: **[CZEKA NA Z2]** — do tego czasu milczenie.
+Pytanie o fakturę: MILCZENIE (Z2 rozstrzygnięte — warunek powrotu:
+testowy zakup z otrzymaną fakturą; rejestr warunków powrotu).
 
 ## 6. Potwierdzenia pod cennikiem
 
 - Rezygnacja w każdej chwili *(26 zn)*
 - Eksport danych zawsze: vCard i CSV *(34 zn)*
-
-(Trzecie potwierdzenie po weryfikacji Z4 — lokalizacja danych.)
+- Dane przechowywane w UE *(23 zn — Z4: region eu-central-1 + fra1)*
 
 ## 7. Zamknięcie
 

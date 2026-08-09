@@ -25,7 +25,7 @@ kontakty, nie wszystkie dane; ADR-018: niedoobiecywanie).
 ## Para 4 — bezpieczeństwo kontaktów
 
 **P:** I hold my customers' data. Who else sees it? *(44 zn)*
-**O:** Only you have access to your account. The Shield keeps content ethical — the SHA-256 Record logs every change. *(110 zn)*
+**O:** Only you have access to your account. The Shield keeps content ethical — the SHA-256 Testimony logs every change. *(113 zn — nazwa wg aplikacji, Z3)*
 
 ## Para 5 — telefon
 

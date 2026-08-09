@@ -9,6 +9,12 @@ i wyłączone flagą → milczenie (nie ma ich w tej tabeli).
 Zastrzeżenie nadrzędne (inwentarz sekcja 0): wszystko poniżej zakłada
 aktywną subskrypcję Stripe. Bez niej żadna funkcja API nie jest dostępna.
 
+AKTUALIZACJA 2026-08-09 (po zleceniu Z1): sekcja „Bramki planów
+i limity" na końcu pliku — zastępuje szacunek „11 funkcji z bramką"
+faktami z kodu. Nazwy funkcji wg słownika (docs/faza-2/slownik-nazw.md
+— OBOWIĄZUJE): Magic Wrapped → Twój Wrapped, Symulator rozmów →
+Sala Treningowa, Puls → Puls zespołu.
+
 Reguły twarde (decyzja właściciela 2026-08-09):
 - Kalendarz NIE jest wyróżnikiem planów na /cennik (rozjazd cennik↔kod
   czeka na rozstrzygnięcie po stronie aplikacji).
@@ -205,3 +211,58 @@ buduje zaufanie (karta tonu sekcja 3). Do użycia w sekcji obawy
 | 4 | „przejmuje ich pracę" (D2) | ❌ Odrzucony przez panel; nie wchodzi do syntezy. |
 | 5 | „porządkuje pracę zespołu" | ✅ Workflow zatwierdzania + Pierwsze 90 Dni = pokryte; fraza bezpieczna. |
 | 6 | „widzisz (…) jak jej idzie" | ✅ Pulpit pokazuje aktywność per osoba z zespołu (13 zapytań); fraza bezpieczna. |
+
+---
+
+## Bramki planów i limity (Z1 — fakty z kodu; panel 2026-08-09)
+
+Źródło: docs/faza-2/raport-zlecen-z1-z4.md (plik:linia per pozycja).
+Mechanizm: assertPlanAtLeast, src/lib/api/plan-limits.ts:226.
+
+### Nazywalne na stronie (zgodne z regułami milczenia)
+
+| Funkcja | Bramka | Język strony |
+|---|---|---|
+| Puls zespołu | GROWTH | Kierunek: „W planie Growth widzisz sygnały ryzyka odejścia…" (na karcie Growth kwalifikator z kontekstu) |
+| Drzewo struktury | GROWTH | Kierunek: „W planie Growth masz widok całego drzewa struktury." |
+| Ranking | PRO | „Ranking — widzisz swoje miejsce na tle innych użytkowniczek" |
+| Klucze API + webhooki | PRO | „Klucze API i webhooki — łączysz Catherly z własnymi narzędziami" |
+| Czysty eksport (bez sygnatury polecającej) | PRO (perk) | „Czysty eksport — twoje materiały bez sygnatury polecającej" |
+
+### Bramkowane, ale NIE nazywane na stronie
+
+- Import wyciągu FL (GROWTH) — Storage atrapa; milczenie.
+- Funkcje Thriving Lifestyle (Szept/Body&Mind/Tryb jazdy — GROWTH;
+  eksport-książka — PRO) — TL: zero wzmianek (reguła twarda).
+- Benchmarki, Liga zespołu, Hive Coach, Win Reel, Catherly
+  Interactive, Stacks, Catherly Tag, raporty struktury i sponsora
+  (GROWTH) — nieobecne w narracji strony; każde wejście = nowa
+  obietnica → panel + decyzja właściciela (rejestr, poz. 12).
+
+### Limity liczbowe (egzekwowane w kodzie; jedyne dozwolone w tabeli /cennik)
+
+| Limit | STARTER | GROWTH | PRO |
+|---|---|---|---|
+| Kontakty | 50 | 200 | bez limitu |
+| Zespół | 10 | 50 | bez limitu |
+| Posty miesięcznie | 20 | 100 | bez limitu |
+| Sesje Sali Treningowej miesięcznie | 5 | 30 | bez limitu |
+
+Wykluczone z tabeli /cennik (decyzja właściciela + panel F1–F3):
+strony www (limit nieegzekwowany), PDF (generator martwy), przestrzeń
+na pliki 1/5/20 GB (Storage martwy), wywołania AI 100/500/∞ (klucz
+pusty), platformy social 2/5/∞ (zgody platform) → rejestr warunków
+powrotu (poz. 4–6).
+
+### Rozstrzygnięcia towarzyszące
+
+- Pierwsze 90 Dni: dla KAŻDEJ użytkowniczki (auto-enroll przy
+  pierwszym wejściu; first90-service.ts:62–67) — Para 1 obaw i filar
+  Zespół poprawne bez zmian. Fazy: Fundament/Rytm/Duplikacja/
+  Przywództwo (4 — zgodnie z filarem Zespół).
+- Kalendarz bez bramki w kodzie — potwierdzone; wiersz „w każdym
+  planie" (rozjazd seed.ts:86 → zlecenie Z5, strona aplikacji).
+- Karta Pro NIE zawiera „White label"/„Dedykowane wsparcie"/
+  „Dashboard analityczny" (seed bez pokrycia w kodzie) ani funkcji TL
+  (milczenie — panel F8: 3 nazwane funkcje zamiast „4", bo czwarta
+  to TL).

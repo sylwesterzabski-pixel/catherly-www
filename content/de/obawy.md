@@ -25,7 +25,7 @@ jederzeit exportieren").
 ## Para 4 — bezpieczeństwo kontaktów
 
 **P:** Ich habe Daten meiner Kundinnen. Wer sieht sie noch? *(52 zn)*
-**O:** Auf dein Konto hast nur du Zugriff. Der Schutzschild prüft deine Inhalte auf Ethik – der SHA-256-Nachweis protokolliert jede Änderung. *(134 zn)*
+**O:** Auf dein Konto hast nur du Zugriff. Der Schild prüft deine Inhalte auf Ethik – das SHA-256-Zeugnis protokolliert jede Änderung. *(127 zn — nazwy wg aplikacji, Z3)*
 
 ## Para 5 — telefon
 
