@@ -29,6 +29,7 @@ sprzeczności wygrywa.
 | 018 | **Prymat nieodwracalnego (NADRZĘDNY)** | [018](018-prymat-nieodwracalnego.md) |
 | 019 | Standardowy toolchain Next.js jako część stacku języka | [019](019-toolchain-jezyka-poza-adr-016.md) |
 | 020 | Main zawsze zielony — merge tylko przy komplecie zielonych bramek | [020](020-main-zawsze-zielony.md) |
+| 021 | **SZKIC** — własny minimalny serwer MCP jako adapter oficjalnego API Higgsfield (fallback wobec buga OAuth; decyzja przy Fazie 4) | [021](021-wlasny-serwer-mcp-higgsfield.md) |
 
 Seed 001–018 pochodzi z rejestru w PLAN.md (sekcja 8). PLAN.md pozostaje
 niezmieniony — jego suma SHA-256 jest sumą odniesienia; ADR-y od 019
