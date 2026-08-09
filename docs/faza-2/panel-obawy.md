@@ -4,7 +4,12 @@
 **Mechanika:** fan-out 3 niezależnych zestawów (O1 koleżanka uspokaja /
 O2 przez fakty / O3 przez jej perspektywę) → osobny agent-panel (Prawo 2)
 → synteza. Brief: docs/faza-2/brief-obawy.md.
-**Status: PROJEKT — czeka na decyzję właściciela.**
+**Status: ROZSTRZYGNIĘTY — synteza zaakceptowana przez właściciela
+2026-08-09.** Para 2 bez zdania kierunku (brak śladu importu hurtowego
+w kodzie; jest tylko import wyciągu FL). Para 4 zachowawcza —
+weryfikacja lokalizacji danych i szyfrowania zlecona oknu aplikacji
+osobno. SHA-256 zostaje w obawach; strona główna mówi „cyfrowy odcisk".
+Tekst obowiązujący: content/pl/obawy.md.
 
 ---
 

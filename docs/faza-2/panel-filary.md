@@ -4,7 +4,11 @@
 **Mechanika:** fan-out 3 niezależnych zestawów (F1 przez jej dzień /
 F2 problem→rozwiązanie / F3 przez efekt) → osobny agent-panel (Prawo 2)
 → synteza. Brief: docs/faza-2/brief-filary.md.
-**Status: PROJEKT — czeka na decyzję właściciela.**
+**Status: ROZSTRZYGNIĘTY — synteza zaakceptowana przez właściciela
+2026-08-09**, z korektą: „podpis cyfrowy" → „cyfrowy odcisk" (SHA-256
+to suma kontrolna, nie podpis). „Dbanie o siebie" jako mini-sekcja po
+czterech filarach — zaakceptowane. Tekst obowiązujący:
+content/pl/filary.md.
 
 ---
 
