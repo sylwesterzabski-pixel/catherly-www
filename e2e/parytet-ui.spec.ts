@@ -10,16 +10,25 @@ import de from "../src/i18n/messages/de.json";
  * z src/i18n/messages (kontrakt K1: pl bez prefiksu, /en, /de).
  */
 const PRZYPADKI = [
-  { adres: "/", jezyk: "pl", komunikaty: pl },
-  { adres: "/en", jezyk: "en", komunikaty: en },
-  { adres: "/de", jezyk: "de", komunikaty: de },
+  { adres: "/", jezyk: "pl", prefiks: "", komunikaty: pl },
+  { adres: "/en", jezyk: "en", prefiks: "/en", komunikaty: en },
+  { adres: "/de", jezyk: "de", prefiks: "/de", komunikaty: de },
+] as const;
+
+// Ścieżki pozycji menu i mapy strony — ZAPISANE WPROST (niezależnie
+// od src/i18n/sciezki.ts): parytet hrefów per język to kontrakt K1
+// (pl bez prefiksu: /funkcje…; en: /en/funkcje…; de: /de/funkcje…).
+const POZYCJE = [
+  { klucz: "funkcje", sciezka: "/funkcje" },
+  { klucz: "cennik", sciezka: "/cennik" },
+  { klucz: "dlaKogo", sciezka: "/dla-kogo" },
 ] as const;
 
 // Liczba linków w stopce: mapa strony (3 pozycje) + języki (3) —
 // dokumenty i kontakt to TEKST „(wkrótce)", bez linków (kontrakt K1).
 const LICZBA_LINKOW_STOPKI = 6;
 
-for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
+for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   test(`parytet UI (${jezyk}): nawigacja i stopka z etykietami messages na ${adres}`, async ({
     page,
   }) => {
@@ -38,13 +47,14 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     await expect(
       naglowek.getByRole("link", { name: "Catherly", exact: true }),
     ).toBeVisible();
-    for (const klucz of ["funkcje", "cennik", "dlaKogo"] as const) {
-      await expect(
-        naglowek.getByRole("link", {
-          name: komunikaty.Nawigacja[klucz],
-          exact: true,
-        }),
-      ).toBeVisible();
+    for (const { klucz, sciezka } of POZYCJE) {
+      const link = naglowek.getByRole("link", {
+        name: komunikaty.Nawigacja[klucz],
+        exact: true,
+      });
+      await expect(link).toBeVisible();
+      // Parytet hrefów per język: pl bez prefiksu, /en i /de z prefiksem.
+      await expect(link).toHaveAttribute("href", `${prefiks}${sciezka}`);
     }
     await expect(
       naglowek.getByRole("link", {
@@ -62,6 +72,23 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
           exact: true,
         }),
       ).toBeVisible();
+    }
+
+    // Mapa strony: te same trzy pozycje co menu, hrefy per język
+    // (parytet hrefów — kontrakt K1).
+    const mapaStrony = stopka.locator("section", {
+      has: page.getByRole("heading", {
+        name: komunikaty.Stopka.mapaStrony,
+        exact: true,
+      }),
+    });
+    for (const { klucz, sciezka } of POZYCJE) {
+      await expect(
+        mapaStrony.getByRole("link", {
+          name: komunikaty.Nawigacja[klucz],
+          exact: true,
+        }),
+      ).toHaveAttribute("href", `${prefiks}${sciezka}`);
     }
 
     // Języki jako linki; bieżący oznaczony aria-current="true".
