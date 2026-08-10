@@ -6,14 +6,18 @@
 <title>HF K2 — hero + K9 pasek potwierdzeń (podgląd na tokenach)</title>
 <link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
 <style>
-  /* HF K2+K9. Wartości wizualne wyłącznie var(--…); wymiary rem/ch;
+  /* HF K2+K9 — PO PANELU (werdykt 2026-08-10, przyjęty przez
+     właściciela): 3 warunki blokujące + 2 drobne CSS wprowadzone.
+     Wartości wizualne wyłącznie var(--…); wymiary rem/ch (wyjątek:
+     5vw w clamp — fluid type, brak alternatywy w CSS);
      typografia: system-ui (ADR-026 — data ważności: etap F).
      Element LCP = tekst H1; zero obrazu nad foldem; zero JS.
-     Para CTA: rola-interakcja × rola-tekst-na-interakcji (5,22:1 —
-     komentarz w tokenach). Stan hover/active CTA używa
-     --kolor-terakota-700 BEZPOŚREDNIO — kandydat na rolę
-     „interakcja-aktywna" (do rozstrzygnięcia przez panel: rola
-     w ADR czy akcept skali dla stanu przejściowego). */
+     Pary CTA (komentarze w tokenach): rola-interakcja ×
+     rola-tekst-na-interakcji 5,22:1; hover/active przez rolę
+     interakcja-aktywna × tekst-na-interakcji 7,02:1.
+     K9 poniżej 48rem: układ pionowy BEZ separatorów (decyzja
+     właściciela po panelu — zawinięcie PL 412 px > 358 px dawało
+     osieroconą kreskę); separatory tylko w wariancie poziomym. */
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -33,7 +37,7 @@
     line-height: 1.15;
     letter-spacing: -0.01em;
     margin: 0 0 1rem;
-    max-width: 18ch;
+    max-width: 22ch; /* panel: 22ch = 3 linie we wszystkich językach na desktopie */
     text-wrap: balance;
   }
   .hero__podtytul {
@@ -52,21 +56,18 @@
     padding: 0.875rem 1.5rem;
     border-radius: 0.5rem;
   }
-  .cta:hover, .cta:active { background: var(--kolor-terakota-700); }
+  .cta:hover, .cta:active {
+    background: var(--kolor-rola-interakcja-aktywna);
+  }
   .potwierdzenia {
     list-style: none;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 0;
+    flex-direction: column; /* mobile: pion, bez separatorów */
+    gap: 0.5rem;
     margin: 2.25rem 0 0;
     padding: 0;
     color: var(--kolor-rola-tekst-drugorzedny);
     font-size: 0.9375rem;
-  }
-  .potwierdzenia li { padding-inline: 0.875rem; }
-  .potwierdzenia li:first-child { padding-inline-start: 0; }
-  .potwierdzenia li + li {
-    border-inline-start: 0.0625rem solid var(--kolor-rola-kreska);
   }
   @media (min-width: 48rem) {
     .hero { padding-block: 5rem 3rem; }
@@ -74,6 +75,16 @@
       display: grid;
       grid-template-columns: 3fr 2fr; /* tekst ~60% | przestrzeń */
       gap: 2rem;
+    }
+    .potwierdzenia {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5rem 0;
+    }
+    .potwierdzenia li { padding-inline: 0.875rem; }
+    .potwierdzenia li:first-child { padding-inline-start: 0; }
+    .potwierdzenia li + li {
+      border-inline-start: 0.0625rem solid var(--kolor-rola-kreska);
     }
   }
 </style>
@@ -90,7 +101,7 @@
         sprzedaży bezpośredniej — kontakty, treści, zespół i wyniki
         w jednym miejscu.</p>
         <a class="cta" href="/funkcje">Sprawdź, jak działa</a>
-        <ul class="potwierdzenia">
+        <ul class="potwierdzenia" role="list">
           <li>Dane przechowywane w UE</li>
           <li>Rezygnacja w każdej chwili</li>
         </ul>

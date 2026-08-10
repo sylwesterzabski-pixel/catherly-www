@@ -53,10 +53,11 @@
   --kolor-rola-tekst-drugorzedny: var(--kolor-neutralna-700); /** 6,33:1 na tle — AA */
   --kolor-rola-akcent: var(--kolor-terakota-500); /** Wyłącznie dekoracja (2,87:1) — nigdy tekst ani samodzielny komunikat */
   --kolor-rola-interakcja: var(--kolor-terakota-600); /** Przyciski, elementy interaktywne — 4,68:1 na tle */
+  --kolor-rola-interakcja-aktywna: var(--kolor-terakota-700); /** Stan hover/active interakcji (panel K2, 2026-08-10). Kontrasty wyliczone: ×tekst-na-interakcji 7,02:1 — AA/AAA · ×tło strony 6,29:1 non-text ≥3:1. Para stała jak link/link-aktywny. */
   --kolor-rola-tekst-na-interakcji: var(--kolor-neutralna-50); /** 5,22:1 na terakocie-600 — AA */
   --kolor-rola-link: var(--kolor-sliwka-700); /** 6,47:1 na tle — AA */
   --kolor-rola-link-aktywny: var(--kolor-sliwka-800);
   --kolor-rola-fokus: var(--kolor-sliwka-700); /** Ślad fokusa — 6,47:1 względem tła */
   --kolor-rola-powierzchnia-akcentowa: var(--kolor-terakota-100); /** Tło akcentowe lustra L1 (ADR-025). Kontrasty wyliczone: ×tekst-podstawowy 11,15:1 · ×link 6,51:1 · ×fokus 6,51:1 — AA z zapasem (warunek DECYZJI 6). */
-  --kolor-rola-kreska: var(--kolor-neutralna-200); /** Kreski nagłówka/stopki — dekoracyjne (1,20:1 na tle; ADR-025). */
+  --kolor-rola-kreska: var(--kolor-neutralna-200); /** Kreski dekoracyjne: nagłówek, stopka, separatory list (1,20:1 na tle; ADR-025; zakres rozszerzony — panel K2, 2026-08-10). */
 }
