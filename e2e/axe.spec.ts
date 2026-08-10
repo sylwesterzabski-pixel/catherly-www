@@ -6,7 +6,7 @@ import AxeBuilder from "@axe-core/playwright";
  * Skan każdej istniejącej trasy; nowe trasy dopisuje się do listy
  * w ramach Definition of Done sekcji (PLAN.md 4.2).
  */
-const TRASY = ["/"];
+const TRASY = ["/", "/en", "/de"];
 
 for (const trasa of TRASY) {
   test(`axe: zero błędów na ${trasa}`, async ({ page }) => {
