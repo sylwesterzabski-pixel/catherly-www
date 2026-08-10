@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF K3 — sekcja tekstowa: warianty neutralna i akcentowa</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF K3. Wartości wizualne wyłącznie var(--…); wymiary w rem/ch.
+     Wariant akcentowy: tło var(--kolor-terakota-100) — kontrast
+     tekstu podstawowego 11,15:1 (AA z zapasem; warunek DECYZJI 6).
+     Propozycja handoffu: rola --kolor-rola-powierzchnia-akcentowa. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+  }
+  .sekcja { padding: 3rem 1rem; }
+  .sekcja--akcentowa { background: var(--kolor-terakota-100); }
+  .sekcja__wnetrze { max-width: 38rem; margin-inline: auto; }
+  .sekcja h2 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0 0 1rem;
+  }
+  .sekcja p { margin: 0 0 1rem; max-width: 65ch; }
+  .kropka {
+    display: block;
+    margin-block-start: 1.25rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- Wariant NEUTRALNA — użycie: S3 problem, S4 definicja -->
+<section class="sekcja" aria-labelledby="s3-h2">
+  <div class="sekcja__wnetrze">
+    <h2 id="s3-h2">Wszystko gdzieś jest. Każde gdzie indziej.</h2>
+    <p>Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru,
+    który gdzieś przecież zapisałaś. O tym, co w zespole, dowiadujesz
+    się później, niż byś chciała.</p>
+    <span class="kropka">Wieczorem siadasz do zeszytu i liczysz,
+    co z tego wyszło.</span>
+  </div>
+</section>
+
+<!-- Wariant AKCENTOWA — użycie: S10 rytm dnia (lustro L1, „po") -->
+<section class="sekcja sekcja--akcentowa" aria-labelledby="s10-h2">
+  <div class="sekcja__wnetrze">
+    <h2 id="s10-h2">Jak wygląda twój dzień z Catherly</h2>
+    <p>(Podgląd wariantu tonalnego — treść kroków S10 wchodzi po
+    akceptacji właściciela; „słyszalna kropka" poniżej pokazuje slot
+    kotwicy.)</p>
+    <span class="kropka">Wieczorem widzisz, co z tego wyszło.</span>
+  </div>
+</section>
+
+</body>
+</html>

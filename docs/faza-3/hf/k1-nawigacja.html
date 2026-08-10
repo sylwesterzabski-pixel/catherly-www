@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF K1 — nawigacja + stopka (podgląd na tokenach)</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF K1. Wyłącznie var(--…) dla wartości wizualnych; wymiary w rem
+     (brak tokenów odstępów — zgłoszone w handoffie). Zero px, zero JS. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  .skip-link {
+    position: absolute;
+    inset-inline-start: 0.5rem;
+    inset-block-start: -3rem;
+    background: var(--kolor-rola-powierzchnia);
+    color: var(--kolor-rola-tekst-podstawowy);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+  }
+  .skip-link:focus-visible { inset-block-start: 0.5rem; }
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: var(--kolor-rola-tlo-strony);
+    border-block-end: 0.0625rem solid var(--kolor-neutralna-200);
+    padding: 0.5rem 1rem;
+  }
+  .naw-gorny {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--kolor-rola-tekst-podstawowy);
+    text-decoration: none;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.25rem;
+    margin: 0.375rem 0 0;
+    padding: 0;
+  }
+  nav a {
+    color: var(--kolor-rola-link);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  nav a[aria-current="page"] {
+    color: var(--kolor-rola-tekst-podstawowy);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .logowanie { color: var(--kolor-rola-link); }
+  main { padding: 1rem; min-height: 60vh; }
+  footer {
+    background: var(--kolor-rola-powierzchnia);
+    border-block-start: 0.0625rem solid var(--kolor-neutralna-200);
+    padding: 1.5rem 1rem;
+    font-size: 0.9375rem;
+  }
+  footer h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+  footer ul { list-style: none; margin: 0 0 1.25rem; padding: 0; display: grid; gap: 0.375rem; }
+  footer a { color: var(--kolor-rola-link); }
+  .dokumenty-martwe { color: var(--kolor-rola-tekst-drugorzedny); }
+  .jezyki a[aria-current="true"] { font-weight: 700; color: var(--kolor-rola-tekst-podstawowy); text-decoration: none; }
+  @media (min-width: 48rem) {
+    .naw-caly { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; }
+    nav ul { margin: 0; }
+    footer .kolumny { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#tresc">Przejdź do treści</a>
+<header>
+  <div class="naw-caly">
+    <div class="naw-gorny">
+      <a class="logo" href="/">Catherly</a>
+      <a class="logowanie" href="/login">Logowanie</a>
+    </div>
+    <nav aria-label="Główna">
+      <ul>
+        <li><a href="/funkcje">Funkcje</a></li>
+        <li><a href="/cennik" aria-current="page">Cennik</a></li>
+        <li><a href="/dla-kogo">Dla kogo</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id="tresc">
+  <p>(Slot treści strony — podgląd HF; przewiń, żeby sprawdzić sticky.)</p>
+</main>
+<footer>
+  <div class="kolumny">
+    <section>
+      <h2>Mapa strony</h2>
+      <ul>
+        <li><a href="/funkcje">Funkcje</a></li>
+        <li><a href="/cennik">Cennik</a></li>
+        <li><a href="/dla-kogo">Dla kogo</a></li>
+      </ul>
+    </section>
+    <section class="jezyki">
+      <h2>Język</h2>
+      <ul>
+        <li><a href="/" aria-current="true" lang="pl">Polski</a></li>
+        <li><a href="/en" lang="en">English</a></li>
+        <li><a href="/de" lang="de">Deutsch</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2>Dokumenty</h2>
+      <ul class="dokumenty-martwe">
+        <li>Regulamin (wkrótce)</li>
+        <li>Prywatność (wkrótce)</li>
+        <li>Ciasteczka (wkrótce)</li>
+        <li>Przetwarzanie danych (wkrótce)</li>
+      </ul>
+    </section>
+  </div>
+</footer>
+</body>
+</html>
