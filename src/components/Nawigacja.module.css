@@ -1,4 +1,6 @@
-/* K1 — CSS 1:1 z HF docs/faza-3/hf/k1-nawigacja.html (po panelu).
+/* K1 — CSS wg HF docs/faza-3/hf/k1-nawigacja.html (po panelu);
+   od ADR-025 kreska przez rolę (HF pozostaje zapisem historycznym
+   z wartością sprzed ADR).
    Wartości wizualne wyłącznie var(--…) z tokenów; wymiary w rem — zero px.
    Sticky przez CSS, zero JS; nav ul z flex-wrap (DE/EN + zoom 200%). */
 
@@ -23,8 +25,8 @@
   position: sticky;
   inset-block-start: 0;
   background: var(--kolor-rola-tlo-strony);
-  /* Kreska dekoracyjna — docelowo rola kreski (propozycja ADR-025). */
-  border-block-end: 0.0625rem solid var(--kolor-neutralna-200);
+  /* Kreska dekoracyjna — rola kreski (ADR-025). */
+  border-block-end: 0.0625rem solid var(--kolor-rola-kreska);
   padding: 0.5rem 1rem;
 }
 

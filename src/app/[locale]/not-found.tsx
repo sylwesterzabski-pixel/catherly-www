@@ -37,6 +37,9 @@ import { adresWJezyku, type Locale } from "@/i18n/sciezki";
 export default function NieZnaleziono() {
   const locale = useLocale() as Locale;
   const t = useTranslations("NieZnaleziono");
+  // Etykieta linku powrotnego wspólna z placeholderami B1a
+  // (messages: Wspolne.stronaGlowna).
+  const tWspolne = useTranslations("Wspolne");
   return (
     <>
       <Nawigacja locale={locale} biezacaSciezka="" />
@@ -44,7 +47,7 @@ export default function NieZnaleziono() {
         <h1>{t("naglowek")}</h1>
         <p>{t("wroc")}</p>
         <p>
-          <a href={adresWJezyku(locale, "/")}>{t("stronaGlowna")}</a>
+          <a href={adresWJezyku(locale, "/")}>{tWspolne("stronaGlowna")}</a>
         </p>
       </main>
     </>

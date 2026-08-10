@@ -4,7 +4,7 @@ import styles from "./SekcjaTekstowa.module.css";
 
 type Props = {
   /** Wariant tonalny (brief K3): "neutralna" — tło strony;
-   *  "akcentowa" — tło terakota-100 (docelowo rola ADR-025). */
+   *  "akcentowa" — rola powierzchni akcentowej (ADR-025). */
   wariant?: "neutralna" | "akcentowa";
   /** H2 pochodzi z treści (content/); jeden H1 na stronę. */
   naglowek: string;

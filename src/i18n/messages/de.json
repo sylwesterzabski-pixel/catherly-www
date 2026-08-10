@@ -10,15 +10,29 @@
     "mapaStrony": "Seitenübersicht",
     "jezyk": "Sprache",
     "dokumenty": "Dokumente",
+    "dokumentyPozycje": {
+      "regulamin": "Nutzungsbedingungen",
+      "prywatnosc": "Datenschutz",
+      "ciasteczka": "Cookies",
+      "przetwarzanieDanych": "Auftragsverarbeitung"
+    },
     "kontakt": "Kontakt",
     "wkrotce": "(folgt in Kürze)"
   },
   "StronaGlowna": {
     "szkielet": "Die Inhalte der Seite entstehen in Etappen — Phase 3."
   },
+  "StronaWBudowie": {
+    "tresc": "Diese Seite entsteht gerade."
+  },
+  "StronaLogowania": {
+    "tresc": "Die Anmeldung ist verfügbar, sobald die App startet."
+  },
   "NieZnaleziono": {
     "naglowek": "Diese Seite gibt es nicht.",
-    "wroc": "Zurück zur Startseite.",
+    "wroc": "Zurück zur Startseite."
+  },
+  "Wspolne": {
     "stronaGlowna": "Startseite"
   }
 }

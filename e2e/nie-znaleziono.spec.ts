@@ -40,10 +40,11 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
       `<html lang="${jezyk}"`,
     );
 
-    // Komunikat 404 z messages (nagłówek, treść, link do strony głównej).
+    // Komunikat 404 z messages (nagłówek, treść, link do strony głównej
+    // — etykieta linku ze wspólnego klucza Wspolne.stronaGlowna).
     expect(html).toContain(komunikaty.NieZnaleziono.naglowek);
     expect(html).toContain(komunikaty.NieZnaleziono.wroc);
-    expect(html).toContain(komunikaty.NieZnaleziono.stronaGlowna);
+    expect(html).toContain(komunikaty.Wspolne.stronaGlowna);
 
     // Nawigacja i stopka w HTML-u (K1 wokół treści 404).
     expect(html).toContain(komunikaty.Nawigacja.przejdzDoTresci);

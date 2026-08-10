@@ -31,5 +31,12 @@ export function adresWJezyku(locale: Locale, sciezka: string): string {
  * (testy nowej strony wykryją to natychmiast, głośna awaria zamiast
  * cichej). Celowo NIE ma tu "/nie-znaleziono": bezpośrednie wejście
  * na ten adres też ma dostać status 404, nie 200.
+ * Ścieżki pozycji menu pochodzą z POZYCJE_MENU (jedno źródło);
+ * "/login" — strona przekaźnika logowania (B1a; docelowo szew do
+ * aplikacji w Fazie 5 — ADR-022/ADR-023).
  */
-export const ISTNIEJACE_SCIEZKI: readonly string[] = ["/"];
+export const ISTNIEJACE_SCIEZKI: readonly string[] = [
+  "/",
+  ...POZYCJE_MENU.map((pozycja) => pozycja.sciezka),
+  "/login",
+];

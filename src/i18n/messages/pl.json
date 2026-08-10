@@ -10,15 +10,29 @@
     "mapaStrony": "Mapa strony",
     "jezyk": "Język",
     "dokumenty": "Dokumenty",
+    "dokumentyPozycje": {
+      "regulamin": "Regulamin",
+      "prywatnosc": "Prywatność",
+      "ciasteczka": "Ciasteczka",
+      "przetwarzanieDanych": "Przetwarzanie danych"
+    },
     "kontakt": "Kontakt",
     "wkrotce": "(wkrótce)"
   },
   "StronaGlowna": {
     "szkielet": "Treść strony powstaje etapami — Faza 3."
   },
+  "StronaWBudowie": {
+    "tresc": "Ta strona powstaje."
+  },
+  "StronaLogowania": {
+    "tresc": "Logowanie będzie dostępne przy premierze aplikacji."
+  },
   "NieZnaleziono": {
     "naglowek": "Tej strony nie ma.",
-    "wroc": "Wróć na stronę główną.",
+    "wroc": "Wróć na stronę główną."
+  },
+  "Wspolne": {
     "stronaGlowna": "Strona główna"
   }
 }

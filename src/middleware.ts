@@ -48,7 +48,10 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Bez tras wewnętrznych Nexta, plików statycznych i /login
-  // (szew logowania do aplikacji — ADR-022/ADR-023, poza i18n www).
-  matcher: "/((?!api|login|_next|_vercel|.*\\..*).*)",
+  // Bez tras wewnętrznych Nexta i plików statycznych. /login przechodzi
+  // przez middleware jak każda strona per locale (placeholder B1a —
+  // rejestr ISTNIEJACE_SCIEZKI); docelowo to szew do aplikacji
+  // (ADR-022/ADR-023) — rewrite wejdzie w Fazie 5 i wtedy /login
+  // wróci do wyjątków matchera.
+  matcher: "/((?!api|_next|_vercel|.*\\..*).*)",
 };
