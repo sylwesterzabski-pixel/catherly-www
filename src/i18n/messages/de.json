@@ -19,8 +19,12 @@
     "kontakt": "Kontakt",
     "wkrotce": "(folgt in Kürze)"
   },
-  "StronaGlowna": {
-    "szkielet": "Die Inhalte der Seite entstehen in Etappen — Phase 3."
+  "Hero": {
+    "naglowek": "Du sprichst mit Menschen – Catherly führt deine Kontakte und Ergebnisse.",
+    "podtytul": "Catherly ist ein System für deinen eigenen Direktvertrieb – Kontakte, Inhalte, Team und Ergebnisse an einem Ort.",
+    "cta": "Sieh dir an, wie es funktioniert",
+    "potwierdzenieUE": "Daten in der EU gespeichert",
+    "potwierdzenieRezygnacja": "Kündigung jederzeit"
   },
   "StronaWBudowie": {
     "tresc": "Diese Seite entsteht gerade."

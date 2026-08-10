@@ -1,0 +1,36 @@
+/* K9 — CSS wg HF docs/faza-3/hf/k2-hero.html (po panelu 2026-08-10).
+   Kolory wyłącznie var(--…); wymiary rem — zero px.
+   Poniżej 48rem: pion BEZ separatorów (decyzja właściciela po panelu —
+   zawinięcie poziome w PL dawało osieroconą kreskę); separator
+   rola-kreska tylko w układzie poziomym od 48rem. */
+
+.pasek {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  color: var(--kolor-rola-tekst-drugorzedny);
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 48rem) {
+  .pasek {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+  }
+
+  .pasek li {
+    padding-inline: 0.875rem;
+  }
+
+  .pasek li:first-child {
+    padding-inline-start: 0;
+  }
+
+  .pasek li + li {
+    border-inline-start: 0.0625rem solid var(--kolor-rola-kreska);
+  }
+}

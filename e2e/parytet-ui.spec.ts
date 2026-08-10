@@ -119,9 +119,10 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     ).toBeVisible();
     await expect(stopka.locator("a")).toHaveCount(LICZBA_LINKOW_STOPKI);
 
-    // Treść placeholdera w main#tresc z messages.
-    await expect(page.locator("main#tresc")).toContainText(
-      komunikaty.StronaGlowna.szkielet,
+    // Hero (K2) w main#tresc: H1 z messages — parytet szczegółowy
+    // (podtytuł, CTA, potwierdzenia): e2e/hero.spec.ts.
+    await expect(page.locator("main#tresc h1")).toHaveText(
+      komunikaty.Hero.naglowek,
     );
   });
 }

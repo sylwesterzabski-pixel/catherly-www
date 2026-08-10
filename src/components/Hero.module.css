@@ -1,0 +1,64 @@
+/* K2 — CSS wg HF docs/faza-3/hf/k2-hero.html (po panelu 2026-08-10).
+   Kolory wyłącznie var(--…); wymiary rem/ch (wyjątek: 5vw w clamp —
+   fluid type, brak alternatywy w CSS; odnotowane w handoffie).
+   Element LCP = tekst H1; typografia system-ui (ADR-026). */
+
+.hero {
+  padding: 3rem 1rem 2rem;
+}
+
+.wnetrze {
+  max-width: 70rem;
+  margin-inline: auto;
+}
+
+.naglowek {
+  font-size: clamp(1.75rem, 5vw + 1rem, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
+  /* Panel K2: 22ch = 3 linie H1 we wszystkich językach na desktopie
+     (18ch dawało EN/DE 4 linie wobec „2–3" z wireframe'u). */
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.podtytul {
+  color: var(--kolor-rola-tekst-drugorzedny);
+  font-size: 1.125rem;
+  max-width: var(--wymiar-miara-akapitu);
+  margin: 0 0 1.75rem;
+}
+
+.cta {
+  display: inline-block;
+  background: var(--kolor-rola-interakcja);
+  color: var(--kolor-rola-tekst-na-interakcji);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.cta:hover,
+.cta:active {
+  /* Para 7,02:1 — komentarz przy roli w tokenach (panel K2). */
+  background: var(--kolor-rola-interakcja-aktywna);
+}
+
+.potwierdzenia {
+  margin-block-start: 2.25rem;
+}
+
+@media (min-width: 48rem) {
+  .hero {
+    padding-block: 5rem 3rem;
+  }
+
+  .kolumny {
+    display: grid;
+    grid-template-columns: 3fr 2fr; /* tekst ~60% | spokojna przestrzeń */
+    gap: 2rem;
+  }
+}

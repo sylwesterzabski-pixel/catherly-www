@@ -19,8 +19,12 @@
     "kontakt": "Kontakt",
     "wkrotce": "(wkrótce)"
   },
-  "StronaGlowna": {
-    "szkielet": "Treść strony powstaje etapami — Faza 3."
+  "Hero": {
+    "naglowek": "Rozmawiasz z ludźmi — Catherly prowadzi kontakty i wyniki.",
+    "podtytul": "Catherly to system do własnej sprzedaży bezpośredniej — kontakty, treści, zespół i wyniki w jednym miejscu.",
+    "cta": "Sprawdź, jak działa",
+    "potwierdzenieUE": "Dane przechowywane w UE",
+    "potwierdzenieRezygnacja": "Rezygnacja w każdej chwili"
   },
   "StronaWBudowie": {
     "tresc": "Ta strona powstaje."

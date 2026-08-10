@@ -19,8 +19,12 @@
     "kontakt": "Contact",
     "wkrotce": "(coming soon)"
   },
-  "StronaGlowna": {
-    "szkielet": "The page content is being built in stages — Phase 3."
+  "Hero": {
+    "naglowek": "You do the talking — Catherly keeps track of contacts and results.",
+    "podtytul": "Catherly is a system for running your own direct selling — contacts, content, team, and results in one place.",
+    "cta": "See how it works",
+    "potwierdzenieUE": "Data stored in the EU",
+    "potwierdzenieRezygnacja": "Cancel at any time"
   },
   "StronaWBudowie": {
     "tresc": "This page is being built."
