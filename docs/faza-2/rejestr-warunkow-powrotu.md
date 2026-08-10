@@ -19,6 +19,8 @@ Data założenia: 2026-08-09 (po Z1–Z4).
 | 11 | Fraza Pulsu poza kartą Growth | wszystkie treści | Zawsze pełna forma „W planie Growth…" (warunek panelu cennika, aktualny) |
 | 12 | Pozostałe bramki GROWTH z Z1 (Benchmarki, Liga, Hive Coach, Win Reel, Interactive, Stacks, Tag, raporty struktury/sponsora) | ewentualne przyszłe treści | Nieobecne w narracji strony; każde wejście = nowa obietnica → tabela obietnic + panel + decyzja właściciela |
 
+| 13 | robots: noindex,nofollow (layout www — stan przedpremierowy, odnotowany przez adwersarza) | src/app/[locale]/…/layout.tsx | Wyłączyć przy publikacji (Faza 7) — pozycja checklisty premiery |
+
 Pozycje zamknięte (dla historii): „kto czeka na odpowiedź" (usunięta
 na stałe — brak funkcji); „co z tego jest twoje" (zredukowana do „co
 się sprzedało"); FAQ-faktura i trial rozstrzygnięte 2026-08-09 jako

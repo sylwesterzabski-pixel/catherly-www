@@ -15,6 +15,9 @@ potwierdzony niezależnym rachunkiem (11,15:1).
 | link × terakota-100 | 6,51:1 |
 | fokus × terakota-100 | 6,51:1 |
 | tekst-drugorzędny × tło strony | 6,33:1 |
+| tekst-drugorzędny × powierzchnia stopki (neutralna-50) | 7,07:1 |
+| link × powierzchnia stopki | 7,22:1 |
+| tekst-podstawowy × powierzchnia stopki | 12,36:1 |
 
 ## K1 — kontrakt implementacji
 
