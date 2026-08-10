@@ -1,8 +1,10 @@
 # Protokół adwersarza: Etap B (K1/K3 + i18n + 404)
 
-**Zakres:** diff 25c6e10..ffbc728 (implementacja K1/K3, i18n www,
-strona 404). Trzy rundy (2026-08-10). Adwersarz wszystko uruchamiał
-samodzielnie; mutacje weryfikowane empirycznie.
+**Zakres:** diff 25c6e10..e2ba0cf (implementacja K1/K3, i18n www,
+strona 404; rundy 1–3 objęły 25c6e10..ffbc728, runda 4 — naprawy
+B1a/I4/I1/ADR-025/check-linki do merge e2ba0cf). Cztery rundy
+(2026-08-10). Adwersarz wszystko uruchamiał samodzielnie; mutacje
+weryfikowane empirycznie.
 
 ## Przebieg
 

@@ -2,6 +2,10 @@
 
 Data: 2026-08-10. Status: PRZYJĘTY (decyzja właściciela).
 
+Adnotacja 2026-08-10: dwie redakcyjne generalizacje zapisu („Etapy
+C–E … WYŁĄCZNIE" i „z zapasem" przy budżecie 1,8 s) potwierdzone
+przez właściciela jako zgodne z intencją.
+
 ## Kontekst
 
 STRATEGIA (fundament wizualny) wymaga docelowo kroju tekstowego oraz
