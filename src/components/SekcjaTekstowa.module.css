@@ -1,0 +1,38 @@
+/* K3 — CSS 1:1 z HF docs/faza-3/hf/k3-sekcja-tekstowa.html (po panelu).
+   Kolory wyłącznie var(--…); wymiary rem/ch — zero px.
+   LUKA TOKENOWA (handoff): brak tokenu MIARY TEKSTU — 38rem/65ch to
+   wartości surowe do czasu ADR-025. */
+
+.sekcja {
+  padding: 3rem 1rem;
+  line-height: 1.6;
+}
+
+.akcentowa {
+  /* Tło akcentowe — docelowo rola ADR-025
+     (--kolor-rola-powierzchnia-akcentowa). Kontrast tekstu
+     podstawowego 11,15:1 — AA z zapasem (warunek DECYZJI 6). */
+  background: var(--kolor-terakota-100);
+}
+
+.wnetrze {
+  max-width: 38rem;
+  margin-inline: auto;
+}
+
+.sekcja h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+}
+
+.sekcja p {
+  margin: 0 0 1rem;
+  max-width: 65ch;
+}
+
+.kropka {
+  margin-block-start: 1.25rem;
+  font-weight: 600;
+  font-size: 1.125rem;
+}

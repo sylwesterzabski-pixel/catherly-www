@@ -1,0 +1,45 @@
+/* K1 stopka — CSS 1:1 z HF docs/faza-3/hf/k1-nawigacja.html (po panelu).
+   Wartości wizualne wyłącznie var(--…) z tokenów; wymiary w rem — zero px. */
+
+.stopka {
+  background: var(--kolor-rola-powierzchnia);
+  /* Kreska dekoracyjna — docelowo rola kreski (propozycja ADR-025). */
+  border-block-start: 0.0625rem solid var(--kolor-neutralna-200);
+  padding: 1.5rem 1rem;
+  font-size: 0.9375rem;
+}
+
+.stopka h2 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.stopka ul {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: grid;
+  gap: 0.375rem;
+}
+
+.stopka a {
+  color: var(--kolor-rola-link);
+}
+
+.martwe {
+  color: var(--kolor-rola-tekst-drugorzedny);
+}
+
+.jezyki a[aria-current="true"] {
+  font-weight: 700;
+  color: var(--kolor-rola-tekst-podstawowy);
+  text-decoration: none;
+}
+
+@media (min-width: 48rem) {
+  .kolumny {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+}
