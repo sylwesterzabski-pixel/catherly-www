@@ -1,0 +1,19 @@
+{
+  "Nawigacja": {
+    "przejdzDoTresci": "Skip to content",
+    "funkcje": "Features",
+    "cennik": "Pricing",
+    "dlaKogo": "Who it's for",
+    "logowanie": "Log in"
+  },
+  "Stopka": {
+    "mapaStrony": "Site map",
+    "jezyk": "Language",
+    "dokumenty": "Documents",
+    "kontakt": "Contact",
+    "wkrotce": "(coming soon)"
+  },
+  "StronaGlowna": {
+    "szkielet": "The page content is being built in stages — Phase 3."
+  }
+}

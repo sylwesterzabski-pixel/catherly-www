@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   // Generowanie statyczne per strona (ADR-007). Świadomie BEZ `output: "export"`:
@@ -6,4 +7,7 @@ const nextConfig: NextConfig = {
   // a rewrites nie działają przy pełnym eksporcie statycznym.
 };
 
-export default nextConfig;
+// i18n www (ADR-008): konfiguracja żądań next-intl w src/i18n/request.ts.
+const withNextIntl = createNextIntlPlugin();
+
+export default withNextIntl(nextConfig);
