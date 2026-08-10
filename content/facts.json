@@ -7,5 +7,48 @@
       "data_pomiaru": "RRRR-MM-DD"
     }
   },
-  "fakty": {}
+  "fakty": {
+    "limit-kontakty-starter": {
+      "wartosc": 50,
+      "zrodlo": "Kod aplikacji: PLAN_LIMITS candidates_count, src/lib/api/plan-limits.ts:8-48; egzekucja candidate-service.ts:139. Raport Z1 (docs/faza-2/raport-zlecen-z1-z4.md). DECYZJA 8 właściciela.",
+      "data_pomiaru": "2026-08-09"
+    },
+    "limit-kontakty-growth": {
+      "wartosc": 200,
+      "zrodlo": "Kod aplikacji: PLAN_LIMITS candidates_count, src/lib/api/plan-limits.ts:8-48. Raport Z1.",
+      "data_pomiaru": "2026-08-09"
+    },
+    "limit-zespol-starter": {
+      "wartosc": 10,
+      "zrodlo": "Kod aplikacji: PLAN_LIMITS team_members, src/lib/api/plan-limits.ts:8-48; egzekucja team-service.ts:167. Raport Z1.",
+      "data_pomiaru": "2026-08-09"
+    },
+    "limit-zespol-growth": {
+      "wartosc": 50,
+      "zrodlo": "Kod aplikacji: PLAN_LIMITS team_members, src/lib/api/plan-limits.ts:8-48. Raport Z1.",
+      "data_pomiaru": "2026-08-09"
+    },
+    "limit-posty-starter": {
+      "wartosc": 20,
+      "zrodlo": "Kod aplikacji: PLAN_LIMITS posts_per_month, src/lib/api/plan-limits.ts:8-48; egzekucja content-service.ts:86,134,159. Raport Z1.",
+      "data_pomiaru": "2026-08-09"
+    },
+    "limit-posty-growth": {
+      "wartosc": 100,
+      "zrodlo": "Kod aplikacji: PLAN_LIMITS posts_per_month, src/lib/api/plan-limits.ts:8-48. Raport Z1.",
+      "data_pomiaru": "2026-08-09"
+    },
+    "limit-sesje-treningowe-starter": {
+      "wartosc": 5,
+      "zrodlo": "Kod aplikacji: PLAN_LIMITS simulator_sessions (UI: Sala Treningowa), src/lib/api/plan-limits.ts:8-48; egzekucja simulator-service.ts:42. Raport Z1.",
+      "data_pomiaru": "2026-08-09"
+    },
+    "limit-sesje-treningowe-growth": {
+      "wartosc": 30,
+      "zrodlo": "Kod aplikacji: PLAN_LIMITS simulator_sessions, src/lib/api/plan-limits.ts:8-48. Raport Z1.",
+      "data_pomiaru": "2026-08-09"
+    },
+    "_uwaga_pro": "Plan PRO: limity zniesione (-1 w kodzie) dla powyższych — na stronie słowami („bez limitu"), nie liczbą; wpis liczbowy niepotrzebny.",
+    "_uwaga_wykluczone": "NIE wpisano (rejestr warunków powrotu poz. 4-6): storage_gb 1/5/20 (Storage martwy), ai_calls_per_month 100/500 (klucz pusty), social_platforms 2/5 (zgody platform), website_pages 3/10 (limit nieegzekwowany), pdf_per_month 10/50 (generator martwy)."
+  }
 }
