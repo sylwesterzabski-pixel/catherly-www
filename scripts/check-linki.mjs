@@ -32,7 +32,28 @@ idz(HTML_DIR);
 const trasy = new Set();
 for (const plik of pliki) {
   const wzgledna = relative(HTML_DIR, plik).replace(/\.html$/, "");
-  trasy.add(wzgledna === "index" ? "/" : `/${wzgledna.replace(/\/index$/, "")}`);
+  const trasa =
+    wzgledna === "index" ? "/" : `/${wzgledna.replace(/\/index$/, "")}`;
+  // Strony 404 (/[locale]/nie-znaleziono) są prerenderowane, ale ich
+  // bezpośredni adres zwraca STATUS 404 (rejestr w src/i18n/sciezki.ts
+  // celowo ich nie zawiera) — link do nich to link martwy, więc nie
+  // wchodzą do zbioru celów.
+  if (/\/nie-znaleziono$/.test(trasa)) continue;
+  trasy.add(trasa);
+}
+
+// Routing next-intl "as-needed" (src/i18n/routing.ts): język domyślny
+// pl jest serwowany BEZ prefiksu — middleware przepisuje "/" na "/pl",
+// "/cennik" na "/pl/cennik" itd. Plik pl.html obsługuje więc też adres
+// "/", a pl/cennik.html — "/cennik". Aliasy dochodzą OBOK tras z
+// prefiksem (nie zamiast): /pl/… nadal istnieje (redirect kanonizujący),
+// a linki do tras nieistniejących w ŻADNEJ formie dalej są łapane.
+const DOMYSLNY_JEZYK = "pl";
+for (const trasa of [...trasy]) {
+  if (trasa === `/${DOMYSLNY_JEZYK}`) trasy.add("/");
+  else if (trasa.startsWith(`/${DOMYSLNY_JEZYK}/`)) {
+    trasy.add(trasa.slice(DOMYSLNY_JEZYK.length + 1));
+  }
 }
 
 let martwe = 0;
