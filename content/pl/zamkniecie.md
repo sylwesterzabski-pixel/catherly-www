@@ -1,7 +1,8 @@
 # Zamknięcie strony głównej — PL (STRATEGIA pkt 25; sekcja S13)
 
-**Status: PROJEKT — po panelu (tryb skrócony, DECYZJA 7), czeka na
-akceptację właściciela.**
+**Status: OBOWIĄZUJE — akcept właściciela 2026-08-10.**
+Potwierdzenie właściciela: „bez podawania powodu" w rejestrze
+warunków powrotu (poz. 14).
 Protokół: docs/faza-3/panel-tresci-pkt21-25.md.
 
 ---

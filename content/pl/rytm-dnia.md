@@ -1,7 +1,6 @@
 # Rytm dnia — PL (STRATEGIA pkt 21; sekcja S10, lustro L1)
 
-**Status: PROJEKT — synteza po panelu (mini fan-out R1/R2, DECYZJA 7),
-czeka na akceptację właściciela.**
+**Status: OBOWIĄZUJE — akcept właściciela 2026-08-10.**
 Protokół: docs/faza-3/panel-tresci-pkt21-25.md.
 Kotwica zarezerwowana (decyzja 2026-08-09) — ostatnie zdanie kroku
 wieczornego, dosłownie. Tło: akcentowe (lustro L1, DECYZJA 6 —

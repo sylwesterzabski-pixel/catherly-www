@@ -45,8 +45,18 @@ potwierdzony niezależnym rachunkiem (11,15:1).
 - Sekcje w landmarku main; aria-labelledby na section; H2 z treści.
 - Zero JS, zero ruchu.
 
-## Etykiety nawigacji i stopki EN/DE (poza treścią Fazy 2 — do
-zatwierdzenia przy akcepcie PR)
+## Etykiety nawigacji i stopki EN/DE — ZATWIERDZONE przez
+właściciela 2026-08-10. Nazwy dokumentów prawnych (I4) zatwierdzone:
+PL Regulamin/Prywatność/Ciasteczka/Przetwarzanie danych · EN Terms
+of Service/Privacy/Cookies/Data Processing · DE Nutzungsbedingungen/
+Datenschutz/Cookies/**Auftragsverarbeitung** — weryfikacja intencji
+(polecenie właściciela): czwarty dokument = umowa powierzenia
+(dowód: aplikacja, dpa-template.ts:1-2 — „DPA — umowa powierzenia
+przetwarzania (RODO Art. 28); Catherly = procesor, użytkowniczka =
+administrator danych kontaktów"; ogólną informację RODO pokrywa
+/prywatnosc). Gdyby treść dokumentu przy tworzeniu okazała się
+ogólną informacją — nazwa DE zmienia się na „Datenverarbeitung"
+(nazwa wynika z treści).
 
 | PL | EN | DE |
 |---|---|---|

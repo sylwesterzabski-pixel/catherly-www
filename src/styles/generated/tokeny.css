@@ -44,6 +44,8 @@
   --kolor-sliwka-700: #5e4775; /** Baza przypięta — akcent tekstowy: linki, wyróżnienia (Etap B) */
   --kolor-sliwka-800: #4c3663;
   --kolor-sliwka-900: #3c2752;
+  --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). */
+  --wymiar-miara-kolumny: 38rem; /** Maksymalna szerokość kolumny tekstu sekcji (ADR-025). */
   --kolor-rola-tlo-strony: var(--kolor-tlo);
   --kolor-rola-powierzchnia: var(--kolor-neutralna-50); /** Karty i powierzchnie na tle strony */
   --kolor-rola-powierzchnia-2: var(--kolor-neutralna-100);
@@ -55,4 +57,6 @@
   --kolor-rola-link: var(--kolor-sliwka-700); /** 6,47:1 na tle — AA */
   --kolor-rola-link-aktywny: var(--kolor-sliwka-800);
   --kolor-rola-fokus: var(--kolor-sliwka-700); /** Ślad fokusa — 6,47:1 względem tła */
+  --kolor-rola-powierzchnia-akcentowa: var(--kolor-terakota-100); /** Tło akcentowe lustra L1 (ADR-025). Kontrasty wyliczone: ×tekst-podstawowy 11,15:1 · ×link 6,51:1 · ×fokus 6,51:1 — AA z zapasem (warunek DECYZJI 6). */
+  --kolor-rola-kreska: var(--kolor-neutralna-200); /** Kreski nagłówka/stopki — dekoracyjne (1,20:1 na tle; ADR-025). */
 }

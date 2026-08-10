@@ -3,7 +3,8 @@
 **Data:** 2026-08-10. **Mechanika:** mini fan-out R1/R2 (rytm dnia)
 + tryb skrócony (zamknięcie) → osobny agent-panel (Prawo 2) → synteza
 (DECYZJA 7 właściciela autoryzowała mechanikę).
-**Status: PROJEKT — synteza czeka na akceptację właściciela.**
+**Status: ROZSTRZYGNIĘTY — akcept właściciela 2026-08-10;
+adaptacje EN/DE w toku.**
 
 ## Werdykty
 
