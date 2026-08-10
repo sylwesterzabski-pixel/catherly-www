@@ -20,7 +20,11 @@ samodzielnie; mutacje weryfikowane empirycznie.
 
 ## Werdykt końcowy
 
-**DOPUSZCZONE DO AKCEPTU WŁAŚCICIELA** z jawnymi warunkami:
+**ETAP B PRZYJĘTY PRZEZ WŁAŚCICIELA W CAŁOŚCI (2026-08-10)** —
+po rundzie 4 (B1a/I4/I1/ADR-025/check-linki): bramka linków ZIELONA
+(0 martwych), parytet ZIELONY, 68/70 testów (2 znane czerwienie
+ścieżki zakupu przyjęte świadomie). Warunki akceptu z rundy 3
+(historyczne, rozstrzygnięte):
 1. B1 — decyzja właściciela (linki do nieistniejących stron;
    warianty: tekst / placeholdery / akcept czerwieni + poprawka
    check-linki o rewrite /pl→/).

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF K2 — hero + K9 pasek potwierdzeń (podgląd na tokenach)</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF K2+K9. Wartości wizualne wyłącznie var(--…); wymiary rem/ch;
+     typografia: system-ui (ADR-026 — data ważności: etap F).
+     Element LCP = tekst H1; zero obrazu nad foldem; zero JS.
+     Para CTA: rola-interakcja × rola-tekst-na-interakcji (5,22:1 —
+     komentarz w tokenach). Stan hover/active CTA używa
+     --kolor-terakota-700 BEZPOŚREDNIO — kandydat na rolę
+     „interakcja-aktywna" (do rozstrzygnięcia przez panel: rola
+     w ADR czy akcept skali dla stanu przejściowego). */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  .hero { padding: 3rem 1rem 2rem; }
+  .hero__wnetrze { max-width: 70rem; margin-inline: auto; }
+  .hero h1 {
+    font-size: clamp(1.75rem, 5vw + 1rem, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .hero__podtytul {
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 1.125rem;
+    max-width: var(--wymiar-miara-akapitu);
+    margin: 0 0 1.75rem;
+  }
+  .cta {
+    display: inline-block;
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+  .cta:hover, .cta:active { background: var(--kolor-terakota-700); }
+  .potwierdzenia {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+    margin: 2.25rem 0 0;
+    padding: 0;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 0.9375rem;
+  }
+  .potwierdzenia li { padding-inline: 0.875rem; }
+  .potwierdzenia li:first-child { padding-inline-start: 0; }
+  .potwierdzenia li + li {
+    border-inline-start: 0.0625rem solid var(--kolor-rola-kreska);
+  }
+  @media (min-width: 48rem) {
+    .hero { padding-block: 5rem 3rem; }
+    .hero__kolumny {
+      display: grid;
+      grid-template-columns: 3fr 2fr; /* tekst ~60% | przestrzeń */
+      gap: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+<main id="tresc">
+<section class="hero" aria-labelledby="hero-h1">
+  <div class="hero__wnetrze">
+    <div class="hero__kolumny">
+      <div>
+        <h1 id="hero-h1">Rozmawiasz z ludźmi — Catherly prowadzi
+        kontakty i wyniki.</h1>
+        <p class="hero__podtytul">Catherly to system do własnej
+        sprzedaży bezpośredniej — kontakty, treści, zespół i wyniki
+        w jednym miejscu.</p>
+        <a class="cta" href="/funkcje">Sprawdź, jak działa</a>
+        <ul class="potwierdzenia">
+          <li>Dane przechowywane w UE</li>
+          <li>Rezygnacja w każdej chwili</li>
+        </ul>
+      </div>
+      <div aria-hidden="true"><!-- prawa kolumna: spokojna przestrzeń;
+        obraz wejdzie pipeline'em obrazów w etapie D, poza foldem LCP --></div>
+    </div>
+  </div>
+</section>
+</main>
+</body>
+</html>
