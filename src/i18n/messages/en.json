@@ -22,9 +22,17 @@
   "StronaGlowna": {
     "szkielet": "The page content is being built in stages — Phase 3."
   },
+  "StronaWBudowie": {
+    "tresc": "This page is being built."
+  },
+  "StronaLogowania": {
+    "tresc": "Log-in will be available when the app launches."
+  },
   "NieZnaleziono": {
     "naglowek": "This page doesn't exist.",
-    "wroc": "Go back to the home page.",
+    "wroc": "Go back to the home page."
+  },
+  "Wspolne": {
     "stronaGlowna": "Home page"
   }
 }

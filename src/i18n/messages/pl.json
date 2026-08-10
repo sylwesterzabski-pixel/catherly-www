@@ -22,9 +22,17 @@
   "StronaGlowna": {
     "szkielet": "Treść strony powstaje etapami — Faza 3."
   },
+  "StronaWBudowie": {
+    "tresc": "Ta strona powstaje."
+  },
+  "StronaLogowania": {
+    "tresc": "Logowanie będzie dostępne przy premierze aplikacji."
+  },
   "NieZnaleziono": {
     "naglowek": "Tej strony nie ma.",
-    "wroc": "Wróć na stronę główną.",
+    "wroc": "Wróć na stronę główną."
+  },
+  "Wspolne": {
     "stronaGlowna": "Strona główna"
   }
 }
