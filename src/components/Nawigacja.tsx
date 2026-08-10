@@ -7,7 +7,8 @@ import styles from "./Nawigacja.module.css";
 type Props = {
   locale: Locale;
   /** Ścieżka bieżącej strony względem języka (np. "/", "/cennik") —
-   *  wyznaczana po stronie serwera z parametrów trasy (zero JS). */
+   *  podaje ją strona (render serwerowy, zero JS); pusty string =
+   *  żadna pozycja nie jest bieżąca (404). */
   biezacaSciezka: string;
 };
 

@@ -15,5 +15,10 @@
   },
   "StronaGlowna": {
     "szkielet": "Treść strony powstaje etapami — Faza 3."
+  },
+  "NieZnaleziono": {
+    "naglowek": "Tej strony nie ma.",
+    "wroc": "Wróć na stronę główną.",
+    "stronaGlowna": "Strona główna"
   }
 }

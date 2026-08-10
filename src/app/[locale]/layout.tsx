@@ -4,12 +4,11 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 
-import { Nawigacja } from "@/components/Nawigacja";
 import { Stopka } from "@/components/Stopka";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/sciezki";
 
-import "../../globals.css";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: "Catherly",
@@ -18,27 +17,25 @@ export const metadata: Metadata = {
 
 type Props = {
   children: ReactNode;
-  params: Promise<{ locale: string; sciezka?: string[] }>;
+  params: Promise<{ locale: string }>;
 };
 
 /**
- * Layout per język: html lang zgodny z locale; renderuje K1
- * (Nawigacja + Stopka) wokół treści strony. Segment [[...sciezka]]
- * daje layoutowi bieżącą ścieżkę z parametrów trasy — aria-current
- * wyznaczany po stronie serwera, bez JS klienckiego i bez dynamizacji
- * renderu (strony pozostają prerenderowane — bramka No-JS).
+ * Layout per język: html lang zgodny z locale; Stopka (K1) wspólna dla
+ * wszystkich stron i dla 404. Nawigację (K1) renderują strony oraz
+ * not-found — strona zna własną ścieżkę i wyznacza aria-current po
+ * stronie serwera (layout w segmencie [locale] nie dostaje parametrów
+ * segmentów podrzędnych — mechanika Next). Layout przeniesiony tu
+ * z [[...sciezka]] w ramach B2 — uzasadnienie: not-found.tsx.
  */
 export default async function LayoutJezyka({ children, params }: Props) {
-  const { locale, sciezka } = await params;
+  const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-
-  const biezacaSciezka = `/${(sciezka ?? []).join("/")}`;
 
   return (
     <html lang={locale}>
       <body>
-        <Nawigacja locale={locale as Locale} biezacaSciezka={biezacaSciezka} />
         {children}
         <Stopka locale={locale as Locale} />
       </body>

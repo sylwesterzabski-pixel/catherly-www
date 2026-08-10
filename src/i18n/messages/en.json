@@ -15,5 +15,10 @@
   },
   "StronaGlowna": {
     "szkielet": "The page content is being built in stages — Phase 3."
+  },
+  "NieZnaleziono": {
+    "naglowek": "This page doesn't exist.",
+    "wroc": "Go back to the home page.",
+    "stronaGlowna": "Home page"
   }
 }

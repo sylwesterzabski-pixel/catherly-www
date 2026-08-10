@@ -15,5 +15,10 @@
   },
   "StronaGlowna": {
     "szkielet": "Die Inhalte der Seite entstehen in Etappen — Phase 3."
+  },
+  "NieZnaleziono": {
+    "naglowek": "Diese Seite gibt es nicht.",
+    "wroc": "Zurück zur Startseite.",
+    "stronaGlowna": "Startseite"
   }
 }
