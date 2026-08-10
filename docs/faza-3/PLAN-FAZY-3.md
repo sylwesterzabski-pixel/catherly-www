@@ -2,7 +2,10 @@
 
 **Data:** 2026-08-10. **Gałąź:** faza-3/komponenty (od
 faza-2/tresc-i-pozycjonowanie — main nie zawiera treści Fazy 2).
-**Status: PROJEKT — czeka na DECYZJĘ 5.**
+**Status: OBOWIĄZUJE — DECYZJA 5 właściciela 2026-08-10: wariant B
+(ADR-024). DECYZJA 7: mini fan-outy pkt 21/25 + /funkcje/pozyskiwanie
+jako wzorzec — zatwierdzone. DECYZJA 8: limity Z1 → facts.json ze
+źródłem — zatwierdzona. Otwarta: DECYZJA 6 (akcept wireframe'ów).**
 
 ---
 
