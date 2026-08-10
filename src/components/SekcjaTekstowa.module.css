@@ -1,7 +1,7 @@
-/* K3 — CSS 1:1 z HF docs/faza-3/hf/k3-sekcja-tekstowa.html (po panelu).
-   Kolory wyłącznie var(--…); wymiary rem/ch — zero px.
-   LUKA TOKENOWA (handoff): brak tokenu MIARY TEKSTU — 38rem/65ch to
-   wartości surowe do czasu ADR-025. */
+/* K3 — CSS wg HF docs/faza-3/hf/k3-sekcja-tekstowa.html (po panelu);
+   od ADR-025 tło akcentowe i miary tekstu przez rolę/tokeny wymiaru
+   (HF pozostaje zapisem historycznym z wartościami sprzed ADR).
+   Kolory wyłącznie var(--…); wymiary rem/ch — zero px. */
 
 .sekcja {
   padding: 3rem 1rem;
@@ -9,14 +9,15 @@
 }
 
 .akcentowa {
-  /* Tło akcentowe — docelowo rola ADR-025
-     (--kolor-rola-powierzchnia-akcentowa). Kontrast tekstu
-     podstawowego 11,15:1 — AA z zapasem (warunek DECYZJI 6). */
-  background: var(--kolor-terakota-100);
+  /* Rola powierzchni akcentowej (ADR-025). Kontrasty pary na poziomie
+     tokenu: ×tekst-podstawowy 11,15:1 · ×link 6,51:1 · ×fokus 6,51:1
+     — AA z zapasem (warunek DECYZJI 6). */
+  background: var(--kolor-rola-powierzchnia-akcentowa);
 }
 
 .wnetrze {
-  max-width: 38rem;
+  /* Miara kolumny — token wymiaru (ADR-025). */
+  max-width: var(--wymiar-miara-kolumny);
   margin-inline: auto;
 }
 
@@ -28,7 +29,8 @@
 
 .sekcja p {
   margin: 0 0 1rem;
-  max-width: 65ch;
+  /* Miara akapitu — token wymiaru (ADR-025). */
+  max-width: var(--wymiar-miara-akapitu);
 }
 
 .kropka {
