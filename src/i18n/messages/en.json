@@ -10,6 +10,12 @@
     "mapaStrony": "Site map",
     "jezyk": "Language",
     "dokumenty": "Documents",
+    "dokumentyPozycje": {
+      "regulamin": "Terms of Service",
+      "prywatnosc": "Privacy",
+      "ciasteczka": "Cookies",
+      "przetwarzanieDanych": "Data Processing"
+    },
     "kontakt": "Contact",
     "wkrotce": "(coming soon)"
   },

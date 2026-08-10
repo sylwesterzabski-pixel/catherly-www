@@ -10,6 +10,12 @@
     "mapaStrony": "Mapa strony",
     "jezyk": "Język",
     "dokumenty": "Dokumenty",
+    "dokumentyPozycje": {
+      "regulamin": "Regulamin",
+      "prywatnosc": "Prywatność",
+      "ciasteczka": "Ciasteczka",
+      "przetwarzanieDanych": "Przetwarzanie danych"
+    },
     "kontakt": "Kontakt",
     "wkrotce": "(wkrótce)"
   },

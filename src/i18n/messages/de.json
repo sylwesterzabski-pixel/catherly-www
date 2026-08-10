@@ -10,6 +10,12 @@
     "mapaStrony": "Seitenübersicht",
     "jezyk": "Sprache",
     "dokumenty": "Dokumente",
+    "dokumentyPozycje": {
+      "regulamin": "Nutzungsbedingungen",
+      "prywatnosc": "Datenschutz",
+      "ciasteczka": "Cookies",
+      "przetwarzanieDanych": "Auftragsverarbeitung"
+    },
     "kontakt": "Kontakt",
     "wkrotce": "(folgt in Kürze)"
   },

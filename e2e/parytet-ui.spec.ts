@@ -105,8 +105,15 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
       jezyk,
     );
 
-    // Dokumenty i kontakt: tekst „(wkrótce)" z messages, ZERO linków
-    // do nieistniejących stron — łącznie tylko mapa strony + języki.
+    // Dokumenty: cztery NAZWY z messages jako TEKST „Nazwa (wkrótce)"
+    // (I4 — decyzja właściciela 2026-08-10); kontakt: tekst „(wkrótce)".
+    // ZERO linków do nieistniejących stron — łącznie tylko mapa strony
+    // + języki.
+    for (const nazwa of Object.values(komunikaty.Stopka.dokumentyPozycje)) {
+      await expect(
+        stopka.getByText(`${nazwa} ${komunikaty.Stopka.wkrotce}`),
+      ).toBeVisible();
+    }
     await expect(
       stopka.getByText(komunikaty.Stopka.wkrotce).first(),
     ).toBeVisible();

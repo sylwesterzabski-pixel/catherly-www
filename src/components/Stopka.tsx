@@ -16,11 +16,24 @@ type Props = {
   locale: Locale;
 };
 
+/** Nazwy dokumentów prawnych w stopce (I4 — zatwierdzone przez
+ *  właściciela 2026-08-10; handoff K1/K3). Klucze wskazują etykiety
+ *  w messages (Stopka.dokumentyPozycje). DE „Auftragsverarbeitung" =
+ *  umowa powierzenia (RODO Art. 28) — weryfikacja intencji w handoffie. */
+const DOKUMENTY = [
+  "regulamin",
+  "prywatnosc",
+  "ciasteczka",
+  "przetwarzanieDanych",
+] as const;
+
 /**
- * K1 — stopka (markup 1:1 z HF docs/faza-3/hf/k1-nawigacja.html).
- * Mapa strony i języki jako LINKI; dokumenty prawne i kontakt jako
- * TEKST „(wkrótce)" — ŻADNYCH linków do nieistniejących stron
- * (bramka linków; linki wchodzą wraz ze stronami).
+ * K1 — stopka (markup wg HF docs/faza-3/hf/k1-nawigacja.html; od
+ * rundy 4 sekcja Dokumenty rozszerzona względem HF o NAZWY czterech
+ * dokumentów prawnych — I4). Mapa strony i języki jako LINKI;
+ * dokumenty prawne jako TEKST „Nazwa (wkrótce)" i kontakt jako TEKST
+ * „(wkrótce)" — ŻADNYCH linków do nieistniejących stron (bramka
+ * linków; linki wchodzą wraz ze stronami dokumentów).
  */
 export function Stopka({ locale }: Props) {
   const t = useTranslations("Stopka");
@@ -59,7 +72,11 @@ export function Stopka({ locale }: Props) {
         <section>
           <h2>{t("dokumenty")}</h2>
           <ul className={styles.martwe}>
-            <li>{t("wkrotce")}</li>
+            {DOKUMENTY.map((dokument) => (
+              <li key={dokument}>
+                {t(`dokumentyPozycje.${dokument}`)} {t("wkrotce")}
+              </li>
+            ))}
           </ul>
         </section>
         <section>
