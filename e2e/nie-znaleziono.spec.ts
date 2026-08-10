@@ -13,6 +13,9 @@ import de from "../src/i18n/messages/de.json";
  */
 const PRZYPADKI = [
   { adres: "/nie-ma-takiej-strony", jezyk: "pl", komunikaty: pl },
+  // Nieistniejąca ścieżka POD prefiksem języka domyślnego — nie jest
+  // kanonizowana redirectem, tylko dostaje pełne 404 jak pozostałe.
+  { adres: "/pl/nie-ma-takiej-strony", jezyk: "pl", komunikaty: pl },
   { adres: "/en/nie-ma-takiej-strony", jezyk: "en", komunikaty: en },
   { adres: "/de/nie-ma-takiej-strony", jezyk: "de", komunikaty: de },
 ] as const;
@@ -56,5 +59,36 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     await expect(page.locator("html")).toHaveAttribute("lang", jezyk);
     const wyniki = await new AxeBuilder({ page }).analyze();
     expect(wyniki.violations).toEqual([]);
+  });
+}
+
+/**
+ * Kanonizacja prefiksu języka domyślnego (next-intl "as-needed"):
+ * /pl z ISTNIEJĄCĄ ścieżką to NIE 404, tylko redirect na wersję
+ * bez prefiksu (znalezisko adwersarza, runda 3 — N1).
+ */
+test("kanonizacja: /pl → redirect (3xx) na /", async ({ request }) => {
+  const odpowiedz = await request.get("/pl", { maxRedirects: 0 });
+  expect(odpowiedz.status(), "status 3xx").toBeGreaterThanOrEqual(300);
+  expect(odpowiedz.status(), "status 3xx").toBeLessThan(400);
+  const location = odpowiedz.headers()["location"];
+  expect(location, "nagłówek Location obecny").toBeTruthy();
+  expect(new URL(location, "http://localhost:3000").pathname).toBe("/");
+});
+
+test("kanonizacja: /pl/ → docelowo / ze statusem 200", async ({ page }) => {
+  const odpowiedz = await page.goto("/pl/");
+  expect(odpowiedz?.status(), "status HTTP 200").toBe(200);
+  expect(new URL(page.url()).pathname, "finalny URL bez prefiksu").toBe("/");
+});
+
+/**
+ * Bezpośrednie wejście na adres strony 404 też ma status 404, nie 200
+ * — rejestr celowo NIE zawiera "/nie-znaleziono" (src/i18n/sciezki.ts).
+ */
+for (const adres of ["/nie-znaleziono", "/en/nie-znaleziono"]) {
+  test(`bezpośrednie ${adres} → status 404`, async ({ request }) => {
+    const odpowiedz = await request.get(adres);
+    expect(odpowiedz.status(), "status HTTP 404").toBe(404);
   });
 }

@@ -7,22 +7,26 @@ import { ISTNIEJACE_SCIEZKI } from "./i18n/sciezki";
 /**
  * Middleware routingu serwerowego (zero JS w przeglądarce — progi
  * CLAUDE.md: treść czytelna bez JS):
- * 1. Ścieżki spoza rejestru istniejących stron (ISTNIEJACE_SCIEZKI)
+ * 1. Ścieżki spoza rejestru istniejących stron (ISTNIEJACE_SCIEZKI) —
+ *    ścieżka liczona WZGLĘDEM języka, więc także /pl/xyz i /en/xyz —
  *    → rewrite na prerenderowaną stronę /[locale]/nie-znaleziono ze
  *    statusem 404 (B2). To jedyna droga do PEŁNEGO HTML-a 404 bez JS:
  *    notFound() w renderze na żądanie (on-demand SSG i force-dynamic)
  *    serwuje w Next 15.5 pusty szkielet __next_error__ z treścią
  *    wyłącznie w ładunku RSC — szczegóły w app/[locale]/not-found.tsx.
- * 2. Pozostałe ścieżki → next-intl: przepisuje / → /pl (prefiks
- *    "as-needed") i kanonizuje /pl → /.
+ * 2. Pozostałe ścieżki → next-intl: przepisuje / → /pl wewnętrznie
+ *    (prefiks "as-needed") i KANONIZUJE redirectem prefiks języka
+ *    domyślnego: /pl → / oraz /pl/<istniejąca> → /<istniejąca>.
  */
 const intlMiddleware = createMiddleware(routing);
 
 /** Rozbija pathname żądania na język i ścieżkę względem języka
- *  (pl bez prefiksu; /en, /de z prefiksem — routing "as-needed"). */
+ *  (routing "as-needed": pl kanonicznie bez prefiksu, /en i /de
+ *  z prefiksem). Prefiks /pl też jest tu zdejmowany — dzięki temu
+ *  /pl/<istniejąca> trafia do intlMiddleware, który kanonizuje ją
+ *  redirectem na wersję bez prefiksu, a /pl/xyz dostaje pełne 404. */
 function rozbijSciezke(pathname: string): { locale: string; sciezka: string } {
   for (const locale of routing.locales) {
-    if (locale === routing.defaultLocale) continue;
     if (pathname === `/${locale}`) return { locale, sciezka: "/" };
     if (pathname.startsWith(`/${locale}/`)) {
       return { locale, sciezka: pathname.slice(locale.length + 1) };
