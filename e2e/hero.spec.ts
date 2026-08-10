@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { test, expect } from "@playwright/test";
 
 import pl from "../src/i18n/messages/pl.json";
@@ -47,7 +50,12 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     await expect(cta).toHaveAttribute("href", `${prefiks}/funkcje`);
 
     // K9: lista potwierdzeń — dokładnie dwie pozycje z messages.
+    // role="list" JAWNIE w atrybucie (kontrakt Safari/VoiceOver przy
+    // list-style: none — handoff K2/K9; getByRole łapie też rolę
+    // niejawną, więc atrybut pilnowany osobno — adwersarz Etapu C,
+    // mutacja b).
     const potwierdzenia = hero.getByRole("list");
+    await expect(potwierdzenia).toHaveAttribute("role", "list");
     await expect(potwierdzenia.getByRole("listitem")).toHaveCount(2);
     await expect(potwierdzenia).toContainText(komunikaty.Hero.potwierdzenieUE);
     await expect(potwierdzenia).toContainText(
@@ -103,14 +111,39 @@ test("K9: pion bez separatorów na 390 px, poziom z kreską od 48rem", async ({
   }
 });
 
-test("hero bez JS: H1 i potwierdzenia w surowym HTML (LCP = tekst)", async ({
-  request,
-}) => {
-  const odpowiedz = await request.get("/");
-  expect(odpowiedz.status()).toBe(200);
-  const html = await odpowiedz.text();
-  expect(html, "H1 w HTML bez JS").toContain(pl.Hero.naglowek);
-  expect(html, "potwierdzenia w HTML bez JS").toContain(
-    pl.Hero.potwierdzenieUE,
-  );
+for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
+  test(`hero bez JS (${jezyk}): H1, potwierdzenia i role=list w surowym HTML`, async ({
+    request,
+  }) => {
+    const odpowiedz = await request.get(adres);
+    expect(odpowiedz.status()).toBe(200);
+    const html = await odpowiedz.text();
+    expect(html, "H1 w HTML bez JS").toContain(komunikaty.Hero.naglowek);
+    expect(html, "potwierdzenia w HTML bez JS").toContain(
+      komunikaty.Hero.potwierdzenieUE,
+    );
+    // Atrybut w surowym HTML — strażnik semantyki listy bez DOM-u
+    // (adwersarz Etapu C, mutacja b).
+    expect(html, "role=list w HTML bez JS").toContain('role="list"');
+  });
+}
+
+// Strażnik „znak w znak": messages ↔ content/naglowek.md (treść
+// OBOWIĄZUJE). Adwersarz Etapu C, mutacja c: podmiana półpauzy DE
+// w messages była niewykrywalna — testy porównywały DOM z messages
+// (samoodniesienie). Normalizowane są WYŁĄCZNIE białe znaki (md
+// zawija wiersze); litery, pauzy i interpunkcja muszą być identyczne.
+test("treść hero: messages znak w znak z content/*/naglowek.md", () => {
+  for (const { jezyk, komunikaty } of PRZYPADKI) {
+    const zrodlo = readFileSync(
+      join(__dirname, "..", "content", jezyk, "naglowek.md"),
+      "utf8",
+    ).replace(/\s+/g, " ");
+    for (const [pole, tresc] of Object.entries(komunikaty.Hero)) {
+      expect(
+        zrodlo,
+        `content/${jezyk}/naglowek.md zawiera treść pola „${pole}"`,
+      ).toContain(tresc);
+    }
+  }
 });
