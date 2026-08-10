@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HF K3 — sekcja tekstowa: warianty neutralna i akcentowa</title>
+<title>HF K3 — sekcja tekstowa: warianty neutralna i akcentowa (po panelu)</title>
 <link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
 <style>
-  /* HF K3. Wartości wizualne wyłącznie var(--…); wymiary w rem/ch.
+  /* HF K3 po poprawkach panelu projektu (2026-08-10).
+     Kolory wyłącznie var(--…); wymiary rem/ch.
+     LUKA TOKENOWA (zgłoszona do handoffu): brak tokenu MIARY TEKSTU —
+     38rem/65ch to wartości surowe; propozycja tokenu miary w ADR-025
+     razem z rolą powierzchni akcentowej i rolą kreski.
      Wariant akcentowy: tło var(--kolor-terakota-100) — kontrast
-     tekstu podstawowego 11,15:1 (AA z zapasem; warunek DECYZJI 6).
-     Propozycja handoffu: rola --kolor-rola-powierzchnia-akcentowa. */
+     tekstu podstawowego 11,15:1 (AA z zapasem; warunek DECYZJI 6;
+     potwierdzone niezależnym rachunkiem panelu). */
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -28,7 +32,6 @@
   }
   .sekcja p { margin: 0 0 1rem; max-width: 65ch; }
   .kropka {
-    display: block;
     margin-block-start: 1.25rem;
     font-weight: 600;
     font-size: 1.125rem;
@@ -36,6 +39,7 @@
 </style>
 </head>
 <body>
+<main>
 
 <!-- Wariant NEUTRALNA — użycie: S3 problem, S4 definicja -->
 <section class="sekcja" aria-labelledby="s3-h2">
@@ -44,8 +48,8 @@
     <p>Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru,
     który gdzieś przecież zapisałaś. O tym, co w zespole, dowiadujesz
     się później, niż byś chciała.</p>
-    <span class="kropka">Wieczorem siadasz do zeszytu i liczysz,
-    co z tego wyszło.</span>
+    <p class="kropka">Wieczorem siadasz do zeszytu i liczysz,
+    co z tego wyszło.</p>
   </div>
 </section>
 
@@ -56,9 +60,10 @@
     <p>(Podgląd wariantu tonalnego — treść kroków S10 wchodzi po
     akceptacji właściciela; „słyszalna kropka" poniżej pokazuje slot
     kotwicy.)</p>
-    <span class="kropka">Wieczorem widzisz, co z tego wyszło.</span>
+    <p class="kropka">Wieczorem widzisz, co z tego wyszło.</p>
   </div>
 </section>
 
+</main>
 </body>
 </html>

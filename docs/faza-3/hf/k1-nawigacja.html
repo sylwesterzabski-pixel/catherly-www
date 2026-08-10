@@ -3,11 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HF K1 — nawigacja + stopka (podgląd na tokenach)</title>
+<title>HF K1 — nawigacja + stopka (podgląd na tokenach; po panelu)</title>
 <link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
 <style>
-  /* HF K1. Wyłącznie var(--…) dla wartości wizualnych; wymiary w rem
-     (brak tokenów odstępów — zgłoszone w handoffie). Zero px, zero JS. */
+  /* HF K1 po poprawkach panelu projektu (2026-08-10).
+     Wartości wizualne wyłącznie var(--…); wymiary w rem (brak tokenów
+     odstępów/typografii — zgłoszone w handoffie; propozycja ADR-025).
+     Zero px, zero JS.
+     DOM: logo → nav → Logowanie (kolejność fokusa wg briefu:
+     Logowanie ostatnie); na 390 px Logowanie WIZUALNIE w wierszu 1
+     (grid) — rozjazd wizualno-fokusowy to decyzja briefu, nie usterka. */
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -25,35 +30,45 @@
     padding: 0.5rem 0.75rem;
     border-radius: 0.25rem;
   }
-  .skip-link:focus-visible { inset-block-start: 0.5rem; }
+  .skip-link:focus { inset-block-start: 0.5rem; }
   :focus-visible {
     outline: 0.1875rem solid var(--kolor-rola-fokus);
     outline-offset: 0.125rem;
   }
   header {
     position: sticky;
-    top: 0;
+    inset-block-start: 0;
     background: var(--kolor-rola-tlo-strony);
     border-block-end: 0.0625rem solid var(--kolor-neutralna-200);
     padding: 0.5rem 1rem;
   }
-  .naw-gorny {
-    display: flex;
-    justify-content: space-between;
+  .naw-caly {
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: baseline;
-    gap: 1rem;
+    gap: 0.375rem 1rem;
   }
   .logo {
     font-weight: 700;
     font-size: 1.125rem;
     color: var(--kolor-rola-tekst-podstawowy);
     text-decoration: none;
+    grid-row: 1;
+    grid-column: 1;
   }
+  .logowanie {
+    color: var(--kolor-rola-link);
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: end;
+  }
+  nav { grid-row: 2; grid-column: 1 / -1; }
   nav ul {
     list-style: none;
     display: flex;
-    gap: 1.25rem;
-    margin: 0.375rem 0 0;
+    flex-wrap: wrap;
+    gap: 0.375rem 1.25rem;
+    margin: 0;
     padding: 0;
   }
   nav a {
@@ -66,8 +81,8 @@
     text-decoration: none;
     font-weight: 600;
   }
-  .logowanie { color: var(--kolor-rola-link); }
   main { padding: 1rem; min-height: 60vh; }
+  #tresc { scroll-margin-block-start: 4rem; }
   footer {
     background: var(--kolor-rola-powierzchnia);
     border-block-start: 0.0625rem solid var(--kolor-neutralna-200);
@@ -77,12 +92,13 @@
   footer h2 { font-size: 1rem; margin: 0 0 0.5rem; }
   footer ul { list-style: none; margin: 0 0 1.25rem; padding: 0; display: grid; gap: 0.375rem; }
   footer a { color: var(--kolor-rola-link); }
-  .dokumenty-martwe { color: var(--kolor-rola-tekst-drugorzedny); }
+  .martwe { color: var(--kolor-rola-tekst-drugorzedny); }
   .jezyki a[aria-current="true"] { font-weight: 700; color: var(--kolor-rola-tekst-podstawowy); text-decoration: none; }
   @media (min-width: 48rem) {
-    .naw-caly { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; }
-    nav ul { margin: 0; }
-    footer .kolumny { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .naw-caly { grid-template-columns: auto 1fr auto; }
+    nav { grid-row: 1; grid-column: 2; justify-self: center; }
+    .logowanie { grid-column: 3; }
+    footer .kolumny { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
   }
 </style>
 </head>
@@ -90,10 +106,7 @@
 <a class="skip-link" href="#tresc">Przejdź do treści</a>
 <header>
   <div class="naw-caly">
-    <div class="naw-gorny">
-      <a class="logo" href="/">Catherly</a>
-      <a class="logowanie" href="/login">Logowanie</a>
-    </div>
+    <a class="logo" href="/">Catherly</a>
     <nav aria-label="Główna">
       <ul>
         <li><a href="/funkcje">Funkcje</a></li>
@@ -101,10 +114,12 @@
         <li><a href="/dla-kogo">Dla kogo</a></li>
       </ul>
     </nav>
+    <a class="logowanie" href="/login">Logowanie</a>
   </div>
 </header>
 <main id="tresc">
-  <p>(Slot treści strony — podgląd HF; przewiń, żeby sprawdzić sticky.)</p>
+  <p>(Slot treści strony — podgląd HF; przewiń, żeby sprawdzić sticky
+  i scroll-margin celu skip-linku.)</p>
 </main>
 <footer>
   <div class="kolumny">
@@ -126,11 +141,17 @@
     </section>
     <section>
       <h2>Dokumenty</h2>
-      <ul class="dokumenty-martwe">
+      <ul class="martwe">
         <li>Regulamin (wkrótce)</li>
         <li>Prywatność (wkrótce)</li>
         <li>Ciasteczka (wkrótce)</li>
         <li>Przetwarzanie danych (wkrótce)</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Kontakt</h2>
+      <ul class="martwe">
+        <li>Dane kontaktowe pojawią się przy premierze (wkrótce)</li>
       </ul>
     </section>
   </div>
