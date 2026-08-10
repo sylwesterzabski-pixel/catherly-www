@@ -1,6 +1,6 @@
 # Wireframe: /cennik (low-fi; mobile-first 390 px)
 
-Status: PROJEKT — do DECYZJI 6. Struktura = projekt-cennik.md
+Status: **OBOWIĄZUJE — DECYZJA 6 właściciela 2026-08-10, bez korekt.** Struktura = projekt-cennik.md
 (OBOWIĄZUJE, 7 sekcji) + treść content/*/cennik.md.
 
 ## Stos sekcji (390 px)

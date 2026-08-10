@@ -1,6 +1,6 @@
 # Wireframe: /funkcje/pozyskiwanie — wzorcowa podstrona funkcji
 
-Status: PROJEKT — do DECYZJI 6. Wzorzec dla pozostałych /funkcje/*
+Status: **OBOWIĄZUJE — DECYZJA 6 właściciela 2026-08-10, bez korekt.** Wzorzec dla pozostałych /funkcje/*
 (STRATEGIA pkt 28: „dla każdego: po co to, jak wygląda, czego nie
 robi"). Treść: pełny cykl treściowy (DECYZJA 7) równolegle do etapów
 D–E — wireframe definiuje SLOTY, nie brzmienia.

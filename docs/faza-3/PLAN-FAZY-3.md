@@ -5,7 +5,9 @@ faza-2/tresc-i-pozycjonowanie — main nie zawiera treści Fazy 2).
 **Status: OBOWIĄZUJE — DECYZJA 5 właściciela 2026-08-10: wariant B
 (ADR-024). DECYZJA 7: mini fan-outy pkt 21/25 + /funkcje/pozyskiwanie
 jako wzorzec — zatwierdzone. DECYZJA 8: limity Z1 → facts.json ze
-źródłem — zatwierdzona. Otwarta: DECYZJA 6 (akcept wireframe'ów).**
+źródłem — zatwierdzona. DECYZJA 6 (2026-08-10): trzy układy zaakceptowane bez korekt; lustro
+L1 z warunkiem AA z zapasem na tle akcentowym (weryfikacja
+w pipeline).**
 
 ---
 

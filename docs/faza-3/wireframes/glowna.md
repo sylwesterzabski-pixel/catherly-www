@@ -1,6 +1,10 @@
 # Wireframe: strona główna (low-fi; mobile-first 390 px)
 
-Status: PROJEKT — do DECYZJI 6. Kolejność sekcji = STRATEGIA pkt 16–25
+Status: **OBOWIĄZUJE — DECYZJA 6 właściciela 2026-08-10, bez korekt.
+Lustro: wariant L1 (klamra tonalna) z WARUNKIEM: kontrast tekstu na
+tle akcentowym przechodzi AA Z ZAPASEM — weryfikacja w pipeline
+(wyliczenie na parach tokenów + axe), nie założenie.**
+Kolejność sekcji = STRATEGIA pkt 16–25
 (pkt 22 „Dowód" świadomie nieobecny — zero prawdziwych historii).
 Wszystkie wartości wizualne = tokeny (tu tylko role, nie wartości).
 
