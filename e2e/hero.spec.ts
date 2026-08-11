@@ -128,6 +128,31 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   });
 }
 
+// Strażnik INTENCJI panelu K2 (decyzja właściciela 2026-08-11):
+// H1 ≤ 3 linie na desktopie we wszystkich językach. Pilnuje skutku,
+// nie wartości 22ch — złapie też przyszłą zmianę treści (content)
+// lub kroju pisma (ADR-027), która przełamie H1 na 4 linie.
+// Wireframe glowna.md S2: „H1 (2–3 linie)". Na 390 px EN/DE mają
+// 4 linie (dewiacja odnotowana w handoffie) — test tylko desktop.
+for (const { adres, jezyk } of PRZYPADKI) {
+  test(`hero (${jezyk}): H1 ≤ 3 linie na desktopie`, async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== "desktop",
+      "intencja panelu dotyczy desktopu (mobile: dewiacja w handoffie)",
+    );
+    await page.goto(adres);
+    const linie = await page.locator("h1").evaluate((el) => {
+      const styl = getComputedStyle(el);
+      return Math.round(
+        el.getBoundingClientRect().height / parseFloat(styl.lineHeight),
+      );
+    });
+    expect(linie, `H1 (${jezyk}) ma ≤ 3 linie`).toBeLessThanOrEqual(3);
+  });
+}
+
 // Strażnik „znak w znak": messages ↔ content/naglowek.md (treść
 // OBOWIĄZUJE). Adwersarz Etapu C, mutacja c: podmiana półpauzy DE
 // w messages była niewykrywalna — testy porównywały DOM z messages

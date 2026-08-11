@@ -41,9 +41,14 @@ bez poziomego przewijania, kontrasty przeliczone niezależnie
 
 ## Odnotowane bez naprawy (świadomie)
 
-- 22ch bez testu (drobne 3): pinowanie wartości = testowanie arkusza
-  samym sobą; ewentualny strażnik intencji („H1 ≤ 3 linie na
-  desktopie") — do decyzji właściciela.
+- 22ch (drobne 3) — ROZSTRZYGNIĘTE (decyzja właściciela 2026-08-11):
+  strażnik INTENCJI „H1 ≤ 3 linie na desktopie ×3 języki"
+  w hero.spec.ts (pilnuje skutku, nie wartości; złapie też zmianę
+  treści lub kroju przy ADR-027). Czułość udowodniona mutacją 12ch
+  (3 czerwienie). Ustalenie empiryczne przy okazji: 18ch w Chromium
+  także daje ≤ 3 linie (rachunek panelu na metrykach Helvetiki był
+  konserwatywny — sam to zastrzegał); 22ch zostaje jako decyzja
+  wiążąca, strażnikiem jest intencja, nie liczba.
 - CTA hero jako tabstop po „Logowanie" poprawny empirycznie, ale
   poza sekwencją klawiatura.spec (drobne 4) — handoff nie wymagał.
 - Margines K9 z klasy kontekstu — kruchość kolejności modułów CSS
