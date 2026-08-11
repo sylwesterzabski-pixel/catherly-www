@@ -14,19 +14,28 @@
      — w implementacji WYŁĄCZNIE z migawki, nigdy literały.
      LIMITY: z content/facts.json (50/200, 10/50, 20/100, 5/30;
      Pro „bez limitu" — kod ma -1).
-     K6 — DWA WARIANTY do decyzji panelu (kryterium rozstrzygające
-     właściciela: semantyka czytników ekranu; „zero JS to środek,
-     nie cel"):
-       A) CSS-only: fieldset radio + body:has(:checked) steruje
-          widocznością cen; bez :has()/CSS obie ceny widoczne.
-          Pytanie do panelu: zmiana treści kart bez aria-live.
-       B) Progressive enhancement: serwer renderuje OBIE ceny
-          (stan pokazany niżej jako wariant B), minimalny skrypt
-          dodałby przełącznik przycisków z aria-pressed + ukrycie.
-     PYTANIA OTWARTE DLA PANELU (mikro-teksty rusztowania, brak
-     w content — wymagają sankcji): legend „Okres rozliczenia",
-     caption tabeli „Porównanie planów", teksty ✓/— dla czytników
-     („w planie" / „poza planem"), sr-only nagłówki sekcji. */
+     K6 — DECYZJA WIĄŻĄCA PANELU (2026-08-11): WARIANT A (CSS-only,
+     natywne radio + :has()) — semantyka radiogroup (nazwa grupy,
+     pozycja 1 z 2, stan) LEPSZA niż aria-pressed wariantu B;
+     zarzut braku aria-live dotyczył obu wariantów i jest
+     zneutralizowany słowem interwału przy KAŻDEJ cenie.
+     ŚWIADOMY BRAK aria-live (nie „poprawiać" w implementacji):
+     zmianę inicjuje użytkownik na kontrolce anonsującej stan,
+     ceny leżą dalej w porządku czytania, żadna kwota nie występuje
+     bez słowa okresu. W1: cała mechanika (ukrywanie cen ORAZ
+     widoczność przełącznika) pod @supports selector(:has(*)) —
+     bez wsparcia przełącznik UKRYTY, obie ceny widoczne.
+     Pod-wariant pigułki z ukrytym radiem ODRZUCONY (tło zaznaczenia
+     powierzchnia-2 × tło strony = 1,00:1 — stan niewidoczny).
+     Mikro-teksty rusztowania USANKCJONOWANE przez panel: legend
+     „Okres rozliczenia", caption „Porównanie planów", sr-only
+     „Zakres", „Pytania o płatność", „w planie"/„poza planem",
+     aria-label „Potwierdzenia", słowa interwału przy cenach.
+     W2: wiersz tabeli = „Drzewo struktury" (znak w znak z content).
+     Pary kontrastowe powierzchni WYLICZONE — komentarze w tokenach
+     (W4). Promień karty ujednolicony do 0.5rem (W5); promień
+     pigułki 2rem = literał zgłoszony do ADR skali promieni
+     (propozycja przy E/F, wzorem W5 handoffu K4). */
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -60,14 +69,23 @@
     color: var(--kolor-rola-tekst-drugorzedny);
     font-size: 1.125rem;
   }
-  /* C3 — K6 wariant A: przełącznik radio (CSS-only) */
-  .przelacznik {
-    border: 0.0625rem solid var(--kolor-rola-kreska);
-    border-radius: 2rem;
-    padding: 0.25rem;
-    display: inline-flex;
-    gap: 0.25rem;
-    margin: 0;
+  /* C3 — K6 wariant A (decyzja panelu): radio widoczny (niesie stan
+     natywnie), tło etykiety wyłącznie dekoracją zaznaczenia.
+     W1: CAŁA mechanika pod @supports — bez :has() przełącznik
+     ukryty, obie ceny widoczne (zero utraty, zero martwej kontrolki,
+     zgodnie z wireframe C3). */
+  .przelacznik { display: none; }
+  @supports selector(:has(*)) {
+    .przelacznik {
+      border: 0.0625rem solid var(--kolor-rola-kreska);
+      border-radius: 2rem; /* literał zgłoszony do ADR skali promieni */
+      padding: 0.25rem;
+      display: inline-flex;
+      gap: 0.25rem;
+      margin: 0;
+    }
+    body:has(#okres-rocznie:checked) .cena--miesiecznie { display: none; }
+    body:has(#okres-miesiecznie:checked) .cena--rocznie { display: none; }
   }
   .przelacznik label {
     display: inline-flex;
@@ -77,16 +95,20 @@
     border-radius: 2rem;
     cursor: pointer;
   }
-  /* Radio pozostaje widoczny dla AT; wizualnie mały, nie ukryty —
-     appearance natywna daje darmową semantykę. Wariant stylizacji
-     „pigułki" (radio sr-only + tło etykiety) — do oceny panelu. */
   .przelacznik label:has(input:checked) {
     background: var(--kolor-rola-powierzchnia-2);
   }
-  /* Sterowanie widocznością cen (wariant A): domyślnie miesięcznie */
-  body:has(#okres-rocznie:checked) .cena--miesiecznie { display: none; }
-  body:has(#okres-miesiecznie:checked) .cena--rocznie { display: none; }
-  /* Bez obsługi :has() obie ceny pozostają widoczne — zero utraty. */
+  /* W7: fokus widoczny na całej etykiecie, nie tylko małym radio */
+  .przelacznik label:has(input:focus-visible) {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  /* W7: druk zawsze z oboma cenami (WYSIWYG zaznaczenia uchylone
+     na rzecz kompletności wydruku) */
+  @media print {
+    .przelacznik { display: none; }
+    .cena--miesiecznie, .cena--rocznie { display: block !important; }
+  }
   /* C4 — K5 karty planów */
   .karty {
     display: grid;
@@ -99,7 +121,7 @@
   .karta {
     background: var(--kolor-rola-powierzchnia);
     border: 0.0625rem solid var(--kolor-rola-kreska);
-    border-radius: 0.75rem;
+    border-radius: 0.5rem; /* W5: ujednolicone z K2/K4 */
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -163,6 +185,10 @@
     position: sticky;
     inset-inline-start: 0;
     background: var(--kolor-rola-tlo-strony);
+    /* W6: pierwsza kolumna ograniczona i odcięta kreską — komórki
+       nie „wpływają" pod sticky bez wizualnej granicy. */
+    max-width: 11rem;
+    border-inline-end: 0.0625rem solid var(--kolor-rola-kreska);
   }
   /* C6 — K8 FAQ */
   .faq { max-width: var(--wymiar-miara-kolumny); }
@@ -224,8 +250,10 @@ działa w tym pliku bez JS przez :has()). Wariant B opisany
 w komentarzu głowy pliku; jego stan no-JS = obie ceny widoczne
 (identyczny z fallbackiem A bez :has()).</div>
 
-<!-- C3 — K6 wariant A: fieldset radio (CSS-only) -->
-<section class="sekcja" aria-labelledby="okres-legenda">
+<!-- C3+C4 — K6 wariant A + K5 karty. W3: sekcja BEZ aria-labelledby
+     wskazującego legend (region planów nie może nazywać się „Okres
+     rozliczenia"); nawigację niosą h2 kart. -->
+<section class="sekcja">
   <div class="wnetrze">
     <fieldset class="przelacznik">
       <legend id="okres-legenda" class="sr-only">Okres rozliczenia</legend>
@@ -347,7 +375,7 @@ w komentarzu głowy pliku; jego stan no-JS = obie ceny widoczne
             <td><span aria-hidden="true">✓</span><span class="sr-only">w planie</span></td>
           </tr>
           <tr>
-            <th scope="row">Drzewo struktury zespołu</th>
+            <th scope="row">Drzewo struktury</th>
             <td><span aria-hidden="true">—</span><span class="sr-only">poza planem</span></td>
             <td><span aria-hidden="true">✓</span><span class="sr-only">w planie</span></td>
             <td><span aria-hidden="true">✓</span><span class="sr-only">w planie</span></td>

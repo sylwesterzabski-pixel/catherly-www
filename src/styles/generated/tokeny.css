@@ -47,8 +47,8 @@
   --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). */
   --wymiar-miara-kolumny: 38rem; /** Maksymalna szerokość kolumny tekstu sekcji (ADR-025). */
   --kolor-rola-tlo-strony: var(--kolor-tlo);
-  --kolor-rola-powierzchnia: var(--kolor-neutralna-50); /** Karty i powierzchnie na tle strony */
-  --kolor-rola-powierzchnia-2: var(--kolor-neutralna-100);
+  --kolor-rola-powierzchnia: var(--kolor-neutralna-50); /** Karty i powierzchnie na tle strony. Kontrasty wyliczone (panel E, 2026-08-11): ×tekst-podstawowy 12,36:1 · ×tekst-drugorzedny 7,07:1 · ×fokus 7,22:1 · ×interakcja (non-text) 5,22:1 · ×interakcja-aktywna (non-text) 7,02:1 · ×akcent (dekoracja) 3,21:1 · ×kreska (dekoracja) 1,34:1. */
+  --kolor-rola-powierzchnia-2: var(--kolor-neutralna-100); /** Kontrasty wyliczone (panel E, 2026-08-11): ×tekst-podstawowy 11,12:1 · ×fokus 6,49:1. UWAGA: ×tło strony = 1,00:1 — nigdy jako JEDYNY wskaźnik stanu (odrzucony pod-wariant pigułki K6). */
   --kolor-rola-tekst-podstawowy: var(--kolor-neutralna-900); /** 11,07:1 na tle — AA/AAA */
   --kolor-rola-tekst-drugorzedny: var(--kolor-neutralna-700); /** 6,33:1 na tle — AA */
   --kolor-rola-akcent: var(--kolor-terakota-500); /** Wyłącznie dekoracja (2,87:1) — nigdy tekst ani samodzielny komunikat */
