@@ -148,9 +148,13 @@ Wymagania twarde:
 1. Playwright na DZIAŁAJĄCEJ aplikacji, dane demo z seedu —
    wyłącznie neutralne, wymyślone nazwy osób i zespołów; zero
    danych rzeczywistych osób, zero nazw realnych firm branży.
-2. Viewport 1440×900, deviceScaleFactor 2, format PNG (surowy —
-   kompresję i warianty robi pipeline www). Pełny naturalny widok
-   ekranu (bez kadrowania fragmentów i bez retuszu).
+2. Viewport 1024×640, deviceScaleFactor 2 (wynik 2048×1280 =
+   proporcja 16:10), format PNG (surowy — kompresję i warianty
+   robi pipeline www). Pełny naturalny widok ekranu w TYM oknie
+   (widok responsywny aplikacji to nadal prawdziwy ekran —
+   DECYZJA 9 właściciela 2026-08-11; bez kadrowania fragmentów
+   i bez retuszu). Inny wymiar wyjściowy niż 2048×1280 = odrzut
+   przy odbiorze.
 3. Pulpit (zrzut 4): wartości demo umiarkowane — bez liczb
    sugerujących konkretne zarobki.
 4. Nazwy plików: z6-filar-1-dmo.png, z6-filar-2-studio-tarcza.png,
@@ -158,6 +162,12 @@ Wymagania twarde:
 5. Raport pochodzenia do każdego zrzutu: trasa (URL wewnętrzny),
    użyty seed, hash commita aplikacji — dla śladu w
    design/obrazy-robocze/ po stronie www.
+6. Jednolinijkowe potwierdzenie nazw: czy „Wall of Proof"
+   (/psychika/proof — osobista oś sukcesów) i „Ściana sukcesów"
+   (zakładka /recognition — zespołowa) to na pewno DWIE różne
+   funkcje o tych nazwach w bieżącym kodzie? (Sankcjonowany
+   odczyt i18n 2026-08-11 tak wskazuje — proszę o potwierdzenie
+   ze strony aplikacji.)
 
 Zero szacunków i zero mockupów — tylko to, co realnie renderuje
 aplikacja.

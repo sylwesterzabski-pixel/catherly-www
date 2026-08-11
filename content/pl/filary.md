@@ -90,11 +90,33 @@ Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje.
 
 ## Mini-sekcja — DBANIE O SIEBIE (po czterech filarach)
 
-Pozycja: OBOWIĄZUJE (decyzja właściciela). Treść wewnętrzna do
-opracowania osobno; do czasu wpisania Rytuału Porannego i ćwiczenia
-odmów do tabeli obietnic operuje wyłącznie na materiale pokrytym:
-Wall of Proof, Ściana sukcesów — przestrzeń na świętowanie, nie tylko
-mierzenie.
+**Status treści: OBOWIĄZUJE — DECYZJA 10 właściciela 2026-08-11**
+(mini fan-out 3 wariantów → panel treści, Prawo 2 → wariant B
+z trzema poprawkami panelu). Protokół: raport paneli Etapu D.
+
+### H2 (visually-hidden — wyłącznie struktura nagłówków)
+
+Dbanie o siebie
+
+### Treść
+
+Zbierasz dowody swojej pracy na Wall of Proof. To przestrzeń,
+w której świętujesz, nie tylko mierzysz.
+
+**102 znaki.** Pokrycie: tabela obietnic w. 146 („Zbierasz dowody
+swojej pracy na Wall of Proof") + mandat świętowania z tej
+mini-sekcji. Bez widocznego H2 (wireframe: oddech, nie piąty filar).
+
+### Doprecyzowanie zapisu (rekomendacja panelu, przyjęta DECYZJĄ 10)
+
+„Wall of Proof" (/psychika/proof — osobista, automatyczna oś czasu
+sukcesów; moduł Psychika) i „Ściana sukcesów" (zakładka /recognition
+— zespołowa, społecznościowa) to DWIE RÓŻNE funkcje aplikacji
+(dowód: i18n aplikacji, odczyt sankcjonowany 2026-08-11; wiersze
+144 i 146 tabeli obietnic). Elementem i tematem S9 jest wyłącznie
+Wall of Proof; Ściana sukcesów pozostaje poza S9 (funkcja zespołowa,
+tematycznie bliżej filarów 3–4). Rytuał Poranny i ćwiczenie odmów
+nadal poza tabelą obietnic — zakaz obiecywania utrzymany.
 
 ---
 

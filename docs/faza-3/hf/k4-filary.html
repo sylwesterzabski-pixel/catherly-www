@@ -10,16 +10,17 @@
      typografia: system-ui (ADR-026 — data ważności: etap F).
      Sekcje POD foldem — obrazy z loading="lazy" w implementacji.
      Ramki obrazów: proporcja 16/10 zadeklarowana (CLS) — zrzuty
-     PRAWDZIWEJ aplikacji przyjdą ze zlecenia Z6 (ADR-011: zero
-     mockupów; do tego czasu ramka na powierzchni z kreską).
-     KANDYDACI DO ROZSTRZYGNIĘCIA PRZEZ PANEL:
-     1. ::marker konkretów w rola-akcent (2,87:1 — dekoracja przy
-        tekście niosącym informację; alternatywa: marker w kolorze
-        tekstu).
-     2. Korzyść jako 1.125rem/600 — ten sam duet co „kropka" K3;
-        czy różnica H2 (1.5rem) / korzyść / proza jest czytelna.
-     3. S9: tekst-drugorzedny na tle strony (6,33:1) jako „cichsza
-        typografia" — czy wystarczająco odróżnia od filarów. */
+     PRAWDZIWEJ aplikacji przyjdą ze zlecenia Z6 (viewport 1024×640
+     @2x = 2048×1280, DECYZJA 9; ADR-011: zero mockupów; do tego
+     czasu ramka na powierzchni z kreską).
+     PO PANELU (2026-08-11, werdykt przyjęty DECYZJAMI 9/10):
+     (a) ::marker w rola-akcent DOPUSZCZONY jako dekoracja —
+         granica: tylko glif ul; ol/ikony znaczące wymagają ≥3:1;
+     (b) korzyść 1.125rem/600 ZATWIERDZONA;
+     (c) S9 na tekst-drugorzedny ZATWIERDZONE (6,33:1).
+     W2: aria-hidden dotyczy WYŁĄCZNIE ramki zastępczej — docelowy
+     <img> jest INFORMACYJNY: alt opisowy ×3 języki (handoff),
+     BEZ aria-hidden na obrazie i jego kontenerze. */
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -58,7 +59,9 @@
   .filar__konkrety li::marker { color: var(--kolor-rola-akcent); }
   .filar__obraz {
     margin-block-start: 1.5rem; /* 390 px: tekst NAD obrazem */
-    aspect-ratio: 16 / 10;      /* 1440×900 z Z6 — CLS zadeklarowany */
+    aspect-ratio: 16 / 10;      /* 2048×1280 z Z6 (W3: w implementacji
+                                   wymiary z realnych plików; 16/10
+                                   tylko fallback ramki) */
     background: var(--kolor-rola-powierzchnia);
     border: 0.0625rem solid var(--kolor-rola-kreska);
     border-radius: 0.5rem;
@@ -84,6 +87,19 @@
     color: var(--kolor-rola-tekst-podstawowy);
   }
   .dbanie p { margin: 0; max-width: var(--wymiar-miara-akapitu); }
+  /* H2 S9 visually-hidden (DECYZJA 10): sr-only, NIE display:none —
+     czytniki ekranu muszą go widzieć. */
+  .sr-only {
+    position: absolute;
+    width: 0.0625rem;
+    height: 0.0625rem;
+    padding: 0;
+    margin: -0.0625rem;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
   @media (min-width: 48rem) {
     .filar__uklad {
       display: grid;
@@ -195,14 +211,14 @@
   </div>
 </section>
 
-<!-- S9 — DBANIE O SIEBIE (mini-sekcja; treść: mini fan-out
-     + panel + decyzja właściciela — W TOKU; poniżej PLACEHOLDER
-     wyłącznie do oceny układu, NIE treść obowiązująca -->
+<!-- S9 — DBANIE O SIEBIE (treść OBOWIĄZUJE — DECYZJA 10,
+     2026-08-11: wariant B po poprawkach panelu; H2 visually-hidden,
+     element Wall of Proof jako temat sekcji) -->
 <section class="dbanie" aria-labelledby="dbanie-h2">
   <div class="dbanie__wnetrze">
-    <h2 id="dbanie-h2">[S9 — H2 po decyzji właściciela]</h2>
-    <p>[1–2 zdania mini-sekcji po decyzji właściciela — materiał
-    pokryty: Wall of Proof / Ściana sukcesów.]</p>
+    <h2 id="dbanie-h2" class="sr-only">Dbanie o siebie</h2>
+    <p>Zbierasz dowody swojej pracy na Wall of Proof. To przestrzeń,
+    w której świętujesz, nie tylko mierzysz.</p>
   </div>
 </section>
 
