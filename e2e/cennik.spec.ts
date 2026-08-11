@@ -228,11 +228,11 @@ test("K7: liczby tabeli = facts.json (import, nie literały)", async ({
     await expect(komorki.nth(1)).toHaveText(String(growth));
     await expect(komorki.nth(2)).toHaveText(pl.Cennik.tabela.bezLimitu);
   }
-  // Strona nie panoramuje poziomo — asercja BEHAWIORALNA (próba
-  // przesunięcia), nie arytmetyka scrollWidth: w emulacji mobilnej
-  // Chromium documentElement.scrollWidth raportuje też wewnętrzny
-  // overflow kontenera przewijanego (artefakt zmierzony sondą
-  // 2026-08-11: scrollWidth 506 przy scrollX trwale 0).
+  // Strona nie panoramuje poziomo — asercja behawioralna. Diagnoza
+  // (adwersarz E, runda 1): layout-overflow tabeli (min-width)
+  // propagował w Chromium do roota MIMO kontenera overflow-x:auto
+  // (silnik desktopowy panoramował realnie; emulacja mobilna tylko
+  // maskowała scrollX=0). Naprawa: contain:paint na kontenerze.
   const przesuniecie = await page.evaluate(() => {
     window.scrollTo(300, 0);
     return window.scrollX;
@@ -241,6 +241,65 @@ test("K7: liczby tabeli = facts.json (import, nie literały)", async ({
     przesuniecie,
     "strona nie panoramuje poziomo (scroll wyłącznie w kontenerze tabeli)",
   ).toBe(0);
+});
+
+// Reflow 320 px (WCAG 1.4.10; handoff: „test 320 px OBOWIĄZKOWY" —
+// adwersarz E wykazał, że przełącznik wystawał przez zdublowane
+// wcięcie main+sekcja). Kadr wymuszony niezależnie od projektu.
+test.describe("reflow 320 px", () => {
+  test.use({ viewport: { width: 320, height: 700 } });
+
+  test("K6 mieści się w kadrze 320 px, strona nie panoramuje", async ({
+    page,
+  }) => {
+    await page.goto("/cennik");
+    const przelacznik = page.locator("fieldset");
+    await expect(przelacznik).toBeVisible();
+    const ramka = await przelacznik.boundingBox();
+    expect(ramka, "przełącznik ma ramkę").not.toBeNull();
+    expect(
+      ramka!.x + ramka!.width,
+      "przełącznik w kadrze 320 px",
+    ).toBeLessThanOrEqual(320);
+    const przesuniecie = await page.evaluate(() => {
+      window.scrollTo(300, 0);
+      return window.scrollX;
+    });
+    expect(przesuniecie, "brak panoramy na 320 px").toBe(0);
+  });
+});
+
+// Strażnik statyczny W1 (decyzja wiążąca panelu; adwersarz E,
+// mutacja c — zdjęcie @supports było niewykrywalne w Chromium,
+// bo :has() jest wspierane): zbudowany CSS MUSI bramkować mechanikę
+// przełącznika @supports selector(:has(*)), a baza przełącznika
+// musi być display:none (stare przeglądarki: obie ceny, zero
+// martwej kontrolki).
+test("W1: @supports selector(:has(*)) w zbudowanym CSS", async ({
+  page,
+  request,
+}) => {
+  await page.goto("/cennik");
+  const adresyCss = await page.evaluate(() =>
+    Array.from(
+      document.querySelectorAll('link[rel="stylesheet"]'),
+      (l) => (l as HTMLLinkElement).href,
+    ),
+  );
+  expect(adresyCss.length).toBeGreaterThan(0);
+  let css = "";
+  for (const adres of adresyCss) {
+    css += await (await request.get(adres)).text();
+  }
+  expect(css, "bramkowanie :has() obecne").toContain(
+    "@supports selector(:has(*))",
+  );
+  // Baza: .przelacznik { display: none } POZA blokiem @supports.
+  const przedSupports = css.slice(0, css.indexOf("@supports selector"));
+  expect(
+    przedSupports,
+    "baza przełącznika display:none przed @supports",
+  ).toMatch(/przelacznik__[\w-]+\{display:none\}/);
 });
 
 // Strażnik „znak w znak": messages ↔ content/<jezyk>/cennik.md

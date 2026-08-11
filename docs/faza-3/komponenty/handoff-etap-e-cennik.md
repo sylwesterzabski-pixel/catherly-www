@@ -69,8 +69,15 @@ ZAAKCEPTOWANY z kryterium K6 właściciela.
 - Ścieżki EN/DE ujednolicone: /en/cennik, /de/cennik (etykiety
   z messages; „/pricing"/„/preise" z nagłówków content to
   dokumentacja Fazy 2, nie routing — rejestr ISTNIEJACE_SCIEZKI).
-- Reflow 320 px: przełącznik ≈315 px — mieści się BEZ zapasu;
-  test 320 px obowiązkowy.
+- Reflow 320 px (KOREKTA po adwersarzu E): rachunek panelu zakładał
+  pojedyncze wcięcie sekcji; globalny padding main dublował wcięcie
+  i wypychał przełącznik poza kadr (322 > 320). Naprawa: wcięcie
+  main zawężone do klasy stron prostych (.tresc-prosta); test
+  320 px w suicie (obowiązkowy). Fantomowa panorama roota od
+  min-width tabeli — naprawiona contain:paint na kontenerze
+  (propagacja layout-overflow w Chromium mimo overflow-x:auto);
+  strażnik behawioralny scrollX + statyczny W1 (@supports
+  w zbudowanym CSS).
 - CLS przy przełączeniu inicjowane przez użytkownika — poza
   metryką; zamknięcie C8 i „Cennik w skrócie" — Etap F.
 

@@ -13,6 +13,11 @@
 
 .kontener {
   overflow-x: auto;
+  /* Layout-overflow tabeli (min-width) propaguje w Chromium do roota
+     MIMO overflow-x:auto — fantomowa panorama strony (adwersarz E:
+     scrollX 116/186 px). contain:paint odcina propagację; scroll
+     wewnętrzny i sticky działają (sonda 2026-08-11). */
+  contain: paint;
 }
 
 .tabela {

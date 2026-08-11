@@ -28,7 +28,7 @@ export function StronaWBudowie({ locale, sciezka }: Props) {
   return (
     <>
       <Nawigacja locale={locale} biezacaSciezka={sciezka} />
-      <main id="tresc">
+      <main id="tresc" className="tresc-prosta">
         <h1>{tNaw(pozycja.klucz)}</h1>
         <p>{t("tresc")}</p>
         <p>

@@ -43,7 +43,7 @@ export default function NieZnaleziono() {
   return (
     <>
       <Nawigacja locale={locale} biezacaSciezka="" />
-      <main id="tresc">
+      <main id="tresc" className="tresc-prosta">
         <h1>{t("naglowek")}</h1>
         <p>{t("wroc")}</p>
         <p>

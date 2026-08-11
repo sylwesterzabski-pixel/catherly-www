@@ -33,7 +33,7 @@ export default async function StronaLogowania({ params }: Props) {
   return (
     <>
       <Nawigacja locale={locale as Locale} biezacaSciezka="/login" />
-      <main id="tresc">
+      <main id="tresc" className="tresc-prosta">
         <h1>{tNaw("logowanie")}</h1>
         <p>{t("tresc")}</p>
         <p>

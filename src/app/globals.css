@@ -34,7 +34,11 @@ a:active {
   outline-offset: 0.125rem;
 }
 
-main {
+/* Wcięcie WYŁĄCZNIE dla stron prostych (placeholder, login, 404) —
+   strony sekcyjne (główna, /cennik) niosą własne wcięcia w sekcjach
+   (wzór HF). Globalny padding na main dublował wcięcie sekcji
+   i wypychał przełącznik K6 poza kadr 320 px (adwersarz E). */
+.tresc-prosta {
   padding: 1rem;
 }
 
