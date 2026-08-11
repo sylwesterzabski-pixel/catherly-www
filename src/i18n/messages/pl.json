@@ -56,6 +56,70 @@
       "konkret3": "Świadectwo z cyfrowym odciskiem zostaje — ktoś może zweryfikować twoje wyniki."
     }
   },
+  "Cennik": {
+    "naglowek": "Plany różnią się zakresem, nie obietnicami",
+    "wstep": "Każdy plan to ten sam system. Różnica leży w zakresie — od twoich pierwszych kontaktów po całą strukturę zespołu.",
+    "okresLegenda": "Okres rozliczenia",
+    "miesiecznie": "miesięcznie",
+    "rocznie": "rocznie",
+    "oszczedzasz": "oszczędzasz {kwota}",
+    "cta": "Wybierz plan",
+    "plany": {
+      "starter": {
+        "dlaKogo": "Dla ciebie, jeśli zaczynasz i chcesz mieć jasny plan na każdy dzień.",
+        "pozycja1": "Pulpit — jeden ekran, na którym widzisz swoje kontakty i wyniki",
+        "pozycja2": "DMO — Dzienny Plan Działania, który mówi, co dziś zrobić",
+        "pozycja3": "Formularz zgłoszeniowy z publiczną stroną — kontakty trafiają prosto do bazy",
+        "pozycja4": "Sala Treningowa — ćwiczysz trudne odpowiedzi, zanim padną naprawdę",
+        "pozycja5": "Tarcza — sprawdza ryzykowne sformułowania, zanim je wyślesz"
+      },
+      "growth": {
+        "dlaKogo": "Dla ciebie, jeśli budujesz zespół i chcesz widzieć, jak radzi sobie każda z twoich osób.",
+        "dopisek": "Wszystko ze Startera, a do tego:",
+        "pozycja1": "Puls zespołu — widzisz sygnały ryzyka odejścia i dostajesz zdanie otwierające rozmowę",
+        "pozycja2": "Widzisz całe drzewo struktury swojego zespołu"
+      },
+      "pro": {
+        "dlaKogo": "Dla ciebie, jeśli prowadzisz dużą strukturę i część pracy chcesz przekazać innym.",
+        "dopisek": "Wszystko z Growth, a do tego:",
+        "pozycja1": "Ranking — widzisz swoje miejsce na tle innych użytkowniczek",
+        "pozycja2": "Klucze API i webhooki — łączysz Catherly z własnymi narzędziami",
+        "pozycja3": "Zniesione limity kontaktów, zespołu, postów i sesji treningowych",
+        "pozycja4": "Czysty eksport — twoje materiały bez sygnatury polecającej"
+      }
+    },
+    "tabela": {
+      "caption": "Porównanie planów",
+      "zakres": "Zakres",
+      "kontakty": "Kontakty",
+      "zespol": "Zespół",
+      "posty": "Posty miesięcznie",
+      "sesje": "Sesje Sali Treningowej miesięcznie",
+      "kalendarz": "Kalendarz",
+      "puls": "Puls zespołu",
+      "drzewo": "Drzewo struktury",
+      "ranking": "Ranking, klucze API i webhooki",
+      "bezLimitu": "bez limitu",
+      "wKazdymPlanie": "w każdym planie",
+      "wPlanie": "w planie",
+      "pozaPlanem": "poza planem"
+    },
+    "faqNaglowek": "Pytania o płatność",
+    "faq": {
+      "p1": "W jakiej walucie zapłacę?",
+      "o1": "Ceny na tej stronie są w złotych. Każdy plan ma też cenę w euro — walutę widzisz przed płatnością.",
+      "p2": "A jeśli plan przestanie mi pasować?",
+      "o2": "Wybierasz plan i zmieniasz go kiedy chcesz.",
+      "p3": "A jeśli uznam, że to nie dla mnie?",
+      "o3": "Rezygnujesz kiedy chcesz. Nie musisz podawać powodu.",
+      "p4": "Co z moimi kontaktami, kiedy zrezygnuję?",
+      "o4": "Eksportujesz kontakty do vCard, pobierasz CSV z rejestrem — wszystko jest twoje."
+    },
+    "potwierdzeniaAria": "Potwierdzenia",
+    "potwierdzenie1": "Rezygnacja w każdej chwili",
+    "potwierdzenie2": "Eksport danych zawsze: vCard i CSV",
+    "potwierdzenie3": "Dane przechowywane w UE"
+  },
   "DbanieOSiebie": {
     "naglowek": "Dbanie o siebie",
     "tresc": "Zbierasz dowody swojej pracy na Wall of Proof. To przestrzeń, w której świętujesz, nie tylko mierzysz."

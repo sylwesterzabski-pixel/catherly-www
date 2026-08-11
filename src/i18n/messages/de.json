@@ -56,6 +56,70 @@
       "konkret3": "Das Zeugnis mit digitalem Fingerabdruck bleibt – deine Ergebnisse lassen sich überprüfen."
     }
   },
+  "Cennik": {
+    "naglowek": "Die Pläne unterscheiden sich im Umfang, nicht in den Versprechen",
+    "wstep": "Jeder Plan ist dasselbe System. Der Unterschied liegt im Umfang – von deinen ersten Kontakten bis zur ganzen Struktur deines Teams.",
+    "okresLegenda": "Abrechnungszeitraum",
+    "miesiecznie": "monatlich",
+    "rocznie": "jährlich",
+    "oszczedzasz": "du sparst {kwota}",
+    "cta": "Plan wählen",
+    "plany": {
+      "starter": {
+        "dlaKogo": "Für dich, wenn du anfängst und einen klaren Plan für jeden Tag haben willst.",
+        "pozycja1": "Dashboard – ein Bildschirm, auf dem du deine Kontakte und Ergebnisse siehst",
+        "pozycja2": "Täglicher Aktionsplan (DMO) – sagt dir, was heute zu tun ist",
+        "pozycja3": "Anmeldeformular mit öffentlicher Seite – Kontakte landen direkt in deiner Kontaktbasis",
+        "pozycja4": "Trainingsraum – du übst schwierige Antworten, bevor sie wirklich fallen",
+        "pozycja5": "Schild – prüft riskante Formulierungen, bevor du sie abschickst"
+      },
+      "growth": {
+        "dlaKogo": "Für dich, wenn du ein Team aufbaust und sehen willst, wie jede deiner Partnerinnen vorankommt.",
+        "dopisek": "Alles aus Starter, dazu:",
+        "pozycja1": "Team-Puls – du siehst Signale, dass eine Partnerin abspringen könnte, und bekommst einen fertigen Satz für den Gesprächseinstieg",
+        "pozycja2": "Du siehst den ganzen Strukturbaum deines Teams"
+      },
+      "pro": {
+        "dlaKogo": "Für dich, wenn du eine große Struktur führst und einen Teil der Arbeit an andere abgeben willst.",
+        "dopisek": "Alles aus Growth, dazu:",
+        "pozycja1": "Rangliste – du siehst, wo du im Vergleich zu anderen Nutzerinnen stehst",
+        "pozycja2": "API-Schlüssel und Webhooks – du verbindest Catherly mit deinen eigenen Werkzeugen",
+        "pozycja3": "Keine Limits bei Kontakten, Team, Posts und Trainingseinheiten",
+        "pozycja4": "Sauberer Export – deine Materialien ohne Empfehlungssignatur"
+      }
+    },
+    "tabela": {
+      "caption": "Planvergleich",
+      "zakres": "Umfang",
+      "kontakty": "Kontakte",
+      "zespol": "Team",
+      "posty": "Posts pro Monat",
+      "sesje": "Trainingsraum-Einheiten pro Monat",
+      "kalendarz": "Kalender",
+      "puls": "Team-Puls",
+      "drzewo": "Strukturbaum",
+      "ranking": "Rangliste, API-Schlüssel, Webhooks",
+      "bezLimitu": "ohne Limit",
+      "wKazdymPlanie": "in jedem Plan",
+      "wPlanie": "enthalten",
+      "pozaPlanem": "nicht enthalten"
+    },
+    "faqNaglowek": "Fragen zur Zahlung",
+    "faq": {
+      "p1": "In welcher Währung zahle ich?",
+      "o1": "Die Preise auf dieser Seite sind in Euro. Jeder Plan hat auch einen Preis in Złoty – die Währung siehst du vor der Zahlung.",
+      "p2": "Und wenn der Plan irgendwann nicht mehr zu mir passt?",
+      "o2": "Du wählst einen Plan und wechselst ihn, wann du willst.",
+      "p3": "Und wenn ich merke, dass es nichts für mich ist?",
+      "o3": "Du kündigst, wann du willst. Einen Grund musst du nicht nennen.",
+      "p4": "Was passiert mit meinen Kontakten, wenn ich kündige?",
+      "o4": "Du exportierst deine Kontakte als vCard und lädst das Register als CSV herunter – alles gehört dir."
+    },
+    "potwierdzeniaAria": "Bestätigungen",
+    "potwierdzenie1": "Kündigung jederzeit",
+    "potwierdzenie2": "Datenexport jederzeit: vCard und CSV",
+    "potwierdzenie3": "Daten in der EU gespeichert"
+  },
   "DbanieOSiebie": {
     "naglowek": "Für dich selbst",
     "tresc": "Du sammelst Belege deiner Arbeit auf der Wall of Proof. Ein Raum, in dem du feierst – nicht nur misst."

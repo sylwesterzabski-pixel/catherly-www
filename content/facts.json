@@ -48,7 +48,7 @@
       "zrodlo": "Kod aplikacji: PLAN_LIMITS simulator_sessions, src/lib/api/plan-limits.ts:8-48. Raport Z1.",
       "data_pomiaru": "2026-08-09"
     },
-    "_uwaga_pro": "Plan PRO: limity zniesione (-1 w kodzie) dla powyższych — na stronie słowami („bez limitu"), nie liczbą; wpis liczbowy niepotrzebny.",
+    "_uwaga_pro": "Plan PRO: limity zniesione (-1 w kodzie) dla powyższych — na stronie słowami („bez limitu”), nie liczbą; wpis liczbowy niepotrzebny.",
     "_uwaga_wykluczone": "NIE wpisano (rejestr warunków powrotu poz. 4-6): storage_gb 1/5/20 (Storage martwy), ai_calls_per_month 100/500 (klucz pusty), social_platforms 2/5 (zgody platform), website_pages 3/10 (limit nieegzekwowany), pdf_per_month 10/50 (generator martwy)."
   }
 }

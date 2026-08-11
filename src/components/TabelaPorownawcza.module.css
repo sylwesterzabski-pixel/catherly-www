@@ -1,0 +1,63 @@
+/* K7 — CSS wg HF docs/faza-3/hf/cennik.html (po panelu 2026-08-11).
+   Strona NIGDY nie scrolluje poziomo — wyłącznie kontener tabeli.
+   W6: sticky pierwsza kolumna ograniczona (11rem) i odcięta kreską. */
+
+.sekcja {
+  padding: 2.5rem 1rem;
+}
+
+.wnetrze {
+  max-width: 70rem;
+  margin-inline: auto;
+}
+
+.kontener {
+  overflow-x: auto;
+}
+
+.tabela {
+  border-collapse: collapse;
+  min-width: 36rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabela caption {
+  text-align: start;
+  font-weight: 600;
+  padding-block-end: 0.5rem;
+}
+
+.tabela th,
+.tabela td {
+  text-align: start;
+  padding: 0.625rem 1rem;
+  border-block-end: 0.0625rem solid var(--kolor-rola-kreska);
+}
+
+.tabela thead th {
+  font-size: 0.9375rem;
+}
+
+.tabela tbody th {
+  font-weight: 400;
+}
+
+.tabela tbody th[scope="row"] {
+  position: sticky;
+  inset-inline-start: 0;
+  background: var(--kolor-rola-tlo-strony);
+  max-width: 11rem;
+  border-inline-end: 0.0625rem solid var(--kolor-rola-kreska);
+}
+
+.srOnly {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  padding: 0;
+  margin: -0.0625rem;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

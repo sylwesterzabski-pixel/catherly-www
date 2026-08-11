@@ -1,0 +1,169 @@
+/* K5+K6 — CSS wg HF docs/faza-3/hf/cennik.html (po panelu
+   2026-08-11). Kolory wyłącznie var(--…); wymiary rem/ch.
+   K6 wariant A (decyzja wiążąca panelu): natywne WIDOCZNE radio
+   niesie stan; W1 — CAŁA mechanika pod @supports selector(:has(*)):
+   bez wsparcia przełącznik ukryty, obie ceny widoczne (zero utraty,
+   zero martwej kontrolki). ŚWIADOMY BRAK aria-live (handoff).
+   Kontrasty par powierzchni — komentarze w tokenach (W4). */
+
+.sekcja {
+  padding: 2.5rem 1rem;
+}
+
+.wnetrze {
+  max-width: 70rem;
+  margin-inline: auto;
+}
+
+.przelacznik {
+  display: none; /* W1: widoczny wyłącznie przy wsparciu :has() */
+}
+
+@supports selector(:has(*)) {
+  .przelacznik {
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    /* 2rem = literał zgłoszony do ADR skali promieni (handoff E) */
+    border-radius: 2rem;
+    padding: 0.25rem;
+    display: inline-flex;
+    gap: 0.25rem;
+    margin: 0;
+  }
+
+  .sekcja:has(.okresRocznie:checked) .cenaMiesiecznie {
+    display: none;
+  }
+
+  .sekcja:has(.okresMiesiecznie:checked) .cenaRocznie {
+    display: none;
+  }
+}
+
+.przelacznik label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+/* Tło zaznaczenia = wyłącznie dekoracja (stan niesie radio;
+   powierzchnia-2 × tło strony 1,00:1 — patrz komentarz tokenu). */
+.przelacznik label:has(input:checked) {
+  background: var(--kolor-rola-powierzchnia-2);
+}
+
+/* W7: fokus widoczny na całej etykiecie, nie tylko małym radio. */
+.przelacznik label:has(input:focus-visible) {
+  outline: 0.1875rem solid var(--kolor-rola-fokus);
+  outline-offset: 0.125rem;
+}
+
+/* W7: druk zawsze z oboma cenami. */
+@media print {
+  .przelacznik {
+    display: none;
+  }
+
+  .cenaMiesiecznie,
+  .cenaRocznie {
+    display: block !important;
+  }
+}
+
+.karty {
+  display: grid;
+  gap: 1.5rem;
+  margin-block-start: 1.5rem;
+}
+
+@media (min-width: 48rem) {
+  .karty {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* Trzy karty RÓWNORZĘDNE (ADR-003) — żadnych wyróżnień ponad tokeny. */
+.karta {
+  background: var(--kolor-rola-powierzchnia);
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.karta h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.cena {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cena .interwal {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--kolor-rola-tekst-drugorzedny);
+}
+
+.oszczednosc {
+  font-size: 0.9375rem;
+  color: var(--kolor-rola-tekst-drugorzedny);
+  margin: 0;
+}
+
+.dlaKogo {
+  margin: 0;
+}
+
+.dopisek {
+  margin: 0;
+  font-weight: 600;
+}
+
+.lista {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lista li::marker {
+  color: var(--kolor-rola-akcent);
+}
+
+.cta {
+  margin-block-start: auto; /* CTA na wspólnej linii bazowej (desktop) */
+  display: inline-block;
+  background: var(--kolor-rola-interakcja);
+  color: var(--kolor-rola-tekst-na-interakcji);
+  text-decoration: none;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.cta:hover,
+.cta:active {
+  background: var(--kolor-rola-interakcja-aktywna);
+}
+
+.srOnly {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  padding: 0;
+  margin: -0.0625rem;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

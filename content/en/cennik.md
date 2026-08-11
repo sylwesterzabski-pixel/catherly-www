@@ -24,7 +24,7 @@ z migawki Stripe.
 ## 3. Karty planów
 
 ### Starter — {price.starter} €
-For whom: For you if you're just starting and want a clear plan for
+For whom: For you if you’re just starting and want a clear plan for
 every day. *(68 zn)*
 - Dashboard — one screen where you see your contacts and results *(62 zn)*
 - DMO — a Daily Method of Operation that tells you what to do today *(65 zn)*
@@ -35,7 +35,7 @@ every day. *(68 zn)*
 CTA: Choose plan → /login (plan wybierany w aplikacji — ADR-023)
 
 ### Growth — {price.growth} €
-For whom: For you if you're building a team and want to see how each
+For whom: For you if you’re building a team and want to see how each
 of your people is doing. *(83 zn)*
 
 Everything in Starter, plus:
@@ -73,7 +73,7 @@ in Polish złoty — you see the currency before you pay. *(116 zn)*
 **P2:** What if my plan stops being the right fit? *(42 zn)*
 **O2:** You choose a plan and change it whenever you like. *(50 zn)*
 
-**P3:** What if I decide it's not for me? *(33 zn)*
+**P3:** What if I decide it’s not for me? *(33 zn)*
 **O3:** You can cancel whenever you like. No reason needed. *(51 zn)*
 
 **P4:** What about my contacts when I cancel? *(37 zn)*
