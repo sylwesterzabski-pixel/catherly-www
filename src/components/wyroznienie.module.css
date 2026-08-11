@@ -1,0 +1,8 @@
+/* Wspólny duet wyróżnienia 1.125rem/600 (W6 handoffu K4):
+   „kropka" K3 i „korzyść" K4 komponują z JEDNEGO miejsca,
+   żeby style nie rozjechały się przy zmianach. */
+
+.duet {
+  font-size: 1.125rem;
+  font-weight: 600;
+}

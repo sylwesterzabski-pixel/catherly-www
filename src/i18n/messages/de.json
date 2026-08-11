@@ -26,6 +26,40 @@
     "potwierdzenieUE": "Daten in der EU gespeichert",
     "potwierdzenieRezygnacja": "Kündigung jederzeit"
   },
+  "Filary": {
+    "filar1": {
+      "naglowek": "Morgens siehst du, bei wem du dich meldest.",
+      "korzysc": "Du hast einen Plan für den Tag und eine Kontaktbasis, die wächst, während du Gespräche führst.",
+      "konkret1": "Der Tägliche Aktionsplan (DMO) ordnet deine Gespräche – du startest, ohne lange zu überlegen.",
+      "konkret2": "Eine Erinnerung kurz vor dem Termin – du bist vorbereitet, nicht überrascht.",
+      "konkret3": "Jede empfohlene Person bringt ihre Spur mit – du weißt, wer sie empfohlen hat."
+    },
+    "filar2": {
+      "naglowek": "Du schreibst. Der Schild prüft. Das Siegel bestätigt.",
+      "korzysc": "Das Studio lernt deine Stimme und achtet darauf, dass kein Inhalt deine Regeln verletzt.",
+      "konkret1": "Das Studio liefert fertige Formate und Vorlagen – du beginnst nicht mit einem leeren Blatt.",
+      "konkret2": "Der Schild markiert riskante Formulierungen, bevor du auf „Senden“ tippst.",
+      "konkret3": "Das Ethik-Siegel gibt dir eine Bewertung und ein Zertifikat – ein Beleg, nicht nur ein Gefühl."
+    },
+    "filar3": {
+      "naglowek": "Deine neue Partnerin weiß ab Tag eins, was zu tun ist",
+      "korzysc": "Statt jeder alles neu zu erklären – der Einstiegsassistent übernimmt das für dich.",
+      "konkret1": "Der Einstiegsassistent führt neue Partnerinnen durch alle Etappen – ohne deine Hilfe.",
+      "konkret2": "Die ersten 90 Tage mit vier Phasen und Missionen – sie sieht den Weg vor sich.",
+      "konkret3": "Erfolge und Abzeichen halten das Engagement – lange über den Start hinaus."
+    },
+    "filar4": {
+      "naglowek": "Du siehst Wachstum – auch nach einem schweren Tag",
+      "korzysc": "Das Dashboard zeigt den heutigen Stand – und deine Ergebnisse haben einen Beleg, der bleibt.",
+      "konkret1": "Dein Wrapped fasst den Zeitraum zusammen – du siehst, was du wirklich geschafft hast.",
+      "konkret2": "Dein Ziel mit Meilensteinen zeigt, wie weit du gekommen bist und was als Nächstes kommt.",
+      "konkret3": "Das Zeugnis mit digitalem Fingerabdruck bleibt – deine Ergebnisse lassen sich überprüfen."
+    }
+  },
+  "DbanieOSiebie": {
+    "naglowek": "Für dich selbst",
+    "tresc": "Du sammelst Belege deiner Arbeit auf der Wall of Proof. Ein Raum, in dem du feierst – nicht nur misst."
+  },
   "StronaWBudowie": {
     "tresc": "Diese Seite entsteht gerade."
   },

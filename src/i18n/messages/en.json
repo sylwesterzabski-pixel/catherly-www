@@ -26,6 +26,40 @@
     "potwierdzenieUE": "Data stored in the EU",
     "potwierdzenieRezygnacja": "Cancel at any time"
   },
+  "Filary": {
+    "filar1": {
+      "naglowek": "In the morning, you see who to reach out to.",
+      "korzysc": "You have a plan for the day and a contact base that grows while you do the talking.",
+      "konkret1": "The DMO sets the order of your conversations — you start the day without hesitating.",
+      "konkret2": "A reminder just before each meeting — you walk in prepared, not caught off guard.",
+      "konkret3": "Every referral arrives with a trail — you know who sent her your way."
+    },
+    "filar2": {
+      "naglowek": "You write. Shield checks. Ethical Seal confirms.",
+      "korzysc": "The Studio learns your voice and makes sure no piece of content breaks your rules.",
+      "konkret1": "The Studio comes with ready formats and templates — you never face a blank page.",
+      "konkret2": "The Shield flags risky wording before you hit send.",
+      "konkret3": "The Ethical Seal gives a score and a certificate — proof, not just a feeling."
+    },
+    "filar3": {
+      "naglowek": "A new team member knows what to do from day one",
+      "korzysc": "Instead of explaining it all to every new person, the onboarding wizard does it for you.",
+      "konkret1": "The onboarding wizard walks her through each stage — no help from you needed.",
+      "konkret2": "First 90 Days: four phases with missions — she sees the road ahead of her.",
+      "konkret3": "Achievements and badges keep her engaged long after the start."
+    },
+    "filar4": {
+      "naglowek": "You see growth even after a hard day",
+      "korzysc": "The Dashboard shows where things stand today, and your results carry proof that lasts.",
+      "konkret1": "Your Wrapped sums up the period — you see what you actually got done.",
+      "konkret2": "A goal with milestones tells you how far you've come and what's next.",
+      "konkret3": "The Testimony with its digital fingerprint stays — others can verify your results."
+    }
+  },
+  "DbanieOSiebie": {
+    "naglowek": "Self-care",
+    "tresc": "You collect proof of your work on the Wall of Proof. It's a space where you celebrate, not just measure."
+  },
   "StronaWBudowie": {
     "tresc": "This page is being built."
   },

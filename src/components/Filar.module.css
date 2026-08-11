@@ -1,0 +1,78 @@
+/* K4 — CSS wg HF docs/faza-3/hf/k4-filary.html (po panelu
+   2026-08-11; DECYZJE 9/10). Kolory wyłącznie var(--…); wymiary
+   rem/ch. Sekcje POD foldem. ::marker w rola-akcent DOPUSZCZONY
+   przez panel jako dekoracja — granica: tylko glif ul; zamiana na
+   ol/ikony znaczące wymaga pary ≥3:1 (axe nie testuje ::marker —
+   ślad wyliczenia w handoffie: akcent 2,87:1, informacja listy
+   niesiona semantyką + wcięciem + kształtem). Próg 48rem i kontener
+   70rem: surowe wartości wspólne K1–K4 (W5 — propozycja tokenów
+   przy etapie E/F). */
+
+.filar {
+  padding: 3rem 1rem;
+}
+
+.wnetrze {
+  max-width: 70rem;
+  margin-inline: auto;
+}
+
+.naglowek {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+  max-width: 26ch;
+  text-wrap: balance;
+}
+
+.korzysc {
+  /* Duet 1.125/600 wspólny z kropką K3 (W6 handoffu K4). */
+  composes: duet from "./wyroznienie.module.css";
+  margin: 0 0 1rem;
+  max-width: var(--wymiar-miara-akapitu);
+}
+
+.konkrety {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: var(--wymiar-miara-akapitu);
+}
+
+.konkrety li::marker {
+  color: var(--kolor-rola-akcent);
+}
+
+.obraz {
+  margin-block-start: 1.5rem; /* 390 px: tekst NAD obrazem */
+  /* Fallback ramki do dostawy Z6 (W3: docelowo width/height
+     z realnych plików 2048×1280; 16/10 tylko jako rezerwa CLS). */
+  aspect-ratio: 16 / 10;
+  background: var(--kolor-rola-powierzchnia);
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: 0.5rem;
+}
+
+@media (min-width: 48rem) {
+  .uklad {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center; /* zapobiega stretch nadpisującemu aspect-ratio */
+  }
+
+  .obraz {
+    margin-block-start: 0;
+  }
+
+  /* Zebra L-P-L-P: instancje z obrazem po LEWEJ (filary 2 i 4). */
+  .obrazPoLewej .tekst {
+    order: 2;
+  }
+
+  .obrazPoLewej .obraz {
+    order: 1;
+  }
+}
