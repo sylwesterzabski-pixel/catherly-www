@@ -73,5 +73,20 @@ proof that lasts. *(86 zn)*
 
 ## Mini-sekcja — SELF-CARE (po czterech filarach)
 
-Jak w PL: pozycja obowiązuje, treść wewnętrzna do opracowania osobno
-(materiał pokryty: Wall of Proof).
+**Status treści: OBOWIĄZUJE — adaptacja po panelu (PRZESZŁA bez
+poprawek), na polecenie właściciela (DECYZJA 10, 2026-08-11).**
+Źródło: content/pl/filary.md (mini-sekcja, OBOWIĄZUJE).
+
+### H2 (visually-hidden)
+
+Self-care
+
+### Treść
+
+You collect proof of your work on the Wall of Proof. It's a space
+where you celebrate, not just measure.
+
+**104 zn.** Panel: „the Wall of Proof" z rodzajnikiem spójnie
+z konwencją filarów EN; powtórzenie „proof … Wall of Proof" uznane
+za echo systemowe głosu marki („proof, not just a feeling",
+„proof that lasts"), nie usterkę.

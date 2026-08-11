@@ -167,7 +167,10 @@ Wymagania twarde:
    (zakładka /recognition — zespołowa) to na pewno DWIE różne
    funkcje o tych nazwach w bieżącym kodzie? (Sankcjonowany
    odczyt i18n 2026-08-11 tak wskazuje — proszę o potwierdzenie
-   ze strony aplikacji.)
+   ze strony aplikacji.) Dodatkowo z de.json: jakiego rodzaju
+   gramatycznego używa aplikacja przy „Wall of Proof" (die/der/das)?
+   Strona przyjęła „die" (panel adaptacji, rozstrzygnięcie
+   językowe) — przy rozjeździe wygrywa aplikacja.
 
 Zero szacunków i zero mockupów — tylko to, co realnie renderuje
 aplikacja.

@@ -75,5 +75,21 @@ einen Beleg, der bleibt. *(92 zn)*
 
 ## Mini-sekcja — FÜR DICH SELBST (po czterech filarach)
 
-Jak w PL: pozycja obowiązuje, treść wewnętrzna do opracowania osobno
-(materiał pokryty: Wall of Proof).
+**Status treści: OBOWIĄZUJE — adaptacja po panelu (PRZESZŁA
+z warunkiem rejestrowym), na polecenie właściciela (DECYZJA 10,
+2026-08-11).** Źródło: content/pl/filary.md (mini-sekcja).
+
+### H2 (visually-hidden)
+
+Für dich selbst
+
+### Treść
+
+Du sammelst Belege deiner Arbeit auf der Wall of Proof. Ein Raum,
+in dem du feierst – nicht nur misst.
+
+**102 zn.** Panel: „Belege" podejmuje wzorzec „ein Beleg, nicht nur
+ein Gefühl"; elipsa spójna ze stylem filarów DE. Rodzaj „die Wall
+of Proof" rozstrzygnięty językowo (uzus die Wall of Fame; analogia
+die Wand/die Mauer) — *(rodzaj wg aplikacji — do potwierdzenia,
+Z6; przy rozjeździe wygrywa aplikacja)*.
