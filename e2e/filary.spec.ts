@@ -72,37 +72,50 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   });
 }
 
-test("K4: zebra przez order — tylko na desktopie, DOM zawsze tekst przed obrazem", async ({
+test("K4: zebra L-P-L-P przez order na WSZYSTKICH filarach; DOM zawsze tekst przed obrazem", async ({
   page,
 }, testInfo) => {
   await page.goto("/");
-  const filar2 = page.locator("section", {
-    has: page.getByRole("heading", {
-      name: pl.Filary.filar2.naglowek,
-      exact: true,
-    }),
-  });
-  // Obraz (ramka aria-hidden) to ostatnie dziecko układu — w DOM
-  // ZAWSZE po tekście (czytniki i 390 px czytają tekst najpierw).
-  const uklad = filar2.locator("div > div").first();
-  const obraz = uklad.locator("> div").last();
-  const orderObrazu = await obraz.evaluate(
-    (el) => getComputedStyle(el).order,
-  );
-  const displayUkladu = await uklad.evaluate(
-    (el) => getComputedStyle(el).display,
-  );
+  // Pełny wzór zebry (adwersarz Etapu D, ustalenie 1 — pilnowanie
+  // samego filaru 2 przepuszczało mutację L-L-P-L): desktop
+  // filary 1/3 obraz po prawej (order 0), 2/4 po lewej (order 1);
+  // 390 px — order nieaktywny wszędzie, bez siatki.
+  const WZOR_ZEBRY = [
+    { klucz: "filar1", orderObrazu: "0" },
+    { klucz: "filar2", orderObrazu: "1" },
+    { klucz: "filar3", orderObrazu: "0" },
+    { klucz: "filar4", orderObrazu: "1" },
+  ] as const;
 
-  if (testInfo.project.name === "mobile-390") {
-    expect(displayUkladu, "390 px: bez siatki — naturalny przepływ").toBe(
-      "block",
+  for (const { klucz, orderObrazu } of WZOR_ZEBRY) {
+    const sekcja = page.locator("section", {
+      has: page.getByRole("heading", {
+        name: pl.Filary[klucz].naglowek,
+        exact: true,
+      }),
+    });
+    // Obraz (ramka aria-hidden) to ostatnie dziecko układu — w DOM
+    // ZAWSZE po tekście (czytniki i 390 px czytają tekst najpierw).
+    const uklad = sekcja.locator("div > div").first();
+    const obraz = uklad.locator("> div").last();
+    const zmierzonyOrder = await obraz.evaluate(
+      (el) => getComputedStyle(el).order,
     );
-    expect(orderObrazu, "390 px: order nieaktywny").toBe("0");
-  } else {
-    expect(displayUkladu, "desktop: siatka dwukolumnowa").toBe("grid");
-    expect(orderObrazu, "desktop: filar 2 z obrazem po lewej (order 1)").toBe(
-      "1",
+    const displayUkladu = await uklad.evaluate(
+      (el) => getComputedStyle(el).display,
     );
+
+    if (testInfo.project.name === "mobile-390") {
+      expect(displayUkladu, `390 px (${klucz}): bez siatki`).toBe("block");
+      expect(zmierzonyOrder, `390 px (${klucz}): order nieaktywny`).toBe("0");
+    } else {
+      expect(displayUkladu, `desktop (${klucz}): siatka dwukolumnowa`).toBe(
+        "grid",
+      );
+      expect(zmierzonyOrder, `desktop (${klucz}): zebra L-P-L-P`).toBe(
+        orderObrazu,
+      );
+    }
   }
 });
 

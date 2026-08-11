@@ -42,8 +42,8 @@ export function Filar({
             </h2>
             <p className={styles.korzysc}>{korzysc}</p>
             <ul className={styles.konkrety}>
-              {konkrety.map((konkret) => (
-                <li key={konkret}>{konkret}</li>
+              {konkrety.map((konkret, indeks) => (
+                <li key={indeks}>{konkret}</li>
               ))}
             </ul>
           </div>
