@@ -13,16 +13,19 @@
      kropka=tekst-podstawowy); desktop oś pozioma 3 kroków.
      S11 K10: ceny miesięczne z migawki (99/199/399 zł — rachunek
      jak w lib/cennik). S13/C8 K11: CTA parą interakcji.
-     KANDYDACI DO ROZSTRZYGNIĘCIA PRZEZ PANEL:
-     1. S10 kroki: nazwy kroków (Rano/W ciągu dnia/Wieczorem) jako
-        h3 czy jako wyróżnione frazy w akapitach (h3 = pierwsze h3
-        na stronie; frazy = płytsza struktura)?
-     2. S11: wiersz planu jako link CAŁY do /cennik czy tylko
-        końcowy link „Zobacz pełny cennik" (jeden cel — mniej
-        celów klawiszowych)?
-     3. S13: sekcja zamknięcia bez H2 (sam CTA + zdanie) — czy
-        potrzebuje sr-only H2 dla struktury („Zacznij" nie istnieje
-        w treści — mikro-tekst wymagałby sankcji)? */
+     PO PANELU (2026-08-11, PRZESZEDŁ Z WARUNKAMI — naniesione):
+     Kotwica jako kropka = WIERNOŚĆ (konkatenacja krok+kotwica
+     93/93 zn == content; W4: strażnik porównuje konkatenację).
+     Kandydat 1: FRAZY, nie h3 (sekwencja, nie podsekcje).
+     Kandydat 2: JEDEN link „Zobacz pełny cennik" (ADR-003/023).
+     Kandydat 3: S13/C8 BEZ etykiety i bez h2 (sekcja generyczna;
+     sankcji dla wymyślonej etykiety ODMÓWIONO).
+     Sankcje: sr-only „Cennik w skrócie" (pochodna content) +
+     „miesięcznie" przy cenie (pochodna §2).
+     W1: link w tokenie roli. W2: lustro desktop — H2+kropka S10
+     w ograniczniku miara-kolumny (70rem tylko dla osi kroków).
+     W5: sortowanie planów deterministyczne (migawka ma
+     Pro/Starter/Growth!). W6: flex-wrap na wierszu planu. */
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -58,8 +61,16 @@
   }
   .rytm__kroki p { margin: 0; }
   @media (min-width: 48rem) {
-    /* Oś pozioma: szersze wnętrze wyłącznie dla kroków */
-    .rytm .wnetrze--os { max-width: 70rem; }
+    /* W2: 70rem WYŁĄCZNIE dla osi kroków; H2 i kropka w ograniczniku
+       miara-kolumny wyśrodkowanym — kropki luster S3/S10 stoją
+       w tej samej kolumnie co do piksela. */
+    .rytm .wnetrze--os { max-width: var(--wymiar-kontener-strony); }
+    .rytm .wnetrze--os > h2,
+    .rytm .wnetrze--os > .kropka {
+      max-width: var(--wymiar-miara-kolumny);
+      margin-inline: auto;
+      width: 100%;
+    }
     .rytm__kroki { flex-direction: row; gap: 2rem; }
     .rytm__kroki li { flex: 1; }
   }
@@ -78,13 +89,17 @@
   .skrot__plan {
     background: var(--kolor-rola-powierzchnia);
     border: 0.0625rem solid var(--kolor-rola-kreska);
-    border-radius: 0.5rem;
+    border-radius: var(--wymiar-promien);
     padding: 1rem 1.25rem;
     display: flex;
+    flex-wrap: wrap; /* W6: 320 px, zoom 200%, teksty DE */
     justify-content: space-between;
     align-items: baseline;
-    gap: 1rem;
+    gap: 0.25rem 1rem;
   }
+  /* W1: link w tokenie roli (globals stylizuje a — tu jawnie dla HF) */
+  .skrot a { color: var(--kolor-rola-link); }
+  .skrot a:hover, .skrot a:active { color: var(--kolor-rola-link-aktywny); }
   .skrot__nazwa { font-weight: 600; }
   .skrot__cena { font-variant-numeric: tabular-nums; }
   .skrot__cena .interwal {
@@ -198,8 +213,7 @@ szkielet S3, kotwica jako kropka)</div>
 
 <div class="hf-etykieta">S13 — K11 zamknięcie głównej (bez zdania
 prowadzącego — werdykt panelu pkt 25)</div>
-<section class="sekcja zamkniecie" aria-label="[do rozstrzygnięcia
-przez panel — kandydat 3]">
+<section class="sekcja zamkniecie">
   <div class="wnetrze">
     <a class="cta" href="/funkcje">Sprawdź, jak działa</a>
     <p class="zamkniecie__zdanie">Rezygnujesz w każdej chwili.</p>
@@ -207,7 +221,7 @@ przez panel — kandydat 3]">
 </section>
 
 <div class="hf-etykieta">C8 — K11 zamknięcie /cennik (§7)</div>
-<section class="sekcja zamkniecie" aria-label="[jw.]">
+<section class="sekcja zamkniecie">
   <div class="wnetrze">
     <p class="zamkniecie__zdanie-prowadzace">Wybierz plan i sprawdź,
     jak działa Catherly w twojej codziennej pracy. Niczym się nie
