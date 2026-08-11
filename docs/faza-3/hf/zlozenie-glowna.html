@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF Etap F — S3/S4/S10/S11/S13 + C8 (podgląd na tokenach)</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF złożenia (Etap F). Wartości wyłącznie var(--…); rem/ch.
+     S3/S4 = istniejący K3 (style 1:1 z k3-sekcja-tekstowa.html —
+     tu powtórzone dla podglądu). S10 = LUSTRO L1: ten sam szkielet
+     i skala co S3, tło akcentowe (pary z tokenów: tekst 11,15:1,
+     kropka=tekst-podstawowy); desktop oś pozioma 3 kroków.
+     S11 K10: ceny miesięczne z migawki (99/199/399 zł — rachunek
+     jak w lib/cennik). S13/C8 K11: CTA parą interakcji.
+     KANDYDACI DO ROZSTRZYGNIĘCIA PRZEZ PANEL:
+     1. S10 kroki: nazwy kroków (Rano/W ciągu dnia/Wieczorem) jako
+        h3 czy jako wyróżnione frazy w akapitach (h3 = pierwsze h3
+        na stronie; frazy = płytsza struktura)?
+     2. S11: wiersz planu jako link CAŁY do /cennik czy tylko
+        końcowy link „Zobacz pełny cennik" (jeden cel — mniej
+        celów klawiszowych)?
+     3. S13: sekcja zamknięcia bez H2 (sam CTA + zdanie) — czy
+        potrzebuje sr-only H2 dla struktury („Zacznij" nie istnieje
+        w treści — mikro-tekst wymagałby sankcji)? */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  /* K3 (S3/S4) — 1:1 z HF K3 */
+  .sekcja { padding: 3rem 1rem; line-height: 1.6; }
+  .wnetrze { max-width: var(--wymiar-miara-kolumny); margin-inline: auto; }
+  .sekcja h2 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 1rem; }
+  .sekcja p { margin: 0 0 1rem; max-width: var(--wymiar-miara-akapitu); }
+  .kropka { margin-block-start: 1.25rem; font-weight: 600; font-size: 1.125rem; }
+  /* S10 — lustro L1: identyczny szkielet, tło akcentowe */
+  .rytm { background: var(--kolor-rola-powierzchnia-akcentowa); }
+  .rytm__kroki {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+  }
+  .rytm__nazwa {
+    display: block;
+    font-weight: 600;
+    margin-block-end: 0.25rem;
+  }
+  .rytm__kroki p { margin: 0; }
+  @media (min-width: 48rem) {
+    /* Oś pozioma: szersze wnętrze wyłącznie dla kroków */
+    .rytm .wnetrze--os { max-width: 70rem; }
+    .rytm__kroki { flex-direction: row; gap: 2rem; }
+    .rytm__kroki li { flex: 1; }
+  }
+  /* S11 — K10 cennik w skrócie */
+  .skrot .wnetrze { max-width: 70rem; }
+  .skrot__plany {
+    display: grid;
+    gap: 1rem;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 48rem) {
+    .skrot__plany { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .skrot__plan {
+    background: var(--kolor-rola-powierzchnia);
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .skrot__nazwa { font-weight: 600; }
+  .skrot__cena { font-variant-numeric: tabular-nums; }
+  .skrot__cena .interwal {
+    font-size: 0.9375rem;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+  .skrot__roznica { margin: 0 0 1rem; max-width: var(--wymiar-miara-akapitu); }
+  /* S13 / C8 — K11 zamknięcie */
+  .zamkniecie { text-align: center; }
+  .zamkniecie .wnetrze { max-width: var(--wymiar-miara-kolumny); }
+  .zamkniecie__zdanie-prowadzace {
+    margin: 0 0 1.25rem;
+    max-width: var(--wymiar-miara-akapitu);
+    margin-inline: auto;
+  }
+  .cta {
+    display: inline-block;
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+  .cta:hover, .cta:active { background: var(--kolor-rola-interakcja-aktywna); }
+  .zamkniecie__zdanie {
+    margin: 1rem 0 0;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 0.9375rem;
+  }
+  .sr-only {
+    position: absolute; width: 0.0625rem; height: 0.0625rem;
+    padding: 0; margin: -0.0625rem; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  .hf-etykieta {
+    background: var(--kolor-rola-powierzchnia-2);
+    padding: 0.5rem 1rem; font-size: 0.875rem;
+  }
+</style>
+</head>
+<body>
+<main id="tresc">
+
+<div class="hf-etykieta">S3 — problem (K3, wariant neutralny, kropka)</div>
+<section class="sekcja" aria-labelledby="problem-h2">
+  <div class="wnetrze">
+    <h2 id="problem-h2">Wszystko gdzieś jest. Każde gdzie indziej.</h2>
+    <p>Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru,
+    który gdzieś przecież zapisałaś. O tym, co w zespole, dowiadujesz
+    się później, niż byś chciała.</p>
+    <p class="kropka">Wieczorem siadasz do zeszytu i liczysz, co
+    z tego wyszło.</p>
+  </div>
+</section>
+
+<div class="hf-etykieta">S4 — definicja (K3, wariant neutralny)</div>
+<section class="sekcja" aria-labelledby="definicja-h2">
+  <div class="wnetrze">
+    <h2 id="definicja-h2">Catherly to pamięć twojej sprzedaży</h2>
+    <p>Catherly pamięta to, co dotąd trzymałaś w głowie i notesach:
+    komu co obiecałaś, jakie treści wysłałaś której klientce i co się
+    sprzedało. Zespół też masz pod ręką — widzisz, kogo wprowadzasz
+    i jak jej idzie. Sprzedajesz po swojemu, tylko już nie z pamięci.</p>
+  </div>
+</section>
+
+<div class="hf-etykieta">S10 — rytm dnia (LUSTRO L1: tło akcentowe,
+szkielet S3, kotwica jako kropka)</div>
+<section class="sekcja rytm" aria-labelledby="rytm-h2">
+  <div class="wnetrze wnetrze--os">
+    <h2 id="rytm-h2">Jak wygląda twój dzień z Catherly</h2>
+    <ul class="rytm__kroki" role="list">
+      <li>
+        <span class="rytm__nazwa">Rano</span>
+        <p>Otwierasz Dzienny Plan Działania i zaczynasz rozmowy
+        w ułożonej kolejności. Kalendarz przypomina o reszcie.</p>
+      </li>
+      <li>
+        <span class="rytm__nazwa">W ciągu dnia</span>
+        <p>Zaglądasz do bazy kontaktów i wiesz, komu co obiecałaś.
+        Post składasz z szablonu w Studiu.</p>
+      </li>
+      <li>
+        <span class="rytm__nazwa">Wieczorem</span>
+        <p>Na Pulpicie masz swój dzień i dzień zespołu obok siebie.</p>
+      </li>
+    </ul>
+    <p class="kropka">Wieczorem widzisz, co z tego wyszło.</p>
+  </div>
+</section>
+
+<div class="hf-etykieta">S11 — K10 cennik w skrócie (ceny z migawki)</div>
+<section class="sekcja skrot" aria-labelledby="skrot-h2">
+  <div class="wnetrze">
+    <h2 id="skrot-h2" class="sr-only">Cennik w skrócie</h2>
+    <ul class="skrot__plany" role="list">
+      <li class="skrot__plan"><span class="skrot__nazwa">Starter</span>
+        <span class="skrot__cena">99 zł <span class="interwal">miesięcznie</span></span></li>
+      <li class="skrot__plan"><span class="skrot__nazwa">Growth</span>
+        <span class="skrot__cena">199 zł <span class="interwal">miesięcznie</span></span></li>
+      <li class="skrot__plan"><span class="skrot__nazwa">Pro</span>
+        <span class="skrot__cena">399 zł <span class="interwal">miesięcznie</span></span></li>
+    </ul>
+    <p class="skrot__roznica">Wszystkie plany prowadzą twoje kontakty
+    i wyniki — Growth dodaje do tego widok całego zespołu.</p>
+    <p><a href="/cennik">Zobacz pełny cennik</a></p>
+  </div>
+</section>
+
+<div class="hf-etykieta">S13 — K11 zamknięcie głównej (bez zdania
+prowadzącego — werdykt panelu pkt 25)</div>
+<section class="sekcja zamkniecie" aria-label="[do rozstrzygnięcia
+przez panel — kandydat 3]">
+  <div class="wnetrze">
+    <a class="cta" href="/funkcje">Sprawdź, jak działa</a>
+    <p class="zamkniecie__zdanie">Rezygnujesz w każdej chwili.</p>
+  </div>
+</section>
+
+<div class="hf-etykieta">C8 — K11 zamknięcie /cennik (§7)</div>
+<section class="sekcja zamkniecie" aria-label="[jw.]">
+  <div class="wnetrze">
+    <p class="zamkniecie__zdanie-prowadzace">Wybierz plan i sprawdź,
+    jak działa Catherly w twojej codziennej pracy. Niczym się nie
+    wiążesz — rezygnujesz kiedy chcesz.</p>
+    <a class="cta" href="/login">Wybierz plan</a>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
