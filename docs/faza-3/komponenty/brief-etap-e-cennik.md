@@ -1,6 +1,7 @@
 # Brief Etapu E: K5–K8 — cennik (pipeline 4.1)
 
-Status: BRIEF (do akceptu właściciela). Wireframe /cennik:
+Status: **ZAAKCEPTOWANY przez właściciela 2026-08-11** —
+z doprecyzowaniem kryteriów K6 (niżej). Wireframe /cennik:
 OBOWIĄZUJE (DECYZJA 6). Treść: content/*/cennik.md OBOWIĄZUJE
 (DECYZJA 4 + Z1/Z2). Etap D przyjęty 2026-08-11 (obrazy dojadą
 torem Z6 — niezależnie od E).
@@ -64,6 +65,12 @@ przyrostowo — pełne złożenie i przegląd całości w F.
   (radiogroup vs tabs), zachowanie druku/reader-mode, INP < 200 ms,
   prostota. Pierwszy JS na stronie wymaga jawnej zgody panelu —
   domyślnie zero JS.
+- **DOPRECYZOWANIE WŁAŚCICIELA (2026-08-11, wiążące dla panelu):**
+  semantyka czytników ekranu ma WAGĘ ROZSTRZYGAJĄCĄ — jeśli
+  CSS-only (radio+:checked) okaże się gorszy dla VoiceOver/NVDA
+  niż progressive enhancement z poprawnym aria, wygrywa PE mimo
+  kosztu minimalnego skryptu. „Zero JS to środek, nie cel — celem
+  jest dostępność."
 
 ## K7 — tabela porównawcza (kontrakt)
 

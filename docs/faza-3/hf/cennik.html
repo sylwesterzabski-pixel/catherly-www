@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF /cennik C2–C7 — K5/K6/K7/K8 (podgląd na tokenach)</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF Etapu E. Wartości wizualne wyłącznie var(--…); wymiary rem/ch;
+     system-ui (ADR-026). Zero JS w tym pliku.
+     CENY: wyprowadzone z content/cennik-snapshot.json (PLN brutto:
+     Starter 9900 gr/mies + 89000 gr/rok; Growth 19900/179000;
+     Pro 39900/359000; oszczędności = 12×mies − rok: 298/598/1198 zł)
+     — w implementacji WYŁĄCZNIE z migawki, nigdy literały.
+     LIMITY: z content/facts.json (50/200, 10/50, 20/100, 5/30;
+     Pro „bez limitu" — kod ma -1).
+     K6 — DWA WARIANTY do decyzji panelu (kryterium rozstrzygające
+     właściciela: semantyka czytników ekranu; „zero JS to środek,
+     nie cel"):
+       A) CSS-only: fieldset radio + body:has(:checked) steruje
+          widocznością cen; bez :has()/CSS obie ceny widoczne.
+          Pytanie do panelu: zmiana treści kart bez aria-live.
+       B) Progressive enhancement: serwer renderuje OBIE ceny
+          (stan pokazany niżej jako wariant B), minimalny skrypt
+          dodałby przełącznik przycisków z aria-pressed + ukrycie.
+     PYTANIA OTWARTE DLA PANELU (mikro-teksty rusztowania, brak
+     w content — wymagają sankcji): legend „Okres rozliczenia",
+     caption tabeli „Porównanie planów", teksty ✓/— dla czytników
+     („w planie" / „poza planem"), sr-only nagłówki sekcji. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  .sekcja { padding: 2.5rem 1rem; }
+  .wnetrze { max-width: 70rem; margin-inline: auto; }
+  .sr-only {
+    position: absolute; width: 0.0625rem; height: 0.0625rem;
+    padding: 0; margin: -0.0625rem; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  /* C2 — nagłówek strony */
+  .naglowek-strony h1 {
+    font-size: clamp(1.625rem, 4vw + 0.75rem, 2.5rem);
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    max-width: 24ch;
+    text-wrap: balance;
+  }
+  .naglowek-strony p {
+    margin: 0;
+    max-width: var(--wymiar-miara-akapitu);
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 1.125rem;
+  }
+  /* C3 — K6 wariant A: przełącznik radio (CSS-only) */
+  .przelacznik {
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    border-radius: 2rem;
+    padding: 0.25rem;
+    display: inline-flex;
+    gap: 0.25rem;
+    margin: 0;
+  }
+  .przelacznik label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    cursor: pointer;
+  }
+  /* Radio pozostaje widoczny dla AT; wizualnie mały, nie ukryty —
+     appearance natywna daje darmową semantykę. Wariant stylizacji
+     „pigułki" (radio sr-only + tło etykiety) — do oceny panelu. */
+  .przelacznik label:has(input:checked) {
+    background: var(--kolor-rola-powierzchnia-2);
+  }
+  /* Sterowanie widocznością cen (wariant A): domyślnie miesięcznie */
+  body:has(#okres-rocznie:checked) .cena--miesiecznie { display: none; }
+  body:has(#okres-miesiecznie:checked) .cena--rocznie { display: none; }
+  /* Bez obsługi :has() obie ceny pozostają widoczne — zero utraty. */
+  /* C4 — K5 karty planów */
+  .karty {
+    display: grid;
+    gap: 1.5rem;
+    margin-block-start: 1.5rem;
+  }
+  @media (min-width: 48rem) {
+    .karty { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .karta {
+    background: var(--kolor-rola-powierzchnia);
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .karta h2 { font-size: 1.25rem; margin: 0; }
+  .karta__cena { font-size: 1.75rem; font-weight: 700; }
+  .karta__cena .interwal {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+  .karta__oszczednosc {
+    font-size: 0.9375rem;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+  .karta__dla-kogo { margin: 0; }
+  .karta__lista {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .karta__lista li::marker { color: var(--kolor-rola-akcent); }
+  .karta__dopisek { margin: 0; font-weight: 600; }
+  .karta .cta {
+    margin-block-start: auto; /* CTA w jednej linii bazowej (desktop) */
+    display: inline-block;
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+  }
+  .karta .cta:hover, .karta .cta:active {
+    background: var(--kolor-rola-interakcja-aktywna);
+  }
+  /* C5 — K7 tabela porównawcza */
+  .tabela-kontener { overflow-x: auto; margin-block-start: 1rem; }
+  .tabela {
+    border-collapse: collapse;
+    min-width: 36rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .tabela caption {
+    text-align: start;
+    font-weight: 600;
+    padding-block-end: 0.5rem;
+  }
+  .tabela th, .tabela td {
+    text-align: start;
+    padding: 0.625rem 1rem;
+    border-block-end: 0.0625rem solid var(--kolor-rola-kreska);
+  }
+  .tabela thead th { font-size: 0.9375rem; }
+  .tabela tbody th { font-weight: 400; }
+  .tabela tbody th[scope="row"] {
+    position: sticky;
+    inset-inline-start: 0;
+    background: var(--kolor-rola-tlo-strony);
+  }
+  /* C6 — K8 FAQ */
+  .faq { max-width: var(--wymiar-miara-kolumny); }
+  .faq details {
+    border-block-end: 0.0625rem solid var(--kolor-rola-kreska);
+    padding-block: 0.75rem;
+  }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.25rem 0;
+  }
+  .faq details p {
+    margin: 0.5rem 0 0.25rem;
+    max-width: var(--wymiar-miara-akapitu);
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+  /* C7 — K9 potwierdzenia (style jak w hero od 48rem) */
+  .potwierdzenia {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 0.9375rem;
+  }
+  @media (min-width: 48rem) {
+    .potwierdzenia { flex-direction: row; flex-wrap: wrap; gap: 0.5rem 0; }
+    .potwierdzenia li { padding-inline: 0.875rem; }
+    .potwierdzenia li:first-child { padding-inline-start: 0; }
+    .potwierdzenia li + li {
+      border-inline-start: 0.0625rem solid var(--kolor-rola-kreska);
+    }
+  }
+  /* Rozdzielnik wariantów HF (nie trafia do implementacji) */
+  .hf-warianty {
+    background: var(--kolor-rola-powierzchnia-2);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+</style>
+</head>
+<body>
+<main id="tresc">
+
+<!-- C2 — nagłówek strony -->
+<section class="sekcja naglowek-strony" aria-labelledby="cennik-h1">
+  <div class="wnetrze">
+    <h1 id="cennik-h1">Plany różnią się zakresem, nie obietnicami</h1>
+    <p>Każdy plan to ten sam system. Różnica leży w zakresie — od
+    twoich pierwszych kontaktów po całą strukturę zespołu.</p>
+  </div>
+</section>
+
+<div class="hf-warianty">HF: poniżej K6 WARIANT A (CSS-only radio —
+działa w tym pliku bez JS przez :has()). Wariant B opisany
+w komentarzu głowy pliku; jego stan no-JS = obie ceny widoczne
+(identyczny z fallbackiem A bez :has()).</div>
+
+<!-- C3 — K6 wariant A: fieldset radio (CSS-only) -->
+<section class="sekcja" aria-labelledby="okres-legenda">
+  <div class="wnetrze">
+    <fieldset class="przelacznik">
+      <legend id="okres-legenda" class="sr-only">Okres rozliczenia</legend>
+      <label><input type="radio" name="okres" id="okres-miesiecznie"
+        value="miesiecznie" checked> miesięcznie</label>
+      <label><input type="radio" name="okres" id="okres-rocznie"
+        value="rocznie"> rocznie</label>
+    </fieldset>
+
+    <!-- C4 — K5 karty planów -->
+    <div class="karty">
+      <article class="karta" aria-labelledby="plan-starter">
+        <h2 id="plan-starter">Starter</h2>
+        <p class="karta__cena cena--miesiecznie">99 zł
+          <span class="interwal">miesięcznie</span></p>
+        <p class="karta__cena cena--rocznie">890 zł
+          <span class="interwal">rocznie</span></p>
+        <p class="karta__oszczednosc cena--rocznie">oszczędzasz 298 zł</p>
+        <p class="karta__dla-kogo">Dla ciebie, jeśli zaczynasz
+        i chcesz mieć jasny plan na każdy dzień.</p>
+        <ul class="karta__lista">
+          <li>Pulpit — jeden ekran, na którym widzisz swoje kontakty
+          i wyniki</li>
+          <li>DMO — Dzienny Plan Działania, który mówi, co dziś
+          zrobić</li>
+          <li>Formularz zgłoszeniowy z publiczną stroną — kontakty
+          trafiają prosto do bazy</li>
+          <li>Sala Treningowa — ćwiczysz trudne odpowiedzi, zanim
+          padną naprawdę</li>
+          <li>Tarcza — sprawdza ryzykowne sformułowania, zanim je
+          wyślesz</li>
+        </ul>
+        <a class="cta" href="/login">Wybierz plan</a>
+      </article>
+
+      <article class="karta" aria-labelledby="plan-growth">
+        <h2 id="plan-growth">Growth</h2>
+        <p class="karta__cena cena--miesiecznie">199 zł
+          <span class="interwal">miesięcznie</span></p>
+        <p class="karta__cena cena--rocznie">1790 zł
+          <span class="interwal">rocznie</span></p>
+        <p class="karta__oszczednosc cena--rocznie">oszczędzasz 598 zł</p>
+        <p class="karta__dla-kogo">Dla ciebie, jeśli budujesz zespół
+        i chcesz widzieć, jak radzi sobie każda z twoich osób.</p>
+        <p class="karta__dopisek">Wszystko ze Startera, a do tego:</p>
+        <ul class="karta__lista">
+          <li>Puls zespołu — widzisz sygnały ryzyka odejścia
+          i dostajesz zdanie otwierające rozmowę</li>
+          <li>Widzisz całe drzewo struktury swojego zespołu</li>
+        </ul>
+        <a class="cta" href="/login">Wybierz plan</a>
+      </article>
+
+      <article class="karta" aria-labelledby="plan-pro">
+        <h2 id="plan-pro">Pro</h2>
+        <p class="karta__cena cena--miesiecznie">399 zł
+          <span class="interwal">miesięcznie</span></p>
+        <p class="karta__cena cena--rocznie">3590 zł
+          <span class="interwal">rocznie</span></p>
+        <p class="karta__oszczednosc cena--rocznie">oszczędzasz 1198 zł</p>
+        <p class="karta__dla-kogo">Dla ciebie, jeśli prowadzisz dużą
+        strukturę i część pracy chcesz przekazać innym.</p>
+        <p class="karta__dopisek">Wszystko z Growth, a do tego:</p>
+        <ul class="karta__lista">
+          <li>Ranking — widzisz swoje miejsce na tle innych
+          użytkowniczek</li>
+          <li>Klucze API i webhooki — łączysz Catherly z własnymi
+          narzędziami</li>
+          <li>Zniesione limity kontaktów, zespołu, postów i sesji
+          treningowych</li>
+          <li>Czysty eksport — twoje materiały bez sygnatury
+          polecającej</li>
+        </ul>
+        <a class="cta" href="/login">Wybierz plan</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- C5 — K7 tabela porównawcza -->
+<section class="sekcja" aria-labelledby="tabela-caption">
+  <div class="wnetrze">
+    <div class="tabela-kontener">
+      <table class="tabela">
+        <caption id="tabela-caption">Porównanie planów</caption>
+        <thead>
+          <tr>
+            <th scope="col"><span class="sr-only">Zakres</span></th>
+            <th scope="col">Starter</th>
+            <th scope="col">Growth</th>
+            <th scope="col">Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Kontakty</th>
+            <td>50</td><td>200</td><td>bez limitu</td>
+          </tr>
+          <tr>
+            <th scope="row">Zespół</th>
+            <td>10</td><td>50</td><td>bez limitu</td>
+          </tr>
+          <tr>
+            <th scope="row">Posty miesięcznie</th>
+            <td>20</td><td>100</td><td>bez limitu</td>
+          </tr>
+          <tr>
+            <th scope="row">Sesje Sali Treningowej miesięcznie</th>
+            <td>5</td><td>30</td><td>bez limitu</td>
+          </tr>
+          <tr>
+            <th scope="row">Kalendarz</th>
+            <td colspan="3">w każdym planie</td>
+          </tr>
+          <tr>
+            <th scope="row">Puls zespołu</th>
+            <td><span aria-hidden="true">—</span><span class="sr-only">poza planem</span></td>
+            <td><span aria-hidden="true">✓</span><span class="sr-only">w planie</span></td>
+            <td><span aria-hidden="true">✓</span><span class="sr-only">w planie</span></td>
+          </tr>
+          <tr>
+            <th scope="row">Drzewo struktury zespołu</th>
+            <td><span aria-hidden="true">—</span><span class="sr-only">poza planem</span></td>
+            <td><span aria-hidden="true">✓</span><span class="sr-only">w planie</span></td>
+            <td><span aria-hidden="true">✓</span><span class="sr-only">w planie</span></td>
+          </tr>
+          <tr>
+            <th scope="row">Ranking, klucze API i webhooki</th>
+            <td><span aria-hidden="true">—</span><span class="sr-only">poza planem</span></td>
+            <td><span aria-hidden="true">—</span><span class="sr-only">poza planem</span></td>
+            <td><span aria-hidden="true">✓</span><span class="sr-only">w planie</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- C6 — K8 FAQ (natywne details/summary) -->
+<section class="sekcja" aria-labelledby="faq-h2">
+  <div class="wnetrze">
+    <h2 id="faq-h2" class="sr-only">Pytania o płatność</h2>
+    <div class="faq">
+      <details>
+        <summary>W jakiej walucie zapłacę?</summary>
+        <p>Ceny na tej stronie są w złotych. Każdy plan ma też cenę
+        w euro — walutę widzisz przed płatnością.</p>
+      </details>
+      <details>
+        <summary>A jeśli plan przestanie mi pasować?</summary>
+        <p>Wybierasz plan i zmieniasz go kiedy chcesz.</p>
+      </details>
+      <details>
+        <summary>A jeśli uznam, że to nie dla mnie?</summary>
+        <p>Rezygnujesz kiedy chcesz. Nie musisz podawać powodu.</p>
+      </details>
+      <details>
+        <summary>Co z moimi kontaktami, kiedy zrezygnuję?</summary>
+        <p>Eksportujesz kontakty do vCard, pobierasz CSV z rejestrem —
+        wszystko jest twoje.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- C7 — K9 potwierdzenia ×3 (reużycie komponentu z Etapu C) -->
+<section class="sekcja" aria-label="Potwierdzenia">
+  <div class="wnetrze">
+    <ul class="potwierdzenia" role="list">
+      <li>Rezygnacja w każdej chwili</li>
+      <li>Eksport danych zawsze: vCard i CSV</li>
+      <li>Dane przechowywane w UE</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
