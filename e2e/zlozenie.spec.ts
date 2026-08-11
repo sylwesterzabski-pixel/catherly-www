@@ -81,6 +81,33 @@ test("LUSTRO L1: tło akcentowe S10; kropki S3/S10 wspólnym duetem", async ({
   }
 });
 
+// Strażnik W2 panelu złożenia (adwersarz F, ISTOTNE 1: mutacja
+// zdejmująca ogranicznik miara-kolumny z H2/kropki S10 przechodziła
+// suitę przy Δx = 256 px): na desktopie kropki luster S3/S10 stoją
+// w TEJ SAMEJ kolumnie — „ta sama siatka" z DECYZJI 6 mierzona
+// geometrycznie, nie zakładana.
+test("W2: kropki luster S3/S10 w tej samej kolumnie (desktop)", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "desktop",
+    "poniżej 48rem obie sekcje mają jedną kolumnę z natury",
+  );
+  await page.goto("/");
+  const ramkaS3 = await page
+    .getByText(pl.Problem.kropka, { exact: true })
+    .boundingBox();
+  const ramkaS10 = await page
+    .getByText(pl.RytmDnia.kropka, { exact: true })
+    .boundingBox();
+  expect(ramkaS3, "kropka S3 ma ramkę").not.toBeNull();
+  expect(ramkaS10, "kropka S10 ma ramkę").not.toBeNull();
+  expect(
+    Math.abs(ramkaS3!.x - ramkaS10!.x),
+    "kropki luster w jednej kolumnie (Δx ≤ 1 px)",
+  ).toBeLessThanOrEqual(1);
+});
+
 // Kolejność sekcji: h2 w main w porządku złożenia (S3→S12; S13 bez
 // h2 — decyzja panelu). toHaveText(tablica) pilnuje liczby I porządku.
 for (const { adres, jezyk, komunikaty } of PRZYPADKI) {

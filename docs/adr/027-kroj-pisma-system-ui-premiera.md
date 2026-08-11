@@ -16,15 +16,18 @@ z throttlingiem, strona główna ZŁOŻONA S1–S14, build produkcyjny)
 
 | Metryka | Wynik | Próg |
 |---|---|---|
-| LCP (element: H1 hero, tekst) | **1,7 s** | < 1,8 s |
+| LCP (element: H1 hero, tekst) | **1,7 s** (adwersarz, 3 przebiegi: 1,77 / 1,78 / 1,82 s — JEDEN NAD progiem) | < 1,8 s |
 | FCP | 0,9 s | — |
 | CLS | 0 | < 0,1 |
 | TBT | 0 ms | (INP proxy) |
 | Performance | 100 | — |
 
-Zapas budżetu LCP: **0,1 s**. Webfont na H1 (pobranie + swap na
-łączu mobilnym) kosztuje typowo 0,2–0,5 s — ryzyko przekroczenia
-budżetu jest realne, a warunek „z zapasem" nie byłby spełniony.
+Zapas budżetu LCP: **praktycznie ZEROWY** — wariancja przebiegów
+(orkiestrator 1,7 s; adwersarz 1,77–1,82 s, w tym jeden przebieg
+NAD progiem) pokazuje, że budżet jest na styk już bez webfontu.
+Webfont na H1 (pobranie + swap na łączu mobilnym) kosztuje typowo
+0,2–0,5 s — warunek ADR-026 „z zapasem" jest dziś niespełnialny
+dla H1; to WZMACNIA rekomendację pozostania przy system-ui.
 
 ## Propozycja (rekomendacja do decyzji)
 
