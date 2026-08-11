@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF K4 — sekcje filarów S5–S8 + mini-sekcja S9 (podgląd na tokenach)</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF K4 + S9. Wartości wizualne wyłącznie var(--…); wymiary rem/ch;
+     typografia: system-ui (ADR-026 — data ważności: etap F).
+     Sekcje POD foldem — obrazy z loading="lazy" w implementacji.
+     Ramki obrazów: proporcja 16/10 zadeklarowana (CLS) — zrzuty
+     PRAWDZIWEJ aplikacji przyjdą ze zlecenia Z6 (ADR-011: zero
+     mockupów; do tego czasu ramka na powierzchni z kreską).
+     KANDYDACI DO ROZSTRZYGNIĘCIA PRZEZ PANEL:
+     1. ::marker konkretów w rola-akcent (2,87:1 — dekoracja przy
+        tekście niosącym informację; alternatywa: marker w kolorze
+        tekstu).
+     2. Korzyść jako 1.125rem/600 — ten sam duet co „kropka" K3;
+        czy różnica H2 (1.5rem) / korzyść / proza jest czytelna.
+     3. S9: tekst-drugorzedny na tle strony (6,33:1) jako „cichsza
+        typografia" — czy wystarczająco odróżnia od filarów. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  .filar { padding: 3rem 1rem; }
+  .filar__wnetrze { max-width: 70rem; margin-inline: auto; }
+  .filar h2 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+    max-width: 26ch;
+    text-wrap: balance;
+  }
+  .filar__korzysc {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    max-width: var(--wymiar-miara-akapitu);
+  }
+  .filar__konkrety {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: var(--wymiar-miara-akapitu);
+  }
+  .filar__konkrety li::marker { color: var(--kolor-rola-akcent); }
+  .filar__obraz {
+    margin-block-start: 1.5rem; /* 390 px: tekst NAD obrazem */
+    aspect-ratio: 16 / 10;      /* 1440×900 z Z6 — CLS zadeklarowany */
+    background: var(--kolor-rola-powierzchnia);
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 0.9375rem;
+  }
+  /* S9 — oddech, nie piąty filar: węższa kolumna, cichszy rejestr. */
+  .dbanie {
+    padding: 3rem 1rem;
+  }
+  .dbanie__wnetrze {
+    max-width: var(--wymiar-miara-kolumny);
+    margin-inline: auto;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+  .dbanie h2 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    margin: 0 0 0.75rem;
+    color: var(--kolor-rola-tekst-podstawowy);
+  }
+  .dbanie p { margin: 0; max-width: var(--wymiar-miara-akapitu); }
+  @media (min-width: 48rem) {
+    .filar__uklad {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .filar__obraz { margin-block-start: 0; }
+    /* Zebra L-P-L-P: filary parzyste (2 i 4) mają obraz PO LEWEJ. */
+    .filar--obraz-lewa .filar__tekst { order: 2; }
+    .filar--obraz-lewa .filar__obraz { order: 1; }
+  }
+</style>
+</head>
+<body>
+<main id="tresc">
+
+<!-- S5 — Filar 1 POZYSKIWANIE (obraz po prawej) -->
+<section class="filar" aria-labelledby="filar-1-h2">
+  <div class="filar__wnetrze">
+    <div class="filar__uklad">
+      <div class="filar__tekst">
+        <h2 id="filar-1-h2">Rano widzisz, do kogo się odezwać.</h2>
+        <p class="filar__korzysc">Masz plan działania i bazę, która
+        rośnie, gdy ty prowadzisz rozmowy.</p>
+        <ul class="filar__konkrety">
+          <li>DMO układa kolejność rozmów — zaczynasz dzień bez
+          zastanawiania się.</li>
+          <li>Przypomnienie chwilę przed spotkaniem, żebyś była
+          gotowa, nie zaskoczona.</li>
+          <li>Każda polecona osoba przychodzi ze śladem — wiesz,
+          kto ją polecił.</li>
+        </ul>
+      </div>
+      <div class="filar__obraz" aria-hidden="true">zrzut Z6:
+      DMO / plan dnia (Playwright, dane demo)</div>
+    </div>
+  </div>
+</section>
+
+<!-- S6 — Filar 2 TREŚCI (obraz po lewej) -->
+<section class="filar filar--obraz-lewa" aria-labelledby="filar-2-h2">
+  <div class="filar__wnetrze">
+    <div class="filar__uklad">
+      <div class="filar__tekst">
+        <h2 id="filar-2-h2">Piszesz. Tarcza sprawdza. Pieczęć
+        potwierdza.</h2>
+        <p class="filar__korzysc">Studio uczy się twojego głosu
+        i pilnuje, żeby żadna treść nie złamała twoich zasad.</p>
+        <ul class="filar__konkrety">
+          <li>Studio daje gotowe formaty i szablony — nie zaczynasz
+          od pustej kartki.</li>
+          <li>Tarcza zaznacza ryzykowne sformułowania, zanim
+          klikniesz „wyślij".</li>
+          <li>Pieczęć Etyczna daje wynik i certyfikat — masz dowód,
+          nie tylko odczucie.</li>
+        </ul>
+      </div>
+      <div class="filar__obraz" aria-hidden="true">zrzut Z6:
+      Studio z Tarczą (Playwright, dane demo)</div>
+    </div>
+  </div>
+</section>
+
+<!-- S7 — Filar 3 ZESPÓŁ (obraz po prawej) -->
+<section class="filar" aria-labelledby="filar-3-h2">
+  <div class="filar__wnetrze">
+    <div class="filar__uklad">
+      <div class="filar__tekst">
+        <h2 id="filar-3-h2">Nowa osoba wie, co robić od pierwszego
+        dnia</h2>
+        <p class="filar__korzysc">Zamiast tłumaczyć od nowa każdemu —
+        kreator wdrożeniowy robi to za ciebie.</p>
+        <ul class="filar__konkrety">
+          <li>Kreator wdrożeniowy prowadzi nową osobę przez etapy —
+          bez twojej pomocy.</li>
+          <li>Pierwsze 90 Dni z czterema fazami i misjami — nowa
+          osoba widzi drogę przed sobą.</li>
+          <li>Osiągnięcia i odznaki utrzymują zaangażowanie długo
+          po starcie.</li>
+        </ul>
+      </div>
+      <div class="filar__obraz" aria-hidden="true">zrzut Z6:
+      Pierwsze 90 Dni (Playwright, dane demo)</div>
+    </div>
+  </div>
+</section>
+
+<!-- S8 — Filar 4 WYNIKI (obraz po lewej) -->
+<section class="filar filar--obraz-lewa" aria-labelledby="filar-4-h2">
+  <div class="filar__wnetrze">
+    <div class="filar__uklad">
+      <div class="filar__tekst">
+        <h2 id="filar-4-h2">Widzisz wzrost nawet po trudnym dniu</h2>
+        <p class="filar__korzysc">Pulpit pokazuje dzisiejszy stan,
+        a twoje wyniki mają dowód, który zostaje.</p>
+        <ul class="filar__konkrety">
+          <li>Twój Wrapped składa podsumowanie okresu — widzisz,
+          co naprawdę zrobiłaś.</li>
+          <li>Cel z kamieniami milowymi mówi, jak daleko zaszłaś
+          i co jest następne.</li>
+          <li>Świadectwo z cyfrowym odciskiem zostaje — ktoś może
+          zweryfikować twoje wyniki.</li>
+        </ul>
+      </div>
+      <div class="filar__obraz" aria-hidden="true">zrzut Z6:
+      Pulpit (Playwright, dane demo)</div>
+    </div>
+  </div>
+</section>
+
+<!-- S9 — DBANIE O SIEBIE (mini-sekcja; treść: mini fan-out
+     + panel + decyzja właściciela — W TOKU; poniżej PLACEHOLDER
+     wyłącznie do oceny układu, NIE treść obowiązująca -->
+<section class="dbanie" aria-labelledby="dbanie-h2">
+  <div class="dbanie__wnetrze">
+    <h2 id="dbanie-h2">[S9 — H2 po decyzji właściciela]</h2>
+    <p>[1–2 zdania mini-sekcji po decyzji właściciela — materiał
+    pokryty: Wall of Proof / Ściana sukcesów.]</p>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
