@@ -5,17 +5,19 @@ import { Nawigacja } from "@/components/Nawigacja";
 import { PasekPotwierdzen } from "@/components/PasekPotwierdzen";
 import { SekcjaPlanow } from "@/components/SekcjaPlanow";
 import { TabelaPorownawcza } from "@/components/TabelaPorownawcza";
+import { Zamkniecie } from "@/components/Zamkniecie";
 import { routing } from "@/i18n/routing";
-import type { Locale } from "@/i18n/sciezki";
+import { adresWJezyku, type Locale } from "@/i18n/sciezki";
 
 import styles from "./cennik.module.css";
 
 /**
- * /cennik C2–C7 (Etap E; markup wg HF docs/faza-3/hf/cennik.html po
- * panelu 2026-08-11): H1+wstęp, K6+K5 (SekcjaPlanow), K7 tabela,
- * K8 FAQ, K9 potwierdzenia ×3. C8 zamknięcie (K11) — Etap F.
- * Prerender SSG per locale; hierarchia: h1 → h2 plany → h2 sr-only
- * FAQ; tabela etykietowana caption. Zero JS.
+ * /cennik C2–C8 (Etapy E–F; markup wg HF docs/faza-3/hf/cennik.html
+ * i docs/faza-3/hf/zlozenie-glowna.html, po panelach 2026-08-11):
+ * H1+wstęp, K6+K5 (SekcjaPlanow), K7 tabela, K8 FAQ, K9
+ * potwierdzenia ×3, C8 zamknięcie (K11: zdanie §7 + CTA → /login,
+ * ADR-023). Prerender SSG per locale; hierarchia: h1 → h2 plany →
+ * h2 sr-only FAQ; tabela etykietowana caption. Zero JS.
  */
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -29,6 +31,7 @@ export default async function StronaCennik({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Cennik");
+  const tZamkniecie = await getTranslations("ZamkniecieCennik");
 
   return (
     <>
@@ -68,6 +71,14 @@ export default async function StronaCennik({ params }: Props) {
             />
           </div>
         </section>
+
+        {/* C8 — zamknięcie (K11): zdanie §7 treści cennika NAD CTA;
+            CTA → /login (ADR-023 — plan wybierasz po zalogowaniu). */}
+        <Zamkniecie
+          zdaniePrzed={tZamkniecie("zdanie")}
+          ctaEtykieta={tZamkniecie("cta")}
+          ctaHref={adresWJezyku(locale as Locale, "/login")}
+        />
       </main>
     </>
   );

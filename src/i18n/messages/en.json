@@ -124,6 +124,53 @@
     "naglowek": "Self-care",
     "tresc": "You collect proof of your work on the Wall of Proof. It’s a space where you celebrate, not just measure."
   },
+  "Problem": {
+    "naglowek": "Everything is somewhere. Each thing somewhere else.",
+    "tresc": "You write posts once the house is asleep. In the morning you hunt for a number you know you saved somewhere. You hear what’s happening in your team later than you’d like.",
+    "kropka": "In the evening you sit down with a notebook and add up what came of it."
+  },
+  "Definicja": {
+    "naglowek": "Catherly is the memory of your selling",
+    "tresc": "Catherly remembers what you’ve been carrying in your head and your notebooks: what you promised to whom, which content went to which customer, and what sold. Your team is close at hand too — you see who you’re bringing in and how she’s doing. You still sell your way, just not from memory anymore."
+  },
+  "RytmDnia": {
+    "naglowek": "What your day with Catherly looks like",
+    "krok1Nazwa": "Morning",
+    "krok1Tresc": "You open your Daily Action Plan and start conversations in a set order. The calendar reminds you of the rest.",
+    "krok2Nazwa": "During the day",
+    "krok2Tresc": "You check your contact base and know what you promised to whom. You build your post from a template in Studio.",
+    "krok3Nazwa": "Evening",
+    "krok3Tresc": "On the Dashboard, your day and your team’s day sit side by side.",
+    "kropka": "In the evening you see what came of it."
+  },
+  "CennikSkrot": {
+    "naglowek": "Pricing at a glance",
+    "roznica": "Every plan keeps track of your contacts and results — Growth adds a view of your whole team.",
+    "link": "See full pricing"
+  },
+  "Obawy": {
+    "naglowek": "Sześć obaw",
+    "p1": "What if I can’t get the hang of another new app?",
+    "o1": "The onboarding wizard takes you step by step. First 90 Days gives you a ready plan for the start.",
+    "p2": "What about the contacts I already keep in other places?",
+    "o2": "There’s no bulk import — you add contacts by hand or through the form. You can always export them to vCard.",
+    "p3": "If I stop paying, does my data disappear?",
+    "o3": "You can cancel whenever you like. Export contacts to vCard, download your log as CSV — everything is yours.",
+    "p4": "I hold my customers' data. Who else sees it?",
+    "o4": "Only you have access to your account. The Shield keeps content ethical — the SHA-256 Testimony logs every change.",
+    "p5": "I hardly ever sit at a computer — will this work?",
+    "o5": "Built for the phone from day one — there’s no cut-down version. You open it and it works the way it should.",
+    "p6": "My company has its rules. Can I even use outside tools?",
+    "o6": "The Compliance Passport scans content against four jurisdictions' rules — but your company’s IT has the final say."
+  },
+  "ZamkniecieGlowna": {
+    "cta": "See how it works",
+    "zdanie": "You can cancel at any time."
+  },
+  "ZamkniecieCennik": {
+    "zdanie": "Choose a plan and see how Catherly works in your day-to-day. Nothing ties you in — you can cancel whenever you like.",
+    "cta": "Choose plan"
+  },
   "StronaWBudowie": {
     "tresc": "This page is being built."
   },

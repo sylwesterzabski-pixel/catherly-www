@@ -1,0 +1,44 @@
+/* K11 — CSS wg HF docs/faza-3/hf/zlozenie-glowna.html (po panelu
+   2026-08-11). Kolory wyłącznie var(--…); wymiary rem/ch — zero px.
+   CTA 1:1 z parą interakcji K2 (Hero.module.css); promień z tokenu
+   ADR-028. */
+
+.sekcja {
+  padding: 3rem 1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.wnetrze {
+  max-width: var(--wymiar-miara-kolumny);
+  margin-inline: auto;
+}
+
+.zdanieProwadzace {
+  margin: 0 0 1.25rem;
+  max-width: var(--wymiar-miara-akapitu);
+  margin-inline: auto;
+}
+
+.cta {
+  display: inline-block;
+  background: var(--kolor-rola-interakcja);
+  color: var(--kolor-rola-tekst-na-interakcji);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--wymiar-promien);
+}
+
+.cta:hover,
+.cta:active {
+  /* Para 7,02:1 — komentarz przy roli w tokenach (panel K2). */
+  background: var(--kolor-rola-interakcja-aktywna);
+}
+
+.zdanie {
+  margin: 1rem 0 0;
+  color: var(--kolor-rola-tekst-drugorzedny);
+  font-size: 0.9375rem;
+}

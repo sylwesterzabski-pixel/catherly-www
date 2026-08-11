@@ -1,0 +1,82 @@
+/* S10 — CSS wg HF docs/faza-3/hf/zlozenie-glowna.html (po panelu
+   2026-08-11). LUSTRO L1: szkielet i skala 1:1 z K3
+   (SekcjaTekstowa.module.css), tło rola-powierzchnia-akcentowa
+   (kontrasty pary na tokenie: ×tekst-podstawowy 11,15:1 — DECYZJA 6).
+   Kolory wyłącznie var(--…); wymiary rem/ch — zero px. */
+
+.sekcja {
+  padding: 3rem 1rem;
+  line-height: 1.6;
+  background: var(--kolor-rola-powierzchnia-akcentowa);
+}
+
+.wnetrze {
+  /* Mobile: ta sama miara kolumny co K3 (lustro w pionie). */
+  max-width: var(--wymiar-miara-kolumny);
+  margin-inline: auto;
+}
+
+.sekcja h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+}
+
+.sekcja p {
+  margin: 0 0 1rem;
+  max-width: var(--wymiar-miara-akapitu);
+}
+
+.kroki {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.nazwa {
+  /* Fraza sekwencji (NIE h3 — decyzja panelu Etapu F, kandydat 1). */
+  display: block;
+  font-weight: 600;
+  margin-block-end: 0.25rem;
+}
+
+.kroki p {
+  margin: 0;
+}
+
+.kropka {
+  /* Duet 1.125/600 wspólny z kropką K3 (lustro: obie kropki tym
+     samym głosem — W6 handoffu K4). */
+  composes: duet from "./wyroznienie.module.css";
+  margin-block-start: 1.25rem;
+}
+
+/* 48rem = --wymiar-prog-ukladu (ADR-028): @media nie czyta var(),
+   wartość powielona literalnie — zmiana wymaga ADR i sync @media. */
+@media (min-width: 48rem) {
+  /* W2: kontener-strony WYŁĄCZNIE dla osi kroków; H2 i kropka
+     w ograniczniku miara-kolumny wyśrodkowanym (width: 100%!) —
+     kropki luster S3/S10 stoją w tej samej kolumnie co do piksela. */
+  .wnetrze {
+    max-width: var(--wymiar-kontener-strony);
+  }
+
+  .wnetrze > h2,
+  .wnetrze > .kropka {
+    max-width: var(--wymiar-miara-kolumny);
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .kroki {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .kroki li {
+    flex: 1;
+  }
+}

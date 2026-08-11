@@ -124,6 +124,53 @@
     "naglowek": "Dbanie o siebie",
     "tresc": "Zbierasz dowody swojej pracy na Wall of Proof. To przestrzeń, w której świętujesz, nie tylko mierzysz."
   },
+  "Problem": {
+    "naglowek": "Wszystko gdzieś jest. Każde gdzie indziej.",
+    "tresc": "Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru, który gdzieś przecież zapisałaś. O tym, co w zespole, dowiadujesz się później, niż byś chciała.",
+    "kropka": "Wieczorem siadasz do zeszytu i liczysz, co z tego wyszło."
+  },
+  "Definicja": {
+    "naglowek": "Catherly to pamięć twojej sprzedaży",
+    "tresc": "Catherly pamięta to, co dotąd trzymałaś w głowie i notesach: komu co obiecałaś, jakie treści wysłałaś której klientce i co się sprzedało. Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak jej idzie. Sprzedajesz po swojemu, tylko już nie z pamięci."
+  },
+  "RytmDnia": {
+    "naglowek": "Jak wygląda twój dzień z Catherly",
+    "krok1Nazwa": "Rano",
+    "krok1Tresc": "Otwierasz Dzienny Plan Działania i zaczynasz rozmowy w ułożonej kolejności. Kalendarz przypomina o reszcie.",
+    "krok2Nazwa": "W ciągu dnia",
+    "krok2Tresc": "Zaglądasz do bazy kontaktów i wiesz, komu co obiecałaś. Post składasz z szablonu w Studiu.",
+    "krok3Nazwa": "Wieczorem",
+    "krok3Tresc": "Na Pulpicie masz swój dzień i dzień zespołu obok siebie.",
+    "kropka": "Wieczorem widzisz, co z tego wyszło."
+  },
+  "CennikSkrot": {
+    "naglowek": "Cennik w skrócie",
+    "roznica": "Wszystkie plany prowadzą twoje kontakty i wyniki — Growth dodaje do tego widok całego zespołu.",
+    "link": "Zobacz pełny cennik"
+  },
+  "Obawy": {
+    "naglowek": "Sześć obaw",
+    "p1": "Co jeśli znowu nie ogarnę nowej aplikacji?",
+    "o1": "Kreator wdrożeniowy prowadzi cię krok po kroku. Pierwsze 90 Dni dają ci gotowy plan na start.",
+    "p2": "A te kontakty, które już mam w innych miejscach?",
+    "o2": "Importu hurtowego nie ma — kontakty wpisujesz ręcznie lub przez formularz. Dane eksportujesz do vCard zawsze.",
+    "p3": "A jeśli przestanę płacić — znikną mi dane?",
+    "o3": "Rezygnujesz kiedy chcesz. Eksportujesz kontakty do vCard, pobierasz CSV z rejestrem — wszystko jest twoje.",
+    "p4": "Mam dane klientek. Kto jeszcze je widzi?",
+    "o4": "Do twojego konta masz dostęp tylko ty. Tarcza kontroluje etyczność treści — Świadectwo SHA-256 rejestruje każdą zmianę.",
+    "p5": "Prawie nie siadam do komputera — to zadziała?",
+    "o5": "Projektowane pod telefon od początku — nie ma okrojonej wersji. Otwierasz, działa jak trzeba.",
+    "p6": "Moja firma ma regulaminy. Czy mogę używać zewnętrznych narzędzi?",
+    "o6": "Paszport zgodności skanuje treść pod wymagania czterech jurysdykcji — ale ostatnie słowo ma twoje IT."
+  },
+  "ZamkniecieGlowna": {
+    "cta": "Sprawdź, jak działa",
+    "zdanie": "Rezygnujesz w każdej chwili."
+  },
+  "ZamkniecieCennik": {
+    "zdanie": "Wybierz plan i sprawdź, jak działa Catherly w twojej codziennej pracy. Niczym się nie wiążesz — rezygnujesz kiedy chcesz.",
+    "cta": "Wybierz plan"
+  },
   "StronaWBudowie": {
     "tresc": "Ta strona powstaje."
   },

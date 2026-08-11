@@ -124,6 +124,53 @@
     "naglowek": "Für dich selbst",
     "tresc": "Du sammelst Belege deiner Arbeit auf der Wall of Proof. Ein Raum, in dem du feierst – nicht nur misst."
   },
+  "Problem": {
+    "naglowek": "Alles ist irgendwo. Nur nichts am selben Ort.",
+    "tresc": "Deine Posts schreibst du, wenn zu Hause schon alle schlafen. Morgens suchst du die Nummer, die du doch irgendwo notiert hast. Was in deinem Team passiert, erfährst du später, als dir lieb ist.",
+    "kropka": "Abends sitzt du mit dem Notizheft da und rechnest zusammen, was dabei herausgekommen ist."
+  },
+  "Definicja": {
+    "naglowek": "Catherly ist das Gedächtnis deines Vertriebs",
+    "tresc": "Catherly merkt sich, was du bisher im Kopf und in Notizbüchern hattest: wem du was versprochen hast, welche Inhalte du welcher Kundin geschickt hast und was sich verkauft hat. Auch dein Team hast du zur Hand – du siehst, wen du gerade einarbeitest und wie sie vorankommt. Du verkaufst auf deine Art, nur nicht mehr aus dem Gedächtnis."
+  },
+  "RytmDnia": {
+    "naglowek": "So sieht dein Tag mit Catherly aus",
+    "krok1Nazwa": "Morgens",
+    "krok1Tresc": "Du öffnest den Täglichen Aktionsplan und beginnst die Gespräche in seiner Reihenfolge. Der Kalender erinnert an den Rest.",
+    "krok2Nazwa": "Tagsüber",
+    "krok2Tresc": "Du schaust in die Kontaktbasis und weißt, wem du was versprochen hast. Den Post baust du aus einer Vorlage im Studio.",
+    "krok3Nazwa": "Abends",
+    "krok3Tresc": "Auf dem Dashboard liegen dein Tag und der Tag deines Teams nebeneinander.",
+    "kropka": "Abends siehst du, was dabei herausgekommen ist."
+  },
+  "CennikSkrot": {
+    "naglowek": "Preise im Überblick",
+    "roznica": "Alle Pläne führen deine Kontakte und Ergebnisse – Growth ergänzt den Blick auf dein ganzes Team.",
+    "link": "Zur vollständigen Preisübersicht"
+  },
+  "Obawy": {
+    "naglowek": "Sześć obaw",
+    "p1": "Was, wenn ich mit einer neuen App wieder nicht zurechtkomme?",
+    "o1": "Der Einstiegsassistent führt dich Schritt für Schritt. Die ersten 90 Tage geben dir einen fertigen Plan für den Anfang.",
+    "p2": "Und die Kontakte, die ich schon woanders habe?",
+    "o2": "Einen Massenimport gibt es nicht – Kontakte trägst du von Hand oder über ein Formular ein. Als vCard kannst du sie jederzeit exportieren.",
+    "p3": "Und wenn ich nicht mehr zahle – sind meine Daten weg?",
+    "o3": "Du kündigst, wann du willst. Kontakte exportierst du als vCard, das Register lädst du als CSV herunter – alles gehört dir.",
+    "p4": "Ich habe Daten meiner Kundinnen. Wer sieht sie noch?",
+    "o4": "Auf dein Konto hast nur du Zugriff. Der Schild prüft deine Inhalte auf Ethik – das SHA-256-Zeugnis protokolliert jede Änderung.",
+    "p5": "Ich sitze kaum am Computer – funktioniert das?",
+    "o5": "Von Anfang an fürs Handy entworfen – es gibt keine abgespeckte Version. Du öffnest es, und es funktioniert, wie es soll.",
+    "p6": "Mein Unternehmen hat Richtlinien. Darf ich externe Anwendungen nutzen?",
+    "o6": "Der Compliance-Pass scannt deine Inhalte auf die Anforderungen von vier Rechtsräumen – das letzte Wort hat deine IT-Abteilung."
+  },
+  "ZamkniecieGlowna": {
+    "cta": "Sieh dir an, wie es funktioniert",
+    "zdanie": "Du kannst jederzeit kündigen."
+  },
+  "ZamkniecieCennik": {
+    "zdanie": "Wähl einen Plan und sieh, wie Catherly in deinem Arbeitsalltag funktioniert. Du bindest dich an nichts – kündigen kannst du, wann du willst.",
+    "cta": "Plan wählen"
+  },
   "StronaWBudowie": {
     "tresc": "Diese Seite entsteht gerade."
   },

@@ -68,7 +68,12 @@ test("hero: CTA hover/active przechodzi na rolę interakcja-aktywna", async ({
   page,
 }) => {
   await page.goto("/");
-  const cta = page.getByRole("link", { name: pl.Hero.cta, exact: true });
+  // Zawężenie do sekcji hero (Etap F): S13 zamknięcie niesie CTA
+  // o tej samej etykiecie i hrefie — bez zawężenia locator łapał
+  // dwa elementy (strict mode). Asercje pary hover bez zmian.
+  const cta = page
+    .locator('section[aria-labelledby="hero-h1"]')
+    .getByRole("link", { name: pl.Hero.cta, exact: true });
 
   const spoczynek = await cta.evaluate(
     (el) => getComputedStyle(el).backgroundColor,
