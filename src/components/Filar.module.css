@@ -13,7 +13,7 @@
 }
 
 .wnetrze {
-  max-width: 70rem;
+  max-width: var(--wymiar-kontener-strony);
   margin-inline: auto;
 }
 
@@ -52,7 +52,7 @@
   aspect-ratio: 16 / 10;
   background: var(--kolor-rola-powierzchnia);
   border: 0.0625rem solid var(--kolor-rola-kreska);
-  border-radius: 0.5rem;
+  border-radius: var(--wymiar-promien);
 }
 
 @media (min-width: 48rem) {

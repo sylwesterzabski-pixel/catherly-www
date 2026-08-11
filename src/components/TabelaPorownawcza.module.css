@@ -7,7 +7,7 @@
 }
 
 .wnetrze {
-  max-width: 70rem;
+  max-width: var(--wymiar-kontener-strony);
   margin-inline: auto;
 }
 

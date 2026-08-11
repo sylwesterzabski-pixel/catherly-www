@@ -15,10 +15,10 @@ Catherly is the memory of your selling
 
 ## Treść
 
-Catherly remembers what you've been carrying in your head and your
+Catherly remembers what you’ve been carrying in your head and your
 notebooks: what you promised to whom, which content went to which
 customer, and what sold. Your team is close at hand too — you see who
-you're bringing in and how she's doing. You still sell your way, just
+you’re bringing in and how she’s doing. You still sell your way, just
 not from memory anymore.
 
 **297 znaków, 3 zdania.**

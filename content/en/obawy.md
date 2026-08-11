@@ -9,13 +9,13 @@ kontakty, nie wszystkie dane; ADR-018: niedoobiecywanie).
 
 ## Para 1 — łatwość obsługi
 
-**P:** What if I can't get the hang of another new app? *(48 zn)*
+**P:** What if I can’t get the hang of another new app? *(48 zn)*
 **O:** The onboarding wizard takes you step by step. First 90 Days gives you a ready plan for the start. *(97 zn)*
 
 ## Para 2 — wprowadzenie istniejących kontaktów
 
 **P:** What about the contacts I already keep in other places? *(55 zn)*
-**O:** There's no bulk import — you add contacts by hand or through the form. You can always export them to vCard. *(107 zn)*
+**O:** There’s no bulk import — you add contacts by hand or through the form. You can always export them to vCard. *(107 zn)*
 
 ## Para 3 — dane po rezygnacji
 
@@ -30,9 +30,9 @@ kontakty, nie wszystkie dane; ADR-018: niedoobiecywanie).
 ## Para 5 — telefon
 
 **P:** I hardly ever sit at a computer — will this work? *(49 zn)*
-**O:** Built for the phone from day one — there's no cut-down version. You open it and it works the way it should. *(107 zn)*
+**O:** Built for the phone from day one — there’s no cut-down version. You open it and it works the way it should. *(107 zn)*
 
 ## Para 6 — zgodność z zasadami firmy
 
 **P:** My company has its rules. Can I even use outside tools? *(55 zn)*
-**O:** The Compliance Passport scans content against four jurisdictions' rules — but your company's IT has the final say. *(114 zn)*
+**O:** The Compliance Passport scans content against four jurisdictions' rules — but your company’s IT has the final say. *(114 zn)*

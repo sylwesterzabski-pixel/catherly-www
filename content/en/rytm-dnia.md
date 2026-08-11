@@ -22,5 +22,5 @@ You check your contact base and know what you promised to whom.
 You build your post from a template in Studio. *(110 zn)*
 
 **Evening** *(7 zn)*
-On the Dashboard, your day and your team's day sit side by side.
+On the Dashboard, your day and your team’s day sit side by side.
 In the evening you see what came of it. *(104 zn)*

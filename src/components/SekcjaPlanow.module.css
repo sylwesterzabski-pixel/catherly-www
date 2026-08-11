@@ -11,7 +11,7 @@
 }
 
 .wnetrze {
-  max-width: 70rem;
+  max-width: var(--wymiar-kontener-strony);
   margin-inline: auto;
 }
 
@@ -23,7 +23,7 @@
   .przelacznik {
     border: 0.0625rem solid var(--kolor-rola-kreska);
     /* 2rem = literał zgłoszony do ADR skali promieni (handoff E) */
-    border-radius: 2rem;
+    border-radius: var(--wymiar-promien-pigulki);
     padding: 0.25rem;
     display: inline-flex;
     gap: 0.25rem;
@@ -44,7 +44,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1.25rem;
-  border-radius: 2rem;
+  border-radius: var(--wymiar-promien-pigulki);
   cursor: pointer;
 }
 
@@ -88,7 +88,7 @@
 .karta {
   background: var(--kolor-rola-powierzchnia);
   border: 0.0625rem solid var(--kolor-rola-kreska);
-  border-radius: 0.5rem;
+  border-radius: var(--wymiar-promien);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -148,7 +148,7 @@
   font-weight: 600;
   text-align: center;
   padding: 0.75rem 1.25rem;
-  border-radius: 0.5rem;
+  border-radius: var(--wymiar-promien);
 }
 
 .cta:hover,
