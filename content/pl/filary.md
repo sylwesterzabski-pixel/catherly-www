@@ -42,7 +42,7 @@ Studio uczy się twojego głosu i pilnuje, żeby żadna treść nie złamała tw
 
 ### Konkrety
 1. Studio daje gotowe formaty i szablony — nie zaczynasz od pustej kartki. *(71 zn)*
-2. Tarcza zaznacza ryzykowne sformułowania, zanim klikniesz „wyślij". *(65 zn)*
+2. Tarcza zaznacza ryzykowne sformułowania, zanim klikniesz „wyślij”. *(65 zn)*
 3. Pieczęć Etyczna daje wynik i certyfikat — masz dowód, nie tylko odczucie. *(73 zn)*
 
 ---

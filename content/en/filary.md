@@ -66,7 +66,7 @@ proof that lasts. *(86 zn)*
 
 ### Konkrety
 1. Your Wrapped sums up the period — you see what you actually got done. *(69 zn — nazwa wg aplikacji, Z3)*
-2. A goal with milestones tells you how far you've come and what's next. *(69 zn)*
+2. A goal with milestones tells you how far you’ve come and what’s next. *(69 zn)*
 3. The Testimony with its digital fingerprint stays — others can verify your results. *(82 zn — nazwa wg aplikacji, Z3)*
 
 ---
@@ -83,7 +83,7 @@ Self-care
 
 ### Treść
 
-You collect proof of your work on the Wall of Proof. It's a space
+You collect proof of your work on the Wall of Proof. It’s a space
 where you celebrate, not just measure.
 
 **104 zn.** Panel: „the Wall of Proof" z rodzajnikiem spójnie
