@@ -182,3 +182,12 @@ Z asystentem AI dostosowujesz wiadomości do konkretnej osoby.
 ### Granica
 
 Asystent nie napisze tekstu zamiast ciebie — proponuje, ty piszesz.
+
+---
+
+## Etykieta okruszków (mikrotekst nawigacji)
+
+Jesteś tutaj
+
+**Sankcja: panel projektu HF K12, 2026-08-12** (odrzucone:
+„Okruszki" — żargon; „Ścieżka" — wieloznaczne).

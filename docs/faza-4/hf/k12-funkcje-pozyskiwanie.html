@@ -55,7 +55,7 @@
     max-width: var(--wymiar-kontener-strony);
     margin-inline: auto;
   }
-  .okruszki li + li::before { content: "→"; margin-inline-end: 0.375rem; }
+  .okruszki li + li::before { content: "→" / ""; margin-inline-end: 0.375rem; } /* W3: pusty alt dla czytników */
   /* F2 — nagłówek podstrony */
   .naglowek h1 {
     font-size: clamp(1.625rem, 4vw + 0.75rem, 2.5rem);
@@ -77,7 +77,7 @@
     margin: 0 0 0.75rem;
     max-width: 30ch;
     text-wrap: balance;
-    scroll-margin-block-start: 4rem; /* kotwica pod sticky nav */
+    scroll-margin-block-start: 5rem; /* W4: sticky nav na 390 px = 4.625rem (pomiar panelu) */
   }
   .modul__poco { margin: 0 0 1rem; max-width: var(--wymiar-miara-akapitu); }
   .modul__granica {
@@ -107,6 +107,13 @@
   }
   /* Sekcja kierunku AI — karta, bez slotu zrzutu */
   .kierunek .wnetrze { max-width: var(--wymiar-miara-kolumny); }
+  .kierunek h2 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    scroll-margin-block-start: 5rem; /* W2+W4 */
+  }
   .kierunek__karta {
     background: var(--kolor-rola-powierzchnia);
     border: 0.0625rem solid var(--kolor-rola-kreska);
@@ -166,10 +173,10 @@
 <!-- F3 — moduł 1 (obraz po prawej); moduły 2-10 analogicznie,
      zebra L-P (kandydat 3); w HF pokazane moduły 1, 2 i 9 jako
      reprezentatywne — implementacja renderuje wszystkie 10 -->
-<section class="sekcja modul" aria-labelledby="m-formularz">
+<section class="sekcja modul" aria-labelledby="formularz">
   <div class="wnetrze"><div class="modul__uklad">
     <div class="modul__tekst">
-      <h2 id="m-formularz">formularz zgłoszeniowy z publiczną
+      <h2 id="formularz">formularz zgłoszeniowy z publiczną
       stroną</h2>
       <p class="modul__poco">Znajoma pyta cię o współpracę, a ty
       zamiast przepisywać jej dane z wiadomości przekazujesz link
@@ -183,10 +190,10 @@
   </div></div>
 </section>
 
-<section class="sekcja modul modul--obraz-lewa" aria-labelledby="m-kalendarz">
+<section class="sekcja modul modul--obraz-lewa" aria-labelledby="kalendarz">
   <div class="wnetrze"><div class="modul__uklad">
     <div class="modul__tekst">
-      <h2 id="m-kalendarz">Kalendarz z przypomnieniami</h2>
+      <h2 id="kalendarz">Kalendarz z przypomnieniami</h2>
       <p class="modul__poco">Terminy rozmów nie muszą siedzieć
       w twojej głowie. Planujesz kontakty w kalendarzu, a 30 minut
       przed każdą rozmową Catherly przypomina ci o niej.</p>
@@ -197,10 +204,10 @@
   </div></div>
 </section>
 
-<section class="sekcja modul" aria-labelledby="m-sala-treningowa">
+<section class="sekcja modul" aria-labelledby="sala-treningowa">
   <div class="wnetrze"><div class="modul__uklad">
     <div class="modul__tekst">
-      <h2 id="m-sala-treningowa">Sala Treningowa</h2>
+      <h2 id="sala-treningowa">Sala Treningowa</h2>
       <p class="modul__poco">Przed trudną rozmową wchodzisz do Sali
       Treningowej i przechodzisz ją na sucho — obiekcja pada
       najpierw tu, nie przy klientce. Odpowiedzi bierzesz
@@ -214,9 +221,9 @@
 </section>
 
 <!-- Sekcja kierunku AI (D-B2; po module 10, przed F8) -->
-<section class="sekcja kierunek" aria-labelledby="m-asystent-ai">
+<section class="sekcja kierunek" aria-labelledby="asystent-ai">
   <div class="wnetrze">
-    <h2 id="m-asystent-ai" class="modul__poco" style="font-size:1.5rem;font-weight:700;margin:0 0 0.75rem">asystent AI</h2>
+    <h2 id="asystent-ai">asystent AI</h2>
     <div class="kierunek__karta">
       <p>Z asystentem AI dostosowujesz wiadomości do konkretnej
       osoby.</p>
@@ -235,7 +242,7 @@
 </section>
 
 <!-- F9 (kandydat 4: UKRYTE do Etapu C — tu pokazane docelowo) -->
-<section class="sekcja przejscia-wrap">
+<section class="sekcja">
   <div class="wnetrze przejscia">
     <a href="/funkcje/tresci">Dalej: Treści →</a>
   </div>
