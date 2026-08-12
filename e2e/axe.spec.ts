@@ -7,6 +7,9 @@ import AxeBuilder from "@axe-core/playwright";
  * w ramach Definition of Done sekcji (PLAN.md 4.2).
  */
 const TRASY = [
+  "/nie-znaleziono",
+  "/en/nie-znaleziono",
+  "/de/nie-znaleziono",
   "/",
   "/en",
   "/de",

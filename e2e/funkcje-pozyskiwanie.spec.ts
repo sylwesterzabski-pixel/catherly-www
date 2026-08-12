@@ -241,6 +241,15 @@ const FRAZY_MILCZENIA = [
   "kontaktsequenzen",
   // Granica — blokada osoby (brak przycisku UI).
   "blokada osoby",
+  "block a person",
+  "person blockieren",
+  // Milczenie pozostałych filarów (adwersarz B F4 — strażnik
+  // obejmuje całą tabelę, nie tylko filar 1).
+  "kapsułka przyszłości",
+  "future capsule",
+  "zukunftskapsel",
+  "thriving lifestyle",
+  "elevenlabs",
   // WhatsApp (brak zgody platformy / SZKIELET).
   "whatsapp",
   // Integracje z kontami social do pozyskiwania (brak zgody platformy).

@@ -141,7 +141,7 @@ kierunku (asystent proponuje), nie efektu końcowego.
 | Funkcja | Obietnica strony |
 |---|---|
 | Pulpit (13 równoległych zapytań) | Na pulpicie widzisz aktualny stan: sprzedaż, aktywne kontakty, aktywność zespołu — wszystko w jednym miejscu. |
-| Magic Wrapped (7 zapytań) | Twój Wrapped podsumowuje twój okres: co zrobiłaś, co sprzedałaś, co w zespole. |
+| Twój Wrapped (7 zapytań) | Twój Wrapped podsumowuje twój okres: co zrobiłaś, co sprzedałaś, co w zespole. |
 | Cel z kamieniami milowymi | Wyznaczasz cele i śledzisz postęp kamieniami milowymi. |
 | Ściana sukcesów (/recognition) | Rejestrujesz i świętujesz sukcesy swoje i zespołu. |
 | Świadectwo (SHA-256, eksport CSV) | Twoja historia aktywności zabezpieczona podpisem SHA-256 — eksportujesz CSV kiedy chcesz. |
