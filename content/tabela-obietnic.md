@@ -1,6 +1,8 @@
 # Tabela obietnic — catherly.com
 
 **Status: OBOWIĄZUJE — zaakceptowana przez właściciela 2026-08-09 (DECYZJA 2).**
+Korekta techniczna 2026-08-12 (zgoda właściciela, A-3 Fazy 4): nazwy
+wg słownika + literówki w treściach obietnic — zero zmiany sensu.
 Źródło: content/inwentarz-funkcji.md (git 61a69c9c, 2026-08-09).
 Gramatyka: DZIAŁA → tryb dokonany · klucz → język kierunku (bez
 dokonanego) · zgoda platformy → zdanie z zastrzeżeniem · SZKIELET
@@ -38,8 +40,8 @@ Reguły twarde (decyzja właściciela 2026-08-09):
 | Program poleceń z kodem i śledzeniem | Śledzisz, kto skorzystał z twojego zaproszenia. |
 | DMO — Dzienny Plan Działania | Planujesz dzień w Dziennym Planie Działania. |
 | Zadania | Zarządzasz zadaniami powiązanymi z kontaktami. |
-| Symulator rozmów + biblioteka obiekcji (7 kategorii) | Ćwiczysz trudne rozmowy w symulatorze z odpowiedziami na obiekcje. |
-| Odczyt planów rozmów i debriefów | Zapisujesz plany rozmów i piszesz debriefe po spotkaniach. |
+| Sala Treningowa + biblioteka obiekcji (7 kategorii) | Ćwiczysz trudne rozmowy w Sali Treningowej z odpowiedziami na obiekcje. |
+| Odczyt planów rozmów i debriefów | Zapisujesz plany rozmów i piszesz debriefy po spotkaniach. |
 
 ### Język kierunku (klucz Anthropic — 21 funkcji; zero kodu)
 
@@ -104,7 +106,7 @@ kierunku (asystent proponuje), nie efektu końcowego.
 
 | Funkcja | Obietnica strony |
 |---|---|
-| Kreator wdrożeniowy 6 kroków | Wdrażasz nową osobę przez 6-krokowy kreator — profil, cele, materiały, zaproszenie. |
+| kreator wdrożeniowy (6 kroków) | Wdrażasz nową osobę przez 6-krokowy kreator — profil, cele, materiały, zaproszenie. |
 | Workflow zatwierdzania treści (kaskada do struktury) | Zatwierdzasz treści swojego zespołu — wszystkie zmiany statusu widoczne w czasie rzeczywistym w całej strukturze. |
 | Pierwsze 90 Dni (4 fazy, silnik misji) | Prowadzisz nową osobę przez Pierwsze 90 Dni z misjami i fazami. |
 | Osiągnięcia (18 reguł odznak, seria z tokenami łaski) | Gamifikacja motywuje zespół: odznaki, serie i żetony łaski przy powrocie po przerwie. |
@@ -139,9 +141,9 @@ kierunku (asystent proponuje), nie efektu końcowego.
 | Funkcja | Obietnica strony |
 |---|---|
 | Pulpit (13 równoległych zapytań) | Na pulpicie widzisz aktualny stan: sprzedaż, aktywne kontakty, aktywność zespołu — wszystko w jednym miejscu. |
-| Magic Wrapped (7 zapytań) | Magic Wrapped podsumowuje twój okres: co zrobiłaś, co sprzedałaś, co w zespole. |
-| Cele z kamieniami milowymi | Wyznaczasz cele i śledzisz postęp kamieniami milowymi. |
-| Ściana sukcesów (/recognition) | Rejestrujesz i świętuj sukcesy swoje i zespołu. |
+| Magic Wrapped (7 zapytań) | Twój Wrapped podsumowuje twój okres: co zrobiłaś, co sprzedałaś, co w zespole. |
+| Cel z kamieniami milowymi | Wyznaczasz cele i śledzisz postęp kamieniami milowymi. |
+| Ściana sukcesów (/recognition) | Rejestrujesz i świętujesz sukcesy swoje i zespołu. |
 | Świadectwo (SHA-256, eksport CSV) | Twoja historia aktywności zabezpieczona podpisem SHA-256 — eksportujesz CSV kiedy chcesz. |
 | Wall of Proof | Zbierasz dowody swojej pracy na Wall of Proof. |
 
