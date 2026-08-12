@@ -1,0 +1,303 @@
+{
+ "ekstrakcje": [
+  {
+   "filar": "Filar 1: KONTAKTY",
+   "dziala": [
+    {
+     "nazwa": "Formularz zgłoszeniowy z publiczną stroną /l/[slug] (opisowo, wg słownika)",
+     "obietnica": "Tworzysz własny formularz zgłoszeniowy z publiczną stroną — wypełnione zgłoszenia trafiają prosto do twojej bazy kontaktów.",
+     "uwaga": "Słownik: wyłącznie opis, małą literą; nazwa strony app „Formularze & Import\" NIE wchodzi na www, nav-skrót „Leady\" też nie (anglicyzm). „Baza kontaktów\" — nazwa opisowa ze słownika."
+    },
+    {
+     "nazwa": "Kalendarz + przypomnienie 30 min przed",
+     "obietnica": "Planujesz kontakty w kalendarzu i dostajesz przypomnienie 30 minut przed każdą rozmową.",
+     "uwaga": "Reguła twarda: Kalendarz NIE jest wyróżnikiem planów na /cennik."
+    },
+    {
+     "nazwa": "Subskrypcja kalendarza w telefonie",
+     "obietnica": "Twój kalendarz Catherly synchronizuje się z telefonem."
+    },
+    {
+     "nazwa": "Eksport kontaktów do vCard",
+     "obietnica": "Eksportujesz kontakty do telefonu jednym kliknięciem."
+    },
+    {
+     "nazwa": "QR polecający w eksportach Studia",
+     "obietnica": "Tworzysz kod QR polecający do materiałów i wizytówek.",
+     "uwaga": "Nazwa „Studio\" wg słownika bez zmian (PL/EN/DE: Studio)."
+    },
+    {
+     "nazwa": "Program poleceń z kodem i śledzeniem",
+     "obietnica": "Śledzisz, kto skorzystał z twojego zaproszenia."
+    },
+    {
+     "nazwa": "DMO — Dzienny Plan Działania",
+     "obietnica": "Planujesz dzień w Dziennym Planie Działania.",
+     "uwaga": "Słownik: PL „DMO — Dzienny Plan Działania\", EN „DMO — Daily Action Plan\", DE „Täglicher Aktionsplan (DMO)\"."
+    },
+    {
+     "nazwa": "Zadania",
+     "obietnica": "Zarządzasz zadaniami powiązanymi z kontaktami."
+    },
+    {
+     "nazwa": "Sala Treningowa (+ biblioteka obiekcji, 7 kategorii)",
+     "obietnica": "Ćwiczysz trudne rozmowy w symulatorze z odpowiedziami na obiekcje.",
+     "uwaga": "W tabeli wiersz nosi starą nazwę „Symulator rozmów\" — nazwa wycofana z www, obowiązuje „Sala Treningowa\" (EN Training Room, DE Trainingsraum). Dosłowna obietnica z tabeli nadal zawiera słowo „w symulatorze\" — do rozstrzygnięcia przy implementacji, czy zamienić na sformułowanie zgodne ze słownikiem."
+    },
+    {
+     "nazwa": "Odczyt planów rozmów i debriefów",
+     "obietnica": "Zapisujesz plany rozmów i piszesz debriefe po spotkaniach.",
+     "uwaga": "W tabeli literalnie „debriefe\" (prawdopodobna literówka; poprawnie „debriefy\") — cytuję dosłownie zgodnie z poleceniem."
+    }
+   ],
+   "czesciowe": [
+    {
+     "nazwa": "Asystent AI — personalizacja wiadomości",
+     "kierunek": "Wolno komunikować wyłącznie językiem kierunku (bez trybu dokonanego): „Z asystentem AI dostosowujesz wiadomości do konkretnej osoby.\" — funkcja zależy od klucza Anthropic (sekcja obejmuje 21 funkcji; zero kodu po stronie www)."
+    }
+   ],
+   "milczenie": [
+    "E-mail o nowym zgłoszeniu (Resend atrapa; wyśle gdy klucz Resend aktywny — teraz milczymy o powiadomieniach e-mail)",
+    "Sekwencje kontaktowe (brak przycisku UI; silnik gotowy, niedostępna dla użytkowniczki)",
+    "Granica — blokada osoby (brak przycisku UI)",
+    "WhatsApp, SMS (brak zgody platformy / SZKIELET)",
+    "Integracje z kontami social do pozyskiwania (brak zgody platformy; 6 funkcji, tygodnie, możliwa odmowa — nie obiecujemy)"
+   ],
+   "zastrzezenia": [
+    "Zastrzeżenie nadrzędne (inwentarz sekcja 0): wszystkie obietnice zakładają aktywną subskrypcję Stripe — bez niej żadna funkcja API nie jest dostępna.",
+    "Gramatyka nagłówka: DZIAŁA → tryb dokonany; klucz → język kierunku (bez dokonanego); zgoda platformy → zdanie z zastrzeżeniem; SZKIELET i wyłączone flagą → milczenie (nie ma ich w tabeli).",
+    "Reguła twarda (decyzja właściciela 2026-08-09): Kalendarz NIE jest wyróżnikiem planów na /cennik — rozjazd cennik↔kod czeka na rozstrzygnięcie po stronie aplikacji.",
+    "Nazwy wg słownika (docs/faza-2/slownik-nazw.md — OBOWIĄZUJE): Symulator rozmów → Sala Treningowa; nazwy app są wzorcem — rozjazd strona↔aplikacja to obietnica, której użytkowniczka nie odnajdzie po zalogowaniu.",
+    "Słownik: formularz z publiczną stroną wyłącznie opisowo — nazwa strony app „Formularze & Import\" i nav-skrót „Leady\" nie wchodzą na www.",
+    "Pozostałe reguły twarde nagłówka (rozkład dochodów FL, Kapsułka Przyszłości, Thriving Lifestyle) nie dotyczą pozycji Filara 1 — dotyczą innych filarów."
+   ]
+  },
+  {
+   "filar": "Filar 2: TREŚCI",
+   "dziala": [
+    {
+     "nazwa": "Studio (edytor canvas)",
+     "obietnica": "Tworzysz grafiki i posty w edytorze ze strefami bezpiecznymi i auto-układem dla różnych formatów.",
+     "uwaga": "Nazwa wg słownika: Studio / Studio / Studio (identyczna we wszystkich językach)."
+    },
+    {
+     "nazwa": "Szablony z wersjonowaniem",
+     "obietnica": "Korzystasz z gotowych szablonów i zapisujesz własne wersje."
+    },
+    {
+     "nazwa": "Menedżer zestawów hashtagów",
+     "obietnica": "Zarządzasz zestawami hashtagów i dodajesz je jednym kliknięciem."
+    },
+    {
+     "nazwa": "Kalendarz publikacji",
+     "obietnica": "Planujesz posty w kalendarzu.",
+     "uwaga": "Reguła twarda z nagłówka: Kalendarz NIE jest wyróżnikiem planów na /cennik (rozjazd cennik-kod czeka na rozstrzygnięcie po stronie aplikacji)."
+    },
+    {
+     "nazwa": "Workflow zatwierdzania (lider akceptuje/odrzuca, kaskada)",
+     "obietnica": "Twoje treści trafiają do zatwierdzenia przez lidera — śledzisz status w czasie rzeczywistym."
+    },
+    {
+     "nazwa": "Tarcza",
+     "obietnica": "Tarcza sprawdza ryzykowne sformułowania przed publikacją — reguły działają lokalnie, treść nie opuszcza aplikacji.",
+     "uwaga": "Nazwa wg słownika: Tarcza / Shield / Schild (DE wg app, nie Schutzschild)."
+    },
+    {
+     "nazwa": "Pieczęć Etyczna (0-100 + publiczny certyfikat z QR)",
+     "obietnica": "Każdy projekt otrzymuje wynik etyczny z publicznym certyfikatem do pokazania klientce.",
+     "uwaga": "Nazwa wg słownika: Pieczęć Etyczna / Ethical Seal / Ethik-Siegel; kafelek skrócony: Pieczęć/Seal/Siegel."
+    },
+    {
+     "nazwa": "Uczenie profilu głosu marki",
+     "obietnica": "System uczy się twojego stylu z opublikowanych postów."
+    },
+    {
+     "nazwa": "Tablica postów z filtrami",
+     "obietnica": "Przegląd wszystkich postów z filtrowaniem i statusami."
+    }
+   ],
+   "czesciowe": [
+    {
+     "nazwa": "Generowanie treści AI (asystent AI)",
+     "kierunek": "Z asystentem AI piszesz i edytujesz treści — on proponuje, ty decydujesz. Wolno komunikować wyłącznie kierunek (asystent proponuje), nie efekt końcowy; zakaz sformułowań typu AI napisze za ciebie oraz spersonalizowane treści — tryb dokonany niedozwolony bez klucza Anthropic."
+    }
+   ],
+   "milczenie": [
+    "Automatyczna publikacja na IG/TikTok/FB/Pinterest/YouTube — martwe podwójnie (brak CRON_SECRET + brak podłączonych kont + brak zgody platformy); żadnej obietnicy publikacji na stronie",
+    "Wgrywanie zdjęć i plików — Storage atrapa",
+    "Głos ElevenLabs — SZKIELET",
+    "Kapsułka Przyszłości — decyzja właściciela: milczenie"
+   ],
+   "zastrzezenia": [
+    "Zastrzeżenie nadrzędne (inwentarz sekcja 0): wszystko zakłada aktywną subskrypcję Stripe — bez niej żadna funkcja API nie jest dostępna.",
+    "Gramatyka nagłówka: DZIAŁA -> tryb dokonany; klucz -> język kierunku (bez dokonanego); zgoda platformy -> zdanie z zastrzeżeniem; SZKIELET i wyłączone flagą -> milczenie.",
+    "Reguła twarda: Kalendarz NIE jest wyróżnikiem planów na /cennik (rozjazd cennik-kod czeka na rozstrzygnięcie po stronie aplikacji).",
+    "Reguła twarda: Kapsułka Przyszłości — milczenie do czasu ekranu odtwarzania (potwierdzone w sekcji Milczenie filara 2).",
+    "Uwaga do copywritera (w sekcji filara): nie pisać AI napisze za ciebie ani spersonalizowane treści — tryb dokonany niedozwolony bez klucza Anthropic; obietnica dotyczy kierunku, nie efektu końcowego.",
+    "Żadnej obietnicy publikacji na stronie (pogrubione w sekcji Milczenie): zdanie warunkowe Catherly zaplanuje post — wyśle gdy podłączysz konto I platforma wyrazi zgodę nie wchodzi na www.",
+    "Nazwy funkcji wg słownika docs/faza-2/slownik-nazw.md (OBOWIĄZUJE) — nazwy aplikacji są wzorcem; w filarze 2 dotyczy to: Studio, Tarcza, Pieczęć Etyczna."
+   ]
+  },
+  {
+   "filar": "Filar 3: ZESPÓŁ",
+   "dziala": [
+    {
+     "nazwa": "kreator wdrożeniowy (opisowo, małą literą — bez nazwy własnej, wg słownika)",
+     "obietnica": "Wdrażasz nową osobę przez 6-krokowy kreator — profil, cele, materiały, zaproszenie.",
+     "uwaga": "Słownik: forma OPISOWA, małą literą, bez nazwy własnej (app: „Witaj w Catherly!”); EN: onboarding wizard, DE: Einstiegsassistent."
+    },
+    {
+     "nazwa": "Workflow zatwierdzania treści (kaskada do struktury)",
+     "obietnica": "Zatwierdzasz treści swojego zespołu — wszystkie zmiany statusu widoczne w czasie rzeczywistym w całej strukturze."
+    },
+    {
+     "nazwa": "Pierwsze 90 Dni",
+     "obietnica": "Prowadzisz nową osobę przez Pierwsze 90 Dni z misjami i fazami.",
+     "uwaga": "Słownik: „Pierwsze 90 Dni” (EN: First 90 Days, DE: Die ersten 90 Tage); app pisze „Pierwsze 90 dni” małym „dni” — do ujednolicenia przy implementacji."
+    },
+    {
+     "nazwa": "Osiągnięcia (18 reguł odznak, seria z tokenami łaski)",
+     "obietnica": "Gamifikacja motywuje zespół: odznaki, serie i żetony łaski przy powrocie po przerwie."
+    },
+    {
+     "nazwa": "Paszport zgodności",
+     "obietnica": "Sprawdzasz zgodność komunikacji z wymogami w czterech jurysdykcjach.",
+     "uwaga": "Słownik: EN Compliance Passport, DE Compliance-Pass (wg nav app; „Compliance-Ausweis” w tytule strony app to zgłoszona niespójność aplikacji)."
+    },
+    {
+     "nazwa": "Akademia (infrastruktura LMS)",
+     "obietnica": "Akademia z sekwencyjnym odblokowaniem modułów jest gotowa — treści szkoleniowe dodaje administrator.",
+     "uwaga": "Wolno pisać wyłącznie o infrastrukturze Akademii — o treściach szkoleniowych milczenie (baza pusta, patrz sekcja milczenia)."
+    }
+   ],
+   "czesciowe": [
+    {
+     "nazwa": "Puls zespołu",
+     "kierunek": "Komunikacja WYŁĄCZNIE w opisie planu GROWTH (bramka planu, wymaga Stripe): „W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę.” Bez trybu dokonanego poza kartą Growth; słownik: zawsze z członem „zespołu”, poza kartą Growth pełna forma „W planie Growth…”. Nazwa „Puls” bez członu — wycofana z www."
+    },
+    {
+     "nazwa": "Drzewo struktury",
+     "kierunek": "Komunikacja WYŁĄCZNIE w opisie planu GROWTH (bramka planu, wymaga Stripe): „W planie Growth masz widok całego drzewa struktury.” Bez trybu dokonanego poza opisem planu Growth."
+    }
+   ],
+   "milczenie": [
+    "Import wyciągu z FL (Storage atrapa + bramka GROWTH; ekrany puste bez importu)",
+    "Wyzwania (tworzy tylko admin przez API, nie użytkowniczka)",
+    "Quizy (pytań nie da się edytować)",
+    "Ognisko (bez zbudowanego zespołu pokazuje zero; nie obiecywać „zobaczysz swoją społeczność” na Starterze)",
+    "Partner biegu (wymaga drugiej osoby szukającej w tej samej chwili; na starcie nie zadziała)",
+    "Treści szkoleniowe Akademii (baza pusta; wolno pisać o infrastrukturze Akademii, nie o treściach)"
+   ],
+   "zastrzezenia": [
+    "Zastrzeżenie nadrzędne (nagłówek pliku, inwentarz sekcja 0): wszystkie obietnice zakładają aktywną subskrypcję Stripe — bez niej żadna funkcja API nie jest dostępna.",
+    "Gramatyka (nagłówek pliku): DZIAŁA → tryb dokonany; klucz/bramka → język kierunku bez trybu dokonanego; SZKIELET i wyłączone flagą → milczenie (nie ma ich w tabeli).",
+    "Puls zespołu i Drzewo struktury mają bramkę planu GROWTH — obietnica dozwolona tylko w opisie planu GROWTH, nigdy jako ogólna cecha produktu.",
+    "Nazwy WYŁĄCZNIE wg słownika (docs/faza-2/slownik-nazw.md — OBOWIĄZUJE): „Puls” → „Puls zespołu”; kreator wdrożeniowy opisowo, małą literą, bez nazwy własnej. Rozjazd strona↔aplikacja = obietnica, której użytkowniczka nie odnajdzie po zalogowaniu.",
+    "Reguła twarda z nagłówka dotykająca danych FL: rozkład dochodów FL nigdy jako „oficjalne dane Forever Living” — istotna przy wszelkich wzmiankach okołoimportowych (Import wyciągu z FL i tak objęty milczeniem).",
+    "Na Starterze nie obiecywać „zobaczysz swoją społeczność” (Ognisko) — milczenie obejmuje także pośrednie obietnice społeczności."
+   ]
+  },
+  {
+   "czesciowe": [
+    {
+     "nazwa": "Wybór i zmiana planu (Subskrypcja planów GROWTH/PRO)",
+     "kierunek": "Wyłącznie język kierunku, po uruchomieniu Stripe (status: Stripe atrapa — klucz). Dosłowna obietnica z tabeli „Można obiecać”: „Wybierasz plan i zmieniasz go kiedy chcesz.” — bez trybu dokonanego."
+    },
+    {
+     "nazwa": "Ekran wyboru planu (Stripe UI)",
+     "kierunek": "Status: Stripe atrapa — „UI jest, nic nie przetwarza”. Wolno komunikować tylko w ramach kierunku „Wybór i zmiana planu” po uruchomieniu Stripe; żadnych sugestii, że płatność jest dziś przetwarzana."
+    }
+   ],
+   "dziala": [],
+   "filar": "Filar 5: ROZLICZENIA — status: ŻADNA funkcja rozliczeniowa nie działa end-to-end (billing zdegradowany 2 → 0; inwentarz sekcja 5: „Nie przyjmie płatności”)",
+   "milczenie": [
+    "Faktury PDF — brak biblioteki puppeteer, BRAK KODU (nie da się odblokować kluczem)",
+    "Rozliczenia w aplikacji / rozliczenia z klientkami — zdegradowane, 0 działających, zero mechanizmu",
+    "Import wyciągu z FL — mimo oceny CZĘŚCIOWE (dwa klucze: Storage atrapa + GROWTH) sekcja Milczenie filara wprost zakazuje umieszczania na stronie (ekrany puste bez importu)"
+   ],
+   "zastrzezenia": [
+    "Zastrzeżenie nadrzędne (nagłówek pliku, za inwentarzem sekcja 0): każda obietnica zakłada aktywną subskrypcję Stripe — bez niej żadna funkcja API nie jest dostępna.",
+    "Reguła twarda (nagłówek pliku, decyzja właściciela 2026-08-09): Kalendarz NIE jest wyróżnikiem planów na /cennik — rozjazd cennik↔kod czeka na rozstrzygnięcie po stronie aplikacji.",
+    "Sekcja „Można obiecać” filara nosi zastrzeżenie „(kierunek — po uruchomieniu Stripe)” — nawet jedyna dopuszczona obietnica nie jest trybem dokonanym; lista DZIAŁA jest pusta.",
+    "Konflikt wewnętrzny sekcji: „Import wyciągu z FL” ma w tabeli statusowej ocenę CZĘŚCIOWE (dwa klucze), ale figuruje na liście „Milczenie — nie umieszczać na stronie”; dla www obowiązuje milczenie.",
+    "Gramatyka nagłówka: DZIAŁA → tryb dokonany · klucz → język kierunku (bez dokonanego) · SZKIELET i wyłączone flagą → milczenie (nie ma ich w tabeli)."
+   ]
+  },
+  {
+   "filar": "Filar 4: WYNIKI",
+   "dziala": [
+    {
+     "nazwa": "Pulpit",
+     "obietnica": "Na pulpicie widzisz aktualny stan: sprzedaż, aktywne kontakty, aktywność zespołu — wszystko w jednym miejscu.",
+     "uwaga": "W tabeli: „Pulpit (13 równoległych zapytań)”. Słownik: PL „Pulpit” (metaTitle app); nav app używa „Dashboard”."
+    },
+    {
+     "nazwa": "Twój Wrapped",
+     "obietnica": "Magic Wrapped podsumowuje twój okres: co zrobiłaś, co sprzedałaś, co w zespole.",
+     "uwaga": "Obietnica dosłownie z tabeli, ale nazwa „Magic Wrapped” jest wycofana z www — wg słownika na stronie wyłącznie „Twój Wrapped” (EN „Your Wrapped”, DE „Dein Wrapped”); w tekście strony podmienić nazwę."
+    },
+    {
+     "nazwa": "Cel z kamieniami milowymi",
+     "obietnica": "Wyznaczasz cele i śledzisz postęp kamieniami milowymi.",
+     "uwaga": "W tabeli: „Cele z kamieniami milowymi”. Słownik: opisowe, bez nazwy własnej (goal with milestones / Ziel mit Meilensteinen)."
+    },
+    {
+     "nazwa": "Ściana sukcesów (/recognition)",
+     "obietnica": "Rejestrujesz i świętuj sukcesy swoje i zespołu.",
+     "uwaga": "Brak pozycji w słowniku nazw; funkcja odrębna od Wall of Proof. W tabeli dosłownie „świętuj” — prawdopodobna literówka od „świętujesz”, do wyjaśnienia przy implementacji."
+    },
+    {
+     "nazwa": "Świadectwo",
+     "obietnica": "Twoja historia aktywności zabezpieczona podpisem SHA-256 — eksportujesz CSV kiedy chcesz.",
+     "uwaga": "W tabeli: „Świadectwo (SHA-256, eksport CSV)”. Słownik: wariant techniczny „Świadectwo SHA-256”; na stronie głównej „cyfrowy odcisk / digital fingerprint / digitaler Fingerabdruck”."
+    },
+    {
+     "nazwa": "Wall of Proof",
+     "obietnica": "Zbierasz dowody swojej pracy na Wall of Proof.",
+     "uwaga": "Słownik: bez tłumaczenia we wszystkich językach (jak w aplikacji)."
+    }
+   ],
+   "czesciowe": [
+    {
+     "nazwa": "Puls zespołu",
+     "kierunek": "Bramka GROWTH (wymaga Stripe) — kierunek jak w Filarze 3: komunikować WYŁĄCZNIE w opisie planu Growth, bez trybu dokonanego poza tym kontekstem; wzorzec z Filaru 3: „W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę.” Słownik: zawsze z członem „zespołu”; poza kartą Growth pełna forma „W planie Growth…”."
+    }
+   ],
+   "milczenie": [
+    "Raport PDF",
+    "Rozkład dochodów FL (Uczciwe Lustro)"
+   ],
+   "zastrzezenia": [
+    "Zastrzeżenie nadrzędne (nagłówek tabeli): wszystko zakłada aktywną subskrypcję Stripe — bez niej żadna funkcja API nie jest dostępna.",
+    "Reguła twarda (nagłówek + wpis filara): Rozkład dochodów FL nigdy jako „oficjalne dane Forever Living”; jeśli w ogóle pojawi się na stronie — wyłącznie jako „orientacyjny szacunek” (domyślnie: milczenie).",
+    "Raport PDF: brak biblioteki puppeteer — nie da się odblokować kluczem, wymaga kodu; milczenie bezwzględne.",
+    "Nazwy funkcji wg słownika (docs/faza-2/slownik-nazw.md — OBOWIĄZUJE): Magic Wrapped → Twój Wrapped, Puls → Puls zespołu; rozjazd strona↔aplikacja = obietnica, której użytkowniczka nie odnajdzie po zalogowaniu."
+   ]
+  }
+ ],
+ "weryfikacja": {
+  "licznikWlasny": 31,
+  "zgodnyZWlascicielem": false,
+  "zgodnyZEkstrakcja": true,
+  "brakujace": [],
+  "nadmiarowe": [],
+  "uwagiNazw": [
+   "Filar 1, wiersz 9 (linia 41): tabela używa wycofanej nazwy 'Symulator rozmów + biblioteka obiekcji' — słownik (OBOWIĄZUJE) nakazuje 'Sala Treningowa' ('d. Symulator rozmów — nazwa wycofana z www'). Ekstraktor poprawnie zastosował nazwę słownikową. Nagłówek samej tabeli (linie 15-16) zna to mapowanie, ale wiersz go nie stosuje.",
+   "Filar 4, wiersz 2 (linia 142): tabela używa wycofanej nazwy 'Magic Wrapped' — słownik: 'Twój Wrapped' ('d. Magic Wrapped — nazwa wycofana z www'). Groźniejsze: sama treść obietnicy strony brzmi 'Magic Wrapped podsumowuje twój okres…' — wycofana nazwa w tekście przeznaczonym na www. Wycofana nazwa pojawia się też w tabeli flag (linia 208).",
+   "Filar 3, wiersz 1 (linia 107): 'Kreator wdrożeniowy 6 kroków' wielką literą — słownik nakazuje formę OPISOWĄ, małą literą, bez nazwy własnej ('kreator wdrożeniowy'). Wielka litera może być tylko konwencją początku komórki, ale ekstraktor słusznie odnotował formę słownikową.",
+   "Filar 4, wiersz 3 (linia 143): tabela ma 'Cele z kamieniami milowymi' (liczba mnoga) — słownik: 'Cel z kamieniami milowymi' (opisowe, pojedyncza). Ekstraktor podał formę słownikową. Rozjazd kosmetyczny.",
+   "Filar 1, wiersz 1 (linia 33): 'Formularz z publiczną stroną /l/[slug] → CRM' — zgodne z formą opisową słownika ('formularz z publiczną stroną — opis'); ekstraktor poprawnie opisał; nazwa app 'Formularze & Import' słusznie nieużyta."
+  ],
+  "uwagi": [
+   "WERDYKT: licznik własny 31 = ekstrakcja 31 (mapowanie 1:1, zero braków i nadmiarów) ≠ twierdzenie właściciela 38.",
+   "Źródło liczby 38 zidentyfikowane: content/inwentarz-funkcji.md linia 4 — 'Pozycji: 105 · Bilans: 38 DZIAŁA / 56 CZĘŚCIOWE / 11 SZKIELET' (11 dziedzin). To inna miara niż wiersze 'można obiecać (tryb dokonany)' w tabeli obietnic: część funkcji DZIAŁA objęta jest regułą milczenia (np. Sekwencje kontaktowe — silnik gotowy, brak przycisku UI; Granica — brak przycisku UI), a pozycje inwentarza bywają scalane w jeden wiersz tabeli (np. inwentarz linia 26 łączy subskrypcję kalendarza i eksport vCard, w tabeli to 2 wiersze). Rozjazd 38↔31 to niezgodność kategorii, nie błąd zliczenia — ale zdanie 'funkcji DZIAŁA jest 38' NIE uprawnia do twierdzenia '38 pozycji do obiecania w trybie dokonanym'.",
+   "Filar 5 ma sekcję 'Można obiecać', ale z dopiskiem '(kierunek — po uruchomieniu Stripe)' — jej 1 wiersz (Wybór i zmiana planu, linia 178) NIE liczy się do trybu dokonanego. Ekstraktorzy poprawnie go pominęli. Status filaru: 0 funkcji rozliczeniowych działa end-to-end.",
+   "Pozycje spoza tabel trybu dokonanego, których NIE policzono (zgodnie z instrukcją): wiersze 'Język kierunku' (Filar 1: 1, Filar 2: 1, Filar 3: 2, Filar 5: 1 = 5) oraz tabela 'Nazywalne na stronie' w sekcji bramek (5 wierszy: Puls zespołu, Drzewo struktury, Ranking, Klucze API + webhooki, Czysty eksport — z czego Puls i Drzewo dublują wiersze kierunku Filaru 3). Uwaga adwersaryjna: język strony dla Ranking/Klucze API/Czysty eksport ('widzisz', 'łączysz') brzmi jak tryb dokonany — gdyby ktoś doliczył te pozycje do 31, zbliżyłby się do 38-39; to prawdopodobne źródło zawyżenia, ale nie zmienia faktu, że sekcje trybu dokonanego mają 31 wierszy.",
+   "Niespójność wewnętrzna pliku: nagłówek kierunku Filaru 1 (linia 44) mówi '21 funkcji; zero kodu', a tabela pod nim ma 1 wiersz — 21 funkcji AI zwinięto do jednej obietnicy; przy audycie liczb łatwo o pomyłkę.",
+   "Drobiazg językowy w treści obietnicy (linia 144): 'Rejestrujesz i świętuj sukcesy' — powinno być 'świętujesz'; tekst idzie na stronę, warto poprawić przy najbliższym zleceniu.",
+   "Metodologia: liczono wyłącznie wiersze danych tabel pod nagłówkami 'Można obiecać (tryb dokonany)' (bez wierszy nagłówkowych i separatorów). Wyliczenia w prozie (listy 'Milczenie') i tabela statusowa Filaru 5 (linie 166-172) nie są obietnicami i nie zostały policzone. Plik: /Users/sylwesterzabski/Documents/FBO OS - www/catherly-www/content/tabela-obietnic.md."
+  ]
+ },
+ "artefakty": "## 1. Stan wireframe'u K12 (docs/faza-3/wireframes/funkcje-pozyskiwanie.md)\n\n**Status: OBOWIĄZUJE — zaakceptowany DECYZJĄ 6 właściciela 2026-08-10, bez korekt**; jawnie oznaczony jako wzorzec dla pozostałych /funkcje/*. Potwierdzone też w PLAN-FAZY-3.md (K12, wiersz 53; Etap F, wiersz 85) i PLAN-FAZY-4.md (Etap A pkt 2, Etap B).\n\nCo zakłada (stos F1–F11, mobile-first 390 px, zero JS):\n- F1 nawigacja współdzielona + **okruszki** „Funkcje → Pozyskiwanie\"\n- F2 nagłówek podstrony: **H1 filara + 1 zdanie korzyści** (to samo źródło co filar strony głównej)\n- F3–F7 **moduły funkcji ×N**, każdy z obowiązkową trójką: H2 (nazwa ze słownika) → PO CO TO (1–2 zdania) → JAK WYGLĄDA (slot zrzutu Playwright na demo; do czasu zrzutu placeholder tokenowy z podpisem) → CZEGO NIE ROBI (1 zdanie, obowiązkowe)\n- F8 plan jednym wierszem + link do /cennik (bez tabeli; dla /funkcje/zespol wiersz Growth w języku kierunku)\n- F9 przejścia poziome ← poprzedni filar | następny →\n- F10 zamknięcie = **K11 wariant krótki**, F11 stopka\n- Reguły: liczba modułów z tabeli obietnic (tylko DZIAŁA), MILCZENIE bez modułów, nazwy wyłącznie ze słownika.\n\n**Zgodność z DECYZJĄ F4-1 (rekomendacja a: 4 podstrony filarowe, komplet funkcji DZIAŁA sekcjami):** pasuje wprost — moduł ×N to dokładnie „sekcja per funkcja\", a H2 z id daje naturalne cele kotwic. Dwie rozbieżności do domknięcia:\n1. **Wireframe nigdzie nie wymienia kotwic** (id modułów / linkowanie z indeksu /funkcje) — trzeba je dodać do briefu K12 jako wymóg (nie zmienia układu, więc bez nowej DECYZJI wg pipeline'u pkt 2).\n2. PLAN-FAZY-4 Etap A pkt 1 wymaga **osobnej listy funkcji CZĘŚCIOWYCH (klucz) z językiem kierunku** — wireframe nie ma dla niej slotu (ma tylko F8 z precedensem „W planie Growth…\"). To luka wireframe'u względem F4-1.\n\n## 2. Komponenty do reużycia (src/components/)\n\n| Komponent | Slot | Uzasadnienie |\n|---|---|---|\n| **Nawigacja** (K1) | F1 | Współdzielona, przyjmuje `biezacaSciezka`; okruszki trzeba dobudować (patrz luki). Uwaga: `aria-current` porównuje ścieżkę dokładnie — na /funkcje/pozyskiwanie żadna pozycja menu nie będzie bieżąca (decyzja: czy oznaczać rodzica). |\n| **Stopka** | F11 | Przychodzi z layoutu [locale] — zero pracy. |\n| **Zamkniecie** (K11) | F10 | Wireframe wprost wskazuje „K11 wariant krótki\"; propsy `zdaniePrzed`/`zdaniePo` są opcjonalne, więc wariant krótki to kwestia treści, nie kodu. |\n| **SekcjaTekstowa** (K3) | pomocniczo | Wzorzec markupu sekcji (aria-labelledby, wnętrze, kropka) do skopiowania w nowych komponentach; sama renderuje H2, więc nie obsłuży F2 (H1). |\n| **Filar** (K4) | wzorzec dla modułu | Strukturalnie najbliższy modułowi funkcji (H2+id, tekst, ramka obrazu-placeholder), ale ma sztywne 3 konkrety, brak slotu „czego nie robi\" i obraz `aria-hidden` — nadaje się jako punkt wyjścia, nie do bezpośredniego użycia. |\n\nNiepotrzebne na tej podstronie: Hero, PasekPotwierdzen, Faq, CennikSkrot (F8 to jeden wiersz, nie 3 plany), SekcjaPlanow/KartaPlanu/TabelaPorownawcza, SekcjaRytmu, DbanieOSiebie. StronaWBudowie pozostaje na /funkcje do Etapu D.\n\n## 3. Wymagane wpisy rejestru ścieżek (src/i18n/sciezki.ts)\n\n`ISTNIEJACE_SCIEZKI` zawiera dziś tylko: \"/\", \"/funkcje\", \"/cennik\", \"/dla-kogo\", \"/login\". Middleware serwuje 404 dla wszystkiego innego, więc **każda podstrona funkcji musi być dopisana w swoim PR**:\n- `/funkcje/pozyskiwanie` (Etap B),\n- `/funkcje/tresci`, `/funkcje/zespol`, `/funkcje/wyniki` (Etap C).\n\nRekomendacja: osobna stała `PODSTRONY_FUNKCJI` (analogicznie do POZYCJE_MENU — jedno źródło), rozlana do ISTNIEJACE_SCIEZKI i reużyta przez F9 (poprzedni/następny filar) oraz okruszki i przyszłą mapę stopki (DECYZJA F4-5). Ścieżki są wspólne dla pl/en/de (adresWJezyku tylko prefiksuje locale — brak tłumaczonych slugów), więc wystarczą 4 wpisy.\n\n## 4. Luki — czego szablon NIE ma w istniejących komponentach\n\n1. **Okruszki (F1)** — żaden komponent ich nie renderuje; Nawigacja nie ma na nie slotu.\n2. **Nagłówek podstrony (F2)** — brak komponentu z H1 + zdaniem korzyści (Hero jest specyficzny dla głównej; StronaWBudowie to placeholder).\n3. **Moduł funkcji (F3–F7)** — rdzeń szablonu: trójka po co / jak wygląda / czego nie robi + id-kotwica; nie istnieje (Filar tylko jako wzorzec strukturalny).\n4. **Slot zrzutu z placeholderem tokenowym i podpisem** (figure/figcaption publikowalne bez zrzutu) — nie istnieje; ramka w Filarze jest `aria-hidden`, bez podpisu.\n5. **F8 wiersz planu** (jedno zdanie + link do /cennik, wariantowo język kierunku Growth) — brak; CennikSkrot za ciężki.\n6. **F9 przejścia poprzedni/następny filar** — brak komponentu nawigacji poziomej po /funkcje/*.\n7. **Lista funkcji CZĘŚCIOWYCH (klucz)** wymagana przez PLAN-FAZY-4 Etap A — brak i w wireframie, i w komponentach (wymaga uzupełnienia briefu K12).\n\nPliki źródłowe: /Users/sylwesterzabski/Documents/FBO OS - www/catherly-www/docs/faza-3/wireframes/funkcje-pozyskiwanie.md, docs/faza-3/PLAN-FAZY-3.md, docs/faza-4/PLAN-FAZY-4.md, src/i18n/sciezki.ts, src/components/.",
+ "poboczne": "**(1) Reguły twarde z nagłówka (linie 1-26) wpływające na podstrony funkcji:**\n- Gramatyka obietnic: funkcja DZIAŁA → tryb dokonany; wymaga klucza → język kierunku (bez trybu dokonanego); wymaga zgody platformy → zdanie z zastrzeżeniem; SZKIELET i wyłączone flagą → milczenie (nieobecne w tabeli, więc i na podstronach).\n- Zastrzeżenie nadrzędne: wszystko zakłada aktywną subskrypcję Stripe — bez niej żadna funkcja API nie działa.\n- Kalendarz NIE jest wyróżnikiem planów na /cennik (rozjazd cennik↔kod czeka na rozstrzygnięcie po stronie aplikacji).\n- Rozkład dochodów FL nigdy jako „oficjalne dane Forever Living\".\n- Kapsułka Przyszłości — milczenie do czasu ekranu odtwarzania.\n- Thriving Lifestyle — zero wzmianek, nawet „wkrótce\".\n- Obowiązujący słownik nazw (docs/faza-2/slownik-nazw.md): Magic Wrapped → Twój Wrapped, Symulator rozmów → Sala Treningowa, Puls → Puls zespołu.\n\n**(2) Czego Catherly nie robi (sekcja 5 — do sekcji obaw i /bezpieczenstwo, NIE na podstrony funkcji jako obietnice):**\n- Nie wyśle e-maila (gdy Resend skonfigurowany — tak).\n- Nie opublikuje posta automatycznie — zaplanuje; wyśle, gdy konto social podłączone i platforma wyrazi zgodę.\n- Nie napisze tekstu zamiast użytkowniczki — asystent proponuje, ona pisze.\n- Nie przechowuje wideo — linki do YouTube/Vimeo.\n- Dane w UE (Supabase region EU) — wymaga weryfikacji z właścicielem przed użyciem na /bezpieczenstwo.\nUwaga: te prawdy są traktowane jako aktywa (uczciwość), ale ich miejsce to sekcja obaw / /bezpieczenstwo.\n\n**(3) Flagi rozstrzygnięte istotne dla treści podstron:**\n- „co z tego jest twoje\" (rozliczenia) — ⚠️ OSTROŻNIE: filar rozliczenia = 0 działających funkcji; fraza dopuszczalna tylko jako „co zarobiłaś\" (Twój Wrapped / Świadectwo — filar wyniki); w definicjach S1/S2 redukować do „co się sprzedało\".\n- „kiedy się odezwać\" (kontakty) — ✅ bezpieczna (reminder 30 min + DMO).\n- „kto czeka na odpowiedź\" — ⚠️ brak funkcji statusu otwartej rozmowy w CRM; fraza do usunięcia z S1 definicji.\n- „przejmuje ich pracę\" — ❌ odrzucona, nie używać.\n- „porządkuje pracę zespołu\" — ✅ bezpieczna (workflow zatwierdzania + Pierwsze 90 Dni).\n- „widzisz (…) jak jej idzie\" — ✅ bezpieczna (Pulpit: aktywność per osoba, 13 zapytań).\n\n**(4) Bramki planów i limity (Z1 — fakty z kodu; mechanizm assertPlanAtLeast, src/lib/api/plan-limits.ts:226):**\n\nNazywalne na stronie — na podstronach tych funkcji trzeba uczciwie oznaczyć plan:\n- Puls zespołu — GROWTH („W planie Growth widzisz sygnały ryzyka odejścia…\").\n- Drzewo struktury — GROWTH („W planie Growth masz widok całego drzewa struktury.\").\n- Ranking — PRO.\n- Klucze API + webhooki — PRO.\n- Czysty eksport (bez sygnatury polecającej) — PRO (perk).\n\nBramkowane, ale NIE nazywane na stronie (milczenie): Import wyciągu FL (GROWTH, Storage atrapa); funkcje Thriving Lifestyle (Szept/Body&Mind/Tryb jazdy — GROWTH; eksport-książka — PRO); Benchmarki, Liga zespołu, Hive Coach, Win Reel, Catherly Interactive, Stacks, Catherly Tag, raporty struktury i sponsora (GROWTH) — każde wejście do narracji = nowa obietnica → panel + decyzja właściciela (rejestr, poz. 12).\n\nLimity liczbowe egzekwowane w kodzie (jedyne dozwolone w tabeli /cennik): Kontakty 50/200/bez limitu; Zespół 10/50/bez limitu; Posty miesięcznie 20/100/bez limitu; Sesje Sali Treningowej miesięcznie 5/30/bez limitu (STARTER/GROWTH/PRO). Wykluczone z /cennik: strony www, PDF, przestrzeń na pliki, wywołania AI, platformy social (rejestr warunków powrotu, poz. 4-6).\n\nRozstrzygnięcia towarzyszące: Pierwsze 90 Dni dla każdej użytkowniczki (auto-enroll, first90-service.ts:62-67; 4 fazy: Fundament/Rytm/Duplikacja/Przywództwo); Kalendarz bez bramki w kodzie — potwierdzone, „w każdym planie\" (rozjazd seed.ts:86 → Z5); karta Pro NIE zawiera „White label\"/„Dedykowane wsparcie\"/„Dashboard analityczny\" ani funkcji TL — Pro nazywa 3 funkcje, nie „4\".\n\nŚcieżka pliku: /Users/sylwesterzabski/Documents/FBO OS - www/catherly-www/content/tabela-obietnic.md"
+}
