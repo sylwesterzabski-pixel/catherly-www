@@ -14,7 +14,7 @@ Protokół: docs/faza-2/panel-filary.md.
 ### H2
 Rano widzisz, do kogo się odezwać.
 
-**32 znaki.**
+**34 znaki** *(korekta licznika 2026-08-12, tryb A-3 — brzmienie bez zmian).*
 
 ### Korzyść
 Masz plan działania i bazę, która rośnie, gdy ty prowadzisz rozmowy.

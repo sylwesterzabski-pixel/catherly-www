@@ -22,6 +22,11 @@ Data założenia: 2026-08-09 (po Z1–Z4).
 | 13 | robots: noindex,nofollow (layout www — stan przedpremierowy, odnotowany przez adwersarza) | src/app/[locale]/…/layout.tsx | Wyłączyć przy publikacji (Faza 7) — pozycja checklisty premiery |
 | 14 | „bez podawania powodu" (rezygnacja) | zamknięcie pkt 25 (odrzucone przez panel) | Weryfikacja przepływu anulowania w aplikacji (czy nie wymusza powodu — dowód) + wpis do tabeli obietnic |
 
+| 15 | Granice e-mail modułów pozyskiwania (formularz/kalendarz/zadania: „nie wyśle e-maila/nie przychodzą e-mailem") | /funkcje/pozyskiwanie | Aktywacja Resend → rewizja trzech granic (panel Etapu B F4, 2026-08-12) |
+| 16 | Granica jednokierunkowości subskrypcji kalendarza | /funkcje/pozyskiwanie | Integracja kalendarza dwustronna (dziś SZKIELET) → rewizja granicy modułu 3 |
+| 17 | Cel linku kodu QR polecającego (teksty zakładają adres polecający) | /funkcje/pozyskiwanie | Weryfikacja przy zleceniu zrzutów Z9+ (dokąd QR prowadzi w aplikacji) |
+| 18 | 7 nazw opisowych modułów bez pozycji słownika (kalendarz, subskrypcja, vCard, QR, program poleceń, zadania, plany rozmów) | /funkcje/* | Potwierdzenie zgodności z i18n aplikacji przy najbliższym zleceniu Z (decyzja właściciela 2026-08-12) |
+
 Pozycje zamknięte (dla historii): „kto czeka na odpowiedź" (usunięta
 na stałe — brak funkcji); „co z tego jest twoje" (zredukowana do „co
 się sprzedało"); FAQ-faktura i trial rozstrzygnięte 2026-08-09 jako

@@ -49,6 +49,11 @@
       "data_pomiaru": "2026-08-09"
     },
     "_uwaga_pro": "Plan PRO: limity zniesione (-1 w kodzie) dla powyższych — na stronie słowami („bez limitu”), nie liczbą; wpis liczbowy niepotrzebny.",
-    "_uwaga_wykluczone": "NIE wpisano (rejestr warunków powrotu poz. 4-6): storage_gb 1/5/20 (Storage martwy), ai_calls_per_month 100/500 (klucz pusty), social_platforms 2/5 (zgody platform), website_pages 3/10 (limit nieegzekwowany), pdf_per_month 10/50 (generator martwy)."
+    "_uwaga_wykluczone": "NIE wpisano (rejestr warunków powrotu poz. 4-6): storage_gb 1/5/20 (Storage martwy), ai_calls_per_month 100/500 (klucz pusty), social_platforms 2/5 (zgody platform), website_pages 3/10 (limit nieegzekwowany), pdf_per_month 10/50 (generator martwy).",
+    "przypomnienie-kalendarza-minuty": {
+      "wartosc": 30,
+      "zrodlo": "Tabela obietnic (Filar 1, przypomnienie 30 min przed rozmową; inwentarz 61a69c9c). STATUS: do weryfikacji w kodzie aplikacji przy najbliższym zleceniu Z (decyzja właściciela D-B3, 2026-08-12).",
+      "data_pomiaru": "2026-08-12"
+    }
   }
 }
