@@ -24,7 +24,7 @@ kontakty, nie wszystkie dane; ADR-018: niedoobiecywanie).
 
 ## Para 4 — bezpieczeństwo kontaktów
 
-**P:** I hold my customers' data. Who else sees it? *(44 zn)*
+**P:** I hold my customers’ data. Who else sees it? *(44 zn)*
 **O:** Only you have access to your account. The Shield keeps content ethical — the SHA-256 Testimony logs every change. *(113 zn — nazwa wg aplikacji, Z3)*
 
 ## Para 5 — telefon
@@ -35,4 +35,16 @@ kontakty, nie wszystkie dane; ADR-018: niedoobiecywanie).
 ## Para 6 — zgodność z zasadami firmy
 
 **P:** My company has its rules. Can I even use outside tools? *(55 zn)*
-**O:** The Compliance Passport scans content against four jurisdictions' rules — but your company’s IT has the final say. *(114 zn)*
+**O:** The Compliance Passport scans content against four jurisdictions’ rules — but your company’s IT has the final say. *(114 zn)*
+
+---
+
+## Tytuł sekcji S12 (sr-only — struktura nagłówków)
+
+Six worries
+
+**Status: OBOWIĄZUJE — panel tytułów S12 + decyzja właściciela
+2026-08-12** (odmowa sankcji tytułu PL na stronach EN/DE:
+„czytnik ekranu to pełnoprawna odbiorczyni parytetu”). EN „Six
+worries” i DE „Sechs Sorgen” wybrane przez panel (Prawo 2) nad
+alternatywami „concerns”/„Bedenken” (rejestr proceduralny).

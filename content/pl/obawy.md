@@ -54,3 +54,15 @@ Kreator wdrożeniowy · Pierwsze 90 Dni · eksport vCard · Świadectwo
 w każdej chwili — wszystkie DZIAŁA. Zero twierdzeń: „dane w UE",
 lokalizacja bazy, szyfrowanie, import z plików (Storage atrapa).
 „Czterech jurysdykcji" — cecha funkcji z tabeli, nie liczba marketingowa.
+
+---
+
+## Tytuł sekcji S12 (sr-only — struktura nagłówków)
+
+Sześć obaw
+
+**Status: OBOWIĄZUJE — panel tytułów S12 + decyzja właściciela
+2026-08-12** (odmowa sankcji tytułu PL na stronach EN/DE:
+„czytnik ekranu to pełnoprawna odbiorczyni parytetu”). EN „Six
+worries” i DE „Sechs Sorgen” wybrane przez panel (Prawo 2) nad
+alternatywami „concerns”/„Bedenken” (rejestr proceduralny).

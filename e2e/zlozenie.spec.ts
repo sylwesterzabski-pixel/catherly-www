@@ -335,9 +335,10 @@ test("złożenie: messages znak w znak z content (Etap F)", () => {
       `content/${jezyk}/rytm-dnia.md zawiera konkatenację krok3Tresc + kropka (W4)`,
     ).toContain(`${r.krok3Tresc} ${r.kropka}`);
 
-    // Obawy: 6 par + naglowek sr-only = część opisowa tytułu „# …"
-    // pliku (case-insensitive, bez „— PL/EN/DE…") — pochodna treści
-    // pkt 24; sankcja właściciela na koniec etapu.
+    // Obawy: 6 par + naglowek sr-only — tytuł sekcyjny S12 wpisany
+    // do content ×3 (panel tytułów + decyzja właściciela 2026-08-12:
+    // EN „Six worries", DE „Sechs Sorgen"; odmowa tytułu PL na EN/DE)
+    // — strażnik zwykłym „zawiera", jak pozostałe pola.
     const obawy = znorm("obawy.md");
     for (const numer of [1, 2, 3, 4, 5, 6] as const) {
       for (const pole of [`p${numer}`, `o${numer}`] as const) {
@@ -347,15 +348,10 @@ test("złożenie: messages znak w znak z content (Etap F)", () => {
         ).toContain(komunikaty.Obawy[pole]);
       }
     }
-    const pierwszaLinia = readFileSync(
-      join(__dirname, "..", "content", jezyk, "obawy.md"),
-      "utf8",
-    ).split("\n")[0];
-    const tytul = pierwszaLinia.match(/^# (.+?) — (?:PL|EN|DE)\b/)?.[1];
     expect(
-      tytul?.toLowerCase(),
-      `Obawy.naglowek (${jezyk}) = tytuł content/${jezyk}/obawy.md`,
-    ).toBe(komunikaty.Obawy.naglowek.toLowerCase());
+      obawy,
+      `content/${jezyk}/obawy.md zawiera tytuł sekcyjny S12`,
+    ).toContain(komunikaty.Obawy.naglowek);
 
     const zamkniecie = znorm("zamkniecie.md");
     for (const [pole, tresc] of Object.entries(komunikaty.ZamkniecieGlowna)) {

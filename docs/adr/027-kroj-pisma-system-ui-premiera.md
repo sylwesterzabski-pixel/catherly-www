@@ -1,8 +1,11 @@
-# ADR-027: Krój pisma — propozycja: system-ui na premierę iteracji 1
+# ADR-027: Krój pisma — system-ui na premierę iteracji 1
 
-Data: 2026-08-12. Status: **PROPOZYCJA — DO DECYZJI WŁAŚCICIELA**
-(granica ADR-026: etap F nie może zostać zamknięty bez
-rozstrzygnięcia tego ADR-a).
+Data: 2026-08-12. Status: **PRZYJĘTY (decyzja właściciela
+2026-08-12)** — pomiary 1,70–1,82 s rozstrzygają: webfont nie
+mieści się w budżecie już dziś; cyfry tabelaryczne przez
+font-variant-numeric spełniają wymóg STRATEGII; wybór kroju =
+OSOBNA ITERACJA z pomiarem na preview (warunek wiążący — pkt 3
+propozycji). Granica ADR-026 domknięta w terminie (etap F).
 
 ## Kontekst
 

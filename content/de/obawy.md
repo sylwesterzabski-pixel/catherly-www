@@ -36,3 +36,15 @@ jederzeit exportieren").
 
 **P:** Mein Unternehmen hat Richtlinien. Darf ich externe Anwendungen nutzen? *(70 zn)*
 **O:** Der Compliance-Pass scannt deine Inhalte auf die Anforderungen von vier Rechtsräumen – das letzte Wort hat deine IT-Abteilung. *(126 zn)*
+
+---
+
+## Tytuł sekcji S12 (sr-only — struktura nagłówków)
+
+Sechs Sorgen
+
+**Status: OBOWIĄZUJE — panel tytułów S12 + decyzja właściciela
+2026-08-12** (odmowa sankcji tytułu PL na stronach EN/DE:
+„czytnik ekranu to pełnoprawna odbiorczyni parytetu”). EN „Six
+worries” i DE „Sechs Sorgen” wybrane przez panel (Prawo 2) nad
+alternatywami „concerns”/„Bedenken” (rejestr proceduralny).

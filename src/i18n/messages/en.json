@@ -3,7 +3,7 @@
     "przejdzDoTresci": "Skip to content",
     "funkcje": "Features",
     "cennik": "Pricing",
-    "dlaKogo": "Who it's for",
+    "dlaKogo": "Who it’s for",
     "logowanie": "Log in"
   },
   "Stopka": {
@@ -149,19 +149,19 @@
     "link": "See full pricing"
   },
   "Obawy": {
-    "naglowek": "Sześć obaw",
+    "naglowek": "Six worries",
     "p1": "What if I can’t get the hang of another new app?",
     "o1": "The onboarding wizard takes you step by step. First 90 Days gives you a ready plan for the start.",
     "p2": "What about the contacts I already keep in other places?",
     "o2": "There’s no bulk import — you add contacts by hand or through the form. You can always export them to vCard.",
     "p3": "If I stop paying, does my data disappear?",
     "o3": "You can cancel whenever you like. Export contacts to vCard, download your log as CSV — everything is yours.",
-    "p4": "I hold my customers' data. Who else sees it?",
+    "p4": "I hold my customers’ data. Who else sees it?",
     "o4": "Only you have access to your account. The Shield keeps content ethical — the SHA-256 Testimony logs every change.",
     "p5": "I hardly ever sit at a computer — will this work?",
     "o5": "Built for the phone from day one — there’s no cut-down version. You open it and it works the way it should.",
     "p6": "My company has its rules. Can I even use outside tools?",
-    "o6": "The Compliance Passport scans content against four jurisdictions' rules — but your company’s IT has the final say."
+    "o6": "The Compliance Passport scans content against four jurisdictions’ rules — but your company’s IT has the final say."
   },
   "ZamkniecieGlowna": {
     "cta": "See how it works",
@@ -178,7 +178,7 @@
     "tresc": "Log-in will be available when the app launches."
   },
   "NieZnaleziono": {
-    "naglowek": "This page doesn't exist.",
+    "naglowek": "This page doesn’t exist.",
     "wroc": "Go back to the home page."
   },
   "Wspolne": {
