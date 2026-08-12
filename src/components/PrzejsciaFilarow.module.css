@@ -1,0 +1,20 @@
+/* F9 — CSS wg HF docs/faza-4/hf/k12-funkcje-pozyskiwanie.html
+   (po panelu 2026-08-12): przejście „Dalej" dosunięte do prawej.
+   Link „Wstecz" (Etap C) zostaje przy lewej przez margin-inline-end
+   auto — HF pokazuje wyłącznie wariant z „Dalej". Kolory linków
+   z globals. Tokeny wymiarów ADR-028. */
+
+.sekcja {
+  padding: 2.5rem 1rem;
+}
+
+.przejscia {
+  max-width: var(--wymiar-kontener-strony);
+  margin-inline: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wstecz {
+  margin-inline-end: auto;
+}

@@ -42,7 +42,10 @@ a:active {
   padding: 1rem;
 }
 
-/* Cel skip-linku: sticky nagłówek nie zasłania treści po przeskoku. */
+/* Cel skip-linku: sticky nagłówek nie zasłania treści po przeskoku.
+   W4 (panel HF K12, 2026-08-12): margines wspólny z kotwicami modułów
+   funkcji — sticky nagłówek na 390 px mierzy 4.625rem (pomiar panelu),
+   5rem daje zapas nad dolną kreską. */
 #tresc {
-  scroll-margin-block-start: 4rem;
+  scroll-margin-block-start: 5rem;
 }

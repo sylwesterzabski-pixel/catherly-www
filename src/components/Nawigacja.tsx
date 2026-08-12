@@ -15,7 +15,8 @@ type Props = {
 /**
  * K1 — nagłówek sticky + skip-link (markup wg HF
  * docs/faza-3/hf/k1-nawigacja.html, po panelu 2026-08-10; od rundy 4
- * link Logowanie per locale + aria-current — B1a).
+ * link Logowanie per locale + aria-current — B1a; od Fazy 4 Etapu B
+ * pozycja-rodzic sekcji z aria-current="true" — A-1).
  * DOM: skip-link → logo → nav (Funkcje·Cennik·Dla kogo) → Logowanie
  * (/login — ADR-023). Na 390 px Logowanie wizualnie w wierszu 1,
  * fokusowo ostatnie — DECYZJA BRIEFU, nie usterka. Zero JS klienckiego.
@@ -36,10 +37,19 @@ export function Nawigacja({ locale, biezacaSciezka }: Props) {
             <ul>
               {POZYCJE_MENU.map((pozycja) => (
                 <li key={pozycja.sciezka}>
+                  {/* A-1 (architektura Etapu A, 2026-08-12): dokładna
+                      ścieżka → "page"; podstrona sekcji (np.
+                      /funkcje/pozyskiwanie pod /funkcje) → "true" —
+                      pozycja jest rodzicem sekcji, nie bieżącą stroną
+                      (tę wskazuje ostatni okruszek). */}
                   <a
                     href={adresWJezyku(locale, pozycja.sciezka)}
                     aria-current={
-                      biezacaSciezka === pozycja.sciezka ? "page" : undefined
+                      biezacaSciezka === pozycja.sciezka
+                        ? "page"
+                        : biezacaSciezka.startsWith(`${pozycja.sciezka}/`)
+                          ? "true"
+                          : undefined
                     }
                   >
                     {t(pozycja.klucz)}

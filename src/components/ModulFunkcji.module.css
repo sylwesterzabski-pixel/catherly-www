@@ -1,0 +1,74 @@
+/* F3–F7 — CSS 1:1 wg HF docs/faza-4/hf/k12-funkcje-pozyskiwanie.html
+   (po panelu 2026-08-12; wzorzec K4). Kolory wyłącznie var(--…);
+   wymiary rem/ch — zero px; tokeny wymiarów ADR-028. Sekcje POD
+   foldem. Próg 48rem: surowa wartość wspólna K1–K4 (W5 — token
+   --wymiar-prog-ukladu jest wyłącznie dokumentacyjny). */
+
+.modul {
+  padding: 2.5rem 1rem;
+}
+
+.wnetrze {
+  max-width: var(--wymiar-kontener-strony);
+  margin-inline: auto;
+}
+
+.naglowek {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+  max-width: 30ch;
+  text-wrap: balance;
+  /* W4: kotwica pod sticky nav — na 390 px nagłówek ma 4.625rem
+     (pomiar panelu), margines 5rem daje zapas. */
+  scroll-margin-block-start: 5rem;
+}
+
+.poCo {
+  margin: 0 0 1rem;
+  max-width: var(--wymiar-miara-akapitu);
+}
+
+/* CZEGO NIE ROBI — rozstrzygnięcie 2 panelu: zdanie samonośne bez
+   etykiety; wyróżnienie: tekst-drugorzedny + kreska inline-start
+   (dekoracja — informacja niesiona treścią zdania, nie kreską). */
+.granica {
+  margin: 0;
+  max-width: var(--wymiar-miara-akapitu);
+  color: var(--kolor-rola-tekst-drugorzedny);
+  border-inline-start: 0.1875rem solid var(--kolor-rola-kreska);
+  padding-inline-start: 0.875rem;
+}
+
+.obraz {
+  margin-block-start: 1.5rem; /* 390 px: tekst NAD obrazem */
+  /* Placeholder ramki do dostawy Z9+ (brief K12: docelowy zrzut
+     INFORMACYJNY z alt; 16/10 jako rezerwa CLS). */
+  aspect-ratio: 16 / 10;
+  background: var(--kolor-rola-powierzchnia);
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: var(--wymiar-promien);
+}
+
+@media (min-width: 48rem) {
+  .uklad {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center; /* zapobiega stretch nadpisującemu aspect-ratio */
+  }
+
+  .obraz {
+    margin-block-start: 0;
+  }
+
+  /* Zebra L-P-L-P (rozstrzygnięcie 3 panelu — jak K4): instancje
+     z obrazem po LEWEJ (moduły parzyste). */
+  .obrazPoLewej .tekst {
+    order: 2;
+  }
+
+  .obrazPoLewej .obraz {
+    order: 1;
+  }
+}

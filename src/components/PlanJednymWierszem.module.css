@@ -1,0 +1,17 @@
+/* F8 — CSS 1:1 wg HF docs/faza-4/hf/k12-funkcje-pozyskiwanie.html
+   (po panelu 2026-08-12). Link dziedziczy kolor z globals (rola
+   link/link-aktywny). Tokeny wymiarów ADR-028. */
+
+.sekcja {
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.wnetrze {
+  max-width: var(--wymiar-kontener-strony);
+  margin-inline: auto;
+}
+
+.wnetrze p {
+  margin: 0 0 0.5rem;
+}

@@ -1,0 +1,27 @@
+/* F2 — CSS 1:1 wg HF docs/faza-4/hf/k12-funkcje-pozyskiwanie.html
+   (po panelu 2026-08-12). Kolory wyłącznie var(--…); wymiary rem/ch;
+   tokeny wymiarów ADR-028. */
+
+.sekcja {
+  padding: 2.5rem 1rem;
+}
+
+.wnetrze {
+  max-width: var(--wymiar-kontener-strony);
+  margin-inline: auto;
+}
+
+.naglowek {
+  font-size: clamp(1.625rem, 4vw + 0.75rem, 2.5rem);
+  line-height: 1.2;
+  margin: 0 0 0.75rem;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.zdanie {
+  margin: 0;
+  max-width: var(--wymiar-miara-akapitu);
+  color: var(--kolor-rola-tekst-drugorzedny);
+  font-size: 1.125rem;
+}

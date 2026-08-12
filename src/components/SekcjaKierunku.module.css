@@ -1,0 +1,37 @@
+/* Sekcja kierunku AI — CSS 1:1 wg HF
+   docs/faza-4/hf/k12-funkcje-pozyskiwanie.html (po panelu 2026-08-12).
+   Kolory wyłącznie var(--…); wymiary rem; tokeny wymiarów ADR-028. */
+
+.sekcja {
+  padding: 2.5rem 1rem;
+}
+
+.wnetrze {
+  max-width: var(--wymiar-miara-kolumny);
+  margin-inline: auto;
+}
+
+.naglowek {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  scroll-margin-block-start: 5rem; /* W2+W4 */
+}
+
+.karta {
+  background: var(--kolor-rola-powierzchnia);
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: var(--wymiar-promien);
+  padding: 1.5rem;
+}
+
+.karta p {
+  margin: 0 0 0.75rem;
+  max-width: var(--wymiar-miara-akapitu);
+}
+
+.karta p:last-child {
+  margin: 0;
+  color: var(--kolor-rola-tekst-drugorzedny);
+}

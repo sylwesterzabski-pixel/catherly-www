@@ -1,0 +1,123 @@
+import { getTranslations, setRequestLocale } from "next-intl/server";
+
+import fakty from "../../../../../content/facts.json";
+import { ModulFunkcji } from "@/components/ModulFunkcji";
+import { NaglowekPodstrony } from "@/components/NaglowekPodstrony";
+import { Nawigacja } from "@/components/Nawigacja";
+import { Okruszki } from "@/components/Okruszki";
+import { PlanJednymWierszem } from "@/components/PlanJednymWierszem";
+import { PrzejsciaFilarow } from "@/components/PrzejsciaFilarow";
+import { SekcjaKierunku } from "@/components/SekcjaKierunku";
+import { Zamkniecie } from "@/components/Zamkniecie";
+import { routing } from "@/i18n/routing";
+import { adresWJezyku, type Locale } from "@/i18n/sciezki";
+
+/**
+ * /funkcje/pozyskiwanie — wzorcowa podstrona funkcji K12 (Faza 4,
+ * Etap B; markup wg HF docs/faza-4/hf/k12-funkcje-pozyskiwanie.html,
+ * po panelu 2026-08-12; treść content/{pl,en,de}/funkcje-pozyskiwanie.md
+ * — D-B1/D-B2). Stos F1–F11: okruszki → nagłówek podstrony → 10 modułów
+ * DZIAŁA (zebra L-P jak K4) → sekcja kierunku AI → F8 plan jednym
+ * wierszem → F9 przejścia (w Etapie B nieobecne — bramka linków) →
+ * F10 zamknięcie (K11 krótki); stopka z layoutu. Prerender SSG per
+ * locale; hierarchia: 1×h1 + 11×h2 (10 modułów + kierunek). Zero JS.
+ */
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+// Kotwice modułów = sluggi z content (cele linków z indeksu /funkcje
+// w Etapie D); kolejność = kolejność modułów 1–10 treści.
+const MODULY = [
+  { klucz: "mod1", kotwica: "formularz" },
+  { klucz: "mod2", kotwica: "kalendarz" },
+  { klucz: "mod3", kotwica: "subskrypcja-kalendarza" },
+  { klucz: "mod4", kotwica: "eksport-vcard" },
+  { klucz: "mod5", kotwica: "qr-polecajacy" },
+  { klucz: "mod6", kotwica: "program-polecen" },
+  { klucz: "mod7", kotwica: "dmo" },
+  { klucz: "mod8", kotwica: "zadania" },
+  { klucz: "mod9", kotwica: "sala-treningowa" },
+  { klucz: "mod10", kotwica: "plany-rozmow" },
+] as const;
+
+// „30 minut" modułu 2 — WYŁĄCZNIE z facts.json (D-B3; linter liczb).
+const MINUTY_PRZYPOMNIENIA =
+  fakty.fakty["przypomnienie-kalendarza-minuty"].wartosc;
+
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function StronaFunkcjePozyskiwanie({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("FunkcjePozyskiwanie");
+  const tNawigacja = await getTranslations("Nawigacja");
+
+  return (
+    <>
+      <Nawigacja
+        locale={locale as Locale}
+        biezacaSciezka="/funkcje/pozyskiwanie"
+      />
+      <main id="tresc">
+        {/* F1b — okruszki: „Funkcje → Pozyskiwanie"; etykieta rodzica
+            wspólna z menu (Nawigacja.funkcje), bieżąca strona tekstem
+            z aria-current="page" (rozstrzygnięcie 1 panelu). */}
+        <Okruszki
+          ariaEtykieta={t("okruszkiAria")}
+          pozycje={[
+            {
+              etykieta: tNawigacja("funkcje"),
+              href: adresWJezyku(locale as Locale, "/funkcje"),
+            },
+            { etykieta: t("okruszek") },
+          ]}
+        />
+        <NaglowekPodstrony naglowek={t("naglowek")} zdanie={t("zdanie")} />
+        {/* F3–F7 — 10 modułów DZIAŁA; zebra jak K4 (rozstrzygnięcie 3):
+            moduły nieparzyste obraz po prawej, parzyste po lewej.
+            {minuty} interpoluje wartość z facts.json (tylko mod2_poco
+            używa placeholderu; nadmiarowa wartość jest ignorowana). */}
+        {MODULY.map(({ klucz, kotwica }, indeks) => (
+          <ModulFunkcji
+            key={kotwica}
+            naglowek={t(`${klucz}_nazwa`)}
+            idNaglowka={kotwica}
+            poCo={t(`${klucz}_poco`, { minuty: MINUTY_PRZYPOMNIENIA })}
+            granica={t(`${klucz}_nie`)}
+            obrazPoLewej={indeks % 2 === 1}
+          />
+        ))}
+        {/* Sekcja kierunku AI (D-B2) — po module 10, przed F8;
+            kotwica #asystent-ai wchodzi (rozstrzygnięcie 5). */}
+        <SekcjaKierunku
+          naglowek={t("aiNaglowek")}
+          idNaglowka="asystent-ai"
+          tresc={t("aiTresc")}
+          granica={t("aiGranica")}
+        />
+        <PlanJednymWierszem
+          zdanie={t("f8")}
+          linkEtykieta={t("f8link")}
+          linkHref={adresWJezyku(locale as Locale, "/cennik")}
+        />
+        {/* F9 — na wzorcowej: brak poprzedniego (pierwszy filar);
+            następny → /funkcje/tresci powstaje w Etapie C, więc bramka
+            linków w komponencie zwraca null (sekcja NIEOBECNA —
+            rozstrzygnięcie 4). */}
+        <PrzejsciaFilarow
+          locale={locale as Locale}
+          dalej={{ etykieta: t("dalej"), sciezka: "/funkcje/tresci" }}
+        />
+        {/* F10 — K11 wariant krótki: CTA → /login (ADR-023). */}
+        <Zamkniecie
+          ctaEtykieta={t("zamkniecieCta")}
+          ctaHref={adresWJezyku(locale as Locale, "/login")}
+          zdaniePo={t("zamkniecieZdanie")}
+        />
+      </main>
+    </>
+  );
+}

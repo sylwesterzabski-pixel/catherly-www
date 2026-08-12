@@ -23,6 +23,10 @@ const TRASY = [
   "/de/cennik",
   "/de/dla-kogo",
   "/de/login",
+  // Faza 4, Etap B — wzorcowa podstrona funkcji (K12).
+  "/funkcje/pozyskiwanie",
+  "/en/funkcje/pozyskiwanie",
+  "/de/funkcje/pozyskiwanie",
 ];
 
 for (const trasa of TRASY) {
