@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF K12 — /funkcje/pozyskiwanie (podgląd na tokenach)</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF K12 (Etap B Fazy 4). Wartości wyłącznie var(--…); rem/ch;
+     tokeny wymiarów ADR-028. Treść: content/pl/funkcje-pozyskiwanie.md
+     (OBOWIĄZUJE, D-B1/D-B2). Zero JS; wszystkie moduły POD foldem
+     poza nagłówkiem.
+     KANDYDACI DO ROZSTRZYGNIĘCIA PRZEZ PANEL:
+     1. Okruszki: aria-label nawigacji okruszkowej — mikrotekst
+        (propozycja: „Jesteś tutaj"); ostatni okruszek jako tekst
+        z aria-current="page".
+     2. Zdanie CZEGO NIE ROBI: bez etykiety (rekomendacja — zdania
+        samonośne, etykieta wymagałaby mikrotekstu i sankcji) vs
+        z etykietą; wyróżnienie: tekst-drugorzedny + kreska
+        inline-start (jak niżej).
+     3. Zebra modułów jak K4 (L-P-L-P; spójność wzorca) — czy
+        wireframe F3–F7 bez zebry (tekst zawsze lewa)? HF pokazuje
+        ZEBRĘ.
+     4. F9 „Dalej: Treści →": strona /funkcje/tresci powstaje
+        w Etapie C — do tego czasu przejście UKRYTE (bramka linków;
+        HF pokazuje docelowo z komentarzem) vs tekst nieaktywny.
+     5. Sekcja kierunku AI: karta na powierzchni (jak niżej) —
+        odróżnienie od modułów (bez ramki zrzutu, bez kotwicy
+        w indeksie?) — rozstrzygnąć czy kotwica #asystent-ai
+        też wchodzi. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  a { color: var(--kolor-rola-link); }
+  a:hover, a:active { color: var(--kolor-rola-link-aktywny); }
+  .sekcja { padding: 2.5rem 1rem; }
+  .wnetrze { max-width: var(--wymiar-kontener-strony); margin-inline: auto; }
+  /* F1b — okruszki */
+  .okruszki { padding: 1rem 1rem 0; }
+  .okruszki ol {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 0.375rem;
+    font-size: 0.9375rem;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    max-width: var(--wymiar-kontener-strony);
+    margin-inline: auto;
+  }
+  .okruszki li + li::before { content: "→"; margin-inline-end: 0.375rem; }
+  /* F2 — nagłówek podstrony */
+  .naglowek h1 {
+    font-size: clamp(1.625rem, 4vw + 0.75rem, 2.5rem);
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .naglowek p {
+    margin: 0;
+    max-width: var(--wymiar-miara-akapitu);
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 1.125rem;
+  }
+  /* F3–F7 — moduł funkcji (wzorzec K4: zebra, ramka 16/10) */
+  .modul h2 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+    max-width: 30ch;
+    text-wrap: balance;
+    scroll-margin-block-start: 4rem; /* kotwica pod sticky nav */
+  }
+  .modul__poco { margin: 0 0 1rem; max-width: var(--wymiar-miara-akapitu); }
+  .modul__granica {
+    margin: 0;
+    max-width: var(--wymiar-miara-akapitu);
+    color: var(--kolor-rola-tekst-drugorzedny);
+    border-inline-start: 0.1875rem solid var(--kolor-rola-kreska);
+    padding-inline-start: 0.875rem;
+  }
+  .modul__obraz {
+    margin-block-start: 1.5rem;
+    aspect-ratio: 16 / 10;
+    background: var(--kolor-rola-powierzchnia);
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    border-radius: var(--wymiar-promien);
+  }
+  @media (min-width: 48rem) {
+    .modul__uklad {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .modul__obraz { margin-block-start: 0; }
+    .modul--obraz-lewa .modul__tekst { order: 2; }
+    .modul--obraz-lewa .modul__obraz { order: 1; }
+  }
+  /* Sekcja kierunku AI — karta, bez slotu zrzutu */
+  .kierunek .wnetrze { max-width: var(--wymiar-miara-kolumny); }
+  .kierunek__karta {
+    background: var(--kolor-rola-powierzchnia);
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    border-radius: var(--wymiar-promien);
+    padding: 1.5rem;
+  }
+  .kierunek__karta p { margin: 0 0 0.75rem; max-width: var(--wymiar-miara-akapitu); }
+  .kierunek__karta p:last-child {
+    margin: 0;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+  /* F8 — plan jednym wierszem */
+  .plan { text-align: center; }
+  .plan p { margin: 0 0 0.5rem; }
+  /* F9 — przejścia */
+  .przejscia { display: flex; justify-content: flex-end; }
+  /* F10 — zamknięcie (wzorzec K11) */
+  .zamkniecie { text-align: center; }
+  .cta {
+    display: inline-block;
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: var(--wymiar-promien);
+  }
+  .cta:hover, .cta:active { background: var(--kolor-rola-interakcja-aktywna); }
+  .zamkniecie__zdanie {
+    margin: 1rem 0 0;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 0.9375rem;
+  }
+</style>
+</head>
+<body>
+<main id="tresc">
+
+<!-- F1b — okruszki (kandydat 1: aria-label „Jesteś tutaj") -->
+<nav class="okruszki" aria-label="Jesteś tutaj">
+  <ol>
+    <li><a href="/funkcje">Funkcje</a></li>
+    <li aria-current="page">Pozyskiwanie</li>
+  </ol>
+</nav>
+
+<!-- F2 -->
+<section class="sekcja naglowek" aria-labelledby="podstrona-h1">
+  <div class="wnetrze">
+    <h1 id="podstrona-h1">Rano widzisz, do kogo się odezwać.</h1>
+    <p>Masz plan działania i bazę, która rośnie, gdy ty prowadzisz
+    rozmowy.</p>
+  </div>
+</section>
+
+<!-- F3 — moduł 1 (obraz po prawej); moduły 2-10 analogicznie,
+     zebra L-P (kandydat 3); w HF pokazane moduły 1, 2 i 9 jako
+     reprezentatywne — implementacja renderuje wszystkie 10 -->
+<section class="sekcja modul" aria-labelledby="m-formularz">
+  <div class="wnetrze"><div class="modul__uklad">
+    <div class="modul__tekst">
+      <h2 id="m-formularz">formularz zgłoszeniowy z publiczną
+      stroną</h2>
+      <p class="modul__poco">Znajoma pyta cię o współpracę, a ty
+      zamiast przepisywać jej dane z wiadomości przekazujesz link
+      do swojego formularza. Wypełnia go na publicznej stronie —
+      i zgłoszenie trafia prosto do twojej bazy kontaktów.</p>
+      <p class="modul__granica">Catherly nie wyśle ci e-maila
+      o nowym zgłoszeniu — wypełnione zgłoszenia widzisz
+      w aplikacji.</p>
+    </div>
+    <div class="modul__obraz" aria-hidden="true"></div>
+  </div></div>
+</section>
+
+<section class="sekcja modul modul--obraz-lewa" aria-labelledby="m-kalendarz">
+  <div class="wnetrze"><div class="modul__uklad">
+    <div class="modul__tekst">
+      <h2 id="m-kalendarz">Kalendarz z przypomnieniami</h2>
+      <p class="modul__poco">Terminy rozmów nie muszą siedzieć
+      w twojej głowie. Planujesz kontakty w kalendarzu, a 30 minut
+      przed każdą rozmową Catherly przypomina ci o niej.</p>
+      <p class="modul__granica">Przypomnienia nie przychodzą
+      e-mailem ani SMS-em.</p>
+    </div>
+    <div class="modul__obraz" aria-hidden="true"></div>
+  </div></div>
+</section>
+
+<section class="sekcja modul" aria-labelledby="m-sala-treningowa">
+  <div class="wnetrze"><div class="modul__uklad">
+    <div class="modul__tekst">
+      <h2 id="m-sala-treningowa">Sala Treningowa</h2>
+      <p class="modul__poco">Przed trudną rozmową wchodzisz do Sali
+      Treningowej i przechodzisz ją na sucho — obiekcja pada
+      najpierw tu, nie przy klientce. Odpowiedzi bierzesz
+      z biblioteki obiekcji uporządkowanej w siedem kategorii.</p>
+      <p class="modul__granica">Sala Treningowa nie rozmawia z twoją
+      klientką i niczego do niej nie wysyła — ćwiczysz tu sama,
+      a prawdziwą rozmowę prowadzisz ty.</p>
+    </div>
+    <div class="modul__obraz" aria-hidden="true"></div>
+  </div></div>
+</section>
+
+<!-- Sekcja kierunku AI (D-B2; po module 10, przed F8) -->
+<section class="sekcja kierunek" aria-labelledby="m-asystent-ai">
+  <div class="wnetrze">
+    <h2 id="m-asystent-ai" class="modul__poco" style="font-size:1.5rem;font-weight:700;margin:0 0 0.75rem">asystent AI</h2>
+    <div class="kierunek__karta">
+      <p>Z asystentem AI dostosowujesz wiadomości do konkretnej
+      osoby.</p>
+      <p>Asystent nie napisze tekstu zamiast ciebie — proponuje,
+      ty piszesz.</p>
+    </div>
+  </div>
+</section>
+
+<!-- F8 -->
+<section class="sekcja plan">
+  <div class="wnetrze">
+    <p>Wszystko powyżej działa od planu Starter.</p>
+    <p><a href="/cennik">Zobacz cennik</a></p>
+  </div>
+</section>
+
+<!-- F9 (kandydat 4: UKRYTE do Etapu C — tu pokazane docelowo) -->
+<section class="sekcja przejscia-wrap">
+  <div class="wnetrze przejscia">
+    <a href="/funkcje/tresci">Dalej: Treści →</a>
+  </div>
+</section>
+
+<!-- F10 — K11 wariant krótki -->
+<section class="sekcja zamkniecie">
+  <div class="wnetrze">
+    <a class="cta" href="/login">Sprawdź, jak działa</a>
+    <p class="zamkniecie__zdanie">Rezygnujesz w każdej chwili.</p>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
