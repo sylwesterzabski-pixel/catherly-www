@@ -62,3 +62,20 @@ projektu (Prawo 2) → handoff → implementacja → bramki + testy
 (w tym: kotwice działają — fragment nawiguje; okruszki; aria-current
 rodzica; strażnik milczenia) → adwersarz → akcept właściciela →
 push per etap.
+
+---
+
+## Uzupełnienie Etapu C (decyzja właściciela 2026-08-12, akcept B)
+
+- **SPIS TREŚCI jako element STANDARDOWY szablonu** (wszystkie
+  cztery podstrony, w tym retroaktywnie /pozyskiwanie): lista
+  linków do kotwic modułów, nad pierwszym modułem; etykieta —
+  mikrotekst do sankcji (fan-out C proponuje, panel rozstrzyga).
+- **F9 dwukierunkowe:** kolejność pozyskiwanie → tresci → zespol
+  → wyniki; lewy/prawy link warunkowo od rejestru ścieżek.
+- **/funkcje/tresci:** moduł Studio w WARIANCIE KIERUNKU (F4-2 —
+  język kierunku, BEZ slotu zrzutu, mimo statusu DZIAŁA w tabeli;
+  zrzut po przebudowie wariant C aplikacji).
+- **/funkcje/zespol i /wyniki:** Puls zespołu / Drzewo struktury
+  NIE są modułami ani sekcjami — wyłącznie F8 w języku planu
+  Growth (pełna forma „W planie Growth…" — rejestr poz. 11).

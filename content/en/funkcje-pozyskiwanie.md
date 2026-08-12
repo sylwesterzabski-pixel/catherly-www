@@ -195,5 +195,4 @@ write.
 
 You are here
 
-*(propozycja robocza panelu HF K12 — sankcja właściciela przy
-akcepcie etapu; PL „Jesteś tutaj" sankcjonowane panelem)*
+**Sankcja właściciela 2026-08-12 (akcept Etapu B)** — wraz z etykietą bieżącego okruszka.

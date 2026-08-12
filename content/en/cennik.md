@@ -27,7 +27,7 @@ z migawki Stripe.
 For whom: For you if you’re just starting and want a clear plan for
 every day. *(68 zn)*
 - Dashboard — one screen where you see your contacts and results *(62 zn)*
-- DMO — a Daily Method of Operation that tells you what to do today *(65 zn)*
+- DMO — a Daily Action Plan that tells you what to do today *(65 zn)*
 - Sign-up form with a public page — submissions go straight into your contact base *(80 zn — korekta panelu)*
 - Training Room — practice the hard answers before they come up for real *(70 zn)*
 - Shield — catches risky wording before you send it *(49 zn)*
