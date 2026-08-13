@@ -18,7 +18,7 @@ The Studio learns your voice and makes sure no piece of content breaks your rule
 
 ### F8
 
-Everything above works from the Starter plan up. Link: See pricing → /cennik
+Everything above works from the Starter plan up. [Link: See pricing → /cennik]
 
 ### F9
 

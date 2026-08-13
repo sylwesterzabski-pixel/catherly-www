@@ -26,9 +26,9 @@ odnajdzie po zalogowaniu.
 | Klucze API, webhooki | API keys, webhooks | API-Schlüssel, Webhooks | dozwolone nazwy techniczne (rozstrzygnięcie panelu — bez polskiego odpowiednika) |
 | Cel z kamieniami milowymi | goal with milestones | Ziel mit Meilensteinen | opisowe |
 | Baza kontaktów | contact base | Kontaktbasis | opisowe |
+| Ściana sukcesów | Success wall | Erfolgswand | verbatim z i18n app (klucz tabWall; sankcjonowany odczyt właściciela 2026-08-13, adwersarz C blokada 2 wariant a); EN małe „wall" wg app |
+| liderka (osoba zatwierdzająca) | leader (her) | Leaderin | Forma żeńska na www — decyzja właściciela D-C2, 2026-08-13 (karta tonu; „lider” w tabeli = dokument wewnętrzny) |
 
 Adresy: /cennik → /pricing → /preise (strona www). Rejestracja:
 WYŁĄCZNIE /login (ADR-023) — tras /rejestracja, /register,
 /registrierung nie ma i www ich nie linkuje.
-
-| liderka (osoba zatwierdzająca) | leader (her) | Leaderin | Forma żeńska na www — decyzja właściciela D-C2, 2026-08-13 (karta tonu; „lider” w tabeli = dokument wewnętrzny) |

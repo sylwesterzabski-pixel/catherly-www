@@ -3,6 +3,10 @@
 **Status: OBOWIĄZUJE — adaptacja po panelu (poprawki naniesione),
 na polecenie właściciela (D-C1…D-C5, 2026-08-13).**
 Źródło: content/pl/funkcje-zespol.md.
+Korekta 2026-08-13 (adwersarz C, uwaga EN F8): „In the Growth
+plan" → „On the Growth plan" ×2 — werdykt panelu uzupełniającego
+EN zatwierdzony przez właściciela (uzus SaaS; forma kanoniczna
+zdania Growth, rejestr poz. 11).
 
 ---
 
@@ -18,7 +22,7 @@ Instead of explaining it all to every new person, the onboarding wizard does it 
 
 ### F8
 
-Everything above works from the Starter plan up. In the Growth plan, you see the signs someone may be stepping back, with a ready line to open the conversation. In the Growth plan, you see the full tree of your team structure. [Link: See pricing → /cennik]
+Everything above works from the Starter plan up. On the Growth plan, you see the signs someone may be stepping back, with a ready line to open the conversation. On the Growth plan, you see the full tree of your team structure. [Link: See pricing → /cennik]
 
 ### F9
 

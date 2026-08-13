@@ -3,6 +3,10 @@
 **Status: OBOWIĄZUJE — adaptacja po panelu (poprawki naniesione),
 na polecenie właściciela (D-C1…D-C5, 2026-08-13).**
 Źródło: content/pl/funkcje-wyniki.md.
+Korekta 2026-08-13 (adwersarz C, blokada 2): „Success Wall" →
+„Success wall" ×4 — verbatim z i18n aplikacji (tabWall,
+sankcjonowany odczyt; decyzja właściciela wariant a). Słownik
+nazw: wiersz dodany. Format linku F8 ujednolicony do nawiasów.
 
 ---
 
@@ -18,7 +22,7 @@ The Dashboard shows where things stand today, and your results carry proof that 
 
 ### F8
 
-Everything above works from the Starter plan up. On the Growth plan, you see the signs someone may be stepping back, with a ready line to open the conversation. Link: See pricing → /cennik
+Everything above works from the Starter plan up. On the Growth plan, you see the signs someone may be stepping back, with a ready line to open the conversation. [Link: See pricing → /cennik]
 
 ### F9
 
@@ -66,15 +70,15 @@ You set a goal and track your progress milestone by milestone. Instead of one di
 
 Catherly doesn’t set goals for you and doesn’t push you when progress slows — the goal is yours, and so is the pace.
 
-## Moduł 4 — Success Wall
+## Moduł 4 — Success wall
 
 ### PO CO TO
 
-A new person’s first sale, the milestone you closed — you save moments like these on the Success Wall. You record and celebrate your successes and your team’s before everyday life buries them.
+A new person’s first sale, the milestone you closed — you save moments like these on the Success wall. You record and celebrate your successes and your team’s before everyday life buries them.
 
 ### CZEGO NIE ROBI
 
-Catherly won’t record a success for you — what lands on the Success Wall, you put there yourself.
+Catherly won’t record a success for you — what lands on the Success wall, you put there yourself.
 
 ## Moduł 5 — Testimony
 
@@ -94,4 +98,4 @@ You collect proof of your work on the Wall of Proof — your personal timeline o
 
 ### CZEGO NIE ROBI
 
-The Wall of Proof isn’t the team’s wall — celebrating together has its place on the Success Wall.
+The Wall of Proof isn’t the team’s wall — celebrating together has its place on the Success wall.

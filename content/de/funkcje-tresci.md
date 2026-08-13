@@ -18,7 +18,7 @@ Das Studio lernt deine Stimme und achtet darauf, dass kein Inhalt deine Regeln v
 
 ### F8
 
-Alles, was oben steht, funktioniert ab dem Starter-Plan. Link: Sieh dir die Preise an → /cennik
+Alles, was oben steht, funktioniert ab dem Starter-Plan. [Link: Sieh dir die Preise an → /cennik]
 
 ### F9
 

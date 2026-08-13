@@ -18,7 +18,7 @@ Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje.
 
 ### F8
 
-Wszystko powyżej działa od planu Starter. W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę. Link: Zobacz cennik → /cennik. [Rozstrzygnięcie panelu: F8 dwuzdaniowe na mocy briefu K12, Uzupełnienie Etapu C (rejestr poz. 11) — nowsza decyzja właściciela wygrywa z literalnym „jednym wierszem”; zdanie Growth VERBATIM z tabeli w. 120/228, celowo BEZ nazwy „Puls zespołu” (zdanie sankcjonowane jej nie zawiera; pełna forma „W planie Growth…” zgodna ze słownikiem w. 13); zero liczb — Starter i Growth to nazwy planów.]
+Wszystko powyżej działa od planu Starter. W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę. [Link: Zobacz cennik → /cennik] [Rozstrzygnięcie panelu: F8 dwuzdaniowe na mocy briefu K12, Uzupełnienie Etapu C (rejestr poz. 11) — nowsza decyzja właściciela wygrywa z literalnym „jednym wierszem”; zdanie Growth VERBATIM z tabeli w. 120/228, celowo BEZ nazwy „Puls zespołu” (zdanie sankcjonowane jej nie zawiera; pełna forma „W planie Growth…” zgodna ze słownikiem w. 13); zero liczb — Starter i Growth to nazwy planów.]
 
 ### F9
 

@@ -18,7 +18,7 @@ Studio uczy się twojego głosu i pilnuje, żeby żadna treść nie złamała tw
 
 ### F8
 
-Wszystko powyżej działa od planu Starter. Link: Zobacz cennik → /cennik. Rozstrzygnięcie panelu: verbatim z wzorcowej podstrony, ZERO liczb (limit postów miesięcznie wolno pokazać wyłącznie na /cennik); prawdziwość potwierdzona — żaden moduł strony nie ma bramki GROWTH/PRO, a „Czysty eksport” (PRO) świadomie poza F8 (nowa obietnica wymagałaby panelu i decyzji właściciela — rejestr poz. 12).
+Wszystko powyżej działa od planu Starter. [Link: Zobacz cennik → /cennik] [Rozstrzygnięcie panelu: verbatim z wzorcowej podstrony, ZERO liczb (limit postów miesięcznie wolno pokazać wyłącznie na /cennik); prawdziwość potwierdzona — żaden moduł strony nie ma bramki GROWTH/PRO, a „Czysty eksport” (PRO) świadomie poza F8 (nowa obietnica wymagałaby panelu i decyzji właściciela — rejestr poz. 12).]
 
 ### F9
 

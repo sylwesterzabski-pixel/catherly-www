@@ -3,6 +3,10 @@
 **Status: OBOWIĄZUJE — adaptacja po panelu (poprawki naniesione),
 na polecenie właściciela (D-C1…D-C5, 2026-08-13).**
 Źródło: content/pl/funkcje-wyniki.md.
+Rozstrzygnięcie 2026-08-13 (adwersarz C, blokada 2): „Erfolgswand"
+POTWIERDZONE verbatim z i18n aplikacji (tabWall, sankcjonowany
+odczyt; decyzja właściciela wariant a) — marker PROPOZYCJA
+usunięty, wiersz słownika dodany. Format linku F8 ujednolicony.
 
 ---
 
@@ -18,7 +22,7 @@ Das Dashboard zeigt den heutigen Stand – und deine Ergebnisse haben einen Bele
 
 ### F8
 
-Alles, was oben steht, funktioniert ab dem Starter-Plan. Im Growth-Plan siehst du Signale, dass eine Partnerin abspringen könnte, und bekommst einen fertigen Satz für den Gesprächseinstieg. Link: Sieh dir die Preise an → /cennik
+Alles, was oben steht, funktioniert ab dem Starter-Plan. Im Growth-Plan siehst du Signale, dass eine Partnerin abspringen könnte, und bekommst einen fertigen Satz für den Gesprächseinstieg. [Link: Sieh dir die Preise an → /cennik]
 
 ### F9
 
@@ -66,7 +70,7 @@ Du setzt dir ein Ziel und verfolgst den Fortschritt in Meilensteinen. Statt eine
 
 Catherly setzt dir keine Ziele und drängt nicht, wenn der Fortschritt langsamer wird – das Ziel ist deins, das Tempo auch.
 
-## Moduł 4 — Erfolgswand *(PROPOZYCJA — patrz NOTY, pkt 5)*
+## Moduł 4 — Erfolgswand
 
 ### PO CO TO
 
