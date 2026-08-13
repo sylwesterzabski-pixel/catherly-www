@@ -25,7 +25,11 @@ Konsekwencje twarde, które ta sankcja zamyka:
 - etykiety pozycji indeksu są **reużywane** z przestrzeni podstron, nie
   duplikowane (D-D12) — dotyczy też adaptacji EN/DE;
 - reguła „etykieta linku = podciąg akapitu CO ROBI" wchodzi jako kontrakt
-  implementacji **z asercją testową** (D-D21).
+  implementacji **z asercją testową** (D-D21);
+- **doprecyzowanie D-D20 (2026-08-13):** etykieta „Na tej stronie" jest
+  stałą **podstron funkcji**, nie całego serwisu — `/funkcje` idzie BEZ
+  `SpisTresci`, bo indeks sam jest nawigacją. Zakres etykiety: cztery
+  podstrony filarowe plus `/dla-kogo`.
 
 Ten dokument nie jest treścią wdrożoną — niesie treść finalną PL, ślad
 panelu (co naniesione, co odrzucone i dlaczego) oraz ryzyka. Przeniesienie
@@ -127,7 +131,7 @@ z uzasadnieniami są w załączniku na końcu tego dokumentu.**
 | D-D17 | Ile z karty Pro niesie `/dla-kogo` | Jedna pozycja (czysty eksport) | Wiersz planu rośnie ponad sekcję, ścieżka czyta się jak cennik |
 | D-D18 | Czy `/dla-kogo` wiąże segment z planem jak karty `/cennik` | Nie — `/cennik` zostaje jedynym takim miejscem | Drugi cennik do utrzymania ×3 języki |
 | D-D19 | Czy jedna funkcja może być w dwóch ścieżkach | Jedna funkcja — jeden dom | Dopuszczalne tylko przy innym zdaniu i innym kącie |
-| D-D20 | Etykieta „Na tej stronie" jako stała serwisu (poza cztery podstrony z D-C4) | Potwierdzić jednym zdaniem | Druga etykieta na to samo, w trzech językach |
+| D-D20 | Etykieta „Na tej stronie" jako stała serwisu (poza cztery podstrony z D-C4) | Potwierdzić jednym zdaniem — **doprecyzowane: stała podstron funkcji, indeks poza regułą** | Druga etykieta na to samo, w trzech językach |
 | D-D21 | Reguła „etykieta linku = podciąg akapitu CO ROBI" + asercja testowa | Przyjąć jako kontrakt implementacji | Klasa błędu wychodzi dopiero u adwersarza |
 
 ## Co się dzieje po decyzjach
@@ -1106,6 +1110,17 @@ decyzją — decyzję podejmuje właściciel.*
 **Pytanie.** Etykieta spisu treści „Na tej stronie" była sankcjonowana decyzją D-C4 jako wspólna dla CZTERECH podstron filarowych. Potwierdzasz ją jako stałą serwisu na cały zakres (piąta strona /dla-kogo, szósta /funkcje i kolejne ze spisem)?
 
 **Rekomendacja panelu.** Potwierdzić jednym zdaniem. To spójność, nie nowa treść — EN „On this page" i DE „Auf dieser Seite" już istnieją w drzewach. Bez potwierdzenia serwis dostaje drugą etykietę na to samo i drugi wariant do utrzymania w adaptacjach.
+
+**Rozstrzygnięcie właściciela (2026-08-13) — doprecyzowanie zakresu.**
+Pytanie panelu wymieniało `/funkcje` jako stronę ze spisem, ale treść
+finalna części A spisu nie ma. Obowiązuje wykładnia właściciela:
+**D-D20 = „stała serwisu na podstronach funkcji"; indeks jest poza
+regułą.** `/funkcje` idzie BEZ `SpisTresci` — indeks sam jest
+nawigacją, a spis treści jest narzędziem podstron modułowych. Zakres
+etykiety „Na tej stronie": cztery podstrony filarowe (D-C4) plus
+`/dla-kogo`. Skutek dla adaptacji: `content/{en,de}/funkcje.md` nie
+niosą etykiety spisu, `content/{en,de}/dla-kogo.md` niosą ją
+w brzmieniu istniejącym („On this page" / „Auf dieser Seite").
 
 ### D-D21
 

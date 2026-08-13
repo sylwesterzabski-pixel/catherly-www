@@ -17,6 +17,64 @@ samych obietnic — należy do treści, nie do archiwum.
 
 ---
 
+## Etap D — panele adaptacji EN/DE (2026-08-13)
+
+Dotyczy `content/{en,de}/funkcje.md` i `content/{en,de}/dla-kogo.md`.
+Sześć soczewek panelowych (Prawo 2), werdykt każdej: POPRAWKI.
+Razem 56 uwag — 2 BLOKUJĄCE, 18 WAŻNYCH, 36 DROBNYCH. Protokół
+treści: `docs/faza-4/tresci-etap-d-po-panelach.md`.
+
+### K-D1 · content/de/dla-kogo.md — BLOKUJĄCA, obietnica prawna
+
+Projekt DE ścieżki 3 brzmiał „Ob deine Nachricht die Anforderungen
+von vier Rechtsräumen erfüllt, prüft der Compliance-Pass" — narzędzie
+orzeka, CZY wymogi są spełnione. PL mówi węziej: „sprawdza komunikat
+POD KĄTEM wymogów". Kolizja z własną granicą trzy akapity niżej
+(`FunkcjeZespol.mod5_nie`: „gibt keine rechtliche Garantie") i z
+wzorcem korpusu DE, gdzie przy narzędziu jako podmiocie zawsze stoi
+„prüft … nach Regeln". Naniesione: „prüft deine Nachricht anhand der
+Anforderungen von vier Rechtsräumen". ADR-018, obszar: obietnice.
+
+### K-D2 · content/de/dla-kogo.md — BLOKUJĄCA, przypadek gramatyczny
+
+„Sauberer Export … gibt es im Pro-Plan" jest niegramatyczne —
+`es gibt` rządzi biernikiem, a reużywany znak w znak ciąg
+`Cennik.plany.pro.pozycja4` jest mianownikowy i odmienić go nie
+wolno (D-D12). Rozwiązane zmianą ramy zdania, nie ciągu:
+„… ist im Pro-Plan enthalten." Wzorzec na przyszłość: konflikt
+reużycia z gramatyką docelową rozstrzyga się przebudową ramy.
+
+### K-D3 · odmiana nazw funkcji w DE (D-D12) — wzorzec
+
+Etykiety linków DE odmieniają się wg wzorca już przyjętego
+w `content/de/`: „im Täglichen Aktionsplan" jak
+`FunkcjePozyskiwanie.mod7_poco`, „die ersten 90 Tage" jak
+`FunkcjeZespol.mod3_poco`, „über den Einstiegsassistenten" — biernik
+po „über", nazwa mianownikowa `FunkcjeZespol.mod1_nazwa` zawarta
+w formie odmienionej. Nazwy skrócone („Anmeldeformular", „fertigen
+Vorlage") są lustrem skrótów PL („formularza zgłoszeniowego",
+„gotowego szablonu"). Reguła D-D21 sprawdza się w tekście danego
+języka osobno — kontrola mechaniczna, nie deklaracja autora.
+
+### K-D4 · rozjazd EN↔DE we wprowadzeniu bloku 3 — OTWARTY
+
+PL `content/pl/funkcje.md` blok 3: „prowadzi nową osobę przez etapy"
+— bez kwantyfikatora. Panel EN uznał kwantyfikator za podniesienie
+obietnicy i dał „walks a new person through the stages"; panel DE
+zostawił „führt … durch alle Etappen". Obie wersje mają argument:
+sankcjonowane już ciągi `Filary.filar3.konkret1` niosą kwantyfikator
+w OBU językach („through each stage" / „durch alle Etappen"), więc
+EN rozjeżdża się teraz wewnątrzjęzykowo (/filary ↔ /funkcje), a DE
+rozjeżdża się z PL. Ciąg jest nowy (`FunkcjeIndeks.blok3Wprowadzenie`),
+więc reguła reużycia go nie wiąże i wybór jest realny.
+
+Status OTWARTY: do decyzji właściciela przed pushem Etapu D —
+(a) wyrównać DE do EN („durch die Etappen"), (b) wyrównać EN do DE
+(powrót do „through each stage"), (c) zostawić jak jest. Zgłoszone,
+nie zasypane (ADR-018: niepewność zgłaszasz).
+
+---
+
 ## Etap C — korekty po adwersarzu (2026-08-13)
 
 Źródło decyzji: werdykt adwersarza Etapu C (ODRZUCENIE, 2 blokady)
