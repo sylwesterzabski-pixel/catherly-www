@@ -64,6 +64,11 @@ type Podstrona = {
   plikTresci: string;
   /** Kotwice modułów = sluggi z PL content (kontrakt z page.tsx). */
   kotwice: readonly string[];
+  /** Kotwice sekcji w WARIANCIE KIERUNKU (F4-2/D-C1: BEZ slotu
+   *  zrzutu, bez ramki obrazu) — pozostałe kotwice to moduły DZIAŁA
+   *  z dokładnie jedną ramką. Obejmuje też #asystent-ai (spoza listy
+   *  kotwic modułów). */
+  kotwiceKierunku: readonly string[];
   /** Sekcja kierunku AI (wyłącznie /funkcje/tresci). */
   maAI: boolean;
   /** Klucze zdań F8 w kolejności renderowania (F8 wieloczęściowy —
@@ -98,6 +103,7 @@ const PODSTRONY: readonly Podstrona[] = [
       "tablica-postow",
     ],
     maAI: true,
+    kotwiceKierunku: ["studio", "asystent-ai"],
     f8Klucze: ["f8"],
     wsteczSciezka: "/funkcje/pozyskiwanie",
     dalejSciezka: "/funkcje/zespol",
@@ -121,6 +127,7 @@ const PODSTRONY: readonly Podstrona[] = [
       "akademia",
     ],
     maAI: false,
+    kotwiceKierunku: [],
     f8Klucze: ["f8_1", "f8_2", "f8_3"],
     wsteczSciezka: "/funkcje/tresci",
     dalejSciezka: "/funkcje/wyniki",
@@ -129,16 +136,26 @@ const PODSTRONY: readonly Podstrona[] = [
     // dozwolona wyłącznie na karcie Growth /cennik; F8 celowo bez
     // niej. „Drzewo struktury" NIE wchodzi do fraz — F8_3 legalnie
     // mówi „widok całego drzewa struktury" (zdanie sankcjonowane).
+    // EN/DE: „team-puls" = forma DE ze słownika nazw (Team-Puls,
+    // porównanie po lowercase); pozostałe literały EN/DE to przekład
+    // zachowawczy (best-effort) — brzmienia z i18n aplikacji do
+    // weryfikacji odrębnym zleceniem Z (adwersarz C, uwaga 3).
     frazyMilczenia: [
       "import wyciągu",
+      "statement import",
       "wyzwania",
       "challenges",
       "herausforderungen",
       "quiz",
       "ognisko",
+      "bonfire",
+      "lagerfeuer",
       "partner biegu",
+      "running partner",
+      "laufpartner",
       "puls zespołu",
       "team pulse",
+      "team-puls",
     ],
     sekcjeMain: 10, // nagłówek + 6 modułów + F8 + F9 + zamknięcie
   },
@@ -155,6 +172,7 @@ const PODSTRONY: readonly Podstrona[] = [
       "wall-of-proof",
     ],
     maAI: false,
+    kotwiceKierunku: [],
     f8Klucze: ["f8_1", "f8_2"],
     wsteczSciezka: "/funkcje/zespol",
     kotwicaW4: "swiadectwo",
@@ -162,12 +180,20 @@ const PODSTRONY: readonly Podstrona[] = [
     // Celowo BEZ „pdf" — granica Twojego Wrapped legalnie mówi
     // przecząco o raporcie PDF (ryzyko 3 protokołu: strażnik musi
     // dopuścić ten jeden przypadek; precedens e-mail/SMS).
+    // Literały EN/DE: przekład zachowawczy (best-effort) — brzmienia
+    // z i18n aplikacji do weryfikacji odrębnym zleceniem Z;
+    // „team-puls" = forma DE ze słownika (adwersarz C, uwaga 3).
     frazyMilczenia: [
       "rozkład dochodów",
+      "income distribution",
+      "einkommensverteilung",
       "uczciwe lustro",
+      "honest mirror",
+      "ehrlicher spiegel",
       "forever living",
       "puls zespołu",
       "team pulse",
+      "team-puls",
     ],
     sekcjeMain: 10, // nagłówek + 6 modułów + F8 + F9 + zamknięcie
   },
@@ -394,6 +420,40 @@ for (const podstrona of PODSTRONY) {
     await expect(page.locator("main > section")).toHaveCount(
       podstrona.sekcjeMain,
     );
+  });
+
+  // (k) STRAŻNIK WARIANTU KIERUNKU (adwersarz C Etapu C, blokada 1:
+  // mutacja dopisująca ramkę do SekcjaKierunku była niewidzialna dla
+  // suity). Kontrakt DOM: sekcja kierunku BEZ slotu zrzutu — zero
+  // elementów aria-hidden i zero img (F4-2/D-C1); każdy moduł DZIAŁA
+  // ma DOKŁADNIE jedną ramkę div[aria-hidden="true"] (ModulFunkcji).
+  test(`WARIANT KIERUNKU: sekcje kierunku bez slotu zrzutu, moduły DZIAŁA z 1 ramką na ${podstrona.sciezka}`, async ({
+    page,
+  }) => {
+    await page.goto(podstrona.sciezka);
+    for (const kotwica of podstrona.kotwiceKierunku) {
+      const sekcja = page.locator(`section[aria-labelledby="${kotwica}"]`);
+      await expect(sekcja).toHaveCount(1);
+      await expect(
+        sekcja.locator('[aria-hidden="true"]'),
+        `sekcja kierunku #${kotwica} bez elementów aria-hidden`,
+      ).toHaveCount(0);
+      await expect(
+        sekcja.locator("img"),
+        `sekcja kierunku #${kotwica} bez img`,
+      ).toHaveCount(0);
+    }
+    for (const kotwica of podstrona.kotwice) {
+      if (podstrona.kotwiceKierunku.includes(kotwica)) {
+        continue;
+      }
+      await expect(
+        page
+          .locator(`section[aria-labelledby="${kotwica}"]`)
+          .locator('div[aria-hidden="true"]'),
+        `moduł DZIAŁA #${kotwica} z dokładnie jedną ramką`,
+      ).toHaveCount(1);
+    }
   });
 
   // (i) Reflow 320 px (WCAG 1.4.10): bez panoramy poziomej.

@@ -197,6 +197,34 @@ test("W4: kotwica #asystent-ai w pełni widoczna pod sticky nav", async ({
   );
 });
 
+// (j) STRAŻNIK WARIANTU KIERUNKU (retro adwersarza C Etapu C,
+// blokada 1): sekcja #asystent-ai BEZ slotu zrzutu — zero elementów
+// aria-hidden i zero img (D-B2); każdy z 10 modułów DZIAŁA ma
+// DOKŁADNIE jedną ramkę div[aria-hidden="true"] (ModulFunkcji).
+test("WARIANT KIERUNKU: #asystent-ai bez slotu zrzutu; 10 modułów z 1 ramką", async ({
+  page,
+}) => {
+  await page.goto("/funkcje/pozyskiwanie");
+  const kierunek = page.locator('section[aria-labelledby="asystent-ai"]');
+  await expect(kierunek).toHaveCount(1);
+  await expect(
+    kierunek.locator('[aria-hidden="true"]'),
+    "sekcja kierunku bez elementów aria-hidden",
+  ).toHaveCount(0);
+  await expect(
+    kierunek.locator("img"),
+    "sekcja kierunku bez img",
+  ).toHaveCount(0);
+  for (const kotwica of KOTWICE) {
+    await expect(
+      page
+        .locator(`section[aria-labelledby="${kotwica}"]`)
+        .locator('div[aria-hidden="true"]'),
+      `moduł DZIAŁA #${kotwica} z dokładnie jedną ramką`,
+    ).toHaveCount(1);
+  }
+});
+
 // (c) A-1: na podstronie pozycja-rodzic „Funkcje" ma aria-current="true"
 // (i tylko ona w nawigacji nagłówka); "page" wskazuje wyłącznie okruszek.
 // Uwaga zakresu: link języka w stopce też niesie aria-current="true"
