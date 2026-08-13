@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF Etap D — /dla-kogo (trzy ścieżki rozpoznania, podgląd na tokenach)</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF Etapu D — /dla-kogo: trzy ścieżki rozpoznania siebie.
+     STATUS: PO PANELU PROJEKTU 2026-08-13. Ta makieta nie zadaje już
+     pytań — jest zapisem tego, co postanowiono. Handoff:
+     docs/faza-4/komponenty/handoff-etap-d.md.
+     Treść: content/pl/dla-kogo.md (OBOWIĄZUJE, D-D1…D-D21).
+     Wartości wyłącznie var(--…); rem/ch; tokeny wymiarów ADR-028.
+     Zero JS. Mobile-first 390 px. Bez okruszków (D-D2a).
+     ZE spisem treści (S3 briefu, etykieta D-C4 „Na tej stronie") —
+     inaczej niż indeks /funkcje, bo kotwice ścieżek są celem linków
+     z zewnątrz i strona nie jest sama nawigacją.
+
+     CO TA STRONA MUSI UNIEŚĆ, A CZEGO NIE MIAŁ SZABLON K12:
+     ścieżka ma PIĘĆ członów o różnym statusie (rozpoznanie → ból →
+     co robi → od którego planu → granica), a treść nie niesie ani
+     jednej widocznej etykiety tych członów. Cały rozdział znaczeń
+     spada więc na projekt: jeśli „co boli" wygląda jak „co robi",
+     strona czyta się jak trzy razy powtórzona ulotka.
+
+     ROZSTRZYGNIĘCIA PANELU PROJEKTU (2026-08-13):
+     1. CO BOLI vs CO ROBI → NOŚNIK PODWÓJNY: pozycja + stopień.
+        Ból jest ZAWSZE pierwszym akapitem po H2 (kontrakt komponentu,
+        nie decyzja składu) i dostaje 1.125rem w tekście PODSTAWOWYM,
+        nie drugorzędnym. Wariant A z makiety przegrywa: sam kolor
+        jest nośnikiem jednozmysłowym, a w forced-colors: active obie
+        role tekstu zapadają się w jeden kolor systemowy i rozdział
+        znika razem z nimi (1.4.1). Drugi powód jest systemowy:
+        tekst-drugorzedny to na czterech podstronach filarowych rejestr
+        GRANICY (ModulFunkcji.module.css:35-41) — dając go bólowi,
+        wprowadzamy dwa znaczenia dla jednego rejestru na jednej
+        stronie. 1.125rem, nie 1.0625rem: 1.125rem jest istniejącym
+        stopniem lidu (NaglowekPodstrony.module.css), a 1.0625rem to
+        stopień CTA. Wariant B (powierzchnia akcentowa) odrzucony
+        dwoma niezależnymi regułami: powierzchnia-akcentowa × tło
+        strony = 1,01:1 (wyliczone scripts/kontrast.mjs 2026-08-13),
+        więc pas tła nie ma własnej granicy i pierwsza sekcja bez
+        odstępu zlewa się z sąsiadem; a ADR-025 wiąże ten token
+        z lustrem L1 (jedna sekcja rytmu na stronie), więc trzy pasy
+        pod rząd kasują znaczenie samego lustra.
+     2. GRANICA → kreska inline-start + tekst-drugorzedny ZOSTAJE,
+        1:1 z ModulFunkcji.module.css:35-41 (wszystkie cztery
+        soczewki zgodnie). Jeden wzorzec wizualny na serwisie niesie
+        jedno znaczenie „tu jest kres obietnicy" — na podstronach
+        filarowych i tutaj. Wyodrębnienie wspólnego pliku
+        (granica.module.css + composes) NIE wchodzi do Etapu D:
+        rusza komponent wdrożony w Etapie B bez żadnej zmiany
+        widocznej, więc jest osobną decyzją nazwaną, nie skutkiem
+        ubocznym tego etapu.
+     3. WIERSZ PLANU → wariant A: człon ścieżki, do lewej, w mierze
+        akapitu, oddzielony KRESKĄ pełnej szerokości akapitu.
+        PlanJednymWierszem zostaje bez zmian i nie jest tu używany —
+        jest sekcją wyśrodkowaną na całą szerokość i użyty trzy razy
+        w środku strony trzy razy zapowiada jej koniec. Zdania planu
+        to OSOBNE <p>, jedno na zdanie sankcjonowane (1/2/3), a link
+        „Zobacz cennik" to CZWARTY <p> — precedens
+        PlanJednymWierszem.module.css (rejestr warunków powrotu
+        poz. 11: pełna forma „W planie Growth…" musi zostać własnym
+        zdaniem, a nie doklejką do zdania Startera). Propozycja
+        soczewki rytmu (sam margines 2rem bez kreski) przegrywa:
+        „Wszystko powyżej" jest odwołaniem do zakresu, a zakres
+        domyka krawędź, nie odstęp — margines czyta się jako oddech
+        wewnątrz tej samej wypowiedzi.
+     4. ŚCIEŻKA → SEKCJA na tle strony, bez karty (wszystkie cztery
+        soczewki zgodnie): karta zamyka ścieżkę jak ofertę dla
+        segmentu, a brief chce rozpoznania („to ja"), nie szuflady;
+        dodatkowo karta uruchamia parę link × powierzchnia, której
+        komentarz roli w tokenach nie wylicza. RAZEM z tym: wnętrze
+        ścieżki wraca na --wymiar-kontener-strony. Propozycja
+        soczewki rytmu (wnętrze na miarę kolumny 38rem) przegrywa
+        na pomiarze: H1 i spis stoją na 70rem, więc lewa krawędź
+        ścieżek odskoczyłaby o 256 px na desktopie, a długość wiersza
+        i tak jest już ograniczona miarą akapitu NA KAŻDYM akapicie
+        (dokładnie jak w ModulFunkcji na czterech podstronach).
+     5. LINKI W PROZIE → domyślne podkreślenie z globals.css,
+        BEZ lokalnej receptury. Link na tekście podstawowym daje
+        1,71:1 (wyliczone 2026-08-13), więc podkreślenie jest tu
+        jedynym rozróżnieniem niezależnym od koloru i technika G183
+        czyni je obowiązkowym, nie stylistycznym — osłabianie go
+        w prozie jest ruchem w stronę czerwieni 1.4.1. Ujednolicenie
+        podkreśleń w globals.css rusza strony wdrożone w Etapach A–C,
+        więc jest decyzją nazwaną poza tym etapem.
+     6. LICZNIK ŚCIEŻEK → NIE MA, potwierdzone; trzy rozpoznania są
+        równoległe, nie są etapami drogi. Konsekwencja, której makieta
+        nie wyciągnęła: skoro numer ma nie znaczyć kolejności, to spis
+        treści nie może jej rysować cyframi. Spis idzie 1:1 ze
+        SpisTresci.module.css (list-style: none, kreska inline-start,
+        siatka z odstępem 0.5rem, miara kolumny, 0.9375rem) — makieta
+        rysowała gołe <ol> z widocznymi „1. 2. 3.", czyli wprowadzała
+        ranking, którego treść nie stawia, i rozjeżdżała się
+        z komponentem deklarowanym jako „reużycie bez zmian".
+        role="list" na <ol> jest WARUNKIEM: przy list-style: none
+        Safari i VoiceOver zdejmują semantykę listy razem z liczbą
+        pozycji (precedens PasekPotwierdzen.tsx:14).
+     7. KOTWICE ŚCIEŻEK → scroll-margin-block-start: 5rem POPRAWNE
+        i bez zmian. Wartość jest ta sama co na podstronach
+        filarowych, bo H2 stoi bezpośrednio w sekcji, bez karty
+        (rozstrzygnięcie 4). Ograniczenie zapisane świadomie:
+        scroll-margin działa na SKOK, ale nie na wędrówkę fokusu
+        klawiaturą — to jest luka 2.4.11 (AA) wspólna dla całego
+        serwisu i nie zamyka jej ten etap; patrz handoff, punkt
+        dla właściciela 3.
+     DODATKOWO, poza kandydatami:
+     8. id nagłówka = „podstrona-h1" (NaglowekPodstrony.tsx:18 i :20
+        mają je na sztywno). Makieta deklarowała reużycie „bez zmian"
+        i pisała „strona-h1" — to wdraża zły odruch przy implementacji
+        1:1 i kończy się dwoma id na jednej stronie albo martwym
+        aria-labelledby.
+     9. Komentarz przy „30 minut" mówił o „komponencie liczby", który
+        w tym repo nie istnieje. Mechanizm rzeczywisty: import
+        content/facts.json w page.tsx + wstawka ICU w kluczu messages
+        (precedens: funkcje/pozyskiwanie/page.tsx:49-50 i :102).
+        Makieta wskazująca nieistniejący komponent zmusza implementację
+        do zgadywania. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  a { color: var(--kolor-rola-link); }
+  a:hover, a:active { color: var(--kolor-rola-link-aktywny); }
+  .sekcja { padding: 2.5rem 1rem; }
+  .wnetrze { max-width: var(--wymiar-kontener-strony); margin-inline: auto; }
+  /* S2 — nagłówek strony (NaglowekPodstrony bez zmian) */
+  .naglowek h1 {
+    font-size: clamp(1.625rem, 4vw + 0.75rem, 2.5rem);
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .naglowek p {
+    margin: 0;
+    max-width: var(--wymiar-miara-akapitu);
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 1.125rem;
+  }
+  /* S3 — spis treści (SpisTresci BEZ ZMIAN; etykieta aria-hidden,
+     accessible name z aria-label nav-u — jak na podstronach).
+     ROZSTRZYGNIĘCIE 6: rysunek 1:1 ze SpisTresci.module.css —
+     bez cyfr, kreska inline-start, siatka 0.5rem, miara kolumny. */
+  .spis { padding: 0 1rem 1.5rem; }
+  .spis__wnetrze { max-width: var(--wymiar-kontener-strony); margin-inline: auto; }
+  .spis__etykieta {
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+  .spis ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-inline-start: 0.875rem;
+    border-inline-start: 0.0625rem solid var(--kolor-rola-kreska);
+    display: grid;
+    gap: 0.5rem;
+    max-width: var(--wymiar-miara-kolumny);
+    font-size: 0.9375rem;
+  }
+  /* S4 — ścieżka rozpoznania (nowy komponent SciezkaRozpoznania).
+     ROZSTRZYGNIĘCIE 4: sekcja na tle strony, zero powierzchni,
+     zero promienia; wnętrze na kontenerze strony jak każda sekcja
+     serwisu — długość wiersza trzyma miara akapitu, nie wnętrze. */
+  .sciezka h2 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+    max-width: 30ch;
+    text-wrap: balance;
+    scroll-margin-block-start: 5rem;              /* W4 + rozstrzygnięcie 7 */
+  }
+  /* ROZSTRZYGNIĘCIE 1: ból nosi POZYCJA (zawsze pierwszy akapit po H2,
+     kontrakt komponentu) i STOPIEŃ (1.125rem — istniejący stopień lidu),
+     nie kolor. Rejestr tekstu podstawowego, bo drugorzędny znaczy
+     na serwisie „granica". */
+  .sciezka__boli {
+    margin: 0 0 1.5rem;
+    max-width: var(--wymiar-miara-akapitu);
+    font-size: 1.125rem;
+  }
+  .sciezka__robi { margin: 0 0 1rem; max-width: var(--wymiar-miara-akapitu); }
+  /* ROZSTRZYGNIĘCIE 3: wiersz planu jako człon ścieżki — do lewej,
+     w mierze akapitu, odcięty kreską. Kreska × tło = 1,20:1
+     (wyliczone 2026-08-13) — dekoracja w sankcjonowanym zakresie
+     „separatory", nie nośnik informacji. Jedno <p> na zdanie
+     sankcjonowane + osobne <p> na link do /cennik. */
+  .sciezka__plan {
+    margin: 1.75rem 0 1.5rem;
+    max-width: var(--wymiar-miara-akapitu);
+    border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
+    padding-block-start: 1rem;
+  }
+  .sciezka__plan p { margin: 0 0 0.5rem; }
+  .sciezka__plan p:last-child { margin: 0; }
+  /* ROZSTRZYGNIĘCIE 2: granica 1:1 z ModulFunkcji.module.css:35-41 */
+  .sciezka__granica {
+    margin: 0;
+    max-width: var(--wymiar-miara-akapitu);
+    color: var(--kolor-rola-tekst-drugorzedny);
+    border-inline-start: 0.1875rem solid var(--kolor-rola-kreska);
+    padding-inline-start: 0.875rem;
+  }
+  /* S5 — zamknięcie (Zamkniecie, wariant krótki). Wartości WŁASNE
+     komponentu, nie dziedziczone po .sekcja — Zamkniecie.module.css
+     ma padding 3rem, line-height 1.6 i wnętrze na miarę kolumny. */
+  .zamkniecie {
+    padding: 3rem 1rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .zamkniecie .wnetrze { max-width: var(--wymiar-miara-kolumny); }
+  .cta {
+    display: inline-block;
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: var(--wymiar-promien);
+  }
+  .cta:hover, .cta:active { background: var(--kolor-rola-interakcja-aktywna); }
+  .zamkniecie__zdanie {
+    margin: 1rem 0 0;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 0.9375rem;
+  }
+</style>
+</head>
+<body>
+<main id="tresc">
+
+<!-- S1 — nawigacja z layoutu, „Dla kogo" z aria-current="page",
+     BEZ okruszków (D-D2a). W HF pominięta jak w K12. -->
+
+<!-- S2 -->
+<section class="sekcja naglowek" aria-labelledby="podstrona-h1">
+  <div class="wnetrze">
+    <h1 id="podstrona-h1">Pracujesz sama, budujesz zespół albo prowadzisz
+    strukturę.</h1>
+    <p>Przy każdej z tych dróg co innego jest trudne, co innego robi
+    Catherly i gdzie indziej się zatrzymuje.</p>
+  </div>
+</section>
+
+<!-- S3 — pozycje spisu = H2 ścieżek verbatim, w kolejności sekcji -->
+<nav class="spis" aria-label="Na tej stronie">
+  <div class="spis__wnetrze">
+    <p class="spis__etykieta" aria-hidden="true">Na tej stronie</p>
+    <ol role="list">
+      <li><a href="#pracujesz-sama">Wszystko trzymasz jeszcze w głowie i w wiadomościach.</a></li>
+      <li><a href="#budujesz-zespol">Masz zespół. Pytanie, komu dziś pomóc, a komu nie przeszkadzać.</a></li>
+      <li><a href="#prowadzisz-strukture">Struktura urosła, a decyzje wciąż przechodzą przez ciebie.</a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- S4 — ścieżka 1 -->
+<section class="sekcja sciezka" aria-labelledby="pracujesz-sama">
+  <div class="wnetrze">
+    <h2 id="pracujesz-sama">Wszystko trzymasz jeszcze w głowie
+    i w wiadomościach.</h2>
+
+    <p class="sciezka__boli">Rano decydujesz od nowa, od czego zacząć:
+    notatki są w telefonie, ustalenia w wiadomościach, terminy
+    w kilku miejscach naraz. Wieczorem nie masz pewności, czy o kimś
+    ważnym nie zapomniałaś.</p>
+
+    <p class="sciezka__robi">Kolejność rozmów układasz
+    w <a href="/funkcje/pozyskiwanie#dmo">Dziennym Planie Działania</a>
+    — dzień zaczynasz od konkretu, nie od zastanawiania się. Terminy
+    rozmów wpisujesz do
+    <a href="/funkcje/pozyskiwanie#kalendarz">kalendarza z przypomnieniami</a>
+    — 30 minut przed każdą rozmową Catherly przypomina ci o niej.</p>
+    <!-- ROZSTRZYGNIĘCIE 9: „30 minut" NIE jest literałem. Mechanizm
+         istniejący w repo: import content/facts.json w page.tsx
+         (klucz przypomnienie-kalendarza-minuty) + wstawka ICU
+         {minuty} w kluczu messages — precedens
+         funkcje/pozyskiwanie/page.tsx:49-50 i :102. Komponentu liczby
+         w tym repo nie ma; literał w JSX nie przejdzie lintera liczb. -->
+
+    <p class="sciezka__robi">Gdy ktoś pyta cię o współpracę,
+    przekazujesz link do swojego
+    <a href="/funkcje/pozyskiwanie#formularz">formularza zgłoszeniowego</a>
+    — wypełnione zgłoszenie trafia prosto do twojej bazy kontaktów.
+    Trudną rozmowę przechodzisz najpierw na sucho w
+    <a href="/funkcje/pozyskiwanie#sala-treningowa">Sali Treningowej</a>.</p>
+
+    <p class="sciezka__robi">Post zaczynasz od
+    <a href="/funkcje/tresci#szablony">gotowego szablonu</a>, nie od
+    pustej strony. <a href="/funkcje/tresci#tarcza">Tarcza</a> zaznacza
+    ryzykowne sformułowania, zanim go opublikujesz.</p>
+
+    <!-- ROZSTRZYGNIĘCIE 3: wiersz planu jako człon ścieżki.
+         Ścieżka 1 — JEDNO zdanie planu + osobny akapit linku. -->
+    <div class="sciezka__plan">
+      <p>Wszystko powyżej działa od planu Starter.</p>
+      <p><a href="/cennik">Zobacz cennik</a></p>
+    </div>
+
+    <p class="sciezka__granica">Catherly nie znajdzie za ciebie
+    kontaktów ani nie poprowadzi rozmów — ludzi do formularza kierujesz
+    sama, porządek dnia dostajesz.</p>
+  </div>
+</section>
+
+<!-- S4 — ścieżka 2: wiersz planu DWUZDANIOWY (Starter + pełna forma
+     „W planie Growth…" — rejestr warunków powrotu poz. 11) -->
+<section class="sekcja sciezka" aria-labelledby="budujesz-zespol">
+  <div class="wnetrze">
+    <h2 id="budujesz-zespol">Masz zespół. Pytanie, komu dziś pomóc,
+    a komu nie przeszkadzać.</h2>
+
+    <p class="sciezka__boli">Każda osoba w twoim zespole jest w innym
+    miejscu: jedna dopiero się wdraża, inna wyhamowała po dobrym
+    starcie. Nie masz tego w jednym widoku, więc dowiadujesz się
+    w rozmowie — zwykle później, niż chciałaś.</p>
+
+    <p class="sciezka__robi"><a href="/funkcje/wyniki#pulpit">Pulpit</a>
+    pokazuje aktualny stan: sprzedaż, aktywne kontakty, aktywność
+    zespołu — wszystko w jednym miejscu. Nową osobę wdrażasz przez
+    <a href="/funkcje/zespol#kreator-wdrozeniowy">kreator wdrożeniowy</a>:
+    profil, cele, materiały, zaproszenie.</p>
+
+    <p class="sciezka__robi">Potem prowadzisz ją przez
+    <a href="/funkcje/zespol#pierwsze-90-dni">Pierwsze 90 Dni</a>: misje
+    mówią jej, co teraz, a cztery fazy pokazują, dokąd zmierza.
+    <a href="/funkcje/zespol#osiagniecia">Osiągnięcia</a> zbiera twój
+    zespół według gotowych reguł: odznaki za kolejne kroki, a przy
+    powrocie po przerwie serię chroni żeton łaski.</p>
+
+    <!-- Ścieżka 2 — DWA zdania planu, każde własnym akapitem:
+         pełna forma „W planie Growth…" nie doklejona do zdania
+         Startera (rejestr warunków powrotu, poz. 11). -->
+    <div class="sciezka__plan">
+      <p>Wszystko powyżej działa od planu Starter.</p>
+      <p>W planie Growth widzisz sygnały ryzyka odejścia i dostajesz
+      gotowe zdanie otwierające rozmowę.</p>
+      <p><a href="/cennik">Zobacz cennik</a></p>
+    </div>
+
+    <p class="sciezka__granica">Catherly nie oceni za ciebie, kto
+    wyhamował — widzisz tylko to, co ty i twój zespół zapisujecie
+    w aplikacji, a rozmowę prowadzisz ty.</p>
+  </div>
+</section>
+
+<!-- S4 — ścieżka 3: wiersz planu TRZYZDANIOWY (Starter + Growth + Pro);
+     zdanie Pro zawiera ciąg reużyty znak w znak z cennika -->
+<section class="sekcja sciezka" aria-labelledby="prowadzisz-strukture">
+  <div class="wnetrze">
+    <h2 id="prowadzisz-strukture">Struktura urosła, a decyzje wciąż
+    przechodzą przez ciebie.</h2>
+
+    <p class="sciezka__boli">Pytania nowych osób, treści czekające na
+    twoje zdanie, wątpliwość, co wolno napisać na którym rynku — każda
+    z tych rzeczy czeka na ciebie. Godzin w tygodniu nie przybywa.</p>
+
+    <p class="sciezka__robi"><a href="/funkcje/zespol#zatwierdzanie-zespolu">Treści
+    zespołu zatwierdzasz</a> u siebie: akceptujesz albo odrzucasz,
+    a zmianę statusu od razu widzi cała struktura.
+    <a href="/funkcje/zespol#paszport-zgodnosci">Paszport zgodności</a>
+    sprawdza twój komunikat pod kątem wymogów czterech jurysdykcji,
+    zanim go wyślesz — różnic między rynkami nie musisz pamiętać.</p>
+
+    <p class="sciezka__robi"><a href="/funkcje/zespol#akademia">Akademia</a>
+    odblokowuje kolejny moduł dopiero po ukończeniu poprzedniego — nowa
+    osoba nie pyta cię, od czego zacząć, a treści szkoleniowe dodaje
+    administrator.</p>
+
+    <!-- Ścieżka 3 — TRZY zdania planu (Starter + Growth + Pro),
+         każde własnym akapitem; zdanie Pro niesie ciąg reużyty
+         znak w znak z cennika. -->
+    <div class="sciezka__plan">
+      <p>Wszystko powyżej działa od planu Starter.</p>
+      <p>W planie Growth masz widok całego drzewa struktury.</p>
+      <p>Czysty eksport — twoje materiały bez sygnatury polecającej —
+      jest w planie Pro.</p>
+      <p><a href="/cennik">Zobacz cennik</a></p>
+    </div>
+
+    <p class="sciezka__granica">Paszport zgodności nie daje prawnej
+    gwarancji ani porady — sprawdza komunikat według reguł,
+    a zatwierdzenia i rozmowy z ludźmi zostają po twojej stronie.</p>
+  </div>
+</section>
+
+<!-- MILCZENIE /dla-kogo (rejestr poz. 12): raporty struktury
+     i sponsora, Liga zespołu, Benchmarki, Hive Coach — za bramką
+     Growth, ale NA STRONIE nie padają. W HF widać to jako brak
+     czwartego akapitu w ścieżce 3. -->
+
+<!-- S5 — wariant krótki K11, JEDNO na całą stronę (nie po ścieżce) -->
+<section class="sekcja zamkniecie">
+  <div class="wnetrze">
+    <a class="cta" href="/login">Sprawdź, jak działa</a>
+    <p class="zamkniecie__zdanie">Rezygnujesz w każdej chwili.</p>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

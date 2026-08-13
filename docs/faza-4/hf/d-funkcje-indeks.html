@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF Etap D — /funkcje (indeks wg zadań dnia, po panelu projektu)</title>
+<link rel="stylesheet" href="../../../src/styles/generated/tokeny.css">
+<style>
+  /* HF Etapu D — /funkcje jako INDEKS wg zadań dnia.
+     STATUS: PO PANELU PROJEKTU 2026-08-13. Ta makieta nie zadaje już
+     pytań — jest zapisem tego, co postanowiono. Handoff:
+     docs/faza-4/komponenty/handoff-etap-d.md.
+     Treść: content/pl/funkcje.md (OBOWIĄZUJE, D-D1…D-D21).
+     Wartości wyłącznie var(--…); rem/ch; tokeny wymiarów ADR-028.
+     Zero JS. Mobile-first 390 px. Bez okruszków (D-D2a).
+     Bez spisu treści (D-D20 doprecyzowane 2026-08-13: „Na tej
+     stronie" jest stałą PODSTRON funkcji; indeks sam jest nawigacją).
+
+     CO TA STRONA MUSI UNIEŚĆ, A CZEGO NIE MIAŁ SZABLON K12:
+     33 linki na jednym ekranie (11+10+6+6) bez ucięcia listy —
+     brief przesądza, że przy ciasnocie rozstrzyga UKŁAD, nie skrót
+     treści. Blok NIE ma slotu obrazu (indeks nie obiecuje ekranu).
+
+     ROZSTRZYGNIĘCIA PANELU PROJEKTU (2026-08-13):
+     1. ZNACZNIK LISTY → <ol role="list"> z list-style: none.
+        Kolejność pozycji NIE jest redakcyjna: sprawdzona znak w znak
+        z tablicami MODULY w czterech page.tsx — jest kolejnością
+        modułów strony docelowej, więc <ol> ją zapisuje, a <ul> gubi.
+        Widocznych cyfr nie ma (czytałyby się jako ranking, którego
+        treść nie stawia); precedens SpisTresci.tsx:35. role="list"
+        jest WARUNKIEM, nie ozdobą: przy list-style: none Safari
+        i VoiceOver zdejmują semantykę listy razem z liczbą pozycji,
+        a liczba pozycji jest jedynym słyszalnym dowodem
+        kompletności listy (precedens PasekPotwierdzen.tsx:14).
+     2. POZYCJE KIERUNKU → mikroetykieta USUNIĘTA, pozycje wchodzą
+        bez kwalifikatora. Panel nie ma tu władzy w dwie strony:
+        kwalifikator jest NOWYM CIĄGIEM WIDOCZNYM (sankcja
+        właściciela + messages ×3), a samo pytanie zamknęło już
+        D-D6 z uzasadnieniem „etykieta «asystent AI» to gołe
+        wyrażenie rzeczownikowe bez czasownika — nie orzeka trybu
+        dokonanego i nie podnosi poziomu obietnicy"; korekta
+        wyłącznie na indeksie daje rozjazd indeks ↔ podstrony,
+        czyli stan gorszy od dziedziczonej niejasności. Trzy
+        soczewki chciały wariantu A — przegrywają nie na argumencie
+        projektowym (ten jest mocny), tylko na braku sankcji.
+        DLA WŁAŚCICIELA: patrz handoff, punkt 1 i 2.
+     3. BLOK → SEKCJA na tle strony, rozdzielona kreską; karta
+        usunięta (wszystkie cztery soczewki zgodnie). Karta była
+        deklaracja w deklarację kartą SekcjaKierunku.module.css:22-27,
+        a ten wzorzec na czterech podstronach filarowych znaczy
+        „to jest kierunek, nie moduł DZIAŁA" — oddanie go czterem
+        blokom z 31 modułami DZIAŁA nie podnosi obietnicy, ale kasuje
+        jedyny marker, który ją OBNIŻA. Dodatkowo karta kładła
+        33 linki na powierzchni, czyli uruchamiała pary link
+        i link-aktywny × powierzchnia, których komentarz roli
+        w design/tokens.json nie wylicza. Na tle strony obie pary są
+        zapisane: link × tło 6,47:1, link-aktywny × tło 8,45:1.
+        Kreska × tło = 1,20:1 — dekoracja w sankcjonowanym zakresie
+        „separatory" (komentarz roli, panel K2).
+     4. UKŁAD LISTY → JEDNA KOLUMNA ZAWSZE; @media usunięte.
+        Pomiar soczewki rytmu: kolumny dzielą listę 11-pozycyjną
+        6/5 na wspólnej linii bazowej, więc wzrok paruje poziomo
+        pozycje, których nic nie łączy, a kolejność treści wymaga
+        zjazdu i powrotu. Cena rezygnacji zmierzona: +529 px, czyli
+        2,57 → 3,20 ekranu na desktopie, przy podstronie docelowej
+        mierzącej tam ok. 6 ekranów. W systemie nie ma ani jednego
+        układu wielokolumnowego, a SpisTresci.module.css:2-3 ma
+        wprost „kolumna zawsze — bez wariantów układu". Zwartość
+        listy daje max-width miary kolumny, nie łamanie ciągu.
+     5. KOTWICE BLOKÓW → margines należy się bez wyjątku, wartość
+        5rem POPRAWNA. Margines należy do CELU skoku, nie do jego
+        źródła: kotwica bez linku na stronie i tak jest celem linków
+        kampanijnych, /pomoc z Etapu E i paska adresu. 5rem jest
+        poprawne dokładnie dlatego, że blok jest sekcją (rozstrzygnięcie
+        3) — H2 stoi bezpośrednio w sekcji, jak w K12; przy karcie
+        trzeba by 6.5rem, bo pod nagłówek wjeżdżałaby jej krawędź.
+     6. GĘSTOŚĆ DOTYKOWA → odstęp przeniesiony DO WNĘTRZA linku:
+        a { display: block; padding-block: 0.3125rem } i li + li
+        bez marginesu. Deklaracja poprzedniej makiety („efektywna
+        wysokość celu ≈ 2.75rem = 44 px") była błędem rachunku
+        i błędem modelu: wiersz to 1rem × 1.5 = 24 px, z odstępem
+        0.625rem daje skok 34 px = 2,125rem, a sam klikalny cel to
+        pudełko inline linku, zmierzone 18 px. Tak narysowana lista
+        zdawała 2.5.8 (AA) wyłącznie wyjątkiem odstępu i nie zdawała
+        2.5.5 (AAA). Po przeniesieniu odstępu do linku cel ma 34 px
+        wysokości na pełną szerokość kolumny, SKOK POZOSTAJE 34 px,
+        strona nie rośnie ani o piksel, a kryterium jest spełnione
+        WPROST. Zły pomiar w makiecie jest gorszy niż brak pomiaru,
+        bo usypia następny panel (ADR-018).
+     DODATKOWO, poza kandydatami:
+     7. Strzałka „→" wychodzi z ciągu do CSS z PUSTYM tekstem
+        alternatywnym (content: "→" / "") — D-D10 mówi wprost, że
+        dokłada ją komponent, a poprzednia makieta rysowała ją jako
+        znak wewnątrz <a>, więc czytnik ogłaszałby ją w nazwie linku
+        cztery razy. Precedens: Okruszki.module.css:25 (W3).
+     8. .blok__wejscie traci font-weight: 600. Link wejściowy był
+        najcięższym tekstem bloku — cięższym niż 33 pozycje, czyli
+        niż sedno indeksu — i sugerował, że lista jest wyborem,
+        a pełna wersja jest gdzie indziej. Lista JEST kompletna.
+     9. Lokalna receptura podkreślenia (text-decoration-thickness
+        + text-underline-offset) usunięta: byłaby trzecią w serwisie
+        obok domyślnej z globals.css i nawigacyjnej 0.2em. Ujednolicenie
+        podkreśleń w globals zmienia strony wdrożone w Etapach A–C,
+        więc jest decyzją nazwaną poza tym etapem, nie skutkiem
+        ubocznym Etapu D.
+    10. id nagłówka = „podstrona-h1" (NaglowekPodstrony.tsx:18 ma je
+        na sztywno). Makieta deklarowała reużycie „bez zmian"
+        i zmieniała id — to wdraża zły odruch przy implementacji 1:1.
+    11. Blok 2 uzupełniony do PEŁNYCH 10 pozycji z content/pl/funkcje.md.
+        Makieta jest materiałem pomiarowym; skrót do 4 pozycji ukrywał
+        najgorszy przypadek gęstości.
+    12. OGRANICZENIE ZAPISANE ŚWIADOMIE, nie naprawiane w tym etapie:
+        scroll-margin ratuje SKOK do kotwicy, ale nie ratuje wędrówki
+        fokusu klawiaturą — sticky nav potrafi przykryć element, który
+        właśnie dostał fokus (2.4.11 Focus Not Obscured, AA).
+        Lekarstwem jest scroll-padding-block-start na html plus zdjęcie
+        scroll-margin z komponentów, a to rusza ModulFunkcji,
+        SekcjaKierunku i globals.css, czyli strony wdrożone w Etapach
+        A–C. Panel nie rozszerza sobie zakresu: punkt dla właściciela,
+        patrz handoff. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+  a { color: var(--kolor-rola-link); }
+  a:hover, a:active { color: var(--kolor-rola-link-aktywny); }
+  .sekcja { padding: 2.5rem 1rem; }
+  .wnetrze { max-width: var(--wymiar-kontener-strony); margin-inline: auto; }
+  /* I2 — nagłówek strony (komponent NaglowekPodstrony bez zmian) */
+  .naglowek h1 {
+    font-size: clamp(1.625rem, 4vw + 0.75rem, 2.5rem);
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .naglowek p {
+    margin: 0;
+    max-width: var(--wymiar-miara-akapitu);
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 1.125rem;
+  }
+  /* I3 — blok zadania dnia (nowy komponent BlokZadaniaDnia).
+     ROZSTRZYGNIĘCIE 3: sekcja na tle strony w rytmie 2.5rem (jak
+     każda sekcja systemu), rozdzielona kreską pełnej szerokości.
+     Zero powierzchni, zero promienia — powierzchnia zostaje
+     zarezerwowana dla karty kierunku i ramek zrzutu. */
+  .blok + .blok { border-block-start: 0.0625rem solid var(--kolor-rola-kreska); }
+  .blok h2 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+    max-width: 30ch;
+    text-wrap: balance;
+    scroll-margin-block-start: 5rem;          /* W4 + rozstrzygnięcie 5 */
+  }
+  .blok__wprowadzenie {
+    margin: 0 0 1.25rem;
+    max-width: var(--wymiar-miara-akapitu);
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+  /* ROZSTRZYGNIĘCIE 1 i 4: <ol role="list">, bez cyfr, jedna kolumna
+     zawsze, miara kolumny zamiast pasa przez cały ekran. */
+  .blok__lista {
+    list-style: none;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    max-width: var(--wymiar-miara-kolumny);
+  }
+  /* ROZSTRZYGNIĘCIE 6: cel dotykowy budowany paddingiem SAMEGO linku,
+     nie odstępem między wierszami. Wysokość celu 24 px + 2×5 px
+     = 34 px na pełną szerokość kolumny; skok środek-do-środka bez
+     zmian 34 px, długość strony bez zmian. 2.5.8 spełnione wprost. */
+  .blok__lista a { display: block; padding-block: 0.3125rem; }
+  .blok__wejscie { margin: 0; }
+  /* ROZSTRZYGNIĘCIE 7: strzałka dekoracyjna z PUSTYM tekstem
+     alternatywnym — nazwa dostępna linku bez glifu (W3, Okruszki). */
+  .blok__wejscie a::after { content: "→" / ""; margin-inline-start: 0.375rem; }
+  /* I5 — plan jednym wierszem (PlanJednymWierszem bez zmian:
+     padding 2.5rem 1rem, środkowanie, wnętrze na kontener strony) */
+  .plan { text-align: center; }
+  .plan p { margin: 0 0 0.5rem; }
+  /* I6 — zamknięcie (Zamkniecie, wariant krótki). Wartości WŁASNE
+     komponentu, nie dziedziczone po .sekcja — Zamkniecie.module.css
+     ma padding 3rem, line-height 1.6 i wnętrze na miarę kolumny. */
+  .zamkniecie {
+    padding: 3rem 1rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .zamkniecie .wnetrze { max-width: var(--wymiar-miara-kolumny); }
+  .cta {
+    display: inline-block;
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: var(--wymiar-promien);
+  }
+  .cta:hover, .cta:active { background: var(--kolor-rola-interakcja-aktywna); }
+  .zamkniecie__zdanie {
+    margin: 1rem 0 0;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-size: 0.9375rem;
+  }
+</style>
+</head>
+<body>
+<main id="tresc">
+
+<!-- I1 — nawigacja z layoutu; „Funkcje" dostaje aria-current="page"
+     (to JEST ta strona, nie rodzic — różnica wobec A-1 na podstronach).
+     BEZ okruszków (D-D2a). W HF nawigacja pominięta jak w K12. -->
+
+<!-- I2 -->
+<section class="sekcja naglowek" aria-labelledby="podstrona-h1">
+  <div class="wnetrze">
+    <h1 id="podstrona-h1">Funkcje ułożone tak, jak idzie twój dzień</h1>
+    <p>Wybierasz to, co masz teraz do zrobienia, a nazwy funkcji
+    znajdziesz po drodze.</p>
+  </div>
+</section>
+
+<!-- I3 — blok 1: PEŁNA lista 11 pozycji -->
+<section class="sekcja blok" aria-labelledby="pozyskiwanie">
+  <div class="wnetrze">
+    <h2 id="pozyskiwanie">Rano widzisz, do kogo się odezwać.</h2>
+    <p class="blok__wprowadzenie">Dzień zaplanowany w Dziennym Planie
+    Działania zaczyna się od konkretu. Terminy, zadania i kontakty
+    trzymasz w jednym miejscu, nie w głowie.</p>
+    <ol class="blok__lista" role="list">
+      <li><a href="/funkcje/pozyskiwanie#formularz">formularz zgłoszeniowy z publiczną stroną</a></li>
+      <li><a href="/funkcje/pozyskiwanie#kalendarz">Kalendarz z przypomnieniami</a></li>
+      <li><a href="/funkcje/pozyskiwanie#subskrypcja-kalendarza">subskrypcja kalendarza w telefonie</a></li>
+      <li><a href="/funkcje/pozyskiwanie#eksport-vcard">eksport kontaktów do vCard</a></li>
+      <li><a href="/funkcje/pozyskiwanie#qr-polecajacy">kod QR polecający</a></li>
+      <li><a href="/funkcje/pozyskiwanie#program-polecen">program poleceń ze śledzeniem</a></li>
+      <li><a href="/funkcje/pozyskiwanie#dmo">DMO — Dzienny Plan Działania</a></li>
+      <li><a href="/funkcje/pozyskiwanie#zadania">Zadania</a></li>
+      <li><a href="/funkcje/pozyskiwanie#sala-treningowa">Sala Treningowa</a></li>
+      <li><a href="/funkcje/pozyskiwanie#plany-rozmow">plany rozmów i debriefy</a></li>
+      <!-- ROZSTRZYGNIĘCIE 2: pozycja kierunku wchodzi BEZ kwalifikatora
+           (D-D6). Ostatnia na liście swojego bloku, zgodnie z kolejnością
+           podstrony (SekcjaKierunku po ostatnim module). -->
+      <li><a href="/funkcje/pozyskiwanie#asystent-ai">asystent AI</a></li>
+    </ol>
+    <p class="blok__wejscie"><a href="/funkcje/pozyskiwanie">Zobacz wszystko o pozyskiwaniu</a></p>
+  </div>
+</section>
+
+<!-- blok 2 — PEŁNE 10 pozycji (rozstrzygnięcie 11) -->
+<section class="sekcja blok" aria-labelledby="tresci">
+  <div class="wnetrze">
+    <h2 id="tresci">Siadasz do postów i nie zaczynasz od pustej kartki.</h2>
+    <p class="blok__wprowadzenie">Post układasz z gotowego szablonu,
+    planujesz go w kalendarzu i wysyłasz do zatwierdzenia u liderki —
+    publikujesz sama. Ryzykowne sformułowanie wyłapujesz przed
+    publikacją, nie po niej.</p>
+    <ol class="blok__lista" role="list">
+      <li><a href="/funkcje/tresci#studio">Studio</a></li>
+      <li><a href="/funkcje/tresci#szablony">szablony z wersjonowaniem</a></li>
+      <li><a href="/funkcje/tresci#hashtagi">zestawy hashtagów</a></li>
+      <li><a href="/funkcje/tresci#kalendarz-publikacji">Kalendarz publikacji</a></li>
+      <li><a href="/funkcje/tresci#zatwierdzanie">zatwierdzanie u liderki</a></li>
+      <li><a href="/funkcje/tresci#tarcza">Tarcza</a></li>
+      <li><a href="/funkcje/tresci#pieczec-etyczna">Pieczęć Etyczna</a></li>
+      <li><a href="/funkcje/tresci#uczenie-glosu">uczenie profilu głosu</a></li>
+      <li><a href="/funkcje/tresci#tablica-postow">tablica postów z filtrami</a></li>
+      <li><a href="/funkcje/tresci#asystent-ai">asystent AI</a></li>
+    </ol>
+    <p class="blok__wejscie"><a href="/funkcje/tresci">Zobacz wszystko o treściach</a></p>
+  </div>
+</section>
+
+<!-- SPROSTOWANIE PANELU + PUNKT DLA WŁAŚCICIELA (fakt sprawdzony
+     u źródła, nie z pamięci; zastępuje eskalację poprzedniej makiety).
+
+     Poprzednia makieta twierdziła, że adnotacja *(pozycja kierunku)*
+     przy Studiu w content/pl/funkcje.md NIE STOI. To NIEPRAWDA:
+     content/pl/funkcje.md w. 90 brzmi dosłownie
+     „1. Studio *(pozycja kierunku)* → /funkcje/tresci#studio".
+
+     Rozjazd jest realny, ale w drugą stronę, niż zgłosiła makieta.
+     Studio ma status obietnicy DZIAŁA i to jest udokumentowane
+     trzykrotnie: tresci/page.tsx:81-83 („BEZ slotu zrzutu (…) status
+     obietnicy DZIAŁA bez zmian"); protokół
+     tresci-trzy-podstrony-po-panelach.md w. 19 („F4-2 dotyczy zrzutu,
+     nie statusu obietnicy") i w. 37 („Studio w języku kierunku MIMO
+     statusu DZIAŁA"). Protokół, z którego ta treść powstała, liczy
+     w tabeli bloku 2 tylko asystenta AI jako [POZYCJA KIERUNKU]
+     (tresci-etap-d-po-panelach.md w. 244 i 253) i mówi wprost:
+     „#studio (…) jest kotwicą MODUŁU 1 /funkcje/tresci, nie osobną
+     sekcją — dwie sekcje kierunku w kodzie to #asystent-ai ×2"
+     (w. 369). Sankcja D-D6 liczy 31 modułów + 2 sekcje kierunku.
+
+     Wniosek panelu: adnotacja przy Studiu w content/pl/funkcje.md
+     jest adnotacją REDAKCYJNĄ (nie ciągiem widocznym) niezgodną
+     z protokołem i z kodem. Pozycji kierunku jest DWIE z 33.
+     Panel nie dotyka treści — punkt idzie do właściciela, patrz
+     handoff „Punkty dla właściciela", poz. 3. Dla PROJEKTU nie ma
+     to dziś skutku, bo rozstrzygnięcie 2 usuwa kwalifikator
+     w całości; skutek pojawia się dopiero, gdyby właściciel
+     kwalifikator sankcjonował. -->
+
+<!-- blok 3 — pełny (6 pozycji) -->
+<section class="sekcja blok" aria-labelledby="zespol">
+  <div class="wnetrze">
+    <h2 id="zespol">Nowa osoba dołącza, a ty nie tłumaczysz od nowa.</h2>
+    <p class="blok__wprowadzenie">Kreator wdrożeniowy prowadzi nową
+    osobę przez etapy, a przez Pierwsze 90 Dni z misjami i fazami
+    prowadzisz ją ty. Treści zespołu zatwierdzasz, a komunikat
+    sprawdzasz, zanim go wyślesz.</p>
+    <ol class="blok__lista" role="list">
+      <li><a href="/funkcje/zespol#kreator-wdrozeniowy">kreator wdrożeniowy</a></li>
+      <li><a href="/funkcje/zespol#zatwierdzanie-zespolu">zatwierdzanie treści zespołu</a></li>
+      <li><a href="/funkcje/zespol#pierwsze-90-dni">Pierwsze 90 Dni</a></li>
+      <li><a href="/funkcje/zespol#osiagniecia">Osiągnięcia</a></li>
+      <li><a href="/funkcje/zespol#paszport-zgodnosci">Paszport zgodności</a></li>
+      <li><a href="/funkcje/zespol#akademia">Akademia</a></li>
+    </ol>
+    <p class="blok__wejscie"><a href="/funkcje/zespol">Zobacz wszystko o zespole</a></p>
+  </div>
+</section>
+
+<!-- blok 4 — pełny (6 pozycji) -->
+<section class="sekcja blok" aria-labelledby="wyniki">
+  <div class="wnetrze">
+    <h2 id="wyniki">Wieczorem wiesz, na czym stoisz.</h2>
+    <p class="blok__wprowadzenie">Pulpit pokazuje dzisiejszy stan,
+    a twoje wyniki mają dowód, który zostaje. Sukcesy swoje i zespołu
+    zapisujesz i świętujesz, zanim przykryje je codzienność.</p>
+    <ol class="blok__lista" role="list">
+      <li><a href="/funkcje/wyniki#pulpit">Pulpit</a></li>
+      <li><a href="/funkcje/wyniki#twoj-wrapped">Twój Wrapped</a></li>
+      <li><a href="/funkcje/wyniki#cel">Cel z kamieniami milowymi</a></li>
+      <li><a href="/funkcje/wyniki#sciana-sukcesow">Ściana sukcesów</a></li>
+      <li><a href="/funkcje/wyniki#swiadectwo">Świadectwo</a></li>
+      <li><a href="/funkcje/wyniki#wall-of-proof">Wall of Proof</a></li>
+    </ol>
+    <p class="blok__wejscie"><a href="/funkcje/wyniki">Zobacz wszystko o wynikach</a></p>
+  </div>
+</section>
+
+<!-- I4 — MILCZENIE: cztery bloki, nie pięć. Filar 5 nie ma bloku,
+     słowo „rozliczenia" nie pada. Element strukturalny: w HF widać
+     go wyłącznie jako BRAK piątej sekcji.
+     UWAGA PANELU: po rozstrzygnięciu 3 milczenie niesie liczba
+     nazwanych sekcji i liczba ogłoszonych list (role="list"
+     z rozstrzygnięcia 1) — dlatego oba rozstrzygnięcia są sprzężone
+     i żadnego nie wolno cofnąć osobno. -->
+
+<!-- I5 — bez kopii tabeli porównawczej (D-D1a) -->
+<section class="sekcja plan">
+  <div class="wnetrze">
+    <p>Wszystko powyżej działa od planu Starter.</p>
+    <p><a href="/cennik">Zobacz cennik</a></p>
+  </div>
+</section>
+
+<!-- I6 — wariant krótki K11 -->
+<section class="zamkniecie">
+  <div class="wnetrze">
+    <a class="cta" href="/login">Sprawdź, jak działa</a>
+    <p class="zamkniecie__zdanie">Rezygnujesz w każdej chwili.</p>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
