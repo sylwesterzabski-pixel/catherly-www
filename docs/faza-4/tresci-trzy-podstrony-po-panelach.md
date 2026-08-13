@@ -1,0 +1,120 @@
+# Treści /funkcje/{tresci,zespol,wyniki} — po panelach (do DECYZJI właściciela)
+
+Status: KANDYDAT. Fan-out: workflow 27 agentów (18/21 autorów + 3 ramy + 3 panele; 3 moduły dorobione cyklem autor→panel uzupełniający po awariach StructuredOutput). NOTA PROCEDURALNA: panel podstrony wyniki samowolnie dorobił moduł swiadectwo — wersja ODRZUCONA, zastąpiona pełnym cyklem Prawa 2. Data: 2026-08-13.
+
+
+## /funkcje/tresci (Treści)
+
+**H1:** Piszesz. Tarcza sprawdza. Pieczęć potwierdza.  
+**Zdanie:** Studio uczy się twojego głosu i pilnuje, żeby żadna treść nie złamała twoich zasad.  
+**F8:** Wszystko powyżej działa od planu Starter. Link: Zobacz cennik → /cennik. Rozstrzygnięcie panelu: verbatim z wzorcowej podstrony, ZERO liczb (limit postów miesięcznie wolno pokazać wyłącznie na /cennik); prawdziwość potwierdzona — żaden moduł strony nie ma bramki GROWTH/PRO, a „Czysty eksport” (PRO) świadomie poza F8 (nowa obietnica wymagałaby panelu i decyzji właściciela — rejestr poz. 12).  
+**F9:** Lewy kierunek: „← Wstecz: Pozyskiwanie” → /funkcje/pozyskiwanie (trasa istnieje, link aktywny). Prawy kierunek: „Dalej: Zespół →” → /funkcje/zespol (trasa niezarejestrowana — do czasu rejestracji tekst nieaktywny albo ukryty, bramka linków, tryb wg briefu/HF). Panel sankcjonuje parę „Wstecz/Dalej” ×4: pozyskiwanie [— | Dalej: Treści →] · tresci [← Wstecz: Pozyskiwanie | Dalej: Zespół →] · zespol [← Wstecz: Treści | Dalej: Wyniki →] · wyniki [← Wstecz: Zespół | —]. Uzasadnienie przyjęte za autorem: „Dalej:” już sankcjonowane na wzorcowej stronie; „Wstecz” to kanoniczna para kierunkowa niezakładająca wcześniejszej wizyty (odrzucone „Wróć” i „Poprzednio”); F9 wzorcowej podstrony bez zmian (lewy slot pusty).  
+**F10:** CTA: Sprawdź, jak działa → /login (ADR-023). Zdanie: Rezygnujesz w każdej chwili. Stałe sankcjonowane — bez zmian, identyczne z wzorcową podstroną.  
+**Spis treści:** Na tej stronie — SANKCJA PANELU jako JEDNA etykieta ×4 podstrony (brief, Uzupełnienie C: fan-out proponuje, panel rozstrzyga), retroaktywnie także /pozyskiwanie. „Spis treści” odrzucone (kolizja znaczeniowa na stronie o nazwie Treści — argument autora przyjęty), wariant dłuższy odrzucony (390 px). Rekomendacja panelu: etykieta WIDOCZNA i jako accessible name nav (aria-labelledby); ostateczna widoczność i poziom nagłówka — panel projektu/HF, zgodnie z briefem. Zakres spisu: kotwice ośmiu modułów (litera briefu: „lista linków do kotwic modułów”); sekcja kierunku poza spisem — ewentualne włączenie to decyzja panelu projektu przy HF.  
+**Sekcja kierunku:** H2: Asystent AI. Treść: Z asystentem AI piszesz i edytujesz treści — on proponuje, ty decydujesz. Granica: Asystent nie napisze treści zamiast ciebie — podsuwa pomysły i poprawki, a ty piszesz. — Rozstrzygnięcie: Wariant A autora, treść VERBATIM z tabeli w. 85; granica przyjęta („podsuwa pomysły i poprawki” mieści się w „piszesz i edytujesz — on proponuje”: pomysły=pisanie, poprawki=edycja; dokona
+
+
+*Uwagi panelu (skrót):* 1) Spójność F2↔moduł Studio POTWIERDZONA: F4-2 dotyczy zrzutu (przebudowa wariant C), nie statusu obietnicy — „uczy się głosu” (w. 78) i „pilnuje” (Tarcza, w. 76) mają status DZIAŁA; H1 i zdanie korzyści verbatim z filary.md (OBOWIĄZUJE), zero parafraz. 2) Skrót „Pieczęć” w H1 niesie sankcję filary.md; pełna nazwa „Pieczęć Etyczna” pada w module — warunek słownika spełniony na tej samej stronie. 3) F8 „wszystko powyżej” obejmuje także sekcję kierunku — układ identyczny ze wzorcową podstroną sankcjonowaną D-B1/D-B2; panel nie otwiera tej kwestii na nowo. 4) Kolejność modułów wg tabeli (studio, …
+
+
+| # | Moduł | PO CO TO | CZEGO NIE ROBI |
+|---|---|---|---|
+| 1 | `#studio` | Ten sam pomysł ma wyglądać dobrze w poście i na wydruku — a ty nie chcesz za każdym razem zaczynać od zera. Po to jest Studio: strefy bezpieczne i auto-układ dbają o to, żeby w żadnym formacie nic ważnego się nie ucięło. | Do Studia nie wgrasz zdjęć z telefonu — projekt składasz z tekstu, szablonów i elementów edytora. |
+| 2 | `#szablony` | Wieczorem przygotowujesz post i zamiast pustej strony otwierasz gotowy szablon. Zmieniasz tekst na swój, zapisujesz własną wersję — i następnym razem zaczynasz od niej. | Catherly nie wygeneruje szablonu za ciebie — wybierasz z gotowych i dopasowujesz po swojemu. |
+| 3 | `#hashtagi` | Zestawy hashtagów układasz raz i masz je pod ręką przy każdym poście — dodajesz je jednym kliknięciem. Niczego nie przepisujesz ze starych postów ani z notatek w telefonie. | Catherly nie podpowie ci hashtagów — co jest w zestawie i do którego posta trafi, decydujesz sama. |
+| 4 | `#kalendarz-publikacji` | Każdy pomysł na post od razu dostaje swoje miejsce i datę w kalendarzu. Widzisz, co zaplanowałaś i na kiedy, a gdy plan się zmienia, przesuwasz post na inny dzień — bez układania wszystkiego od nowa. | Catherly nie opublikuje posta za ciebie — kalendarz pokazuje plan, a publikujesz sama. |
+| 5 | `#zatwierdzanie` | Gotowy post wysyłasz do zatwierdzenia — od tej chwili jest u twojej liderki. Gdy go przyjmie albo odrzuci, widzisz to od razu, bez dopytywania w wiadomościach. | O decyzji liderki Catherly nie wyśle ci e-maila — status widzisz w aplikacji. |
+| 6 | `#tarcza` | Ryzykowne sformułowanie wyłapujesz przed publikacją, nie po niej. Reguły Tarczy działają w samej aplikacji — twoja treść nie wychodzi na zewnątrz do sprawdzenia. | Tarcza nie poprawi tekstu za ciebie — wskazuje ryzykowne sformułowania, a co z nimi zrobisz, decydujesz sama. |
+| 7 | `#pieczec-etyczna` | Kończysz projekt, a on dostaje Pieczęć Etyczną — wynik etyczny z publicznym certyfikatem. Na spotkaniu pokazujesz klientce kod QR: skanuje go i sama ogląda certyfikat. | Catherly nie wyśle certyfikatu twojej klientce — komu i kiedy go pokazać, decydujesz sama. |
+| 8 | `#uczenie-glosu` | Piszesz posty tak, jak mówisz do swoich klientek — po swojemu. Catherly uczy się tego stylu z opublikowanych postów i buduje z niego profil głosu twojej marki. | Catherly nie napisze postów za ciebie — profil głosu zapamiętuje twój styl, a piszesz ty sama, własnymi słowami. |
+| 9 | `#tablica-postow` | Wracasz do swoich postów po paru dniach i nie musisz zgadywać, na czym stanęłaś. Filtrujesz tablicę i od razu widzisz, co czeka na zatwierdzenie, a co już zaplanowałaś. | Zasięgów ani polubień tablica nie pokaże — widzisz statusy swoich postów, a ich wyniki sprawdzasz tam, gdzie je opublikowałaś. |
+
+**Ryzyka globalne panelu:**
+- Wiersz 79 tabeli („Tablica postów z filtrami”, DZIAŁA) nie ma modułu w pakiecie — do decyzji właściciela: dziewiąty moduł albo świadome pominięcie; wiersz sformułowany bezosobowo („Przegląd wszystkich postów…”), więc ewentualny moduł wymaga przełożenia na drugą osobę osobnym fan-outem, nie dopiskiem
+- „Liderka”: panel sankcjonuje formę żeńską kartą tonu sekcja 4 (dyskwalifikująca) wobec „lidera” w tabeli w. 75 i „lider” w inwentarzu — wymaga potwierdzenia właściciela i wpisu do słownika nazw (para PL/EN/DE) przed adaptacjami EN/DE; do tego czasu rozjazd tabela↔strona pozostaje jawny.
+- Decyzja F4-2 (Studio w języku kierunku mimo statusu DZIAŁA) musi być dołączona do kontekstu bramkarza i adwersarza — źródło: brief K12, Uzupełnienie Etapu C; bez niej oceniający zgłoszą naruszenie reguły „tekst o funkcji powstaje z tabeli obietnic” (karta tonu 4.9).
+- „Jednym kliknięciem” (moduł hashtagów) — fraza verbatim z tabeli w. 73, nie liczba z facts.json; precedens: moduł 4 pozyskiwania (ta sama fraza z w. 38); jeśli linter liczb potraktuje „jednym” literalnie, rozstrzygnięcie przy implementacji jak przy wzorcowej podstronie.
+- Granice przeczące o funkcjach nieobecnych lub SZKIELET (podpowiadanie hashtagów — nieobecne w inwentarzu; generowanie szablonów AI — czeka na klucz) są prawdziwe NA DZIŚ — obowiązkowy wpis do rejestru warunków powrotu (wzorem poz. 15–18); aktywacja klucza Anthropic unieważni granicę szablonów i wymu
+- Weryfikacje bramkarza w aplikacji przed publikacją (ADR-018: brak dowodu = brak zabezpieczenia): przesunięcie zaplanowanego posta na inny dzień; otwarcie zapisanej wersji szablonu przy kolejnym projekcie; certyfikat Pieczęci oglądany bez konta i logowania; automatyczne nadanie Pieczęci po ukończeniu
+- Nazwy opisowe spoza słownika nazw („Kalendarz publikacji”, „profil głosu marki”, szablony) — przed implementacją potwierdzić z i18n aplikacji, że użytkowniczka odnajdzie je po zalogowaniu (kontrakt szwu app↔www); rozjazd = obietnica nie do odnalezienia.
+- Skład i ilustracje podstrony: jedyne wzmianki publikacyjne to granica kalendarza (przecząca) i „przed publikacją” Tarczy (jej akt) — żaden element wizualny ani sąsiedztwo tekstów nie może zasugerować publikacji przez Catherly, wgrywania własnych zdjęć (Storage atrapa, w. 97) ani głosu mówionego/nagr
+- F9 prawy link (Zespół) prowadzi do trasy niezarejestrowanej — do czasu rejestracji tekst nieaktywny albo ukryty (bramka linków); retroakcja na /pozyskiwanie obejmuje wyłącznie spis treści z etykietą „Na tej stronie” (F9 wzorcowej bez zmian — lewy slot pusty).
+- Prawo 2: brzmienia finalne to rekomendacja panelu do decyzji właściciela; pięć granic zmienionych względem pakietu autorów (studio, szablony, hashtagi, zatwierdzanie, pieczęć) oraz dwie poprawki treści (Studio bez „relacji”, zatwierdzanie z nowym otwarciem) nie przeszły oceny autorskiej — wymagają ś
+
+## /funkcje/zespol (Zespół)
+
+**H1:** Nowa osoba wie, co robić od pierwszego dnia  
+**Zdanie:** Zamiast tłumaczyć od nowa każdemu — kreator wdrożeniowy robi to za ciebie.  
+**F8:** Wszystko powyżej działa od planu Starter. W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę. W planie Growth masz widok całego drzewa struktury. [Link: Zobacz cennik → /cennik]  
+**F9:** Lewy: ← Wstecz: Treści · Prawy: Dalej: Wyniki → (prawy link nieaktywny jako tekst do czasu wpisu /funkcje/wyniki w rejestrze ścieżek — bramka linków; komplet ×4 wg propozycji autora, w tym retroaktywnie „← Wstecz: Pozyskiwanie / Dalej: Zespół →” na /tresci)  
+**F10:** CTA: Sprawdź, jak działa → /login · Zdanie: Rezygnujesz w każdej chwili.  
+**Spis treści:** Na tej stronie  
+**Sekcja kierunku:** BRAK
+
+
+*Uwagi panelu (skrót):* F8: sankcjonuję wariant F8-A — trzy zdania VERBATIM (Starter z precedensu pozyskiwania; oba zdania Growth znak w znak z tabeli :120–121). Powtórzenie „W planie Growth” ×2 celowe i wymagane: pełna forma dla każdej komunikacji poza kartą Growth (słownik, poz. Puls zespołu; rejestr poz. 11) — każde zdanie niesie kwalifikator samodzielnie. F8-B (scalenie) ODRZUCONE: nowe brzmienie względem tabeli i wspólny kwalifikator dla dwóch obietnic. Bez nazw „Puls zespołu”/„Drzewo struktury” w F8 — sankcjonowane zdania ich nie zawierają. Zgodność z zasadą kierunku (F4-2): „widzisz/dostajesz/masz” — język kie…
+
+
+| # | Moduł | PO CO TO | CZEGO NIE ROBI |
+|---|---|---|---|
+| 1 | `#kreator-wdrozeniowy` | Znajoma zdecydowała się dołączyć do twojego zespołu, a twój dzień jest już pełen własnych rozmów. Nie siadasz z nią nad każdym ustawieniem — kreator wdrożeniowy prowadzi ją przez sześć kroków, od profilu i celów po gotowy start. | Kreator nie przenosi danych z innych narzędzi — profil i cele nowa osoba wpisuje w nim sama, krok po kroku. |
+| 2 | `#zatwierdzanie-zespolu` | Osoba z twojego zespołu skończyła post i czeka na twoje zdanie. Akceptujesz albo odrzucasz — a zmianę statusu od razu widzi cała struktura. | Catherly nie opublikuje zatwierdzonego posta za ciebie ani za osobę z zespołu — zatwierdzenie zmienia status, a treść publikuje jej autorka sama. |
+| 3 | `#pierwsze-90-dni` | Nowa osoba pyta cię, co dalej — a ty nie układasz jej planu od zera. Prowadzisz ją przez Pierwsze 90 Dni: misje mówią jej, co teraz, a cztery fazy pokazują, dokąd zmierza. | Catherly nie poprowadzi nowej osoby za ciebie — program daje jej misje i fazy, a rozmowy prowadzisz ty. |
+| 4 | `#osiagniecia` | Współpracowniczka z twojego zespołu wraca po przerwie i jej seria nie zaczyna się od zera — chroni ją żeton łaski. Za kolejne kroki zbiera odznaki i widzi, że codzienna praca się liczy. | Catherly nie pozwoli ci ułożyć własnych odznak ani zasad ich zdobywania — twój zespół zbiera osiągnięcia według gotowych reguł. |
+| 5 | `#paszport-zgodnosci` | To, co wolno napisać na jednym rynku, na innym bywa niedozwolone — i nie musisz trzymać tych różnic w głowie. Zgodność komunikacji z wymogami czterech jurysdykcji sprawdzasz w Paszporcie zgodności, zanim wyślesz. | Paszport zgodności nie daje prawnej gwarancji ani porady — skaner sprawdza komunikat według reguł, a o tym, co wyślesz, decydujesz sama. |
+| 6 | `#akademia` | Nowa osoba z twojego zespołu otwiera Akademię i nie pyta cię, od czego zacząć — kolejny moduł odblokowuje się dopiero po ukończeniu poprzedniego. Ty wracasz do swoich rozmów, a jej ścieżka pilnuje się sama. | Catherly nie przychodzi z gotowymi treściami szkoleniowymi — Akademia pilnuje kolejności przechodzenia modułów, nie tego, co w nich jest. |
+
+**Ryzyka globalne panelu:**
+- NIEKOMPLETNOŚĆ PAKIETU: Filar 3 ma 6 wierszy DZIAŁA, pakiet zawiera 5 modułów — brak modułu „Pierwsze 90 Dni” (tabela-obietnic.md:111), który strona główna zapowiada w konkretach filaru (filary.md:64) i w Parze 1 obaw. Do decyzji właściciela przed HF: dogrywka fan-outu albo świadome pominięcie z uza
+- Rozjazd kroków kreatora POTWIERDZONY odczytem: tabela :109 („materiały, zaproszenie”) ↔ inwentarz :117–118 („social, zaproszenie”) ↔ i18n aplikacji (pl.json:6686–6691: Witaj/Twój Profil/Twój Cel/Social Media/Twoja Strona/Gotowe!). Panel usunął wyliczenie z treści; korekta wiersza tabeli wymaga zlece
+- Rozjazd Akademii: tabela :114 („treści szkoleniowe dodaje administrator”) ↔ i18n aplikacji (sekcja academy: ścieżki tworzy i przypisuje lider — „Utwórz pierwszą, dodaj lekcje i przypisz zespołowi”). Granica sformułowana neutralnie, żeby przetrwała oba rozstrzygnięcia; rola do wyjaśnienia zleceniem Z
+- „Żeton łaski” potwierdzony i18n aplikacji (pl.json:2584, 2590) — ryzyko rozjazdu zamknięte; hasło do wpisania w słownik nazw przy implementacji, żeby adaptacje EN/DE nie wprowadziły „tokenu”.
+- Liczby słowne w treści („sześć kroków”, „czterech jurysdykcji”) traktowane jako cechy funkcji z tabeli (precedensy: „czterema fazami” filary.md:67–68, „siedem kategorii” pozyskiwanie M9, pokrycie obaw :56); jeśli implementacja użyje cyfry w JSX — obowiązkowy wpis w content/facts.json (wzór „przypomn
+- Strażnik milczenia: po poprawkach panelu żadna treść nie zawiera nazwy z listy milczenia Filaru 3 (usunięte „wyzwań”); granice odnoszą się do milczenia wyłącznie przecząco i ogólnie („z innych narzędzi”, „gotowe treści szkoleniowe”). Przy adaptacjach EN/DE bezwzględnie pilnować, żeby nie padł skrót 
+- F8 tworzy zobowiązanie spójności z /cennik: karta Growth musi pokazywać sygnały ryzyka odejścia i widok drzewa struktury (tabela to sankcjonuje — kwalifikator z kontekstu na karcie), inaczej rozjazd obietnic. Zastrzeżenie nadrzędne (aktywna subskrypcja Stripe) obsługuje język kierunku — bez dodatkow
+- Bliźniaczy moduł zatwierdzania trafi na /funkcje/tresci z perspektywy autorki (tabela :75) — przy składaniu Etapu C pilnować rozdziału perspektyw (tu: liderka akceptuje/odrzuca; tam: treść trafia do zatwierdzenia), żeby moduły się nie dublowały ani nie przeczyły.
+- Elementy retroaktywne ×4 (widoczny spis treści „Na tej stronie”, F9 dwukierunkowe, ewentualne wyrównanie kropki w H1) wdrażać jako jedną decyzję szablonu, nie per strona; kotwice modułów ze scroll-margin (sticky nav — precedens #tresc); brzmienie „← Wstecz: X” wchodzi do rejestru mikrotekstów z tą s
+- Perspektywa modułu 1 utrzymana uczciwie (podmiotem prowadzenia jest kreator, nie liderka), ale całą podstronę przy HF/adwersarzu sprawdzić pod tym samym kątem: żaden tekst nie może sugerować, że liderka wykonuje w aplikacji czynności, które wykonuje nowa osoba na własnej sesji (inwentarz :117–119, t
+
+## /funkcje/wyniki (Wyniki)
+
+**H1:** Widzisz wzrost nawet po trudnym dniu  
+**Zdanie:** Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje.  
+**F8:** Wszystko powyżej działa od planu Starter. W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę. Link: Zobacz cennik → /cennik. [Rozstrzygnięcie panelu: F8 dwuzdaniowe na mocy briefu K12, Uzupełnienie Etapu C (rejestr poz. 11) — nowsza decyzja właściciela wygrywa z literalnym „jednym wierszem”; zdanie Growth VERBATIM z tabeli w. 120/228, celowo BEZ nazwy „Puls zespołu” (zdanie sankcjonowane jej nie zawiera; pełna forma „W planie Growth…” zgodna ze słownikiem w. 13); zero liczb — Starter i Growth to nazwy planów.]  
+**F9:** Na /funkcje/wyniki: lewy slot „← Wstecz: Zespół” (link do /funkcje/zespol, warunkowo od rejestru ścieżek), prawy slot PUSTY — ostatni filar, lustro pustego lewego slotu /pozyskiwanie. Wzorzec OBU kierunków dla ×4 podstron: „← Wstecz: [nazwa filara]” | „Dalej: [nazwa filara] →”. „Dalej: X →” już sankcjonowane na /pozyskiwanie; „Wstecz” panel przyjmuje jako naturalną, jednoznaczną parę Dalej/Wstecz (odrzucone za ramą: „Poprzednio” — dziennikowe, „Wróć do” — zakłada wcześniejszą wizytę). Etykiety = nazwy filarów. Pełna mapa: /pozyskiwanie: — | Dalej: Treści → · /tresci: ← Wstecz: Pozyskiwanie | Dalej: Zespół → · /zespol: ← Wstecz: Treści | Dalej: Wyniki → · /wyniki: ← Wstecz: Zespół | —.  
+**F10:** CTA: Sprawdź, jak działa → /login (ADR-023). Zdanie: Rezygnujesz w każdej chwili. [Stałe sankcjonowane — bez zmian.]  
+**Spis treści:** „Na tej stronie” — SANKCJA PANELU jako JEDNA etykieta dla wszystkich czterech podstron (w tym retroaktywnie /pozyskiwanie, wg briefu C); WIDOCZNA (nie sr-only), identyczna w aria-label nav-u spisu. Pozycje spisu = H2 modułów wg słownika. Odrzucony wariant B „Co tu znajdziesz” — lekko obiecujący; „Na tej stronie” gra rejestrem z sankcjonowanym „Jesteś tutaj” okruszków.  
+**Sekcja kierunku:** BRAK
+
+
+*Uwagi panelu (skrót):* 1) KIERUNEK — uzasadnienie BRAKU: konflikt pkt 6 zlecenia z briefem K12 (Uzupełnienie Etapu C, decyzja właściciela 2026-08-12) rozstrzygnięty na rzecz briefu — Puls zespołu na /wyniki NIE jest modułem ani sekcją, żyje wyłącznie w F8; tekst zapasowy ramy zostaje w protokole na wypadek świadomej zmiany briefu przez właściciela. 2) KOLEJNOŚĆ MODUŁÓW (sankcja panelu): 1. Pulpit (#pulpit) · 2. Twój Wrapped (#twoj-wrapped) · 3. Cel z kamieniami milowymi (#cel-z-kamieniami-milowymi) · 4. Ściana sukcesów (#sciana-sukcesow) · 5. Wall of Proof (#wall-of-proof) · 6. Świadectwo (#swiadectwo) — odstępstwo …
+
+
+| # | Moduł | PO CO TO | CZEGO NIE ROBI |
+|---|---|---|---|
+| 1 | `#pulpit` | Na Pulpicie widzisz aktualny stan: sprzedaż, aktywne kontakty, aktywność zespołu — wszystko w jednym miejscu. Zanim zdecydujesz, co dziś najważniejsze, wiesz, na czym stoisz. | Pulpit nie pokazuje danych spoza Catherly — widzisz to, co ty i twój zespół zapisujecie w aplikacji. |
+| 2 | `#twoj-wrapped` | Otwierasz Twój Wrapped i czytasz podsumowanie swojego okresu: co zrobiłaś, co sprzedałaś, co działo się w zespole. Widzisz, co naprawdę się wydarzyło — nie tylko to, co zapamiętałaś. | Catherly nie zrobi z twojego podsumowania raportu PDF — Twój Wrapped oglądasz w aplikacji. |
+| 3 | `#cel` | Wyznaczasz cel i śledzisz postęp kamieniami milowymi. Zamiast jednej odległej mety widzisz, jak daleko zaszłaś i co jest następne. | Catherly nie wyznacza celów za ciebie i nie pogania, gdy postęp zwalnia — cel jest twój, tempo też. |
+| 4 | `#sciana-sukcesow` | Pierwsza sprzedaż nowej osoby, twój domknięty kamień milowy — takie chwile zapisujesz na Ścianie sukcesów. Rejestrujesz i świętujesz sukcesy swoje i zespołu, zanim przykryje je codzienność. | Catherly nie zapisze sukcesu za ciebie — co trafia na Ścianę sukcesów, rejestrujesz sama. |
+| 5 | `#swiadectwo` | Chcesz pokazać swoje wyniki komuś, kto nie widział twojej codziennej pracy. Eksportujesz CSV ze Świadectwa kiedy chcesz — a rejestr z cyfrowym odciskiem SHA-256 sprawia, że twoją historię aktywności można zweryfikować, nie tylko przeczytać. | Świadectwo niczego nigdzie nie wysyła — rejestr widzisz ty, a CSV trafia tylko do tych, którym sama go przekażesz. |
+| 6 | `#wall-of-proof` | Zbierasz dowody swojej pracy na Wall of Proof — osobistej osi czasu sukcesów. W trudniejszy dzień przewijasz ją i widzisz, ile już za tobą — to przestrzeń, w której świętujesz, nie tylko mierzysz. | Wall of Proof nie jest ścianą zespołu — wspólne świętowanie ma swoje miejsce na Ścianie sukcesów. |
+
+**Ryzyka globalne panelu:**
+- 1. „Ściana sukcesów” bez wiersza w słowniku nazw (docs/faza-2/slownik-nazw.md) — kontrakt PL/EN/DE do uzupełnienia decyzją właściciela PRZED adaptacjami; realne ryzyko dwóch „wall” w EN (Wall of Proof jest bez tłumaczenia we wszystkich językach). Do tego czasu moduł 4 i granica modułu 5 nie przechod
+- 2. Rozjazd litery tabeli: w. 147 mówi „podpisem SHA-256”, a korekta właściciela w filarach (2026-08-09) ustala „cyfrowy odcisk” (SHA-256 to suma kontrolna, nie podpis). Strona pisze „cyfrowy odcisk SHA-256” — sens zachowany, litera nie; tabela wymaga korekty technicznej w trybie A-3 (zgoda właścicie
+- 3. Jedyne odniesienie do Raportu PDF (granica modułu Twój Wrapped, wyłącznie przecząco) vs strażnik milczenia briefu K12 („żadna nazwa z list milczenia nie występuje w DOM”) — konfiguracja strażnika musi jawnie dopuścić ten jeden przecząco użyty przypadek (precedens: e-mail/SMS przecząco na /pozyski
+- 4. Weryfikacja zrzutami z aplikacji (dostawa Z9+, ADR-018: brak dowodu = brak zabezpieczenia) przed akceptem końcowym: (a) Ściana sukcesów nie dopisuje wpisów automatycznie, np. z Osiągnięć — warunek prawdziwości granicy modułu 4; (b) widok Celu pokazuje następny kamień milowy („co jest następne” — 
+- 5. Świeże konto na Starterze bez zbudowanego zespołu: części „aktywność zespołu” (Pulpit) i „co działo się w zespole” (Twój Wrapped) mogą pokazywać pustkę (analogia reguły milczenia Ogniska, tabela w. 128–129). Obietnice są pokryte wierszami 143–144, więc panel je utrzymuje bez złagodzenia — właścic
+- 6. Adnotacje dla lintera liczb: „Pierwsza sprzedaż” (moduł 4 — liczebnik porządkowy sceny, nie liczba produktowa; precedens adnotacji „Pierwsze 90 Dni” w filary.md) oraz „SHA-256” i „CSV” (moduł 6 — nazwy techniczne; precedens obaw i słownika). Bez adnotacji bramka liczb może się zaczerwienić na fra
+- 7. Kolejność modułów odstępuje od kolejności tabeli (Wall of Proof przed Świadectwem) — sankcja panelu z uzasadnieniem (rozplątanie dwóch ścian + finał „dowód, który zostaje”), ale precedens /pozyskiwanie trzymał kolejność tabeli; odstępstwo wymaga świadomego akceptu właściciela razem z treścią. War
+- 8. Moduł Świadectwo nie miał autora w fan-oucie — panel oceniał jedyną propozycję (z ramy), bez konkurencyjnych wariantów; flaga proceduralna dla właściciela: świadomy wyjątek od wzorca dwóch wariantów na moduł.
+- 9. Spis treści retroaktywnie na /pozyskiwanie (brief C): etykieta „Na tej stronie” musi wejść identycznie na stronę już OBOWIĄZUJĄCĄ — zmiana przechodzi pełny pipeline (parytet ×3, strażnik znak w znak messages ↔ content), nie „przy okazji” wdrożenia /wyniki.
+
+## Punkty do decyzji właściciela
+
+- **D-C1:** akcept treści trzech podstron (21 modułów + ramy jw.).
+- **D-C2:** „liderka" (moduł zatwierdzanie, tresci) — panel sankcjonuje formę żeńską kartą tonu; potwierdzenie + wpis do słownika nazw.
+- **D-C3:** rejestr „cyfrowy odcisk SHA-256" na podstronach funkcji (rozszerzenie decyzji obaw; fallback: skreślenie „SHA-256") ORAZ korekta A-3 tabeli w. 147 „podpisem"→„odciskiem" (wykonuje decyzję filarów: suma kontrolna ≠ podpis).
+- **D-C4:** etykieta spisu treści „Na tej stronie" ×4 podstrony (sankcja panelu — potwierdzenie).
+- **D-C5:** Studio w języku kierunku (F4-2) — brzmienie finalne jw. (moduł 1 tresci) + granica zdjęć (Storage).
+- Nowe wpisy rejestru warunków powrotu (po akcepcie): generowanie szablonów AI (klucz), statystyki publikacji (zgody platform), widok liderki w Pierwszych 90 Dniach (Z), „przesuwasz post" (weryfikacja Z9), nazwy poza słownikiem (kalendarz publikacji, tablica postów — najbliższe Z).
