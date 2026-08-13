@@ -30,6 +30,16 @@ const TRASY = [
   "/funkcje/pozyskiwanie",
   "/en/funkcje/pozyskiwanie",
   "/de/funkcje/pozyskiwanie",
+  // Faza 4, Etap C — pozostałe podstrony funkcji (szablon K12).
+  "/funkcje/tresci",
+  "/en/funkcje/tresci",
+  "/de/funkcje/tresci",
+  "/funkcje/zespol",
+  "/en/funkcje/zespol",
+  "/de/funkcje/zespol",
+  "/funkcje/wyniki",
+  "/en/funkcje/wyniki",
+  "/de/funkcje/wyniki",
 ];
 
 for (const trasa of TRASY) {

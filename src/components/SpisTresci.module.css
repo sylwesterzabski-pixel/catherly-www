@@ -1,0 +1,32 @@
+/* SPIS TREŚCI — element standardowy szablonu K12 (brief, Uzupełnienie
+   Etapu C; sankcja etykiety: panel D-C4). Styl skromny: kolumna zawsze
+   (390 px i desktop — bez wariantów układu), max-width miary kolumny.
+   Kolory wyłącznie var(--…); kolor linku dziedziczony z globals (rola
+   link/link-aktywny). Wymiary rem — zero px; tokeny wymiarów ADR-028. */
+
+.spis {
+  padding: 0 1rem 1.5rem;
+}
+
+.wnetrze {
+  max-width: var(--wymiar-kontener-strony);
+  margin-inline: auto;
+}
+
+.etykieta {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--kolor-rola-tekst-drugorzedny);
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 0.875rem;
+  border-inline-start: 0.0625rem solid var(--kolor-rola-kreska);
+  display: grid;
+  gap: 0.5rem;
+  max-width: var(--wymiar-miara-kolumny);
+  font-size: 0.9375rem;
+}

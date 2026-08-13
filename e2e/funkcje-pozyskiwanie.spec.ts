@@ -14,8 +14,10 @@ import de from "../src/i18n/messages/de.json";
  * 2026-08-12; treść content/{pl,en,de}/funkcje-pozyskiwanie.md —
  * D-B1/D-B2). Strażnicy: parytet ×3, kotwice pod sticky nav (W4),
  * aria-current rodzica (A-1), MILCZENIE filara 1, znak w znak
- * messages ↔ content, no-JS, brak przejść F9 (bramka linków —
- * rozstrzygnięcie 4), reflow 320 px, struktura nagłówków.
+ * messages ↔ content, no-JS, reflow 320 px, struktura nagłówków.
+ * Retro Etapu C (brief, Uzupełnienie C): SPIS TREŚCI + przejście F9
+ * „Dalej: Treści →" OBECNE (cel /funkcje/tresci wszedł do rejestru
+ * ścieżek — bramka linków otworzyła sekcję).
  */
 const PRZYPADKI = [
   { adres: "/funkcje/pozyskiwanie", jezyk: "pl", prefiks: "", komunikaty: pl },
@@ -273,22 +275,47 @@ for (const { adres, jezyk } of PRZYPADKI) {
   });
 }
 
-// (g) F9 — przejścia NIEOBECNE w Etapie B (rozstrzygnięcie 4 panelu:
-// cel /funkcje/tresci nie istnieje w rejestrze → bramka linków
-// w PrzejsciaFilarow zwraca null; sekcja nieobecna, nie „nieaktywna").
-for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
+// (g) F9 — przejście „Dalej: Treści →" OBECNE od Etapu C (bramka
+// linków w PrzejsciaFilarow: cel /funkcje/tresci wszedł do rejestru
+// ścieżek). Pierwszy filar — lewy slot pusty: dokładnie JEDEN link.
+for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   const k = komunikaty.FunkcjePozyskiwanie;
-  test(`F9 (${jezyk}): sekcja przejść nieobecna w DOM na ${adres}`, async ({
+  test(`F9 (${jezyk}): przejście „dalej" do /funkcje/tresci na ${adres}`, async ({
     page,
   }) => {
     await page.goto(adres);
-    await expect(
-      page.getByRole("link", { name: k.dalej, exact: true }),
-    ).toHaveCount(0);
-    await expect(page.locator('a[href$="/funkcje/tresci"]')).toHaveCount(0);
-    // Stos main bez F9: nagłówek podstrony + 10 modułów + kierunek
-    // + F8 + zamknięcie = 14 sekcji (okruszki to nav, nie section).
-    await expect(page.locator("main > section")).toHaveCount(14);
+    const dalej = page.getByRole("link", { name: k.dalej, exact: true });
+    await expect(dalej).toHaveAttribute("href", `${prefiks}/funkcje/tresci`);
+    const f9 = page.locator("main > section", { has: dalej });
+    await expect(f9.locator("a")).toHaveCount(1);
+    // Stos main z F9: nagłówek podstrony + 10 modułów + kierunek
+    // + F8 + F9 + zamknięcie = 15 sekcji (okruszki i spis treści
+    // to nav, nie section).
+    await expect(page.locator("main > section")).toHaveCount(15);
+  });
+}
+
+// (g2) SPIS TREŚCI — retro Etapu C (brief, Uzupełnienie C; etykieta
+// D-C4 „Na tej stronie" wspólna ×4): nav[aria-label] z widoczną
+// etykietą i 10 linkami do kotwic modułów (sekcja AI poza spisem);
+// etykiety pozycji = nazwy modułów H2 (klucze modN_nazwa).
+for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
+  const k = komunikaty.FunkcjePozyskiwanie;
+  test(`SPIS (${jezyk}): nav „${k.spisEtykieta}" z 10 linkami do kotwic na ${adres}`, async ({
+    page,
+  }) => {
+    await page.goto(adres);
+    const spis = page.locator(`nav[aria-label="${k.spisEtykieta}"]`);
+    await expect(spis).toHaveCount(1);
+    await expect(spis.locator("p")).toHaveText(k.spisEtykieta);
+    const linki = spis.locator("ol > li > a");
+    await expect(linki).toHaveCount(KOTWICE.length);
+    for (const [indeks, numer] of NUMERY_MODULOW.entries()) {
+      const link = linki.nth(indeks);
+      await expect(link).toHaveAttribute("href", `#${KOTWICE[indeks]}`);
+      await expect(link).toHaveText(k[`mod${numer}_nazwa`]);
+      await expect(page.locator(`h2#${KOTWICE[indeks]}`)).toHaveCount(1);
+    }
   });
 }
 
@@ -339,7 +366,10 @@ test.describe("reflow 320 px", () => {
 //   wartości z facts.json (D-B3);
 // - okruszek: etykieta pochodzi z nagłówka filara 1
 //   w content/*/filary.md (część opisowa „## Filar 1 — …"; nagłówek
-//   stoi wersalikami, stąd porównanie bez rozróżniania wielkości).
+//   stoi wersalikami, stąd porównanie bez rozróżniania wielkości);
+// - spisEtykieta: retro D-C4 (etykieta wspólna ×4) — nośnikiem
+//   decyzji są pliki Etapu C („### Etykieta spisu treści"
+//   w content/*/funkcje-tresci.md), nie plik wzorcowej podstrony.
 test("K12: messages znak w znak z content (Etap B Fazy 4)", () => {
   for (const { jezyk, komunikaty } of PRZYPADKI) {
     const zrodlo = readFileSync(
@@ -348,6 +378,10 @@ test("K12: messages znak w znak z content (Etap B Fazy 4)", () => {
     ).replace(/\s+/g, " ");
     const filary = readFileSync(
       join(__dirname, "..", "content", jezyk, "filary.md"),
+      "utf8",
+    ).replace(/\s+/g, " ");
+    const tresci = readFileSync(
+      join(__dirname, "..", "content", jezyk, "funkcje-tresci.md"),
       "utf8",
     ).replace(/\s+/g, " ");
 
@@ -359,6 +393,13 @@ test("K12: messages znak w znak z content (Etap B Fazy 4)", () => {
           filary.toLowerCase(),
           `content/${jezyk}/filary.md zawiera nazwę filara 1 „${tresc}"`,
         ).toContain(tresc.toLowerCase());
+        continue;
+      }
+      if (pole === "spisEtykieta") {
+        expect(
+          tresci,
+          `content/${jezyk}/funkcje-tresci.md (D-C4) zawiera etykietę spisu „${tresc}"`,
+        ).toContain(tresc);
         continue;
       }
       const oczekiwane = pole === "mod2_poco" ? podstawMinuty(tresc) : tresc;

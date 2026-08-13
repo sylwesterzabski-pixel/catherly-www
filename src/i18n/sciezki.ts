@@ -40,8 +40,12 @@ export const ISTNIEJACE_SCIEZKI: readonly string[] = [
   ...POZYCJE_MENU.map((pozycja) => pozycja.sciezka),
   "/login",
   // Podstrony funkcji (Faza 4): Etap B — wzorcowa podstrona filara 1;
-  // pozostałe (/funkcje/tresci, /funkcje/zespol, /funkcje/wyniki)
-  // dochodzą w Etapie C — do tego czasu przejścia F9 do nich są
-  // NIEOBECNE (bramka linków w PrzejsciaFilarow czyta ten rejestr).
+  // Etap C — pozostałe trzy filary. Komplet ×4 odblokowuje przejścia
+  // F9 w obu kierunkach (bramka linków w PrzejsciaFilarow czyta ten
+  // rejestr). Kolejność filarów: pozyskiwanie → tresci → zespol →
+  // wyniki (protokół tresci-trzy-podstrony-po-panelach.md).
   "/funkcje/pozyskiwanie",
+  "/funkcje/tresci",
+  "/funkcje/zespol",
+  "/funkcje/wyniki",
 ];

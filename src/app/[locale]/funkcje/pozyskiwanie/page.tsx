@@ -8,6 +8,7 @@ import { Okruszki } from "@/components/Okruszki";
 import { PlanJednymWierszem } from "@/components/PlanJednymWierszem";
 import { PrzejsciaFilarow } from "@/components/PrzejsciaFilarow";
 import { SekcjaKierunku } from "@/components/SekcjaKierunku";
+import { SpisTresci } from "@/components/SpisTresci";
 import { Zamkniecie } from "@/components/Zamkniecie";
 import { routing } from "@/i18n/routing";
 import { adresWJezyku, type Locale } from "@/i18n/sciezki";
@@ -18,9 +19,12 @@ import { adresWJezyku, type Locale } from "@/i18n/sciezki";
  * po panelu 2026-08-12; treść content/{pl,en,de}/funkcje-pozyskiwanie.md
  * — D-B1/D-B2). Stos F1–F11: okruszki → nagłówek podstrony → 10 modułów
  * DZIAŁA (zebra L-P jak K4) → sekcja kierunku AI → F8 plan jednym
- * wierszem → F9 przejścia (w Etapie B nieobecne — bramka linków) →
- * F10 zamknięcie (K11 krótki); stopka z layoutu. Prerender SSG per
- * locale; hierarchia: 1×h1 + 11×h2 (10 modułów + kierunek). Zero JS.
+ * wierszem → F9 przejścia → F10 zamknięcie (K11 krótki); stopka
+ * z layoutu. Retro Etapu C (brief, Uzupełnienie C + D-C4): SPIS
+ * TREŚCI nad pierwszym modułem; przejście F9 „Dalej: Treści →"
+ * obecne, odkąd /funkcje/tresci istnieje w rejestrze ścieżek.
+ * Prerender SSG per locale; hierarchia: 1×h1 + 11×h2 (10 modułów
+ * + kierunek). Zero JS.
  */
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -76,6 +80,16 @@ export default async function StronaFunkcjePozyskiwanie({ params }: Props) {
           ]}
         />
         <NaglowekPodstrony naglowek={t("naglowek")} zdanie={t("zdanie")} />
+        {/* SPIS TREŚCI — retro Etapu C (brief, Uzupełnienie C; etykieta
+            D-C4 wspólna ×4): wyłącznie kotwice modułów, sekcja
+            kierunku AI poza spisem. */}
+        <SpisTresci
+          etykieta={t("spisEtykieta")}
+          pozycje={MODULY.map(({ klucz, kotwica }) => ({
+            etykieta: t(`${klucz}_nazwa`),
+            kotwica,
+          }))}
+        />
         {/* F3–F7 — 10 modułów DZIAŁA; zebra jak K4 (rozstrzygnięcie 3):
             moduły nieparzyste obraz po prawej, parzyste po lewej.
             {minuty} interpoluje wartość z facts.json (tylko mod2_poco
@@ -103,10 +117,9 @@ export default async function StronaFunkcjePozyskiwanie({ params }: Props) {
           linkEtykieta={t("f8link")}
           linkHref={adresWJezyku(locale as Locale, "/cennik")}
         />
-        {/* F9 — na wzorcowej: brak poprzedniego (pierwszy filar);
-            następny → /funkcje/tresci powstaje w Etapie C, więc bramka
-            linków w komponencie zwraca null (sekcja NIEOBECNA —
-            rozstrzygnięcie 4). */}
+        {/* F9 — pierwszy filar: lewy slot pusty; przejście „Dalej:
+            Treści →" AKTYWNE od Etapu C (cel w rejestrze ścieżek —
+            bramka linków w komponencie). */}
         <PrzejsciaFilarow
           locale={locale as Locale}
           dalej={{ etykieta: t("dalej"), sciezka: "/funkcje/tresci" }}
