@@ -26,7 +26,10 @@ type Props = {
 export function Okruszki({ ariaEtykieta, pozycje }: Props) {
   return (
     <nav className={styles.okruszki} aria-label={ariaEtykieta}>
-      <ol>
+      {/* role="list" — ten sam powód co w SpisTresci: przy
+          list-style: none Safari i VoiceOver zdejmują semantykę listy
+          razem z liczbą pozycji (panel projektu D, 2026-08-13). */}
+      <ol role="list">
         {pozycje.map((pozycja) =>
           pozycja.href === undefined ? (
             <li key={pozycja.etykieta} aria-current="page">

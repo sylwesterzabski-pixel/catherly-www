@@ -1,0 +1,82 @@
+/* I3 — CSS 1:1 wg HF docs/faza-4/hf/d-funkcje-indeks.html
+   (po panelu projektu 2026-08-13). Kolory wyłącznie var(--…);
+   wymiary rem/ch — zero px; tokeny wymiarów ADR-028.
+
+   ROZSTRZYGNIĘCIE 3: sekcja na tle strony w rytmie 2.5rem (jak
+   każda sekcja systemu), rozdzielona kreską pełnej szerokości.
+   Zero powierzchni, zero promienia — powierzchnia zostaje
+   zarezerwowana dla karty kierunku i ramek zrzutu.
+
+   ROZSTRZYGNIĘCIE 4: JEDNA KOLUMNA ZAWSZE — w tym pliku NIE MA ani
+   jednego zapytania medialnego, ani jednego progu układu. Zwartość
+   listy daje max-width miary kolumny, nie łamanie ciągu
+   (SpisTresci.module.css:2-3: „kolumna zawsze — bez wariantów
+   układu"). */
+
+.blok {
+  padding: 2.5rem 1rem;
+}
+
+/* Wnętrze sekcji na kontener strony — w makiecie klasa współdzielona
+   .wnetrze; w CSS Modules klas współdzielonych między komponentami
+   nie ma, więc element bloku nosi własną nazwę. */
+.blok__wnetrze {
+  max-width: var(--wymiar-kontener-strony);
+  margin-inline: auto;
+}
+
+.blok + .blok {
+  border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
+}
+
+.blok h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+  max-width: 30ch;
+  text-wrap: balance;
+  scroll-margin-block-start: 5rem; /* W4 + rozstrzygnięcie 5 */
+}
+
+.blok__wprowadzenie {
+  margin: 0 0 1.25rem;
+  max-width: var(--wymiar-miara-akapitu);
+  color: var(--kolor-rola-tekst-drugorzedny);
+}
+
+/* ROZSTRZYGNIĘCIE 1 i 4: <ol role="list">, bez cyfr, jedna kolumna
+   zawsze, miara kolumny zamiast pasa przez cały ekran. */
+.blok__lista {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  max-width: var(--wymiar-miara-kolumny);
+}
+
+/* ROZSTRZYGNIĘCIE 6: cel dotykowy budowany paddingiem SAMEGO linku,
+   nie odstępem między wierszami — li + li NIE MA marginesu i tej
+   reguły tu celowo nie ma. Wysokość celu 24 px + 2×5 px = 34 px na
+   pełną szerokość kolumny; skok środek-do-środka bez zmian 34 px,
+   długość strony bez zmian. 2.5.8 spełnione wprost. */
+.blok__lista a {
+  display: block;
+  padding-block: 0.3125rem;
+}
+
+/* ROZSTRZYGNIĘCIE 8: BEZ font-weight — link wejściowy nie może być
+   najcięższym tekstem bloku, bo sugerowałby, że lista jest wyborem,
+   a pełna wersja jest gdzie indziej. Lista JEST kompletna.
+   ROZSTRZYGNIĘCIE 9: bez lokalnej receptury podkreślenia
+   (text-decoration-thickness / text-underline-offset) — byłaby trzecią
+   w serwisie; ujednolicenie należy do globals.css, poza tym etapem. */
+.blok__wejscie {
+  margin: 0;
+}
+
+/* ROZSTRZYGNIĘCIE 7: strzałka dekoracyjna z PUSTYM tekstem
+   alternatywnym — nazwa dostępna linku bez glifu (W3, Okruszki).
+   W ciągu messages („blokNLink") strzałki NIE MA. */
+.blok__wejscie a::after {
+  content: "→" / "";
+  margin-inline-start: 0.375rem;
+}

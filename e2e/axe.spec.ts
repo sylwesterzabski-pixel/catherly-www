@@ -13,7 +13,9 @@ const TRASY = [
   "/",
   "/en",
   "/de",
-  // B1(a) — strony placeholderowe (pl bez prefiksu, /en, /de).
+  // B1(a) — pl bez prefiksu, /en, /de. Faza 4, Etap D: /funkcje
+  // i /dla-kogo NIE są już placeholderami (StronaWBudowie) — to
+  // strony właściwe, skanowane tym samym wpisem.
   "/funkcje",
   "/cennik",
   "/dla-kogo",

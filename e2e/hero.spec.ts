@@ -128,8 +128,21 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
       komunikaty.Hero.potwierdzenieUE,
     );
     // Atrybut w surowym HTML — strażnik semantyki listy bez DOM-u
-    // (adwersarz Etapu C, mutacja b).
-    expect(html, "role=list w HTML bez JS").toContain('role="list"');
+    // (adwersarz Etapu C, mutacja b). Od przeglądu role="list"
+    // (Etap D) jawną rolę mają też listy nagłówka i stopki, więc
+    // samo toContain('role="list"') przeszłoby nawet PO zdjęciu roli
+    // z K9 — nie potrafiłoby już zaczerwienić. Sprawdzamy więc
+    // znacznik <ul>, który FAKTYCZNIE otacza potwierdzenia.
+    const doPotwierdzenia = html.slice(
+      0,
+      html.indexOf(komunikaty.Hero.potwierdzenieUE),
+    );
+    const otwarcieListy = doPotwierdzenia.slice(
+      doPotwierdzenia.lastIndexOf("<ul"),
+    );
+    expect(otwarcieListy, "role=list na liście potwierdzeń K9").toContain(
+      'role="list"',
+    );
   });
 }
 

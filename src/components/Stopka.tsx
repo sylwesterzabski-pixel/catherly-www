@@ -43,7 +43,9 @@ export function Stopka({ locale }: Props) {
       <div className={styles.kolumny}>
         <section>
           <h2>{t("mapaStrony")}</h2>
-          <ul>
+          {/* role="list" — CSS zdejmuje punktory (Stopka.module.css),
+              a Safari z VoiceOver odbiera wtedy liście semantykę. */}
+          <ul role="list">
             {POZYCJE_MENU.map((pozycja) => (
               <li key={pozycja.sciezka}>
                 <a href={adresWJezyku(locale, pozycja.sciezka)}>
@@ -55,7 +57,7 @@ export function Stopka({ locale }: Props) {
         </section>
         <section className={styles.jezyki}>
           <h2>{t("jezyk")}</h2>
-          <ul>
+          <ul role="list">
             {JEZYKI.map((jezyk) => (
               <li key={jezyk.locale}>
                 <a
@@ -71,7 +73,7 @@ export function Stopka({ locale }: Props) {
         </section>
         <section>
           <h2>{t("dokumenty")}</h2>
-          <ul className={styles.martwe}>
+          <ul className={styles.martwe} role="list">
             {DOKUMENTY.map((dokument) => (
               <li key={dokument}>
                 {t(`dokumentyPozycje.${dokument}`)} {t("wkrotce")}
@@ -81,7 +83,7 @@ export function Stopka({ locale }: Props) {
         </section>
         <section>
           <h2>{t("kontakt")}</h2>
-          <ul className={styles.martwe}>
+          <ul className={styles.martwe} role="list">
             <li>{t("wkrotce")}</li>
           </ul>
         </section>

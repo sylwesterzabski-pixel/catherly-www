@@ -13,6 +13,8 @@ test-results/
 .vercel/
 .lighthouseci/
 next-env.d.ts
+# Cache przyrostowy `tsc --noEmit` — powstaje przy każdej kontroli typów.
+tsconfig.tsbuildinfo
 
 # Lokalne ustawienia Claude Code (per maszyna, poza repo)
 .claude/settings.local.json

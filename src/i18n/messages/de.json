@@ -1,6 +1,7 @@
 {
   "Nawigacja": {
     "przejdzDoTresci": "Zum Inhalt springen",
+    "nawGlowna": "Hauptnavigation",
     "funkcje": "Funktionen",
     "cennik": "Preise",
     "dlaKogo": "Für wen",
@@ -171,6 +172,26 @@
     "zdanie": "Wähl einen Plan und sieh, wie Catherly in deinem Arbeitsalltag funktioniert. Du bindest dich an nichts – kündigen kannst du, wann du willst.",
     "cta": "Plan wählen"
   },
+  "FunkcjeIndeks": {
+    "h1": "Funktionen, geordnet nach deinem Tagesablauf",
+    "zdanie": "Du wählst aus, was jetzt dran ist – die Namen der Funktionen findest du unterwegs.",
+    "blok1Naglowek": "Morgens siehst du, bei wem du dich meldest.",
+    "blok1Wprowadzenie": "Ein Tag, den du im Täglichen Aktionsplan geplant hast, beginnt mit etwas Konkretem. Termine, Aufgaben und Kontakte hältst du an einem Ort – nicht im Kopf.",
+    "blok1Link": "Sieh dir alles zum Thema Kontakte gewinnen an",
+    "blok2Naglowek": "Du setzt dich an deine Posts und hast kein leeres Blatt vor dir.",
+    "blok2Wprowadzenie": "Einen Post setzt du aus einer fertigen Vorlage zusammen, planst ihn im Kalender und schickst ihn deiner Leaderin zur Freigabe – du veröffentlichst selbst. Eine riskante Formulierung fängst du vor der Veröffentlichung ab, nicht danach.",
+    "blok2Link": "Sieh dir alles zum Thema Inhalte an",
+    "blok3Naglowek": "Eine neue Partnerin kommt dazu, und du erklärst nicht alles neu.",
+    "blok3Wprowadzenie": "Der Einstiegsassistent führt deine neue Partnerin durch alle Etappen, und durch die ersten 90 Tage mit Missionen und Phasen führst du sie selbst. Team-Inhalte gibst du frei, und deine Nachricht prüfst du, bevor du sie abschickst.",
+    "blok3Link": "Sieh dir alles zum Thema Team an",
+    "blok4Naglowek": "Abends weißt du, wo du stehst.",
+    "blok4Wprowadzenie": "Das Dashboard zeigt den heutigen Stand – und deine Ergebnisse haben einen Beleg, der bleibt. Deine Erfolge und die deines Teams hältst du fest und feierst sie, bevor der Alltag sie zudeckt.",
+    "blok4Link": "Sieh dir alles zum Thema Ergebnisse an",
+    "f8": "Alles, was oben steht, funktioniert ab dem Starter-Plan.",
+    "f8link": "Sieh dir die Preise an",
+    "zamkniecieCta": "Sieh dir an, wie es funktioniert",
+    "zamkniecieZdanie": "Du kannst jederzeit kündigen."
+  },
   "FunkcjePozyskiwanie": {
     "okruszkiAria": "Du bist hier",
     "okruszek": "Kontakte gewinnen",
@@ -323,8 +344,35 @@
     "zamkniecieCta": "Sieh dir an, wie es funktioniert",
     "zamkniecieZdanie": "Du kannst jederzeit kündigen."
   },
-  "StronaWBudowie": {
-    "tresc": "Diese Seite entsteht gerade."
+  "DlaKogo": {
+    "naglowek": "Du arbeitest allein, baust ein Team auf oder führst eine Struktur.",
+    "zdanie": "Auf jedem dieser Wege ist etwas anderes schwer, macht Catherly etwas anderes – und hört an einer anderen Stelle auf.",
+    "spisEtykieta": "Auf dieser Seite",
+    "cta": "Sieh dir an, wie es funktioniert",
+    "ctaZdanie": "Du kannst jederzeit kündigen.",
+    "cennikLink": "Sieh dir die Preise an",
+    "s1_h2": "Du hast noch alles im Kopf und in deinen Nachrichten.",
+    "s1_boli": "Morgens entscheidest du wieder neu, womit du anfängst: Die Notizen liegen im Handy, die Absprachen in den Nachrichten, die Termine an mehreren Stellen gleichzeitig. Abends bist du dir nicht sicher, ob du jemanden vergessen hast, der dir wichtig ist.",
+    "s1_robi_1": "Die Reihenfolge deiner Gespräche legst du im <dmo>Täglichen Aktionsplan</dmo> fest – dein Tag beginnt mit etwas Konkretem, ohne langes Überlegen. Deine Gesprächstermine trägst du in den <kalendarz>Kalender mit Erinnerungen</kalendarz> ein, und {minuty} Minuten vor jedem Gespräch erinnert Catherly dich daran.",
+    "s1_robi_2": "Fragt dich jemand nach einer Zusammenarbeit, gibst du den Link zu deinem <formularz>Anmeldeformular</formularz> weiter – die ausgefüllte Anmeldung landet direkt in deiner Kontaktbasis. Ein schwieriges Gespräch spielst du erst einmal im <salaTreningowa>Trainingsraum</salaTreningowa> durch.",
+    "s1_robi_3": "Einen Post beginnst du mit einer <szablony>fertigen Vorlage</szablony>, nicht mit einem leeren Blatt. Der <tarcza>Schild</tarcza> markiert riskante Formulierungen, bevor du den Post veröffentlichst.",
+    "s1_plan": "Alles, was oben steht, funktioniert ab dem Starter-Plan.",
+    "s1_granica": "Catherly findet für dich keine Kontakte und führt keine Gespräche – die Menschen zu deinem Formular schickst du selbst, die Ordnung für deinen Tag bekommst du.",
+    "s2_h2": "Du hast ein Team. Die Frage ist: wem heute helfen, wen in Ruhe lassen.",
+    "s2_boli": "Jede Partnerin in deinem Team steht an einer anderen Stelle: Die eine steigt gerade erst ein, die andere ist nach einem guten Start langsamer geworden. Auf einen Blick hast du das nicht, also erfährst du es im Gespräch – meist später, als dir lieb wäre.",
+    "s2_robi_1": "Das <pulpit>Dashboard</pulpit> zeigt den aktuellen Stand: Verkäufe, aktive Kontakte, die Aktivität deines Teams – alles an einem Ort. Eine neue Partnerin bindest du über den <kreator>Einstiegsassistenten</kreator> ein: Profil, Ziele, Materialien, Einladung.",
+    "s2_robi_2": "Danach führst du sie durch <pierwsze90>die ersten 90 Tage</pierwsze90>: Die Missionen sagen ihr, was jetzt dran ist, die vier Phasen zeigen ihr, wohin sie unterwegs ist. <osiagniecia>Erfolge</osiagniecia> sammelt dein Team nach fertigen Regeln: Abzeichen für die nächsten Schritte, und kommt eine Partnerin nach einer Pause zurück, schützt ein Gnaden-Token ihre Serie.",
+    "s2_plan_1": "Alles, was oben steht, funktioniert ab dem Starter-Plan.",
+    "s2_plan_2": "Im Growth-Plan siehst du Signale, dass eine Partnerin abspringen könnte, und bekommst einen fertigen Satz für den Gesprächseinstieg.",
+    "s2_granica": "Wer langsamer geworden ist, beurteilt Catherly nicht an deiner Stelle – du siehst nur das, was du und dein Team in der App eintragt, und das Gespräch führst du selbst.",
+    "s3_h2": "Die Struktur ist gewachsen, und die Entscheidungen laufen immer noch über dich.",
+    "s3_boli": "Fragen neuer Partnerinnen, Inhalte, die auf deine Rückmeldung warten, die Unsicherheit, was du auf welchem Markt schreiben darfst – all das landet bei dir. Mehr Stunden hat die Woche deshalb nicht.",
+    "s3_robi_1": "Die <zatwierdzanieZespolu>Freigabe von Team-Inhalten</zatwierdzanieZespolu> liegt bei dir: Du gibst frei oder lehnst ab, und den neuen Status sieht deine ganze Struktur sofort. Der <paszport>Compliance-Pass</paszport> prüft deine Nachricht anhand der Anforderungen von vier Rechtsräumen, bevor du sie abschickst – die Unterschiede zwischen den Märkten musst du nicht im Kopf behalten.",
+    "s3_robi_2": "In der <akademia>Akademie</akademia> schaltet sich das nächste Modul erst frei, wenn das vorherige abgeschlossen ist – deine neue Partnerin fragt dich nicht, womit sie anfangen soll, und die Schulungsinhalte legt der Administrator an.",
+    "s3_plan_1": "Alles, was oben steht, funktioniert ab dem Starter-Plan.",
+    "s3_plan_2": "Im Growth-Plan siehst du den ganzen Strukturbaum deines Teams.",
+    "s3_plan_3": "Sauberer Export – deine Materialien ohne Empfehlungssignatur – ist im Pro-Plan enthalten.",
+    "s3_granica": "Der Compliance-Pass gibt keine rechtliche Garantie und keine Rechtsberatung – er prüft deine Nachricht nach Regeln. Die Freigaben und die Gespräche mit Menschen bleiben bei dir."
   },
   "StronaLogowania": {
     "tresc": "Die Anmeldung ist verfügbar, sobald die App startet."

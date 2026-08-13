@@ -96,7 +96,7 @@ Jede Partnerin in deinem Team steht an einer anderen Stelle: Die eine steigt ger
 Das Dashboard zeigt den aktuellen Stand: Verkäufe, aktive Kontakte, die Aktivität deines Teams – alles an einem Ort. Eine neue Partnerin bindest du über den Einstiegsassistenten ein: Profil, Ziele, Materialien, Einladung.
 
 **Linki:** „Dashboard" → /funkcje/wyniki#pulpit ·
-„Einstiegsassistent" → /funkcje/zespol#kreator-wdrozeniowy
+„Einstiegsassistenten" → /funkcje/zespol#kreator-wdrozeniowy
 
 ### CO CATHERLY Z TYM ROBI — akapit 2
 

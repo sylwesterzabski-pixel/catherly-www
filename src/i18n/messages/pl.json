@@ -1,6 +1,7 @@
 {
   "Nawigacja": {
     "przejdzDoTresci": "Przejdź do treści",
+    "nawGlowna": "Nawigacja główna",
     "funkcje": "Funkcje",
     "cennik": "Cennik",
     "dlaKogo": "Dla kogo",
@@ -171,6 +172,26 @@
     "zdanie": "Wybierz plan i sprawdź, jak działa Catherly w twojej codziennej pracy. Niczym się nie wiążesz — rezygnujesz kiedy chcesz.",
     "cta": "Wybierz plan"
   },
+  "FunkcjeIndeks": {
+    "h1": "Funkcje ułożone tak, jak idzie twój dzień",
+    "zdanie": "Wybierasz to, co masz teraz do zrobienia, a nazwy funkcji znajdziesz po drodze.",
+    "blok1Naglowek": "Rano widzisz, do kogo się odezwać.",
+    "blok1Wprowadzenie": "Dzień zaplanowany w Dziennym Planie Działania zaczyna się od konkretu. Terminy, zadania i kontakty trzymasz w jednym miejscu, nie w głowie.",
+    "blok1Link": "Zobacz wszystko o pozyskiwaniu",
+    "blok2Naglowek": "Siadasz do postów i nie zaczynasz od pustej kartki.",
+    "blok2Wprowadzenie": "Post układasz z gotowego szablonu, planujesz go w kalendarzu i wysyłasz do zatwierdzenia u liderki — publikujesz sama. Ryzykowne sformułowanie wyłapujesz przed publikacją, nie po niej.",
+    "blok2Link": "Zobacz wszystko o treściach",
+    "blok3Naglowek": "Nowa osoba dołącza, a ty nie tłumaczysz od nowa.",
+    "blok3Wprowadzenie": "Kreator wdrożeniowy prowadzi nową osobę przez etapy, a przez Pierwsze 90 Dni z misjami i fazami prowadzisz ją ty. Treści zespołu zatwierdzasz, a komunikat sprawdzasz, zanim go wyślesz.",
+    "blok3Link": "Zobacz wszystko o zespole",
+    "blok4Naglowek": "Wieczorem wiesz, na czym stoisz.",
+    "blok4Wprowadzenie": "Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje. Sukcesy swoje i zespołu zapisujesz i świętujesz, zanim przykryje je codzienność.",
+    "blok4Link": "Zobacz wszystko o wynikach",
+    "f8": "Wszystko powyżej działa od planu Starter.",
+    "f8link": "Zobacz cennik",
+    "zamkniecieCta": "Sprawdź, jak działa",
+    "zamkniecieZdanie": "Rezygnujesz w każdej chwili."
+  },
   "FunkcjePozyskiwanie": {
     "okruszkiAria": "Jesteś tutaj",
     "okruszek": "Pozyskiwanie",
@@ -323,8 +344,35 @@
     "zamkniecieCta": "Sprawdź, jak działa",
     "zamkniecieZdanie": "Rezygnujesz w każdej chwili."
   },
-  "StronaWBudowie": {
-    "tresc": "Ta strona powstaje."
+  "DlaKogo": {
+    "naglowek": "Pracujesz sama, budujesz zespół albo prowadzisz strukturę.",
+    "zdanie": "Przy każdej z tych dróg co innego jest trudne, co innego robi Catherly i gdzie indziej się zatrzymuje.",
+    "spisEtykieta": "Na tej stronie",
+    "cta": "Sprawdź, jak działa",
+    "ctaZdanie": "Rezygnujesz w każdej chwili.",
+    "cennikLink": "Zobacz cennik",
+    "s1_h2": "Wszystko trzymasz jeszcze w głowie i w wiadomościach.",
+    "s1_boli": "Rano decydujesz od nowa, od czego zacząć: notatki są w telefonie, ustalenia w wiadomościach, terminy w kilku miejscach naraz. Wieczorem nie masz pewności, czy o kimś ważnym nie zapomniałaś.",
+    "s1_robi_1": "Kolejność rozmów układasz w <dmo>Dziennym Planie Działania</dmo> — dzień zaczynasz od konkretu, nie od zastanawiania się. Terminy rozmów wpisujesz do <kalendarz>kalendarza z przypomnieniami</kalendarz> — {minuty} minut przed każdą rozmową Catherly przypomina ci o niej.",
+    "s1_robi_2": "Gdy ktoś pyta cię o współpracę, przekazujesz link do swojego <formularz>formularza zgłoszeniowego</formularz> — wypełnione zgłoszenie trafia prosto do twojej bazy kontaktów. Trudną rozmowę przechodzisz najpierw na sucho w <salaTreningowa>Sali Treningowej</salaTreningowa>.",
+    "s1_robi_3": "Post zaczynasz od <szablony>gotowego szablonu</szablony>, nie od pustej strony. <tarcza>Tarcza</tarcza> zaznacza ryzykowne sformułowania, zanim go opublikujesz.",
+    "s1_plan": "Wszystko powyżej działa od planu Starter.",
+    "s1_granica": "Catherly nie znajdzie za ciebie kontaktów ani nie poprowadzi rozmów — ludzi do formularza kierujesz sama, porządek dnia dostajesz.",
+    "s2_h2": "Masz zespół. Pytanie, komu dziś pomóc, a komu nie przeszkadzać.",
+    "s2_boli": "Każda osoba w twoim zespole jest w innym miejscu: jedna dopiero się wdraża, inna wyhamowała po dobrym starcie. Nie masz tego w jednym widoku, więc dowiadujesz się w rozmowie — zwykle później, niż chciałaś.",
+    "s2_robi_1": "<pulpit>Pulpit</pulpit> pokazuje aktualny stan: sprzedaż, aktywne kontakty, aktywność zespołu — wszystko w jednym miejscu. Nową osobę wdrażasz przez <kreator>kreator wdrożeniowy</kreator>: profil, cele, materiały, zaproszenie.",
+    "s2_robi_2": "Potem prowadzisz ją przez <pierwsze90>Pierwsze 90 Dni</pierwsze90>: misje mówią jej, co teraz, a cztery fazy pokazują, dokąd zmierza. <osiagniecia>Osiągnięcia</osiagniecia> zbiera twój zespół według gotowych reguł: odznaki za kolejne kroki, a przy powrocie po przerwie serię chroni żeton łaski.",
+    "s2_plan_1": "Wszystko powyżej działa od planu Starter.",
+    "s2_plan_2": "W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę.",
+    "s2_granica": "Catherly nie oceni za ciebie, kto wyhamował — widzisz tylko to, co ty i twój zespół zapisujecie w aplikacji, a rozmowę prowadzisz ty.",
+    "s3_h2": "Struktura urosła, a decyzje wciąż przechodzą przez ciebie.",
+    "s3_boli": "Pytania nowych osób, treści czekające na twoje zdanie, wątpliwość, co wolno napisać na którym rynku — każda z tych rzeczy czeka na ciebie. Godzin w tygodniu nie przybywa.",
+    "s3_robi_1": "<zatwierdzanieZespolu>Treści zespołu zatwierdzasz</zatwierdzanieZespolu> u siebie: akceptujesz albo odrzucasz, a zmianę statusu od razu widzi cała struktura. <paszport>Paszport zgodności</paszport> sprawdza twój komunikat pod kątem wymogów czterech jurysdykcji, zanim go wyślesz — różnic między rynkami nie musisz pamiętać.",
+    "s3_robi_2": "<akademia>Akademia</akademia> odblokowuje kolejny moduł dopiero po ukończeniu poprzedniego — nowa osoba nie pyta cię, od czego zacząć, a treści szkoleniowe dodaje administrator.",
+    "s3_plan_1": "Wszystko powyżej działa od planu Starter.",
+    "s3_plan_2": "W planie Growth masz widok całego drzewa struktury.",
+    "s3_plan_3": "Czysty eksport — twoje materiały bez sygnatury polecającej — jest w planie Pro.",
+    "s3_granica": "Paszport zgodności nie daje prawnej gwarancji ani porady — sprawdza komunikat według reguł, a zatwierdzenia i rozmowy z ludźmi zostają po twojej stronie."
   },
   "StronaLogowania": {
     "tresc": "Logowanie będzie dostępne przy premierze aplikacji."

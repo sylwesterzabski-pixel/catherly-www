@@ -147,6 +147,29 @@ przynależność do tablicy `MODULY` i zapis w protokole treści — trzy
 źródła, nie jedno. Zgłoszenie do właściciela sprawdzam wszystkimi
 trzema, zanim je wyślę.
 
+### K-D6 · content/de/dla-kogo.md — adnotacja `**Linki:**` niezgodna z własną prozą
+
+Wykryta PO akcepcie, kontrolą trójźródłową (treść ↔ `messages` ↔
+lustro testu) na etapie pisania strażnika T1. Wiersz `**Linki:**`
+w `content/de/dla-kogo.md:99` deklarował lemat „Einstiegsassistent",
+podczas gdy proza tego samego pliku niesie biernik „über den
+**Einstiegsassistenten**" — czyli formę zasądzoną w K-D3. Deklaracja
+przeczyła więc rozstrzygnięciu stojącemu dwie pozycje wyżej w tym
+rejestrze.
+
+Naprawiona **adnotacja, nie proza**: konwencja PL w tym samym pliku
+deklaruje formy odmienione, a proza jest zgodna z K-D3, więc błędem
+był zapis deklaracji. **Zero bajtów widocznych dla użytkowniczki** —
+pliki `content/**/*.md` nie są renderowane (runtime czyta wyłącznie
+`content/facts.json`), a wiersze `**Linki:**` czyta test T1.
+
+Nauka (ADR-018): zgodność „znak w znak" ma sens tylko wtedy, gdy
+strażnik porównuje ze ŹRÓDŁEM ZEWNĘTRZNYM. Pierwsza wersja T1
+porównywała etykietę linku z akapitem, który ten link zawiera —
+zielona zawsze, bo kontener zawiera własne dziecko. Tautologia
+zielonego testu jest groźniejsza od jego braku: brak widać.
+Patrz `komponenty/handoff-etap-d.md` §9 (dowody mutacyjne M0–M2).
+
 ---
 
 ## Etap C — korekty po adwersarzu (2026-08-13)

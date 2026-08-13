@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 
 import pl from "../src/i18n/messages/pl.json";
 import en from "../src/i18n/messages/en.json";
+import de from "../src/i18n/messages/de.json";
 
 /**
  * I1 — aria-current="page" wskazuje bieżącą pozycję menu (kontrakt K1:
@@ -16,7 +17,12 @@ import en from "../src/i18n/messages/en.json";
  * scenariusz pilnowany per nagłówek w e2e/funkcje-pozyskiwanie.spec.ts.
  */
 const PRZYPADKI = [
+  // Faza 4, Etap D: /funkcje i /dla-kogo to strony właściwe (nie
+  // StronaWBudowie) i OBIE są bez okruszków (D-D2a) — pozycja menu
+  // niesie „page", nie „true" (T8 handoffu Etapu D).
   { adres: "/funkcje", etykieta: pl.Nawigacja.funkcje },
+  { adres: "/dla-kogo", etykieta: pl.Nawigacja.dlaKogo },
+  { adres: "/de/dla-kogo", etykieta: de.Nawigacja.dlaKogo },
   { adres: "/en/cennik", etykieta: en.Nawigacja.cennik },
 ] as const;
 

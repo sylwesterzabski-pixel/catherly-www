@@ -89,8 +89,13 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     await page.getByText(c.faq.p1, { exact: true }).click();
     await expect(page.getByText(c.faq.o1, { exact: true })).toBeVisible();
 
-    // Potwierdzenia ×3 (K9).
-    const potwierdzenia = page.locator('ul[role="list"]');
+    // Potwierdzenia ×3 (K9). Selektor zawężony do <main>: od
+    // przeglądu role="list" (Etap D) jawną rolę mają też listy
+    // nagłówka i stopki, więc goły ul[role="list"] łapał 17 pozycji.
+    // W <main> na /cennik K9 jest jedyną taką listą — asercja niżej
+    // pilnuje TEJ jedyności, żeby test nie zmiękł po cichu.
+    const potwierdzenia = page.locator('main ul[role="list"]');
+    await expect(potwierdzenia).toHaveCount(1);
     await expect(potwierdzenia.getByRole("listitem")).toHaveCount(3);
     for (const tekst of [
       c.potwierdzenie1,

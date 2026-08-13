@@ -300,7 +300,15 @@ w `e2e/funkcje-podstrony.spec.ts:304` działają bez zmian.
 Nazwy kluczy pochodzą z `docs/faza-4/tresci-etap-d-po-panelach.md`.
 Wartości **znak w znak** z `content/pl/*.md` (i odpowiednio EN/DE).
 
-### 4.1 `FunkcjeIndeks` — 16 kluczy
+### 4.1 `FunkcjeIndeks` — 18 kluczy
+
+> POPRAWKA ARYTMETYCZNA (2026-08-13, po implementacji). Pierwsza
+> wersja tej sekcji i T2 mówiły „16 kluczy", a tabela poniżej wylicza
+> 18: 2 (rama) + 4 × 3 (bloki) + 2 (I5) + 2 (I6). Trzej agenci
+> implementacji niezależnie zwrócili 18 i odmówili przycięcia listy do
+> 16, bo zejście do 16 wymagałoby skasowania pary I5 albo I6, czyli
+> ciągów sankcjonowanych. Mieli rację: błąd był w tym handoffie,
+> nie w treści. Liczba obowiązująca: **18**.
 
 | Klucz | Źródło w `content/pl/funkcje.md` |
 | --- | --- |
@@ -477,12 +485,31 @@ niesprawdzonej, a niesprawdzona liczy się jak niedziałająca
 
 Wszystko ×3 języki, jeśli nie napisano inaczej.
 
-**T1. D-D21 — etykieta linku jest podciągiem akapitu.** Dla każdego
-z 13 linków `/dla-kogo`: tekst `<a>` MUSI być dokładnym podciągiem
-tekstu akapitu, w którym stoi, **w tym języku**. Test czyta akapit
-z DOM (`textContent`), nie z messages. Ta asercja jest ostatnią
-linią obrony reguły kontraktowej — bez niej reguła jest komentarzem
-w pliku treści.
+**T1. D-D21 — etykieta linku zgadza się ze źródłem treści.**
+~~Dla każdego z 13 linków `/dla-kogo`: tekst `<a>` MUSI być dokładnym
+podciągiem tekstu akapitu, w którym stoi.~~
+
+**Wymaganie przeformułowane na etapie implementacji — poprzednie
+brzmienie opisywało asercję, która nie potrafi zaczerwienić.** Link
+jest dzieckiem akapitu, więc `textContent` akapitu z definicji zawiera
+`textContent` linku: warunek „etykieta jest podciągiem swojego
+akapitu" jest prawdziwy zawsze, niezależnie od treści. Zielona
+asercja bez zdolności do czerwieni nie jest zabezpieczeniem
+(ADR-018 — brak dowodu = brak zabezpieczenia), a poprzednie
+brzmienie właśnie taką asercję zamawiało.
+
+Sprawdzalna treść D-D21: **etykieta linku to DOKŁADNIE fraza
+zadeklarowana w wierszu `**Linki:**` pliku `content/{j}/dla-kogo.md`,
+a adres to zadeklarowany tam cel** — porównanie ze źródłem
+zewnętrznym wobec kodu (CLAUDE.md, źródła prawdy: treść =
+`content/{pl,en,de}`). Frazy są w treści zapisywane w formie,
+w jakiej stoją w zdaniu (PL „Sali Treningowej", DE
+„Einstiegsassistenten" — nie lemat), więc asercja łapie zarówno
+podmianę frazy, jak i zawinięcie w link formy słownikowej, które
+rozcięłoby wyraz. Własność podciągu wynika z tej asercji
+w koniunkcji z porównaniem akapitu do messages — nie jest pisana
+osobno. Realizacja: `e2e/dla-kogo.spec.ts`, `deklaracjeLinkow()` + test
+(b), dowód mutacyjny w §8.
 
 **T2. Znak w znak messages ↔ content**, wzorzec K12
 (`e2e/funkcje-podstrony.spec.ts`, normalizacja wyłącznie białych
@@ -492,7 +519,8 @@ klucz). Dwie różnice wobec K12, obie do zapisania w komentarzu testu:
   `</?[a-zA-Z][a-zA-Z0-9]*>`;
 - `s1_robi_1` niesie `{minuty}` — porównuj PO podstawieniu wartości
   z `facts.json` (precedens `e2e/funkcje-pozyskiwanie.spec.ts:56-61`).
-Dla `FunkcjeIndeks` strażnik obejmuje **16 kluczy** — 33 etykiety
+Dla `FunkcjeIndeks` strażnik obejmuje **18 kluczy** (patrz poprawka
+arytmetyczna w §4.1) — 33 etykiety
 pozycji NIE wchodzą do niego, bo mieszkają w przestrzeniach podstron
 i porównuje je strażnik tamtej strony (D-D12; zapisane wprost
 w nagłówku `content/pl/funkcje.md`).
@@ -572,19 +600,31 @@ nikt nie sankcjonował; (b) decyzja obowiązuje na PIĘCIU stronach
 naraz (indeks + cztery podstrony), inaczej powstaje rozjazd
 indeks ↔ podstrona, czyli stan gorszy od dziedziczonej niejasności.
 
-**2. Adnotacja `*(pozycja kierunku)*` przy „Studio"
-(`content/pl/funkcje.md:90`, tak samo EN i DE).** Adnotacja mówi, że
-Studio jest pozycją kierunku. Protokół etapu oznacza jako
-`[POZYCJA KIERUNKU]` wyłącznie asystenta AI, a kod mówi wprost
-(`src/app/[locale]/funkcje/tresci/page.tsx:81-83`): Studio używa
-komponentu `SekcjaKierunku` **wyjątkiem F4-2 / D-C5, żeby nie mieć
-slotu zrzutu**, a „status obietnicy DZIAŁA bez zmian". Dwa źródła
-prawdy mówią różnie o poziomie obietnicy jednej funkcji — to jest
-obszar ADR-018. **Panel treści nie tyka (Prawo 2, treść zamknięta).**
-Rozstrzygnięcie właściciela: albo adnotacja znika z trzech plików
-treści, albo status Studio zmienia się także w protokole i w kodzie.
-Do czasu rozstrzygnięcia indeks renderuje samą etykietę `Studio` —
-czyli cytuje podstronę, nie adnotację.
+**2. FORMA oznaczenia pozycji kierunku na indeksie.**
+~~Adnotacja `*(pozycja kierunku)*` przy „Studio".~~ **BEZPRZEDMIOTOWE
+w tej postaci** — adnotacji przy Studiu w repo nie ma i nie było
+sankcjonowanej; wpisałem ją błędnie i wycofałem w `65fece8`
+(K-D5 w `docs/faza-4/rejestr-korekt-tresci.md`). Stan faktyczny
+sprawdzalny: ciąg `*(pozycja kierunku)*` stoi wyłącznie przy
+asystencie AI — `content/pl/funkcje.md:65` i `:99`, `en:65` i `:97`,
+`de:63` i `:94`. Dwie pozycje kierunku z 33, zgodnie z kodem
+i protokołem.
+
+Otwarte zostaje to, co rozstrzygnął właściciel co do ZASADY:
+„zero pozycji kierunku wyglądających jak dokonane (ADR-018)" —
+oznaczenie jest OBOWIĄZKOWE, a jego FORMĘ rozstrzyga panel projektu.
+Zakres: **dwie** pozycje (nie trzy), pięć stron naraz (indeks +
+cztery podstrony). Warunki twarde panelu z punktu 1 obowiązują:
+(a) brzmienie „w przygotowaniu" odrzucone — obiecuje termin dostawy;
+(b) oznaczenie musi siedzieć WEWNĄTRZ `<a>`, inaczej znika
+z nazwy dostępnej linku. Nowy ciąg widoczny wymaga sankcji
+właściciela i wejścia do messages ×3 języki.
+
+Lekcja zapisana w K-D5: użycie komponentu nie jest dowodem statusu
+obietnicy. Dowodem są trzy źródła naraz — komentarz decyzyjny przy
+użyciu, przynależność do tablicy `MODULY` i zapis w protokole treści.
+Studio spełnia wszystkie trzy jako DZIAŁA
+(`src/app/[locale]/funkcje/tresci/page.tsx:81-83` + `MODULY[0]`).
 
 **3. Zakres naprawy 2.4.11 (Focus Not Obscured, AA).**
 `scroll-margin-block-start: 5rem` ratuje SKOK do kotwicy, ale nie
@@ -612,7 +652,12 @@ Etapu D. **Rekomendacja: osobne zlecenie porządkowe.**
 
 - Nie ma nowych tokenów ani nowych par kontrastowych — nie było
   potrzeby, więc nie ma ADR.
-- Nie ma zmian w `content/` — treść jest zamknięta.
+- Nie ma zmian w PROZIE `content/` — treść jest zamknięta. Jedna
+  zmiana w `content/` jednak jest: adnotacja w wierszu `**Linki:**`
+  pliku `content/de/dla-kogo.md:99` („Einstiegsassistent" →
+  „Einstiegsassistenten"), wykryta po akcepcie i opisana jako K-D6
+  w `docs/faza-4/rejestr-korekt-tresci.md`. Zero bajtów widocznych
+  dla użytkowniczki — pliki `.md` nie są renderowane.
 - Nie ma tabeli planów na indeksie (D-D1a) ani okruszków (D-D2a)
   ani spisu treści na `/funkcje` (D-D20).
 - Nie ma slotu obrazu w bloku indeksu (brief: indeks nie obiecuje
@@ -620,3 +665,226 @@ Etapu D. **Rekomendacja: osobne zlecenie porządkowe.**
 - Nie ma wariantu układu wielokolumnowego. W systemie nie istnieje
   ani jeden, a `SpisTresci.module.css:2-3` mówi wprost „kolumna
   zawsze — bez wariantów układu".
+
+---
+
+## 9. Dowody mutacyjne (dopisane po implementacji, 2026-08-13)
+
+Zielona bramka i zielony test nie dowodzą niczego o swoim zasięgu.
+Dowodzi go dopiero CZERWIEŃ na celowo zepsutym wejściu (ADR-018 —
+brak dowodu = brak zabezpieczenia). Poniżej trzy przeprowadzone
+dowody; każdy zakończony przywróceniem stanu i potwierdzoną zielenią.
+
+**M0 — bramka kotwic na zbudowanym HTML, 36 celów ×3 języki.**
+Skrypt kontrolny zdejmował `id="<kotwica>"` z pliku docelowego we
+wszystkich trzech językach, uruchamiał `bramka:kotwice` jako osobny
+proces i żądał kodu wyjścia 1 oraz komunikatu nazywającego tę kotwicę.
+Wynik: **36/36 celów czerwieni bramkę**, każdy nazwany trasą
+i fragmentem. 36 celów pokrywa wszystkie 46 nowych linków (33 pozycje
+indeksu + 13 linków prozy celują w 33 kotwice modułów; 3 linki spisu
+`/dla-kogo` w 3 kotwice ścieżek). Build przywrócony bajt w bajt,
+bramka po przywróceniu zielona (270 linków z fragmentem, 0 martwych).
+
+**M1 — cały łańcuch źródło → build → bramka.** Zmutowano JEDNOCZEŚNIE
+kotwicę pozycji w `BLOKI` (`src/app/[locale]/funkcje/page.tsx`,
+`tarcza` → `tarcza-ZMUTOWANA`) i cel w `LINKI_PROZY`
+(`src/app/[locale]/dla-kogo/page.tsx`, `akademia` →
+`akademia-ZMUTOWANA`), po czym wykonano pełny `npm run build`.
+Wynik: `bramka:kotwice` EXIT=1, **6 martwych z 270** — po jednym na
+mutację na język, każdy nazwany. Źródła przywrócone (`cmp` bajtowy),
+build powtórzony, bramka zielona.
+
+**M2 — czy nowy strażnik T1 potrafi zaczerwienić.** Mutacja
+CHIRURGICZNA w `src/i18n/messages/de.json`: przesunięcie granicy
+znacznika bez zmiany tekstu akapitu —
+`<kreator>Einstiegsassistenten</kreator>` →
+`<kreator>Einstiegsassistent</kreator>en`. Tekst zdania po zdjęciu
+znaczników jest IDENTYCZNY, więc T2 (znak w znak messages ↔ content)
+pozostaje zielony; zmienia się wyłącznie fraza zawinięta w link, który
+zaczyna rozcinać wyraz. Wynik: **dokładnie jeden test czerwony** —
+`D-D21 (de)`, komunikat: oczekiwano „Einstiegsassistenten", otrzymano
+„Einstiegsassistent"; pozostałe 22 testy pliku zielone. Poprzednie
+brzmienie T1 („podciąg akapitu") tej mutacji NIE wykryłoby:
+„Einstiegsassistent" jest podciągiem „…Einstiegsassistenten…".
+Mutacja cofnięta, build powtórzony, pełny pakiet: 508 passed,
+4 skipped (te same 4 pominięcia desktopowe co przed etapem).
+
+**Znalezisko uboczne M2 — poprawka w pliku treści.**
+`content/de/dla-kogo.md` deklarował w wierszu `**Linki:**` lemat
+„Einstiegsassistent", podczas gdy własna proza tego samego pliku
+niesie formę biernikową „über den Einstiegsassistenten ein".
+Konwencja pliku jest jednoznaczna — PL deklaruje frazy odmienione
+dokładnie tak, jak stoją w zdaniu („Dziennym Planie Działania",
+„kalendarza z przypomnieniami", „Sali Treningowej") — więc
+niezgodna była ADNOTACJA, nie kod: zawinięcie lematu rozcięłoby
+wyraz. Adnotację doprowadzono do zgodności z prozą tego samego
+pliku. **Zmiana nie rusza ani jednego bajtu tekstu widocznego dla
+użytkowniczki**: pliki `content/**/*.md` nie są renderowane — czyta
+je wyłącznie test T2 i człowiek. Do wiadomości właściciela jako
+korekta w źródle prawdy.
+
+---
+
+## 10. Poprawki po adwersarzu Etapu D (2026-08-14)
+
+Adwersarz (4 wymiary + sceptycy, Prawo 2) zwrócił 14 potwierdzonych
+znalezisk. Każde sprawdziłem sam przed działaniem — dwa okazały się
+nietrafione co do NAPRAWY, mimo trafnej DIAGNOZY (patrz punkt „do
+decyzji" niżej). Wykaz zmian w kodzie:
+
+### 10.1 Strażniki, które nie potrafiły zaczerwienić
+
+- **T6 mierzył ładunek RSC, nie znaczniki.** Ciało odpowiedzi Next.js
+  w ~70% składa się z `<script>self.__next_f.push(...)</script>`,
+  więc `expect(cialo).toContain(...)` przechodziło dla ciągów, których
+  w znacznikach NIE MA. Pomiar różnicowy: `/funkcje` 28430 znaków, w tym
+  20812 w skryptach; ciąg 404 „Tej strony nie ma." jest w ciele, a nie
+  w znacznikach. Dodany `bezSkryptow()` w obu specyfikacjach — test
+  „treść bez JS" znów mierzy to, co ma w nazwie.
+- **Brak zakotwiczenia 33 pozycji indeksu w źródle.** Strażnik „znak
+  w znak" pytał tylko, czy fraza WYSTĘPUJE — zamiana wartości dwóch
+  kluczy przechodziła. Nowy test (a2) parsuje numerowane wiersze
+  `content/{j}/funkcje.md` i porównuje PARY (etykieta, cel) w kolejności
+  dokumentu. **Uściślenie po dowodzie M3 (patrz §11): (a2) kotwiczy
+  w treści LUSTRO `BLOKI` z linii 43 specyfikacji, nie sam `page.tsx`
+  (ten ma własne, nieeksportowane `BLOKI` w linii 41).** Stronę pilnuje
+  DOM-owy test `:343` porównujący render z tym samym lustrem. Dopiero
+  para zamyka łańcuch DOM ↔ lustro ↔ treść; żaden z tych testów nie
+  wystarcza sam.
+- **19 fraz MILCZENIA bez pokrycia** na `/dla-kogo` — zakres zrównany
+  z indeksem.
+- **Brak asercji liczby akapitów** w obu specyfikacjach (`toHaveCount`).
+- **Próg 2.5.8 zaniżony** do 24 px; podniesiony do 34 px (mierzona
+  wartość rzeczywista), tytuł testu zgodny z asercją.
+
+### 10.2 Dostępność w komponentach współdzielonych
+
+- **`role="list"` — przegląd domknięty.** Adwersarz wskazał 5 list
+  (`Nawigacja` ×1, `Stopka` ×4). Mój przegląd całego `src/` potwierdził
+  te 5 i wykluczył pozostałe: `Filar.konkrety` i `SekcjaPlanow.lista`
+  ZACHOWUJĄ punktory (stylowany `li::marker`), więc reguła ich nie
+  dotyczy. Kryterium to `list-style: none`, nie sam znacznik `<ul>`.
+- **Główna nawigacja bez nazwy dostępnej.** Na podstronach filarowych
+  są TRZY landmarki `nav` (główna, okruszki, spis treści); dwa ostatnie
+  mają nazwy od Etapu B, główna nie miała. Nowy klucz
+  `Nawigacja.nawGlowna` ×3 („Nawigacja główna" / „Main navigation" /
+  „Hauptnavigation"). Napisy chrome, nie proza — bez panelu językowego;
+  zgłoszone właścicielowi.
+
+### 10.3 Sprzątanie i bramki
+
+- **`StronaWBudowie` usunięty** — komponent + przestrzeń `messages` ×3.
+  Plan Fazy 4 mówi o Etapie D „zastępuje placeholder", więc usunięcie
+  należy do zakresu tego etapu, a nie jest jego poszerzeniem. `/login`
+  pozostaje stroną zastępczą, ale ma WŁASNĄ przestrzeń
+  `StronaLogowania` — nie ożywia usuniętej. Odzysk:
+  `git show ba3cba6:src/components/StronaWBudowie.tsx`.
+- **Bramka wydajności mierzyła wyłącznie `/`.** Obie trasy Etapu D
+  dopisane do `lighthouserc.json` PO POMIARZE, nie z założenia:
+  `/` LCP 1717 ms · `/funkcje` 1706 ms · `/dla-kogo` 1703 ms, CLS 0,000
+  i TBT 0 ms wszędzie, dostępność 1,00 (progi: 1800 / 0,1 / 200 / 1,0).
+  Cztery podstrony filarowe Etapu B/C nadal poza bramką — dopisanie ich
+  to +12 przebiegów Lighthouse w CI, czyli decyzja o czasie bramki.
+- **Rejestr korekt**: dopisane K-D6 (adnotacja DE), poprawione zdanie
+  w §8 tego handoffu, które twierdziło, że `content/` jest nietknięty.
+
+### 10.4 Diagnoza trafna, naprawa błędna — do decyzji właściciela
+
+Znaleziska 2.4.11 (Focus Not Obscured): adwersarz zaproponował
+jednolinijkowe `html { scroll-padding-block-start: 5rem }` i napisał,
+że „liczba zakrytych przystanków spada do 0". **Zmierzyłem — nieprawda
+w obu członach.** Reguła SUMUJE SIĘ z istniejącym
+`scroll-margin-block-start: 5rem` na celach kotwic: odsunięcie skoku
+w `#wyniki` rośnie 80,2 px → 160,2 px, czyli +80 px pustki na każdej
+z 270 kotwic serwisu. A liczba zakrytych przystanków Shift+Tab spada
+`/funkcje` 15 → 1 i `/dla-kogo` 12 → 2, nie do zera. Poprawną naprawą
+jest refaktor całego serwisu (scroll-padding w korzeniu + zdjęcie
+scroll-margin z celów), a to dotyka wszystkich stron wdrożonych —
+zakres właściciela, nie skutek uboczny Etapu D.
+
+---
+
+## 11. Dowody mutacyjne poprawek po adwersarzu (2026-08-14)
+
+Zasada: strażnik, który nie potrafi zaczerwienić, nie jest
+zabezpieczeniem — a to, że NOWY strażnik gryzie, też trzeba pokazać,
+nie zadeklarować. Cztery mutacje, każda z odnotowanym zasięgiem.
+
+### M3 · zamiana kotwic w `page.tsx` — WYNIK INNY, NIŻ ZAKŁADAŁEM
+
+Mutacja: `mod1_nazwa ↔ mod2_nazwa` wymieniają się kotwicami
+(`#formularz` ↔ `#kalendarz`) w `BLOKI` strony. Etykiety i cele nadal
+istnieją — błędne jest wyłącznie PRZYPISANIE.
+
+Oczekiwałem czerwieni na (a2). Zaczerwienił się **`:343` (DOM), a (a2)
+został zielony** — bo (a2) czyta lustro `BLOKI` ze specyfikacji, a nie
+`page.tsx`. Mutacja trafiła w inne ogniwo, niż celowałem. Zasięg:
+`funkcje-indeks:343` ×6 i `:480` ×6; `bramka:kotwice` ZIELONA (cele
+istnieją, tylko pod złymi etykietami) — czyli DOM-owy test łapie to,
+czego bramka nie widzi. Wniosek naniesiony w §10.1: układ jest
+poprawny, ale opisywałem go nieściśle.
+
+### M3b · zamiana celów w `content/pl/funkcje.md` — (a2) gryzie punktowo
+
+Mutacja: te same dwa cele zamienione w PLIKU TREŚCI. Wynik na pełnym
+zestawie: **czerwone dokładnie 2 testy — (a2) w wersji `pl`, w obu
+projektach. 512 zielonych.** `bramka:kotwice`, `bramka:linki`,
+`bramka:parytet`, `bramka:kontrakt` — wszystkie ZIELONE.
+To jest dowód wartości (a2): rozjazd przypisania treść ↔ kod nie jest
+widoczny dla żadnego innego strażnika ani bramki.
+
+### M4 · czy `bezSkryptow()` zmienia werdykt (pomiar, nie mutacja)
+
+Skanowanie wszystkich wartości `messages` przeciwko odpowiedzi serwera:
+`/funkcje` — ciało 28756 znaków, znaczniki 7708 (**skrypty to 73,2%**);
+`/dla-kogo` — 28325 / 8339 (**70,6%**). Ciągów, które STARY
+`toContain(cialo)` znajdował, a których w znacznikach NIE MA: **po 3 na
+każdej stronie** — `NieZnaleziono.naglowek` („Tej strony nie ma."),
+`NieZnaleziono.wroc`, `Wspolne.stronaGlowna`. Ładunek RSC niesie
+granicę 404 każdej strony, więc stary test „treść bez JS" potwierdzał
+obecność zdania, którego na badanej stronie nie ma w ogóle. Nie była
+to nieszczelność ilościowa, tylko test mierzący nie ten obiekt.
+
+### M5 · zdjęcie `role="list"` z `PasekPotwierdzen`
+
+Mutacja sprawdza strażnika WZMOCNIONEGO przy okazji przeglądu ról.
+Zasięg: `hero:120` („role=list w surowym HTML") ×6, `hero:31` ×6,
+`cennik:56` ×6. Istotne jest `hero:120`: w postaci sprzed Etapu D
+(`toContain('role="list"')` na całym HTML) test **zostałby ZIELONY**,
+bo od przeglądu jawną rolę mają listy nagłówka i stopki. Po zawężeniu
+do znacznika `<ul>` otaczającego potwierdzenia — czerwienieje.
+
+**Efekt uboczny przeglądu ról, wart zapamiętania.** Dodanie
+`role="list"` w `Nawigacja` i `Stopka` zaczerwieniło 6 testów cennika,
+bo selektor `ul[role="list"]` zakładał po cichu „na stronie jest tylko
+jedna taka lista" (17 pozycji zamiast 3). Poprawka to zawężenie do
+`main ul[role="list"]` PLUS jawna asercja `toHaveCount(1)` na samą tę
+jedyność — żeby założenie było odtąd sprawdzane, a nie zakładane.
+
+### 11.1 Pułapka pomiaru — czerwień, która nie była regresją
+
+Przy końcowej weryfikacji zaczerwieniły się dwa testy CSS na `/`
+(`klawiatura:72` skip-link, `zlozenie:58` tło S10). Wyglądało to na
+regresję po przeglądzie ról. **Nie było.** Serwowany HTML wskazywał
+arkusz `9c623fb430173dd1.css`, którego w buildzie NIE MA, a arkusz
+z regułami `skipLink` i `SekcjaRytmu` (10,5 KB) nie był podlinkowany —
+czyli testy mierzyły artefakt sprzed przebudowy.
+
+Mechanizm, wart zapamiętania na przyszłe etapy:
+
+1. `npm run start` startuje proces, który przemianowuje się na
+   `next-server` — `pkill -f "next start"` GO NIE ŁAPIE i kończy się
+   kodem 0, więc wygląda na skuteczny.
+2. `playwright.config.ts` ma `reuseExistingServer: !CI`, więc lokalnie
+   Playwright cicho przejmuje ten zapomniany serwer zamiast wystawić
+   własny na świeżym buildzie.
+
+Skutek: pełny zestaw mierzy STARY artefakt, a wynik — czerwony czy
+zielony — nie mówi nic o kodzie, który się właśnie napisało. Groźniejszy
+jest wariant zielony: cichy fałszywy dowód. Rozpoznanie: `lsof -ti:3000`
+plus porównanie czasu startu procesu z czasem builda. Ubijanie:
+`lsof -ti:3000 | xargs kill -9`, nigdy `pkill -f "next start"`.
+
+Po sprzątnięciu portu i przebiegu na świeżym serwerze: **514 zielonych,
+4 pominięte, zero czerwonych** (baza sprzed etapu 508 + 6 nowych
+przebiegów (a2) = 514).

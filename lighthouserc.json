@@ -3,7 +3,12 @@
   "ci": {
     "collect": {
       "startServerCommand": "npm run start",
-      "url": ["http://localhost:3000/"],
+      "_opis_url": "Trasy Etapu D dopisane 2026-08-14 po POMIARZE, nie z założenia (lhci autorun, 1 przebieg, build produkcyjny): / → LCP 1717 ms, /funkcje → 1706 ms, /dla-kogo → 1703 ms; CLS 0,000 i TBT 0 ms wszędzie, dostępność 1,00. NIE są tu mierzone cztery podstrony filarowe Etapu B/C — dopisanie ich to +12 przebiegów Lighthouse w CI, czyli decyzja o czasie bramki, nie skutek uboczny Etapu D.",
+      "url": [
+        "http://localhost:3000/",
+        "http://localhost:3000/funkcje",
+        "http://localhost:3000/dla-kogo"
+      ],
       "numberOfRuns": 3,
       "settings": {
         "formFactor": "mobile",

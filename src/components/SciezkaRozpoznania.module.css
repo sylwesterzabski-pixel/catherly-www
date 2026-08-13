@@ -1,0 +1,69 @@
+/* S4 — CSS 1:1 wg HF docs/faza-4/hf/d-dla-kogo.html (po panelu
+   projektu 2026-08-13). Kolory wyłącznie var(--…); wymiary rem/ch —
+   zero px; tokeny wymiarów ADR-028. Linki w prozie: domyślne
+   podkreślenie z globals.css, BEZ lokalnej receptury
+   (rozstrzygnięcie 5 — podkreślenie jest jedynym rozróżnieniem
+   niezależnym od koloru, technika G183). Zapytań medialnych NIE MA —
+   kolumna zawsze; długość wiersza trzyma --wymiar-miara-akapitu
+   NA KAŻDYM akapicie, nie wnętrze sekcji. */
+
+/* ROZSTRZYGNIĘCIE 4: sekcja na tle strony, zero powierzchni,
+   zero promienia, BEZ karty — karta zamyka ścieżkę jak ofertę dla
+   segmentu, a brief chce rozpoznania „to ja". */
+.sciezka {
+  padding: 2.5rem 1rem;
+}
+
+/* ROZSTRZYGNIĘCIE 4, druga połowa: wnętrze ścieżki na kontenerze
+   strony jak każda sekcja serwisu — H1 i spis stoją na tym samym
+   kontenerze, więc miara kolumny odsunęłaby lewą krawędź ścieżek. */
+.sciezka__wnetrze {
+  max-width: var(--wymiar-kontener-strony);
+  margin-inline: auto;
+}
+
+.sciezka h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+  max-width: 30ch;
+  text-wrap: balance;
+  scroll-margin-block-start: 5rem;              /* W4 + rozstrzygnięcie 7 */
+}
+
+/* ROZSTRZYGNIĘCIE 1: ból nosi POZYCJA (zawsze pierwszy akapit po H2,
+   kontrakt komponentu) i STOPIEŃ (1.125rem — istniejący stopień lidu),
+   nie kolor. Rejestr tekstu podstawowego, bo drugorzędny znaczy
+   na serwisie „granica". */
+.sciezka__boli {
+  margin: 0 0 1.5rem;
+  max-width: var(--wymiar-miara-akapitu);
+  font-size: 1.125rem;
+}
+
+.sciezka__robi { margin: 0 0 1rem; max-width: var(--wymiar-miara-akapitu); }
+
+/* ROZSTRZYGNIĘCIE 3: wiersz planu jako człon ścieżki — do lewej,
+   w mierze akapitu, odcięty kreską. Kreska × tło = 1,20:1
+   (wyliczone 2026-08-13) — dekoracja w sankcjonowanym zakresie
+   „separatory", nie nośnik informacji. Jedno <p> na zdanie
+   sankcjonowane + osobne <p> na link do /cennik. */
+.sciezka__plan {
+  margin: 1.75rem 0 1.5rem;
+  max-width: var(--wymiar-miara-akapitu);
+  border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
+  padding-block-start: 1rem;
+}
+
+.sciezka__plan p { margin: 0 0 0.5rem; }
+
+.sciezka__plan p:last-child { margin: 0; }
+
+/* ROZSTRZYGNIĘCIE 2: granica 1:1 z ModulFunkcji.module.css:35-41 */
+.sciezka__granica {
+  margin: 0;
+  max-width: var(--wymiar-miara-akapitu);
+  color: var(--kolor-rola-tekst-drugorzedny);
+  border-inline-start: 0.1875rem solid var(--kolor-rola-kreska);
+  padding-inline-start: 0.875rem;
+}

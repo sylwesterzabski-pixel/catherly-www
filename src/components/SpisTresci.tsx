@@ -32,7 +32,12 @@ export function SpisTresci({ etykieta, pozycje }: Props) {
         <p className={styles.etykieta} aria-hidden="true">
           {etykieta}
         </p>
-        <ol className={styles.lista}>
+        {/* role="list" JEST WARUNKIEM, nie ozdobą: przy list-style: none
+            Safari i VoiceOver zdejmują semantykę listy razem z liczbą
+            pozycji, a liczba pozycji jest jedynym słyszalnym dowodem
+            kompletności spisu (panel projektu D, 2026-08-13; precedens
+            PasekPotwierdzen.tsx). */}
+        <ol className={styles.lista} role="list">
           {pozycje.map((pozycja) => (
             <li key={pozycja.kotwica}>
               <a href={`#${pozycja.kotwica}`}>{pozycja.etykieta}</a>

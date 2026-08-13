@@ -33,8 +33,14 @@ export function Nawigacja({ locale, biezacaSciezka }: Props) {
           <a className={styles.logo} href={adresWJezyku(locale, "/")}>
             Catherly
           </a>
-          <nav className={styles.naw}>
-            <ul>
+          {/* aria-label — na podstronach filarowych są TRZY landmarki
+              nav (główna, okruszki, spis treści). Bezimienny landmark
+              w liście czytnika ekranu jest nierozróżnialny; tamte dwa
+              nazwy mają od Etapu B. */}
+          <nav className={styles.naw} aria-label={t("nawGlowna")}>
+            {/* role="list" — CSS zdejmuje punktory (Nawigacja.module.css),
+                a Safari z VoiceOver odbiera wtedy liście semantykę. */}
+            <ul role="list">
               {POZYCJE_MENU.map((pozycja) => (
                 <li key={pozycja.sciezka}>
                   {/* A-1 (architektura Etapu A, 2026-08-12): dokładna
