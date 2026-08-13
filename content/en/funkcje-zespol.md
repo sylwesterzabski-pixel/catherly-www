@@ -1,12 +1,9 @@
 # /funkcje/zespol — EN (adaptacja; Faza 4 Etap C)
 
-**Status: OBOWIĄZUJE — adaptacja po panelu (poprawki naniesione),
-na polecenie właściciela (D-C1…D-C5, 2026-08-13).**
+**Status: OBOWIĄZUJE — adaptacja po panelu, na polecenie
+właściciela (D-C1…D-C5, 2026-08-13).**
 Źródło: content/pl/funkcje-zespol.md.
-Korekta 2026-08-13 (adwersarz C, uwaga EN F8): „In the Growth
-plan" → „On the Growth plan" ×2 — werdykt panelu uzupełniającego
-EN zatwierdzony przez właściciela (uzus SaaS; forma kanoniczna
-zdania Growth, rejestr poz. 11).
+Historia korekt: docs/faza-4/rejestr-korekt-tresci.md.
 
 ---
 

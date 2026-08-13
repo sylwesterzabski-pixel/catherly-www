@@ -1,8 +1,8 @@
 # /funkcje/zespol — PL (Faza 4, Etap C; podstrona K12)
 
-**Status: OBOWIĄZUJE — DECYZJE D-C1…D-C5 właściciela 2026-08-13**
-(fan-out workflow → panele Prawo 2; 3 moduły cyklem uzupełniającym).
+**Status: OBOWIĄZUJE — DECYZJE D-C1…D-C5 właściciela 2026-08-13.**
 Protokół: docs/faza-4/tresci-trzy-podstrony-po-panelach.md.
+Historia korekt: docs/faza-4/rejestr-korekt-tresci.md.
 
 ---
 

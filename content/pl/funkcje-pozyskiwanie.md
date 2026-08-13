@@ -1,10 +1,9 @@
 # /funkcje/pozyskiwanie — PL (Faza 4, Etap B; wzorcowa podstrona K12)
 
-**Status: OBOWIĄZUJE — DECYZJE D-B1/D-B2 właściciela 2026-08-12**
-(fan-out: workflow 10 autorów + rama → panel Prawo 2; formularz
-dorobiony z panelem uzupełniającym). Protokół:
-docs/faza-4/tresci-pozyskiwanie-po-panelu.md. Granice prawdziwe
-NA DZIŚ — rejestr warunków powrotu poz. 15–18.
+**Status: OBOWIĄZUJE — DECYZJE D-B1/D-B2 właściciela 2026-08-12.**
+Protokół: docs/faza-4/tresci-pozyskiwanie-po-panelu.md.
+Historia korekt: docs/faza-4/rejestr-korekt-tresci.md.
+Granice prawdziwe NA DZIŚ — rejestr warunków powrotu poz. 15–18.
 
 ---
 

@@ -1,12 +1,9 @@
 # /funkcje/wyniki — DE (adaptacja; Faza 4 Etap C)
 
-**Status: OBOWIĄZUJE — adaptacja po panelu (poprawki naniesione),
-na polecenie właściciela (D-C1…D-C5, 2026-08-13).**
+**Status: OBOWIĄZUJE — adaptacja po panelu, na polecenie
+właściciela (D-C1…D-C5, 2026-08-13).**
 Źródło: content/pl/funkcje-wyniki.md.
-Rozstrzygnięcie 2026-08-13 (adwersarz C, blokada 2): „Erfolgswand"
-POTWIERDZONE verbatim z i18n aplikacji (tabWall, sankcjonowany
-odczyt; decyzja właściciela wariant a) — marker PROPOZYCJA
-usunięty, wiersz słownika dodany. Format linku F8 ujednolicony.
+Historia korekt: docs/faza-4/rejestr-korekt-tresci.md.
 
 ---
 

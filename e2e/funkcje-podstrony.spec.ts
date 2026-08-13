@@ -447,11 +447,18 @@ for (const podstrona of PODSTRONY) {
       if (podstrona.kotwiceKierunku.includes(kotwica)) {
         continue;
       }
+      const modul = page.locator(`section[aria-labelledby="${kotwica}"]`);
+      // Asercja mocna (uwaga 2 adwersarza C): liczymy elementy
+      // aria-hidden DOWOLNEGO typu — inaczej ukryty <span> obok ramki
+      // byłby niewidzialny dla strażnika…
       await expect(
-        page
-          .locator(`section[aria-labelledby="${kotwica}"]`)
-          .locator('div[aria-hidden="true"]'),
-        `moduł DZIAŁA #${kotwica} z dokładnie jedną ramką`,
+        modul.locator('[aria-hidden="true"]'),
+        `moduł DZIAŁA #${kotwica}: dokładnie jeden element aria-hidden`,
+      ).toHaveCount(1);
+      // …a ten jedyny element musi być ramką slotu zrzutu.
+      await expect(
+        modul.locator('div[aria-hidden="true"]'),
+        `moduł DZIAŁA #${kotwica}: tym elementem jest ramka div`,
       ).toHaveCount(1);
     }
   });

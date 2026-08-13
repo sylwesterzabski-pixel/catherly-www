@@ -1,11 +1,9 @@
 # /funkcje/pozyskiwanie — EN (adaptacja; Faza 4 Etap B)
 
-**Status: OBOWIĄZUJE — adaptacja po panelu EN (WERDYKT: POPRAWKI —
-6 zmian naniesionych), na polecenie właściciela (D-B1/D-B2,
-2026-08-12).** Źródło: content/pl/funkcje-pozyskiwanie.md.
-Odnotowane przez panel dla właściciela: niespójność cennika EN
-(„a Daily Method of Operation") ↔ słownik („DMO — Daily Action
-Plan") — korekta cennika EN wymaga osobnej decyzji.
+**Status: OBOWIĄZUJE — adaptacja po panelu EN, na polecenie
+właściciela (D-B1/D-B2, 2026-08-12).**
+Źródło: content/pl/funkcje-pozyskiwanie.md.
+Historia korekt: docs/faza-4/rejestr-korekt-tresci.md.
 
 ---
 

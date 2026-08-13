@@ -216,11 +216,17 @@ test("WARIANT KIERUNKU: #asystent-ai bez slotu zrzutu; 10 modułów z 1 ramką",
     "sekcja kierunku bez img",
   ).toHaveCount(0);
   for (const kotwica of KOTWICE) {
+    const modul = page.locator(`section[aria-labelledby="${kotwica}"]`);
+    // Asercja mocna (uwaga 2 adwersarza C): elementy aria-hidden
+    // DOWOLNEGO typu — ukryty <span> obok ramki nie może przejść…
     await expect(
-      page
-        .locator(`section[aria-labelledby="${kotwica}"]`)
-        .locator('div[aria-hidden="true"]'),
-      `moduł DZIAŁA #${kotwica} z dokładnie jedną ramką`,
+      modul.locator('[aria-hidden="true"]'),
+      `moduł DZIAŁA #${kotwica}: dokładnie jeden element aria-hidden`,
+    ).toHaveCount(1);
+    // …a ten jedyny element musi być ramką slotu zrzutu.
+    await expect(
+      modul.locator('div[aria-hidden="true"]'),
+      `moduł DZIAŁA #${kotwica}: tym elementem jest ramka div`,
     ).toHaveCount(1);
   }
 });

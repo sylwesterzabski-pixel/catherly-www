@@ -1,12 +1,9 @@
 # /funkcje/pozyskiwanie — DE (adaptacja; Faza 4 Etap B)
 
-**Status: OBOWIĄZUJE — adaptacja po panelu DE (WERDYKT: POPRAWKI —
-3 zmiany naniesione, w tym granica AI: „er macht Vorschläge"
-zamyka dwuznaczność V2), na polecenie właściciela (D-B1/D-B2,
-2026-08-12).** Źródło: content/pl/funkcje-pozyskiwanie.md.
-„Debriefings" zostaje (parytet z PL „debrief"); rezerwa
-„Nachbesprechungen" odnotowana. „KI-Assistent" — rozjazd z i18n
-aplikacji rejestrowany (przy rozjeździe wygrywa aplikacja).
+**Status: OBOWIĄZUJE — adaptacja po panelu DE, na polecenie
+właściciela (D-B1/D-B2, 2026-08-12).**
+Źródło: content/pl/funkcje-pozyskiwanie.md.
+Historia korekt: docs/faza-4/rejestr-korekt-tresci.md.
 
 ---
 
