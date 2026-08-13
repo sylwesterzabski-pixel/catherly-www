@@ -32,6 +32,11 @@ Data założenia: 2026-08-09 (po Z1–Z4).
 | 23 | Widok liderki w Pierwszych 90 Dniach (W2 odrzucony — brak dowodu) | /funkcje/zespol | Odczyt first90 przy najbliższym Z |
 | 24 | „Przesuwasz post” + nazwy poza słownikiem (kalendarz publikacji, tablica postów) | /funkcje/tresci | Weryfikacja przy Z9 / najbliższym Z |
 
+**„Najbliższe zlecenie Z" (poz. 17, 18, 19, 23, 24) = Z7**, spisane
+2026-08-13: `docs/faza-4/zlecenie-Z7.md`. Do czasu odpowiedzi okna
+aplikacji pozycje pozostają otwarte — zlecenie wysłane to nie jest
+warunek spełniony.
+
 Pozycje zamknięte (dla historii): „kto czeka na odpowiedź" (usunięta
 na stałe — brak funkcji); „co z tego jest twoje" (zredukowana do „co
 się sprzedało"); FAQ-faktura i trial rozstrzygnięte 2026-08-09 jako

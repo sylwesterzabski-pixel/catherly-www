@@ -174,3 +174,22 @@ Wymagania twarde:
 
 Zero szacunków i zero mockupów — tylko to, co realnie renderuje
 aplikacja.
+
+---
+
+## Z7 — zbiorcze zlecenie nazewnicze (Faza 4 po Etapie C; 2026-08-13)
+
+Tekst do wklejenia leży osobno, bo urósł ponad rozmiar wpisu w tym
+pliku: **`docs/faza-4/zlecenie-Z7.md`**.
+
+Zakres w skrócie: nazwy funkcji z czterech podstron filarowych
+(Z7.1) · prawdziwe brzmienia EN/DE funkcji, o których strona MILCZY
+— dziś strażnik pilnuje literałów zgadniętych (Z7.2) · dwa nowe
+wiersze słownika: Akademia, żeton łaski (Z7.3) · „KI-Assistent" —
+pozycja otwarta od Etapu B (Z7.4) · kalendarz publikacji i tablica
+postów + gest przesuwania posta (Z7.5) · trzy pytania faktyczne:
+cel linku QR, zakres importu, widok liderki w Pierwszych 90 Dniach
+(Z7.6).
+
+Zamyka pozycje 17, 18, 19, 23, 24 rejestru warunków powrotu oraz
+status OTWARTY K-B3 w `docs/faza-4/rejestr-korekt-tresci.md`.
