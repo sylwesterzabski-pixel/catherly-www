@@ -1,16 +1,36 @@
 # Etap D — treść po panelach: /funkcje (indeks) + /dla-kogo (trzy ścieżki)
 
-Status: **PO PANELACH — DO DECYZJI WŁAŚCICIELA.** Data: 2026-08-13.
+Status: **DECYZJE ZATWIERDZONE — TREŚĆ PL OBOWIĄZUJE.** Data: 2026-08-13.
 Podstawa: `docs/faza-4/komponenty/brief-etap-d-indeks-i-dla-kogo.md`
 (OBOWIĄZUJE), tabela obietnic, słownik nazw, rejestr warunków powrotu,
 `content/facts.json`, treści OBOWIĄZUJĄCE z Etapów B i C.
 
-Ten dokument nie jest treścią wdrożoną. Jest protokołem panelu: niesie
-treść finalną PL obu stron, ślad panelu (co naniesione, co odrzucone
-i dlaczego) oraz ryzyka. **Implementacja nie startuje przed decyzjami
-właściciela** — trzy z nich zmieniają liczbę pozycji albo publiczny
-kontrakt adresów, więc rozstrzygnięcie po fakcie kosztuje poprawkę
-w sześciu plikach treści i trzech przestrzeniach messages naraz.
+## SANKCJA WŁAŚCICIELA (2026-08-13)
+
+**Wszystkie rekomendacje D-D1…D-D21 zatwierdzone bez odstępstw.**
+Od tej chwili treść finalna PL z części A i B jest treścią OBOWIĄZUJĄCĄ
+dla adaptacji EN/DE, HF, handoffu i implementacji. Zmiana dowolnego
+zdania po tym punkcie wymaga nowej decyzji właściciela, nie korekty
+redakcyjnej.
+
+Konsekwencje twarde, które ta sankcja zamyka:
+
+- listy indeksu mają **33 pozycje** (31 modułów + 2 sekcje kierunku) —
+  D-D6 rozstrzygnięte, liczba nie jest już otwarta;
+- kontrakt publiczny slugów `/dla-kogo`: `#pracujesz-sama`,
+  `#budujesz-zespol`, `#prowadzisz-strukture` — D-D14, wiążące dla
+  SpisTresci, bramki kotwic, kampanii i `/pomoc` w Etapie E;
+- kotwica zarezerwowana „Wieczorem widzisz, co z tego wyszło." pozostaje
+  wyłączna dla `rytm-dnia.md` (D-D8) — blok 4 indeksu ma własne H2;
+- etykiety pozycji indeksu są **reużywane** z przestrzeni podstron, nie
+  duplikowane (D-D12) — dotyczy też adaptacji EN/DE;
+- reguła „etykieta linku = podciąg akapitu CO ROBI" wchodzi jako kontrakt
+  implementacji **z asercją testową** (D-D21).
+
+Ten dokument nie jest treścią wdrożoną — niesie treść finalną PL, ślad
+panelu (co naniesione, co odrzucone i dlaczego) oraz ryzyka. Przeniesienie
+do `content/` następuje dopiero z adaptacjami EN/DE, bo bramka parytetu
+porównuje drzewa i plik bez rodzeństwa daje czerwień.
 
 ## Jak powstał ten materiał (pipeline bez zmian)
 
