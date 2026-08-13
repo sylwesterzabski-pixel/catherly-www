@@ -30,3 +30,5 @@ odnajdzie po zalogowaniu.
 Adresy: /cennik → /pricing → /preise (strona www). Rejestracja:
 WYŁĄCZNIE /login (ADR-023) — tras /rejestracja, /register,
 /registrierung nie ma i www ich nie linkuje.
+
+| liderka (osoba zatwierdzająca) | leader (her) | Leaderin | Forma żeńska na www — decyzja właściciela D-C2, 2026-08-13 (karta tonu; „lider” w tabeli = dokument wewnętrzny) |

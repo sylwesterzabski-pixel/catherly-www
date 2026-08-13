@@ -2,6 +2,7 @@
 
 **Status: OBOWIĄZUJE — zaakceptowana przez właściciela 2026-08-09 (DECYZJA 2).**
 Korekta techniczna 2026-08-12 (zgoda właściciela, A-3 Fazy 4): nazwy
+[2026-08-13, D-C3: „podpisem”→„odciskiem” SHA-256 — suma kontrolna ≠ podpis]
 wg słownika + literówki w treściach obietnic — zero zmiany sensu.
 Źródło: content/inwentarz-funkcji.md (git 61a69c9c, 2026-08-09).
 Gramatyka: DZIAŁA → tryb dokonany · klucz → język kierunku (bez
@@ -144,7 +145,7 @@ kierunku (asystent proponuje), nie efektu końcowego.
 | Twój Wrapped (7 zapytań) | Twój Wrapped podsumowuje twój okres: co zrobiłaś, co sprzedałaś, co w zespole. |
 | Cel z kamieniami milowymi | Wyznaczasz cele i śledzisz postęp kamieniami milowymi. |
 | Ściana sukcesów (/recognition) | Rejestrujesz i świętujesz sukcesy swoje i zespołu. |
-| Świadectwo (SHA-256, eksport CSV) | Twoja historia aktywności zabezpieczona podpisem SHA-256 — eksportujesz CSV kiedy chcesz. |
+| Świadectwo (SHA-256, eksport CSV) | Twoja historia aktywności zabezpieczona odciskiem SHA-256 — eksportujesz CSV kiedy chcesz. |
 | Wall of Proof | Zbierasz dowody swojej pracy na Wall of Proof. |
 
 ### Milczenie / zastrzeżenia — nie umieszczać na stronie
