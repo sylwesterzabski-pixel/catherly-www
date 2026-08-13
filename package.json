@@ -16,6 +16,7 @@
     "bramka:parytet": "node scripts/check-parytet.mjs",
     "bramka:kontrakt": "node scripts/check-kontrakt-tokenow.mjs",
     "bramka:linki": "node scripts/check-linki.mjs",
+    "bramka:kotwice": "node scripts/check-kotwice.mjs",
     "bramka:nojs": "node scripts/check-nojs.mjs",
     "bramka:cennik": "node scripts/stripe-snapshot.mjs",
     "bramka:nieodwracalne": "node scripts/check-audyt.mjs",
