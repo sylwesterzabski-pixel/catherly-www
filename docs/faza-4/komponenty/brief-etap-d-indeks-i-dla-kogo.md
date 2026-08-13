@@ -134,7 +134,9 @@ do kotwic, więc ta dziura przestaje być teoretyczna.
 w zbudowanym HTML: strona docelowa istnieje ORAZ element o tym `id`
 jest w jej HTML. Sprawdzenie na wszystkich trzech językach (kotwice
 są wspólne — slug PL — więc rozjazd per język to realny błąd).
-Bramka wchodzi do `npm run bramki` i do pre-commit obok pozostałych.
+Bramka wchodzi jako `npm run bramka:kotwice` i jako zadanie CI obok
+bramki linków. **Poza pre-commit** — wymaga builda, a hook buduje
+tylko przy zmianach w `src/` (axe); miejsce bramki budowanej to CI.
 
 **Dowód działania bramki jest częścią etapu:** mutacja (podmiana
 jednej kotwicy w treści indeksu na nieistniejącą) musi dać czerwień.
