@@ -85,7 +85,7 @@ You build your post from a ready template, plan it in the calendar and send it t
 
 ### Pozycje (etykiety reużyte z FunkcjeTresci)
 
-1. Studio *(pozycja kierunku)* → /funkcje/tresci#studio
+1. Studio → /funkcje/tresci#studio
 2. Templates with versioning → /funkcje/tresci#szablony
 3. Hashtag sets → /funkcje/tresci#hashtagi
 4. Publishing calendar → /funkcje/tresci#kalendarz-publikacji

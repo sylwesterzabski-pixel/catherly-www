@@ -89,31 +89,63 @@ zdania. Wniosek właściciela zostaje w mocy w obu odczytach: kreator
 prowadzi przez wszystkie swoje etapy, więc kwantyfikator nie podnosi
 obietnicy.
 
-### K-D5 · Studio na indeksie bez oznaczenia kierunku — ROZSTRZYGNIĘTY
+### K-D5 · oznaczenie pozycji kierunku na indeksie — WYCOFANE W CZĘŚCI STUDIO
 
-Wykryte przy przygotowaniu projektu: sankcjonowana treść indeksu dawała
-adnotację *(pozycja kierunku)* przy „asystent AI" w blokach 1 i 2, ale
-NIE przy „Studio" (blok 2, poz. 1) — mimo że w kodzie Studio renderuje
-`SekcjaKierunku`, dokładnie tym samym komponentem co asystent AI:
-`src/app/[locale]/funkcje/tresci/page.tsx:84-90`, `MODULY[0] =
-{ klucz: "mod1", kotwica: "studio" }`, `MODULY.slice(1)` idzie przez
-`ModulFunkcji`. Dowód w kodzie, nie deklaracja (D-C5).
+**Bieg sprawy — zapisany w całości, bo pomyłka jest tu pouczeniem.**
 
-**Rozstrzygnięcie właściciela 2026-08-13 (verbatim):** „adnotacja
-pozycji kierunku OBOWIĄZKOWA przy Studiu — trzy pozycje kierunku z 33
-(asystent AI ×2 + Studio) dostają identyczny wzorzec oznaczenia. Zero
-pozycji kierunku wyglądających jak dokonane (ADR-018). Formę oznaczenia
-rozstrzyga panel projektu; zasada — moja, nienegocjowalna."
+**(1) Moje zgłoszenie 2026-08-13, BŁĘDNE.** Zgłosiłem właścicielowi, że
+sankcjonowana treść indeksu adnotuje *(pozycja kierunku)* przy „asystent
+AI" w blokach 1 i 2, ale nie przy „Studio", choć w kodzie Studio
+renderuje `SekcjaKierunku` — ten sam komponent co asystent AI
+(`src/app/[locale]/funkcje/tresci/page.tsx:84-89`). Przeczytałem użycie
+komponentu i nie przeczytałem trzech linii nad nim.
 
-Naniesione w `content/{pl,en,de}/funkcje.md`, blok 2 poz. 1:
-`1. Studio *(pozycja kierunku)* → /funkcje/tresci#studio`.
-Stan po korekcie: 3 z 33 pozycji indeksu niosą oznaczenie kierunku.
+**(2) Rozstrzygnięcie właściciela na tej przesłance (verbatim):**
+„adnotacja pozycji kierunku OBOWIĄZKOWA przy Studiu — trzy pozycje
+kierunku z 33 (asystent AI ×2 + Studio) dostają identyczny wzorzec
+oznaczenia. Zero pozycji kierunku wyglądających jak dokonane (ADR-018).
+Formę oznaczenia rozstrzyga panel projektu; zasada — moja,
+nienegocjowalna."
 
-Zakres otwarty dla panelu projektu: wyłącznie FORMA oznaczenia
-(mikroetykieta, jej pozycja i wygląd). Wariant „bez odróżnienia" jest
-wykluczony decyzją właściciela. Jeśli panel zaproponuje ciąg widoczny
-inny niż obecny nawias, wymaga on sankcji właściciela i wpisu do
-messages ×3 języki.
+**(3) Panel projektu Etapu D obalił przesłankę. Dowód w kodzie:**
+
+- `src/app/[locale]/funkcje/tresci/page.tsx:81-83`, komentarz nad
+  użyciem: „Moduł 1 Studio — WARIANT KIERUNKU (wyjątek F4-2; brief,
+  Uzupełnienie C + D-C5): BEZ slotu zrzutu do przebudowy wariant C
+  aplikacji; **status obietnicy DZIAŁA bez zmian**." Komponent jest tu
+  wariantem UKŁADU (brak slotu zrzutu, bo ekran aplikacji jest
+  przebudowywany), nie deklaracją poziomu obietnicy.
+- `MODULY` (tamże:35-45) zawiera `{ klucz: "mod1", kotwica: "studio" }`
+  jako pozycję pierwszą — Studio jest **modułem DZIAŁA** i wchodzi do
+  spisu treści podstrony. `asystent-ai` w `MODULY` nie występuje
+  i komentarz przy spisie (tamże:72-73) trzyma go poza spisem wprost.
+- `docs/faza-4/tresci-etap-d-po-panelach.md:216` i `:253` oznaczają
+  `[POZYCJA KIERUNKU]` **wyłącznie** asystenta AI, w obu blokach.
+
+**(4) Skutek — wycofanie.** Adnotacja przy Studiu usunięta z
+`content/{pl,en,de}/funkcje.md` (powrót do stanu sankcjonowanego
+D-D1…D-D21). Pozycji kierunku jest **dwie z 33**, nie trzy. Utrzymanie
+adnotacji znaczyłoby, że strona odbiera działającej funkcji jej status —
+to też jest obszar ADR-018 („obietnice"), tylko w drugą stronę.
+
+**(5) Co z zasady właściciela zostaje w mocy.** „Zero pozycji kierunku
+wyglądających jak dokonane" obowiązuje bez zmian — zawęża się wyłącznie
+jej zakres: dwie pozycje `asystent AI`, nie trzy. Forma oznaczenia
+pozostaje OTWARTA i wraca do właściciela, bo panel jej nie wprowadził
+i podał do decyzji twarde warunki (patrz `handoff-etap-d.md`, pkt 7.1):
+ciąg widoczny wymaga sankcji właściciela i wpisu do messages ×3;
+brzmienie „w przygotowaniu" panel odrzucił (obiecuje termin dostawy);
+decyzja obejmuje PIĘĆ stron naraz (indeks + cztery podstrony filarowe),
+inaczej powstaje rozjazd indeks ↔ podstrona. Soczewka dostępności dodała
+warunek mechaniczny: oznaczenie musi stać WEWNĄTRZ `<a>`, bo nazwa
+dostępna linku liczy się tylko z jego zawartości — span po `</a>` nie
+istnieje dla czytnika ekranu w trybie listy linków.
+
+**(6) Nauka na przyszłość (ADR-018).** Użycie komponentu nie jest
+dowodem statusu obietnicy. Dowodem jest komentarz decyzyjny przy użyciu,
+przynależność do tablicy `MODULY` i zapis w protokole treści — trzy
+źródła, nie jedno. Zgłoszenie do właściciela sprawdzam wszystkimi
+trzema, zanim je wyślę.
 
 ---
 
