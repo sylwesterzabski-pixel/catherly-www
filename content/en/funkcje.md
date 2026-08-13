@@ -85,7 +85,7 @@ You build your post from a ready template, plan it in the calendar and send it t
 
 ### Pozycje (etykiety reużyte z FunkcjeTresci)
 
-1. Studio → /funkcje/tresci#studio
+1. Studio *(pozycja kierunku)* → /funkcje/tresci#studio
 2. Templates with versioning → /funkcje/tresci#szablony
 3. Hashtag sets → /funkcje/tresci#hashtagi
 4. Publishing calendar → /funkcje/tresci#kalendarz-publikacji
@@ -110,7 +110,7 @@ A new person joins your team, and you don’t explain it all over again.
 
 ### Wprowadzenie
 
-The onboarding wizard walks a new person through the stages, and it’s you who guides her through First 90 Days, with its missions and phases. You approve your team’s content, and you check your message before you send it.
+The onboarding wizard walks a new person through all the stages, and it’s you who guides her through First 90 Days, with its missions and phases. You approve your team’s content, and you check your message before you send it.
 
 ### Pozycje (etykiety reużyte z FunkcjeZespol)
 

@@ -87,7 +87,7 @@ wyłapujesz przed publikacją, nie po niej.
 
 ### Pozycje (etykiety reużyte z FunkcjeTresci)
 
-1. Studio → /funkcje/tresci#studio
+1. Studio *(pozycja kierunku)* → /funkcje/tresci#studio
 2. szablony z wersjonowaniem → /funkcje/tresci#szablony
 3. zestawy hashtagów → /funkcje/tresci#hashtagi
 4. Kalendarz publikacji → /funkcje/tresci#kalendarz-publikacji

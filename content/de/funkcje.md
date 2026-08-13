@@ -82,7 +82,7 @@ Einen Post setzt du aus einer fertigen Vorlage zusammen, planst ihn im Kalender 
 
 ### Pozycje (etykiety reużyte z FunkcjeTresci)
 
-1. Studio → /funkcje/tresci#studio
+1. Studio *(pozycja kierunku)* → /funkcje/tresci#studio
 2. Vorlagen mit Versionierung → /funkcje/tresci#szablony
 3. Hashtag-Sets → /funkcje/tresci#hashtagi
 4. Veröffentlichungskalender → /funkcje/tresci#kalendarz-publikacji

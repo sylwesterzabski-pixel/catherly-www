@@ -1,11 +1,11 @@
-# Rejestr korekt treści podstron funkcji (Faza 4, Etapy B–C)
+# Rejestr korekt treści podstron funkcji (Faza 4, Etapy B–D)
 
 **Status: OBOWIĄZUJE jako dokumentacja.** Powstał 2026-08-13 na
 polecenie właściciela po Etapie C (uwaga adwersarza C, pkt 1):
 historia korekt i noty paneli wyprowadzone z nagłówków plików
 `content/` — pliki treści mają nieść treść, nie swoją historię.
 
-Zasada na przyszłość: nagłówek pliku `content/*/funkcje-*.md` niesie
+Zasada na przyszłość: nagłówek każdego pliku w `content/` niesie
 wyłącznie (1) status z numerem decyzji właściciela i datą, (2) źródło
 adaptacji dla EN/DE, (3) wskaźnik protokołu, (4) wskaźnik na ten
 rejestr. Każda korekta po akcepcie dopisuje pozycję TUTAJ.
@@ -19,10 +19,11 @@ samych obietnic — należy do treści, nie do archiwum.
 
 ## Etap D — panele adaptacji EN/DE (2026-08-13)
 
-Dotyczy `content/{en,de}/funkcje.md` i `content/{en,de}/dla-kogo.md`.
-Sześć soczewek panelowych (Prawo 2), werdykt każdej: POPRAWKI.
-Razem 56 uwag — 2 BLOKUJĄCE, 18 WAŻNYCH, 36 DROBNYCH. Protokół
-treści: `docs/faza-4/tresci-etap-d-po-panelach.md`.
+K-D1…K-D4 dotyczą `content/{en,de}/funkcje.md` i
+`content/{en,de}/dla-kogo.md` (sześć soczewek panelowych, Prawo 2,
+werdykt każdej: POPRAWKI; razem 56 uwag — 2 BLOKUJĄCE, 18 WAŻNYCH,
+36 DROBNYCH). K-D5 dotyczy wszystkich trzech języków `funkcje.md`.
+Protokół treści: `docs/faza-4/tresci-etap-d-po-panelach.md`.
 
 ### K-D1 · content/de/dla-kogo.md — BLOKUJĄCA, obietnica prawna
 
@@ -56,7 +57,7 @@ Vorlage") są lustrem skrótów PL („formularza zgłoszeniowego",
 „gotowego szablonu"). Reguła D-D21 sprawdza się w tekście danego
 języka osobno — kontrola mechaniczna, nie deklaracja autora.
 
-### K-D4 · rozjazd EN↔DE we wprowadzeniu bloku 3 — OTWARTY
+### K-D4 · rozjazd EN↔DE we wprowadzeniu bloku 3 — ROZSTRZYGNIĘTY
 
 PL `content/pl/funkcje.md` blok 3: „prowadzi nową osobę przez etapy"
 — bez kwantyfikatora. Panel EN uznał kwantyfikator za podniesienie
@@ -68,10 +69,51 @@ EN rozjeżdża się teraz wewnątrzjęzykowo (/filary ↔ /funkcje), a DE
 rozjeżdża się z PL. Ciąg jest nowy (`FunkcjeIndeks.blok3Wprowadzenie`),
 więc reguła reużycia go nie wiąże i wybór jest realny.
 
-Status OTWARTY: do decyzji właściciela przed pushem Etapu D —
-(a) wyrównać DE do EN („durch die Etappen"), (b) wyrównać EN do DE
-(powrót do „through each stage"), (c) zostawić jak jest. Zgłoszone,
-nie zasypane (ADR-018: niepewność zgłaszasz).
+**Rozstrzygnięcie właściciela 2026-08-13 (verbatim):** „wyrównać DO
+KWANTYFIKATORA — EN «through all the stages» (korekta panelu EN), DE
+zostaje «durch alle Etappen». Powód: sankcjonowane Filary.filar3.konkret1
+niosą kwantyfikator w obu językach — spójność wewnętrzna języka wygrywa;
+merytorycznie First90 prowadzi przez wszystkie 4 fazy (pokrycie w kodzie)."
+
+Naniesione w `content/en/funkcje.md` (blok 3, wprowadzenie): „The
+onboarding wizard walks a new person through **all the stages**…".
+DE bez zmian. PL bez zmian (D-D1…D-D21 sankcjonują brzmienie PL).
+
+Nota rzeczowa do pokrycia (ADR-018, dowód nie deklaracja): zdanie
+niosące kwantyfikator mówi o KREATORZE WDROŻENIOWYM, nie o First 90
+Dni — pokrycie dla „all the stages" daje `FunkcjeZespol.mod1_poco`
+(„führt sie durch sechs Schritte" / „prowadzi ją przez sześć kroków"),
+czyli zamknięty zbiór sześciu kroków. Pokrycie dla czterech faz
+First 90 Dni leży w `FunkcjeZespol.mod3_*` i dotyczy drugiego członu
+zdania. Wniosek właściciela zostaje w mocy w obu odczytach: kreator
+prowadzi przez wszystkie swoje etapy, więc kwantyfikator nie podnosi
+obietnicy.
+
+### K-D5 · Studio na indeksie bez oznaczenia kierunku — ROZSTRZYGNIĘTY
+
+Wykryte przy przygotowaniu projektu: sankcjonowana treść indeksu dawała
+adnotację *(pozycja kierunku)* przy „asystent AI" w blokach 1 i 2, ale
+NIE przy „Studio" (blok 2, poz. 1) — mimo że w kodzie Studio renderuje
+`SekcjaKierunku`, dokładnie tym samym komponentem co asystent AI:
+`src/app/[locale]/funkcje/tresci/page.tsx:84-90`, `MODULY[0] =
+{ klucz: "mod1", kotwica: "studio" }`, `MODULY.slice(1)` idzie przez
+`ModulFunkcji`. Dowód w kodzie, nie deklaracja (D-C5).
+
+**Rozstrzygnięcie właściciela 2026-08-13 (verbatim):** „adnotacja
+pozycji kierunku OBOWIĄZKOWA przy Studiu — trzy pozycje kierunku z 33
+(asystent AI ×2 + Studio) dostają identyczny wzorzec oznaczenia. Zero
+pozycji kierunku wyglądających jak dokonane (ADR-018). Formę oznaczenia
+rozstrzyga panel projektu; zasada — moja, nienegocjowalna."
+
+Naniesione w `content/{pl,en,de}/funkcje.md`, blok 2 poz. 1:
+`1. Studio *(pozycja kierunku)* → /funkcje/tresci#studio`.
+Stan po korekcie: 3 z 33 pozycji indeksu niosą oznaczenie kierunku.
+
+Zakres otwarty dla panelu projektu: wyłącznie FORMA oznaczenia
+(mikroetykieta, jej pozycja i wygląd). Wariant „bez odróżnienia" jest
+wykluczony decyzją właściciela. Jeśli panel zaproponuje ciąg widoczny
+inny niż obecny nawias, wymaga on sankcji właściciela i wpisu do
+messages ×3 języki.
 
 ---
 
