@@ -23,6 +23,9 @@ K-D1…K-D4 dotyczą `content/{en,de}/funkcje.md` i
 `content/{en,de}/dla-kogo.md` (sześć soczewek panelowych, Prawo 2,
 werdykt każdej: POPRAWKI; razem 56 uwag — 2 BLOKUJĄCE, 18 WAŻNYCH,
 36 DROBNYCH). K-D5 dotyczy wszystkich trzech języków `funkcje.md`.
+K-D6 wyszła kontrolą trójźródłową już PO akcepcie. K-D7 nie jest
+korektą treści, tylko **świadomym wyjątkiem proceduralnym** —
+odnotowanym tutaj, żeby wyjątek nie stał się cichym precedensem.
 Protokół treści: `docs/faza-4/tresci-etap-d-po-panelach.md`.
 
 ### K-D1 · content/de/dla-kogo.md — BLOKUJĄCA, obietnica prawna
@@ -169,6 +172,38 @@ porównywała etykietę linku z akapitem, który ten link zawiera —
 zielona zawsze, bo kontener zawiera własne dziecko. Tautologia
 zielonego testu jest groźniejsza od jego braku: brak widać.
 Patrz `komponenty/handoff-etap-d.md` §9 (dowody mutacyjne M0–M2).
+
+### K-D7 · trzy napisy chrome bez panelu językowego — ŚWIADOMY WYJĄTEK
+
+**Co.** Przy naprawie znalezisk adwersarza Etapu D dopisałem do
+`src/i18n/messages/{pl,en,de}.json` klucz `Nawigacja.nawGlowna`:
+„Nawigacja główna" · „Main navigation" · „Hauptnavigation". Ciąg jest
+nazwą dostępną landmarku `<nav>` (`aria-label`), nie tekstem na
+stronie. Powstał **bez panelu językowego**, którym idzie każda inna
+treść EN/DE tego etapu.
+
+**Dlaczego był potrzebny.** Na podstronach filarowych stoją TRZY
+landmarki `nav` (główna · okruszki · spis treści). Dwa ostatnie dostały
+nazwy w Etapie B; główna została bezimienna, a bezimienny landmark
+w liście landmarków czytnika ekranu jest nieodróżnialny od pozostałych.
+
+**Dlaczego bez panelu — zgłoszone właścicielowi, AKCEPT 2026-08-14.**
+Panel językowy rozstrzyga wybory redakcyjne: ton, rejestr, obietnicę.
+Tu żadnego wyboru nie ma — to terminologia dostępności ustalona
+konwencją, a nie brzmienie do zaprojektowania. Ciąg nie jest widoczny
+dla osoby widzącej, nie niesie obietnicy i nie ma wariantu, który
+byłby „lepszy w tonie serwisu".
+
+**Granica wyjątku (żeby nie stał się cichym precedensem).** Wyjątek
+obejmuje WYŁĄCZNIE ciąg spełniający wszystkie trzy warunki naraz:
+(1) niewidoczny w układzie wizualnym, (2) brzmienie narzucone
+konwencją dostępności, nie redakcją, (3) zero obietnicy o produkcie.
+Ciąg, który nie spełnia choć jednego, idzie panelem — bez dyskusji.
+
+**Zakres pokrewny.** Tą samą przesłanką („zero bajtów widocznych")
+objęte jest usunięcie martwej przestrzeni `StronaWBudowie` z trzech
+plików `messages` — patrz `komponenty/handoff-etap-d.md` §10.3. To
+usunięcie kodu nieużywanego, nie zmiana treści.
 
 ---
 
