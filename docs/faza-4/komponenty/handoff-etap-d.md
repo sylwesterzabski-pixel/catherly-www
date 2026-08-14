@@ -1018,3 +1018,60 @@ zepsuty selektor nie zazielenił testu pustą listą.
 
 Po przywróceniu: `podkreslenia` + `odsuniecie-kotwic` = **14/14
 zielonych**, bramka tokenów zielona.
+
+### 12.3 Bramka wydajności — cztery podstrony filarowe
+
+**Decyzja:** „Lighthouse +4 podstrony: TAK. Po pierwszym pełnym przebiegu
+podaj delta czasu CI."
+
+**Co było nie tak.** Bramka mierzyła `/`, `/funkcje` i `/dla-kogo` —
+czyli trzy najlżejsze strony serwisu. Cztery podstrony filarowe (11 i 10
+modułów ze zrzutami) nie miały progu wydajności w ogóle. Po dopisaniu
+bramka obejmuje 7 adresów × 3 przebiegi = 21 pomiarów.
+
+**Wynik pierwszego pełnego przebiegu (mediana z 3, build produkcyjny,
+throttling `simulate`, formFactor mobile):**
+
+| adres | LCP med | LCP max | CLS | TBT | dostępność |
+|---|---|---|---|---|---|
+| `/` | 1707 ms | 1710 ms | 0,000 | 0 | 1,00 |
+| `/funkcje` | 1701 ms | 1702 ms | 0,000 | 0 | 1,00 |
+| `/dla-kogo` | 1701 ms | 1703 ms | 0,000 | 0 | 1,00 |
+| `/funkcje/pozyskiwanie` | 1701 ms | 1701 ms | 0,000 | 0 | 1,00 |
+| `/funkcje/tresci` | 1701 ms | 1705 ms | 0,000 | 0 | 1,00 |
+| `/funkcje/zespol` | 1703 ms | 1703 ms | 0,000 | 0 | 1,00 |
+| `/funkcje/wyniki` | 1701 ms | 1702 ms | 0,000 | 0 | 1,00 |
+
+Cztery nowe adresy przechodzą wszystkie cztery asercje. **Zielone, ale
+warto wiedzieć, DLACZEGO** — bo z tego wynika, czego ta bramka nie
+złapie: elementem LCP na każdej ze stron jest BLOK TEKSTU, nie zrzut.
+FCP 911 ms, odpowiedź serwera 40 ms, LCP 1707 ms — czyli wynik jest
+zdominowany przez wspólną ścieżkę krytyczną, a nie przez liczbę modułów.
+Dlatego najcięższe strony serwisu mierzą się tak samo jak najlżejsze
+i dlatego bramka NIE będzie różnicować stron po zawartości. Jej wartość
+jest inna: siedem adresów stoi **99 ms (5,5%) pod progiem 1800 ms**, więc
+każda regresja na ścieżce wspólnej zaczerwieni od razu wszystkie siedem.
+Zapas jest cienki i to jest fakt do zapamiętania, nie do przemilczenia.
+
+**Delta czasu — pomiar lokalny (ten sam build, ten sam sprzęt):**
+
+| | adresów | przebiegów | czas |
+|---|---|---|---|
+| przed | 3 | 9 | **99 s** |
+| po | 7 | 21 | **216 s** |
+
+Delta **+117 s (×2,18)**. Dopasowanie liniowe: 11,25 s stałego kosztu
+startu + 9,75 s na przebieg.
+
+**Delta czasu CI — projekcja, nie pomiar.** Ostatni pełny przebieg
+w GitHub Actions (run 31735203457): job bramki wydajności **73 s**,
+job build 50 s, najdłuższy job zależny — dostępność 87 s, całe CI 145 s.
+Jobs są równoległe (`needs: build`), więc czas całego CI to
+build + najdłuższy job zależny. Po dopisaniu czterech adresów bramka
+wydajności **przejmie rolę ścieżki krytycznej** od bramki dostępności,
+a delta CAŁEGO CI to różnica między nowym czasem tego joba a 87 s, nie
+pełne +117 s. Skalując zmierzoną liniowość na czas jobu w CI wychodzi
+~120–135 s, czyli **całe CI ~145 s → ~170–185 s (+25…+40 s)**.
+
+To jest PROJEKCJA. Liczba z pomiaru zostanie dopisana tutaj po pierwszym
+przebiegu CI na wypchniętej gałęzi.
