@@ -159,6 +159,40 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test e2e/sciezka-zakupu.spec.ts
 
+  bramka-pelny-zestaw:
+    name: "Bramka: Pełny zestaw e2e (każdy spec, oba projekty)"
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: next-build, path: .next/ }
+      - run: npx playwright install --with-deps chromium
+      # DZIURA ZAŁATANA 2026-08-14 (zlecenie właściciela, klasa
+      # security-scan). Do tego dnia CI uruchamiało 4 spece z 17:
+      # axe, klawiatura, oznaczenie-kierunku i sciezka-zakupu. Trzynaście
+      # pozostałych — cały dorobek strażniczy Etapów B, C i D, w tym
+      # funkcje-podstrony.spec.ts z 76 testami — biegało WYŁĄCZNIE
+      # lokalnie. W rejestrze tego projektu znaczy to, że nie istniały:
+      # ADR-018, „brak dowodu = brak zabezpieczenia". Zielona suita na
+      # laptopie autora nie jest dowodem, bo nikt jej nie egzekwuje.
+      #
+      # Świadomie BEZ listy plików. Lista jest dokładnie tym mechanizmem,
+      # który tę dziurę wytworzył: każdy nowy spec wymagał pamiętania
+      # o dopisaniu, a zapomnienie nie dawało żadnego sygnału — bramka
+      # była zielona, po prostu niczego nie sprawdzała. `npx playwright
+      # test` bez filtra bierze wszystko z testDir, więc osierocenie
+      # speca przestaje być możliwe konstrukcyjnie, a nie przez czujność.
+      #
+      # Nakładanie się z bramkami Dostępność i E2E jest zamierzone.
+      # Tamte zostają, bo są osobnymi pozycjami rejestru bramek i dają
+      # szybki, konkretny sygnał („padła dostępność", nie „padło e2e").
+      # Koszt dublowania: 39 testów z 272 na projekt, kilka sekund.
+      - run: npx playwright test
+
   bramka-wydajnosc:
     name: "Bramka: Wydajność (LCP < 1,8 s · CLS < 0,1 · TBT < 200 ms)"
     runs-on: ubuntu-latest
