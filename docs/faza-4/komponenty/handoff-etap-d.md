@@ -802,6 +802,9 @@ jest refaktor całego serwisu (scroll-padding w korzeniu + zdjęcie
 scroll-margin z celów), a to dotyka wszystkich stron wdrożonych —
 zakres właściciela, nie skutek uboczny Etapu D.
 
+> **ROZSTRZYGNIĘTE 2026-08-14.** Właściciel wybrał refaktor u korzenia
+> i odrzucił jednolinijkowca. Wykonanie, pomiary i dowody: **§12.1**.
+
 ---
 
 ## 11. Dowody mutacyjne poprawek po adwersarzu (2026-08-14)
@@ -888,3 +891,65 @@ plus porównanie czasu startu procesu z czasem builda. Ubijanie:
 Po sprzątnięciu portu i przebiegu na świeżym serwerze: **514 zielonych,
 4 pominięte, zero czerwonych** (baza sprzed etapu 508 + 6 nowych
 przebiegów (a2) = 514).
+
+---
+
+## 12. Wykonanie decyzji właściciela z 2026-08-14
+
+Właściciel rozstrzygnął pięć punktów z §7 i §10.4. Każdy zamknięty punkt
+dostaje tu pomiar przed/po i dowód mutacyjny — deklaracja „naprawione"
+bez jednego i drugiego nie liczy się jako naprawa (ADR-018).
+
+### 12.1 Odsunięcie od sticky nagłówka — refaktor u korzenia
+
+**Decyzja:** „refaktor u korzenia (root + zdjęcie scroll-margin z celów),
+re-pomiar ofsetu kotwic po zmianie. Jednolinijkowca z +80px odrzucam."
+
+**Zmiana:** `html { scroll-padding-block-start: 5rem }` w `globals.css`
+zastępuje pięć deklaracji `scroll-margin-block-start: 5rem` (`#tresc`
+w `globals.css` + `h2` w `BlokZadaniaDnia`, `ModulFunkcji`,
+`SciezkaRozpoznania`, `SekcjaKierunku`). Powód, dla którego to nie jest
+kosmetyka: `scroll-margin` działa na CEL skoku, a `scroll-padding`
+na każde wprowadzenie w kadr — w tym przewinięcie wymuszone fokusem,
+którego tamte deklaracje z definicji nie obejmowały.
+
+**Pomiar (osiem stron × dwa kadry, 84 kotwice):**
+
+| | ofset kotwic | zakryte cele | zakryte przystanki fokusu |
+|---|---|---|---|
+| przed | 74–80,5 px (m) · 44–80 px (d) | 0 | **23** |
+| po | 74–80,5 px (m) · 44–80 px (d) | 0 | **0** |
+
+Ofset nie drgnął o dziesiątą część piksela — to jest treść dowodu, że
+refaktor niczego nie przesunął wizualnie, a naprawił wyłącznie to, co
+było zepsute. Wszystkie 23 zakrycia występowały przy Shift+Tab, zero
+przy Tab w przód; dlatego żaden istniejący test kotwic ich nie widział.
+
+**Nowy strażnik:** `e2e/odsuniecie-kotwic.spec.ts` (12 przebiegów).
+Pilnuje dwóch rzeczy, których nie pilnował nikt: GÓRNEJ granicy ofsetu
+(96 px — łapie sumowanie się obu mechanizmów) i braku zakryć przy
+wędrówce fokusu w tył. Asercja zakryć jest ostrzejsza niż AA: czerwieni
+się już zakrycie górnej krawędzi, nie dopiero całkowite.
+
+**Dowody mutacyjne:**
+
+- **M6 · zdjęcie `scroll-padding` z `globals.css`** → 11/12 czerwonych.
+  Jedyny zielony (`[desktop] /funkcje/pozyskiwanie`, test wędrówki
+  fokusu) zgadza się co do joty z pomiarem bazowym, który dla tej pary
+  strona×kadr też dawał 0 zakryć — strażnik nie może zaczerwienić tam,
+  gdzie usterki nie było.
+- **M7 · dopisanie `scroll-margin: 5rem` z powrotem obok reguły korzenia**
+  → dokładnie 2 czerwone, obie na asercji GÓRNEJ granicy na `/funkcje`.
+  To potwierdza sumowanie się obu mechanizmów (80,2 → 160,2 px) i to,
+  że nowy strażnik łapie regresję, na którą testy dolnej granicy są
+  ślepe z definicji.
+
+Po przywróceniu: `odsuniecie-kotwic` + `funkcje-indeks` +
+`funkcje-pozyskiwanie` + `klawiatura` = **120/120 zielonych**.
+
+**Nieaktualne od tej zmiany:** wzmianki „scroll-margin 5rem (W4)"
+w komentarzach kontraktowych §1.1 i §1.2 opisują stan sprzed refaktoru.
+Zostawione, bo §1 jest zapisem tego, co weszło do implementacji
+2026-08-13; obowiązujący opis niesie ten paragraf i komentarz przy
+regule `html` w `globals.css`. Komentarze w samych komponentach są już
+poprawione — rozjazd jest wyłącznie między tym dokumentem a kodem.

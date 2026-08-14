@@ -16,7 +16,8 @@
   line-height: 1.25;
   font-weight: 700;
   margin: 0 0 0.75rem;
-  scroll-margin-block-start: 5rem; /* W2+W4 */
+  /* W2+W4: odsunięcie kotwicy niesie
+     `html { scroll-padding-block-start: 5rem }` w globals.css. */
 }
 
 .karta {

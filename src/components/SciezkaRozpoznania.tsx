@@ -55,7 +55,7 @@ type Props = {
  * (rozstrzygnięcie 3 — brief w tym punkcie się nie utrzymał).
  * Linki w prozie biorą domyślne podkreślenie z globals.css, bez
  * lokalnej receptury (rozstrzygnięcie 5). Kotwica: h2 z id +
- * scroll-margin 5rem (W4). Zero JS.
+ * odsunięcie od sticky nagłówka z globals.css (W4). Zero JS.
  *
  * Nazwy klas idą 1:1 z makietą (.sciezka__…), dlatego H2 nie ma
  * własnej klasy — makieta stylizuje go selektorem `.sciezka h2`.

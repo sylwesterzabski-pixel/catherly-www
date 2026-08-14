@@ -42,10 +42,29 @@ a:active {
   padding: 1rem;
 }
 
-/* Cel skip-linku: sticky nagłówek nie zasłania treści po przeskoku.
-   W4 (panel HF K12, 2026-08-12): margines wspólny z kotwicami modułów
-   funkcji — sticky nagłówek na 390 px mierzy 4.625rem (pomiar panelu),
-   5rem daje zapas nad dolną kreską. */
-#tresc {
-  scroll-margin-block-start: 5rem;
+/* JEDNA recepta odsunięcia od sticky nagłówka na cały serwis
+   (decyzja właściciela 2026-08-14 — naprawa 2.4.11 Focus Not Obscured
+   u korzenia, nie punktowo).
+
+   Do 2026-08-14 odsunięcie niósł `scroll-margin-block-start: 5rem`
+   powtórzony przy KAŻDYM celu (#tresc tutaj + h2 w czterech plikach
+   modułowych). Ratowało to SKOK w kotwicę i nie ratowało wędrówki
+   fokusu klawiaturą: przy Shift+Tab przeglądarka przewija do elementu,
+   który scroll-margin celu nie dotyczy, więc sticky nagłówek go
+   przykrywał. Pomiar 2026-08-14 na ośmiu stronach × dwa kadry:
+   84 kotwice — 0 zakrytych celów, ale 23 zakryte przystanki fokusu
+   (wszystkie przy Shift+Tab, 0 przy Tab w przód).
+
+   scroll-padding na kontenerze przewijania obowiązuje KAŻDE wprowadzanie
+   w kadr — skok w kotwicę, skip-link i przewinięcie wymuszone fokusem —
+   więc zastępuje pięć deklaracji jedną i obejmuje przypadek, którego
+   tamte nie obejmowały. Wartość bez zmian: sticky nagłówek na 390 px
+   mierzy 4.625rem (pomiar panelu HF K12, 2026-08-12), 5rem daje zapas
+   nad dolną kreską.
+
+   UWAGA przy zmianie: scroll-margin celów został ZDJĘTY. Dopisanie go
+   z powrotem obok tej reguły SUMUJE się z nią (zmierzone: 80,2 px →
+   160,2 px pustki nad nagłówkiem) — patrz handoff-etap-d.md §10.4. */
+html {
+  scroll-padding-block-start: 5rem;
 }

@@ -35,7 +35,9 @@
   margin: 0 0 0.75rem;
   max-width: 30ch;
   text-wrap: balance;
-  scroll-margin-block-start: 5rem; /* W4 + rozstrzygnięcie 5 */
+  /* W4 + rozstrzygnięcie 5: odsunięcie kotwicy od sticky nagłówka
+     niesie odtąd `html { scroll-padding-block-start: 5rem }`
+     w globals.css. Lokalny scroll-margin SUMOWAŁBY się z nim. */
 }
 
 .blok__wprowadzenie {

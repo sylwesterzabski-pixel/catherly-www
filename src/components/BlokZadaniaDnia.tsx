@@ -44,7 +44,7 @@ type Props = {
  * indeks nie obiecuje ekranu). Lista: <ol role="list"> bez cyfr,
  * JEDNA KOLUMNA ZAWSZE (rozstrzygnięcia 1 i 4). Cel dotykowy
  * budowany paddingiem samego <a> (rozstrzygnięcie 6). Kotwica: h2
- * z id + scroll-margin 5rem (W4). Zero JS.
+ * z id, odsunięcie od sticky nagłówka z globals.css (W4). Zero JS.
  */
 export function BlokZadaniaDnia({
   naglowek,

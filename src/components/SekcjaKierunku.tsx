@@ -18,8 +18,8 @@ type Props = {
  * docs/faza-4/hf/k12-funkcje-pozyskiwanie.html, po panelu 2026-08-12;
  * D-B2 — po module 10, przed F8). WARIANT KIERUNKU modułu: karta na
  * powierzchni, BEZ slotu zrzutu, bez trybu dokonanego; odróżnienie
- * wizualne od modułów DZIAŁA. Kotwica z scroll-margin 5rem (W2+W4).
- * Zero JS.
+ * wizualne od modułów DZIAŁA. Kotwica z odsunięciem od sticky
+ * nagłówka z globals.css (W2+W4). Zero JS.
  */
 export function SekcjaKierunku({ naglowek, idNaglowka, tresc, granica }: Props) {
   return (

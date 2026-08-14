@@ -23,8 +23,8 @@ type Props = {
  * wzorzec K4). DOM: tekst PRZED obrazem (czytniki i 390 px czytają
  * tekst najpierw; zebra wyłącznie wizualna przez order). Ramka 16/10
  * z aria-hidden WYŁĄCZNIE do dostawy Z9+ — docelowy zrzut jest
- * INFORMACYJNY z alt (brief K12). Kotwica: h2 z id + scroll-margin
- * 5rem (W4 — sticky nav). Zero JS.
+ * INFORMACYJNY z alt (brief K12). Kotwica: h2 z id, odsunięcie od
+ * sticky nagłówka z globals.css (W4). Zero JS.
  */
 export function ModulFunkcji({
   naglowek,

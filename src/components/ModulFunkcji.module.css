@@ -19,9 +19,9 @@
   margin: 0 0 0.75rem;
   max-width: 30ch;
   text-wrap: balance;
-  /* W4: kotwica pod sticky nav — na 390 px nagłówek ma 4.625rem
-     (pomiar panelu), margines 5rem daje zapas. */
-  scroll-margin-block-start: 5rem;
+  /* W4: kotwica pod sticky nav. Odsunięcie niesie odtąd
+     `html { scroll-padding-block-start: 5rem }` w globals.css —
+     jedna recepta na serwis, obejmuje też wędrówkę fokusu (2.4.11). */
 }
 
 .poCo {
