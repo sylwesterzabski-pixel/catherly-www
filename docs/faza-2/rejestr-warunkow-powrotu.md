@@ -44,7 +44,8 @@ jest ściśle o treści podstron funkcji.
 | T1 | Selektywne ładowanie przestrzeni komunikatów per strona (`next-intl` serializuje KOMPLET komunikatów do ładunku każdej strony) | `src/i18n/`, `src/app/[locale]/**` | Blok designu — decyzja właściciela 2026-08-14 |
 | T2 | Audyt nieodwracalnych (ADR-018 pkt 4) — bramka `nieodwracalne` PLANOWO czerwona | `docs/audyt/` | Faza 6 — audyt całościowy przedpremierowy, nie częściowy po etapie (decyzja właściciela 2026-08-14) |
 | T3 | Pomiar wydajności na preview Vercel + mediana jako werdykt (kod gotowy, tryb NIEAKTYWNY) | `lighthouserc.cjs`, `.github/workflows/bramki.yml` | Udostępnienie preview przez właściciela (ochrona wdrożeń) + potwierdzenie, że mierzony adres odpowiada testowanemu commitowi |
-| T4 | Obietnica „H1 ≤ 3 linie na desktopie we wszystkich językach" (panel K2) — NIEPRAWDZIWA przy 1024 px i 768 px, na każdym kroju | `src/components/Hero.module.css`, `e2e/hero.spec.ts` | Skrócenie H1 DE (panel DE) albo poszerzenie kolumny hero — miara `ch` tego nie naprawi |
+| T4 | Obietnica „H1 ≤ 3 linie" — część desktopowa (768 px wzwyż) naprawiona przez ADR-029, ale potwierdzona tylko pomiarem lokalnym; **poniżej 768 px nadal nieprawdziwa** (DE 4–5 linii) i niepilnowana | `src/components/Hero.module.css`, `e2e/hero.spec.ts`, `docs/adr/029-prog-i-proporcje-hero.md` | (1) zielony pełny zestaw e2e jako dowód naprawy desktopu, (2) rozstrzygnięcie właściciela, czy obietnica ma obejmować < 768 px — jeśli tak, `clamp` względem kolumny zamiast okna + strażnik na 390 px |
+| T5 | Strony zbudowane w Fazie 4 (cztery podstrony filarów, /dla-kogo) są w ADR-014 wymienione POZA zakresem startu; nie znaleziono ADR-a uchylającego | `docs/adr/014-zakres-zamrozony-iteracji-1.md`, `docs/PLAN.md` §11 | Rozstrzygnięcie właściciela: ADR uchylający (wejście do zakresu startu) albo potwierdzenie, że publikują się przez /zmiany po starcie |
 
 **T1 — pomiar, nie przypuszczenie.** Ustalone przy Etapie D:
 dopisanie trzech kluczy członu i rozbicie F8 powiększyło HTML strony
@@ -97,50 +98,110 @@ zweryfikować, a niezweryfikowane liczy się jak niedziałające.
 **T4 — obietnica panelu K2 trzyma się jednego kroju i jednej
 szerokości.** Wyszło z bramki pełnego zestawu (przebieg 31833329728):
 `hero (de): H1 ≤ 3 linie na desktopie` czerwony na runnerze, zielony
-lokalnie. To nie flake — to różnica deterministyczna, a mechanizm jest
-odwrotny do intuicji. Przy 1280 px kolumna hero daje **653 px**,
-a H1 DE ma **72 znaki**:
+lokalnie. To nie flake — to różnica deterministyczna, bo `ch` jest
+jednostką zależną od kroju (szerokość cyfry „0"), a `system-ui` znaczy
+inny krój na każdym systemie.
 
-| krój | 1ch | `22ch` daje | co robi H1 DE |
-|---|---|---|---|
-| system-ui na macOS | 31,4 px | 690 px — **więcej niż kolumna** | ogranicznik nie działa, H1 dostaje pełne 653 px → 3 linie |
-| metryka Arial/Helvetica (runner) | 26,2 px | 577–587 px — ogranicznik działa | DE potrzebuje ~588 px → **4 linie** |
-| metryka Arial przy `24ch` | 26,2 px | 641 px | zapas ~53 px → 3 linie |
+**Droga (A) — miara `22ch` → `24ch` — została wykonana (commit
+`3cf7299`) i NIE ZADZIAŁAŁA.** Przebieg 31835331503: ten sam test, ten
+sam wynik, `Received: 4`. Zero zmiany, i to zero jest informacją.
 
-Czyli `22ch` nigdy nie było na desktopie sprawdzone jako
-ograniczenie — na maszynie autora panelu w ogóle nie działało, bo
-było szersze od kolumny. Zielone było przypadkiem, a margines wynosi
-około **1 px** (587 wobec ~588).
+**Pomiar wykonany po tej porażce** (Playwright, sześć krojów × trzy
+szerokości × trzy języki; `scripts/` nie zawiera go na stałe — pomiar
+jednorazowy). Przy 1280 px kolumna hero daje **653 px**, H1 DE ma
+**72 znaki**, a `max-width: 24ch` wypada tak:
 
-Poza 1280 px obietnica jest nieprawdziwa **niezależnie od kroju**,
-także na macOS: przy 768 px H1 DE ma **5 linii** na obu krojach, przy
-1024 px kolumna daje 576 px i DE ma 4 linie w metryce Arial — czego
-żadna wartość `ch` nie naprawi, bo ogranicza kolumna, nie miara.
+| krój | 1ch | `24ch` daje | co realnie ogranicza | naturalna szerokość H1 DE | linie DE |
+|---|---|---|---|---|---|
+| system-ui na macOS | 31,47 px | 755 px | **kolumna** (miara bezczynna) | 1604 px | 3 |
+| Arial / Helvetica | 26,69 px | 641 px | miara | 1675 px | 3 |
+| Trebuchet MS | 28,13 px | 675 px | **kolumna** | 1633 px | 3 |
+| Tahoma | 30,56 px | 734 px | **kolumna** | 1762 px | 3 |
+| Verdana | 34,13 px | 819 px | **kolumna** | 1977 px | **4** |
+
+Stąd trzy wnioski, każdy zmierzony:
+
+1. **Krój runnera jest szerszy od Arialu**, a nie arialowy — tak
+   zakładał poprzedni zapis tej pozycji i było to błędne. Jedyny
+   sprawdzony krój, na którym DE łamie się na 4 linie, to Verdana
+   (klasa szerokich krojów bezszeryfowych; linuksowa DejaVu Sans ma
+   metrykę tej klasy). To jedyna kolumna tabeli zgodna z tym, co
+   pokazuje CI.
+2. **Przy szerokim kroju miara `ch` jest bezczynna**: `24ch` = 819 px,
+   czyli więcej niż kolumna 653 px, więc ogranicza kolumna. `22ch`
+   dawało tam 751 px — też więcej niż kolumna. Obie wartości są na
+   runnerze równie nieistotne, dlatego zmiana nie dała żadnego efektu.
+   Żadna wartość `ch` **większa** od ~19ch nic tam nie zmieni, a
+   mniejsza pogarsza, bo zwęża.
+3. **Zapas jest kwestią treści, nie miary.** Przy 653 px trzy linie
+   mieszczą do 1959 px tekstu. PL ma 1619 px (zapas 21%), EN 1746 px
+   (zapas 11%), DE 1977 px — **3% ponad limit**. DE jest jedynym
+   językiem poza budżetem i wykracza minimalnie.
+
+Poza 1280 px obietnica jest nieprawdziwa znacznie szerzej, niż
+zapisano poprzednio — nie tylko dla DE. Przy 768 px kolumna ma tylko
+**422 px**, a font jest już maksymalny (48 px), bo `clamp` dobija do
+`3rem` około 640 px szerokości okna. Efekt na Verdanie: **6 linii we
+wszystkich trzech językach**, także po polsku. Na macOS przy 768 px:
+PL 4, EN 4, DE 5. Trzech linii nie ma tam żaden język i żaden krój.
 Strażnik pilnuje jednej szerokości (`Desktop Chrome` = 1280 px), więc
-tego nie widział.
+tego nie widzi.
 
-**Rozstrzygnięcie właściciela 2026-08-14: droga (A)** — miara `22ch`
-→ `24ch` w `Hero.module.css`. Wybrana z czterech: (B) skrócić H1 DE
-o ~5 znaków (treść OBOWIĄZUJE, więc panel DE plus aktualizacja
-strażnika „znak w znak"), (C) przypiąć krój pisma (ADR-027 — usuwa
-całą klasę zmienności międzyplatformowej, ale dokłada pobranie fontu
-do LCP, gdzie zapas do progu 1800 wynosi dziś ~90 ms), (D) zawęzić
-obietnicę do „≤ 3 linie od 1280 px" i rozszerzyć strażnika na 1024
-i 768 px.
+**Co z tego wynika dla zamknięcia T4.** Drogi realne były trzy i żadna
+nie była zmianą miary: skrócenie H1 DE (treść), poszerzenie kolumny
+hero (układ), obniżenie górnego krańca `clamp` (typografia).
 
-**Co (A) załatwia, a czego nie — bez zaokrąglania.** Załatwia
-bramkę przy 1280 px i nie zmienia na macOS ani jednego piksela, bo
-tam nadal ogranicza kolumna. **Nie załatwia** 1024 px ani 768 px:
-tam ogranicza kolumna hero, nie miara, więc żadna wartość `ch`
-nie pomoże. Dlatego pozycja T4 **zostaje otwarta** — warunkiem jej
-zamknięcia jest skrócenie H1 DE albo poszerzenie kolumny, nie ta
-zmiana. Strażnik biegnie na jednej szerokości (`Desktop Chrome`
-= 1280 px), więc dwie pozostałe nie mają dziś żadnego pilnowania;
-gdyby właściciel chciał je zapisać, drogą jest (D), niezależna od (A).
+Droga treści **została zamknięta oceną adwersaryjną**: każdy wariant
+skróconego H1 DE odpadł, a rozstrzygający zarzut jest sprawdzalny —
+bez „deine" zdanie „Catherly führt Kontakte" czyta się po niemiecku
+jako *Catherly prowadzi rozmowy*, czemu ta sama strona wprost
+zaprzecza (`content/de/dla-kogo.md`: „führt keine Gespräche"). To
+naruszenie ADR-018, więc treść wypadła z gry.
+
+Droga układu **została zmierzona i wdrożona**: decyzja właściciela
+z 2026-08-14, wariant V5 — próg dwóch kolumn hero 48rem → **72rem**
+i proporcja 3fr 2fr → **4fr 2fr** (ADR-029). Pomiar pięciu wariantów
+× 3 języki × 3 kroje × 9 szerokości, Verdana jako zamiennik
+najgorszego kroju:
+
+| wariant | 1440 | 1280 | 1152 | 1024 | 900 | 768 |
+|---|---|---|---|---|---|---|
+| stan przed zmianą | 4 | 4 | 4 | 4 | 5 | 6 |
+| próg 64rem + 4fr 2fr | 3 | 3 | 3 | **4** | 3 | 3 |
+| **V5: próg 72rem + 4fr 2fr** | 3 | 3 | 3 | 3 | 3 | 3 |
+
+**Część desktopowa T4 jest domknięta, mobilna nie.** Poniżej 768 px
+H1 DE nadal ma 4–5 linii — tam hero był jednokolumnowy już przed
+zmianą, więc V5 niczego nie dotknął. Obietnica panelu K2 mówiła
+o desktopie i na desktopie jest teraz spełniona; poniżej 768 px nie
+ma ani obietnicy, ani strażnika. **Pozycja zostaje otwarta w części
+mobilnej**, a razem z nią pytanie, czy `clamp` H1 nie powinien
+skalować się względem kolumny zamiast względem okna.
+
+Zastrzeżenie do samego dowodu: wdrożenie potwierdza pomiar lokalny na
+Verdanie, nie przebieg CI. Dopóki bramka pełnego zestawu nie zaświeci
+na zielono, ta naprawa ma status **niesprawdzonej**, a niesprawdzona
+liczy się jak niedziałająca (ADR-018).
 
 Podstrony zostają na `22ch` — zmierzony zapas przy metryce Arial to
 co najmniej jedna linia na wszystkich ośmiu adresach DE (najciaśniej:
-`/de/dla-kogo` i `/de/cennik`, 3 linie przy 489 px).
+`/de/dla-kogo` i `/de/cennik`, 3 linie przy 489 px). Zastrzeżenie po
+pomiarze T4: ten zapas był liczony w metryce Arial, a krój runnera jest
+szerszy. Podstrony nie mają dziś strażnika liczby linii, więc jest to
+pozycja niepilnowana, a nie pozycja sprawdzona.
+
+**T5 — zakres startu a to, co Faza 4 już zbudowała.** ADR-014 (i PLAN.md
+§11) wymieniają „cztery podstrony filarów" oraz „/dla-kogo" w sekcji
+**poza zakresem startu**, z zastrzeżeniem, że każde rozszerzenie wymaga
+ADR-a jawnie uchylającego ADR-014. Etapy C i D gałęzi `faza-4/podstrony`
+zbudowały dokładnie te strony. Przeszukanie `docs/` nie znalazło ADR-a
+uchylającego ten punkt; ADR-024 zmienia **kolejność** prac (fazowanie
+hybrydowe per komponent), nie zakres startu. Nie rozstrzygam tego sam —
+to decyzja właścicielska o zakresie, nie usterka do naprawy. Dwie drogi:
+ADR uchylający, który wciąga te strony do zakresu startu (wtedy blokują
+publikację i wchodzą do „definicji startu"), albo potwierdzenie, że
+istnieją w repo, ale publikują się przez /zmiany po starcie. Odnotowane
+też w samym ADR-014 jako punkt 2 doprecyzowania z 2026-08-14.
 
 **„Najbliższe zlecenie Z" (poz. 17, 18, 19, 23, 24) = Z7**, spisane
 2026-08-13: `docs/faza-4/zlecenie-Z7.md`. Do czasu odpowiedzi okna

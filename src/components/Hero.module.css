@@ -20,25 +20,31 @@
   /* Panel K2: H1 ≤ 3 linie we wszystkich językach na desktopie
      (18ch dawało EN/DE 4 linie wobec „2–3" z wireframe'u).
 
-     22ch → 24ch: decyzja właściciela 2026-08-14 po czerwonej bramce
-     pełnego zestawu (przebieg 31833329728) — H1 DE łamał się na
-     runnerze na 4 linie. Mechanizm jest odwrotny do intuicji: `ch`
-     to szerokość cyfry „0", więc ta sama miara daje INNĄ liczbę
+     22ch → 24ch (2026-08-14): zmiana NIE ZADZIAŁAŁA. Przebieg
+     31835331503 dał dokładnie ten sam wynik co poprzedni — H1 DE
+     nadal 4 linie. Powód ustalony pomiarem, nie modelem: `ch` to
+     szerokość cyfry „0", więc ta sama miara daje INNĄ liczbę
      pikseli na każdym kroju, a `system-ui` znaczy inny krój na
-     każdym systemie. Na macOS 22ch = 690 px, czyli więcej niż
-     kolumna hero (653 px) — miara w ogóle nie ograniczała i zieleń
-     była przypadkowa. W metryce Arial 22ch = 587 px przy ~588 px
-     potrzebnych DE (72 znaki): margines około 1 px. 24ch daje tam
-     641 px, zapas ~53 px, a na macOS nie zmienia ani piksela, bo
-     nadal ogranicza kolumna.
+     każdym systemie. Krój runnera jest szerszy od Arialu — w
+     metryce Arialu DE mieści się w trzech liniach, a CI łamie na
+     cztery. Przy szerokim kroju 24ch to ok. 819 px, czyli więcej
+     niż kolumna hero (653 px przy 1280 px): miara jest wtedy
+     BEZCZYNNA i żadna wartość `ch` niczego nie zmienia. Ograniczała
+     kolumna, nie miara. 24ch zostaje jako wartość neutralna.
 
-     Czego to NIE naprawia: przy 1024 px kolumna daje 576 px, a przy
-     768 px H1 DE ma 5 linii na każdym kroju — tam ogranicza kolumna,
-     nie miara, więc żadna wartość `ch` nie pomoże. Strażnik biegnie
-     na 1280 px, więc tego nie widzi. Rejestr warunków powrotu, T4.
+     Domknięte szerokością kolumny — ADR-029 (próg 72rem, 4fr 2fr).
+     Stan po zmianie, zmierzony w przeglądarce dla pl/en/de przy
+     Verdanie jako zamienniku najgorszego kroju: ≤ 3 linie przy 768,
+     900, 1024, 1152, 1280 i 1440 px. DE przy 1280 px ma 725 px
+     kolumny i 3 linie.
 
-     Podstrony zostają na 22ch — zmierzony zapas co najmniej jedna
-     linia (NaglowekPodstrony.module.css). */
+     Poniżej 768 px H1 DE ma 4–5 linii i to się NIE zmieniło — tam
+     hero był jednokolumnowy już wcześniej, a strażnik biegnie na
+     1280 px, więc tego nie widzi. Rejestr warunków powrotu, T4.
+
+     Podstrony zostają na 22ch (NaglowekPodstrony.module.css); ich
+     zapas policzono w metryce Arialu, więc na kroju runnera jest
+     niezweryfikowany, nie potwierdzony — T4. */
   max-width: 24ch;
   text-wrap: balance;
 }
@@ -71,14 +77,26 @@
   margin-block-start: 2.25rem;
 }
 
+/* 48rem = --wymiar-prog-ukladu (ADR-028): @media nie czyta var(),
+   więc wartość jest tu literałem. */
 @media (min-width: 48rem) {
   .hero {
     padding-block: 5rem 3rem;
   }
+}
 
+/* 72rem — JEDYNY wyjątek od progu układu 48rem w całym serwisie,
+   ustanowiony ADR-029. Dwie kolumny hero wchodzą dopiero tutaj, bo
+   przy 48rem kolumna tekstu spada z ~735 px do 422 px, podczas gdy
+   `clamp` trzyma już maksymalne 48 px — H1 łamał się wtedy na
+   6 linii we WSZYSTKICH trzech językach. Proporcja 3fr 2fr → 4fr 2fr
+   z tego samego powodu: przy 1280 px daje kolumnie 725 px zamiast
+   653 px, a DE potrzebuje ok. 660 px na trzy linie. Obie wartości
+   są zmierzone, nie oszacowane — tabela w ADR-029. */
+@media (min-width: 72rem) {
   .kolumny {
     display: grid;
-    grid-template-columns: 3fr 2fr; /* tekst ~60% | spokojna przestrzeń */
+    grid-template-columns: 4fr 2fr; /* tekst ~2/3 | spokojna przestrzeń */
     gap: 2rem;
   }
 }

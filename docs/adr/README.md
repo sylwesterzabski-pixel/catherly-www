@@ -31,6 +31,17 @@ sprzeczności wygrywa.
 | 020 | Main zawsze zielony — merge tylko przy komplecie zielonych bramek | [020](020-main-zawsze-zielony.md) |
 | 021 | **SZKIC** — własny minimalny serwer MCP jako adapter oficjalnego API Higgsfield (fallback wobec buga OAuth; decyzja przy Fazie 4) | [021](021-wlasny-serwer-mcp-higgsfield.md) |
 | 022 | Kontrakt tokenów zawężony do szwu logowania (doprecyzowuje ADR-004; pełny kontrakt po uporządkowaniu DS aplikacji) | [022](022-kontrakt-minimalny-szew-logowania.md) |
+| 023 | Ścieżka zakupu przez /login (doprecyzowanie STRATEGIA pkt 41) | [023](023-sciezka-zakupu-przez-login.md) |
+| 024 | Fazowanie hybrydowe per komponent (Fazy 3+4 przeplatane) | [024](024-fazowanie-hybrydowe-per-komponent.md) |
+| 025 | Tokeny — powierzchnia akcentowa, kreska, miara tekstu | [025](025-tokeny-powierzchnia-akcentowa-kreska-miara.md) |
+| 026 | Typografia tymczasowa — system-ui z datą ważności | [026](026-typografia-tymczasowa-system-ui.md) |
+| 027 | Krój pisma — system-ui na premierę iteracji 1 | [027](027-kroj-pisma-system-ui-premiera.md) |
+| 028 | Tokeny wymiarów — promienie, kontener strony, próg układu | [028](028-tokeny-wymiarow-promienie-kontener-prog.md) |
+| 029 | Próg i proporcje kolumn hero — jedyny wyjątek od progu układu 48rem (ADR-028) | [029](029-prog-i-proporcje-hero.md) |
+
+Wpisy 023–028 dopisano 2026-08-14 — powstały wcześniej, ale nie trafiły
+do tej tabeli. Pliki są źródłem, tabela tylko mapą; przy rozjeździe
+prawdę mają pliki.
 
 Seed 001–018 pochodzi z rejestru w PLAN.md (sekcja 8). PLAN.md pozostaje
 niezmieniony — jego suma SHA-256 jest sumą odniesienia; ADR-y od 019
