@@ -1063,18 +1063,67 @@ Zapas jest cienki i to jest fakt do zapamiętania, nie do przemilczenia.
 Delta **+117 s (×2,18)**. Dopasowanie liniowe: 11,25 s stałego kosztu
 startu + 9,75 s na przebieg.
 
-**Delta czasu CI — projekcja, nie pomiar.** Ostatni pełny przebieg
-w GitHub Actions (run 31735203457): job bramki wydajności **73 s**,
-job build 50 s, najdłuższy job zależny — dostępność 87 s, całe CI 145 s.
-Jobs są równoległe (`needs: build`), więc czas całego CI to
-build + najdłuższy job zależny. Po dopisaniu czterech adresów bramka
-wydajności **przejmie rolę ścieżki krytycznej** od bramki dostępności,
-a delta CAŁEGO CI to różnica między nowym czasem tego joba a 87 s, nie
-pełne +117 s. Skalując zmierzoną liniowość na czas jobu w CI wychodzi
-~120–135 s, czyli **całe CI ~145 s → ~170–185 s (+25…+40 s)**.
+**Delta czasu CI — POMIAR (2026-08-14, run 31830795901, commit a5171fc).
+Moja wcześniejsza projekcja była BŁĘDNA prawie dwukrotnie; zostawiam ją
+poniżej razem z przyczyną, bo skasowanie pomyłki jest gorsze niż jej
+zapis.**
 
-To jest PROJEKCJA. Liczba z pomiaru zostanie dopisana tutaj po pierwszym
-przebiegu CI na wypchniętej gałęzi.
+| | adresów | przebiegów | job wydajności | całe CI |
+|---|---|---|---|---|
+| przed (run 31735203457, c404f14) | **1** | 3 | **73 s** | **145 s** |
+| po (run 31830795901, a5171fc) | 7 | 21 | **286 s** | **~343 s** |
+
+Delta jobu **+213 s (×3,9)**. Bramka wydajności faktycznie przejęła
+ścieżkę krytyczną: następny co do długości job to dostępność 106 s.
+
+**Czego projekcja nie trafiła i dlaczego.** Zapowiadałem „całe CI ~170–185 s
+(+25…+40 s)". Wyszło ~343 s (+~198 s). Błąd nie był w arytmetyce, tylko
+w BAZIE: skalowałem od lokalnego pomiaru **3 adresów**, zakładając, że CI
+mierzy to samo. CI mierzyło **jeden adres** — `/funkcje` i `/dla-kogo`
+weszły do `lighthouserc.json` w commicie f3fb1d3, który do 2026-08-14
+nie był wypchnięty. Porównywałem lokalne 3 adresy do zdalnego 1 adresu
+i nazwałem to projekcją. Lekcja do protokołu: baza projekcji musi być
+odczytana ze ZDALNEGO stanu, nie z lokalnego, kiedy gałąź ma commity
+niewypchnięte.
+
+Dostępność 87 s → **106 s (+19 s)** — koszt dopisania
+`oznaczenie-kierunku.spec.ts` do tego joba. Decyzja, żeby dołożyć spec
+do istniejącego jobu zamiast tworzyć nowy, kosztuje więc 19 s zamiast
+kolejnych ~50 s rozgrzewki (checkout + npm + chromium).
+
+**CHWIEJNOŚĆ BRAMKI — ustalenie z 2026-08-14, do decyzji właściciela.**
+Pierwsza próba run 31830795901 była CZERWONA na `/`:
+
+    largest-contentful-paint  expected <= 1800, found 1802.2022
+    all values: 1878.7856, 1802.2022, 1814.1242
+
+Ponowienie **tego samego commita** dało ZIELONE. Bramka przerzuca się
+na progu, więc jej werdykt na `/` jest dziś losowy, a nie diagnostyczny.
+
+Sprawdzone, że to NIE jest regresja z commita a5171fc — pomiar A/B na
+jednej maszynie, oba buildy produkcyjne, `lhci collect`, 3 przebiegi:
+
+| commit | LCP `/` (3 przebiegi) | mediana |
+|---|---|---|
+| c404f14 (przed) | 1703,9 · 1708,6 · 1718,7 | **1708,6 ms** |
+| a5171fc (po) | 1708,8 · 1709,1 · 1720,3 | **1709,1 ms** |
+
+Delta **+0,5 ms (0,03 %)** — mniejsza niż rozrzut wewnątrz każdej trójki
+(~15 ms). Strona główna nie renderuje żadnego ze zmienionych komponentów
+(`BlokZadaniaDnia`, `SekcjaKierunku`); jedyna wspólna warstwa to
+`messages/*.json`. Jej wpływ jest zmierzony: HTML `/` urósł
+**34 260 B → 34 536 B (+276 B)**, bo `next-intl` serializuje komplet
+komunikatów do ładunku KAŻDEJ strony, także tej, która ich nie
+wyświetla. To warto wiedzieć na przyszłość: każdy nowy klucz obciąża
+wszystkie strony, nie tylko swoją.
+
+Wniosek: `/` ma na sprzęcie GitHub Actions ~1800 ms przy 1709 ms lokalnie,
+czyli cały zapas 5 % zjada sam runner. Nie zmieniam progu — obniżanie
+wymagania, żeby bramka przechodziła, to osłabianie testu (CLAUDE.md).
+Do rozstrzygnięcia przez właściciela osobno: albo skrócić LCP na `/`
+(element LCP to blok tekstu na wspólnej ścieżce krytycznej), albo
+przenieść pomiar na preview Vercel, jak przewiduje `_opis`
+w `lighthouserc.json`.
 
 ### 12.4 Oznaczenie pozycji kierunku — struktura L1-A
 
