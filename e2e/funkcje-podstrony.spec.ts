@@ -104,7 +104,7 @@ const PODSTRONY: readonly Podstrona[] = [
     ],
     maAI: true,
     kotwiceKierunku: ["studio", "asystent-ai"],
-    f8Klucze: ["f8"],
+    f8Klucze: ["f8_1", "f8_2"], // rozbite 2026-08-14 (pozycja kierunku)
     wsteczSciezka: "/funkcje/pozyskiwanie",
     dalejSciezka: "/funkcje/zespol",
     kotwicaW4: "pieczec-etyczna",
@@ -258,8 +258,11 @@ for (const podstrona of PODSTRONY) {
         const kierunek = page.locator(
           'section[aria-labelledby="asystent-ai"]',
         );
+        // H2 = nazwa + OZNACZENIE statusu w jednym węźle tekstowym
+        // (panel projektu 2026-08-14, forma L1-A) — i zarazem nazwa
+        // dostępna sekcji przez aria-labelledby.
         await expect(kierunek.getByRole("heading", { level: 2 })).toHaveText(
-          k.aiNaglowek,
+          `${k.aiNaglowek} ${k.aiOznaczenie}`,
         );
         await expect(
           kierunek.getByText(k.aiTresc, { exact: true }),
@@ -371,6 +374,11 @@ for (const podstrona of PODSTRONY) {
       );
       if (podstrona.maAI) {
         expect(html, "treść sekcji AI w HTML bez JS").toContain(k.aiTresc);
+        // H2 sekcji kierunku RAZEM z członem — sam nagłówek
+        // przechodziłby toContain także po zniknięciu oznaczenia.
+        expect(html, "oznaczenie kierunku przy H2 w HTML bez JS").toContain(
+          `${k.aiNaglowek} ${k.aiOznaczenie}`,
+        );
       }
       for (const klucz of podstrona.f8Klucze) {
         expect(html, `zdanie ${klucz} w HTML bez JS`).toContain(k[klucz]);
@@ -387,7 +395,10 @@ for (const podstrona of PODSTRONY) {
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("main h2")).toHaveText([
         ...podstrona.kotwice.map((_, indeks) => k[`mod${indeks + 1}_nazwa`]),
-        ...(podstrona.maAI ? [k.aiNaglowek] : []),
+        // Sekcja kierunku: nazwa + oznaczenie statusu. Moduł Studio na
+        // /funkcje/tresci oznaczenia NIE dostaje — ma formę karty
+        // kierunku z powodu przebudowy zrzutu, a status DZIAŁA (K-D5).
+        ...(podstrona.maAI ? [`${k.aiNaglowek} ${k.aiOznaczenie}`] : []),
       ]);
     });
   }

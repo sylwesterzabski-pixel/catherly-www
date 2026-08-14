@@ -29,6 +29,26 @@ Du wählst aus, was jetzt dran ist – die Namen der Funktionen findest du unter
 
 Alles, was oben steht, funktioniert ab dem Starter-Plan.
 
+Den KI-Assistenten bekommst du in keinem Plan.
+
+*(F8 ROZBITE 2026-08-14 — rozstrzygnięcie właściciela + mini-panel
+treści. Kwantyfikator „wszystko powyżej" obejmował obie pozycje
+kierunku, a asystenta AI nie dostajesz w żadnym planie: content/pl/
+cennik.md w. 73, wiersz WYKLUCZONE — „wywołania AI (klucz pusty)",
+decyzja właściciela + panel F1–F3. Zdanie pierwsze (f8_1) zostaje
+ZNAK W ZNAK formułą stojącą w pięciu miejscach nietkniętych tą
+zmianą: FunkcjeZespol.f8_1, FunkcjeWyniki.f8_1, DlaKogo.s1_plan,
+s2_plan_1, s3_plan_1. Zdanie drugie (f8_2) wyłącza pozycję Z IMIENIA
+— nie przez zawężenie kwantyfikatora, bo proza sekcji AI stoi w
+trybie oznajmującym jak moduły działające i nie glosuje statusu,
+więc zawężenie kazałoby czytelniczce wywnioskować to, czego strona
+nie mówi (ADR-018: brak dowodu = brak zabezpieczenia). Czasownik
+„dostajesz" zamyka odczyt „nie jest bramkowany, czyli mają wszyscy";
+„wyjątek" odrzucony — zero precedensu w korpusie ×3 języki. Klucze
+f8_1 + f8_2 na gałęzi `zdania` komponentu PlanJednymWierszem —
+wzorzec istniejący na /funkcje/zespol i /funkcje/wyniki.)*
+
+
 **Link:** Sieh dir die Preise an → /cennik
 
 ### I6 — zamknięcie (stałe sankcjonowane)
@@ -62,6 +82,22 @@ Ein Tag, den du im Täglichen Aktionsplan geplant hast, beginnt mit etwas Konkre
 10. Gesprächspläne und Debriefings → /funkcje/pozyskiwanie#plany-rozmow
 11. KI-Assistent *(pozycja kierunku)* → /funkcje/pozyskiwanie#asystent-ai
 
+### Oznaczenie pozycji kierunku
+
+– Ausblick: Kontakte gewinnen
+
+*(człon doklejany WEWNĄTRZ linku pozycji „asystent AI", jeden węzeł
+tekstowy, w całości widoczny — panel projektu i rozstrzygnięcie
+właściciela 2026-08-14, forma L1-A. Nazwa obszaru jest tu jedynym
+różnicownikiem: obie pozycje kierunku niosą tę samą etykietę, więc
+identyczny sufiks zostawiłby dwie nierozróżnialne nazwy dostępne.
+BRZMIENIE ROZSTRZYGNIĘTE 2026-08-14 (właściciel: pakiet ZWIĘZŁY, DE bez
+słowa „Richtung"; panel językowy DE wf_d4b3c933-758). DE odchodzi od
+przyimka pl/en i wiąże obszar DWUKROPKIEM — parytet znaczeniowy, nie
+leksykalny. „Ausblick": 0 wystąpień w całym repo. Odrzucone: „Richtung"
+(kolokacja znak w znak z mod4_nie na tej samej podstronie) oraz
+rusztowanie „zum Thema" (echo z blok1–4Link, 4 wystąpienia).)*
+
 ### Link wejściowy
 
 Sieh dir alles zum Thema Kontakte gewinnen an → /funkcje/pozyskiwanie
@@ -92,6 +128,22 @@ Einen Post setzt du aus einer fertigen Vorlage zusammen, planst ihn im Kalender 
 8. Lernen des Stimmprofils → /funkcje/tresci#uczenie-glosu
 9. Post-Board mit Filtern → /funkcje/tresci#tablica-postow
 10. KI-Assistent *(pozycja kierunku)* → /funkcje/tresci#asystent-ai
+
+### Oznaczenie pozycji kierunku
+
+– Ausblick: Inhalte
+
+*(człon doklejany WEWNĄTRZ linku pozycji „asystent AI", jeden węzeł
+tekstowy, w całości widoczny — panel projektu i rozstrzygnięcie
+właściciela 2026-08-14, forma L1-A. Nazwa obszaru jest tu jedynym
+różnicownikiem: obie pozycje kierunku niosą tę samą etykietę, więc
+identyczny sufiks zostawiłby dwie nierozróżnialne nazwy dostępne.
+BRZMIENIE ROZSTRZYGNIĘTE 2026-08-14 (właściciel: pakiet ZWIĘZŁY, DE bez
+słowa „Richtung"; panel językowy DE wf_d4b3c933-758). DE odchodzi od
+przyimka pl/en i wiąże obszar DWUKROPKIEM — parytet znaczeniowy, nie
+leksykalny. „Ausblick": 0 wystąpień w całym repo. Odrzucone: „Richtung"
+(kolokacja znak w znak z mod4_nie na tej samej podstronie) oraz
+rusztowanie „zum Thema" (echo z blok1–4Link, 4 wystąpienia).)*
 
 ### Link wejściowy
 

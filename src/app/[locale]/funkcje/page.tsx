@@ -37,6 +37,19 @@ export function generateStaticParams() {
  * kolejnością tablic MODULY w czterech src/app/[locale]/funkcje/
  * (rozstrzygnięcie 1 panelu — dlatego lista jest <ol>, nie <ul>).
  * Kotwice to slugi wspólne dla pl/en/de (kontrakt publiczny).
+ *
+ * OZNACZENIE pozycji kierunku (panel projektu 2026-08-14, forma L1-A;
+ * rozstrzygnięcie właściciela tego samego dnia). Dwie pozycje — i tylko
+ * dwie — celują w sekcje o statusie KIERUNKU i niosą klucz `oznaczenie`.
+ * Klucz mieszka w FunkcjeIndeks, a NIE w przestrzeni podstrony, i nie
+ * jest to obejście D-D12: D-D12 dotyczy ETYKIETY pozycji (ta nadal jest
+ * reużyta znak w znak), a oznaczenie jest wypowiedzią INDEKSU o statusie
+ * celu i niesie dodatkowo nazwę obszaru, której odpowiednik na podstronie
+ * nie ma i mieć nie może (na podstronie obszar wynika z kontekstu).
+ * Obszar jest tu jedynym różnicownikiem: obie pozycje mają tę samą
+ * etykietę („asystent AI" ×2), więc identyczny sufiks zostawiłby dwie
+ * nierozróżnialne nazwy dostępne. Symetrii indeks ⇔ podstrona pilnuje
+ * strażnik S-SYMETRIA (e2e/oznaczenie-kierunku.spec.ts) — w obie strony.
  */
 const BLOKI = [
   {
@@ -57,7 +70,11 @@ const BLOKI = [
       { klucz: "mod10_nazwa", kotwica: "plany-rozmow" },
       // Sekcja kierunku AI stoi poza tablicą MODULY podstrony, więc
       // jej nazwa mieszka pod kluczem aiNaglowek, nie modN_nazwa.
-      { klucz: "aiNaglowek", kotwica: "asystent-ai" },
+      {
+        klucz: "aiNaglowek",
+        kotwica: "asystent-ai",
+        oznaczenie: "blok1Oznaczenie",
+      },
     ],
   },
   {
@@ -75,7 +92,14 @@ const BLOKI = [
       { klucz: "mod7_nazwa", kotwica: "pieczec-etyczna" },
       { klucz: "mod8_nazwa", kotwica: "uczenie-glosu" },
       { klucz: "mod9_nazwa", kotwica: "tablica-postow" },
-      { klucz: "aiNaglowek", kotwica: "asystent-ai" },
+      // Moduł 1 (studio) NIE dostaje oznaczenia: na podstronie ma formę
+      // karty kierunku wyłącznie z powodu przebudowy zrzutu (wyjątek
+      // F4-2, D-C5), a status obietnicy ma DZIAŁA (K-D5).
+      {
+        klucz: "aiNaglowek",
+        kotwica: "asystent-ai",
+        oznaczenie: "blok2Oznaczenie",
+      },
     ],
   },
   {
@@ -138,6 +162,12 @@ export default async function StronaFunkcje({ params }: Props) {
             pozycje={blok.pozycje.map((pozycja) => ({
               etykieta: etykiety[indeks](pozycja.klucz),
               href: `${adresWJezyku(locale as Locale, blok.sciezka)}#${pozycja.kotwica}`,
+              // `in` zamiast `?.`: pozycje bez oznaczenia nie mają tego
+              // pola W OGÓLE, więc unia literałów z `as const` nie ma go
+              // do zawężenia. Brak pola = brak członu, nie pusty człon.
+              ...("oznaczenie" in pozycja
+                ? { oznaczenie: t(pozycja.oznaczenie) }
+                : {}),
             }))}
             linkEtykieta={t(`${blok.klucz}Link`)}
             linkHref={adresWJezyku(locale as Locale, blok.sciezka)}
@@ -145,8 +175,16 @@ export default async function StronaFunkcje({ params }: Props) {
         ))}
         {/* I5 — F8 wariant jednozdaniowy (indeks agreguje zakres
             czterech podstron, więc zdanie jest jedno: „od Startera"). */}
+        {/* F8 rozbite na dwa zdania 2026-08-14 (rozstrzygnięcie
+            właściciela + mini-panel treści): „wszystko powyżej" nie
+            może kwantyfikować pozycji kierunku, bo asystenta AI nie
+            ma w żadnym planie (content/pl/cennik.md — wiersz
+            WYKLUCZONE, „wywołania AI (klucz pusty)"). f8_1 zostaje
+            ZNAK W ZNAK formułą korpusu stojącą w pięciu nietkniętych
+            miejscach; f8_2 wyłącza pozycję z imienia. Gałąź `zdania`
+            istniała wcześniej — /funkcje/zespol i /funkcje/wyniki. */}
         <PlanJednymWierszem
-          zdanie={t("f8")}
+          zdania={[t("f8_1"), t("f8_2")]}
           linkEtykieta={t("f8link")}
           linkHref={adresWJezyku(locale as Locale, "/cennik")}
         />

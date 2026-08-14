@@ -123,7 +123,7 @@ jobs:
       - run: npm run bramka:nojs
 
   bramka-dostepnosc:
-    name: "Bramka: Dostępność (axe 0 błędów + klawiatura)"
+    name: "Bramka: Dostępność (axe 0 błędów + klawiatura + nazwy linków)"
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -134,7 +134,16 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { name: next-build, path: .next/ }
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test e2e/axe.spec.ts e2e/klawiatura.spec.ts
+      # oznaczenie-kierunku.spec.ts DOPISANY 2026-08-14. Bez tej linii
+      # oba strażniki (S-NAZWY, S-SYMETRIA) biegałyby wyłącznie lokalnie,
+      # a na bramce byłyby martwe — czyli w rejestrze tego projektu
+      # NIEISTNIEJĄCE (ADR-018: brak dowodu = brak zabezpieczenia).
+      # Dopisany TUTAJ, a nie osobnym jobem: dzieli artefakt builda
+      # i instalację chromium z axe, więc kosztuje sekundy zamiast
+      # kolejnej pełnej rozgrzewki. Rzecz pilnowana jest zresztą ta
+      # sama — nazwa dostępna linku (#11), na którą axe jest ślepe
+      # (identical-links-same-purpose: enabled: false w axe-core 4.12.1).
+      - run: npx playwright test e2e/axe.spec.ts e2e/klawiatura.spec.ts e2e/oznaczenie-kierunku.spec.ts
 
   bramka-e2e:
     name: "Bramka: E2E (cennik → płatność → konto → aplikacja)"

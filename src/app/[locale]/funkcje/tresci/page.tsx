@@ -80,7 +80,11 @@ export default async function StronaFunkcjeTresci({ params }: Props) {
         />
         {/* Moduł 1 Studio — WARIANT KIERUNKU (wyjątek F4-2; brief,
             Uzupełnienie C + D-C5): BEZ slotu zrzutu do przebudowy
-            wariant C aplikacji; status obietnicy DZIAŁA bez zmian. */}
+            wariant C aplikacji; status obietnicy DZIAŁA bez zmian.
+            DLATEGO BEZ propu `oznaczenie` — forma karty jest tu skutkiem
+            braku zrzutu, nie statusu obietnicy (K-D5). Dopisanie tu
+            oznaczenia zaczerwieni S-SYMETRIA: na indeksie pozycja `studio`
+            oznaczenia nie niesie i nieść nie ma. */}
         <SekcjaKierunku
           naglowek={t("mod1_nazwa")}
           idNaglowka={MODULY[0].kotwica}
@@ -100,17 +104,28 @@ export default async function StronaFunkcjeTresci({ params }: Props) {
           />
         ))}
         {/* Sekcja kierunku AI — po ostatnim module, przed F8; H2
-            z wzorcowej podstrony (×4 wygrywa wzorzec — content w. 133). */}
+            z wzorcowej podstrony (×4 wygrywa wzorzec — content w. 133).
+            OZNACZENIE (2026-08-14) — jak na wzorcowej podstronie;
+            odpowiednik członu z indeksu, pilnowany przez S-SYMETRIA. */}
         <SekcjaKierunku
           naglowek={t("aiNaglowek")}
           idNaglowka="asystent-ai"
           tresc={t("aiTresc")}
           granica={t("aiGranica")}
+          oznaczenie={t("aiOznaczenie")}
         />
         {/* F8 — verbatim z wzorcowej podstrony, ZERO liczb (limit
             postów wolno pokazać wyłącznie na /cennik). */}
+        {/* F8 rozbite na dwa zdania 2026-08-14 (rozstrzygnięcie
+            właściciela + mini-panel treści): „wszystko powyżej" nie
+            może kwantyfikować pozycji kierunku, bo asystenta AI nie
+            ma w żadnym planie (content/pl/cennik.md — wiersz
+            WYKLUCZONE, „wywołania AI (klucz pusty)"). f8_1 zostaje
+            ZNAK W ZNAK formułą korpusu stojącą w pięciu nietkniętych
+            miejscach; f8_2 wyłącza pozycję z imienia. Gałąź `zdania`
+            istniała wcześniej — /funkcje/zespol i /funkcje/wyniki. */}
         <PlanJednymWierszem
-          zdanie={t("f8")}
+          zdania={[t("f8_1"), t("f8_2")]}
           linkEtykieta={t("f8link")}
           linkHref={adresWJezyku(locale as Locale, "/cennik")}
         />

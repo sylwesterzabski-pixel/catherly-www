@@ -18,7 +18,27 @@ Studio uczy się twojego głosu i pilnuje, żeby żadna treść nie złamała tw
 
 ### F8
 
-Wszystko powyżej działa od planu Starter. [Link: Zobacz cennik → /cennik] [Rozstrzygnięcie panelu: verbatim z wzorcowej podstrony, ZERO liczb (limit postów miesięcznie wolno pokazać wyłącznie na /cennik); prawdziwość potwierdzona — żaden moduł strony nie ma bramki GROWTH/PRO, a „Czysty eksport” (PRO) świadomie poza F8 (nowa obietnica wymagałaby panelu i decyzji właściciela — rejestr poz. 12).]
+Wszystko powyżej działa od planu Starter. [Link: Zobacz cennik → /cennik] [Rozstrzygnięcie panelu: verbatim z wzorcowej podstrony, ZERO liczb (limit postów miesięcznie wolno pokazać wyłącznie na /cennik); prawdziwość PRZETERMINOWANA 2026-08-14 — uzasadnienie „żaden moduł strony nie ma bramki GROWTH/PRO" powstało przed pozycją kierunku; asystent AI nie ma bramki planowej, bo nie ma go w żadnym planie, i to właśnie wymusiło rozbicie na f8_1 + f8_2, a „Czysty eksport” (PRO) świadomie poza F8 (nowa obietnica wymagałaby panelu i decyzji właściciela — rejestr poz. 12).]
+
+Asystenta AI nie dostajesz w żadnym planie.
+
+*(F8 ROZBITE 2026-08-14 — rozstrzygnięcie właściciela + mini-panel
+treści. Kwantyfikator „wszystko powyżej" obejmował obie pozycje
+kierunku, a asystenta AI nie dostajesz w żadnym planie: content/pl/
+cennik.md w. 73, wiersz WYKLUCZONE — „wywołania AI (klucz pusty)",
+decyzja właściciela + panel F1–F3. Zdanie pierwsze (f8_1) zostaje
+ZNAK W ZNAK formułą stojącą w pięciu miejscach nietkniętych tą
+zmianą: FunkcjeZespol.f8_1, FunkcjeWyniki.f8_1, DlaKogo.s1_plan,
+s2_plan_1, s3_plan_1. Zdanie drugie (f8_2) wyłącza pozycję Z IMIENIA
+— nie przez zawężenie kwantyfikatora, bo proza sekcji AI stoi w
+trybie oznajmującym jak moduły działające i nie glosuje statusu,
+więc zawężenie kazałoby czytelniczce wywnioskować to, czego strona
+nie mówi (ADR-018: brak dowodu = brak zabezpieczenia). Czasownik
+„dostajesz" zamyka odczyt „nie jest bramkowany, czyli mają wszyscy";
+„wyjątek" odrzucony — zero precedensu w korpusie ×3 języki. Klucze
+f8_1 + f8_2 na gałęzi `zdania` komponentu PlanJednymWierszem —
+wzorzec istniejący na /funkcje/zespol i /funkcje/wyniki.)*
+
 
 ### F9
 
@@ -131,3 +151,22 @@ Zasięgów ani polubień tablica nie pokaże — widzisz statusy swoich postów,
 ## Sekcja kierunku — asystent AI (generowanie treści)
 
 H2: Asystent AI. Treść: Z asystentem AI piszesz i edytujesz treści — on proponuje, ty decydujesz. Granica: Asystent nie napisze treści zamiast ciebie — podsuwa pomysły i poprawki, a ty piszesz. — Rozstrzygnięcie: Wariant A autora, treść VERBATIM z tabeli w. 85; granica przyjęta („podsuwa pomysły i poprawki” mieści się w „piszesz i edytujesz — on proponuje”: pomysły=pisanie, poprawki=edycja; dokonane wyłącznie w negacji; bez dubla „proponuje” wewnątrz sekcji). Wariant B ODRZUCONY — drugie zdanie wykracza poza wiersz tabeli (rozszerzenie obietnicy kierunku); wariant zapasowy odrzucony przez wewnętrzny dubel „proponuje”. Umiejscowienie: po ostatnim module, przed F8; bez slotu zrzutu; H2 „Asystent AI” do potwierdzenia z implementacją wzorcowej podstrony (jeśli tam padło inne brzmienie, ×4 wygrywa wzorzec).
+
+### Oznaczenie statusu (człon H2)
+
+— kierunek
+
+*(człon doklejany do H2 sekcji jako jeden węzeł tekstowy — odpowiednik
+oznaczenia z indeksu /funkcje, wymuszony strażnikiem S-SYMETRIA: kotwica
+#asystent-ai jest kontraktem publicznym, więc wejście bezpośrednie
+omija indeks. Obszar tu NIE wchodzi — wynika z kontekstu strony.
+BRZMIENIE ROZSTRZYGNIĘTE 2026-08-14 (właściciel, pakiet ZWIĘZŁY):
+sam rzeczownik, bez zdania wyjaśniającego.
+KOREKTA 2026-08-14: stało tu wcześniej, że „glosę niesie proza pod
+nagłówkiem" — to była NIEPRAWDA o repo i tak ją nazywam. SekcjaKierunku
+renderuje wyłącznie `tresc` i `granica`; obie stoją w trybie
+oznajmującym jak moduły działające, więc statusu nie glosuje nic poza
+tym członem (przyznaje to komentarz w pozyskiwanie/page.tsx: „sama
+sekcja swojego statusu nie nazywa"). Glosę niesie dopiero wiersz F8
+— zdanie f8_2 stojące bezpośrednio pod sekcją; patrz adnotacja przy F8.)*
+

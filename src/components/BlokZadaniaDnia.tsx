@@ -11,6 +11,15 @@ type Pozycja = {
    *  Slug kotwicy jest WSPÓLNY dla trzech języków (kontrakt
    *  publiczny; bramka kotwic sprawdza ×3). */
   href: string;
+  /** OZNACZENIE pozycji kierunku (FunkcjeIndeks.blokNOznaczenie) —
+   *  obecne WYŁĄCZNIE przy pozycjach, których cel na podstronie ma
+   *  status KIERUNKU, nieobecne przy pozostałych 31 (panel projektu
+   *  2026-08-14, forma L1-A; strażnik S-SYMETRIA pilnuje symetrii w obie
+   *  strony). Człon niesie rodzaj I OBSZAR, bo obszar jest jedynym
+   *  różnicownikiem: obie pozycje kierunku mają dziś tę samą
+   *  etykietę („asystent AI"), więc identyczny sufiks nie zamknąłby
+   *  problemu duplikatu nazwy dostępnej. */
+  oznaczenie?: string;
 };
 
 type Props = {
@@ -70,7 +79,20 @@ export function BlokZadaniaDnia({
         <ol className={styles.blok__lista} role="list">
           {pozycje.map((pozycja) => (
             <li key={pozycja.href}>
-              <a href={pozycja.href}>{pozycja.etykieta}</a>
+              {/* Oznaczenie sklejane w JEDEN węzeł tekstowy, a nie
+                  w dwa sąsiadujące elementy inline: obliczanie nazwy
+                  dostępnej NIE gwarantuje odstępu między sąsiednimi
+                  węzłami inline, więc „asystent AIkierunek" byłoby
+                  błędem niewidocznym na ekranie. Przy jednym węźle nie
+                  ma czego sklejać, a nazwa dostępna jest znak w znak
+                  tekstem widocznym (2.5.3 spełnione trywialnie,
+                  sterowanie głosem i Ctrl+F trafiają). Bez span, bez
+                  CSS i bez aria-* — nie ma czego wyłączyć. */}
+              <a href={pozycja.href}>
+                {pozycja.oznaczenie === undefined
+                  ? pozycja.etykieta
+                  : `${pozycja.etykieta} ${pozycja.oznaczenie}`}
+              </a>
             </li>
           ))}
         </ol>

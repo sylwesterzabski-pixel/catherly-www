@@ -115,8 +115,13 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     // Sekcja kierunku AI: kotwica #asystent-ai; treść bez trybu
     // dokonanego + granica (D-B2).
     const kierunek = page.locator('section[aria-labelledby="asystent-ai"]');
+    // H2 niesie NAZWĘ + OZNACZENIE statusu, sklejone w jeden węzeł
+    // tekstowy (panel projektu 2026-08-14, forma L1-A). H2 jest celem
+    // aria-labelledby sekcji, więc ten sam ciąg jest jej nazwą
+    // dostępną — porównanie idzie na CAŁY tekst, żeby zgubiony odstęp
+    // i zniknięcie członu czerwieniły się tak samo.
     await expect(kierunek.getByRole("heading", { level: 2 })).toHaveText(
-      k.aiNaglowek,
+      `${k.aiNaglowek} ${k.aiOznaczenie}`,
     );
     await expect(
       kierunek.getByText(k.aiTresc, { exact: true }),
@@ -125,8 +130,11 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
       kierunek.getByText(k.aiGranica, { exact: true }),
     ).toBeVisible();
 
-    // F8: zdanie planu + link do cennika per język.
-    await expect(page.getByText(k.f8, { exact: true })).toBeVisible();
+    // F8: dwa zdania planu + link do cennika per język. Zdanie 2
+    // (2026-08-14) wyłącza asystenta AI z kwantyfikatora — bez
+    // niego „wszystko powyżej" obejmowałoby pozycję kierunku.
+    await expect(page.getByText(k.f8_1, { exact: true })).toBeVisible();
+    await expect(page.getByText(k.f8_2, { exact: true })).toBeVisible();
     const linkCennika = page.getByRole("link", {
       name: k.f8link,
       exact: true,
@@ -157,7 +165,8 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator("main h2")).toHaveText([
       ...NUMERY_MODULOW.map((numer) => k[`mod${numer}_nazwa`]),
-      k.aiNaglowek,
+      // Ostatni H2 = sekcja kierunku: nazwa + oznaczenie statusu.
+      `${k.aiNaglowek} ${k.aiOznaczenie}`,
     ]);
   });
 }
@@ -368,6 +377,12 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     expect(html, "PO CO TO modułu 1 w HTML bez JS").toContain(k.mod1_poco);
     expect(html, "granica modułu 10 w HTML bez JS").toContain(k.mod10_nie);
     expect(html, "treść sekcji AI w HTML bez JS").toContain(k.aiTresc);
+    // H2 sekcji kierunku RAZEM z członem — sam nagłówek przechodziłby
+    // toContain także po zniknięciu oznaczenia (bramka „treść
+    // czytelna bez JS" obejmuje człon, bo człon jest widoczny).
+    expect(html, "oznaczenie kierunku przy H2 w HTML bez JS").toContain(
+      `${k.aiNaglowek} ${k.aiOznaczenie}`,
+    );
   });
 }
 

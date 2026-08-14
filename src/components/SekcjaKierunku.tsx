@@ -11,6 +11,17 @@ type Props = {
   tresc: string;
   /** Granica — 1 zdanie (wyróżnienie tekstowe, bez kreski). */
   granica: string;
+  /** OZNACZENIE statusu kierunku (przestrzeń podstrony,
+   *  `aiOznaczenie`) doklejane do H2 jako JEDEN węzeł tekstowy.
+   *  OPCJONALNE ŚWIADOMIE, bo ten sam komponent renderuje na
+   *  /funkcje/tresci także moduł Studio (tresci/page.tsx:84) —
+   *  Studio ma formę karty kierunku wyłącznie z powodu przebudowy
+   *  zrzutu (wyjątek F4-2, D-C5), a jego status obietnicy to DZIAŁA
+   *  (K-D5). Gdyby oznaczenie było wbudowane w komponent zamiast
+   *  wchodzić propem, Studio dostałoby fałszywy status.
+   *  BEZ oznaczenia: człon w H2 nie pojawia się w ogóle — nie ma
+   *  pustego separatora. */
+  oznaczenie?: string;
 };
 
 /**
@@ -21,12 +32,24 @@ type Props = {
  * wizualne od modułów DZIAŁA. Kotwica z odsunięciem od sticky
  * nagłówka z globals.css (W2+W4). Zero JS.
  */
-export function SekcjaKierunku({ naglowek, idNaglowka, tresc, granica }: Props) {
+export function SekcjaKierunku({
+  naglowek,
+  idNaglowka,
+  tresc,
+  granica,
+  oznaczenie,
+}: Props) {
   return (
     <section className={styles.sekcja} aria-labelledby={idNaglowka}>
       <div className={styles.wnetrze}>
+        {/* Jeden węzeł tekstowy — ten sam powód, co w
+            BlokZadaniaDnia: H2 jest celem aria-labelledby sekcji,
+            więc jego tekst JEST nazwą dostępną sekcji. Sklejenie
+            w szablonie zamiast dwóch węzłów inline gwarantuje
+            odstęp, którego obliczanie nazwy dostępnej nie
+            gwarantuje. */}
         <h2 id={idNaglowka} className={styles.naglowek}>
-          {naglowek}
+          {oznaczenie === undefined ? naglowek : `${naglowek} ${oznaczenie}`}
         </h2>
         <div className={styles.karta}>
           <p>{tresc}</p>

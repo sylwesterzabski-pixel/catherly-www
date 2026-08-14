@@ -14,7 +14,7 @@ import de from "../src/i18n/messages/de.json";
  * docs/faza-4/hf/d-funkcje-indeks.html po panelu projektu 2026-08-13;
  * wymagania testowe: handoff §6, T2–T9 i T11).
  *
- * Strażnicy ×3 języki: 18 kluczy FunkcjeIndeks znak w znak ↔ content
+ * Strażnicy ×3 języki: 20 kluczy FunkcjeIndeks znak w znak ↔ content
  * (T2), MILCZENIE agregujące cztery filary + słowo „rozliczenia" (T3,
  * I4 — cztery bloki, nie pięć), kotwica bloku pod sticky nav mierzona
  * geometrycznie (T4), CEL DOTYKOWY pozycji listy mierzony, nie
@@ -57,7 +57,11 @@ const BLOKI = [
       { klucz: "mod8_nazwa", kotwica: "zadania" },
       { klucz: "mod9_nazwa", kotwica: "sala-treningowa" },
       { klucz: "mod10_nazwa", kotwica: "plany-rozmow" },
-      { klucz: "aiNaglowek", kotwica: "asystent-ai" },
+      {
+        klucz: "aiNaglowek",
+        kotwica: "asystent-ai",
+        oznaczenie: "blok1Oznaczenie",
+      },
     ],
   },
   {
@@ -75,7 +79,11 @@ const BLOKI = [
       { klucz: "mod7_nazwa", kotwica: "pieczec-etyczna" },
       { klucz: "mod8_nazwa", kotwica: "uczenie-glosu" },
       { klucz: "mod9_nazwa", kotwica: "tablica-postow" },
-      { klucz: "aiNaglowek", kotwica: "asystent-ai" },
+      {
+        klucz: "aiNaglowek",
+        kotwica: "asystent-ai",
+        oznaczenie: "blok2Oznaczenie",
+      },
     ],
   },
   {
@@ -108,9 +116,10 @@ const BLOKI = [
   },
 ] as const;
 
-/** 18 kluczy przestrzeni FunkcjeIndeks — komplet, jak konsumuje je
+/** 20 kluczy przestrzeni FunkcjeIndeks — komplet, jak konsumuje je
  *  page.tsx. (Handoff §4.1 mówił pierwotnie „16" — błąd arytmetyczny
- *  poprawiony 2026-08-13: 2 + 4×3 + 2 + 2 = 18.) */
+ *  poprawiony 2026-08-13: 2 + 4×3 + 2 + 2 = 18. Od 2026-08-14
+ *  dochodzą dwa oznaczenia pozycji kierunku: 18 + 2 = 20.) */
 const KLUCZE_INDEKSU = [
   "h1",
   "zdanie",
@@ -118,8 +127,18 @@ const KLUCZE_INDEKSU = [
     `${blok.klucz}Naglowek`,
     `${blok.klucz}Wprowadzenie`,
     `${blok.klucz}Link`,
+    // Oznaczenia WYPROWADZONE z BLOKI, nie wpisane ręcznie: dopisanie
+    // oznaczenia do pozycji bez odpowiadającego klucza w messages ma
+    // paść tutaj — na komplecie kluczy — a nie dopiero w DOM.
+    ...blok.pozycje.flatMap((pozycja) =>
+      "oznaczenie" in pozycja ? [pozycja.oznaczenie] : [],
+    ),
   ]),
-  "f8",
+  // F8 ROZBITE 2026-08-14: „wszystko powyżej" nie może
+  // kwantyfikować pozycji kierunku. f8_2 wyłącza asystenta AI
+  // z imienia; komplet kluczy pilnuje obecności OBU zdań ×3 języki.
+  "f8_1",
+  "f8_2",
   "f8link",
   "zamkniecieCta",
   "zamkniecieZdanie",
@@ -237,7 +256,13 @@ const pozycjeZTresci = (jezyk: string) => {
   if (biezacy !== null) wpisy.push(biezacy);
 
   return wpisy.map((wpis) => {
-    const tekst = zwin(wpis.replace(/\*\([^)]*\)\*/g, ""));
+    // Regex ZAWĘŻONY do jedynej adnotacji, która ma prawo zniknąć.
+    // Wariant ogólny `/\*\([^)]*\)\*/g` zdejmowałby KAŻDY nawias
+    // kursywą — a wtedy zapisanie członu kierunku w tej formie
+    // sprawiłoby, że strażnik przestaje go widzieć i ZOSTAJE ZIELONY.
+    // Ślepego strażnika nie poznaje się po przebiegu, więc pułapkę
+    // zdejmujemy zawczasu (rekonesans wf_b78294ba-029, poz. 4).
+    const tekst = zwin(wpis.replace(/\s*\*\(pozycja kierunku\)\*/g, ""));
     const pary = tekst.match(
       /^(.+?)\s*→\s*(\/funkcje\/[a-z-]+#[a-z0-9-]+)$/,
     );
@@ -252,11 +277,11 @@ const pozycjeZTresci = (jezyk: string) => {
 for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   const k = komunikaty.FunkcjeIndeks as Record<string, string>;
 
-  // (a) T2 — znak w znak messages ↔ content, komplet 18 kluczy.
+  // (a) T2 — znak w znak messages ↔ content, komplet 20 kluczy.
   // 33 etykiety pozycji NIE wchodzą do tego strażnika: mieszkają
   // w przestrzeniach podstron i pilnują ich strażnicy tamtych stron
   // (D-D12). Tu sprawdzamy je za to w DOM — punkt (c).
-  test(`indeks (${jezyk}): 18 kluczy FunkcjeIndeks znak w znak w content/${jezyk}/funkcje.md`, () => {
+  test(`indeks (${jezyk}): ${KLUCZE_INDEKSU.length} kluczy FunkcjeIndeks znak w znak w content/${jezyk}/funkcje.md`, () => {
     const zrodlo = zwin(
       readFileSync(join(process.cwd(), `content/${jezyk}/funkcje.md`), "utf8"),
     );
@@ -353,7 +378,15 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
       await expect(linki).toHaveCount(blok.pozycje.length);
       for (const [indeks, pozycja] of blok.pozycje.entries()) {
         const link = linki.nth(indeks);
-        await expect(link).toHaveText(etykiety[pozycja.klucz]);
+        // Pozycja kierunku niesie OZNACZENIE sklejone z etykietą
+        // w jeden węzeł tekstowy (panel 2026-08-14, forma L1-A).
+        // Porównujemy CAŁY tekst linku, więc zniknięcie członu,
+        // zgubiony odstęp i podmiana obszaru czerwienią się tak samo.
+        await expect(link).toHaveText(
+          "oznaczenie" in pozycja
+            ? `${etykiety[pozycja.klucz]} ${k[pozycja.oznaczenie]}`
+            : etykiety[pozycja.klucz],
+        );
         await expect(link).toHaveAttribute(
           "href",
           `${prefiks}${blok.sciezka}#${pozycja.kotwica}`,
@@ -396,13 +429,29 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
           html,
           `etykieta ${blok.klucz}/${pozycja.klucz} bez JS`,
         ).toContain(etykiety[pozycja.klucz]);
+        // Człon kierunku jest treścią WIDOCZNĄ, więc obejmuje go
+        // bramka „treść czytelna bez JS". Sama etykieta przechodzi
+        // toContain także wtedy, gdy członu w HTML nie ma — dowód
+        // musi żądać ciągu SKLEJONEGO. Możliwe to jest wyłącznie
+        // dlatego, że sklejenie idzie w JEDEN węzeł tekstowy:
+        // dwa sąsiednie wyrażenia JSX rozdzieliłby w SSR komentarz
+        // <!-- -->, a wtedy tej asercji nie dałoby się napisać.
+        if ("oznaczenie" in pozycja) {
+          expect(
+            html,
+            `oznaczenie ${blok.klucz}/${pozycja.klucz} bez JS`,
+          ).toContain(`${etykiety[pozycja.klucz]} ${k[pozycja.oznaczenie]}`);
+        }
         expect(
           html,
           `kotwica docelowa #${pozycja.kotwica} bez JS`,
         ).toContain(`${blok.sciezka}#${pozycja.kotwica}`);
       }
     }
-    expect(html, "F8 bez JS").toContain(k.f8);
+    expect(html, "F8 zdanie 1 bez JS").toContain(k.f8_1);
+    // Wyłączenie pozycji kierunku jest treścią widoczną, więc
+    // wchodzi do bramki „treść czytelna bez JS" na równi z resztą.
+    expect(html, "F8 zdanie 2 (wyłączenie) bez JS").toContain(k.f8_2);
     expect(html, "zdanie zamknięcia bez JS").toContain(k.zamkniecieZdanie);
   });
 }

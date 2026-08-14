@@ -1075,3 +1075,228 @@ pełne +117 s. Skalując zmierzoną liniowość na czas jobu w CI wychodzi
 
 To jest PROJEKCJA. Liczba z pomiaru zostanie dopisana tutaj po pierwszym
 przebiegu CI na wypchniętej gałęzi.
+
+### 12.4 Oznaczenie pozycji kierunku — struktura L1-A
+
+**Decyzja właściciela (2026-08-14), cytat:** „1. Struktura L1-A: TAK
+(jeden węzeł tekstowy, widoczny, zero CSS — argument wielomodalności
+rozstrzyga). 2. Odpowiednik na podstronach: TAK, wymuszony strażnikiem
+S4 (symetria mechaniczna, czerwień w obie strony…). 3. S3 do
+przeszczepu: TAK… 4. Korekta przyjęta: 2 pozycje oznaczone, nie 3 —
+Studio zostaje DZIAŁA (K-D5), mój brief był błędny. 5. Brzmienie:
+przynieś syntezę panelu osobno."
+
+**Problem, który to zamyka (#11).** Na `/funkcje` dwie z 33 pozycji list
+niosą tę samą etykietę — pl „asystent AI" ×2, en „AI assistant" ×2, de
+„KI-Assistent" ×2 — i celują w RÓŻNE strony. Pozostałe 31 nazw jest
+unikalnych (policzone u źródła). Lista linków czytnika ekranu i rotor
+VoiceOver pokazują oraz sortują po nazwie, więc te dwie pozycje są tam
+nie do rozróżnienia. Drugi wątek to ADR-018: obie celują w sekcje
+o statusie KIERUNKU, a wyglądają identycznie jak 31 pozycji DZIAŁA.
+
+**Forma.** Człon doklejany WEWNĄTRZ `<a>` (indeks) i do `<h2>`
+(podstrona), jako **jeden węzeł tekstowy**: `` `${etykieta} ${oznaczenie}` ``.
+Ani jednej reguły CSS, ani jednego `aria-*`, ani jednego `<span>`.
+Powody, w kolejności wagi:
+
+1. **Wielomodalność.** Człon ukryty wizualnie zamyka #11 wyłącznie
+   w liście linków czytnika. Sterowanie głosem („kliknij asystent AI")
+   nadal trafia w pierwszy link z brzegu, Ctrl+F nadal pokazuje dwa
+   identyczne wiersze, wydruk i przegląd wzrokowy nadal nie rozróżniają.
+2. **Sklejanie nazwy dostępnej.** Obliczanie nazwy dostępnej NIE
+   gwarantuje odstępu między sąsiadującymi węzłami inline — dwa elementy
+   dałyby „asystent AIkierunek", błąd niewidoczny na ekranie. Przy jednym
+   węźle nie ma czego sklejać.
+3. **2.5.3 (Label in Name)** spełnione trywialnie: nazwa dostępna jest
+   znak w znak tekstem widocznym.
+4. **Nie ma czego wyłączyć** — brak CSS znaczy brak zachowania w trybie
+   `forced-colors` i po zdjęciu arkuszy.
+
+**Człon niesie rodzaj I OBSZAR.** Obszar nie jest ozdobą: obie pozycje
+kierunku mają dziś tę samą etykietę, więc identyczny sufiks zostawiłby
+dokładnie ten sam duplikat nazwy dostępnej, o który chodzi w #11.
+Odpowiednik na podstronie obszaru nie niesie — tam wynika z kontekstu
+strony.
+
+**Klucze — `FunkcjeIndeks` 18 → 20.** `blok1Oznaczenie`,
+`blok2Oznaczenie` (indeks) oraz `aiOznaczenie` w `FunkcjePozyskiwanie`
+i `FunkcjeTresci` (podstrony). Ciąg indeksu mieszka w `FunkcjeIndeks`,
+a nie w przestrzeni podstrony, bo strażnik znak-w-znak żąda, by KAŻDY
+klucz przestrzeni podstrony stał w `content/*/funkcje-*.md`, a wypowiedź
+indeksu nie ma tam czego szukać. To NIE jest obejście D-D12: D-D12
+rządzi ETYKIETĄ (nadal reużytą znak w znak z przestrzeni podstrony),
+a oznaczenie jest wypowiedzią INDEKSU o statusie celu.
+
+**Studio zostaje bez oznaczenia.** `SekcjaKierunku` renderuje się na
+`/funkcje/tresci` trzy razy, raz dla modułu Studio (`#studio`). Studio
+ma FORMĘ karty kierunku z powodu braku zrzutu do przebudowy (wyjątek
+F4-2, D-C5), ale STATUS obietnicy DZIAŁA (K-D5). Dlatego `oznaczenie`
+jest propem opcjonalnym, a nie częścią komponentu, i dlatego
+S-SYMETRIA kluczuje po OZNACZENIU, nie po użyciu komponentu.
+
+#### Nazwy strażników — kolizja i przemianowanie
+
+Panel i rozstrzygnięcie właściciela mówiły „S3" i „S4". Obie nazwy są
+w tym repozytorium **zajęte** i znaczą „sekcja N układu strony"
+(`brief-etap-d-indeks-i-dla-kogo.md:70-91` — S3 `SpisTresci`, S4 trzy
+sekcje ścieżek; `src/app/[locale]/page.tsx:19-20`;
+`dla-kogo/page.tsx:125`; `SciezkaRozpoznania.tsx:46`). Przemianowane:
+
+| panel mówił | w kodzie stoi | co pilnuje |
+|---|---|---|
+| S3 | **S-NAZWY** | unikalność 33 nazw dostępnych w `main ol[role="list"]`, ×3 języki |
+| S4 | **S-SYMETRIA** | oznaczenie niosą DOKŁADNIE te pozycje indeksu, które celują w oznaczone sekcje podstron |
+
+Zakres ani jednego, ani drugiego się nie zmienił — zmieniła się nazwa.
+Plik: `e2e/oznaczenie-kierunku.spec.ts` (osobny, bo przedmiotem obu jest
+relacja MIĘDZY pięcioma stronami; strażnik trzymany przy jednej stronie
+zzielenieje, gdy druga rozjedzie się bez niej).
+
+**S-NAZWY** mierzy dwiema niezależnymi drogami: (1) `new Set(nazwy).size
+=== 33` po tekście widocznym, (2) dla każdej nazwy
+`getByRole("link", { name, exact: true })` = 1, czyli po wyliczaniu nazwy
+dostępnej Playwrighta. Do tego asercja, że w tych czterech listach nie ma
+ANI JEDNEGO `aria-label`/`aria-labelledby` — to jedyny warunek, przy
+którym tekst widoczny JEST nazwą dostępną, i zamknięta furtka na cichy
+powrót do wariantu z członem ukrytym. Zakres świadomie zawężony do
+`<main>`: w nawigacji i stopce duplikaty nazw istnieją legalnie, więc
+asercja na całej stronie byłaby czerwona od pierwszego dnia — a wtedy
+pierwszym odruchem byłoby jej OSŁABIENIE.
+
+**S-SYMETRIA** wykrywa oznaczenie MECHANICZNIE po obu stronach: tekst
+albo równa się samej nazwie (pozycja nieoznaczona), albo musi równać się
+„nazwa + spacja + oznaczenie Z i18n". Trzeciej możliwości nie ma —
+sufiks dopisany na sztywno czerwieni się tak samo jak brak oznaczenia.
+Oba zbiory kotwic porównywane są najpierw z KONKRETEM wyprowadzonym
+z lustra `BLOKI`, a dopiero potem ze sobą; odwrotna kolejność
+zostawiałaby dziurę, bo zdjęcie oznaczenia z obu stron naraz daje dwa
+zbiory puste, czyli symetrię idealną i zieleń.
+
+#### Dowód mutacyjny (2026-08-14)
+
+Każda mutacja: zepsuj jedną rzecz → `npm run build` → uruchom oba
+strażniki → przywróć. Przebudowa, nie dev-server — mierzony jest ten sam
+artefakt, który idzie na bramkę.
+
+| # | mutacja | przewidywanie | wynik |
+|---|---|---|---|
+| M0 | kod nietknięty | wszystko zielone | ✔ 6/6 zielonych |
+| M1 | indeks: zdjęte oznaczenie z JEDNEJ pozycji (blok 1) | S-SYMETRIA ×3 czerwone, S-NAZWY zielone | ✔ dokładnie tak |
+| M2 | indeks: zdjęte pole `oznaczenie` z OBU pozycji | czerwień | ✔ **budowa nie kompiluje się** — `TS2345` w `page.tsx:167` |
+| M2b | i18n(pl): oba ciągi oznaczeń OPRÓŻNIONE | S-NAZWY (pl) i S-SYMETRIA (pl) czerwone | ✔ 2 czerwone, 4 zielone |
+| M3 | podstrona: zdjęte oznaczenie z H2 `/funkcje/pozyskiwanie` | S-SYMETRIA ×3 czerwone | ✔ dokładnie tak |
+| M4 | podstrona: oznaczenie DOPISANE do Studio | S-SYMETRIA ×3 czerwone | ✔ dokładnie tak |
+| M5 | indeks: oznaczenia bloków ZAMIENIONE miejscami | S-SYMETRIA ×3 czerwone | ✔ dokładnie tak |
+| M6 | i18n(de): oba oznaczenia dostają IDENTYCZNY ciąg | S-NAZWY (de) czerwone — to jest awaria #11 | ✔ tylko de czerwone, reszta zielona |
+| M7 | komponent: nazwa dostępna nadpisana `aria-label` | S-NAZWY ×3 czerwone | ✔ dokładnie tak |
+
+Osiem z ośmiu zachowań zgodnych z przewidywaniem. **M2 zachował się
+inaczej, niż zakładałem, i to jest ustalenie, nie formalność:** usunięcie
+pola z obu pozycji nie dociera do testów, bo unia literałów przestaje
+mieć co zawężać i `tsc` pada wcześniej. Kompilator jest tu trzecią
+warstwą przed strażnikami, ale wyłącznie dla usunięcia POLA — usunięcie
+TREŚCI (M2b) kompiluje się bez zarzutu i wtedy łapią dopiero strażniki.
+Mutacja M6 jest najważniejsza z całej tabeli: to jedyna, która odtwarza
+awarię #11 w czystej postaci (oznaczenie stoi, ale nie różnicuje).
+
+#### Znalezisko krytyczne: strażniki, których CI nie uruchamiał
+
+Przy rekonesansie ustalone u źródła i **naprawione**: `.github/workflows/
+bramki.yml` uruchamiał Playwrighta w dokładnie dwóch miejscach —
+`e2e/axe.spec.ts e2e/klawiatura.spec.ts` (w. 137) oraz
+`e2e/sciezka-zakupu.spec.ts` (w. 151). Nowy plik strażników nie biegałby
+na bramce w ogóle. Dopisany do joba dostępności, bo dzieli z nim artefakt
+builda i instalację chromium (koszt: sekundy zamiast kolejnej pełnej
+rozgrzewki), a pilnowana rzecz jest ta sama — nazwa dostępna linku.
+
+**To samo znalezisko ma szerszy zasięg i NIE jest tu naprawione:**
+`funkcje-indeks.spec.ts`, `funkcje-podstrony.spec.ts`,
+`funkcje-pozyskiwanie.spec.ts` i pozostałe spece treści Fazy 4 również
+nie biegają na bramce — biegają wyłącznie lokalnie. Wszystkie asercje
+„znak w znak" z Etapów B–D mają dziś na CI status niesprawdzonych.
+Rozszerzenie CI na te pliki wykracza poza zakres decyzji o oznaczeniu
+i jest zgłoszone właścicielowi jako osobna sprawa.
+
+**Decyzja właściciela 2026-08-14:** OSOBNE ZLECENIE, do wykonania
+zaraz po pushu Etapu D — „dopisz wszystkie spece treści do bramki CI
++ przebieg potwierdzający, że biegną i są zielone. To jest dziura
+klasy security-scan." Do czasu wykonania tego zlecenia asercje
+„znak w znak" Etapów B–D mają na CI status NIESPRAWDZONYCH, mimo że
+lokalnie są zielone — a niesprawdzony liczy się jak niedziałający
+(ADR-018).
+
+#### Co było otwarte i JAK ZOSTAŁO ZAMKNIĘTE (2026-08-14)
+
+1. **Brzmienie — ZAMKNIĘTE.** Placeholdery zeszły ×3 języki (pakiet
+   ZWIĘZŁY, rozstrzygnięcie właściciela). `grep` po `src/` i `content/`
+   daje zero trafień. Tabela brzmień, werdykt panelu DE i odrzucenia
+   („Richtung", „zum Thema") — `rejestr-korekt-tresci.md` K-D8.
+2. **Kolizja z F8 — ZAMKNIĘTA.** `f8` → `f8_1` + `f8_2` w trzech
+   przestrzeniach; `f8_1` zostaje znak w znak formułą z pięciu
+   nietkniętych miejsc, `f8_2` wyłącza asystenta AI z imienia.
+   Uzasadnienie doboru (wyłączenie zamiast zawężenia — ADR-018)
+   i dowód prawdziwości u źródła — `rejestr-korekt-tresci.md` K-D9.
+3. **2.4.4 Link Purpose (In Context), poziom A.** Argument sędziego
+   panelu: „programowo ustalony kontekst linku" w WCAG wylicza tekst
+   w tym samym ZDANIU, AKAPICIE, POZYCJI LISTY lub KOMÓRCE TABELI —
+   nagłówka sekcji na tej liście nie ma. Sprawdzone u źródła i faktycznie
+   tak jest: `<li>` zawiera wyłącznie sam link (`BlokZadaniaDnia.tsx`),
+   a H2 bloku brzmi „Rano widzisz, do kogo się odezwać." i nazwy obszaru
+   nie zawiera. Interpretacja WCAG jest argumentem, nie pomiarem — ale
+   jeśli jest trafna, przesuwa #11 z AAA na A.
+
+### 12.5 Strażnicy dopisani po rekonesansie + dowód mutacyjny (2026-08-14)
+
+Dwa strażniki dopisane po znalezieniu luk klasy „zielono, ale ślepo".
+Obie luki były realne, nie hipotetyczne — obie zamknięte i **dowiedzione
+mutacją**, bo strażnik bez dowodu jest ozdobą.
+
+**Luka A — parser zdejmował KAŻDY nawias kursywą.** Regex
+`/\*\([^)]*\)\*/g` w `funkcje-indeks.spec.ts` czyścił numerowany wiersz
+z dowolnej adnotacji redakcyjnej. Dziś nie szkodziło, ale była to
+pułapka pod przyszłego redaktora: zapisanie członu kierunku w tej
+formie sprawiłoby, że strażnik przestaje go widzieć i **zostaje
+zielony**. Regex zawężony do jedynej adnotacji, która ma prawo zniknąć:
+`/\s*\*\(pozycja kierunku\)\*/g`.
+
+**Luka B — bez-JS nie sprawdzał członu.** Strażnik „treść czytalna bez
+JS" sprawdzał `toContain("asystent AI")`, co przechodzi także wtedy, gdy
+członu w surowym HTML nie ma w ogóle. Człon jest treścią widoczną, więc
+bramka go obejmuje — a nikt tego nie dowodził. Asercje dopisane
+w trzech miejscach: `funkcje-indeks.spec.ts`, `funkcje-podstrony.spec.ts`,
+`funkcje-pozyskiwanie.spec.ts`.
+
+Bez-JS jest tu jedyną warstwą, która może złapać rozdzielenie sklejenia:
+React wstawia między sąsiednie wyrażenia JSX komentarz `<!-- -->`,
+a `textContent` komentarzy nie widzi — więc każdy strażnik DOM
+(`toHaveText`, nazwa dostępna, S-NAZWY, S-SYMETRIA) zostaje wtedy
+ZIELONY. To jest treść mutacji N8.
+
+| # | mutacja | przewidywanie | wynik |
+|---|---|---|---|
+| N0 | kod nietknięty | zielone | ✔ |
+| N8 | oba sklejenia rozbite na fragment JSX (komentarz SSR) | tylko bez-JS czerwone, DOM zielone | ✔ **9 czerwieni, wyłącznie bez-JS** (indeks/podstrony/pozyskiwanie ×3 języki); wszystkie strażniki DOM zielone |
+| N9 | dodatkowy `*(dopisek redakcyjny)*` w wierszu 11 `content/pl/funkcje.md` | (a2) czerwone dla pl | ✔ **dokładnie 1 czerwień**, 133 zielone |
+| N0' | przywrócenie | zielone | ✔ 134/134 |
+
+**Zapis uczciwy o przebiegu N9.** Pierwszy przebieg był SKAŻONY —
+harness przywracał źródła po N8, ale nie przebudowywał, więc N9 biegł
+na buildzie z mutacją N8 i przyniósł 9 nadmiarowych czerwieni.
+Delta przypisywalna N9 była poprawna, ale dowód na skażonej bazie
+dowodem nie jest, więc N9 powtórzono na czystym buildzie. Liczby
+w tabeli pochodzą z powtórki.
+
+#### Dowód mutacyjny rozbicia F8 (2026-08-14)
+
+| # | mutacja | przewidywanie | wynik |
+|---|---|---|---|
+| N10 | `f8_2` USUNIĘTY z `de/FunkcjeIndeks` | parytet/komplet czerwony dla de | ✔ „znak w znak" (de) + bez-JS (de); **budowa NIE pada** — next-intl nie krzyczy na brak klucza |
+| N11 | `f8_2` przepisane w `messages`, `content` nietknięty | „znak w znak" czerwony dla pl | ✔ dokładnie tak |
+| N12 | `f8_2` OPRÓŻNIONY (`""`) | cokolwiek czerwone | ✔ czerwone — **ale wyłącznie „znak w znak"** |
+
+**Ustalenie z N12, ważniejsze od koloru.** Pustego ciągu strażnik bez-JS
+NIE łapie, bo `toContain("")` przechodzi zawsze. Siatka pod `f8_2`
+istnieje, ale wisi na luster `content/`, nie na asercji bez-JS. Wniosek
+ogólny do zapamiętania przy dopisywaniu kluczy: **klucz widoczny bez
+odpowiednika w `content/` nie ma dziś ochrony przed opróżnieniem.**
+`f8_2` odpowiednik ma, więc dla niego zagrożenie nie zachodzi.

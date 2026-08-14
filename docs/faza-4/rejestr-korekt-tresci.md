@@ -205,6 +205,150 @@ objęte jest usunięcie martwej przestrzeni `StronaWBudowie` z trzech
 plików `messages` — patrz `komponenty/handoff-etap-d.md` §10.3. To
 usunięcie kodu nieużywanego, nie zmiana treści.
 
+### K-D8 · oznaczenie pozycji kierunku — nowa treść w 9 plikach (ZAMKNIĘTE 2026-08-14)
+
+**Co.** Rozstrzygnięcie właściciela z 2026-08-14 (forma L1-A) domyka
+K-D5 i wprowadza **cztery nowe ciągi widoczne** ×3 języki:
+`FunkcjeIndeks.blok1Oznaczenie`, `FunkcjeIndeks.blok2Oznaczenie`
+(przestrzeń rośnie 18 → 20 kluczy) oraz `aiOznaczenie`
+w `FunkcjePozyskiwanie` i `FunkcjeTresci`. Odpowiedniki dopisane do
+`content/{pl,en,de}/funkcje.md` (po dwa bloki) oraz
+`funkcje-pozyskiwanie.md` i `funkcje-tresci.md` (po jednym) — razem
+**12 wstawek w 9 plikach treści**.
+
+**Dlaczego to jest wpis do rejestru, a nie cicha zmiana.** Etap D miał
+zapisane „Nie ma zmian w PROZIE `content/` — treść jest zamknięta".
+Ta zmiana treść otwiera: cztery ciągi widoczne na powierzchni serwisu,
+w tym słowo, którego w korpusie nie było. Wstawki stoją jako osobne
+podsekcje (`### Oznaczenie pozycji kierunku`, `### Oznaczenie statusu
+(człon H2)`) po pustej linii, więc parser `pozycjeZTresci` nadal wydaje
+dokładnie 33 ponumerowane pozycje, a same wiersze numerowane pozostają
+nietknięte.
+
+**BRZMIENIE ROZSTRZYGNIĘTE 2026-08-14 — pakiet ZWIĘZŁY, ×3 języki.**
+Placeholdery („— [BRZMIENIE NIEROZSTRZYGNIĘTE: …]" i odpowiedniki)
+stały w plikach celowo dłuższe od każdego kandydata, żeby testy
+geometryczne mierzyły przypadek ostrzejszy niż docelowy; zeszły
+w całości — `grep` po `src/` i `content/` daje dziś zero trafień.
+Decyzja właściciela: „glosa raz, na podstronie — nie w 33 linkach;
+pokrycie pomiarowe rozstrzyga".
+
+| klucz | pl | en | de |
+|---|---|---|---|
+| `blok1Oznaczenie` | — kierunek w pozyskiwaniu | — a direction in Acquiring | – Ausblick: Kontakte gewinnen |
+| `blok2Oznaczenie` | — kierunek w treściach | — a direction in Content | – Ausblick: Inhalte |
+| `aiOznaczenie` ×2 | — kierunek | — a direction | – Ausblick |
+
+Nazwa obszaru wchodzi WYŁĄCZNIE na indeksie i jest tam jedynym
+różnicownikiem: obie pozycje kierunku niosą etykietę „asystent AI",
+więc identyczny sufiks zostawiłby dwie nierozróżnialne nazwy dostępne
+(awaria #11). Na podstronach obszar wynika z kontekstu strony i nie
+jest powtarzany.
+
+**DE — osobny panel językowy (wf_d4b3c933-758), słowo „Richtung"
+ODRZUCONE.** Właściciel nałożył warunek: człon DE bez słowa
+„Richtung", bo koliduje jednostronicowo z użyciem przestrzennym
+w `mod3_nie` i `mod4_nie` (`de.json:211` i `:214`, obie
+`FunkcjePozyskiwanie`) — parytet znaczeniowy przed leksykalnym.
+Przyjęte „Ausblick": zero wystąpień w korpusie przed tą zmianą
+(sprawdzone repo-wide), wiązanie dwukropkowe ma precedens
+(`de.json:121`, `:300`, `:327`, `:367`, `:374`). Odrzucone także
+„zum Thema" — echo z sąsiednim linkiem wejściowym (`blok1–4Link`).
+Myślnik DE zgodny z konwencją korpusu: U+2013 (`de.json` ma 122
+wiersze z U+2013 i 0 z U+2014). Panel stracił jednego agenta
+(`krytyka:bez-rzeczownika` — zerwane połączenie); synteza wykonała
+jego rozliczenie sama i tak jest to odnotowane. Wszystkie twierdzenia
+panelu zweryfikowane u źródła przed przyjęciem.
+
+**Pomiar, nie arytmetyka.** Nazwy dostępne złożone: pl 37/34/22,
+en 39/37/26, de 42/32/23 znaków. Bramki geometryczne (2.5.8,
+reflow 320 px) mieszkają w tych samych plikach speców co strażnicy
+treści, więc pokrycie pomiarowe pakietu ZWIĘZŁY jest zmierzone,
+a nie założone: 268/268 zielonych po podmianie pl+en, 314/314 po
+komplecie z de i F8.
+
+**Korekta briefu przyjęta przez właściciela.** Brief mówił o TRZECH
+pozycjach kierunku; faktycznie są DWIE. Studio (`/funkcje/tresci#studio`)
+ma formę karty kierunku wyłącznie z powodu braku zrzutu do przebudowy
+(F4-2, D-C5), a status obietnicy DZIAŁA (K-D5) — i oznaczenia nie
+dostaje. Pilnuje tego mutacja M4 w `komponenty/handoff-etap-d.md` §12.4.
+
+### K-D9 · kolizja F8 z pozycją kierunku — rozbicie na `f8_1` + `f8_2`
+
+**Sprzeczność.** `FunkcjeIndeks.f8` („Wszystko powyżej działa od planu
+Starter.", renderowane PO czterech blokach) kwantyfikowało także obie
+pozycje kierunku; to samo na `/funkcje/pozyskiwanie` i `/funkcje/tresci`,
+gdzie F8 stoi bezpośrednio pod sekcją AI. Sprawdzone ×3 języki.
+Oznaczenie tej sprzeczności nie stworzyło — uczyniło ją widoczną
+w jednym kadrze. Właściciel potwierdził ją 2026-08-14 i zażądał
+doprecyzowania wiersza F8 przed pushem, przez mini-panel treści
+(`wf_5c24266d-394`) i strażnika parytetu.
+
+**Rozstrzygnięcie: rozbicie klucza, nie przepisanie zdania.**
+`f8` → `f8_1` + `f8_2` w trzech przestrzeniach (`FunkcjeIndeks`,
+`FunkcjePozyskiwanie`, `FunkcjeTresci`), na gałęzi `zdania`
+komponentu `PlanJednymWierszem` — wzorzec istniejący wcześniej na
+`/funkcje/zespol` i `/funkcje/wyniki`, nie nowy kontrakt.
+
+| klucz | pl | en | de |
+|---|---|---|---|
+| `f8_1` | Wszystko powyżej działa od planu Starter. | Everything above works from the Starter plan up. | Alles, was oben steht, funktioniert ab dem Starter-Plan. |
+| `f8_2` | Asystenta AI nie dostajesz w żadnym planie. | You don’t get the AI assistant on any plan. | Den KI-Assistenten bekommst du in keinem Plan. |
+
+`f8_1` zostaje ZNAK W ZNAK formułą stojącą w pięciu miejscach
+nietkniętych tą zmianą (`FunkcjeZespol.f8_1`, `FunkcjeWyniki.f8_1`,
+`DlaKogo.s1_plan`, `s2_plan_1`, `s3_plan_1`), więc rozjazd korpusu
+jest addytywny — żadne zdanie nie zostało przepisane.
+
+**Dlaczego wyłączenie Z IMIENIA, a nie zawężenie kwantyfikatora.**
+Mini-panel rozjechał się na pół: dwie poprawki chciały zawęzić
+(„wszystko, co powyżej **działa**"), dwie — nazwać wyjątek. Rozstrzygnął
+ADR-018, nie gust. Zawężenie działa tylko wtedy, gdy czytelniczka
+odczyta człon „— kierunek" jako „nie działa"; sprawdzone u źródła:
+`SekcjaKierunku` renderuje wyłącznie `tresc` i `granica`, obie w trybie
+oznajmującym jak moduły działające („Z asystentem AI dostosowujesz
+wiadomości do konkretnej osoby."), a komentarz w `pozyskiwanie/page.tsx`
+przyznaje wprost „sama sekcja swojego statusu nie nazywa". Zawężenie
+kazałoby więc wywnioskować to, czego strona nie mówi — a „brak dowodu
+= brak zabezpieczenia".
+
+**Prawdziwość `f8_2` potwierdzona u źródła, nie wywnioskowana.**
+`content/pl/cennik.md:73` wymienia „wywołania AI (klucz pusty)"
+w wierszu **WYKLUCZONE** (decyzja właściciela + panel F1–F3). Zero
+trafień na „AI/asystent" w przestrzeniach cennikowych `messages` ×3
+języki i zero w `content/facts.json`.
+
+**Dobór słowa.** Czasownik `dostajesz` / `bekommst` ma precedens w tej
+samej rodzinie F8 (`FunkcjeZespol.f8_2`) i zamyka odczyt „nie jest
+bramkowany, czyli mają wszyscy" — którego bezokolicznikowe „nie ma go
+w żadnym planie" nie zamyka. Kandydat panelu z rzeczownikiem
+„wyjątek / exception / Ausnahme" odrzucony: **zero precedensu
+w korpusie ×3 języki**, abstrakcja urzędowa w tekście pisanym drugą
+osobą. Kandydat „nie ma go w Catherly" odrzucony jako wykraczający
+poza mandat („doprecyzowanie wiersza F8") — to wypowiedź o produkcie,
+nie o planie, i zderzałaby się czołowo z sąsiednią prozą.
+
+**Zero zależności od panelu DE.** `f8_2` cytuje wyłącznie `aiNaglowek`
+(`asystent AI` / `AI assistant` / `KI-Assistent`), rozstrzygnięty
+wcześniej. Rzeczownik kierunku nie pada; myślnik nie pada w ogóle,
+więc konwencja U+2014/U+2013 w tym wierszu nie wchodzi w grę.
+
+**Zasięg.** 6 ciągów w `messages` (2 klucze ×3 języki ×3 przestrzenie
+= 18 wartości), 3 wywołania komponentu, 9 plików `content`, 4 punkty
+styku w specach (`funkcje-indeks.spec.ts` — komplet kluczy i bez-JS;
+`funkcje-pozyskiwanie.spec.ts` — DOM; `funkcje-podstrony.spec.ts` —
+`f8Klucze`). NIETKNIĘTE: `FunkcjeZespol`, `FunkcjeWyniki`, `DlaKogo`.
+`sekcjeMain: 14` zostaje trafne — `PlanJednymWierszem` renderuje jedną
+`<section>` niezależnie od liczby akapitów.
+
+**Korekta własnej adnotacji.** W `content/{pl,en}/funkcje-pozyskiwanie.md`
+i `funkcje-tresci.md` stało wcześniej, że „glosę niesie proza pod
+nagłówkiem, nie człon". To była **nieprawda o repo** — takiej prozy nie
+ma. Adnotacje poprawione i wskazują dziś `f8_2`. Poprawione też
+uzasadnienie prawdziwości F8 w `content/pl/funkcje-tresci.md`
+(„żaden moduł strony nie ma bramki GROWTH/PRO"), które przeterminowało
+się w momencie powstania pozycji kierunku.
+
 ---
 
 ## Etap C — korekty po adwersarzu (2026-08-13)

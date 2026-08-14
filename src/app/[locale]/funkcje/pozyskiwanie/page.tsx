@@ -105,15 +105,28 @@ export default async function StronaFunkcjePozyskiwanie({ params }: Props) {
           />
         ))}
         {/* Sekcja kierunku AI (D-B2) — po module 10, przed F8;
-            kotwica #asystent-ai wchodzi (rozstrzygnięcie 5). */}
+            kotwica #asystent-ai wchodzi (rozstrzygnięcie 5).
+            OZNACZENIE (2026-08-14): odpowiednik członu z indeksu.
+            Konieczny, bo #asystent-ai jest kontraktem publicznym —
+            wejście bezpośrednie fragmentem omija indeks, a sama sekcja
+            swojego statusu nie nazywa. Symetrii pilnuje S-SYMETRIA. */}
         <SekcjaKierunku
           naglowek={t("aiNaglowek")}
           idNaglowka="asystent-ai"
           tresc={t("aiTresc")}
           granica={t("aiGranica")}
+          oznaczenie={t("aiOznaczenie")}
         />
+        {/* F8 rozbite na dwa zdania 2026-08-14 (rozstrzygnięcie
+            właściciela + mini-panel treści): „wszystko powyżej" nie
+            może kwantyfikować pozycji kierunku, bo asystenta AI nie
+            ma w żadnym planie (content/pl/cennik.md — wiersz
+            WYKLUCZONE, „wywołania AI (klucz pusty)"). f8_1 zostaje
+            ZNAK W ZNAK formułą korpusu stojącą w pięciu nietkniętych
+            miejscach; f8_2 wyłącza pozycję z imienia. Gałąź `zdania`
+            istniała wcześniej — /funkcje/zespol i /funkcje/wyniki. */}
         <PlanJednymWierszem
-          zdanie={t("f8")}
+          zdania={[t("f8_1"), t("f8_2")]}
           linkEtykieta={t("f8link")}
           linkHref={adresWJezyku(locale as Locale, "/cennik")}
         />

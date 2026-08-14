@@ -21,6 +21,26 @@ The Studio learns your voice and makes sure no piece of content breaks your rule
 
 Everything above works from the Starter plan up. [Link: See pricing → /cennik]
 
+You don’t get the AI assistant on any plan.
+
+*(F8 ROZBITE 2026-08-14 — rozstrzygnięcie właściciela + mini-panel
+treści. Kwantyfikator „wszystko powyżej" obejmował obie pozycje
+kierunku, a asystenta AI nie dostajesz w żadnym planie: content/pl/
+cennik.md w. 73, wiersz WYKLUCZONE — „wywołania AI (klucz pusty)",
+decyzja właściciela + panel F1–F3. Zdanie pierwsze (f8_1) zostaje
+ZNAK W ZNAK formułą stojącą w pięciu miejscach nietkniętych tą
+zmianą: FunkcjeZespol.f8_1, FunkcjeWyniki.f8_1, DlaKogo.s1_plan,
+s2_plan_1, s3_plan_1. Zdanie drugie (f8_2) wyłącza pozycję Z IMIENIA
+— nie przez zawężenie kwantyfikatora, bo proza sekcji AI stoi w
+trybie oznajmującym jak moduły działające i nie glosuje statusu,
+więc zawężenie kazałoby czytelniczce wywnioskować to, czego strona
+nie mówi (ADR-018: brak dowodu = brak zabezpieczenia). Czasownik
+„dostajesz" zamyka odczyt „nie jest bramkowany, czyli mają wszyscy";
+„wyjątek" odrzucony — zero precedensu w korpusie ×3 języki. Klucze
+f8_1 + f8_2 na gałęzi `zdania` komponentu PlanJednymWierszem —
+wzorzec istniejący na /funkcje/zespol i /funkcje/wyniki.)*
+
+
 ### F9
 
 **Wstecz:** ← Back: Acquiring  
@@ -138,3 +158,22 @@ With the AI assistant, you write and edit content — it suggests, you decide.
 ### Granica
 
 The assistant won’t write the content for you — it offers ideas and edits, and you write.
+
+### Oznaczenie statusu (człon H2)
+
+— a direction
+
+*(człon doklejany do H2 sekcji jako jeden węzeł tekstowy — odpowiednik
+oznaczenia z indeksu /funkcje, wymuszony strażnikiem S-SYMETRIA: kotwica
+#asystent-ai jest kontraktem publicznym, więc wejście bezpośrednie
+omija indeks. Obszar tu NIE wchodzi — wynika z kontekstu strony.
+BRZMIENIE ROZSTRZYGNIĘTE 2026-08-14 (właściciel, pakiet ZWIĘZŁY):
+sam rzeczownik, bez zdania wyjaśniającego.
+KOREKTA 2026-08-14: stało tu wcześniej, że „glosę niesie proza pod
+nagłówkiem" — to była NIEPRAWDA o repo i tak ją nazywam. SekcjaKierunku
+renderuje wyłącznie `tresc` i `granica`; obie stoją w trybie
+oznajmującym jak moduły działające, więc statusu nie glosuje nic poza
+tym członem (przyznaje to komentarz w pozyskiwanie/page.tsx: „sama
+sekcja swojego statusu nie nazywa"). Glosę niesie dopiero wiersz F8
+— zdanie f8_2 stojące bezpośrednio pod sekcją; patrz adnotacja przy F8.)*
+
