@@ -204,9 +204,31 @@ jobs:
       - run: npm ci
       - uses: actions/download-artifact@v4
         with: { name: next-build, path: .next/ }
-      # Docelowo pomiar na preview Vercel (integracja po stronie
-      # właściciela); do tego czasu lokalny build produkcyjny, te same progi.
-      - run: npx lhci autorun
+      # Cel pomiaru sterowany zmienną repozytorium LHCI_BAZA
+      # (Settings → Variables). Ustawiona → mierzymy preview Vercela
+      # i werdyktem jest MEDIANA z 3 przebiegów. Nieustawiona → lokalny
+      # build produkcyjny, jak dotąd. Próg 1800 identyczny w obu trybach.
+      # Szczegóły i uzasadnienie wiązania mediany z trybem: nagłówek
+      # lighthouserc.cjs.
+      #
+      # Strażnik przed pomiarem jest tu OBOWIĄZKOWY, nie ozdobny:
+      # preview Vercela jest domyślnie za ścianą logowania i na żądanie
+      # bez uprawnień oddaje ekran logowania — ze statusem 200 i ze
+      # słowem „Catherly" w treści (adres siedzi w parametrze `next=`).
+      # Lighthouse zmierzyłby ten ekran i oddał świetne wyniki. Bramka
+      # świeciłaby na zielono, nie mierząc niczego — ta sama klasa
+      # dziury co spece poza workflow.
+      - name: "Strażnik celu pomiaru (tryb preview)"
+        if: ${{ vars.LHCI_BAZA != '' }}
+        env:
+          LHCI_BAZA: ${{ vars.LHCI_BAZA }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: npm run bramka:preview
+      - name: Pomiar
+        env:
+          LHCI_BAZA: ${{ vars.LHCI_BAZA }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: npx lhci autorun
 
   bramka-nieodwracalne:
     name: "Bramka: Nieodwracalne (ADR-018 — raport audytu dla commita)"

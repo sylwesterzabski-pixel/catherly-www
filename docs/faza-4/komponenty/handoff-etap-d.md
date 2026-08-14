@@ -1125,6 +1125,15 @@ Do rozstrzygnięcia przez właściciela osobno: albo skrócić LCP na `/`
 przenieść pomiar na preview Vercel, jak przewiduje `_opis`
 w `lighthouserc.json`.
 
+**Rozstrzygnięte 2026-08-14:** właściciel wybrał przeniesienie pomiaru
+na preview plus medianę z ≥3 przebiegów jako werdykt („środowisko
+pomiaru ma być stabilniejsze, nie próg niższy"). Konfiguracja przeszła
+z `lighthouserc.json` na `lighthouserc.cjs` (jedno źródło ścieżek,
+baza ze zmiennej `LHCI_BAZA`). Tryb preview jest NIEAKTYWNY — preview
+Vercela jest za ścianą logowania, odblokowanie należy do właściciela.
+Stan, dowody i otwarta dziura „czy mierzymy TEN commit": rejestr
+warunków powrotu, pozycja **T3**.
+
 ### 12.4 Oznaczenie pozycji kierunku — struktura L1-A
 
 **Decyzja właściciela (2026-08-14), cytat:** „1. Struktura L1-A: TAK

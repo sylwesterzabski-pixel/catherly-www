@@ -17,9 +17,29 @@
   line-height: 1.15;
   letter-spacing: -0.01em;
   margin: 0 0 1rem;
-  /* Panel K2: 22ch = 3 linie H1 we wszystkich językach na desktopie
-     (18ch dawało EN/DE 4 linie wobec „2–3" z wireframe'u). */
-  max-width: 22ch;
+  /* Panel K2: H1 ≤ 3 linie we wszystkich językach na desktopie
+     (18ch dawało EN/DE 4 linie wobec „2–3" z wireframe'u).
+
+     22ch → 24ch: decyzja właściciela 2026-08-14 po czerwonej bramce
+     pełnego zestawu (przebieg 31833329728) — H1 DE łamał się na
+     runnerze na 4 linie. Mechanizm jest odwrotny do intuicji: `ch`
+     to szerokość cyfry „0", więc ta sama miara daje INNĄ liczbę
+     pikseli na każdym kroju, a `system-ui` znaczy inny krój na
+     każdym systemie. Na macOS 22ch = 690 px, czyli więcej niż
+     kolumna hero (653 px) — miara w ogóle nie ograniczała i zieleń
+     była przypadkowa. W metryce Arial 22ch = 587 px przy ~588 px
+     potrzebnych DE (72 znaki): margines około 1 px. 24ch daje tam
+     641 px, zapas ~53 px, a na macOS nie zmienia ani piksela, bo
+     nadal ogranicza kolumna.
+
+     Czego to NIE naprawia: przy 1024 px kolumna daje 576 px, a przy
+     768 px H1 DE ma 5 linii na każdym kroju — tam ogranicza kolumna,
+     nie miara, więc żadna wartość `ch` nie pomoże. Strażnik biegnie
+     na 1280 px, więc tego nie widzi. Rejestr warunków powrotu, T4.
+
+     Podstrony zostają na 22ch — zmierzony zapas co najmniej jedna
+     linia (NaglowekPodstrony.module.css). */
+  max-width: 24ch;
   text-wrap: balance;
 }
 
