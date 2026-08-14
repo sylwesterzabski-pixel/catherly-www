@@ -70,7 +70,8 @@
    a pełna wersja jest gdzie indziej. Lista JEST kompletna.
    ROZSTRZYGNIĘCIE 9: bez lokalnej receptury podkreślenia
    (text-decoration-thickness / text-underline-offset) — byłaby trzecią
-   w serwisie; ujednolicenie należy do globals.css, poza tym etapem. */
+   w serwisie. Ujednolicenie wykonane 2026-08-14 w globals.css (reguła
+   `a`); ten blok korzysta z niej przez dziedziczenie. */
 .blok__wejscie {
   margin: 0;
 }

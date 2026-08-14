@@ -953,3 +953,68 @@ Zostawione, bo §1 jest zapisem tego, co weszło do implementacji
 2026-08-13; obowiązujący opis niesie ten paragraf i komentarz przy
 regule `html` w `globals.css`. Komentarze w samych komponentach są już
 poprawione — rozjazd jest wyłącznie między tym dokumentem a kodem.
+
+### 12.2 Podkreślenia linków — jedna recepta
+
+**Decyzja:** „Podkreślenia linków: TAK, osobny commit z opisem zmian
+wizualnych."
+
+**Skąd rozjazd.** Nawigacja główna dostała `text-underline-offset: 0.2em`
+w swoim module, stopka i treść zostały na `auto` przeglądarki. Nikt tego
+nie zauważył przez cztery fazy, bo żaden test nie porównywał linków
+MIĘDZY obszarami, a w obrębie jednego obszaru było spójnie. Najlepiej
+widać to było w samym nagłówku: pozycje menu (`.naw a`) i link
+„Logowanie" (poza `.naw`) stały obok siebie z podkreśleniem na dwóch
+różnych wysokościach.
+
+**Zmiana:** reguła `a` w `globals.css` dostaje
+`text-decoration-line: underline` i `text-underline-offset: 0.2em`;
+z `Nawigacja.module.css` znika duplikat. Wartość nie jest nowa — to
+liczba już zatwierdzona dla nawigacji, przeniesiona do korzenia.
+`em`, nie `rem`, bo odsunięcie ma skalować się z wielkością pisma.
+
+**Opis zmian wizualnych (pomiar, nie deklaracja).** Ten sam skrypt przed
+i po, dziewięć stron, każdy `<a>` grupowany po trójce
+(linia, odsunięcie, grubość). Odsunięcie liczone w `em` — `0.2em` daje
+3,2 px w treści i mniej w drobniejszej stopce, więc próg pikselowy
+pokazałby fałszywy rozjazd:
+
+| obszar | przed | po |
+|---|---|---|
+| nagłówek, podkreślone | 24 × 0.20em + 9 × auto | 33 × 0.20em |
+| nagłówek, bez podkreślenia | 3 × 0.20em + 9 × auto | 12 × 0.20em |
+| stopka, podkreślone | 45 × auto | 45 × 0.20em |
+| stopka, bez podkreślenia | 9 × auto | 9 × 0.20em |
+| treść, podkreślone | 113 × auto | 113 × 0.20em |
+| treść, bez podkreślenia | 12 × auto | 12 × 0.20em |
+| **razem** | **224 linki, 8 receptur** | **224 linki, 1 recepta** |
+
+Widocznie zmienia się **167 linków**: 113 w treści, 45 w stopce i 9 ×
+„Logowanie" w nagłówku — podkreślenie schodzi z pozycji domyślnej
+przeglądarki na 0.2em pod linią bazową. Pozostałe 30 zmian dotyczy
+linków z wyłączonym podkreśleniem (logo, CTA, przełącznik języka) i jest
+niewidoczne. 27 linków nawigacji nie zmienia się wcale — to one były
+wzorcem. Liczby linii `underline` / `none` są przed i po IDENTYCZNE
+w każdym obszarze: to dowód, że jawne `text-decoration-line: underline`
+nie podkreśliło niczego, co podkreślone nie było.
+
+**Nowy strażnik:** `e2e/podkreslenia.spec.ts`. Porównuje odsunięcie
+KAŻDEGO linku na dziewięciu stronach — bo rozjazd receptur jest
+z definicji zjawiskiem między obszarami i test próbkujący jedną stronę
+niczego by nie dowiódł. Nie pilnuje, KTÓRE linki są podkreślone (to
+decyzja komponentu), tylko że wszystkie niosą to samo odsunięcie, więc
+zdjęcie `text-decoration: none` z dowolnego z nich nigdy nie odsłoni
+obcej receptury. Ma też próg na liczbę zbadanych linków (>200), żeby
+zepsuty selektor nie zazielenił testu pustą listą.
+
+**Dowody mutacyjne:**
+
+- **M8 · zdjęcie `text-underline-offset` z reguły `a`** → 2/2 czerwone,
+  wykaz obcych wartości to `auto` na wszystkich 224 linkach.
+- **M9 · dopisanie `text-underline-offset: 0.25em` do `.stopka a`**
+  (dokładnie ten tryb awarii, który decyzja zamyka) → 2/2 czerwone,
+  a wykaz wskazuje wyłącznie linki stopki — strażnik nie tylko czerwieni
+  się, ale i lokalizuje moduł winowajcę.
+
+Po przywróceniu: `podkreslenia` + `odsuniecie-kotwic` = **14/14
+zielonych**, bramka tokenów zielona.

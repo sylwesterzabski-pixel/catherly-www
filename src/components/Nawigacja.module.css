@@ -67,10 +67,12 @@
   padding: 0;
 }
 
+/* Podkreślenie i jego odsunięcie niesie odtąd reguła `a` w globals.css —
+   ta wartość (0.2em) STĄD tam trafiła. Powtórzenie jej tutaj nic by nie
+   zmieniało (odsunięcie jest dziedziczone), a zostawiałoby drugie miejsce
+   do zmiany przy następnej korekcie wyglądu linków. */
 .naw a {
   color: var(--kolor-rola-link);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
 }
 
 .naw a[aria-current="page"] {

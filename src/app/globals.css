@@ -20,8 +20,29 @@ body {
   line-height: 1.5;
 }
 
+/* JEDNA recepta podkreślenia linku na cały serwis (decyzja właściciela
+   2026-08-14). Przed zmianą pomiar 224 linków na dziewięciu stronach dał
+   OSIEM receptur: odsunięcie 0.2em niosła wyłącznie nawigacja główna
+   (24 linki podkreślone + 12 z wyłączonym podkreśleniem), a 158 linków
+   podkreślonych w stopce i treści zostawało na `auto` przeglądarki.
+   Ta sama rola wizualna rysowana dwoma sposobami — stąd ujednolicenie.
+
+   Wartość 0.2em nie jest nowa: to liczba już zatwierdzona dla nawigacji
+   (Nawigacja.module.css), przeniesiona do korzenia. `em`, nie `rem`, bo
+   odsunięcie ma skalować się z wielkością pisma — drobniejsza stopka
+   dostaje proporcjonalnie mniejszy odstęp, a nie ten sam co treść.
+   Uwaga: `text-underline-offset` jest dziedziczone, więc lokalne
+   powtórzenie tej deklaracji byłoby martwym kodem, nie zabezpieczeniem.
+
+   `text-decoration-line` deklarowane WPROST, choć przeglądarka i tak
+   podkreśla `a[href]` — recepta ma stać w jednym miejscu, nie połowicznie
+   w CSS i połowicznie w domyślnych stylach przeglądarki. Sprawdzone:
+   wszystkie pięć reguł gaszących podkreślenie (.cta ×3, .logo,
+   .jezyki a[aria-current]) są klasowe, więc biją ten selektor. */
 a {
   color: var(--kolor-rola-link);
+  text-decoration-line: underline;
+  text-underline-offset: 0.2em;
 }
 
 a:hover,
