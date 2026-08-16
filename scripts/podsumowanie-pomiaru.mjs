@@ -119,7 +119,17 @@ for (const [url, raporty] of trasy) {
         `zapas ${zapas >= 0 ? "+" : ""}${fmt(zapas)}`.padStart(18) +
         (zapas < 0 ? "   ✗ PONAD PRÓG" : "");
       if (m.klucz === "largest-contentful-paint" && zapas >= 0) {
-        if (!najciasniej || zapas < najciasniej.zapas) najciasniej = { url: skroc(url), zapas };
+        // Kandydatkę na następną czerwień wybiera ZAPAS MINUS ROZRZUT, nie
+        // sam zapas. Przebieg 31952572831: /funkcje/tresci miało najmniejszy
+        // zapas (+297 ms), ale rozrzut 156 ms — a /funkcje/pozyskiwanie
+        // zapas +302 ms przy rozrzucie 1023 ms. Ranking po samym zapasie
+        // wskazywał tę pierwszą, choć to druga wisi na włosku. Tabela nie
+        // ma prawa przeczyć liczbom, które sama wypisuje.
+        const rozrzutLCP = Math.max(...wartosci) - Math.min(...wartosci);
+        const luz = zapas - rozrzutLCP;
+        if (!najciasniej || luz < najciasniej.luz) {
+          najciasniej = { url: skroc(url), zapas, rozrzut: rozrzutLCP, luz };
+        }
       }
     }
     console.log(wiersz);
@@ -188,9 +198,15 @@ for (const [url, raporty] of trasy) {
 if (najciasniej) {
   console.log("");
   console.log(
-    `Najmniejszy zapas LCP wśród tras pod progiem: ${najciasniej.url} ` +
-      `(+${najciasniej.zapas.toFixed(0)} ms).\n` +
-      "To trasa, która spadnie pierwsza — bez żadnej zmiany w kodzie.",
+    `Najbliżej przerzutu wśród tras pod progiem: ${najciasniej.url} — ` +
+      `zapas +${najciasniej.zapas.toFixed(0)} ms przy rozrzucie ` +
+      `${najciasniej.rozrzut.toFixed(0)} ms.`,
+  );
+  console.log(
+    najciasniej.luz < 0
+      ? "  Rozrzut przekracza zapas: ta trasa spadnie przy niezmienionym\n" +
+          "  kodzie, gdy tylko trafi na wolniejszy przebieg."
+      : `  Do progu brakuje jeszcze ${najciasniej.luz.toFixed(0)} ms ponad rozrzut.`,
   );
 }
 

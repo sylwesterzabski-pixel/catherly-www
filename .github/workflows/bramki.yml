@@ -273,6 +273,13 @@ jobs:
           path: .lighthouseci/*.html
           retention-days: 7
           if-no-files-found: ignore
+          # BEZ TEGO ARTEFAKT JEST PUSTY. `.lighthouseci/` zaczyna się od
+          # kropki, a upload-artifact od v4.4 domyślnie pomija pliki i
+          # katalogi ukryte — pierwszy przebieg (31952572831) zameldował
+          # „No files were found" i przeszedł dalej zielono, bo krok ma
+          # `if-no-files-found: ignore`. Cicha pustka w artefakcie, czyli
+          # dokładnie ten rodzaj zieleni, przed którym stoi ADR-018.
+          include-hidden-files: true
       # Interpretacja OBOK wyniku, nie kilkaset linii wyżej.
       - name: "Jak czytać tę czerwień"
         if: failure()
