@@ -14,13 +14,26 @@
  * stojącej 400 ms pod progiem od takiej, która ociera się o niego
  * i spadnie przy następnym przebiegu bez żadnej zmiany w kodzie.
  *
- * Progi i regułę agregacji CZYTAMY z lighthouserc.cjs, nie przepisujemy.
- * Tabela, która miałaby własną kopię progu, po pierwszej zmianie progu
- * kłamałaby cicho — a cicha nieprawda w logu bramki jest gorsza niż jej
- * brak (ADR-018).
+ * Progi CZYTAMY z lighthouserc.cjs, regułę werdyktu ze scripts/
+ * reprezentant.mjs, a to KTÓRY przebieg poszedł pod osąd — ze śladu
+ * `.lighthouseci/regula-werdyktu.json`, zostawionego przez skrypt werdyktu.
+ * Nic z tych trzech rzeczy nie jest tu przepisane. Tabela, która ma własną
+ * kopię progu albo własną kopię reguły, po pierwszej zmianie kłamie cicho
+ * — a cicha nieprawda w logu bramki jest gorsza niż jej brak (ADR-018).
+ * Do 2026-08-16 stała tu ręczna kopia reguły `median-run` z lhci; poszła
+ * razem z tą regułą.
  */
 import { readdirSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
+
+import {
+  KRYTERIUM,
+  liczba,
+  mediana,
+  odchyleniaKontrolne,
+  wybierzReprezentanta,
+  zlamanaRegula,
+} from "./reprezentant.mjs";
 
 const require = createRequire(import.meta.url);
 const KATALOG = new URL("../.lighthouseci/", import.meta.url);
@@ -47,7 +60,21 @@ if (pliki.length === 0) koniec("brak raportów lhr-*.json");
 
 const { ci } = require("../lighthouserc.cjs");
 const ASERCJE = ci?.assert?.assertions ?? {};
-const AGREGACJA = ci?.assert?.aggregationMethod ?? "median";
+
+/**
+ * Ślad po skrypcie werdyktu: KTÓRY przebieg każdej trasy poszedł pod
+ * osąd. Czytamy go zamiast odtwarzać wybór własnym kodem — poprzednia
+ * wersja tej tabeli miała ręczną kopię reguły lhci i to jest klasa błędu:
+ * dwie implementacje tej samej reguły rozjeżdżają się cicho, a tabela
+ * pokazywałaby wtedy inny przebieg niż ten, który bramka osądziła.
+ */
+const SLAD = (() => {
+  try {
+    return JSON.parse(readFileSync(new URL("regula-werdyktu.json", KATALOG), "utf8"));
+  } catch {
+    return null;
+  }
+})();
 
 /**
  * Metryki w kolejności czytania. `zrodlo` mówi, skąd w raporcie brać
@@ -61,42 +88,9 @@ const METRYKI = [
   { klucz: "cumulative-layout-shift", etykieta: "CLS", jednostka: "", cyfry: 3 },
 ];
 
-/** Nieparzysta liczba przebiegów → środek; parzysta → dolny środek. */
-const mediana = (w) => [...w].sort((a, b) => a - b)[Math.floor((w.length - 1) / 2)];
-
-const liczba = (lhr, klucz) => lhr?.audits?.[klucz]?.numericValue ?? 0;
-
-/**
- * Reprezentant dla `median-run` — WIERNA kopia reguły lhci
- * (@lhci/utils/src/representative-runs.js). Nie jest to przebieg
- * o medianowym LCP: wybiera go odległość od median FCP i TTI, a LCP
- * nie bierze w tym wyborze udziału. Gdyby ta tabela liczyła medianę
- * per-metryka, pokazywałaby inną liczbę niż ta, którą sądzi bramka —
- * na przebiegu 31953000525 rozjazd wypadłby na 6 z 7 tras.
- */
-function reprezentant(raporty) {
-  const idx = Math.floor(raporty.length / 2);
-  const medFcp = liczba(
-    [...raporty].sort((a, b) => liczba(a, "first-contentful-paint") - liczba(b, "first-contentful-paint"))[idx],
-    "first-contentful-paint",
-  );
-  const medTti = liczba(
-    [...raporty].sort((a, b) => liczba(a, "interactive") - liczba(b, "interactive"))[idx],
-    "interactive",
-  );
-  const odleglosc = (r) =>
-    (medFcp - liczba(r, "first-contentful-paint")) ** 2 + (medTti - liczba(r, "interactive")) ** 2;
-  return [...raporty].sort((a, b) => odleglosc(a) - odleglosc(b))[0];
-}
-
-const OPIS_AGREGACJI = {
-  optimistic: "wartość najkorzystniejszą z przebiegów",
-  pessimistic: "wartość najgorszą z przebiegów",
-  median: "MEDIANĘ każdej metryki osobno",
-  "median-run": "jeden PRZEBIEG REPREZENTATYWNY (najbliższy medianom FCP i TTI)",
-};
-
 const trasy = new Map();
+/** raport → nazwa pliku, żeby dało się dopiąć wybór zapisany przez bramkę */
+const zPliku = new Map();
 for (const nazwa of pliki) {
   let lhr;
   try {
@@ -108,6 +102,7 @@ for (const nazwa of pliki) {
   if (!url) continue;
   if (!trasy.has(url)) trasy.set(url, []);
   trasy.get(url).push(lhr);
+  zPliku.set(lhr, nazwa);
 }
 if (trasy.size === 0) koniec("żaden raport nie dał się odczytać");
 
@@ -119,38 +114,93 @@ console.log(KRESKA);
 console.log("LICZBY ZE WSZYSTKICH TRAS — pełny wynik pomiaru");
 console.log(KRESKA);
 console.log(
-  `Werdykt bramki bierze ${OPIS_AGREGACJI[AGREGACJA] || AGREGACJA} (lighthouserc.cjs).\n` +
+  `Werdykt bramki bierze ${KRYTERIUM.opis(undefined)} (scripts/reprezentant.mjs).\n` +
     "Kolumna „zapas" +
     "” to odległość od progu: dodatnia = pod progiem.\n" +
     "Poniżej także wszystkie surowe przebiegi — werdykt nie zasłania rozrzutu.",
 );
+if (!SLAD) {
+  // Bez śladu tabela pokazuje przebieg, który bramka BY wybrała — a nie
+  // ten, na którym zapadł wynik wypisany wyżej w logu. Różnica jest istotna
+  // i musi być powiedziana wprost, inaczej tabela cicho przypisze sobie
+  // cudzy werdykt (ADR-018: cicha nieprawda w logu bramki jest gorsza niż
+  // jej brak).
+  console.log(
+    "\n⚠  Brak .lighthouseci/regula-werdyktu.json — pomiar NIE przeszedł przez\n" +
+      "   `npm run bramka:pomiar`. Tabela pokazuje przebieg, który wybrałaby\n" +
+      "   bramka; wynik powyżej mógł zapaść inną regułą.",
+  );
+}
+
+/** url → nazwa pliku przebiegu, który bramka rzeczywiście osądziła */
+const WYBOR_BRAMKI = new Map((SLAD?.wybrane || []).map((w) => [w.url, w.plik]));
+
+// Ślad z POPRZEDNIEGO pomiaru przeżywa `lhci collect`: czyszczenie lhci kasuje
+// wyłącznie lhr-*.json i lhr-*.html (saved-reports.js:68–76), naszego pliku nie
+// dotyka. Nazwy raportów niosą znacznik czasu, więc stary ślad wskazuje pliki,
+// których już nie ma — i to jest test na jego świeżość. Cichy odwrót do
+// własnego liczenia byłby tu tą samą klasą błędu co ręczna kopia reguły:
+// tabela mówiłaby o innym przebiegu niż ten, na którym zapadł wyrok.
+const OBECNE = new Set(zPliku.values());
+if (SLAD && [...WYBOR_BRAMKI.values()].some((p) => !OBECNE.has(p))) {
+  console.log(
+    "\n⚠  .lighthouseci/regula-werdyktu.json wskazuje raporty, których w tym\n" +
+      "   pomiarze nie ma — ślad jest z POPRZEDNIEGO przebiegu. Tabela liczy\n" +
+      "   wybór sama; wynik powyżej mógł zapaść na innym przebiegu.",
+  );
+}
 
 let najciasniej = null;
 
 for (const [url, raporty] of trasy) {
-  // Przy `median-run` cała trasa sądzona jest z JEDNEGO przebiegu; liczymy
-  // go raz, żeby każda metryka i rozbiór faz LCP mówiły o tym samym
-  // ładowaniu, którym mierzy bramka.
-  const wybrany = AGREGACJA === "median-run" ? reprezentant(raporty) : null;
+  // Cała trasa sądzona jest z JEDNEGO przebiegu; bierzemy go raz, żeby każda
+  // metryka i rozbiór faz LCP mówiły o tym samym ładowaniu, które osądziła
+  // bramka. Pierwszeństwo ma wybór ZAPISANY przez skrypt werdyktu; własne
+  // liczenie jest tylko awaryjne i wtedy tabela mówi o tym wyżej.
+  const zapisany = WYBOR_BRAMKI.get(url);
+  let wybrany = zapisany ? raporty.find((r) => zPliku.get(r) === zapisany) : null;
+  if (!wybrany) {
+    try {
+      wybrany = wybierzReprezentanta(raporty).raport;
+    } catch {
+      wybrany = raporty[0];
+    }
+  }
   const agreguj = (wartosci, klucz) => {
-    if (wybrany) return liczba(wybrany, klucz);
-    if (AGREGACJA === "optimistic") return Math.min(...wartosci);
-    if (AGREGACJA === "pessimistic") return Math.max(...wartosci);
-    return mediana(wartosci);
+    const v = liczba(wybrany, klucz);
+    return v === null ? mediana(wartosci) : v;
   };
 
   console.log("");
   console.log(`  ${skroc(url)}   (${raporty.length} przebieg(ów))`);
-  if (wybrany) {
+  {
     const nr = raporty.indexOf(wybrany) + 1;
-    const lcpW = liczba(wybrany, "largest-contentful-paint");
-    const lcpMed = mediana(raporty.map((r) => liczba(r, "largest-contentful-paint")));
+    const zlamana = zlamanaRegula(raporty, wybrany);
     console.log(
       `    werdykt z przebiegu #${nr}` +
-        (lcpW === lcpMed
-          ? ""
-          : `  (⚠ to NIE jest przebieg o medianowym LCP — mediana LCP: ${lcpMed.toFixed(0)} ms)`),
+        (zlamana === null
+          ? `  (${KRYTERIUM.etykieta} = mediana trasy)`
+          : `  (⚠ REGUŁA ZŁAMANA: to NIE jest przebieg o medianowym LCP` +
+            ` — mediana LCP: ${zlamana.toFixed(0)} ms)`),
     );
+    // Odwrotność dawnego ostrzeżenia: skoro reprezentant jest z definicji
+    // medianowy w LCP, audytowalne jest to, jak daleko odstaje w metrykach,
+    // które w wyborze NIE brały udziału. FCP i TTI są tu kryterium starej
+    // reguły — po podmianie kryterium ich odchylenia spadają do zera i widać
+    // to w tabeli, nie tylko w kodzie.
+    const odch = odchyleniaKontrolne(raporty, wybrany);
+    if (odch.length) {
+      console.log(
+        "    odchylenia od median: " +
+          odch
+            .map((o) => {
+              const znak = o.odchylenie > 0 ? "+" : o.odchylenie < 0 ? "−" : "";
+              const v = Math.abs(o.odchylenie).toFixed(o.cyfry);
+              return `${o.etykieta} ${znak}${v}${o.jednostka ? " " + o.jednostka : ""}`;
+            })
+            .join(" · "),
+      );
+    }
   }
   for (const m of METRYKI) {
     const prog = ASERCJE[m.klucz]?.[1]?.maxNumericValue;
@@ -214,15 +264,7 @@ for (const [url, raporty] of trasy) {
   // czcionka, czy sam render. Rozbiór bierzemy z TEGO SAMEGO przebiegu,
   // z którego zapada werdykt — inaczej fazy tłumaczyłyby ładowanie, którego
   // bramka nie sądziła.
-  const posort = [...raporty]
-    .filter((r) => typeof r.audits?.["largest-contentful-paint"]?.numericValue === "number")
-    .sort(
-      (a, b) =>
-        a.audits["largest-contentful-paint"].numericValue -
-        b.audits["largest-contentful-paint"].numericValue,
-    );
-  const srodek = wybrany || posort[Math.floor((posort.length - 1) / 2)];
-  const elAudyt = srodek?.audits?.["largest-contentful-paint-element"]?.details?.items;
+  const elAudyt = wybrany?.audits?.["largest-contentful-paint-element"]?.details?.items;
   const wezel = elAudyt?.[0]?.items?.[0]?.node;
   if (wezel) {
     console.log(

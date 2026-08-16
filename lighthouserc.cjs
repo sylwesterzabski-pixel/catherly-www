@@ -66,22 +66,33 @@
  * którego nigdy nie było. `median-run` asertuje na JEDNYM prawdziwym
  * przebiegu (assertions.js:427) i ta chimera znika.
  *
- * UWAGA, wbrew nazwie: „median-run" NIE jest przebiegiem o medianowym
- * LCP. Reprezentanta wybiera odległość od median FCP i TTI
- * (@lhci/utils/src/representative-runs.js:17–22) — LCP nie bierze
- * w tym wyborze udziału. Sprawdzone na artefaktach przebiegu
- * 31953000525 (skrypt scratchpada, 21 raportów): reprezentant różnił
- * się od przebiegu o medianowym LCP na 6 z 7 tras. Werdykt nie
- * zmienił się nigdzie (7/7 zielono w obu regułach), ale liczba, na
- * której zapada, potrafi skoczyć: /funkcje/zespol byłoby sądzone po
- * 1762 ms (zapas +38 ms) zamiast po 1494 ms (+306 ms). To NIE jest
- * zmiana neutralna dla rozrzutu — na trasie, której wolny przebieg
- * ma medianowe FCP/TTI, median-run wybierze właśnie ten wolny.
- * Zapisane jako czynnik do decyzji O2/O4/O5.
+ * ── „median-run" → WŁASNY WYBÓR PO LCP (decyzja właściciela 2026-08-16)
+ * Wbrew nazwie „median-run" NIE jest przebiegiem o medianowym LCP:
+ * reprezentanta wybiera odległość od median FCP i TTI
+ * (@lhci/utils/src/representative-runs.js:17–22), a LCP nie bierze
+ * w tym wyborze udziału. Werdykt stał na LCP, reprezentanta wybierała
+ * metryka, której werdykt nie dotyczy.
  *
- * Żeby wrócić do mediany per-metryka, wystarczy w AGREGACJA wpisać
- * "median"; obie reguły zna też scripts/podsumowanie-pomiaru.mjs
- * i tabela zapasów pokazuje dokładnie tę liczbę, którą sądzi bramka.
+ * Rachunek za to przyszedł na przebiegu 31955831699: `/dla-kogo` ma
+ * przebiegi LCP 1504 · 1374 · 1934 · 1486 · 1488, mediana 1488 ms
+ * (zapas +312 ms), a `median-run` wybrał 1934 ms i zapalił czerwień
+ * −134 ms. Fałszywy alarm, a bramka fałszywie alarmująca uczy
+ * ignorowania czerwieni.
+ *
+ * Od tego dnia reprezentanta wybiera scripts/reprezentant.mjs:
+ * PRZEBIEG O MEDIANOWYM LCP. Zysk „median-run" zostaje (jeden
+ * prawdziwy przebieg, żadnej chimery), znika tylko obce kryterium.
+ * Ścieżka bramki to `npm run bramka:pomiar`: `lhci collect`, potem
+ * scripts/werdykt-po-lcp.mjs, który podaje `lhci assert` DOKŁADNIE
+ * JEDEN przebieg na trasę. Progi zostają tutaj i nic ich nie dubluje.
+ *
+ * Dlatego `aggregationMethod` w trybie preview to dziś `pessimistic`,
+ * a nie `median-run`. Na ścieżce bramki jest ono bez znaczenia — przy
+ * jednym przebiegu każda agregacja daje tę samą liczbę. Znaczenie ma
+ * dopiero wtedy, gdy ktoś ominie bramkę i uruchomi `lhci autorun` na
+ * pełnym komplecie: `pessimistic` da wtedy werdykt SUROWSZY od bramki,
+ * nigdy łagodniejszy. Pomyłka może kosztować zbędną czerwień, nie
+ * może dać fałszywej zieleni.
  *
  * ── 3 → 5 przebiegów (O2, decyzja właściciela 2026-08-16) ──────────
  * Powód jest w liczbach, nie w przeczuciu. Przebieg 31953862971,
@@ -135,7 +146,12 @@ const SCIEZKI = [
   "/funkcje/wyniki",
 ];
 
-const AGREGACJA = PREVIEW ? "median-run" : "optimistic";
+// Na ścieżce bramki (`npm run bramka:pomiar`) `lhci assert` dostaje JEDEN
+// przebieg na trasę, więc agregacja jest tam degeneratem — każda reguła daje
+// tę samą liczbę. Ta wartość działa dopiero przy `lhci autorun` z pominięciem
+// bramki i dlatego jest ustawiona na najsurowszą: pomyłka ma kosztować zbędną
+// czerwień, nigdy fałszywą zieleń. Wybór reprezentanta: scripts/reprezentant.mjs.
+const AGREGACJA = PREVIEW ? "pessimistic" : "optimistic";
 
 /**
  * Obejście ochrony preview — SPRAWDZONE 2026-08-16 na realnym preview

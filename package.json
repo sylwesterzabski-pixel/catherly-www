@@ -22,6 +22,8 @@
     "bramka:nieodwracalne": "node scripts/check-audyt.mjs",
     "bramka:preview": "node scripts/sprawdz-preview.mjs",
     "bramka:rozgrzewka": "node scripts/rozgrzewka-preview.mjs",
+    "bramka:pomiar": "lhci collect --config=lighthouserc.cjs && node scripts/werdykt-po-lcp.mjs",
+    "bramka:werdykt": "node scripts/werdykt-po-lcp.mjs",
     "bramka:tryb-pomiaru": "node scripts/tryb-pomiaru.mjs",
     "bramka:podsumowanie": "node scripts/podsumowanie-pomiaru.mjs",
     "obrazy:pipeline": "node scripts/obrazy-pipeline.mjs",

@@ -27,6 +27,8 @@
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 
+import { KRYTERIUM } from "./reprezentant.mjs";
+
 const PO_CZERWIENI = process.argv.includes("--po-czerwieni");
 const BAZA = (process.env.LHCI_BAZA || "").trim();
 const PREVIEW = Boolean(BAZA);
@@ -37,13 +39,18 @@ const rejestr = JSON.parse(
 const OSADZENIE = rejestr.osadzenieNaGlownej;
 const P = OSADZENIE.pomiarTransportu;
 
-// Regułę werdyktu i liczbę przebiegów CZYTAMY z lighthouserc.cjs, nie
-// przepisujemy. Ten wiersz raz już skłamał: po zmianie „median" →
-// „median-run" adnotacja dalej mówiła „MEDIANA z 3 przebiegów"
-// (przebieg 31953862971), choć bramka sądziła jeden przebieg
-// reprezentatywny. Liczba „3" była tu wpisana z ręki dokładnie tak samo
-// jak nazwa reguły — i przy O2 (3 → 5) skłamałaby drugi raz, tym samym
-// mechanizmem. Jedno źródło albo żadne.
+// Regułę werdyktu i liczbę przebiegów CZYTAMY, nie przepisujemy. Ten
+// wiersz raz już skłamał: po zmianie „median" → „median-run" adnotacja
+// dalej mówiła „MEDIANA z 3 przebiegów" (przebieg 31953862971), choć
+// bramka sądziła jeden przebieg reprezentatywny. Liczba „3" była tu
+// wpisana z ręki dokładnie tak samo jak nazwa reguły — i przy O2 (3 → 5)
+// skłamałaby drugi raz, tym samym mechanizmem. Jedno źródło albo żadne.
+//
+// Od 2026-08-16 regułą jest własny wybór po LCP, więc jej opis przychodzi
+// stamtąd, gdzie mieszka wybór (scripts/reprezentant.mjs), a liczba
+// przebiegów dalej z lighthouserc.cjs. Nazwy `aggregationMethod` NIE
+// tłumaczymy tu na ludzki opis: opis semantyki lhci byłby znowu ręczną
+// kopią cudzej reguły. Podajemy samą nazwę i plik, w którym stoi.
 const require = createRequire(import.meta.url);
 const KONF = (() => {
   try {
@@ -54,13 +61,6 @@ const KONF = (() => {
 })();
 const AGREGACJA = KONF ? KONF.assert?.aggregationMethod || "optimistic" : null;
 const PRZEBIEGI = KONF?.collect?.numberOfRuns;
-const N = PRZEBIEGI ? `${PRZEBIEGI} przebiegów` : "przebiegów";
-const OPIS_WERDYKTU = {
-  optimistic: `najlepszy z ${N}`,
-  pessimistic: `najgorszy z ${N}`,
-  median: `MEDIANA każdej metryki osobno z ${N}`,
-  "median-run": `JEDEN przebieg reprezentatywny z ${N} (najbliższy medianom FCP i TTI)`,
-};
 
 const KRESKA = "─".repeat(68);
 
@@ -104,10 +104,21 @@ if (PREVIEW) {
   console.log(
     "Zmienna LHCI_BAZA jest ustawiona, więc mierzymy wdrożenie Vercela\n" +
       "(HTTP/2 + brotli). Werdykt: " +
-      (OPIS_WERDYKTU[AGREGACJA] || `reguła „${AGREGACJA}" z lighthouserc.cjs`) +
-      ".\n" +
+      KRYTERIUM.opis(PRZEBIEGI) +
+      "\n(scripts/reprezentant.mjs, wybór robi `npm run bramka:pomiar`).\n" +
       "Strażnik celu pomiaru potwierdził wcześniej, że pod tym adresem\n" +
       "stoi strona Catherly z TEGO commita — inaczej ten krok by nie ruszył.",
+  );
+  // Uczciwość adnotacji: powyższe jest prawdą dla ścieżki bramki. Kto ominie
+  // bramkę i puści `lhci autorun`, dostanie wyrok regułą z lighthouserc.cjs —
+  // i o tym też trzeba tu powiedzieć, zamiast zostawić czytającego
+  // w przekonaniu, że reguła jest jedna niezależnie od polecenia.
+  console.log(
+    `Poza tą ścieżką (surowe \`lhci autorun\`) wyrok zapada regułą` +
+      ` „${AGREGACJA}"\nz lighthouserc.cjs` +
+      (AGREGACJA === "pessimistic"
+        ? " — najsurowszą z dostępnych, więc pomyłka kosztuje\nzbędną czerwień, nie fałszywą zieleń."
+        : " — a to NIE jest reguła najsurowsza; sprawdź,\nczy ktoś nie poluzował agregacji."),
   );
 } else {
   console.log(

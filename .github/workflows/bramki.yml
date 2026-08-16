@@ -28,6 +28,12 @@ jobs:
           name: next-build
           path: .next/
           include-hidden-files: true
+          # Bez tego PEŁNY `gh run rerun` pada: artefakt o tej nazwie już na
+          # przebiegu jest, a upload-artifact@v4 domyślnie odmawia nadpisania
+          # (409). Sprawdzone 2026-08-16 na przebiegu 31955831699 — ratunkiem
+          # było `--failed`, czyli obejście, nie naprawa. Powtórzenie przebiegu
+          # to normalny ruch przy diagnozie, więc ma po prostu działać.
+          overwrite: true
 
   bramka-kontrakt-tokenow:
     name: "Bramka: Kontrakt tokenów (0 rozjazdów strona↔aplikacja)"
@@ -266,11 +272,18 @@ jobs:
         env:
           LHCI_BAZA: ${{ vars.LHCI_BAZA }}
         run: npm run bramka:tryb-pomiaru
+      # Było `lhci autorun`, czyli collect+assert w jednym procesie. Rozbite na
+      # dwa kroki 2026-08-16, bo między pomiar a wyrok trzeba wstawić WYBÓR
+      # REPREZENTANTA: `median-run` z lhci wybiera przebieg po medianach FCP
+      # i TTI, a werdykt stoi na LCP — na `/dla-kogo` dało to czerwień −134 ms
+      # przy medianie LCP 312 ms POD progiem. `npm run bramka:pomiar` =
+      # `lhci collect` + scripts/werdykt-po-lcp.mjs, który podaje `lhci assert`
+      # jeden przebieg na trasę. Progi zostają w lighthouserc.cjs, nietknięte.
       - name: Pomiar
         env:
           LHCI_BAZA: ${{ vars.LHCI_BAZA }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
-        run: npx lhci autorun
+        run: npm run bramka:pomiar
       # `lhci assert` drukuje WYŁĄCZNIE to, co nie przeszło — o trasach
       # zielonych milczy, a ich raporty giną razem z runnerem. Po pierwszym
       # przebiegu na preview (e2ac0f3) nie dało się więc odpowiedzieć na
@@ -301,6 +314,8 @@ jobs:
           # `if-no-files-found: ignore`. Cicha pustka w artefakcie, czyli
           # dokładnie ten rodzaj zieleni, przed którym stoi ADR-018.
           include-hidden-files: true
+          # Powód ten sam co przy `next-build`: bez tego pełny rerun pada na 409.
+          overwrite: true
       # Interpretacja OBOK wyniku, nie kilkaset linii wyżej.
       - name: "Jak czytać tę czerwień"
         if: failure()

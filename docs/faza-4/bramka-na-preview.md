@@ -406,6 +406,120 @@ jest obowiązkowe, wpuściłoby tu czerwień losową.
 
 ---
 
+## 4b. Reguła werdyktu: reprezentant wybierany po LCP (2026-08-16)
+
+Rozstrzygnięcie właściciela z 2026-08-16. Zmienia **wybór przebiegu**,
+na którym zapada wyrok. Nie zmienia **progu** — 1800 ms stoi nietknięte.
+
+### Skąd się wziął problem
+
+Bramka sądziła regułą `median-run` z lhci: jeden prawdziwy przebieg
+z pięciu, zamiast mediany liczonej osobno dla każdej metryki. Sam ten
+krok był słuszny (O1) i zostaje — mediana per-metryka zszywa LCP
+z przebiegu A z TBT z przebiegu B i opisuje ładowanie, którego nigdy
+nie było.
+
+Kłopot był w kryterium. **Wbrew nazwie `median-run` nie jest przebiegiem
+o medianowym LCP**: reprezentanta wybiera odległość od median FCP i TTI
+(`@lhci/utils/src/representative-runs.js:17–22`), a LCP w tym wyborze
+nie bierze udziału. Werdykt stał na LCP; przebieg wybierała metryka,
+której werdykt nie dotyczy.
+
+Rachunek przyszedł na przebiegu **31955831699** (attempt 2, runner
+GitHuba, 7 tras × 5 przebiegów):
+
+```
+/dla-kogo   przebiegi LCP: 1504 · 1374 · 1934 · 1486 · 1488
+            mediana LCP  : 1488 ms   (zapas +312 ms pod progiem)
+            median-run   : 1934 ms   → BRAMKA CZERWONA (−134 ms)
+```
+
+Na 5 z 7 tras reprezentant `median-run` nie był przebiegiem o medianowym
+LCP. Na laptopie ta rozbieżność wypadała 1 raz na 7 — **kalibracji tej
+reguły nie wolno robić na laptopie**.
+
+### Rozstrzygnięcie właściciela i uzasadnienie
+
+> **WŁASNY WYBÓR REPREZENTANTA PO LCP.** Mediana [per-metryka] = powrót
+> chimery zabitej przez O1; „koszt uczciwości" odrzucony — asercja na
+> najgorszym z 5 przebiegów przy medianie +312 ms pod progiem to fałszywy
+> alarm, a **bramka fałszywie alarmująca uczy ignorowania czerwieni**.
+> Wybór po LCP = jeden prawdziwy przebieg (zysk O1 zachowany)
+> + reprezentant po metryce, na której stoi werdykt. Próg 1800
+> NIETKNIĘTY.
+
+Odrzucone zostały obie alternatywy: powrót do `median` (chimera) oraz
+asercja na najgorszym z pięciu przebiegów (fałszywy alarm — a fałszywy
+alarm kosztuje dokładnie to, czego bramka ma pilnować: czujność).
+
+### Jak to jest zrobione
+
+| element | plik | rola |
+| --- | --- | --- |
+| reguła | `scripts/reprezentant.mjs` | JEDYNE źródło kryterium, mediany i odchyleń |
+| wybór + wyrok | `scripts/werdykt-po-lcp.mjs` | podaje `lhci assert` jeden przebieg na trasę |
+| progi | `lighthouserc.cjs` | bez zmian; nic ich nie dubluje |
+| tabela | `scripts/podsumowanie-pomiaru.mjs` | czyta wybór bramki, nie odtwarza go |
+| adnotacja | `scripts/tryb-pomiaru.mjs` | opis reguły bierze z `reprezentant.mjs` |
+
+Krok CI „Pomiar" to dziś `npm run bramka:pomiar`, czyli `lhci collect`
+**plus** skrypt werdyktu — nie `lhci autorun`. Powód jest techniczny:
+`autorun` robi collect i assert w jednym procesie, więc między pomiar
+a wyrok nie da się nic wstawić. Wybrany przebieg trafia do
+`.lighthouseci/werdykt/.lighthouseci/`, a `lhci assert` dostaje ten
+katalog przez **cwd procesu potomnego** — nie przez `--lhr`, bo
+`loadSavedLHRs` czyta nazwy z podanego katalogu, ale skleja je ze ścieżką
+`LHCI_DIR` (`saved-reports.js:39`) i czytałoby cudze pliki. Pozostałe
+raporty zostają nietknięte: rozrzut jest dowodem i nie wolno go kasować.
+
+`aggregationMethod` w trybie preview to teraz `pessimistic`, nie
+`median-run`. Na ścieżce bramki jest bez znaczenia (jeden przebieg →
+każda agregacja daje tę samą liczbę); działa dopiero, gdy ktoś ominie
+bramkę i puści `lhci autorun` — i wtedy da werdykt **surowszy**, nigdy
+łagodniejszy. Pomyłka ma kosztować zbędną czerwień, nie fałszywą zieleń.
+
+### Jak reguła zostaje audytowalna
+
+Odwrotność poprzedniej adnotacji: tabela pokazuje przy każdym
+reprezentancie **odchylenia od median pozostałych metryk** — w tym FCP
+i TTI, czyli dokładnie kryterium starej reguły. Do tego `zlamanaRegula`
+sprawdza po fakcie, czy LCP wybranego przebiegu jest medianowym LCP
+trasy, i wypisuje „⚠ REGUŁA ZŁAMANA", gdy nie jest. Podmiana kryterium
+jest więc widoczna w logu, a nie tylko w kodzie.
+
+### Dowód na danych runnera (nie na liczbach przepisanych z tabeli)
+
+35 raportów LHR wyłuskanych z artefaktu `lighthouse-raporty` przebiegu
+31955831699 (Lighthouse osadza pełny LHR w `window.__LIGHTHOUSE_JSON__`),
+podanych nowej regule:
+
+| trasa | przebiegi LCP | reprezentant | zapas | wynik |
+| --- | --- | --- | --- | --- |
+| `/` | 1535 · 1491 · 2125 · 1537 · 2102 | #4 — 1537 ms | +263 ms | ✅ |
+| `/funkcje` | 1932 · 1387 · 1461 · 1512 · 1372 | #3 — 1461 ms | +339 ms | ✅ |
+| `/dla-kogo` | 1504 · 1374 · 1934 · 1486 · 1488 | #5 — **1488 ms** | **+312 ms** | ✅ |
+| `/funkcje/pozyskiwanie` | 1507 · 1368 · 1933 · 1064 · 1492 | #5 — 1492 ms | +308 ms | ✅ |
+| `/funkcje/tresci` | 1521 · 1492 · 1367 · 1077 · 1487 | #5 — 1487 ms | +313 ms | ✅ |
+| `/funkcje/zespol` | 1368 · 1522 · 1524 · 1367 · 1508 | #5 — 1508 ms | +292 ms | ✅ |
+| `/funkcje/wyniki` | 1366 · 1064 · 1386 · 2017 · 1492 | #3 — 1386 ms | +414 ms | ✅ |
+
+`lhci assert` → `All results processed!`, exit 0. **7/7 zielone** na tych
+samych danych, na których `median-run` dawał czerwień.
+
+### Dowód mutacyjny (2026-08-16, dane runnera 31955831699)
+
+| # | mutacja | wynik |
+| --- | --- | --- |
+| R0 | stan zdrowy | ✅ exit 0, 7/7; zero ostrzeżeń „REGUŁA ZŁAMANA" |
+| R1 | kryterium podmienione z powrotem na FCP+TTI (`median-run`) | ⛔ exit 1 — `/dla-kogo` 1933,618 ms; **5 z 7 tras z „⚠ REGUŁA ZŁAMANA"**; odchylenia TTI spadły do 0 ms tam, gdzie przy zdrowej regule wynosiły −554 i −455 ms |
+
+R1 jest tu ważniejszy od R0: pokazuje, że podmiana kryterium **nie
+przechodzi cicho**. Nie trzeba czytać kodu, żeby ją zobaczyć — widać ją
+w tabeli i w logu wyboru. Plik reguły przywrócono po mutacji, zgodność
+potwierdzona sumą SHA-256 (`e6ddbdf0…`).
+
+---
+
 ## 5. Czerwień do czasu przełączenia — czyja
 
 Dopóki `LHCI_BAZA` jest puste, bramka mierzy przez HTTP/1.1 + gzip,
