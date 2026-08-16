@@ -238,10 +238,30 @@ wygasł przez podmianę otoczenia.
 | N3 | PNG w `public` ≠ bajty zweryfikowane przy odbiorze | 2 czerwone |
 | N4 | ten sam alt pod dwoma filarami | 2 czerwone |
 
-## 8. Otwarte — czeka na ogląd właściciela
+## 8. Ogląd właściciela — werdykt 2026-08-16: 4/4 ZATWIERDZONE
 
-Trzy rzeczy odłożone świadomie; **nie rozstrzygam ich sam** (decyzja
-właściciela z 2026-08-16, punkt 4). Materiał do oceny:
+**Kwestia zamknięta.** Po oglądzie materiału z `podglad-z6/` właściciel
+zatwierdził wszystkie cztery kadry **jak są** — bez re-shootu i bez
+jakiejkolwiek obróbki.
+
+Uzasadnienie werdyktu (słowami właściciela): pustka w kadrach 3 i 4 to
+**prawdziwy design ekranów oddechowych**, a nie brak treści do pokazania;
+w ramkach filarów czyta się jako spokój. Re-shoot nic by nie zmienił,
+bo zmieniałby to, co aplikacja naprawdę pokazuje — a tego robić nie
+wolno (ADR-011, zakaz kadrowania zmieniającego wymowę).
+
+To rozstrzyga punkty 2 i 3 poniżej: **akceptujemy**, re-shootu nie ma.
+
+Jedno zastrzeżenie zostaje otwarte i zmienia adres, nie treść:
+**czytelność na 390 px** (punkt 1) właściciel weryfikuje przy oglądzie
+całości **na żywej stronie**, nie na zrzutach z `podglad-z6/`. Dopóki
+ta weryfikacja się nie odbędzie, kryterium DECYZJI 9 dla 390 px ma
+status niesprawdzonego — nie „przeszło".
+
+### Materiał, na którym zapadł werdykt
+
+Trzy rzeczy odłożone były świadomie (decyzja właściciela z 2026-08-16,
+punkt 4). Materiał do oceny:
 `podglad-z6/` (poza repo) — pełna strona i sam filar 1, desktop 1280
 i mobile 390.
 
@@ -249,11 +269,14 @@ i mobile 390.
    zamiast 1024×640 @2× z handoffu. Ten sam wymiar pliku, ale tekst
    interfejsu ~25 % mniejszy. Na desktopie czyta się dobrze; na 390 px
    etykiety bocznego menu są na granicy — kryterium DECYZJI 9.
+   → **OTWARTE**: weryfikacja przy oglądzie całości na żywej stronie.
 2. **Puste pola w kadrach 3 i 4** (~50 % i ~55 % powierzchni).
    Kadrowanie zmieniające wymowę jest zakazane, więc zostaje jak jest
    do czasu decyzji: akceptujemy czy prosimy o re-shoot.
+   → **ZAMKNIĘTE 2026-08-16**: akceptujemy, to celowy design.
 3. **Re-shoot zamiast retuszu.** Gdyby cokolwiek w kadrach miało się
    zmienić — zmiana idzie przez aplikację i nową dostawę, nigdy przez
    obróbkę pliku (instrukcja przekazania, ADR-011).
+   → **ZAMKNIĘTE 2026-08-16**: re-shootu nie ma, dostawa zostaje.
 
 Kadry modułów dla `/funkcje/*` to dostawa **Z9+**, poza zakresem Z6.

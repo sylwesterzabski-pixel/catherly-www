@@ -58,8 +58,30 @@
  * TERAZ, przed przeniesieniem pomiaru, dałoby bramkę czerwoną na stałe
  * — z powodu środowiskowego, czyli dokładnie tego, co zlecenie miało
  * usunąć („środowisko pomiaru ma być stabilniejsze, nie próg niższy").
- * Mediana i preview to jedna zmiana; wchodzą razem. Żeby włączyć
- * medianę bezwarunkowo, wystarczy w AGREGACJA zostawić samo "median".
+ * Mediana i preview to jedna zmiana; wchodzą razem.
+ *
+ * ── „median" → „median-run" (decyzja właściciela 2026-08-16) ───────
+ * `median` liczy medianę KAŻDEJ asercji osobno, więc werdykt może
+ * zszyć LCP z przebiegu A i TBT z przebiegu B — opisać ładowanie,
+ * którego nigdy nie było. `median-run` asertuje na JEDNYM prawdziwym
+ * przebiegu (assertions.js:427) i ta chimera znika.
+ *
+ * UWAGA, wbrew nazwie: „median-run" NIE jest przebiegiem o medianowym
+ * LCP. Reprezentanta wybiera odległość od median FCP i TTI
+ * (@lhci/utils/src/representative-runs.js:17–22) — LCP nie bierze
+ * w tym wyborze udziału. Sprawdzone na artefaktach przebiegu
+ * 31953000525 (skrypt scratchpada, 21 raportów): reprezentant różnił
+ * się od przebiegu o medianowym LCP na 6 z 7 tras. Werdykt nie
+ * zmienił się nigdzie (7/7 zielono w obu regułach), ale liczba, na
+ * której zapada, potrafi skoczyć: /funkcje/zespol byłoby sądzone po
+ * 1762 ms (zapas +38 ms) zamiast po 1494 ms (+306 ms). To NIE jest
+ * zmiana neutralna dla rozrzutu — na trasie, której wolny przebieg
+ * ma medianowe FCP/TTI, median-run wybierze właśnie ten wolny.
+ * Zapisane jako czynnik do decyzji O2/O4/O5.
+ *
+ * Żeby wrócić do mediany per-metryka, wystarczy w AGREGACJA wpisać
+ * "median"; obie reguły zna też scripts/podsumowanie-pomiaru.mjs
+ * i tabela zapasów pokazuje dokładnie tę liczbę, którą sądzi bramka.
  *
  * Próg 1800 nie zmienia się w żadnym trybie.
  */
@@ -94,7 +116,7 @@ const SCIEZKI = [
   "/funkcje/wyniki",
 ];
 
-const AGREGACJA = PREVIEW ? "median" : "optimistic";
+const AGREGACJA = PREVIEW ? "median-run" : "optimistic";
 
 /**
  * Obejście ochrony preview — SPRAWDZONE 2026-08-16 na realnym preview

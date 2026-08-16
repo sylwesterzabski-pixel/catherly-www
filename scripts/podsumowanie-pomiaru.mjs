@@ -63,7 +63,38 @@ const METRYKI = [
 
 /** Mediana przy 3 przebiegach to środek; dla parzystej liczby — dolny środek. */
 const mediana = (w) => [...w].sort((a, b) => a - b)[Math.floor((w.length - 1) / 2)];
-const agreguj = (w) => (AGREGACJA === "optimistic" ? Math.min(...w) : mediana(w));
+
+const liczba = (lhr, klucz) => lhr?.audits?.[klucz]?.numericValue ?? 0;
+
+/**
+ * Reprezentant dla `median-run` — WIERNA kopia reguły lhci
+ * (@lhci/utils/src/representative-runs.js). Nie jest to przebieg
+ * o medianowym LCP: wybiera go odległość od median FCP i TTI, a LCP
+ * nie bierze w tym wyborze udziału. Gdyby ta tabela liczyła medianę
+ * per-metryka, pokazywałaby inną liczbę niż ta, którą sądzi bramka —
+ * na przebiegu 31953000525 rozjazd wypadłby na 6 z 7 tras.
+ */
+function reprezentant(raporty) {
+  const idx = Math.floor(raporty.length / 2);
+  const medFcp = liczba(
+    [...raporty].sort((a, b) => liczba(a, "first-contentful-paint") - liczba(b, "first-contentful-paint"))[idx],
+    "first-contentful-paint",
+  );
+  const medTti = liczba(
+    [...raporty].sort((a, b) => liczba(a, "interactive") - liczba(b, "interactive"))[idx],
+    "interactive",
+  );
+  const odleglosc = (r) =>
+    (medFcp - liczba(r, "first-contentful-paint")) ** 2 + (medTti - liczba(r, "interactive")) ** 2;
+  return [...raporty].sort((a, b) => odleglosc(a) - odleglosc(b))[0];
+}
+
+const OPIS_AGREGACJI = {
+  optimistic: "wartość najkorzystniejszą z przebiegów",
+  pessimistic: "wartość najgorszą z przebiegów",
+  median: "MEDIANĘ każdej metryki osobno",
+  "median-run": "jeden PRZEBIEG REPREZENTATYWNY (najbliższy medianom FCP i TTI)",
+};
 
 const trasy = new Map();
 for (const nazwa of pliki) {
@@ -88,18 +119,39 @@ console.log(KRESKA);
 console.log("LICZBY ZE WSZYSTKICH TRAS — pełny wynik pomiaru");
 console.log(KRESKA);
 console.log(
-  `Werdykt bramki liczy ${AGREGACJA === "optimistic" ? "wartość najkorzystniejszą" : "MEDIANĘ"}` +
-    " z przebiegów (lighthouserc.cjs).\n" +
+  `Werdykt bramki bierze ${OPIS_AGREGACJI[AGREGACJA] || AGREGACJA} (lighthouserc.cjs).\n` +
     "Kolumna „zapas" +
     "” to odległość od progu: dodatnia = pod progiem.\n" +
-    "Poniżej także wszystkie surowe przebiegi — mediana nie zasłania rozrzutu.",
+    "Poniżej także wszystkie surowe przebiegi — werdykt nie zasłania rozrzutu.",
 );
 
 let najciasniej = null;
 
 for (const [url, raporty] of trasy) {
+  // Przy `median-run` cała trasa sądzona jest z JEDNEGO przebiegu; liczymy
+  // go raz, żeby każda metryka i rozbiór faz LCP mówiły o tym samym
+  // ładowaniu, którym mierzy bramka.
+  const wybrany = AGREGACJA === "median-run" ? reprezentant(raporty) : null;
+  const agreguj = (wartosci, klucz) => {
+    if (wybrany) return liczba(wybrany, klucz);
+    if (AGREGACJA === "optimistic") return Math.min(...wartosci);
+    if (AGREGACJA === "pessimistic") return Math.max(...wartosci);
+    return mediana(wartosci);
+  };
+
   console.log("");
   console.log(`  ${skroc(url)}   (${raporty.length} przebieg(ów))`);
+  if (wybrany) {
+    const nr = raporty.indexOf(wybrany) + 1;
+    const lcpW = liczba(wybrany, "largest-contentful-paint");
+    const lcpMed = mediana(raporty.map((r) => liczba(r, "largest-contentful-paint")));
+    console.log(
+      `    werdykt z przebiegu #${nr}` +
+        (lcpW === lcpMed
+          ? ""
+          : `  (⚠ to NIE jest przebieg o medianowym LCP — mediana LCP: ${lcpMed.toFixed(0)} ms)`),
+    );
+  }
   for (const m of METRYKI) {
     const prog = ASERCJE[m.klucz]?.[1]?.maxNumericValue;
     const wartosci = raporty
@@ -109,7 +161,7 @@ for (const [url, raporty] of trasy) {
       console.log(`    ${m.etykieta.padEnd(5)} — brak audytu w raportach`);
       continue;
     }
-    const w = agreguj(wartosci);
+    const w = agreguj(wartosci, m.klucz);
     const fmt = (v) => v.toFixed(m.cyfry) + (m.jednostka ? " " + m.jednostka : "");
     let wiersz = `    ${m.etykieta.padEnd(5)}${fmt(w).padStart(11)}`;
     if (typeof prog === "number") {
@@ -142,7 +194,7 @@ for (const [url, raporty] of trasy) {
     // przebiegu, nie stan strony. Bramka jest wtedy niepowtarzalna i trzeba
     // to widzieć w logu, a nie odkrywać przy trzecim przebiegu z rzędu.
     if (typeof prog === "number" && wartosci.length > 1) {
-      const zapas = prog - agreguj(wartosci);
+      const zapas = prog - agreguj(wartosci, m.klucz);
       if (zapas >= 0 && rozrzut > zapas) {
         console.log(
           `           ⚠  rozrzut większy niż zapas — ta trasa może spaść` +
@@ -159,7 +211,9 @@ for (const [url, raporty] of trasy) {
   }
   // Czym jest LCP na tej trasie i z czego składa się jego czas. Bez tego
   // diagnoza czerwieni zaczyna się od zgadywania, czy winien jest obraz,
-  // czcionka, czy sam render. Bierzemy przebieg o medianowym LCP.
+  // czcionka, czy sam render. Rozbiór bierzemy z TEGO SAMEGO przebiegu,
+  // z którego zapada werdykt — inaczej fazy tłumaczyłyby ładowanie, którego
+  // bramka nie sądziła.
   const posort = [...raporty]
     .filter((r) => typeof r.audits?.["largest-contentful-paint"]?.numericValue === "number")
     .sort(
@@ -167,7 +221,7 @@ for (const [url, raporty] of trasy) {
         a.audits["largest-contentful-paint"].numericValue -
         b.audits["largest-contentful-paint"].numericValue,
     );
-  const srodek = posort[Math.floor((posort.length - 1) / 2)];
+  const srodek = wybrany || posort[Math.floor((posort.length - 1) / 2)];
   const elAudyt = srodek?.audits?.["largest-contentful-paint-element"]?.details?.items;
   const wezel = elAudyt?.[0]?.items?.[0]?.node;
   if (wezel) {
