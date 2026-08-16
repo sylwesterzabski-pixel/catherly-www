@@ -93,13 +93,30 @@ if (!OCZEKIWANY && !RECZNY) {
   );
 }
 
+/**
+ * Obejście ochrony preview: JEDEN nagłówek, świadomie.
+ *
+ * Dokumentacja Vercela wymienia obok niego drugi —
+ * `x-vercel-set-bypass-cookie` — i tak było tu do 2026-08-16. Zmierzone
+ * na realnym preview (alias gałęzi faza-4/podstrony, wydanie 083d9f0):
+ *
+ *   sam `x-vercel-protection-bypass`             → HTTP 200, strona
+ *   + `x-vercel-set-bypass-cookie: true`         → HTTP 307 → `/`
+ *                                                  z Set-Cookie _vercel_jwt
+ *
+ * To przekierowanie jest uzgodnieniem ciastka, nie ścianą logowania —
+ * ale strażnik czyta KAŻDE przekierowanie jako „nie ta strona" i kończy
+ * czerwienią. Para nagłówków zamykała więc bramkę, zanim cokolwiek
+ * zostało zmierzone: czerwień prawdziwa co do statusu, fałszywa co do
+ * przyczyny. `fetch` i tak nie przenosi ciastek między wywołaniami, więc
+ * drugi nagłówek nie dawał tu nic; to samo w drugą stronę w pomiarze
+ * (lighthouserc.cjs — tam kosztował rundę doliczaną do LCP).
+ *
+ * Wykrywanie ściany logowania NIE słabnie: bez ważnego obejścia Vercel
+ * oddaje 302 na vercel.com/sso-api, co niżej jest osobną czerwienią.
+ */
 const SEKRET = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
-const naglowki = SEKRET
-  ? {
-      "x-vercel-protection-bypass": SEKRET,
-      "x-vercel-set-bypass-cookie": "true",
-    }
-  : {};
+const naglowki = SEKRET ? { "x-vercel-protection-bypass": SEKRET } : {};
 
 const NAGLOWEK_H1 = JSON.parse(
   readFileSync(new URL("../src/i18n/messages/pl.json", import.meta.url), "utf8"),

@@ -56,14 +56,35 @@ Secrets → New repository secret`
 
 - nazwa: `LHCI_BAZA`
 - wartość: **alias gałęzi**, czyli adres, który Vercel utrzymuje zawsze
-  na najnowszym wdrożeniu tej gałęzi — postać
-  `https://catherly-www-git-<gałąź-z-myślnikami>-<zespół>.vercel.app`.
-  Dla `faza-4/podstrony` człon gałęzi to `faza-4-podstrony`. Dokładny
-  adres jest w panelu Vercela przy wdrożeniu, w polu **Domains**.
+  na najnowszym wdrożeniu tej gałęzi. Weź go **z panelu Vercela** przy
+  wdrożeniu, pole **Domains** — nie składaj z nazwy gałęzi.
 
 Bez końcowego ukośnika. Ścieżki (`/`, `/funkcje`, `/dla-kogo`, cztery
 podstrony filarowe) doklei sobie `lighthouserc.cjs` — lista jest w jednym
 miejscu i nie dubluje się w workflow.
+
+> **Naiwne złożenie adresu z nazwy gałęzi daje adres, który NIE
+> ISTNIEJE.** Zmierzone 2026-08-16 przy pierwszym realnym ustawieniu
+> zmiennej. Postać `catherly-www-git-<gałąź>-<zespół>` dla
+> `faza-4/podstrony` ma **65 znaków**, a etykieta DNS dopuszcza 63 —
+> `host` odmawia takiej nazwy („label too long"), `curl` kończy błędem
+> rozwiązywania. Vercel skraca wtedy człon gałęzi i dokleja skrót:
+>
+> | | etykieta | znaków |
+> | --- | --- | --- |
+> | złożone z nazwy gałęzi — **nie istnieje** | `catherly-www-git-faza-4-podstrony-sylwesterzabski-pixels-projects` | 65 |
+> | rzeczywisty alias | `catherly-www-git-faza-4-979743-sylwesterzabski-pixels-projects` | 62 |
+>
+> Skrótu `979743` nie da się wyprowadzić z nazwy gałęzi. Dlatego adres
+> **czyta się**, a nie wylicza — z panelu albo z API
+> (`GET /v2/deployments/<id>/aliases`).
+
+> **Alias jest stały dla gałęzi i przeskakuje na najnowsze wdrożenie.**
+> Sprawdzone na czterech kolejnych wdrożeniach `faza-4/podstrony`
+> (2026-08-16): alias trzyma wyłącznie najnowsze (`083d9f0`), trzy
+> starsze nie mają już żadnego. To jest dokładnie ten mechanizm, dla
+> którego istnieje strażnik prowieniencji — adres nie mówi, który
+> commit pod nim stoi.
 
 > **Adres jest wiązany z gałęzią.** Przy zmianie gałęzi fazy trzeba
 > zmienić też `LHCI_BAZA`. Jeśli się o tym zapomni, bramka **nie**
@@ -73,6 +94,8 @@ miejscu i nie dubluje się w workflow.
 > z nazwy gałęzi: reguł skracania aliasów przez Vercela nie da się
 > sprawdzić bez realnego wdrożenia, a niesprawdzony automat w bramce
 > to dokładnie ten rodzaj sprytu, który ADR-018 liczy jak niedziałający.
+> Pomiar z 2026-08-16 to potwierdził: automat złożyłby adres o 65
+> znakach i bramka szukałaby strony, której nigdy nie było.
 
 ---
 
@@ -127,7 +150,46 @@ okna jest czerwień.
 Nagłówek odpowiedzi, nie treść — nie dotyka HTML-a, więc żadna bramka
 treści go nie widzi.
 
-### Dowody mutacyjne (2026-08-16)
+### Obejście ochrony: JEDEN nagłówek, nie dwa (poprawka 2026-08-16)
+
+Dokumentacja Vercela podaje przy `x-vercel-protection-bypass` drugi
+nagłówek — `x-vercel-set-bypass-cookie: true` — i tak było tu do
+pierwszego przebiegu na realnym preview. Zmierzone wtedy, na siedmiu
+trasach:
+
+| wysłane nagłówki | odpowiedź |
+| --- | --- |
+| sam `x-vercel-protection-bypass` | **HTTP/2 200**, strona, `x-catherly-wydanie` obecny |
+| + `x-vercel-set-bypass-cookie: true` | **HTTP 307** na tę samą ścieżkę, z `Set-Cookie: _vercel_jwt` |
+
+To przekierowanie jest **uzgodnieniem ciastka**, nie ścianą logowania —
+ale strażnik czyta każde przekierowanie jako „nie ta strona" i kończy
+czerwienią. Para nagłówków zamykała więc bramkę, zanim cokolwiek zostało
+zmierzone: czerwień prawdziwa co do statusu, fałszywa co do przyczyny.
+Diagnozując ją z logu CI, szukałoby się problemu z aliasem albo
+z sekretem — czyli nie tam, gdzie był.
+
+Drugi nagłówek został **zdjęty w obu miejscach** (`sprawdz-preview.mjs`
+i `lighthouserc.cjs`). Powód nie jest kosmetyczny:
+
+- `fetch` w strażniku nie przenosi ciastek między wywołaniami, więc
+  ciastko nie dawało mu nic;
+- Lighthouse startuje z czystym profilem, więc uzgodnienie wypadałoby
+  przy pierwszej nawigacji **każdego** przebiegu, a przekierowanie
+  liczy się do LCP. Mierzylibyśmy rundę uwierzytelnienia i dopisali ją
+  stronie — ta sama klasa błędu, którą przeniesienie pomiaru na preview
+  miało usunąć.
+
+Ciastko jest dla przeglądarki klikanej przez człowieka, nie dla
+narzędzia, które nagłówek wysyła przy każdym żądaniu. Sprawdzone też
+w drugą stronę: gdy ciastko już jest, żądanie z obydwoma nagłówkami
+oddaje 200 bez przekierowania — czyli 307 pojawia się wyłącznie przy
+pierwszym kontakcie i pętli tu nie ma.
+
+Ten fragment miał w `lighthouserc.cjs` status **NIESPRAWDZONE**, czyli
+wg ADR-018 liczył się jak niedziałający. Okazał się niedziałający.
+
+### Dowody mutacyjne (2026-08-16, stanowisko lokalne)
 
 Zielony strażnik nie jest dowodem, że cokolwiek mierzy (ADR-018).
 Dowodem jest czerwień po celowym zepsuciu. Stanowisko: proxy na `:3300`
@@ -143,6 +205,28 @@ przed lokalnym buildem, każdy tryb osobno.
 | P5 | brak `OCZEKIWANY_COMMIT`, bez `--reczny` | ⛔ exit 1 — „nie wiadomo, który commit ma być zmierzony" |
 | P6 | `--reczny` (diagnostyka z laptopa) | ✅ exit 0 z wyraźnym „prowieniencja NIE sprawdzana — to nie dowód" |
 | P7 | adres w ogóle nie odpowiada | ⛔ exit 1, a komunikat nazywa **faktyczną** przyczynę („adres nieosiągalny"), nie domyślną |
+
+### Dowody na REALNYM preview (2026-08-16, po poprawce nagłówka)
+
+Powyższe P0–P7 szły przez proxy udające preview. Poniższe szły przez
+prawdziwe wdrożenie Vercela (alias gałęzi, wydanie `083d9f0`), bo
+symulacja nie mogła pokazać ani skracania aliasu, ani uzgodnienia
+ciastka — dwóch rzeczy, które zatrzymałyby pierwszy przebieg.
+
+| # | co sprawdzane | oczekiwano | wynik |
+| --- | --- | --- | --- |
+| R1 | adres dobry, sekret jest, `--reczny` | zieleń | ✅ HTTP 200, 42 837 B, `3/3 markerów` |
+| R2 | pełny tryb CI, `OCZEKIWANY_COMMIT` = wydanie pod adresem | zieleń | ✅ „Wydanie pod adresem = commit CI" |
+| R3 | `OCZEKIWANY_COMMIT` podmieniony na obcy sha | czerwień | ⛔ „cel pomiaru nie ustalił się" |
+| R4 | sekret usunięty ze środowiska | czerwień | ⛔ „preview zamknięty ścianą logowania Vercela" + instrukcja |
+| R5 | adres z **naiwnego złożenia** (65 znaków) | czerwień | ⛔ adres nieosiągalny → czerwień, nie cichy pomiar |
+| R6 | `LHCI_BAZA` puste | czerwień | ⛔ „brak adresu do sprawdzenia" |
+
+**R4 jest tu najważniejsza.** Zdjęcie `x-vercel-set-bypass-cookie`
+mogłoby osłabić wykrywanie ściany logowania — nie osłabiło: bez ważnego
+obejścia Vercel nadal oddaje 302 na `vercel.com/sso-api`, a strażnik
+nadal to nazywa po imieniu. R5 pokazuje, że zła wartość zmiennej kończy
+się czerwienią z sensownym komunikatem, a nie pomiarem czegokolwiek.
 
 ---
 

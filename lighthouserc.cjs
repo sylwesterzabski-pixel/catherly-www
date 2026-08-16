@@ -97,13 +97,29 @@ const SCIEZKI = [
 const AGREGACJA = PREVIEW ? "median" : "optimistic";
 
 /**
- * Obejście ochrony preview. NIESPRAWDZONE w działaniu — nie da się
- * tego zweryfikować, dopóki właściciel nie udostępni preview (dziś
- * zamknięty ścianą logowania). Do czasu przebiegu na realnym preview
- * ten fragment ma status NIESPRAWDZONY, czyli w rejestrze ADR-018
- * liczy się jak niedziałający. Strażnik `bramka:preview` jest tu
- * zabezpieczeniem: jeśli nagłówki nie zadziałają, zatrzyma bramkę,
- * zamiast pozwolić zmierzyć ekran logowania.
+ * Obejście ochrony preview — SPRAWDZONE 2026-08-16 na realnym preview
+ * (alias gałęzi faza-4/podstrony, wydanie 083d9f0). Do tego dnia miało
+ * status NIESPRAWDZONE, czyli wg ADR-018 liczyło się jak niedziałające,
+ * i słusznie: dwa nagłówki z dokumentacji Vercela NIE działały tu tak,
+ * jak zakładano.
+ *
+ * Zmierzone, siedem tras, każda:
+ *   sam `x-vercel-protection-bypass`      → HTTP/2 200, prerender, ok
+ *   + `x-vercel-set-bypass-cookie: true`  → HTTP 307 → ta sama ścieżka,
+ *                                           z Set-Cookie _vercel_jwt
+ *
+ * Drugi nagłówek zostaje ZDJĘTY. Powód nie jest kosmetyczny: Lighthouse
+ * startuje z czystym profilem, więc uzgodnienie ciastka wypadałoby przy
+ * pierwszej nawigacji KAŻDEGO przebiegu, a przekierowanie liczy się do
+ * LCP (audyt `redirects`). Mierzylibyśmy rundę uwierzytelnienia i
+ * dopisali ją stronie — dokładnie ta klasa błędu, którą przeniesienie
+ * pomiaru na preview miało usunąć. Bez ciastka pierwsze żądanie oddaje
+ * 200 od razu; ciastko było potrzebne przeglądarce klikanej przez
+ * człowieka, nie narzędziu, które nagłówek wysyła przy każdym żądaniu.
+ *
+ * Strażnik `bramka:preview` zostaje zabezpieczeniem: bez ważnego
+ * obejścia Vercel oddaje 302 na vercel.com/sso-api i strażnik zatrzyma
+ * bramkę, zamiast pozwolić zmierzyć ekran logowania.
  */
 const SEKRET = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 
@@ -117,12 +133,7 @@ module.exports = {
         formFactor: "mobile",
         throttlingMethod: "simulate",
         ...(SEKRET
-          ? {
-              extraHeaders: {
-                "x-vercel-protection-bypass": SEKRET,
-                "x-vercel-set-bypass-cookie": "true",
-              },
-            }
+          ? { extraHeaders: { "x-vercel-protection-bypass": SEKRET } }
           : {}),
       },
     },
