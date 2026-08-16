@@ -250,6 +250,29 @@ jobs:
           LHCI_BAZA: ${{ vars.LHCI_BAZA }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: npx lhci autorun
+      # `lhci assert` drukuje WYŁĄCZNIE to, co nie przeszło — o trasach
+      # zielonych milczy, a ich raporty giną razem z runnerem. Po pierwszym
+      # przebiegu na preview (e2ac0f3) nie dało się więc odpowiedzieć na
+      # pytanie „LCP wszystkich 7 tras", ani odróżnić trasy stojącej 400 ms
+      # pod progiem od takiej, która ociera się o niego i spadnie następnym
+      # razem bez żadnej zmiany w kodzie. `always()`, bo najbardziej
+      # potrzebne jest to wtedy, gdy pomiar właśnie zapalił czerwień.
+      - name: "Liczby ze wszystkich tras"
+        if: always()
+        env:
+          LHCI_BAZA: ${{ vars.LHCI_BAZA }}
+        run: npm run bramka:podsumowanie
+      # Raporty HTML: z tabeli wiadomo KTÓRA trasa i ile, z raportu — który
+      # element jest LCP i z czego składa się jego czas (rozbiór fazowy).
+      # Bez tego diagnoza czerwieni zaczyna się od zgadywania.
+      - name: "Raporty Lighthouse (do rozbioru czerwieni)"
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-raporty
+          path: .lighthouseci/*.html
+          retention-days: 7
+          if-no-files-found: ignore
       # Interpretacja OBOK wyniku, nie kilkaset linii wyżej.
       - name: "Jak czytać tę czerwień"
         if: failure()

@@ -50,6 +50,27 @@ Secrets → New repository secret`
 - nazwa: `VERCEL_AUTOMATION_BYPASS_SECRET`
 - wartość: to, co skopiowane w kroku (a)
 
+> **NIE DRUKUJ `Set-Cookie` z preview — nawet do diagnozy.**
+>
+> Odpowiedź preview na żądanie z nagłówkiem `x-vercel-set-bypass-cookie`
+> zawiera `Set-Cookie: _vercel_jwt=…`. Ładunek tego tokenu to base64,
+> a w środku — **wartość Protection Bypass otwartym tekstem**. Nie jest
+> zahaszowana ani skrócona. Kto zobaczy nagłówek, ma sekret.
+>
+> To znaczy, że `curl -i`, `curl -D -`, `-v` i każde `console.log`
+> odpowiedzi z preview WYNOSZĄ sekret do logu CI, do transkryptu sesji
+> agenta i do schowka. Log CI bywa publiczny; transkrypt sesji leży na
+> dysku bez szyfrowania. Stało się to 2026-08-16 przy rozbiorze
+> uzgodnienia ciastka — sekret trafił do transkryptu i został wymieniony.
+>
+> Diagnozując odpowiedzi preview, wypisuj **wybrane** nagłówki
+> (`x-catherly-wydanie`, `x-vercel-cache`, `location`), nigdy komplet.
+> Do statusu wystarczy `curl -o /dev/null -w '%{http_code}'`.
+>
+> Skąd w ogóle to ciastko: patrz „Obejście ochrony: JEDEN nagłówek, nie
+> dwa" w sekcji 4. Bramka drugiego nagłówka nie wysyła, więc w normalnym
+> przebiegu CI ten `Set-Cookie` nie powstaje.
+
 ### (c) GitHub: zmienna z adresem
 
 `… → Variables → New repository variable`

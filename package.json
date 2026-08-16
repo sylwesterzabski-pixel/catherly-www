@@ -22,6 +22,7 @@
     "bramka:nieodwracalne": "node scripts/check-audyt.mjs",
     "bramka:preview": "node scripts/sprawdz-preview.mjs",
     "bramka:tryb-pomiaru": "node scripts/tryb-pomiaru.mjs",
+    "bramka:podsumowanie": "node scripts/podsumowanie-pomiaru.mjs",
     "obrazy:pipeline": "node scripts/obrazy-pipeline.mjs",
     "test:e2e": "playwright test",
     "test:axe": "playwright test e2e/axe.spec.ts"
