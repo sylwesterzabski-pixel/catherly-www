@@ -167,6 +167,18 @@ Stan wyłączony nie jest ciszą, tylko innym pytaniem. Testy pilnują:
   +150 ms po cichu,
 - że filar pokazuje pustą ramkę z `aria-hidden`, jak przed dostawą.
 
+**Stan przełącznika od 2026-08-16: WŁĄCZONY.** Rozstrzygnięcie
+właściciela po rozbiorze: bramka ma się przełączyć na preview sama,
+po dwóch kliknięciach w ustawieniach, a zrzuty mają być wtedy już na
+„/" — bez trzeciego kliknięcia w repo. Skutek uboczny, przewidziany
+i zaakceptowany: dopóki zmienna `LHCI_BAZA` jest pusta, bramka mierzy
+przez HTTP/1.1 i „/" przekracza próg. To czerwień termometru, nie
+strony; adnotacja z liczbami leci do logu CI przy każdym przebiegu
+(`scripts/tryb-pomiaru.mjs`). Bezpiecznikiem jest ADR-020 — z czerwoną
+bramką nic nie wejdzie do main, więc dowodem będzie pomiar na preview,
+a nie ta deklaracja. Szczegóły przełączenia i dowody mutacyjne
+strażnika: `docs/faza-4/bramka-na-preview.md`.
+
 **Warunek włączenia — zaktualizowany 2026-08-16 po rozbiorze render
 delay** (`docs/faza-4/render-delay-glowna.md`; decyzja właściciela:
 „strona zdrowa, termometr zły"):
@@ -191,8 +203,9 @@ jest pułapka lanterny, tylko multipleksowanie: HTTP/2 zdejmuje rundy,
 nie bajty. Zapas 524 ms mieści Z6 (150 ms) plus rezerwę designu
 (~200 ms) i zostawia 174 ms.
 
-Włączenie = zmiana `wlaczone` na `true`; **dowodem jest pomiar na
-preview**, nie ta tabela.
+Włączenie = zmiana `wlaczone` na `true` (już zrobiona); **dowodem jest
+pomiar na preview**, nie ta tabela. Co zostało po stronie właściciela
+i co przełączy się samo: `docs/faza-4/bramka-na-preview.md`.
 
 ## 7. Dowody mutacyjne
 

@@ -21,9 +21,28 @@
  *                          localhost (stan sprzed przeniesienia).
  *
  * W trybie preview przed pomiarem MUSI przejść `npm run bramka:preview`
- * (scripts/sprawdz-preview.mjs). Bez niego Lighthouse zmierzyłby ekran
- * logowania Vercela i oddał świetne wyniki — bramka zielona, nic
- * niezmierzone.
+ * (scripts/sprawdz-preview.mjs). Strażnik pilnuje dwóch rzeczy: że pod
+ * adresem stoi strona Catherly, a nie ekran logowania Vercela (ten
+ * oddaje 200 i zawiera słowo „Catherly"), oraz że to wdrożenie TEGO
+ * commita, a nie poprzedniego czy z innej gałęzi — po nagłówku
+ * x-catherly-wydanie z next.config.ts. Bez pierwszego Lighthouse
+ * zmierzyłby ekran logowania; bez drugiego zmierzyłby cudzy kod.
+ * W obu wypadkach: bramka zielona, nic zmierzone.
+ *
+ * ── Czerwień termometru, nie strony ───────────────────────────────
+ * Rozstrzygnięcie właściciela 2026-08-16 po rozbiorze render delay
+ * (docs/faza-4/render-delay-glowna.md): w trybie LOKALNYM ta bramka
+ * mierzy przez HTTP/1.1 + gzip, gdzie każdy zasób to osobna runda na
+ * jednym połączeniu, a symulacja Lighthouse dolicza te rundy do LCP —
+ * mimo że strona realnie maluje się w 88–97 ms. Ten sam kod na HTTP/2
+ * + brotli (tak serwuje Vercel) daje 1276 ms zamiast 1703 ms, a cztery
+ * zrzuty Z6 kosztują 0 ms zamiast 153 ms.
+ *
+ * Dopóki LHCI_BAZA jest puste, czerwień na „/" jest czerwienią
+ * TERMOMETRU. NIE odchudzaj strony pod ten pomiar i NIE podnoś progu —
+ * naprawą jest przeniesienie pomiaru (docs/faza-4/bramka-na-preview.md).
+ * Adnotacja z liczbami leci do logu CI przy każdym przebiegu:
+ * `npm run bramka:tryb-pomiaru` (scripts/tryb-pomiaru.mjs).
  *
  * ── Werdykt: mediana czy najlepszy przebieg ───────────────────────
  * Domyślna agregacja lhci to `optimistic`, co dla asercji `max…`

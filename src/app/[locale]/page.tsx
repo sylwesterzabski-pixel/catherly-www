@@ -87,18 +87,20 @@ export default async function StronaGlowna({ params }: Props) {
               t(`${klucz}.konkret3`),
             ]}
             obrazPoLewej={obrazPoLewej}
-            /* Zrzuty Z6 są gotowe (pipeline, warianty, alty ×3), ale
-               na „/" WYŁĄCZONE — dopóki bramka LCP mierzy przez
-               HTTP/1.1 + gzip, kosztują +150 ms przy zapasie 96 ms
-               do budżetu 1800 ms. Rozbiór pomiarowy
-               (docs/faza-4/render-delay-glowna.md) pokazał, że to
-               koszt transportu POMIARU, nie strony: na HTTP/2 +
-               brotli, czyli tak jak serwuje Vercel, te same cztery
-               warianty kosztują +0 ms przy zapasie 524 ms. Warunek
-               włączenia to więc przeniesienie bramki na preview, nie
-               odchudzenie strony: design/pipeline-obrazow.json →
-               osadzenieNaGlownej. Bez propu filar pokazuje pustą
-               ramkę, dokładnie jak przed dostawą. */
+            /* Zrzuty Z6 — jeden przełącznik w rejestrze
+               (design/pipeline-obrazow.json → osadzenieNaGlownej)
+               czyta i ten markup, i strażnik e2e, więc markup nie
+               może się rozjechać z asercją. Bez propu filar pokazuje
+               pustą ramkę, dokładnie jak przed dostawą.
+
+               Rozbiór pomiarowy (docs/faza-4/render-delay-glowna.md)
+               wykazał, że koszt tych zrzutów jest kosztem TRANSPORTU
+               POMIARU, nie strony: na HTTP/1.1 + gzip +153 ms, na
+               HTTP/2 + brotli (tak serwuje Vercel) +0 ms przy zapasie
+               524 ms do budżetu 1800 ms. Dopóki bramka mierzy
+               lokalnie, „/" będzie ponad progiem — to czerwień
+               termometru, nie strony, i nie naprawia się jej cięciem
+               strony (docs/faza-4/bramka-na-preview.md). */
             obraz={
               OSADZENIE_NA_GLOWNEJ
                 ? { baza: zrzutFilaru(klucz).baza, alt: tObrazy(klucz) }
