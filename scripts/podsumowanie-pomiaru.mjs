@@ -61,7 +61,7 @@ const METRYKI = [
   { klucz: "cumulative-layout-shift", etykieta: "CLS", jednostka: "", cyfry: 3 },
 ];
 
-/** Mediana przy 3 przebiegach to środek; dla parzystej liczby — dolny środek. */
+/** Nieparzysta liczba przebiegów → środek; parzysta → dolny środek. */
 const mediana = (w) => [...w].sort((a, b) => a - b)[Math.floor((w.length - 1) / 2)];
 
 const liczba = (lhr, klucz) => lhr?.audits?.[klucz]?.numericValue ?? 0;

@@ -83,6 +83,25 @@
  * "median"; obie reguły zna też scripts/podsumowanie-pomiaru.mjs
  * i tabela zapasów pokazuje dokładnie tę liczbę, którą sądzi bramka.
  *
+ * ── 3 → 5 przebiegów (O2, decyzja właściciela 2026-08-16) ──────────
+ * Powód jest w liczbach, nie w przeczuciu. Przebieg 31953862971,
+ * siedem tras, ten sam kod co przebieg wcześniej: rozrzut LCP w obrębie
+ * jednej trasy sięgnął 1057 ms (/funkcje/zespol: 2029 · 1892 · 972) przy
+ * progu, pod którym najlepsze trasy stoją z zapasem rzędu 200–300 ms.
+ * Przy takim rozrzucie werdykt z trzech przebiegów jest losowaniem:
+ * ta sama trasa i ten sam commit dają raz +828 ms, raz czerwień.
+ *
+ * Pięć przebiegów nie zmniejsza rozrzutu POJEDYNCZEGO pomiaru — zmniejsza
+ * wpływ jednego wyskoku na wybór reprezentanta, bo mediana z pięciu
+ * potrzebuje trzech zgodnych przebiegów, a nie dwóch. Koszt: pomiar
+ * rośnie z ~286 s do ~480 s. Job jest równoległy (needs: build), więc do
+ * czasu całego CI dolicza się dopiero, gdy stanie się ścieżką krytyczną.
+ *
+ * Czego 5 przebiegów NIE naprawia: obciążenia współdzielonego runnera.
+ * Przy throttlingMethod „simulate" praca CPU jest mnożona przez
+ * cpuSlowdownMultiplier, więc sąsiad na tej samej maszynie wchodzi do
+ * wyniku zwielokrotniony. To pilnuje benchmarkIndex w podsumowaniu.
+ *
  * Próg 1800 nie zmienia się w żadnym trybie.
  */
 
@@ -149,7 +168,9 @@ module.exports = {
   ci: {
     collect: {
       url: SCIEZKI.map((s) => BAZA + s),
-      numberOfRuns: 3,
+      // O2. Zmieniając tę liczbę nie trzeba ruszać nic więcej: adnotacja
+      // (scripts/tryb-pomiaru.mjs) i tabela zapasów czytają ją stąd.
+      numberOfRuns: 5,
       ...(PREVIEW ? {} : { startServerCommand: "npm run start" }),
       settings: {
         formFactor: "mobile",

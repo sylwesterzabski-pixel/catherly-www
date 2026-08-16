@@ -21,6 +21,7 @@
     "bramka:cennik": "node scripts/stripe-snapshot.mjs",
     "bramka:nieodwracalne": "node scripts/check-audyt.mjs",
     "bramka:preview": "node scripts/sprawdz-preview.mjs",
+    "bramka:rozgrzewka": "node scripts/rozgrzewka-preview.mjs",
     "bramka:tryb-pomiaru": "node scripts/tryb-pomiaru.mjs",
     "bramka:podsumowanie": "node scripts/podsumowanie-pomiaru.mjs",
     "obrazy:pipeline": "node scripts/obrazy-pipeline.mjs",

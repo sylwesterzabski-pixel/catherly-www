@@ -205,11 +205,15 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { name: next-build, path: .next/ }
       # Cel pomiaru sterowany zmienną repozytorium LHCI_BAZA
-      # (Settings → Variables). Ustawiona → mierzymy preview Vercela
-      # i werdyktem jest MEDIANA z 3 przebiegów. Nieustawiona → lokalny
-      # build produkcyjny, jak dotąd. Próg 1800 identyczny w obu trybach.
-      # Szczegóły i uzasadnienie wiązania mediany z trybem: nagłówek
-      # lighthouserc.cjs.
+      # (Settings → Variables). Ustawiona → mierzymy preview Vercela.
+      # Nieustawiona → lokalny build produkcyjny, jak dotąd. Próg 1800
+      # identyczny w obu trybach.
+      #
+      # Reguły werdyktu ANI liczby przebiegów NIE ma w tym pliku i mieć
+      # nie będzie: stał tu opis „MEDIANA z 3 przebiegów", który przeżył
+      # zmianę na median-run i zdezaktualizował się w ciszy. Jedyne
+      # źródło to lighthouserc.cjs; adnotacja kroku „Tryb pomiaru" czyta
+      # je stamtąd i wypisuje do logu przy każdym przebiegu.
       #
       # Strażnik przed pomiarem jest tu OBOWIĄZKOWY, nie ozdobny, i pilnuje
       # DWÓCH rzeczy naraz:
@@ -235,6 +239,23 @@ jobs:
           OCZEKIWANY_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
           CZEKANIE_NA_WDROZENIE_S: "420"
         run: npm run bramka:preview
+      # Rozgrzewka (O3). Musi stać MIĘDZY strażnikiem a pomiarem: przed
+      # nią adres bywa jeszcze cudzym wdrożeniem, po niej mierzy już
+      # Lighthouse. `lhci collect` pętli przebiegami wewnątrz adresu,
+      # więc bez tego kroku przebieg #1 KAŻDEJ trasy płaci za zimną
+      # krawędź CDN, a przy median-run taki przebieg potrafi zostać
+      # reprezentantem i to on wyznaczy werdykt. Zmierzone z laptopa na
+      # żywym preview: sam dokument „/" to 922 ms zimno wobec 170 ms
+      # ciepło. Krok pobiera też zasoby stron, bo LCP wisi na nich, a nie
+      # na dokumencie. Jest strażnikiem — sprawdza status i wydanie na
+      # WSZYSTKICH siedmiu trasach, nie tylko na „/" jak krok wyżej.
+      - name: "Rozgrzewka celu pomiaru (tryb preview)"
+        if: ${{ vars.LHCI_BAZA != '' }}
+        env:
+          LHCI_BAZA: ${{ vars.LHCI_BAZA }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          OCZEKIWANY_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: npm run bramka:rozgrzewka
       # Adnotacja, nie strażnik — nie potrafi zapalić czerwieni. Mówi, na
       # jakim transporcie mierzymy i jak czytać wynik. Do czasu przeniesienia
       # pomiaru na preview czerwień na „/" jest czerwienią TERMOMETRU, nie

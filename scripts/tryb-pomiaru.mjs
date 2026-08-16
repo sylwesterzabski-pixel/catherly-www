@@ -37,23 +37,29 @@ const rejestr = JSON.parse(
 const OSADZENIE = rejestr.osadzenieNaGlownej;
 const P = OSADZENIE.pomiarTransportu;
 
-// Regułę werdyktu CZYTAMY z lighthouserc.cjs, nie przepisujemy. Ten
-// wiersz raz już skłamał: po zmianie „median" → „median-run" adnotacja
-// dalej mówiła „MEDIANA z 3 przebiegów" (przebieg 31953862971), choć
-// bramka sądziła jeden przebieg reprezentatywny.
+// Regułę werdyktu i liczbę przebiegów CZYTAMY z lighthouserc.cjs, nie
+// przepisujemy. Ten wiersz raz już skłamał: po zmianie „median" →
+// „median-run" adnotacja dalej mówiła „MEDIANA z 3 przebiegów"
+// (przebieg 31953862971), choć bramka sądziła jeden przebieg
+// reprezentatywny. Liczba „3" była tu wpisana z ręki dokładnie tak samo
+// jak nazwa reguły — i przy O2 (3 → 5) skłamałaby drugi raz, tym samym
+// mechanizmem. Jedno źródło albo żadne.
 const require = createRequire(import.meta.url);
-const AGREGACJA = (() => {
+const KONF = (() => {
   try {
-    return require("../lighthouserc.cjs")?.ci?.assert?.aggregationMethod || "optimistic";
+    return require("../lighthouserc.cjs")?.ci || null;
   } catch {
     return null; // adnotacja nie ma prawa paść przez własny odczyt
   }
 })();
+const AGREGACJA = KONF ? KONF.assert?.aggregationMethod || "optimistic" : null;
+const PRZEBIEGI = KONF?.collect?.numberOfRuns;
+const N = PRZEBIEGI ? `${PRZEBIEGI} przebiegów` : "przebiegów";
 const OPIS_WERDYKTU = {
-  optimistic: "najlepszy z 3 przebiegów",
-  pessimistic: "najgorszy z 3 przebiegów",
-  median: "MEDIANA każdej metryki osobno z 3 przebiegów",
-  "median-run": "JEDEN przebieg reprezentatywny z 3 (najbliższy medianom FCP i TTI)",
+  optimistic: `najlepszy z ${N}`,
+  pessimistic: `najgorszy z ${N}`,
+  median: `MEDIANA każdej metryki osobno z ${N}`,
+  "median-run": `JEDEN przebieg reprezentatywny z ${N} (najbliższy medianom FCP i TTI)`,
 };
 
 const KRESKA = "─".repeat(68);

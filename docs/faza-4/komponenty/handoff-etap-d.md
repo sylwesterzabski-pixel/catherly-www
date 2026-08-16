@@ -1027,7 +1027,9 @@ podaj delta czasu CI."
 **Co było nie tak.** Bramka mierzyła `/`, `/funkcje` i `/dla-kogo` —
 czyli trzy najlżejsze strony serwisu. Cztery podstrony filarowe (11 i 10
 modułów ze zrzutami) nie miały progu wydajności w ogóle. Po dopisaniu
-bramka obejmuje 7 adresów × 3 przebiegi = 21 pomiarów.
+bramka obejmuje 7 adresów × 3 przebiegi = 21 pomiarów. *(Od 2026-08-16
+przebiegów jest 5, czyli 35 pomiarów — O2, `lighthouserc.cjs`. Zdanie
+wyżej zostaje jako zapis stanu z dnia decyzji.)*
 
 **Wynik pierwszego pełnego przebiegu (mediana z 3, build produkcyjny,
 throttling `simulate`, formFactor mobile):**

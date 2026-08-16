@@ -73,6 +73,26 @@ z panelu. Odczyt stanu
 bez wynoszenia wartości: `protectionBypass` z `GET /v9/projects/{id}`
 zawiera sekrety JAKO KLUCZE MAPY — wypisuj skrót SHA-256, nigdy klucz.
 
+##### Kolejność, która domyka rotację (przejechana 2026-08-16)
+
+Klucze poniżej opisane są skrótem SHA-256 (8 znaków); wartości nie ma
+w żadnym logu ani dokumencie.
+
+| krok | kto | co | stan po kroku |
+| --- | --- | --- | --- |
+| 1 | właściciel | dodaje w panelu klucz `LHCI-2` | 2 klucze: `602e1fe7` (na zmiennej), `a9097cc2` |
+| 2 | właściciel | wkleja `a9097cc2` do sekretu GitHuba | CI uwierzytelnia się już nowym |
+| 3 | agent | `revoke {secret: 602e1fe7}` | ⛔ **400** — to ten na zmiennej |
+| 4 | właściciel | **regeneruje** `602e1fe7` w panelu, wkleja wynik do GitHuba | 2 klucze: `5e4a1f79` (na zmiennej), `a9097cc2` |
+| 5 | agent | `revoke {secret: a9097cc2}` | ✅ **200** — odczyt: **1 klucz**, `5e4a1f79` |
+
+Sedno: klucz przypisany do zmiennej systemowej można wymienić **tylko**
+przez regenerację, a odwołać da się wyłącznie klucz, który tej zmiennej
+nie niesie. Rotacja bez przestoju potrzebuje więc chwilowo DWÓCH kluczy
+i kończy się na tym drugim, nie na pierwszym. Kto zatrzyma się po kroku
+2 — a tak brzmi instrukcja „dodaj nowy, wklej, usuń stary" — zostawia
+żywy klucz, o którym myśli, że go nie ma.
+
 ### (b) GitHub: sekret
 
 `GitHub → catherly-www → Settings → Secrets and variables → Actions →
@@ -159,9 +179,11 @@ i czyta te dwie wartości.
 | element | zachowanie przy pustym `LHCI_BAZA` | po ustawieniu |
 | --- | --- | --- |
 | `lighthouserc.cjs` → cel | `http://localhost:3000` + `npm run start` | adres z `LHCI_BAZA`, bez uruchamiania serwera |
-| `lighthouserc.cjs` → werdykt | `optimistic` (najlepszy przebieg) | **`median-run`**: jeden przebieg z 3, wybrany po FCP i TTI (2026-08-16) |
+| `lighthouserc.cjs` → werdykt | `optimistic` (najlepszy przebieg) | **`median-run`**: jeden przebieg z 5, wybrany po FCP i TTI (2026-08-16) |
+| `lighthouserc.cjs` → liczba przebiegów | 5 | 5 (było 3 do 2026-08-16 — O2) |
 | `lighthouserc.cjs` → nagłówki | brak | `x-vercel-protection-bypass` z sekretu |
 | workflow → strażnik celu | krok pomijany | `npm run bramka:preview` **musi** przejść |
+| workflow → rozgrzewka | krok pomijany | `npm run bramka:rozgrzewka` **musi** przejść (O3, §4a) |
 | workflow → adnotacja | „tryb lokalny, czerwień termometru" | „tryb preview, czytaj wynik dosłownie" |
 | próg LCP | 1800 ms | 1800 ms (bez zmian) |
 
@@ -279,6 +301,84 @@ mogłoby osłabić wykrywanie ściany logowania — nie osłabiło: bez ważnego
 obejścia Vercel nadal oddaje 302 na `vercel.com/sso-api`, a strażnik
 nadal to nazywa po imieniu. R5 pokazuje, że zła wartość zmiennej kończy
 się czerwienią z sensownym komunikatem, a nie pomiarem czegokolwiek.
+
+---
+
+## 4a. Rozgrzewka celu pomiaru (O3, 2026-08-16)
+
+`scripts/rozgrzewka-preview.mjs`, krok CI **między** strażnikiem
+a pomiarem.
+
+### Problem, który usuwa
+
+`lhci collect` pętli przebiegami **wewnątrz** adresu
+(`@lhci/cli/src/collect/collect.js:130`): najpierw n razy `/`, potem
+n razy `/funkcje`, i tak dalej. Przebieg #1 każdej trasy trafia więc
+w zimną krawędź CDN. W przebiegu 31953862971 widać to gołym okiem —
+na czterech z siedmiu tras przebieg #1 był najwolniejszy, a trzy malały
+monotonicznie:
+
+| trasa | LCP przebiegów 1 · 2 · 3 |
+| --- | --- |
+| `/` | 2482 · 2077 · 1605 |
+| `/funkcje/tresci` | 1984 · 1641 · 1140 |
+| `/funkcje/zespol` | 2029 · 1892 · 972 |
+| `/funkcje/pozyskiwanie` | 1946 · 1988 · 1136 |
+
+Przy `median-run` taki zimny przebieg **nie ginie**: jeśli jego FCP
+i TTI wypadną blisko median, zostaje reprezentantem i to on wyznacza
+werdykt. Bramka sądziłaby wtedy stronę po koszcie chybienia w cache
+Vercela.
+
+### Ile ten koszt wynosi — zmierzone, nie oszacowane
+
+Z laptopa, żywy preview, dwa przebiegi rozgrzewki (czas pobrania samego
+dokumentu przez `fetch`, nie LCP):
+
+| trasa | zimno | ciepło | różnica |
+| --- | --- | --- | --- |
+| `/` | 922 ms | 170 ms | **−752 ms** |
+| `/funkcje` | 795 ms | 296 ms | −499 ms |
+| `/funkcje/wyniki` | 692 ms | 168 ms | −524 ms |
+| `/dla-kogo` | 512 ms | 182 ms | −330 ms |
+| `/funkcje/tresci` | 463 ms | 171 ms | −292 ms |
+| `/funkcje/zespol` | 423 ms | 167 ms | −256 ms |
+| `/funkcje/pozyskiwanie` | 409 ms | 166 ms | −243 ms |
+
+To sam dokument. Krok pobiera też **zasoby** wyłuskane z HTML-a (chunki
+JS, arkusze, fonty, `/_next/image`) — 110 pobrań na 7 tras — bo LCP wisi
+na zasobach, nie na dokumencie, a `fetch` inaczej niż przeglądarka nie
+pociąga niczego sam z siebie.
+
+### Czego rozgrzewka NIE mierzy — koszt tej decyzji
+
+Po rozgrzewce bramka **przestaje widzieć koszt zimnego wejścia**. To
+zawężenie czułości, nie ulepszenie, i jest wpisane wprost w nagłówku
+skryptu: gdyby build kiedyś urósł tak, że pierwsze pobranie z krawędzi
+robi się wolne, ta bramka tego nie pokaże. Wymiana jest świadoma —
+powtarzalność werdyktu za czułość na koszt, którego prawdziwy
+odwiedzający produkcji zwykle nie płaci, bo ruch trzyma krawędź ciepłą.
+
+### Dlaczego to strażnik, a nie adnotacja
+
+Skoro krok i tak dotyka wszystkich siedmiu tras, widzi ich statusy
+i nagłówek wydania. `bramka:preview` sprawdza **wyłącznie `/`** — więc
+do dziś sześć pozostałych tras mogło oddawać 404 albo wdrożenie innej
+gałęzi, a bramka zmierzyłaby to zielono. Ta sama klasa dziury
+(„zielono, bo nie to"), tylko o sześć tras dalej. Zasoby są wyjątkiem:
+ich niepowodzenia są liczone i wypisane, ale **nie** zapalają czerwieni
+— kontraktem są dokumenty tras, a zgadywanie, które odwołanie w HTML-u
+jest obowiązkowe, wpuściłoby tu czerwień losową.
+
+### Dowody mutacyjne (2026-08-16, żywy preview)
+
+| # | mutacja | wynik |
+| --- | --- | --- |
+| W0 | stan zdrowy, 7 tras × 2 przebiegi | ✅ exit 0, `7/7 tras`, 110 pobrań zasobów |
+| W1 | `OCZEKIWANY_COMMIT` podmieniony na obcy sha | ⛔ exit 1 — „pod adresem stoi wydanie 6970a541…, oczekiwane deadbeefdead" |
+| W2 | trasa oddaje nie-200 (`308` na obcym prefiksie) | ⛔ exit 1 — „przekierowanie zamiast strony", nazwany status i cel |
+| W3 | adres nieosiągalny | ⛔ exit 1 po 3 próbach — „Wyczerpane 3 próby" |
+| W4 | `LHCI_BAZA` puste (tryb lokalny) | ✅ exit 0 z „rozgrzewka pominięta" — krok nie strzela w nieistniejący port |
 
 ---
 
