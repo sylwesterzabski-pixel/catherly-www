@@ -101,6 +101,30 @@ Secrets → New repository secret`
 - nazwa: `VERCEL_AUTOMATION_BYPASS_SECRET`
 - wartość: to, co skopiowane w kroku (a)
 
+> **Sekret ustawiony ≠ sekret właściwy.** GitHub pokazuje przy sekrecie
+> wyłącznie datę aktualizacji; jego wartości nie da się odczytać, więc
+> nic w GitHubie nie powie, czy trzyma klucz, który żyje. Odpowiedź daje
+> dopiero strażnik: przy złej wartości Vercel oddaje 302 na
+> `vercel.com/sso-api`, identycznie jak przy braku sekretu.
+>
+> Zdarzyło się to 2026-08-16, po rotacji: sekret został zaktualizowany
+> o 15:07:48 Z — 53 s po regeneracji klucza — i **mimo to** dwa kolejne
+> przebiegi (31954973660, 31955442686) stanęły na ścianie logowania,
+> podczas gdy ten sam skrypt z laptopa, z kluczem odczytanym z API
+> Vercela, przechodził na zielono na tym samym commicie i adresie.
+> Sprawdzone też, że to nie jest wina wdrożeń: jedyny żyjący klucz
+> przyjmuje **12 z 12** ostatnich wdrożeń, w tym siedem zbudowanych
+> przed rotacją — klucz jest sprawdzany na projekcie, nie wpiekany
+> we wdrożenie.
+>
+> Wniosek na przyszłość: jedynym dowodem poprawnej rotacji jest ZIELONY
+> STRAŻNIK po niej. Do tego czasu rotacja ma status „niesprawdzona",
+> a niesprawdzone liczy się jak niedziałające (ADR-018). Komunikat
+> strażnika rozróżnia od 2026-08-16 dwa przypadki — brak sekretu
+> i sekret o złej wartości — bo poprzedni kazał w tej drugiej sytuacji
+> „włączyć Protection Bypass", czyli szukać wyłączonej funkcji, która
+> była włączona.
+
 > **NIE DRUKUJ `Set-Cookie` z preview — nawet do diagnozy.**
 >
 > Odpowiedź preview na żądanie z nagłówkiem `x-vercel-set-bypass-cookie`

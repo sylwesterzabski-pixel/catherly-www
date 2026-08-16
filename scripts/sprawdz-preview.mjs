@@ -169,11 +169,35 @@ async function proba(numer) {
       blad(
         "preview zamknięty ścianą logowania Vercela",
         `HTTP ${odp.status} → ${cel.slice(0, 120)}…\n` +
-          "  Odblokowanie jest po stronie właściciela — jedno z dwojga:\n" +
-          "  (a) Vercel → Project → Settings → Deployment Protection: wyłączyć\n" +
-          "      ochronę dla Preview, albo\n" +
-          "  (b) włączyć Protection Bypass for Automation i wstawić wartość\n" +
-          "      jako sekret GitHuba VERCEL_AUTOMATION_BYPASS_SECRET.",
+          // Sekret JEST, a ściana stoi — więc wysłana wartość nie jest
+          // żadnym z żyjących kluczy projektu. Zdarzyło się 2026-08-16
+          // (przebiegi 31954973660 i 31955442686), po rotacji: wartość
+          // w GitHubie została podmieniona, ale nie na tę, która żyje.
+          // Poprzedni komunikat kazał wtedy „włączyć Protection Bypass",
+          // czyli szukać wyłączonej funkcji, która była włączona.
+          (SEKRET
+            ? "  Sekret JEST ustawiony, więc funkcja działa — nie zgadza się\n" +
+                "  WARTOŚĆ. Wysłany klucz nie jest żadnym z żyjących kluczy\n" +
+                "  projektu. Najczęstsze przyczyny, od najczęstszej:\n" +
+                "  (a) po rotacji w panelu Vercela do sekretu GitHuba trafiła\n" +
+                "      wartość SPRZED regeneracji — klucz przypisany do\n" +
+                "      zmiennej systemowej można wymienić tylko przez\n" +
+                "      regenerację, a ta unieważnia poprzednik natychmiast;\n" +
+                "  (b) wartość wklejona ze spacją albo znakiem końca wiersza\n" +
+                "      — porównanie jest dosłowne, klucz ma równo 32 znaki;\n" +
+                "  (c) sekret ustawiony w innym repozytorium lub środowisku.\n" +
+                "  Naprawa: Vercel → Settings → Deployment Protection →\n" +
+                "  Protection Bypass for Automation → skopiuj bieżącą wartość\n" +
+                "  → GitHub → Settings → Secrets → Actions →\n" +
+                "  VERCEL_AUTOMATION_BYPASS_SECRET. Stan kluczy da się\n" +
+                "  sprawdzić bez ich wynoszenia: docs/faza-4/bramka-na-preview.md §2a."
+            : "  Sekretu NIE MA w środowisku. Odblokowanie jest po stronie\n" +
+                "  właściciela — jedno z dwojga:\n" +
+                "  (a) Vercel → Project → Settings → Deployment Protection:\n" +
+                "      wyłączyć ochronę dla Preview, albo\n" +
+                "  (b) włączyć Protection Bypass for Automation i wstawić\n" +
+                "      wartość jako sekret GitHuba\n" +
+                "      VERCEL_AUTOMATION_BYPASS_SECRET."),
       );
     }
     blad("przekierowanie zamiast strony", `HTTP ${odp.status} → ${cel}`);
