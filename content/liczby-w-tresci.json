@@ -1,0 +1,174 @@
+{
+  "_opis": "Rozstrzygnięcia dla liczb w warstwie treści (src/i18n/messages/*.json). Towarzyszy content/facts.json, nie zastępuje go: facts.json trzyma WARTOŚCI POMIAROWE, ten plik trzyma ZGODY na liczby, które faktem pomiarowym nie są — nazwę własną, identyfikator techniczny, cechę funkcji z tabeli obietnic. Czyta go bramka:liczby (scripts/lint-liczby.mjs, przebieg 2). Powstał 2026-08-16 przy zamykaniu pozycji T6 rejestru warunków powrotu.",
+  "_zasada": "Wartość zmierzona NIE trafia tutaj. Wartość zmierzona idzie do content/facts.json i wchodzi do komunikatu przez zmienną — nigdy jako cyfra wpisana w tekst przekładu, bo wtedy prawda ma dwa źródła i rozjeżdżają się bezgłośnie.",
+  "_jakDodac": "1) `npm run bramka:liczby -- --inwentarz` wypisuje szkielet wpisu z kompletem znalezionych liczb. 2) Ustal POKRYCIE — plik i wiersz, z którego liczba pochodzi; brak pokrycia = liczba wypada z tekstu, nie dostaje wpisu. 3) Dopisz kategorię i uzasadnienie. Wpis wiąże się z KONKRETNYMI liczbami: zmiana „sześć” na „osiem” zapala bramkę mimo niezmienionego klucza.",
+  "_kategorie": {
+    "cecha-funkcji": "Liczba jest cechą funkcji zapisaną w content/tabela-obietnic.md. Decyzja D-D16 (docs/faza-4/tresci-etap-d-po-panelach.md:130) dopuszcza liczebnik słowny w tej roli; reguła zapisu: docs/faza-4/tresci-trzy-podstrony-po-panelach.md:74.",
+    "nazwa-wlasna": "Liczba jest częścią nazwy programu lub funkcji („Pierwsze 90 Dni”). Nie jest twierdzeniem ilościowym o niej — jest jej imieniem.",
+    "identyfikator": "Liczba jest częścią identyfikatora technicznego („SHA-256”). Zmiana wartości oznaczałaby inny algorytm, nie inny pomiar.",
+    "samoopis": "Liczba opisuje elementy obecne na tej samej stronie — sprawdzalna przez policzenie ich, nie przez odczyt aplikacji.",
+    "idiom": "Słowo z listy liczebników użyte niezliczbowo. Wpis istnieje, żeby nie usuwać słowa z listy skanu: zdjęcie „beides” zdjęłoby też „beide” w roli prawdziwej liczby."
+  },
+  "_poza_zasiegiem": "Dwie rzeczy nie są skanowane i to jest decyzja, nie przeoczenie. (1) Rodzina „jeden / one / ein”: w polskim, angielskim i niemieckim pełni rolę rodzajnika albo idiomu („w jednym miejscu”, „one click”, „ein Klick”); skan 2026-08-16 dał 76 kluczy i ANI JEDNEGO twierdzenia ilościowego, więc jej wykrywanie kupiłoby 76 rozstrzygnięć za zero pokrycia. (2) Liczebniki porządkowe („siódma”, „seventh”, „siebte”): opisują kolejność, nie ilość — „pierwszy krok” niczego nie obiecuje. W obu miejscach cisza bramki NIE JEST pokryciem; odpowiada redakcja. Granica jest powtórzona w content/karta-tonu.md pkt 5, żeby czytający kartę nie wziął jej za pełną.",
+  "wpisy": {
+    "DlaKogo.s2_robi_2": {
+      "liczby": {
+        "pl": ["90", "cztery"],
+        "en": ["90", "four"],
+        "de": ["90", "vier"]
+      },
+      "kategorie": ["nazwa-wlasna", "cecha-funkcji"],
+      "pokrycie": "content/tabela-obietnic.md:112 („Pierwsze 90 Dni (4 fazy, silnik misji)”); fazy potwierdzone odczytem aplikacji przy Z1 — first90-service.ts:62-67, Fundament/Rytm/Duplikacja/Przywództwo (docs/faza-4/ekstrakcja-etap-a.json, blok „poboczne”)",
+      "uzasadnienie": "„90” to imię programu, „cztery fazy” to jego cecha z tabeli obietnic (D-D16). Żadna z tych liczb nie jest pomiarem, więc facts.json nie ma czego trzymać."
+    },
+    "DlaKogo.s3_robi_1": {
+      "liczby": {
+        "pl": ["czterech"],
+        "en": ["four"],
+        "de": ["vier"]
+      },
+      "kategorie": ["cecha-funkcji"],
+      "pokrycie": "content/tabela-obietnic.md:114 („Paszport zgodności (4 jurysdykcje, skaner regex)” → „Sprawdzasz zgodność komunikacji z wymogami w czterech jurysdykcjach”); brief: docs/faza-2/brief-obawy.md:28",
+      "uzasadnienie": "Liczba jurysdykcji jest zakresem skanera zapisanym w tabeli obietnic, nie wynikiem pomiaru."
+    },
+    "Filary.filar3.konkret2": {
+      "liczby": {
+        "pl": ["90", "czterema"],
+        "en": ["90", "four"],
+        "de": ["90", "vier"]
+      },
+      "kategorie": ["nazwa-wlasna", "cecha-funkcji"],
+      "pokrycie": "content/tabela-obietnic.md:112; precedens zapisu słownego: content/pl/filary.md:64,67 („nazwa programu i jego cecha”)",
+      "uzasadnienie": "Najstarszy precedens liczebnika słownego na stronie — od niego wywodzi się reguła D-D16."
+    },
+    "FunkcjeIndeks.blok3Wprowadzenie": {
+      "liczby": {
+        "pl": ["90"],
+        "en": ["90"],
+        "de": ["90"]
+      },
+      "kategorie": ["nazwa-wlasna"],
+      "pokrycie": "content/tabela-obietnic.md:112",
+      "uzasadnienie": "Sama nazwa programu; indeks funkcji nie powtarza liczby faz."
+    },
+    "FunkcjePozyskiwanie.mod10_nie": {
+      "liczby": {
+        "de": ["beides"]
+      },
+      "kategorie": ["idiom"],
+      "pokrycie": "src/i18n/messages/de.json → FunkcjePozyskiwanie.mod10_nie: „du schreibst beides selbst” = „jedno i drugie” (plan i debrief), odpowiednik polskiego „je” i angielskiego „them”",
+      "uzasadnienie": "Trafienie skanu, nie liczba. Wpis zostaje zamiast usunięcia „beides” z listy liczebników, bo lista pilnuje też „beide” w roli prawdziwej („beide Märkte”), a przekłady PL i EN nie mają tu żadnego liczebnika — dowód, że zdanie nie niesie ilości."
+    },
+    "FunkcjePozyskiwanie.mod9_poco": {
+      "liczby": {
+        "pl": ["siedem"],
+        "en": ["seven"],
+        "de": ["sieben"]
+      },
+      "kategorie": ["cecha-funkcji"],
+      "pokrycie": "content/tabela-obietnic.md:44 („Sala Treningowa + biblioteka obiekcji (7 kategorii)”); content/inwentarz-funkcji.md:60",
+      "uzasadnienie": "Liczba kategorii biblioteki obiekcji jest cechą funkcji z tabeli; precedens wskazany w decyzji o trzech podstronach (docs/faza-4/tresci-trzy-podstrony-po-panelach.md:74)."
+    },
+    "FunkcjeWyniki.mod5_poco": {
+      "liczby": {
+        "pl": ["256"],
+        "en": ["256"],
+        "de": ["256"]
+      },
+      "kategorie": ["identyfikator"],
+      "pokrycie": "content/tabela-obietnic.md:148 („Świadectwo (SHA-256, eksport CSV)”); content/inwentarz-funkcji.md:45-46; decyzja D-C3 (tabela obietnic:5 — „odcisk”, nie „podpis”)",
+      "uzasadnienie": "„256” to nazwa algorytmu. Wpis w facts.json sugerowałby, że wartość zmierzono i że mogłaby wyjść inna."
+    },
+    "FunkcjeZespol.mod1_poco": {
+      "liczby": {
+        "pl": ["sześć"],
+        "en": ["six"],
+        "de": ["sechs"]
+      },
+      "kategorie": ["cecha-funkcji"],
+      "pokrycie": "content/tabela-obietnic.md:110 („kreator wdrożeniowy (6 kroków)”); content/inwentarz-funkcji.md:58,117; potwierdzone odczytem i18n aplikacji przy Etapie C (pl.json:6686-6691 — Witaj / Twój Profil / Twój Cel / Social Media / Twoja Strona / Gotowe!)",
+      "uzasadnienie": "Jedyna liczba w tym zestawie policzona bezpośrednio w aplikacji, nie tylko w tabeli. Wyliczenie NAZW kroków zdjęto przy Etapie C, bo tabela i aplikacja się rozjeżdżały — liczba została, bo zgadza się w obu."
+    },
+    "FunkcjeZespol.mod3_nazwa": {
+      "liczby": {
+        "pl": ["90"],
+        "en": ["90"],
+        "de": ["90"]
+      },
+      "kategorie": ["nazwa-wlasna"],
+      "pokrycie": "content/tabela-obietnic.md:112; docs/faza-2/slownik-nazw.md (nazwa obowiązująca)",
+      "uzasadnienie": "Nagłówek modułu to sama nazwa programu."
+    },
+    "FunkcjeZespol.mod3_poco": {
+      "liczby": {
+        "pl": ["90", "cztery"],
+        "en": ["90", "four"],
+        "de": ["90", "vier"]
+      },
+      "kategorie": ["nazwa-wlasna", "cecha-funkcji"],
+      "pokrycie": "content/tabela-obietnic.md:112; fazy potwierdzone w kodzie aplikacji (first90-service.ts:62-67, raport Z1)",
+      "uzasadnienie": "Jak DlaKogo.s2_robi_2 — ten sam moduł opisany na podstronie zespołu."
+    },
+    "FunkcjeZespol.mod5_poco": {
+      "liczby": {
+        "pl": ["czterech"],
+        "en": ["four"],
+        "de": ["vier"]
+      },
+      "kategorie": ["cecha-funkcji"],
+      "pokrycie": "content/tabela-obietnic.md:114",
+      "uzasadnienie": "Jak DlaKogo.s3_robi_1 — ten sam Paszport zgodności opisany na podstronie zespołu."
+    },
+    "Obawy.naglowek": {
+      "liczby": {
+        "pl": ["sześć"],
+        "en": ["six"],
+        "de": ["sechs"]
+      },
+      "kategorie": ["samoopis"],
+      "kontrola": "obawy-liczba-par",
+      "pokrycie": "sekcja obaw na stronie głównej — pary Obawy.p1/o1 … Obawy.p6/o6 w src/i18n/messages/*.json",
+      "uzasadnienie": "Nagłówek liczy własną sekcję, więc jego prawdziwość sprawdza się policzeniem par, nie odczytem aplikacji. Kontrola „obawy-liczba-par” robi to przy każdym przebiegu bramki: dodanie siódmej pary zapala czerwień, zanim nagłówek zdąży skłamać."
+    },
+    "Obawy.o1": {
+      "liczby": {
+        "pl": ["90"],
+        "en": ["90"],
+        "de": ["90"]
+      },
+      "kategorie": ["nazwa-wlasna"],
+      "pokrycie": "content/tabela-obietnic.md:112; brief: docs/faza-2/brief-obawy.md:33",
+      "uzasadnienie": "Sama nazwa programu w odpowiedzi na obawę „czy to trudne?”."
+    },
+    "Obawy.o4": {
+      "liczby": {
+        "pl": ["256"],
+        "en": ["256"],
+        "de": ["256"]
+      },
+      "kategorie": ["identyfikator"],
+      "pokrycie": "content/tabela-obietnic.md:148; decyzja D-C3; rejestr warunków powrotu poz. 20",
+      "uzasadnienie": "Jak FunkcjeWyniki.mod5_poco — nazwa algorytmu, nie wynik pomiaru."
+    },
+    "Obawy.o6": {
+      "liczby": {
+        "pl": ["czterech"],
+        "en": ["four"],
+        "de": ["vier"]
+      },
+      "kategorie": ["cecha-funkcji"],
+      "pokrycie": "content/tabela-obietnic.md:114; brief: docs/faza-2/brief-obawy.md:28,45; treść źródłowa: docs/faza-2/panel-obawy.md:66",
+      "uzasadnienie": "Zakres skanera Paszportu zgodności; granica („ostatnie słowo ma twoje IT”) stoi w tym samym zdaniu."
+    },
+    "ObrazyFilarow.filar3": {
+      "liczby": {
+        "pl": ["90"],
+        "en": ["90"],
+        "de": ["90"]
+      },
+      "kategorie": ["nazwa-wlasna"],
+      "pokrycie": "content/tabela-obietnic.md:112; tekst alternatywny zrzutu Z6 (design/pipeline-obrazow.json)",
+      "uzasadnienie": "Opis alternatywny zrzutu ekranu — nazywa program widoczny na obrazie."
+    }
+  }
+}

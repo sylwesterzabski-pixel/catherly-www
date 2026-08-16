@@ -58,7 +58,17 @@ nie onieśmielać. Reakcja graniczna z ADR-013 działa też dla tekstu:
    „gotowa", „zdecydowałaś", „użytkowniczka", „klientka". Formy męskie
    lub „męskie domyślne" nie występują w treści; jeśli dokument prawny
    wymaga innej formy, rozstrzyga to ADR, nie nawyk.
-5. Każda liczba pochodzi z `content/facts.json` — bez wyjątku (bramka).
+5. **Liczba na stronie ma zapisane źródło albo jej nie ma.** Wartość
+   **zmierzona** pochodzi z `content/facts.json` i wchodzi do zdania
+   przez zmienną — cyfra wpisana ręcznie nie przejdzie bramki. Liczby,
+   które pomiarem nie są, mają wpis w `content/liczby-w-tresci.json`
+   (pokrycie + uzasadnienie): nazwa własna („Pierwsze 90 Dni"),
+   identyfikator („SHA-256"), cecha funkcji z tabeli obietnic („cztery
+   fazy", „sześć kroków" — decyzja D-D16), samoopis strony („Sześć
+   obaw"). `bramka:liczby` czyta obie warstwy: JSX **i** `messages`.
+   Czego nie czyta — świadomie: rodziny „jeden / one / ein" (w trzech
+   językach rodzajnik albo idiom) i liczebników porządkowych. Tam cisza
+   bramki nie jest pokryciem; odpowiada redakcja.
 6. Superlatyw bez pokrycia w faktach nie istnieje. „Najlepszy",
    „jedyny", „niezastąpiony" — wypadają zawsze.
 7. **Wykrzyknik nie występuje** w tekście strony.

@@ -1,5 +1,6 @@
 {
-  "_opis": "Jedyne źródło prawdy dla każdej liczby użytej na stronie (Prawo 1, PLAN.md sekcja 2). Komponent liczby IMPORTUJE wartość stąd — literalna liczba w JSX nie przechodzi lintera (bramka:liczby). Format wpisu: klucz → { wartosc, zrodlo, data_pomiaru }.",
+  "_opis": "Jedyne źródło prawdy dla każdej ZMIERZONEJ liczby użytej na stronie (Prawo 1, PLAN.md sekcja 2). Komponent liczby IMPORTUJE wartość stąd — literalna liczba w JSX nie przechodzi lintera (bramka:liczby). Format wpisu: klucz → { wartosc, zrodlo, data_pomiaru }.",
+  "_opis_granica": "Nie każda liczba na stronie jest pomiarem: „Pierwsze 90 Dni” to nazwa własna, „SHA-256” to identyfikator algorytmu, „cztery fazy” to cecha funkcji z content/tabela-obietnic.md (decyzja D-D16). Takie liczby NIE mają tu wpisu — miałyby fałszywy status wartości zmierzonej. Ich rozstrzygnięcia trzyma content/liczby-w-tresci.json i pilnuje ta sama bramka (przebieg 2, warstwa src/i18n/messages). Dodane 2026-08-16 przy zamykaniu poz. T6 rejestru warunków powrotu.",
   "_przyklad_formatu": {
     "liczba-jezykow": {
       "wartosc": 0,
