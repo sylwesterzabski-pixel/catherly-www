@@ -43,13 +43,14 @@ jest ściśle o treści podstron funkcji.
 |---|---|---|---|
 | T1 | Selektywne ładowanie przestrzeni komunikatów per strona (`next-intl` serializuje KOMPLET komunikatów do ładunku każdej strony) | `src/i18n/`, `src/app/[locale]/**` | Blok designu — decyzja właściciela 2026-08-14 |
 | T2 | Audyt nieodwracalnych (ADR-018 pkt 4) — bramka `nieodwracalne` PLANOWO czerwona | `docs/audyt/` | Faza 6 — audyt całościowy przedpremierowy, nie częściowy po etapie (decyzja właściciela 2026-08-14) |
-| T3 | Pomiar wydajności na preview Vercel + mediana jako werdykt (kod gotowy, tryb NIEAKTYWNY) | `lighthouserc.cjs`, `.github/workflows/bramki.yml` | Udostępnienie preview przez właściciela (ochrona wdrożeń) + potwierdzenie, że mierzony adres odpowiada testowanemu commitowi |
+| ~~T3~~ **ZAMKNIĘTE 2026-08-16** | Pomiar wydajności na preview Vercel + mediana jako werdykt (kod gotowy, tryb NIEAKTYWNY) | `lighthouserc.cjs`, `.github/workflows/bramki.yml`, `scripts/reprezentant.mjs`, `scripts/werdykt-po-lcp.mjs`, `docs/faza-4/bramka-na-preview.md` | **Warunek spełniony 2026-08-16, bramka DOMKNIĘTA decyzją właściciela** — cztery człony z dowodami: (1) **transport** — preview odblokowane przez Protection Bypass for Automation, sekret w GitHubie, wartość nigdzie nie drukowana; (2) **prowieniencja** — strażnik `bramka:preview` potwierdza HTTP 200 i 3/3 znaczniki wydania, a rozgrzewka sprawdza zgodność wydania na **każdej** trasie (przebieg 31957994362: „7/7 tras, 116 pobrań zasobów"); (3) **reguła werdyktu** — **NIE `mediana`** z tego wiersza: chimera zszywająca metryki z różnych przebiegów została zabita świadomie, werdykt zapada na JEDNYM prawdziwym przebiegu o medianowym LCP (§4b dokumentu bramki); (4) **rozgrzewka** przed pomiarem. Wynik: 7/7 tras zielonych na `26c38f2`. **Pozostaje otwarty rozrzut pomiaru → T10** |
 | T4 | Obietnica „H1 ≤ 3 linie" — część desktopowa (768 px wzwyż) naprawiona przez ADR-029, ale potwierdzona tylko pomiarem lokalnym; **poniżej 768 px nadal nieprawdziwa** (DE 4–5 linii) i niepilnowana | `src/components/Hero.module.css`, `e2e/hero.spec.ts`, `docs/adr/029-prog-i-proporcje-hero.md` | (1) zielony pełny zestaw e2e jako dowód naprawy desktopu, (2) rozstrzygnięcie właściciela, czy obietnica ma obejmować < 768 px — jeśli tak, `clamp` względem kolumny zamiast okna + strażnik na 390 px |
 | ~~T5~~ **ZAMKNIĘTE 2026-08-15** | Strony zbudowane w Fazie 4 (cztery podstrony filarów, /dla-kogo) są w ADR-014 wymienione POZA zakresem startu; nie znaleziono ADR-a uchylającego | `docs/adr/014-zakres-zamrozony-iteracji-1.md`, `docs/PLAN.md` §11 | **Rozstrzygnięte przez właściciela 2026-08-15: pięć adresów WCHODZI do zakresu startu** (ADR-014, doprecyzowanie 2026-08-15 II). Uzasadnienie: strony istnieją, są opublikowane ×3 języki, mają testy i przechodzą bramki — rozbieżność była luką formalną, nie sporem o zakres. Forma: doprecyzowanie, nie ADR uchylający; właściciel nazwał to luką formalną świadomie. Pozostałe pozycje listy „poza zakresem startu" **nietknięte** |
 | ~~T6~~ **ZAMKNIĘTE 2026-08-16** | `bramka:liczby` **nie widziała warstwy `messages`** — skanowała wyłącznie `.tsx`/`.jsx` i tylko tekst z **cyfrą** poza klamrami, więc każdy ciąg renderowany przez `{t(...)}` był poza bramką, a liczebniki słowne były niewidoczne wszędzie. Karta tonu pkt 5 („bez wyjątku (bramka)") była wobec tego stanu nieprawdziwa | `scripts/lint-liczby.mjs`, `content/liczby-w-tresci.json`, `content/karta-tonu.md:61`, `docs/faza-4/bramka-liczby-warstwa-tresci.md` | **Wykonane 2026-08-16** (zlecenie właściciela po pushu 083d9f0): przebieg 2 bramki czyta `src/i18n/messages/*.json` — cyfry **i** liczebniki słowne 2–1000 ×3 języki; rozstrzygnięcia per ciąg w `content/liczby-w-tresci.json` (kategoria + pokrycie + komplet liczb, zmiana liczby zapala czerwień). **Inwentarz wyszedł na 16 kluczy, nie 14** — szacunek z 2026-08-15 był o dwa za niski (rozbiór: dokument roboczy §2). Karta tonu pkt 5 przepisana: mówi, co bramka pilnuje, i nazywa dwa miejsca, których NIE pilnuje (rodzina „jeden/one/ein", liczebniki porządkowe). Dowody: 11 mutacji, dokument roboczy §5 |
 | T7 | **Zdania z datą ważności — brak rejestru i brak mechanizmu.** W serwisie stoją zdania prawdziwe wyłącznie DO PREMIERY, a w repozytorium nie ma ani bramki, ani adnotacji, ani listy, która by je znała. W dniu premiery stają się fałszem o własnym serwisie i nic tego nie zapali. Znane dziś: `StronaLogowania.tresc` („Logowanie będzie dostępne przy premierze aplikacji." ×3 języki), `Stopka.wkrotce` przy czterech dokumentach prawnych i przy kontakcie (`(wkrótce)` / `(coming soon)` / `(folgt in Kürze)`) | `src/i18n/messages/{pl,en,de}.json`, `src/components/Stopka.tsx:74-89`, `src/app/[locale]/login/page.tsx` | **Decyzja właściciela 2026-08-15: pozycja na checkliście premiery, BEZ budowy mechanizmu.** Zakres: inwentarz wszystkich zdań przedpremierowych ×3 języki z decyzją per zdanie (usunąć / przepisać / aktywować link). Wykonanie: przed premierą, nie teraz. Świadomie nie budujemy bramki wygasania — dług ma być **zapisany**, nie zapamiętany |
 | T8 | **`/pomoc` wycofana z zakresu startu** (ADR-014, doprecyzowanie 2026-08-15 III) po trzech kompletach werdyktów adwersaryjnych NIE PRZECHODZI. Strona nie istnieje: brak w `ISTNIEJACE_SCIEZKI`, brak w mapie stopki, brak pliku | `docs/adr/014-zakres-zamrozony-iteracji-1.md`, `docs/faza-4/etap-e-pomoc-decyzje.md`, `src/i18n/sciezki.ts` | **Powrót po premierze, warunek potrójny (właściciel 2026-08-15):** (1) treść **z odczytu** — realne pytania użytkowniczek zamiast domysłów redakcji, (2) **istniejący kanał kontaktu**, nie stan „(wkrótce)", (3) **onboarding przetestowany**, nie zapowiedziany. Przed spełnieniem wszystkich trzech strona nie ma czym być — zamknięcie E-1 |
 | T9 | **Wskaźnik zagnieżdżenia w mapie stopki — wariant z kreską odłożony.** Sędzia panelu chciał pionowej kreski wzmacniającej hierarchię czterech filarów pod `/funkcje`. Wdrożone **bez kreski**: `--kolor-rola-kreska` daje na powierzchni stopki **1,34:1** przy progu 3:1 (WCAG 1.4.11), więc kreska mogłaby wystąpić wyłącznie jako dekoracja — a dekoracja obok wcięcia myli co do tego, co **niesie** informację. Hierarchię trzyma dziś wcięcie (`.stopka li ul`) plus drzewo DOM (`<ul>` wewnątrz `<li>` rodzica) | `src/components/Stopka.module.css`, `src/styles/generated/tokeny.css:67`, `docs/faza-4/etap-e-pomoc-decyzje.md` §WYKONANIE | **Decyzja właściciela 2026-08-16: BEZ kreski; wariant `--kolor-rola-tekst-drugorzedny` (7,07:1) → do przeglądu przy bloku designu.** Nie jest to dług techniczny do spłaty, tylko decyzja **wizualna** właściciela odłożona do miejsca, gdzie ogląda się żywy materiał, a nie liczbę kontrastu w oderwaniu. Warunek powrotu: blok designu — łącznie z T1 i mobilną częścią T4 |
+| T10 | **Rozrzut pomiaru szerszy niż zapas do progu — na 7 z 7 tras.** Przebieg 31957994362 (`26c38f2`, 7 tras × 5 przebiegów): zapasy reprezentantów **+239…+403 ms**, a rozrzut LCP w obrębie jednej trasy **328…1441 ms** (`/funkcje/tresci`: 947 · 1559 · **2388** · 1397 · 957 ms). Reguła werdyktu zdejmuje wpływ pojedynczego wyskoku na **wybór** reprezentanta, ale rozrzutu **nie zmniejsza**: ten sam kod zmierzony ponownie może wskazać inny przebieg, a runner potrafi zmienić `benchmarkIndex` o połowę między porami dnia (2161–2415 rano, 3194–3368 wieczorem 2026-08-16). Zieleń stoi więc na medianie, nie na zapasie odpornym na runnera | `lighthouserc.cjs` (`numberOfRuns: 5`), `scripts/reprezentant.mjs`, `docs/faza-4/bramka-na-preview.md` §4b | **Decyzja właściciela 2026-08-16: ZAMROŻONE ŚWIADOMIE.** Warunek powrotu: **bramka przerzuci się NA MEDIANIE, a nie na wyskoku** — czerwień zapadnie na przebiegu o medianowym LCP. Sam szeroki rozrzut ani wyskok ponad próg w przebiegu **niewybranym** warunku nie spełniają: to jest dokładnie ten hałas, który reguła werdyktu ma pomijać |
 
 **T1 — pomiar, nie przypuszczenie.** Ustalone przy Etapie D:
 dopisanie trzech kluczy członu i rozbicie F8 powiększyło HTML strony
@@ -98,6 +99,28 @@ tę testowaną — inna postać tego samego fałszywego zielonego. Kandydat:
 znacznik z `VERCEL_GIT_COMMIT_SHA` w dokumencie i sprawdzenie go przez
 strażnika. Nie zbudowane, bo bez dostępu do preview nie da się tego
 zweryfikować, a niezweryfikowane liczy się jak niedziałające.
+
+**T3 — ZAMKNIĘTE 2026-08-16.** Trzy akapity powyżej opisują stan
+z 14 sierpnia i zostają jako historia. Dziś preview jest dostępne dla CI
+przez Protection Bypass for Automation (sekret w GitHubie; wartość nie
+jest drukowana nigdzie — łącznie z nagłówkiem `Set-Cookie` z preview,
+który niesie ją w jawnym base64). Pytanie „otwarte i **nierozwiązane**"
+— czy mierzymy TEN commit — ma odpowiedź **wykonaną**, nie
+zaprojektowaną: strażnik `bramka:preview` sprawdza znaczniki wydania
+w dokumencie, a rozgrzewka powtarza sprawdzenie na **każdej** trasie.
+Z przebiegu 31957994362: „✔ Cel pomiaru potwierdzony: HTTP 200,
+42837 B, 3/3 markerów obecnych" i „✔ Rozgrzane: 7/7 tras, 116 pobrań
+zasobów. Wydanie zgodne na każdej trasie."
+
+Jedno słowo z wiersza T3 jest przy tym **nieprawdziwe wobec dzisiejszej
+bramki** i dlatego stoi przy nim sprostowanie: werdyktem **nie jest
+`mediana`**. Mediana każdej metryki osobno zszywa LCP z przebiegu A
+z TBT z przebiegu B i opisuje ładowanie, którego nigdy nie było —
+została zabita świadomie. Wyrok zapada na **jednym prawdziwym
+przebiegu**, wybranym po medianowym LCP, czyli po metryce, na której
+stoi próg (`scripts/reprezentant.mjs`, rozstrzygnięcie właściciela
+2026-08-16, rozbiór: `docs/faza-4/bramka-na-preview.md` §4b). Zamknięcie
+T3 nie zamyka **rozrzutu** pomiaru — ten dostał własną pozycję T10.
 
 **T4 — obietnica panelu K2 trzyma się jednego kroju i jednej
 szerokości.** Wyszło z bramki pełnego zestawu (przebieg 31833329728):
@@ -278,6 +301,42 @@ słowne), (2) inwentarz 14 istniejących ciągów z rozstrzygnięciem
 z adnotacją, (3) sprostowanie karty tonu pkt 5 dopiero **po** naprawie,
 żeby zapis znów opisywał stan, a nie zamiar. Do tego czasu każda nowa
 treść z liczbą przechodzi przez człowieka, bo bramka jej nie zobaczy.
+
+**T10 — co dokładnie zostało zamrożone (w rozmowie: „O5").** Nie jest
+to podejrzenie, tylko liczby z przebiegu 31957994362 (`26c38f2`,
+bramka **zielona** 7/7). Kolumny: reprezentant · zapas do progu 1800 ms
+· rozrzut LCP między pięcioma przebiegami tej samej trasy.
+
+| Trasa | Reprezentant | Zapas | Rozrzut |
+|---|---|---|---|
+| `/` | 1533 ms | +267 | 328 ms |
+| `/funkcje` | 1417 ms | +383 | 683 ms |
+| `/dla-kogo` | 1511 ms | +289 | 965 ms |
+| `/funkcje/pozyskiwanie` | 1475 ms | +325 | 462 ms |
+| `/funkcje/tresci` | 1397 ms | +403 | **1441 ms** |
+| `/funkcje/zespol` | 1561 ms | +239 | 651 ms |
+| `/funkcje/wyniki` | 1542 ms | +258 | 597 ms |
+
+Na **każdej** trasie rozrzut jest szerszy od zapasu, miejscami
+kilkukrotnie. Znaczy to tyle, że o zieleni współdecyduje stan runnera:
+`benchmarkIndex` tego samego pomiaru chodził 2026-08-16 od ~2161 rano
+do ~3368 wieczorem, a przy `throttlingMethod: "simulate"` wolniejszy
+runner mnoży zmierzoną pracę CPU. Reguła werdyktu tego **nie leczy**
+i nigdy nie miała leczyć: ona wybiera reprezentanta po metryce, na
+której stoi próg, więc odbiera wyskokowi prawo do wydania wyroku —
+ale wyskok dalej się zdarza i dalej jest w danych widoczny.
+
+Zamrożenie jest świadome i ma cenę zapisaną wprost: bramka wydajności
+jest dziś **wskaźnikiem regresu, nie gwarancją progu**. Wyłapie zmianę,
+która przesunie całą trasę, i przepuści taką, która mieści się
+w hałasie. Warunek powrotu właściciela — „przerzuci się **na medianie**,
+nie na wyskoku" — jest wobec tego dobrany do tego, czym bramka dziś
+jest: dopóki reprezentant trzyma się pod progiem, hałas kosztuje
+niepewność, nie fałszywy alarm. Dopiero czerwień na reprezentancie
+znaczy, że mediana wyszła z budżetu, i wtedy trzeba rozstrzygnąć, czy
+to regres kodu, czy pomiar wymaga wzmocnienia. Oczywisty lek
+(więcej przebiegów) nie jest z góry wybrany: zwężałby rozrzut mediany,
+ale wydłuża pomiar i nie usuwa przyczyny, którą jest zmienność runnera.
 
 **„Najbliższe zlecenie Z" (poz. 17, 18, 19, 23, 24) = Z7**, spisane
 2026-08-13: `docs/faza-4/zlecenie-Z7.md`. Do czasu odpowiedzi okna
