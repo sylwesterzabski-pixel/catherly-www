@@ -132,8 +132,13 @@ nie reszta zmian.
 **Kontekst szerszy od Z6:** „/" miało przed dostawą zapas **96 ms**
 przy render delay 1267 ms dla zwykłego nagłówka tekstowego. Budżet na
 tej stronie był wyczerpany, zanim cokolwiek doszło; dowolny dodatek go
-przebije. Rozbiór tego render delay to osobne zadanie, zlecone
-2026-08-16.
+przebije. Rozbiór tego render delay wykonano — **wynik odwraca wniosek
+tej sekcji**: `docs/faza-4/render-delay-glowna.md`. Strona maluje się
+realnie w 88–97 ms; 1703 ms to liczba wyłącznie symulowana, a jej
+największy składnik jest kosztem transportu, na którym mierzy bramka.
+Tabela wyżej pozostaje prawdziwa dla HTTP/1.1 + gzip i nieprawdziwa dla
+transportu produkcyjnego — patrz zaktualizowany warunek włączenia
+w sekcji 6.
 
 ## 6. Decyzja i przełącznik
 
@@ -162,10 +167,32 @@ Stan wyłączony nie jest ciszą, tylko innym pytaniem. Testy pilnują:
   +150 ms po cichu,
 - że filar pokazuje pustą ramkę z `aria-hidden`, jak przed dostawą.
 
-**Warunek włączenia:** zapas na „/" co najmniej 150 ms na same zrzuty
-plus rezerwa designu ~200 ms, czyli mediana LCP „/" bez zrzutów
-w okolicach 1450 ms lub niżej. Włączenie = zmiana `wlaczone` na `true`
-i ponowny pomiar. Nic więcej.
+**Warunek włączenia — zaktualizowany 2026-08-16 po rozbiorze render
+delay** (`docs/faza-4/render-delay-glowna.md`; decyzja właściciela:
+„strona zdrowa, termometr zły"):
+
+> Bramka LCP mierzy na **transporcie produkcyjnym** — preview Vercel,
+> HTTP/2 + brotli.
+
+Poprzedni warunek („mediana ~1450 ms na „/"") jest **unieważniony**.
+Rozbiór wykazał, że 795 ms z 1703 ms to baseline Next 15.5.23 +
+React 19.2.8 — dwa chunki, zero kodu aplikacji — i że koszt to
+**rundy sieciowe, nie kilobajty**: brotli na HTTP/1.1 dał +3 ms,
+dopiero na HTTP/2 −150 ms. Ta sama gałąź, ten sam build:
+
+| transport | `/` bez Z6 | `/` z Z6 | koszt Z6 | zapas do 1800 ms |
+| --- | --- | --- | --- | --- |
+| HTTP/1.1 + gzip (bramka dziś) | 1703 ms | 1856 ms ⛔ | **+153 ms** | −56 ms |
+| HTTP/2 + gzip | 1426 ms | 1427 ms | **+1 ms** | 373 ms |
+| HTTP/2 + brotli (Vercel) | **1276 ms** | **1276 ms** ✅ | **+0 ms** | **524 ms** |
+
+Cztery warianty 768w AVIF były pobrane w **każdym** przebiegu — to nie
+jest pułapka lanterny, tylko multipleksowanie: HTTP/2 zdejmuje rundy,
+nie bajty. Zapas 524 ms mieści Z6 (150 ms) plus rezerwę designu
+(~200 ms) i zostawia 174 ms.
+
+Włączenie = zmiana `wlaczone` na `true`; **dowodem jest pomiar na
+preview**, nie ta tabela.
 
 ## 7. Dowody mutacyjne
 
