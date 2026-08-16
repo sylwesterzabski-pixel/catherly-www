@@ -25,6 +25,7 @@
  * linii wyżej.
  */
 import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 
 const PO_CZERWIENI = process.argv.includes("--po-czerwieni");
 const BAZA = (process.env.LHCI_BAZA || "").trim();
@@ -35,6 +36,25 @@ const rejestr = JSON.parse(
 );
 const OSADZENIE = rejestr.osadzenieNaGlownej;
 const P = OSADZENIE.pomiarTransportu;
+
+// Regułę werdyktu CZYTAMY z lighthouserc.cjs, nie przepisujemy. Ten
+// wiersz raz już skłamał: po zmianie „median" → „median-run" adnotacja
+// dalej mówiła „MEDIANA z 3 przebiegów" (przebieg 31953862971), choć
+// bramka sądziła jeden przebieg reprezentatywny.
+const require = createRequire(import.meta.url);
+const AGREGACJA = (() => {
+  try {
+    return require("../lighthouserc.cjs")?.ci?.assert?.aggregationMethod || "optimistic";
+  } catch {
+    return null; // adnotacja nie ma prawa paść przez własny odczyt
+  }
+})();
+const OPIS_WERDYKTU = {
+  optimistic: "najlepszy z 3 przebiegów",
+  pessimistic: "najgorszy z 3 przebiegów",
+  median: "MEDIANA każdej metryki osobno z 3 przebiegów",
+  "median-run": "JEDEN przebieg reprezentatywny z 3 (najbliższy medianom FCP i TTI)",
+};
 
 const KRESKA = "─".repeat(68);
 
@@ -77,7 +97,9 @@ if (PREVIEW) {
   console.log(`Cel pomiaru: ${BAZA}`);
   console.log(
     "Zmienna LHCI_BAZA jest ustawiona, więc mierzymy wdrożenie Vercela\n" +
-      "(HTTP/2 + brotli), a werdyktem jest MEDIANA z 3 przebiegów.\n" +
+      "(HTTP/2 + brotli). Werdykt: " +
+      (OPIS_WERDYKTU[AGREGACJA] || `reguła „${AGREGACJA}" z lighthouserc.cjs`) +
+      ".\n" +
       "Strażnik celu pomiaru potwierdził wcześniej, że pod tym adresem\n" +
       "stoi strona Catherly z TEGO commita — inaczej ten krok by nie ruszył.",
   );

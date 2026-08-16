@@ -42,6 +42,37 @@ wartość.
 Alternatywa: całkiem wyłączyć ochronę dla Preview. Wtedy sekret nie jest
 potrzebny, ale preview staje się publiczny — decyzja właściciela.
 
+#### Rotacja: dodanie klucza jest łatwe, USUNIĘCIE starego nie
+
+Kluczy może współistnieć kilka i wszystkie działają — stąd rotacja bez
+przestoju: dodaj nowy, wklej go do GitHuba, dopiero potem usuń stary.
+Pierwsze dwa kroki wykonał właściciel 2026-08-16 (klucz `LHCI-2`).
+
+**Trzeci krok nie przechodzi przez API.** Zmierzone, nie odczytane:
+
+```
+PATCH /v1/projects/{id}/protection-bypass
+{"revoke":{"secret":"<stary>","regenerate":false}}
+→ 400 bad_request
+  "One bypass must be the VERCEL_AUTOMATION_BYPASS_SECRET
+   Environment Variable set on deployments."
+```
+
+Jeden z kluczy jest tym, który Vercel wstrzykuje wdrożeniom jako
+systemową zmienną `VERCEL_AUTOMATION_BYPASS_SECRET`, i tego jednego
+API nie pozwala odwołać. Dodanie klucza w panelu **nie przenosi** tego
+przypisania — nowy klucz działa jako nagłówek obejścia, ale zmienną
+systemową nadal niesie stary.
+
+Skutek dla rotacji: po „dodaj nowy + wklej do GitHuba" **stary klucz
+dalej żyje**. Rotacja jest wtedy w połowie: nowy działa, stary nie
+umarł. Domknięcie wymaga albo `regenerate: true` (Vercel zabija stary
+i od razu tworzy w jego miejsce nowy, przypisany do zmiennej — tę
+wartość trzeba wtedy przepisać do GitHuba), albo tej samej operacji
+z panelu. Odczyt stanu
+bez wynoszenia wartości: `protectionBypass` z `GET /v9/projects/{id}`
+zawiera sekrety JAKO KLUCZE MAPY — wypisuj skrót SHA-256, nigdy klucz.
+
 ### (b) GitHub: sekret
 
 `GitHub → catherly-www → Settings → Secrets and variables → Actions →
@@ -128,7 +159,7 @@ i czyta te dwie wartości.
 | element | zachowanie przy pustym `LHCI_BAZA` | po ustawieniu |
 | --- | --- | --- |
 | `lighthouserc.cjs` → cel | `http://localhost:3000` + `npm run start` | adres z `LHCI_BAZA`, bez uruchamiania serwera |
-| `lighthouserc.cjs` → werdykt | `optimistic` (najlepszy przebieg) | **`median`** z 3 przebiegów |
+| `lighthouserc.cjs` → werdykt | `optimistic` (najlepszy przebieg) | **`median-run`**: jeden przebieg z 3, wybrany po FCP i TTI (2026-08-16) |
 | `lighthouserc.cjs` → nagłówki | brak | `x-vercel-protection-bypass` z sekretu |
 | workflow → strażnik celu | krok pomijany | `npm run bramka:preview` **musi** przejść |
 | workflow → adnotacja | „tryb lokalny, czerwień termometru" | „tryb preview, czytaj wynik dosłownie" |
