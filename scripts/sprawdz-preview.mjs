@@ -230,7 +230,9 @@ if (!wynik) {
       "      CZEKANIE_NA_WDROZENIE_S w workflow;\n" +
       "  (b) LHCI_BAZA wskazuje alias INNEJ gałęzi niż mierzona;\n" +
       "  (c) deploy dla tej gałęzi w ogóle nie powstał (vercel.json\n" +
-      "      wyłącza deploye z main — na main to jest stan oczekiwany).\n" +
+      "      wyłącza deploye z main — na main to jest stan OCZEKIWANY\n" +
+      "      i przyjęty świadomie do Fazy 7: ADR-030. Zdejmuje go\n" +
+      "      włączenie wdrożenia produkcyjnego, nie wyjątek w bramce).\n" +
       "  Bramka NIE mierzy zastanego wdrożenia „bo jakieś jest”: pomiar\n" +
       "  cudzego commita byłby zielenią bez pokrycia.",
   );

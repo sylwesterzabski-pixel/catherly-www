@@ -155,6 +155,22 @@ stan oczekiwany i przewidziany przez właściciela 2026-08-16:
 > Bramka LCP na CI może świecić czerwono na „/" do czasu przeniesienia
 > pomiaru — to czerwień **termometru**, nie strony.
 
+### Zmierzone na CI (nie tylko przewidziane)
+
+| przebieg | commit | zrzuty na „/" | co padło | wynik |
+| --- | --- | --- | --- | --- |
+| 31940798372 | `6a2c7bb` | **wyłączone** | `/funkcje/pozyskiwanie` | **1800,08 ms** przy progu 1800 |
+| 31941921317 | `4ec6576` | włączone | `/` | 1941,9 ms (przebiegi 2070,02 / 1941,95 / 1950,87) |
+
+Pierwszy wiersz jest ważniejszy od drugiego. Bramka padła tam na trasie,
+która **ze zrzutami Z6 nie ma nic wspólnego**, i to o 0,08 ms — czyli
+w trybie lokalnym na runnerze GitHuba cały pomiar leży na kresce
+**niezależnie od Z6**. Ten sam commit `4ec6576` na laptopie dał na „/"
+1819 ms, na runnerze 1941,9 ms: runner jest wolniejszy, więc liczby
+w tabeli transportów (z rozbioru na laptopie) są niższe niż to, co widać
+w logu CI. Przenoszalna jest **różnica między transportami**, nie
+wartość bezwzględna — i ta różnica jest większa niż całe przekroczenie.
+
 Żeby nikt nie zaczął ciąć strony pod złe narzędzie, adnotacja z liczbami
 leci do logu CI przy **każdym** przebiegu bramki
 (`scripts/tryb-pomiaru.mjs`, kroki „Tryb pomiaru i jak czytać wynik"
@@ -197,7 +213,7 @@ zastanego wdrożenia „bo jakieś jest".
 
 ---
 
-## 7. Czego to NIE rozwiązuje: `main` (decyzja właściciela, otwarta)
+## 7. `main` — rozstrzygnięte: wdrożenie produkcyjne przy Fazie 7
 
 Mechanizm z sekcji 4 działa dla gałęzi fazowych i dla PR-ów, bo Vercel
 wdraża ich głowę. Dla **`main` nie zadziała**, i to nie jest przeoczenie
@@ -206,34 +222,64 @@ tylko skutek świadomej wcześniejszej decyzji: `vercel.json` ustawia
 z main do czasu publikacji"). Skoro `main` nie ma wdrożenia, nie ma czego
 mierzyć na transporcie produkcyjnym.
 
-Po ustawieniu `LHCI_BAZA` konsekwencja jest taka:
+**Rozstrzygnięcie właściciela z 2026-08-16** — pełny zapis w
+[ADR-030](../adr/030-wdrozenie-produkcyjne-main-przy-fazie-7.md):
 
-| gałąź | co się stanie |
+> `main` dostaje własne wdrożenie produkcyjne na Vercelu,
+> `deploymentEnabled.main = true` **przy Fazie 7** — merge Fazy 7 to
+> premiera, a wdrożenie produkcyjne i tak wtedy musi istnieć. Do tego
+> czasu czerwień środowiskowa na `main` jest **przyjęta świadomie**
+> i odnotowana. **Zero wyjątków w bramce.**
+
+Podstawa: `main` nie przyjmuje commitów poza merge'ami faz, więc
+przebiegów na `main` jest tyle, ile merge'ów — czerwień nie zaszumia
+codziennej pracy, bo ta dzieje się na gałęziach fazowych.
+
+### Kiedy dokładnie ta czerwień się pojawia
+
+| gałąź | po ustawieniu `LHCI_BAZA`, do Fazy 7 |
 | --- | --- |
 | `faza-*/**`, PR | preview istnieje → strażnik zielony → pomiar na HTTP/2 + brotli |
-| `main` | brak wdrożenia → strażnik czerwony po 420 s, z komunikatem (c) |
+| `main` | wdrożenia dla `main` brak → strażnik czerwony po 420 s |
 
-Sam **merge** to nie blokuje: ADR-020 pilnuje bramek na PR, a te będą
-mierzone na preview. Blokuje natomiast utrzymanie zasady „main zawsze
-zielony" po merge'u — CI na `main` świeciłoby czerwono z powodu
-środowiskowego.
+Okno tej czerwieni otwiera **pierwszy merge do `main` po ustawieniu
+`LHCI_BAZA`** (dopóki zmienna jest pusta, bramka na `main` mierzy
+lokalnie i zachowuje się jak dziś), a zamyka **merge Fazy 7**.
 
-Rozstrzygnięcie należy do właściciela; do tego czasu stan jest
-odnotowany, a nie ukryty. Trzy drogi, bez rekomendacji technicznej, bo
-wybór jest produktowy:
+Samego merge'a to nie blokuje: ADR-020 pilnuje bramek na PR, a te są
+mierzone na preview gałęzi. Czerwień pojawia się **za** bramką, już po
+merge'u — nie jest więc merge'em „przez uzasadnioną czerwień" i nie
+tworzy precedensu, przed którym ADR-020 powstał.
 
-1. **Włączyć deploye z `main`** (zdjąć `deploymentEnabled.main = false`)
-   i wskazać `LHCI_BAZA` na alias produkcyjny. Wymaga zgody na to, żeby
-   `main` faktycznie się wdrażał — czyli decyzji o publikacji.
-2. **Zostawić `main` bez wdrożenia** i przyjąć, że bramka wydajności na
-   `main` jest planowaną czerwienią do czasu publikacji — precedens
-   w repo istnieje (`Bramka: Nieodwracalne` jest planową czerwienią do
-   Fazy 6), ale każda planowa czerwień kosztuje czujność.
-3. **Wyłączyć Z6 na „/" przy merge'u do `main`** — jedna wartość
-   w rejestrze. Tanie, ale znaczy publikować stronę bez zrzutów, więc
-   to decyzja produktowa, nie techniczna.
+### Jak ją rozpoznać (bo planowa czerwień kosztuje czujność)
 
-Czego nie zrobiono i dlaczego: **nie** dodano wyjątku, który na `main`
-po cichu wraca do pomiaru lokalnego. Bramka pomijająca sama siebie na
-najważniejszej gałęzi to dokładnie ta klasa dziury, którą cały ten
-dokument zamyka.
+- pada **strażnik celu pomiaru**, nie asercja Lighthouse: w logu jest
+  `✖ CEL POMIARU NIEPOTWIERDZONY`, a **żadnej liczby LCP nie ma**, bo
+  `lhci` w ogóle się nie uruchamia;
+- komunikat mówi, co zastał: `pod adresem stoi wydanie <sha gałęzi>`
+  (gdy `LHCI_BAZA` wskazuje alias gałęzi fazowej) albo `adres
+  nieosiągalny`, i wskazuje przyczynę (b) lub (c).
+
+Każda inna czerwień w tym jobie — a zwłaszcza taka **z liczbą LCP** —
+nie jest tą czerwienią i wymaga rozbioru.
+
+### Co trzeba zrobić przy Fazie 7
+
+1. `vercel.json`: `git.deploymentEnabled.main` → `true` (albo usunąć blok
+   — domyślnie deploye są włączone).
+2. `LHCI_BAZA` → alias produkcyjny. Dziś to **jedna** zmienna
+   repozytorium na **jeden** adres, a od Fazy 7 `main` ma mierzyć
+   produkcję, gałęzie fazowe swoje preview — trzeba to rozdzielić
+   (środowiska GitHuba albo wyrażenie per gałąź w workflow). Wybór
+   należy do Fazy 7.
+3. Zdjąć adnotacje o planowej czerwieni: tę sekcję i przyczynę (c)
+   w `scripts/sprawdz-preview.mjs`.
+
+### Czego nie zrobiono i dlaczego
+
+**Nie** dodano wyjątku, który na `main` pomija strażnika albo po cichu
+wraca do pomiaru lokalnego — i nie doda się go także po ustawieniu
+`LHCI_BAZA`. Bramka pomijająca samą siebie na najważniejszej gałęzi to
+dokładnie ta klasa dziury, którą cały ten dokument zamyka. Cena tego
+rozstrzygnięcia jest zapłacona w widoczności czerwieni, nie w kodzie
+bramki.

@@ -107,6 +107,15 @@ console.log(
   `  (mediany LCP dla „/”, budżet ${P.budzet} ms; „zapas” liczony dla stanu` +
     ` osadzenia: ${OSADZENIE.wlaczone ? "WŁĄCZONE" : "wyłączone"})`,
 );
+if (!PREVIEW) {
+  console.log(
+    "  Liczby z rozbioru na laptopie. Runner GitHuba jest WOLNIEJSZY:\n" +
+      "  wynik poniżej będzie wyższy niż w kolumnie HTTP/1.1 i to nie jest\n" +
+      "  sprzeczność — 2026-08-16 na runnerze nawet trasa BEZ zrzutów Z6\n" +
+      "  (/funkcje/pozyskiwanie) wypadła na 1800,08 ms. Przenoszalna jest\n" +
+      "  RÓŻNICA między transportami, nie wartość bezwzględna.",
+  );
+}
 console.log("");
 console.log(
   `Osadzenie zrzutów Z6 na „/”: ${OSADZENIE.wlaczone ? "WŁĄCZONE" : "wyłączone"}` +

@@ -38,6 +38,7 @@ sprzeczności wygrywa.
 | 027 | Krój pisma — system-ui na premierę iteracji 1 | [027](027-kroj-pisma-system-ui-premiera.md) |
 | 028 | Tokeny wymiarów — promienie, kontener strony, próg układu | [028](028-tokeny-wymiarow-promienie-kontener-prog.md) |
 | 029 | Próg i proporcje kolumn hero — jedyny wyjątek od progu układu 48rem (ADR-028) | [029](029-prog-i-proporcje-hero.md) |
+| 030 | `main` dostaje wdrożenie produkcyjne przy Fazie 7 — do tego czasu planowa czerwień bramki wydajności na `main`, bez wyjątku w kodzie (dopełnia ADR-020) | [030](030-wdrozenie-produkcyjne-main-przy-fazie-7.md) |
 
 Wpisy 023–028 dopisano 2026-08-14 — powstały wcześniej, ale nie trafiły
 do tej tabeli. Pliki są źródłem, tabela tylko mapą; przy rozjeździe

@@ -30,6 +30,13 @@ przewidywane po Fazie 1, gdy pierwsze prawdziwe bramki zzielenieją.
   mechanicznie, nie kulturowo.
 - Reguła zapisana w CLAUDE.md (sekcja „Zakazy bezwzględne") — zna ją
   każdy agent w każdej sesji.
+- Dopisane 2026-08-16: [ADR-030](030-wdrozenie-produkcyjne-main-przy-fazie-7.md)
+  odnotowuje planową czerwień bramki wydajności **na samym `main`** (brak
+  wdrożenia produkcyjnego do Fazy 7). Nie jest to wyjątek od tego ADR-a:
+  dotyczy przebiegu **po** merge'u, a nie warunku przepuszczenia merge'a,
+  i nie powstaje żadna gałąź kodu omijająca bramkę. Kolejność zdań z tego
+  ADR-a zostaje: zieleń osiąga się dostarczeniem artefaktu — tutaj
+  wdrożeniem produkcyjnym — nigdy osłabieniem bramki.
 
 ## Data
 2026-08-08 (decyzja właściciela po pushu Fazy 0 na GitHub).
