@@ -63,3 +63,15 @@ krótko: nazwa pliku + rozmiar, albo „backup nieudany: <powód>".
 Niepowodzenie backupu (dysk odłączony, brak miejsca, błąd zapisu)
 zgłaszasz WYRAŹNIE i czekasz na decyzję właściciela — cichy brak backupu
 jest gorszy niż jego brak, bo usypia czujność. Nie udajesz sukcesu.
+
+**Kopie milowe (decyzja właściciela 2026-08-16).** Migawka oznaczona
+przez właściciela jako kamień milowy NIE leży wśród migawek rotacyjnych.
+Trafia do podfolderu `KAMIENIE-MILOWE/` w katalogu backupów na SSD
+i nosi w nazwie `NIE-USUWAC`. Powód jest mechaniczny, nie porządkowy:
+katalog rotacyjny ma dziś ponad 200 migawek i prędzej czy później ktoś
+je posprząta wzorcem `catherly-www-*.zip`; kopia milowa ma być **poza
+zasięgiem tego wzorca**, a nie tylko opatrzona prośbą w nazwie. Nazwa
+chroni przed człowiekiem, katalog chroni przed globem — potrzebne są
+obie warstwy. Po utworzeniu kopii milowej weryfikujesz ją tak samo jak
+zwykłą (test integralności) i dodatkowo porównujesz sumę SHA-256
+ze źródłem; przy przenoszeniu suma musi być ta sama przed i po.
