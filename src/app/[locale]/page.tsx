@@ -11,6 +11,7 @@ import { SekcjaTekstowa } from "@/components/SekcjaTekstowa";
 import { Zamkniecie } from "@/components/Zamkniecie";
 import { adresWJezyku, type Locale } from "@/i18n/sciezki";
 import { routing } from "@/i18n/routing";
+import { OSADZENIE_NA_GLOWNEJ, zrzutFilaru } from "@/obrazy/zrzuty";
 
 /**
  * Strona główna (/, /en, /de) — złożenie Etapu F (brief
@@ -44,6 +45,7 @@ export default async function StronaGlowna({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Filary");
+  const tObrazy = await getTranslations("ObrazyFilarow");
   const tProblem = await getTranslations("Problem");
   const tDefinicja = await getTranslations("Definicja");
   const tRytm = await getTranslations("RytmDnia");
@@ -85,6 +87,17 @@ export default async function StronaGlowna({ params }: Props) {
               t(`${klucz}.konkret3`),
             ]}
             obrazPoLewej={obrazPoLewej}
+            /* Zrzuty Z6 są gotowe (pipeline, warianty, alty ×3), ale
+               na „/" WYŁĄCZONE — kosztują +150 ms LCP przy zapasie
+               96 ms do budżetu 1800 ms. Powód, decyzja właściciela
+               i warunek włączenia: design/pipeline-obrazow.json →
+               osadzenieNaGlownej. Bez propu filar pokazuje pustą
+               ramkę, dokładnie jak przed dostawą. */
+            obraz={
+              OSADZENIE_NA_GLOWNEJ
+                ? { baza: zrzutFilaru(klucz).baza, alt: tObrazy(klucz) }
+                : undefined
+            }
           />
         ))}
         <DbanieOSiebie />

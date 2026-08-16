@@ -1,0 +1,57 @@
+{
+  "_opis": "Rejestr pipeline'u obrazów — JEDNO źródło prawdy dla generatora (scripts/obrazy-pipeline.mjs) i dla komponentów (src/obrazy/zrzuty.ts). Dublowanie tej listy w dwóch miejscach jest zakazane: rozjazd generator↔markup dałby martwy <img> bez czerwieni w żadnej bramce (ten sam mechanizm co dziura w bramce e2e — lighthouserc.cjs, nagłówek).",
+  "_pochodzenie": "Dostawa Z6 aplikacji, commit e35ad8ceefbed065d196c0342891f9f1fe56d2bd; instrukcja design/obrazy-robocze/z6/PRZEKAZANIE-DO-WWW.md; metryczka design/obrazy-robocze/z6/RAPORT-POCHODZENIA-e35ad8ce.md.",
+  "zrodlo": "design/obrazy-robocze/z6",
+  "sumy": "SUMY-KONTROLNE.sha256",
+  "wyjscie": "public/obrazy/filary",
+  "_szerokosci": "Punkty srcset wprost z instrukcji przekazania (sekcja „Co robi strona www\", ROBI 1). 2048 = wymiar źródłowy.",
+  "szerokosci": [480, 768, 1280, 2048],
+  "_formaty": "AVIF i WebP w srcset; PNG wyłącznie jako zapasowy <img src> dla przeglądarek bez obu formatów — dlatego bez wariantów szerokości.",
+  "formaty": ["avif", "webp"],
+  "zapasowy": "png",
+  "_wymiar": "Wymiar KAŻDEGO pliku źródłowego (zweryfikowany sips przy odbiorze). W3 handoffu K4: width/height w atrybutach z realnych plików, aspect-ratio 16/10 tylko jako rezerwa ramki.",
+  "szerokoscZrodla": 2048,
+  "wysokoscZrodla": 1280,
+  "_osadzenie": "JEDEN przełącznik osadzenia na stronie głównej, czytany zarówno przez markup (src/app/[locale]/page.tsx przez src/obrazy/zrzuty.ts), jak i przez strażnika (e2e/zrzuty-filarow.spec.ts). Nie ma drugiego miejsca, w którym można to włączyć albo wyłączyć — stan markupu i stan asercji nie mogą się rozjechać. Przy wartości false strażnik NIE milknie: przełącza się na sprawdzanie, że osadzenie jest gotowe do włączenia (komplet wariantów na dysku, sumy PNG zgodne ze źródłem, alty w trzech językach), a filary pokazują pustą ramkę jak przed dostawą.",
+  "osadzenieNaGlownej": {
+    "wlaczone": false,
+    "powod": "Budżet LCP 1800 ms (CLAUDE.md, bramka blokująca). Pomiar 2026-08-16 na „/”: 1704 ms bez zrzutów, 1854 ms ze zrzutami — cztery warianty 768w AVIF (łącznie 44 kB) są pobierane już w oknie startowym mimo loading=\"lazy\" i fetchPriority=\"low\", bo obejmuje je próg leniwego ładowania przeglądarki, i pod dławieniem Lighthouse konkurują o łącze z zasobami blokującymi render (render delay 1267 → 1411 ms, TTFB bez zmian). Atrybucja potwierdzona pomiarem kontrolnym: ta sama gałąź BEZ obrazów daje 1702–1720 ms.",
+    "decyzja": "Właściciel, 2026-08-16, wariant 4: najpierw odzyskać zapas na „/” (rozbiór render delay 1267 ms), potem włączyć osadzenie. Kod osadzenia zostaje kompletny i gotowy — kasowanie i odtwarzanie go później kosztowałoby drugą weryfikację całej ścieżki.",
+    "warunekWlaczenia": "Zapas na „/” co najmniej 150 ms na same zrzuty PLUS rezerwa designu ~200 ms, czyli mediana LCP „/” bez zrzutów w okolicach 1450 ms lub niżej. Włączenie = zmiana tej flagi na true i ponowny pomiar; nic więcej."
+  },
+  "_nazwy": "Dostawa nazywa filary inaczej niż strona (nazwaWDostawie ≠ nazwaNaStronie). Plików NIE przemianowujemy: nazwa pliku jest częścią prowieniencji — figuruje w SUMY-KONTROLNE.sha256 i w metryczce commita e35ad8ce, więc zmiana nazwy zerwałaby ścieżkę weryfikacji dla oszczędności czysto estetycznej. Rozjazd jest tu odnotowany i opisany w docs/faza-4/z6-odbior-i-osadzenie.md; przypisanie kadr↔filar potwierdzone treścią kadru, nie nazwą.",
+  "obrazy": [
+    {
+      "filar": "filar1",
+      "plik": "z6-filar-1-dmo.png",
+      "baza": "filar-1-dmo",
+      "trasaAplikacji": "/dmo",
+      "nazwaWDostawie": "Rytm dnia",
+      "nazwaNaStronie": "POZYSKIWANIE"
+    },
+    {
+      "filar": "filar2",
+      "plik": "z6-filar-2-tarcza.png",
+      "baza": "filar-2-tarcza",
+      "trasaAplikacji": "/etyka/shield",
+      "nazwaWDostawie": "Zgodność",
+      "nazwaNaStronie": "TREŚCI"
+    },
+    {
+      "filar": "filar3",
+      "plik": "z6-filar-3-pierwsze-90-dni.png",
+      "baza": "filar-3-pierwsze-90-dni",
+      "trasaAplikacji": "/first90",
+      "nazwaWDostawie": "Wdrożenie",
+      "nazwaNaStronie": "ZESPÓŁ"
+    },
+    {
+      "filar": "filar4",
+      "plik": "z6-filar-4-wrapped.png",
+      "baza": "filar-4-wrapped",
+      "trasaAplikacji": "/magic/wrapped",
+      "nazwaWDostawie": "Podsumowanie",
+      "nazwaNaStronie": "WYNIKI"
+    }
+  ]
+}

@@ -21,6 +21,7 @@
     "bramka:cennik": "node scripts/stripe-snapshot.mjs",
     "bramka:nieodwracalne": "node scripts/check-audyt.mjs",
     "bramka:preview": "node scripts/sprawdz-preview.mjs",
+    "obrazy:pipeline": "node scripts/obrazy-pipeline.mjs",
     "test:e2e": "playwright test",
     "test:axe": "playwright test e2e/axe.spec.ts"
   },
@@ -40,6 +41,7 @@
     "@types/react-dom": "^19.2.4",
     "eslint": "^9.39.5",
     "eslint-config-next": "^15.5.23",
+    "sharp": "^0.35.3",
     "stripe": "^22.4.0",
     "style-dictionary": "^4.4.0",
     "typescript": "^5.9.3"

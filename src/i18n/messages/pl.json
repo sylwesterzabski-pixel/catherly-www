@@ -121,6 +121,12 @@
     "potwierdzenie2": "Eksport danych zawsze: vCard i CSV",
     "potwierdzenie3": "Dane przechowywane w UE"
   },
+  "ObrazyFilarow": {
+    "filar1": "Ekran Dziennego Planu Działania (DMO) w aplikacji Catherly: liczniki zadań na dany dzień z celami i paskami postępu.",
+    "filar2": "Ekran Tarczy w aplikacji Catherly: wklejony tekst z obietnicą zarobków, pod nim oznaczone ryzykowne sformułowania i propozycja poprawionej wersji.",
+    "filar3": "Ekran programu Pierwsze 90 Dni w aplikacji Catherly: faza, numer dnia, pasek postępu i karta misji na dziś.",
+    "filar4": "Ekran Twojego Wrapped w aplikacji Catherly: slajd miesięcznego podsumowania z licznikiem opublikowanych postów."
+  },
   "DbanieOSiebie": {
     "naglowek": "Dbanie o siebie",
     "tresc": "Zbierasz dowody swojej pracy na Wall of Proof. To przestrzeń, w której świętujesz, nie tylko mierzysz."

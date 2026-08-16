@@ -47,12 +47,38 @@
 
 .obraz {
   margin-block-start: 1.5rem; /* 390 px: tekst NAD obrazem */
-  /* Fallback ramki do dostawy Z6 (W3: docelowo width/height
-     z realnych plików 2048×1280; 16/10 tylko jako rezerwa CLS). */
+  /* Rezerwa CLS na czas dociągania obrazu. Od dostawy Z6 miejsce
+     trzymają PRZEDE WSZYSTKIM atrybuty width/height realnych plików
+     (2048×1280 = dokładnie 16/10), więc te dwie deklaracje się nie
+     kłócą — aspect-ratio zostaje jako rezerwa ramki (W3) na wypadek,
+     gdyby obraz się nie wczytał. Tło pełni rolę poczekalni: kadr
+     dociąga się leniwie, a slot jest widoczny od pierwszej klatki. */
   aspect-ratio: 16 / 10;
   background: var(--kolor-rola-powierzchnia);
   border: 0.0625rem solid var(--kolor-rola-kreska);
   border-radius: var(--wymiar-promien);
+  /* Bez tego promień ramki nie przycina zrzutu w narożnikach. */
+  overflow: hidden;
+}
+
+/* <picture> jest domyślnie inline — bez tego między ramką a zrzutem
+   zostaje szpara wysokości wiersza (baseline), a przy zaokrągleniu
+   narożników widać ją jako pasek tła. */
+.obraz picture {
+  display: block;
+}
+
+/* `height: auto` — nie `100%` i nie `object-fit`. Instrukcja
+   przekazania zakazuje kadrowania zmieniającego wymowę, a każde
+   dopasowanie „na siłę" jest albo przycięciem, albo rozciągnięciem.
+   Tu obraz dyktuje własną wysokość ze swojej proporcji: kadr 16/10
+   wypełnia ramkę 16/10 co do piksela, a kadr o innej proporcji
+   ROZEPCHNIE ramkę zamiast dać się po cichu przyciąć — czyli będzie
+   widoczny w odbiorze wzrokowym, a nie ukryty przez CSS. */
+.obraz img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 @media (min-width: 48rem) {

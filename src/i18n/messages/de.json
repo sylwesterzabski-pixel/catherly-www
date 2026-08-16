@@ -121,6 +121,12 @@
     "potwierdzenie2": "Datenexport jederzeit: vCard und CSV",
     "potwierdzenie3": "Daten in der EU gespeichert"
   },
+  "ObrazyFilarow": {
+    "filar1": "Der Bildschirm des Täglichen Aktionsplans (DMO) in der Catherly-App: Aufgabenzähler für den Tag mit Zielen und Fortschrittsbalken.",
+    "filar2": "Der Bildschirm des Schilds in der Catherly-App: ein eingefügter Text mit einem Verdienstversprechen, darunter die markierten riskanten Formulierungen und ein Vorschlag für eine korrigierte Fassung.",
+    "filar3": "Der Bildschirm der ersten 90 Tage in der Catherly-App: Phase, Tageszahl, Fortschrittsbalken und die Missionskarte für heute.",
+    "filar4": "Der Bildschirm von Dein Wrapped in der Catherly-App: eine Folie der Monatszusammenfassung mit einem Zähler der veröffentlichten Beiträge."
+  },
   "DbanieOSiebie": {
     "naglowek": "Für dich selbst",
     "tresc": "Du sammelst Belege deiner Arbeit auf der Wall of Proof. Ein Raum, in dem du feierst – nicht nur misst."

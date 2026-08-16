@@ -121,6 +121,12 @@
     "potwierdzenie2": "Data export, always available: vCard and CSV",
     "potwierdzenie3": "Data stored in the EU"
   },
+  "ObrazyFilarow": {
+    "filar1": "The Daily Method of Operations (DMO) screen in the Catherly app: task counters for the day with targets and progress bars.",
+    "filar2": "The Shield screen in the Catherly app: a pasted text promising earnings, with the risky phrases flagged below it and a corrected version offered.",
+    "filar3": "The First 90 Days screen in the Catherly app: the phase, the day number, a progress bar and today's mission card.",
+    "filar4": "The Your Wrapped screen in the Catherly app: a monthly summary slide with a counter of published posts."
+  },
   "DbanieOSiebie": {
     "naglowek": "Self-care",
     "tresc": "You collect proof of your work on the Wall of Proof. It’s a space where you celebrate, not just measure."
