@@ -25,6 +25,16 @@ Cztery obszary mają pierwszeństwo przed wyglądem, zakresem i terminem:
 dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze:
 - Brak dowodu = brak zabezpieczenia. Kod, który wygląda poprawnie, ma
   status niesprawdzony, a niesprawdzony liczy się jak niedziałający.
+- Strażnik może ZERODOWAĆ przez zmianę OTOCZENIA, bez zmiany własnego
+  kodu. Asercja na podciągu globalnego artefaktu (`toContain` na całym
+  HTML, grep po całym repo) wygasa w chwili, gdy szukany ciąg staje się
+  wszechobecny — i wygasa CICHO, zostając zielona. Zanim dopiszesz ciąg
+  do elementu współdzielonego (stopka, nagłówek, layout), sprawdź, kto
+  dziś asertuje ten ciąg globalnie; jeśli ktoś asertuje, przepisz jego
+  asercję na lokator celujący w konkretny element (`href`, rola, sekcja),
+  zanim dopiszesz. Zielona bramka po Twojej zmianie nie jest dowodem, że
+  nadal mierzy to samo — dowodem jest MUTACJA: zepsuj celowo to, czego
+  strażnik pilnuje, i pokaż czerwień.
 - Nie oceniasz własnej pracy w tych czterech obszarach. Dowodem jest
   wykonany test, zwrócony status, log — nigdy Twoje przekonanie.
 - W konflikcie przegrywa termin i zakres, nigdy nieodwracalne.

@@ -155,7 +155,18 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
       expect(html, `${plan}: cena miesięczna w HTML`).toContain(`>${mies}<`);
       expect(html, `${plan}: cena roczna w HTML`).toContain(`>${rok}<`);
     }
-    expect(html, "wiersz tabeli w HTML").toContain(c.tabela.kontakty);
+    // Nagłówek wiersza jako KOMPLETNY element, nie sam podciąg — ta sama
+    // technika co dla kwot trzy linie wyżej, z tego samego powodu.
+    // Od Etapu E mapa stopki jest na KAŻDEJ stronie i niesie etykietę
+    // filaru „pozyskiwanie", która po niemiecku brzmi „Kontakte gewinnen"
+    // — a c.tabela.kontakty w DE to dokładnie „Kontakte". Goły toContain
+    // przechodziłby więc od dziś nawet po usunięciu całej tabeli
+    // porównawczej: dowodziłby obecności STOPKI. Markup wiersza:
+    // TabelaPorownawcza.tsx:91 (`<th scope="row">{t(klucz)}</th>`, jedno
+    // wyrażenie w dziecku, więc bez separatora <!-- --> Reacta).
+    expect(html, "wiersz tabeli w HTML").toContain(
+      `<th scope="row">${c.tabela.kontakty}</th>`,
+    );
     expect(html, "FAQ w HTML").toContain(c.faq.p1);
   });
 }

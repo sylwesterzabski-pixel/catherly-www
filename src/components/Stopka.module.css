@@ -24,6 +24,36 @@
   gap: 0.375rem;
 }
 
+/* Podlista mapy strony — filary wcięte pod „Funkcje" (Etap E).
+   Selektor MUSI mieć swoistość (0,1,2), żeby wygrać z `.stopka ul`
+   (0,1,1) wyżej: to selektor POTOMKA, więc trafia też w listę
+   zagnieżdżoną i bez tej reguły narzuciłby jej `padding: 0` (brak
+   wcięcia) oraz `margin: 0 0 1.25rem` (odstęp sekcji WEWNĄTRZ listy).
+   Klasa CSS Modules by nie wystarczyła — `.podlista` to (0,1,0).
+
+   Wcięcie NIESIE informację o zagnieżdżeniu i niesie ją samo.
+   Nie dodawać tu pionowej kreski „dla czytelności": --kolor-rola-kreska
+   na --kolor-rola-powierzchnia daje 1,34:1 (zmierzone
+   scripts/kontrast.mjs) przy progu 3:1 dla elementów nietekstowych
+   niosących informację (WCAG 1.4.11) — kreska mogłaby więc być
+   wyłącznie dekoracją, a dekoracja obok wcięcia tylko sugeruje
+   przyszłemu czytelnikowi, że to ONA trzyma hierarchię. Wtedy usunięcie
+   wcięcia zabija ją po cichu dla widzących. Dla technologii
+   asystujących hierarchię niesie samo drzewo DOM (ul wewnątrz li —
+   Stopka.tsx). Kreska w innej roli (--kolor-rola-tekst-drugorzedny,
+   7,07:1) przeszłaby próg, ale to zmiana WIZUALNA — do decyzji
+   właściciela, nie do cichego wprowadzenia tędy.
+   ROZSTRZYGNIĘTE 2026-08-16 (właściciel): zostaje BEZ kreski —
+   „wcięcie trzyma hierarchię, dekoracja poniżej progu kontrastu
+   myliłaby co do nośnika". Wariant 7,07:1 wraca do PRZEGLĄDU przy
+   bloku designu, na żywym materiale (rejestr warunków powrotu, T9).
+   Kto tu wejdzie wcześniej: to nie jest brak do uzupełnienia. */
+.stopka li ul {
+  padding-inline-start: 1rem;
+  margin-block-start: 0.375rem;
+  margin-block-end: 0;
+}
+
 .stopka a {
   color: var(--kolor-rola-link);
 }

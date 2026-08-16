@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 
-import { adresWJezyku, POZYCJE_MENU, type Locale } from "@/i18n/sciezki";
+import { adresWJezyku, MAPA_STOPKI, type Locale } from "@/i18n/sciezki";
 
 import styles from "./Stopka.module.css";
 
@@ -34,23 +34,74 @@ const DOKUMENTY = [
  * dokumenty prawne jako TEKST „Nazwa (wkrótce)" i kontakt jako TEKST
  * „(wkrótce)" — ŻADNYCH linków do nieistniejących stron (bramka
  * linków; linki wchodzą wraz ze stronami dokumentów).
+ *
+ * Etap E: mapa strony to pełny, DWUPOZIOMOWY spis treści serwisu
+ * (osiem adresów, MAPA_STOPKI w src/i18n/sciezki.ts), a nie odbicie
+ * menu głównego. Stopka celowo NIE importuje już POZYCJE_MENU —
+ * gdyby importowała, każde rozszerzenie mapy rozdymałoby menu.
+ *
+ * KOMPONENT ZOSTAJE SYNCHRONICZNY. Przestrzenie z mapy rozwiązuje
+ * `useTranslations()` BEZ przestrzeni + pełny klucz „Przestrzeń.klucz"
+ * — zasada D-D12 („jedno źródło ciągu na serwis") mówi o ŹRÓDLE
+ * etykiety, nie o mechanizmie jej pobrania. Wariant asynchroniczny
+ * (getTranslations, jak w funkcje/page.tsx:145-147) też by zadziałał,
+ * bo jedyny rodzic — layout.tsx:40 — jest już async; odrzucony, bo
+ * uzależniałby stopkę od asynchroniczności KAŻDEGO przyszłego rodzica
+ * (granice błędu, not-found), a nic w zamian nie daje.
  */
 export function Stopka({ locale }: Props) {
   const t = useTranslations("Stopka");
-  const tNaw = useTranslations("Nawigacja");
+  // Bez przestrzeni: mapa trzyma przestrzeń jako DANE, więc klucz jest
+  // składany („Wspolne.stronaGlowna", „FunkcjeWyniki.okruszek").
+  const tPelne = useTranslations();
+  const etykieta = (wpis: { przestrzen: string; klucz: string }) =>
+    tPelne(`${wpis.przestrzen}.${wpis.klucz}`);
   return (
     <footer className={styles.stopka}>
       <div className={styles.kolumny}>
         <section>
           <h2>{t("mapaStrony")}</h2>
           {/* role="list" — CSS zdejmuje punktory (Stopka.module.css),
-              a Safari z VoiceOver odbiera wtedy liście semantykę. */}
+              a Safari z VoiceOver odbiera wtedy liście semantykę.
+              Dotyczy TAKŻE podlisty filarów niżej.
+
+              ŻADNEGO aria-current w mapie — w ŻADNEJ wartości. Bieżące
+              położenie oznacza wyłącznie nagłówek (Nawigacja.tsx:52-58,
+              A-1). Duplikat w stopce nie tylko powtarza informację dwa
+              razy, ale rozbija strażników: "page" łamie toHaveCount(1)
+              w e2e/aria-current.spec.ts:36, a "true" — tryb ścisły
+              lokatora w e2e/parytet-ui.spec.ts:103.
+
+              Na stronie głównej KAŻDEGO języka wychodzą dwa linki pod
+              ten sam adres (mapa „Strona główna" + własny język na
+              liście języków: „/" w pl, „/en" w en, „/de" w de —
+              sprawdzone w artefaktach builda). To świadome: różne
+              nazwy dostępne, ten sam cel — WCAG tego nie zabrania,
+              a axe i tak jest tu ślepe (reguła identical-links-
+              same-purpose jest w axe-core domyślnie wyłączona —
+              patrz e2e/oznaczenie-kierunku.spec.ts:37-43). */}
           <ul role="list">
-            {POZYCJE_MENU.map((pozycja) => (
-              <li key={pozycja.sciezka}>
-                <a href={adresWJezyku(locale, pozycja.sciezka)}>
-                  {tNaw(pozycja.klucz)}
+            {MAPA_STOPKI.map((wpis) => (
+              <li key={wpis.sciezka}>
+                <a href={adresWJezyku(locale, wpis.sciezka)}>
+                  {etykieta(wpis)}
                 </a>
+                {/* `in` zamiast `?.` — unia literałów z `as const` nie
+                    ma pola „dzieci" do zawężenia (sciezki.ts:108-111).
+                    Podlista SIEDZI W <li> rodzica, nie obok niego:
+                    zagnieżdżenie ma być faktem drzewa dostępności,
+                    a nie samym wcięciem w CSS. */}
+                {"dzieci" in wpis && (
+                  <ul role="list">
+                    {wpis.dzieci.map((dziecko) => (
+                      <li key={dziecko.sciezka}>
+                        <a href={adresWJezyku(locale, dziecko.sciezka)}>
+                          {etykieta(dziecko)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>

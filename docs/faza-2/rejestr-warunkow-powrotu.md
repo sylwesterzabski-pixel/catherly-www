@@ -45,7 +45,11 @@ jest ściśle o treści podstron funkcji.
 | T2 | Audyt nieodwracalnych (ADR-018 pkt 4) — bramka `nieodwracalne` PLANOWO czerwona | `docs/audyt/` | Faza 6 — audyt całościowy przedpremierowy, nie częściowy po etapie (decyzja właściciela 2026-08-14) |
 | T3 | Pomiar wydajności na preview Vercel + mediana jako werdykt (kod gotowy, tryb NIEAKTYWNY) | `lighthouserc.cjs`, `.github/workflows/bramki.yml` | Udostępnienie preview przez właściciela (ochrona wdrożeń) + potwierdzenie, że mierzony adres odpowiada testowanemu commitowi |
 | T4 | Obietnica „H1 ≤ 3 linie" — część desktopowa (768 px wzwyż) naprawiona przez ADR-029, ale potwierdzona tylko pomiarem lokalnym; **poniżej 768 px nadal nieprawdziwa** (DE 4–5 linii) i niepilnowana | `src/components/Hero.module.css`, `e2e/hero.spec.ts`, `docs/adr/029-prog-i-proporcje-hero.md` | (1) zielony pełny zestaw e2e jako dowód naprawy desktopu, (2) rozstrzygnięcie właściciela, czy obietnica ma obejmować < 768 px — jeśli tak, `clamp` względem kolumny zamiast okna + strażnik na 390 px |
-| T5 | Strony zbudowane w Fazie 4 (cztery podstrony filarów, /dla-kogo) są w ADR-014 wymienione POZA zakresem startu; nie znaleziono ADR-a uchylającego | `docs/adr/014-zakres-zamrozony-iteracji-1.md`, `docs/PLAN.md` §11 | Rozstrzygnięcie właściciela: ADR uchylający (wejście do zakresu startu) albo potwierdzenie, że publikują się przez /zmiany po starcie |
+| ~~T5~~ **ZAMKNIĘTE 2026-08-15** | Strony zbudowane w Fazie 4 (cztery podstrony filarów, /dla-kogo) są w ADR-014 wymienione POZA zakresem startu; nie znaleziono ADR-a uchylającego | `docs/adr/014-zakres-zamrozony-iteracji-1.md`, `docs/PLAN.md` §11 | **Rozstrzygnięte przez właściciela 2026-08-15: pięć adresów WCHODZI do zakresu startu** (ADR-014, doprecyzowanie 2026-08-15 II). Uzasadnienie: strony istnieją, są opublikowane ×3 języki, mają testy i przechodzą bramki — rozbieżność była luką formalną, nie sporem o zakres. Forma: doprecyzowanie, nie ADR uchylający; właściciel nazwał to luką formalną świadomie. Pozostałe pozycje listy „poza zakresem startu" **nietknięte** |
+| T6 | `bramka:liczby` **nie widzi warstwy `messages`** — skanuje wyłącznie `.tsx`/`.jsx` i tylko tekst z **cyfrą** poza klamrami, więc każdy ciąg renderowany przez `{t(...)}` jest poza bramką, a liczebniki słowne są niewidoczne wszędzie. Karta tonu pkt 5 („bez wyjątku (bramka)") jest wobec tego stanu nieprawdziwa | `scripts/lint-liczby.mjs:18,44`, `src/i18n/messages/*.json`, `content/karta-tonu.md:61` | Osobne zlecenie PO Etapie E (decyzja właściciela 2026-08-15): rozszerzenie skanu na `messages` (cyfry + liczebniki słowne) → inwentarz 14 istniejących ciągów z rozstrzygnięciem per ciąg (pokrycie w `facts.json` / redakcja / świadomy wyjątek z adnotacją) → sprostowanie karty tonu pkt 5 |
+| T7 | **Zdania z datą ważności — brak rejestru i brak mechanizmu.** W serwisie stoją zdania prawdziwe wyłącznie DO PREMIERY, a w repozytorium nie ma ani bramki, ani adnotacji, ani listy, która by je znała. W dniu premiery stają się fałszem o własnym serwisie i nic tego nie zapali. Znane dziś: `StronaLogowania.tresc` („Logowanie będzie dostępne przy premierze aplikacji." ×3 języki), `Stopka.wkrotce` przy czterech dokumentach prawnych i przy kontakcie (`(wkrótce)` / `(coming soon)` / `(folgt in Kürze)`) | `src/i18n/messages/{pl,en,de}.json`, `src/components/Stopka.tsx:74-89`, `src/app/[locale]/login/page.tsx` | **Decyzja właściciela 2026-08-15: pozycja na checkliście premiery, BEZ budowy mechanizmu.** Zakres: inwentarz wszystkich zdań przedpremierowych ×3 języki z decyzją per zdanie (usunąć / przepisać / aktywować link). Wykonanie: przed premierą, nie teraz. Świadomie nie budujemy bramki wygasania — dług ma być **zapisany**, nie zapamiętany |
+| T8 | **`/pomoc` wycofana z zakresu startu** (ADR-014, doprecyzowanie 2026-08-15 III) po trzech kompletach werdyktów adwersaryjnych NIE PRZECHODZI. Strona nie istnieje: brak w `ISTNIEJACE_SCIEZKI`, brak w mapie stopki, brak pliku | `docs/adr/014-zakres-zamrozony-iteracji-1.md`, `docs/faza-4/etap-e-pomoc-decyzje.md`, `src/i18n/sciezki.ts` | **Powrót po premierze, warunek potrójny (właściciel 2026-08-15):** (1) treść **z odczytu** — realne pytania użytkowniczek zamiast domysłów redakcji, (2) **istniejący kanał kontaktu**, nie stan „(wkrótce)", (3) **onboarding przetestowany**, nie zapowiedziany. Przed spełnieniem wszystkich trzech strona nie ma czym być — zamknięcie E-1 |
+| T9 | **Wskaźnik zagnieżdżenia w mapie stopki — wariant z kreską odłożony.** Sędzia panelu chciał pionowej kreski wzmacniającej hierarchię czterech filarów pod `/funkcje`. Wdrożone **bez kreski**: `--kolor-rola-kreska` daje na powierzchni stopki **1,34:1** przy progu 3:1 (WCAG 1.4.11), więc kreska mogłaby wystąpić wyłącznie jako dekoracja — a dekoracja obok wcięcia myli co do tego, co **niesie** informację. Hierarchię trzyma dziś wcięcie (`.stopka li ul`) plus drzewo DOM (`<ul>` wewnątrz `<li>` rodzica) | `src/components/Stopka.module.css`, `src/styles/generated/tokeny.css:67`, `docs/faza-4/etap-e-pomoc-decyzje.md` §WYKONANIE | **Decyzja właściciela 2026-08-16: BEZ kreski; wariant `--kolor-rola-tekst-drugorzedny` (7,07:1) → do przeglądu przy bloku designu.** Nie jest to dług techniczny do spłaty, tylko decyzja **wizualna** właściciela odłożona do miejsca, gdzie ogląda się żywy materiał, a nie liczbę kontrastu w oderwaniu. Warunek powrotu: blok designu — łącznie z T1 i mobilną częścią T4 |
 
 **T1 — pomiar, nie przypuszczenie.** Ustalone przy Etapie D:
 dopisanie trzech kluczy członu i rozbicie F8 powiększyło HTML strony
@@ -202,6 +206,78 @@ ADR uchylający, który wciąga te strony do zakresu startu (wtedy blokują
 publikację i wchodzą do „definicji startu"), albo potwierdzenie, że
 istnieją w repo, ale publikują się przez /zmiany po starcie. Odnotowane
 też w samym ADR-014 jako punkt 2 doprecyzowania z 2026-08-14.
+
+**T5 — co rozstrzygnięcie z 2026-08-15 zamyka, a czego nie.** Przy
+Etapie E adwersarz wykazał, że propozycja `/pomoc` z modułem K12 (H2 →
+PO CO TO → JAK WYGLĄDA → CZEGO NIE ROBI) byłaby **piątą podstroną
+filarową w przebraniu**, czyli powiększałaby tę właśnie lukę. Właściciel
+zmienił gatunek `/pomoc` na krótki i nawigacyjny i odnotował, że „piąta
+podstrona" jest **bezprzedmiotowa**. To domyka **tylko powiększenie
+luki**: `/pomoc` nowego gatunku nie tworzy kolejnego bytu filarowego.
+**Sam T5 zostaje otwarty** — dotyczy czterech podstron i `/dla-kogo`,
+które już istnieją w repo i których żaden ADR nie wciągnął do zakresu
+startu. Zapis wąski celowo: szerokie odczytanie zamknęłoby lukę ADR-014
+bez decyzji, która by ją zamykała, a to jest dokładnie ten rodzaj cichego
+domknięcia, przed którym stoi ten rejestr.
+
+**T5 — ZAMKNIĘTE decyzją właściciela 2026-08-15 (późniejszą tego samego
+dnia).** Wąskie odczytanie z akapitu wyżej okazało się słuszne
+proceduralnie i **zbędne merytorycznie**: postawione właścicielowi
+osobno, dostało odpowiedź wprost. **Cztery podstrony filarów
+i `/dla-kogo` WCHODZĄ do zakresu startu** — ADR-014, doprecyzowanie
+2026-08-15 (II). Uzasadnienie właściciela: strony istnieją,
+są opublikowane w trzech językach, mają testy i przechodzą bramki;
+rozbieżność między tym stanem a literą ADR-014 jest **luką formalną**,
+nie sporem o zakres — nikt nigdy nie postanowił, że mają czekać
+na `/zmiany`.
+
+Trzy rzeczy warto odnotować, bo wynikają z tego, a nie są w decyzji
+napisane wprost. **(1)** Pięć adresów wchodzi do „definicji startu"
+z ADR-014 — od teraz blokują publikację, więc ich bramki są bramkami
+premiery, nie bramkami gałęzi roboczej. **(2)** Reszta listy „poza
+zakresem startu" jest **nietknięta**: `/o-catherly`, `/blog`, demo,
+`/integracje`, porównania, kalkulator, narzędzie-magnes, webinary,
+rozbudowany element podpisu. Rozstrzygnięcie dotyczy pięciu adresów
+i nie jest precedensem. **(3)** Forma pozostaje doprecyzowaniem, choć
+sekcja „Konsekwencje" ADR-014 żąda dla rozszerzeń ADR-a jawnie
+uchylającego. Właściciel nazwał to luką formalną świadomie; zapisuję
+to zdanie, żeby przyszły czytelnik nie musiał odtwarzać rozumowania,
+a nie jako zastrzeżenie — decyzja jest podjęta i nic nie wstrzymuje.
+
+Pozycja **T8** niżej zapisuje ruch przeciwny z tego samego dnia:
+`/pomoc` wychodzi z zakresu startu. Obie decyzje zapadły tego samego
+dnia i nie są ze sobą sprzeczne — pierwsza zapisuje strony, które
+**istnieją i działają**, druga wycofuje stronę, która **nie ma czym
+być**. Kryterium jest w obu wypadkach to samo: stan faktyczny wygrywa
+z literą planu.
+
+**T6 — bramka liczb jest ślepa na warstwę, w której dziś mieszka
+treść.** Sprawdzone wykonaniem 2026-08-15, nie przeczytane z kodu:
+`npm run bramka:liczby` kończy się komunikatem „Linter liczb: zielony."
+i kodem 0, podczas gdy w `src/i18n/messages/*.json` stoi **14 polskich
+ciągów z liczebnikami słownymi** bez pokrycia w `facts.json`. Przyczyna
+jest dwuczłonowa i obie części są w pliku widoczne: `SCAN_EXT` to
+`{".tsx", ".jsx"}` (`scripts/lint-liczby.mjs:18`), więc pliki `.json`
+nie są w ogóle otwierane; a wzorzec `/>[^<>{}]*\d[^<>{}]*</`
+(tamże :44) wymaga **cyfry** i wyklucza klamry, więc nawet w `.tsx`
+każdy tekst renderowany przez `{t(...)}` jest poza zasięgiem, a
+liczebnik słowny jest niewidoczny wszędzie.
+
+Skutek dokumentacyjny: `content/karta-tonu.md:61` mówi „Każda liczba
+pochodzi z content/facts.json — bez wyjątku **(bramka)**". Człon
+w nawiasie jest wobec stanu faktycznego nieprawdziwy — reguła
+obowiązuje, ale nikt jej nie pilnuje maszynowo. To nie jest usterka
+lintera do naprawy przy okazji, tylko **fałszywy zielony**: bramka
+świeci na dowód, którego nie wykonała.
+
+Warunek zamknięcia rozstrzygnął właściciel 2026-08-15 — **osobne
+zlecenie po Etapie E**, w trzech krokach i w tej kolejności:
+(1) rozszerzenie skanu na warstwę `messages` (cyfry **i** liczebniki
+słowne), (2) inwentarz 14 istniejących ciągów z rozstrzygnięciem
+**per ciąg**: pokrycie w `facts.json` / redakcja / świadomy wyjątek
+z adnotacją, (3) sprostowanie karty tonu pkt 5 dopiero **po** naprawie,
+żeby zapis znów opisywał stan, a nie zamiar. Do tego czasu każda nowa
+treść z liczbą przechodzi przez człowieka, bo bramka jej nie zobaczy.
 
 **„Najbliższe zlecenie Z" (poz. 17, 18, 19, 23, 24) = Z7**, spisane
 2026-08-13: `docs/faza-4/zlecenie-Z7.md`. Do czasu odpowiedzi okna

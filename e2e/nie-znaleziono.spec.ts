@@ -4,6 +4,9 @@ import AxeBuilder from "@axe-core/playwright";
 import pl from "../src/i18n/messages/pl.json";
 import en from "../src/i18n/messages/en.json";
 import de from "../src/i18n/messages/de.json";
+// Sam kształt adresu — wyjątek korzenia („/" nie dostaje „/pl", ale nie
+// dostaje też „/en/") mieszka w sciezki.ts:24-27 i ma tam mieszkać raz.
+import { adresWJezyku } from "../src/i18n/sciezki";
 
 /**
  * B2 — strona 404 renderuje się WEWNĄTRZ layoutu języka: poprawny
@@ -44,7 +47,31 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     // — etykieta linku ze wspólnego klucza Wspolne.stronaGlowna).
     expect(html).toContain(komunikaty.NieZnaleziono.naglowek);
     expect(html).toContain(komunikaty.NieZnaleziono.wroc);
-    expect(html).toContain(komunikaty.Wspolne.stronaGlowna);
+
+    // Link powrotu SPRAWDZANY W <main>, nie w całym dokumencie, i przez
+    // href, nie przez sam podciąg etykiety.
+    //
+    // EROZJA PRZEZ ZMIANĘ OTOCZENIA (CLAUDE.md, ADR-018): do Etapu E
+    // „Strona główna" występowała w serwisie dokładnie raz — w tym
+    // linku — więc toContain na całym HTML-u faktycznie go mierzył.
+    // Od chwili, gdy mapa stopki dostała pozycję „/" z tym samym
+    // kluczem, ten sam ciąg jest na KAŻDEJ stronie. Asercja przeszłaby
+    // wtedy nawet po całkowitym usunięciu linku powrotu z 404 — i
+    // przeszłaby CICHO, zostając zielona. Strażnik nie zmienił ani
+    // jednego znaku własnego kodu; zerodowało go otoczenie.
+    //
+    // Fikstura `request` nie daje lokatorów Playwrighta (to surowa
+    // odpowiedź HTTP, nie przeglądarka), więc zawężenie do regionu robi
+    // się na tekście — i dlatego jest tu wycięcie <main>, a nie
+    // getByRole.
+    const glowna = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1];
+    expect(glowna, "sekcja <main> obecna w HTML z serwera").toBeTruthy();
+    expect(glowna, "link powrotu: href strony głównej w <main>").toContain(
+      `href="${adresWJezyku(jezyk, "/")}"`,
+    );
+    expect(glowna, "link powrotu: etykieta w <main>").toContain(
+      komunikaty.Wspolne.stronaGlowna,
+    );
 
     // Nawigacja i stopka w HTML-u (K1 wokół treści 404).
     expect(html).toContain(komunikaty.Nawigacja.przejdzDoTresci);
