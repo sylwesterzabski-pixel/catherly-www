@@ -135,3 +135,279 @@ html {
   font-display: swap;
 }
 /* === KONIEC EKSPERYMENTU KROJU === */
+
+/* === EKSPERYMENT PALETY — DO USUNIĘCIA === */
+/* Stanowisko próbne trzech palet kandydujących (zadanie właściciela
+   2026-08-17, rozstrzygnięcia z tego samego dnia). WYGASA 2026-08-31 —
+   data jest strażnikiem, nie komentarzem: po niej linter tokenów zapala
+   się na samym ISTNIENIU tego bloku (scripts/lint-tokeny.mjs, funkcja
+   wyjatekEksperymentu). Surowe hexy poniżej są jedynym miejscem w src/,
+   gdzie linter ich nie zgłasza; hex postawiony linię niżej niż znacznik
+   zamknięcia jest czerwony jak dotąd.
+
+   Przełącznik: atrybut data-paleta na <html>.
+     document.documentElement.dataset.paleta = "len"     → P1 LEN
+     document.documentElement.dataset.paleta = "kosc"    → P2 KOŚĆ
+     document.documentElement.dataset.paleta = "popiol"  → P3 POPIÓŁ
+     document.documentElement.dataset.paleta = "czern"   → P4 CZERŃ
+     delete document.documentElement.dataset.paleta      → paleta produkcyjna
+   Bez atrybutu serwis wygląda dokładnie jak dziś — ten blok nie zmienia
+   ani jednej wartości w stanie domyślnym.
+
+   Drugi przełącznik: atrybut data-efekty na <html> (część B3).
+     document.documentElement.dataset.efekty = "1do1"    → efekty jak
+       w referencji, ŚWIADOMIE poniżej progu kontrastu
+     delete document.documentElement.dataset.efekty      → wersja progowa
+   Domyślna jest wersja progowa. Patrz blok „EFEKTY" na końcu tego pliku.
+
+   MAPOWANIE ROLI (specyfikacja daje sześć wartości, serwis ma czternaście
+   ról — cztery przypisania poniżej to rozstrzygnięcia, nie przepisanie):
+
+   • powierzchnia ← tło. Paleta nie niesie stopnia powierzchni, więc karty,
+     nagłówek i stopka lądują płasko na tle strony. Rozdział niosą obwódki
+     w „linii", które i tak już są w każdym z tych komponentów. Skutek do
+     obejrzenia: sticky nagłówek i stopka przestają się odcinać plamą.
+   • powierzchnia-2 i powierzchnia-akcentowa ← linia. Pierwsza to plama pod
+     zaznaczoną etykietą pigułki okresu (SekcjaPlanow), druga to pasma
+     sekcji rytmu i sekcji tekstowej. Zrównanie ich z tłem zgasiłoby oba
+     bez śladu; limonka jest wykluczona (akcent wyłącznie na CTA).
+   • akcent ← TEKST DRUGORZĘDNY, nie limonka. Reguła R-AKCENT-01:
+     --kolor-rola-akcent niesie w tokenach komentarz „wyłącznie dekoracja,
+     nigdy tekst" i występuje w dwóch ::marker (Filar, SekcjaPlanow).
+     To rola INNA niż akcent-CTA z tej specyfikacji.
+   • link ← tekst podstawowy, link-aktywny ← tekst drugorzędny. Paleta nie
+     niesie barwy linku, a limonka jest zajęta przez CTA. Rozróżnienie
+     linku od prozy niesie podkreślenie (recepta wyżej w tym pliku), więc
+     1.4.1 „Use of Color" trzyma się bez własnej barwy.
+
+   POMIAR KONTRASTÓW (WCAG 2.x, wyliczone przed wpisaniem, P1/P2/P3):
+     tekst × tło                     13,62 / 13,89 / 14,11:1 — AA/AAA
+     tekst-2 × tło                    6,57 /  6,24 /  6,87:1 — AA
+     etykieta CTA × wypełnienie CTA  13,52 / 13,81 / 11,65:1 — AA/AAA
+     obwódka CTA × tło               13,62 / 13,89 / 14,11:1 — 1.4.11 OK
+     obwódka CTA × wypełnienie CTA   12,19 / 12,46 / 11,01:1 — 1.4.11 OK
+     fokus × tło                     13,62 / 13,89 / 14,11:1 — 1.4.11 OK
+     fokus × wypełnienie CTA         12,19 / 12,46 / 11,01:1 — 1.4.11 OK
+     WYPEŁNIENIE CTA × TŁO            1,12 /  1,11 /  1,28:1 — PONIŻEJ 3:1
+
+   Ostatni wiersz jest powodem, dla którego obwódka CTA NIE jest ozdobą.
+   Limonka na jasnym tle nie ma różnicy jasności — sama plama nie rysuje
+   granicy przycisku i nie spełnia 1.4.11. Granicę niesie wyłącznie obwódka
+   w kolorze tekstu podstawowego. Zdjęcie jej wywraca dostępność CTA
+   we wszystkich trzech wariantach. (Dla porównania produkcja dzisiaj:
+   terakota-600 × tło = 4,68:1 — tam plama sama wystarcza.)
+
+   Po 2026-08-31 ten blok znika w całości. */
+
+:root[data-paleta="len"] {
+  --kolor-rola-tlo-strony: #f2ece1;
+  --kolor-rola-powierzchnia: #f2ece1;
+  --kolor-rola-powierzchnia-2: #d9d2c4;
+  --kolor-rola-powierzchnia-akcentowa: #d9d2c4;
+  --kolor-rola-tekst-podstawowy: #1e231b;
+  --kolor-rola-tekst-drugorzedny: #4e5548;
+  --kolor-rola-kreska: #d9d2c4;
+  --kolor-rola-akcent: #4e5548; /* R-AKCENT-01 — punktory, NIE limonka */
+  --kolor-rola-interakcja: #c7f04a; /* limonka — wyłącznie CTA */
+  --kolor-rola-interakcja-aktywna: #141a0c;
+  --kolor-rola-tekst-na-interakcji: #141a0c;
+  --kolor-rola-link: #1e231b;
+  --kolor-rola-link-aktywny: #4e5548;
+  --kolor-rola-fokus: #1e231b; /* NIGDY akcent — polecenie właściciela */
+}
+
+:root[data-paleta="kosc"] {
+  --kolor-rola-tlo-strony: #f7f3ea;
+  --kolor-rola-powierzchnia: #f7f3ea;
+  --kolor-rola-powierzchnia-2: #e2dcd0;
+  --kolor-rola-powierzchnia-akcentowa: #e2dcd0;
+  --kolor-rola-tekst-podstawowy: #22261f;
+  --kolor-rola-tekst-drugorzedny: #565c4f;
+  --kolor-rola-kreska: #e2dcd0;
+  --kolor-rola-akcent: #565c4f;
+  --kolor-rola-interakcja: #d4f55c;
+  --kolor-rola-interakcja-aktywna: #181e10;
+  --kolor-rola-tekst-na-interakcji: #181e10;
+  --kolor-rola-link: #22261f;
+  --kolor-rola-link-aktywny: #565c4f;
+  --kolor-rola-fokus: #22261f;
+}
+
+:root[data-paleta="popiol"] {
+  --kolor-rola-tlo-strony: #ede9e0;
+  --kolor-rola-powierzchnia: #ede9e0;
+  --kolor-rola-powierzchnia-2: #d3cdc0;
+  --kolor-rola-powierzchnia-akcentowa: #d3cdc0;
+  --kolor-rola-tekst-podstawowy: #191d16;
+  --kolor-rola-tekst-drugorzedny: #4a5044;
+  --kolor-rola-kreska: #d3cdc0;
+  --kolor-rola-akcent: #4a5044;
+  --kolor-rola-interakcja: #aee03c;
+  --kolor-rola-interakcja-aktywna: #12180a;
+  --kolor-rola-tekst-na-interakcji: #12180a;
+  --kolor-rola-link: #191d16;
+  --kolor-rola-link-aktywny: #4a5044;
+  --kolor-rola-fokus: #191d16;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   P4 CZERŃ — wariant wg referencji Vertical (zadanie właściciela
+   2026-08-17, ZMIANA KIERUNKU). Odwraca wcześniejsze ustalenie o jasnej
+   palecie: ciemne tło, limonka jako pełnoprawny akcent.
+
+   R-AKCENT-01 ZAWIESZONA DLA TEGO WARIANTU — i tylko dla niego. Reguła
+   („limonka wyłącznie jako wypełnienie CTA") powstała z pomiaru na jasnym
+   tle, gdzie limonka ma 1,35:1 i nie może nieść ani tekstu, ani granicy.
+   Na czerni ma 13,13:1, więc niesie tekst, obwódki, fokus, punktory
+   i pola sekcji. Zawieszenie jest ZAKRESOWE: bloki „len", „kosc"
+   i „popiol" wyżej zostają nietknięte i dalej trzymają R-AKCENT-01.
+
+   STRAŻNIK „akcent-tylko-w-cta" — POLECENIE NIEWYKONALNE JAK NAPISANE.
+   Polecenie każe go wyłączyć dla data-paleta="czern". Przeszukanie repo
+   (`R-AKCENT`, `akcent`, `limonk`, `#c7f04a` w src/, e2e/, scripts/)
+   pokazuje, że TAKI STRAŻNIK NIE ISTNIEJE jako kod wykonywalny: R-AKCENT-01
+   żyje wyłącznie jako proza w tym pliku. Najbliższą asercją jest
+   e2e/filary.spec.ts („::marker w --kolor-rola-akcent" = terakota-500),
+   ale ona mierzy paletę PRODUKCYJNĄ — chodzi bez atrybutu data-paleta —
+   więc ten blok jej nie dotyka i nie ma czego w niej wyłączać. Nie
+   dopisuję wyjątku do żadnego testu; zawieszenie realizuje się przez
+   zakres selektora, nie przez osłabienie strażnika.
+
+   POMIAR KONTRASTÓW — scripts/kontrast.mjs, 2026-08-17. W nawiasie
+   wartość podana w poleceniu, gdy różni się od zmierzonej:
+     tekst × tło                  16,91:1 ✓  (polecenie: 15,7)
+     tekst-2 × tło                 8,33:1 ✓  (polecenie: 8,2)
+     limonka × tło                13,13:1 ✓  może być tekstem
+     czarny × limonka             13,13:1 ✓  pole CTA (polecenie: 15,0)
+     BIAŁY × limonka               1,51:1 ✗  ZAKAZ BEZWZGLĘDNY
+     tekst × limonka               1,29:1 ✗  ten sam zakaz, nasz #ededed
+     kreska × tło                  1,46:1 —  dekoracja, nie granica
+     tekst na jasnym × tło jasne  17,66:1 ✓
+     tekst × powierzchnia-2       15,74:1 ✓
+     limonka × powierzchnia-2     12,22:1 ✓
+   Werdykty zgadzają się z poleceniem co do jednego; rozjazd na trzeciej
+   cyfrze zgłoszony w raporcie, nie zasypany.
+
+   ZAKAZ BIAŁEGO NA LIMONCE jest tu spełniony STRUKTURALNIE, nie obietnicą:
+   jedyną rolą, która ląduje na limonce, jest --kolor-rola-tekst-na-interakcji
+   i ma wartość #0a0a0a. Reguła hover z końca tego bloku, która malowała
+   etykietę CTA na limonkowo, jest dla czerni WYŁĄCZONA — bez tego etykieta
+   wypadłaby limonką na #ededed przy 1,29:1.
+
+   SEKCJA JASNA (inwersja) — patrz osobny blok niżej: powierzchnia
+   akcentowa jest w czerni JEDYNYM jasnym polem, więc wszystkie role
+   tekstu muszą się w niej odwrócić. Bez tego tekst #ededed leżałby na
+   #f2f2f0 przy 1,04:1.
+
+   color-scheme ZOSTAJE „light" (deklaracja na :root wyżej) — patrz raport,
+   pozycja o widżetach natywnych. Zmiana tej wartości to zmiana ADR-009,
+   a nie mapowanie roli; nie było jej w poleceniu.
+   ══════════════════════════════════════════════════════════════════════ */
+:root[data-paleta="czern"] {
+  --kolor-rola-tlo-strony: #0a0a0a;
+  --kolor-rola-powierzchnia: #0a0a0a;
+  --kolor-rola-powierzchnia-2: #141414;
+  --kolor-rola-powierzchnia-akcentowa: #f2f2f0; /* inwersja — pole jasne */
+  --kolor-rola-tekst-podstawowy: #ededed;
+  --kolor-rola-tekst-drugorzedny: #a8a8a8;
+  --kolor-rola-kreska: #2e2e2e;
+  --kolor-rola-akcent: #a3e635; /* LIMONKA — zawieszenie R-AKCENT-01 */
+  --kolor-rola-interakcja: #a3e635;
+  --kolor-rola-tekst-na-interakcji: #0a0a0a;
+  --kolor-rola-interakcja-aktywna: #ededed; /* inwersja pary na hover */
+  --kolor-rola-link: #a3e635;
+  --kolor-rola-link-aktywny: #ededed;
+  --kolor-rola-fokus: #a3e635;
+}
+
+/* INWERSJA W POLU JASNYM (tylko czerń).
+   Powierzchnia akcentowa to w tej palecie #f2f2f0 — jedyne jasne pole
+   serwisu. Dziedziczony kolor tekstu (#ededed) daje na nim 1,04:1, więc
+   role tekstu muszą się w tym polu odwrócić. `color` deklarowany WPROST,
+   bo `body { color: var(…) }` wyliczyło się na body: samo nadpisanie
+   zmiennej w potomku nic by nie zmieniło.
+
+   Paleta NIE NIESIE barwy tekstu drugorzędnego na jasnym tle ani barwy
+   akcentu na jasnym tle — dziewięć wartości z polecenia obejmuje wyłącznie
+   „tekst na jasnym tle #0A0A0A". Mapuję więc obie role na tę jedną wartość
+   zamiast dobierać szarość spoza listy. Skutek: w polu jasnym znika
+   hierarchia tekstu drugorzędnego (ten sam kolor co podstawowy) i punktory
+   przestają być limonkowe. To ubytek do rozstrzygnięcia przy designie,
+   zgłoszony w raporcie — nie wymyślam pod niego wartości.
+
+   Dzięki temu blokowi limonka NIE MA jak wypaść na jasne tło: w polu
+   jasnym żadna rola nie niesie #a3e635. Lista z raportu jest pusta
+   z konstrukcji, a nie z przypadku — i sprawdzona pomiarem. */
+:root[data-paleta="czern"] section[class*="SekcjaRytmu_sekcja__"],
+:root[data-paleta="czern"] section[class*="SekcjaTekstowa_akcentowa__"] {
+  --kolor-rola-tekst-podstawowy: #0a0a0a;
+  --kolor-rola-tekst-drugorzedny: #0a0a0a;
+  --kolor-rola-akcent: #0a0a0a;
+  --kolor-rola-link: #0a0a0a;
+  --kolor-rola-link-aktywny: #0a0a0a;
+  --kolor-rola-fokus: #0a0a0a;
+  color: var(--kolor-rola-tekst-podstawowy);
+}
+
+/* KADRY APLIKACJI — jasne prostokąty z widocznym obramowaniem (polecenie
+   części A, referencja: zrzuty mobilne 8 i 15).
+   Ramka zrzutu (Filar.module.css → .obraz) maluje dziś `powierzchnia`
+   i kreskę; w czerni dałoby to czarny prostokąt obwiedziony kreską przy
+   1,46:1 — kadr zlałby się z tłem strony. Tu dostaje pole jasne (17,66:1
+   wobec tła) i obwódkę w tekście drugorzędnym (8,33:1 wobec tła), więc
+   prostokąt widać, zanim zrzut się dociągnie.
+   ZERO retuszu: ani `filter`, ani `opacity`, ani przyciemnienia — kadr
+   jest dowodem produktu i ma wyglądać dokładnie tak, jak go zrobił
+   Playwright. Ten blok dotyka WYŁĄCZNIE ramki, nigdy <img> w środku.
+
+   UWAGA DO RAPORTU: na „/" ramki są dziś PUSTE — osadzenie zrzutów jest
+   wyłączone flagą design/pipeline-obrazow.json → osadzenieNaGlownej
+   (decyzja właściciela 2026-08-16, wariant 4: najpierw odzyskać zapas
+   LCP). Nie przestawiam tej flagi: to osobna decyzja właściciela, a nie
+   mapowanie barwy. */
+:root[data-paleta="czern"] div[class*="Filar_obraz__"] {
+  background: var(--kolor-rola-powierzchnia-akcentowa);
+  border-color: var(--kolor-rola-tekst-drugorzedny);
+}
+
+/* Obwódka CTA. Recepta CTA jest powtórzona ręcznie w trzech modułach
+   (Hero, SekcjaPlanow, Zamkniecie) i żaden z nich nie ma obwódki, więc
+   dokłada ją ten blok — celowo NIE dotykam tamtych plików, bo eksperyment
+   ma znikać jednym cięciem. Selektor celuje we wzorzec nazw CSS Modules
+   Next.js (`Komponent_cta__hash`), sprawdzony na wyrenderowanym HTML:
+   trafia dokładnie w trzy CTA i w nic więcej.
+
+   0.0625rem, nie 1px — tak zapisany jest KAŻDY włos w tym repozytorium
+   (Filar, CennikSkrot, Nawigacja, Stopka, TabelaPorownawcza…). Wpisanie
+   tu „1px" kazałoby wyjątkowi w linterze osłaniać także wymiary, a ma
+   osłaniać wyłącznie barwy.
+
+   CZERŃ WYŁĄCZONA z tej reguły (polecenie części A: „Usuń obwódkę TYLKO
+   w wariancie czern"). Powód jest zmierzony, nie estetyczny: obwódka
+   powstała dlatego, że limonka na jasnym tle ma 1,12–1,28:1 i sama plama
+   nie rysuje przycisku. Na czerni ta sama plama ma 13,13:1 i 1.4.11
+   spełnia się wypełnieniem. Reguła zostaje w mocy dla len/kosc/popiol —
+   `:not()` zawęża zakres, nie kasuje strażnika granicy. */
+:root[data-paleta]:not([data-paleta="czern"]) a[class*="_cta__"] {
+  border: 0.0625rem solid var(--kolor-rola-tekst-podstawowy);
+}
+
+/* Stan hover/active CTA. Specyfikacja nie podaje barwy stanu, więc zamiast
+   jej wymyślać robię INWERSJĘ pary CTA: tło i etykieta zamieniają się
+   miejscami. Zero nowych wartości. Bez tej reguły etykieta znika —
+   --kolor-rola-interakcja-aktywna i --kolor-rola-tekst-na-interakcji mają
+   w tej palecie tę samą wartość, a moduły nie zmieniają koloru tekstu na
+   hover. Do rozstrzygnięcia przy designie.
+
+   CZERŃ WYŁĄCZONA — i to jest zabezpieczenie, nie kosmetyka. W czerni
+   interakcja-aktywna to #ededed (jasne pole na hover), więc ta reguła
+   pomalowałaby etykietę limonką na jasnym: 1,29:1. To ten sam zakaz, co
+   „BIAŁY × limonka", tylko naszym odcieniem bieli. Bez tej reguły czerń
+   spada na receptę modułów (`.cta:hover { color: tekst-na-interakcji }` —
+   powtórzoną w Hero, SekcjaPlanow i Zamkniecie po naprawie z 2026-08-17),
+   czyli czarna etykieta na #ededed: 17,66:1. */
+:root[data-paleta]:not([data-paleta="czern"]) a[class*="_cta__"]:hover,
+:root[data-paleta]:not([data-paleta="czern"]) a[class*="_cta__"]:active {
+  color: var(--kolor-rola-interakcja);
+}
+/* === KONIEC EKSPERYMENTU PALETY === */
