@@ -89,3 +89,49 @@ a:active {
 html {
   scroll-padding-block-start: 5rem;
 }
+
+/* === EKSPERYMENT KROJU — DO USUNIĘCIA, WYGASA 2026-08-31 === */
+/* Stanowisko próbne trzech krojów kandydujących (zadanie właściciela
+   2026-08-17). Pliki: public/fonts/eksperyment/*.woff2 — self-host,
+   zero domen zewnętrznych, subset OFL wg zakresu z polecenia.
+
+   NIE ZMIENIAM tu font-family body — te deklaracje same z siebie
+   niczego nie zaciągają. Przeglądarka pobiera plik dopiero, gdy
+   któraś reguła użyje rodziny; do czasu decyzji używa ich wyłącznie
+   arkusz próbny. Serwis zostaje na system-ui (ADR-026).
+
+   size-adjust / ascent-override / descent-override CELOWO nieobecne:
+   wartości są zmierzone (raport pkt 3), ale jedna deklaracja
+   @font-face nie potrafi trafić jednocześnie w SF Pro (iOS/macOS)
+   i w Roboto (Android). Rozjazd między tymi dwoma zapasami, zmierzony
+   na plikach (arkusz próbny, sekcja metryk): size-adjust do 2,012 pp
+   (Geist), ascent-override do 1,960 pp (Schibsted), descent-override
+   do 6,920 pp (Onest).
+   Wybór należy do właściciela; wpisanie tu jednej z nich udawałoby,
+   że problem nie istnieje.
+
+   Po 2026-08-31 ten blok znika razem z katalogiem public/fonts/eksperyment/. */
+@font-face {
+  font-family: "Eksperyment Schibsted Grotesk";
+  src: url("/fonts/eksperyment/schibsted-grotesk.woff2") format("woff2");
+  font-weight: 400 900; /* oś wght kroju kończy się na 400 — nie 100 */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Eksperyment Onest";
+  src: url("/fonts/eksperyment/onest.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Eksperyment Geist";
+  src: url("/fonts/eksperyment/geist.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* === KONIEC EKSPERYMENTU KROJU === */
