@@ -76,6 +76,28 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   poprawność artefaktu, którego nie da się użyć" — suma kontrolna dowodzi,
   że plik się nie zepsuł, nie że da się wrócić); pełny opis poza tym
   repozytorium, w `fbo-os/docs/ZADANIA_RECZNE.md`.
+- SKAŻENIE POMIARU SPRAWDZA SIĘ WSTECZ (właściciel, 2026-08-19). Gdy
+  wychodzi na jaw, że pomiar był skażony, nie kończysz na tym pomiarze:
+  sprawdzasz, czy przyczyna skażenia nie sięgała wcześniejszych, w tym
+  ZIELONYCH. Zieleń sprzed skażenia nie jest automatycznie czysta.
+  Wzorzec (T22): dwa zadania wydajności mierzyły ten sam alias przez
+  5 min 32 s. Łatwo było poprzestać na „drugi pomiar skażony" — ale
+  strażnik prowieniencji sprawdzał wydanie tylko na starcie, więc
+  późniejsze przebiegi TAMTEGO, zielonego zadania mogły mierzyć już
+  wdrożenie drugiego commita. Skażenie było wzajemne, więc unieważnia
+  obie liczby, nie jedną. Zieleń jest wygodniejsza i dlatego łatwiej ją
+  przeoczyć — reguła istnieje po to, żeby to przeoczenie kosztowało
+  jedno sprawdzenie, a nie fałszywy punkt odniesienia na tygodnie.
+- RAPORT, KTÓREGO NIKT NIE CZYTA, PRZESTAJE BYĆ RAPORTEM (właściciel,
+  2026-08-19). Ostrzeżenie wypisane w miejscu, do którego nikt nie
+  zagląda, działa jak jego brak — z jedną różnicą na gorsze: pozwala
+  potem powiedzieć „przecież było napisane". Wzorzec (T22): linijka
+  „rozrzut większy niż zapas" stała w logu od 2026-08-16 i była wypisana
+  dla `/` w OBU przebiegach doby 2026-08-19, także w ZIELONYM — nikt jej
+  nie przeczytał, bo siedziała w kilkuset linijkach logu zielonego
+  zadania. Jeśli ostrzeżenie ma znaczyć, dostaje własny kod wyjścia
+  i własne miejsce w interfejsie (adnotacja przebiegu, podsumowanie),
+  a nie kolejną linię logu. Rodzina: nieaktualny raport audytu.
 - Nie oceniasz własnej pracy w tych czterech obszarach. Dowodem jest
   wykonany test, zwrócony status, log — nigdy Twoje przekonanie.
 - W konflikcie przegrywa termin i zakres, nigdy nieodwracalne.
