@@ -35,6 +35,26 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   zanim dopiszesz. Zielona bramka po Twojej zmianie nie jest dowodem, że
   nadal mierzy to samo — dowodem jest MUTACJA: zepsuj celowo to, czego
   strażnik pilnuje, i pokaż czerwień.
+- KONTROLA NEGATYWNA W TYM SAMYM PRZEBIEGU. Pomiar, który ma dowieść
+  naprawy, niesie obok wartości PO naprawie wartość, jaką dałby stan
+  SPRZED niej — policzoną w tym samym przebiegu, tym samym kodem, na tym
+  samym otoczeniu. Sama wartość po naprawie nie dowodzi niczego: nie
+  odróżnia „naprawione" od „nigdy nie było zepsute" ani od „mierzę nie
+  to, co trzeba". Kontrola liczona osobno, z pamięci albo z wcześniejszego
+  przebiegu, nie liczy się — ma dzielić z pomiarem wszystko poza samą
+  naprawą. Wzorzec (A1, 2026-08-19): etykieta CTA 7,02:1 po naprawie
+  i 1,34:1 w barwie, którą narzucał `a:hover` przed nią, obie liczby
+  z jednego przebiegu i z jednego kodu. To druga strona mutacji: mutacja
+  pokazuje, że strażnik zapala się na defekcie; kontrola negatywna
+  pokazuje, że pomiar w ogóle widzi defekt.
+- KAŻDA LICZBA Z POMIARU NIESIE DATĘ I COMMIT POMIARU. Liczba wpisana do
+  dokumentu bez tych dwóch rzeczy udaje fakt, a jest migawką stanu, który
+  od tamtej pory mógł urosnąć albo zniknąć. Przykład, który to wymusił
+  (T15): „data cofnięta → 45 naruszeń" zmierzone 2026-08-17 dawało tej
+  samej mutacji **77** dwa dni później, bo osłaniany blok urósł. To ta
+  sama rodzina co nieaktualny raport audytu — nieaktualność artefaktu daje
+  fałszywy spokój — z jedną różnicą: raportu pilnuje bramka, a pojedynczej
+  liczby w prozie nie pilnuje nic poza tą regułą.
 - Nie oceniasz własnej pracy w tych czterech obszarach. Dowodem jest
   wykonany test, zwrócony status, log — nigdy Twoje przekonanie.
 - W konflikcie przegrywa termin i zakres, nigdy nieodwracalne.
