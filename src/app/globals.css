@@ -411,3 +411,249 @@ html {
   color: var(--kolor-rola-interakcja);
 }
 /* === KONIEC EKSPERYMENTU PALETY === */
+
+/* === EKSPERYMENT PRZEZROCZYSTOŚCI — DO USUNIĘCIA, WYGASA 2026-08-31 === */
+/* Część B zadania właściciela 2026-08-17. Osobny blok, bo osobny los:
+   ani jedna reguła niżej nie zawiera surowej barwy ani wymiaru w px, więc
+   NIE korzysta z wyjątku lintera tokenów (ten osłania wyłącznie blok palety
+   i wyłącznie barwy). Wszystko idzie przez var() i color-mix().
+
+   Cały blok jest zakresowany na `:root[data-paleta]` — bez atrybutu palety
+   serwis wygląda i mierzy się dokładnie jak dziś. Wyjątkiem są RECEPTY
+   opt-in (.duch, .wygaszany, .na-zdjeciu), które muszą dać się włączyć
+   także w palecie produkcyjnej, bo używa ich arkusz /proba-kroju.html —
+   arkusz nie kopiuje tych reguł, tylko zaciąga TEN plik, więc pokazuje
+   receptę produkcyjną, a nie jej podobiznę.
+
+   Rozmycie zapisane jako `blur(1rem)`, nie tak jak w poleceniu w pikselach:
+   przy korzeniu 16 px to ta sama wartość, a repozytorium nie ma ani jednego
+   wymiaru pikselowego poza tokenami — pilnuje tego linter i słusznie zapalił
+   się na literale wpisanym w ten komentarz. */
+
+/* ── B1. PASEK NAWIGACJI ──────────────────────────────────────────────
+   Pasek bierze kolor od treści pod nim (referencja: zrzuty mobilne 2, 6,
+   7, 8, 10, 12). Alfa 0,72 + rozmycie 16 px. Bez JS, bez zmiany wysokości
+   przy przewijaniu — reguła dotyka wyłącznie tła i filtra.
+   Najgorszy przypadek (sekcja jasna pod paskiem w czerni) zmierzony
+   na pikselach, wynik w raporcie.
+
+   `z-index` NIE jest tu ozdobą — jest naprawą defektu, który sam wniosłem
+   niżej. Pasek ma `position: sticky` bez z-indeksu i dotąd malował się nad
+   treścią, bo żadna sekcja nie była pozycjonowana. Kontekst układania
+   duchów (`section:has(> .duch)`: `position: relative; z-index: 0`) to
+   odwraca: pozycjonowana sekcja stojąca DALEJ w drzewie wygrywa remis
+   z paskiem bez z-indeksu i maluje się NA NIM. Pasek znikał pod sekcją
+   rytmu — pierwszy pomiar pikseli dał 1,04:1, bo mierzył samą sekcję.
+   Wykryła to MUTACJA (pasek bez tła i bez rozmycia dał liczby co do cyfry
+   takie same), nie oględziny.
+
+   `.pasek-proba` stoi w TEJ SAMEJ liście selektorów, a nie w arkuszu
+   /proba-kroju.html jako kopia. Kopia recepty pokazywałaby, że kopia
+   działa; wspólna reguła pokazuje, że działa RECEPTA. Gdyby ktoś zmienił
+   alfę albo promień rozmycia w jednym miejscu, arkusz zmieni się razem
+   z serwisem — bo to jedna deklaracja, nie dwie. */
+:root[data-paleta] header[class*="Nawigacja_naglowek__"],
+.pasek-proba {
+  background: color-mix(in srgb, var(--kolor-rola-tlo-strony) 72%, transparent);
+  -webkit-backdrop-filter: blur(1rem);
+  backdrop-filter: blur(1rem);
+  z-index: 1;
+}
+
+/* Bez rozmycia półprzezroczysty pasek przestaje być czytelnym pasem
+   i staje się mgłą nad tekstem — wtedy tło pełne, alfa 1,0. */
+@supports not (backdrop-filter: blur(0.0625rem)) {
+  :root[data-paleta] header[class*="Nawigacja_naglowek__"],
+  .pasek-proba {
+    background: var(--kolor-rola-tlo-strony);
+  }
+}
+
+/* ── B2. DUCHY POD TREŚCIĄ ────────────────────────────────────────────
+   Wielki tekst dekoracyjny w tle (referencja: zrzuty mobilne 10, 15, 6).
+
+   WARUNEK BEZWZGLĘDNY z polecenia — „treść ducha NIE NIESIE informacji,
+   której nie ma w normalnym tekście" — spełniony KONSTRUKCYJNIE, nie
+   obietnicą: napis ducha bierze się z atrybutu `data-duch`, który komponent
+   wypełnia DOKŁADNIE tym samym łańcuchem, co własny widoczny nagłówek.
+   Nie ma jak wpisać tam czegokolwiek innego bez zmiany komponentu.
+
+   Napis jedzie przez `content: attr(...)`, a nie węzłem tekstowym — i to
+   też jest decyzja, nie wygoda. Treść pseudoelementu nie wchodzi do drzewa
+   tekstu, więc nie dubluje nagłówka dla wyszukiwarek tekstu Playwrighta ani
+   dla asercji liczących wystąpienia (ADR-018: strażnik zerowany przez
+   zmianę otoczenia). `aria-hidden="true"` stoi w komponencie na nośniku.
+
+   Bramka kontrastu duchów nie dotyczy — WCAG 1.4.3 wyłącza dekorację —
+   ale dostają `z-index: -1`, więc leżą POD treścią, nie na niej. */
+.duch {
+  /* Bez wariantu palety ducha nie ma. To nie jest ukrywanie treści:
+     nośnik jest pusty (napis żyje w pseudoelemencie) i aria-hidden. */
+  display: none;
+}
+
+/* `.duch-widoczny` to furtka dla arkusza — i jest konieczna, bo arkusz
+   startuje na palecie PRODUKCYJNEJ (bez atrybutu `data-paleta`), a wtedy
+   reguła wyżej gasi ducha całkowicie. Bez tej furtki sekcja dowodowa
+   „duch w trzech alfach" byłaby pustym prostokątem dopóki ktoś nie
+   przełączy palety — czyli dowód, którego nie widać. */
+:root[data-paleta] .duch,
+.duch-widoczny {
+  display: block;
+  position: absolute;
+  z-index: -1;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  max-inline-size: 100%;
+  overflow: hidden;
+  font-size: clamp(3.5rem, 16vw, 11rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  /* Alfa 0,08 — środek zakresu 0,06–0,10 z polecenia. Trzy wartości
+     zakresu stoją obok siebie w arkuszu (sekcja PRZEZROCZYSTOŚCI): arkusz
+     podstawia `--duch-alfa`, więc porównuje TĘ regułę w trzech nastawach,
+     a nie trzy własne reguły. Serwis nastawy nie ustawia — bierze 8%. */
+  color: color-mix(
+    in srgb,
+    var(--kolor-rola-tekst-podstawowy) var(--duch-alfa, 8%),
+    transparent
+  );
+}
+
+:root[data-paleta] .duch::before,
+.duch-widoczny::before {
+  content: attr(data-duch);
+}
+
+/* Kontekst układania dla ducha. `z-index: 0` jest tu konieczne, nie
+   ozdobne: bez własnego kontekstu potomek z `z-index: -1` wypada POD tło
+   sekcji i znika w sekcji z tłem (S10). `overflow: hidden` trzyma napis
+   w kadrze — duch nie ma prawa poszerzyć strony. */
+:root[data-paleta] section:has(> .duch) {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ── B3. TEKST WYGASZANY I TEKST NA ZDJĘCIU ───────────────────────────
+   ZA FLAGĄ `data-efekty="1do1"`. DOMYŚLNIE (bez atrybutu) obowiązuje
+   wersja przechodząca próg. To są teksty NIOSĄCE TREŚĆ, więc przełącznik
+   ma pokazywać różnicę także BRAMCE — dlatego zadeklarowany `color` jest
+   w obu wersjach równy NAJGORSZEMU punktowi gradientu:
+     wersja progowa → kolor tekstu drugorzędnego (8,33:1 na czerni),
+     wersja 1do1    → kolor tła pod tekstem (1,00:1).
+   Dzięki temu bramka mierzy prawdę, a nie deklarację; jest to zarazem
+   zapas dla przeglądarek bez `background-clip: text`. */
+
+/* Tło, na którym kończy się wygaszenie 1:1. Sekcja z tłem akcentowym ma
+   inne niż tło strony — bez tego gradient „w tło" kończyłby się w S10
+   kolorem, którego pod tekstem nie ma. */
+:root[data-paleta] {
+  --efekt-tlo-pod-tekstem: var(--kolor-rola-tlo-strony);
+}
+
+:root[data-paleta] section[class*="SekcjaRytmu_sekcja__"],
+:root[data-paleta] section[class*="SekcjaTekstowa_akcentowa__"] {
+  --efekt-tlo-pod-tekstem: var(--kolor-rola-powierzchnia-akcentowa);
+}
+
+/* Nośniki wygaszenia: „kropka" K3/S10 (jedyne zdanie serwisu o wadze
+   cytatu) oraz recepta opt-in .wygaszany dla arkusza. */
+:root[data-paleta] p[class*="_kropka__"],
+.wygaszany {
+  background-image: linear-gradient(
+    to bottom,
+    var(--kolor-rola-tekst-podstawowy),
+    var(--kolor-rola-tekst-drugorzedny)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--kolor-rola-tekst-drugorzedny);
+  -webkit-text-fill-color: transparent;
+}
+
+/* Dwie rzeczy w selektorze wyglądają na pomyłkę i żadna nią nie jest.
+
+   Po pierwsze BRAK `:root`: flaga działa też z przodka innego niż <html>,
+   bo arkusz musi postawić wersję 1:1 OBOK progowej na jednej stronie
+   („cytat wygaszany 1:1 obok progowej"). Na serwisie nic to nie zmienia —
+   atrybut siedzi na <html>, a <html> też jest przodkiem.
+
+   Po drugie POWTÓRZONY atrybut: `[data-efekty="1do1"][data-efekty]` ma
+   swoistość (0,3,1) — dokładnie tyle, co reguła progowa wyżej
+   (`:root[data-paleta] p[class*="_kropka__"]`). Bez powtórzenia byłoby
+   (0,2,1) i flaga PRZEGRAŁABY z wersją progową, mimo że stoi niżej
+   w pliku. Przełącznik wyglądałby na działający tylko dopóki ktoś nie
+   sprawdziłby pikseli.
+
+   Wartość „progowa" NIE pojawia się na serwisie: przełącznik arkusza
+   ustawia atrybut dla 1:1 i USUWA go dla wersji progowej, zgodnie
+   z poleceniem („brak atrybutu → wersja przechodząca próg"). Istnieje
+   wyłącznie po to, by panel progowy oparł się globalnej fladze arkusza. */
+[data-efekty="1do1"][data-efekty] p[class*="_kropka__"],
+[data-efekty="1do1"][data-efekty] .wygaszany {
+  background-image: linear-gradient(
+    to bottom,
+    var(--kolor-rola-tekst-podstawowy),
+    var(--efekt-tlo-pod-tekstem, var(--kolor-rola-tlo-strony))
+  );
+  color: var(--efekt-tlo-pod-tekstem, var(--kolor-rola-tlo-strony));
+}
+
+[data-efekty="progowa"][data-efekty] p[class*="_kropka__"],
+[data-efekty="progowa"][data-efekty] .wygaszany {
+  background-image: linear-gradient(
+    to bottom,
+    var(--kolor-rola-tekst-podstawowy),
+    var(--kolor-rola-tekst-drugorzedny)
+  );
+  color: var(--kolor-rola-tekst-drugorzedny);
+}
+
+/* Tekst na zdjęciu. Wersja progowa: warstwa przyciemniająca POD tekstem
+   (tło strony z alfą dobraną do 4,5:1 wobec najjaśniejszego piksela
+   kadru — wartość i pomiar w raporcie). Wersja 1do1: warstwy nie ma,
+   tekst leży wprost na zdjęciu. */
+.na-zdjeciu {
+  position: relative;
+  display: block;
+}
+
+.na-zdjeciu > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.na-zdjeciu > .tekst-na-zdjeciu {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  margin: 0;
+  padding: 1rem;
+  color: var(--kolor-rola-tekst-podstawowy);
+  font-size: clamp(1.25rem, 5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.na-zdjeciu > .tekst-na-zdjeciu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--kolor-rola-tlo-strony) 64%, transparent);
+}
+
+[data-efekty="1do1"][data-efekty] .na-zdjeciu > .tekst-na-zdjeciu::before {
+  background: transparent;
+}
+
+[data-efekty="progowa"][data-efekty] .na-zdjeciu > .tekst-na-zdjeciu::before {
+  background: color-mix(in srgb, var(--kolor-rola-tlo-strony) 64%, transparent);
+}
+/* === KONIEC EKSPERYMENTU PRZEZROCZYSTOŚCI === */
