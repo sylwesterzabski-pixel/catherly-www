@@ -16,6 +16,11 @@ type Props = {
 export function NaglowekPodstrony({ naglowek, zdanie }: Props) {
   return (
     <section className={styles.sekcja} aria-labelledby="podstrona-h1">
+      {/* Duch eksperymentu przezroczystości (część B2, 2026-08-17) —
+          uzasadnienie i mechanika przy bliźniaczym nośniku
+          w SekcjaRytmu.tsx oraz w globals.css. Napis = ten sam łańcuch,
+          co widoczny H1; nośnik pusty, aria-hidden, gaszony bez palety. */}
+      <span className="duch" aria-hidden="true" data-duch={naglowek} />
       <div className={styles.wnetrze}>
         <h1 id="podstrona-h1" className={styles.naglowek}>
           {naglowek}
