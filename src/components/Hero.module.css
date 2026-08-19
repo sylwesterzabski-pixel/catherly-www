@@ -71,6 +71,12 @@
 .cta:active {
   /* Para 7,02:1 — komentarz przy roli w tokenach (panel K2). */
   background: var(--kolor-rola-interakcja-aktywna);
+  /* Kolor etykiety POWTÓRZONY, choć w spoczynku deklaruje go `.cta`.
+     Bez tego `a:hover` z globals.css (0,1,1) bije `.cta` (0,1,0) i etykieta
+     schodzi na barwę linku odwiedzanego: 1,34:1 zamiast 5,22:1 (pomiar
+     2026-08-17, 18 wystąpień). axe stanów nie wymusza, więc bramka tego nie
+     widziała — pilnuje tego dziś `e2e/kontrast-stanow.spec.ts`. */
+  color: var(--kolor-rola-tekst-na-interakcji);
 }
 
 .potwierdzenia {
