@@ -129,7 +129,7 @@ jobs:
       - run: npm run bramka:nojs
 
   bramka-dostepnosc:
-    name: "Bramka: Dostępność (axe 0 błędów + klawiatura + nazwy linków)"
+    name: "Bramka: Dostępność (axe + klawiatura + nazwy linków + kontrast stanów)"
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -149,7 +149,21 @@ jobs:
       # kolejnej pełnej rozgrzewki. Rzecz pilnowana jest zresztą ta
       # sama — nazwa dostępna linku (#11), na którą axe jest ślepe
       # (identical-links-same-purpose: enabled: false w axe-core 4.12.1).
-      - run: npx playwright test e2e/axe.spec.ts e2e/klawiatura.spec.ts e2e/oznaczenie-kierunku.spec.ts
+      # kontrast-stanow.spec.ts DOPISANY 2026-08-19, tą samą drogą i z tego
+      # samego powodu. Rozstrzygnięcie z 2026-08-17 pkt 2 było wykonane
+      # w plikach i niewykonane w systemie: spec istniał, mierzył i świecił
+      # zielono — na laptopie autora. Dla CI nie istniał, bo nie był śledzony
+      # przez gita. Bramka mająca zamknąć lukę „strażnik nie patrzy tam,
+      # gdzie boli" sama była niewidzialna.
+      #
+      # DOPISANY TUTAJ, a nie jako osobna bramka: pilnuje tej samej rzeczy,
+      # co axe — kontrastu AA — tylko w stanach, których axe nie odwiedza.
+      # axe mierzy spoczynek; :hover, :focus-visible i :active wymuszamy
+      # przez CDP CSS.forcePseudoState. Defekt 1,34:1 na etykiecie CTA
+      # (18 wystąpień, naprawiony 2026-08-17) przeszedł obok axe właśnie
+      # tędy. Dzieli też artefakt builda i instalację chromium, więc
+      # kosztuje sekundy zamiast kolejnej pełnej rozgrzewki.
+      - run: npx playwright test e2e/axe.spec.ts e2e/klawiatura.spec.ts e2e/oznaczenie-kierunku.spec.ts e2e/kontrast-stanow.spec.ts
 
   bramka-e2e:
     name: "Bramka: E2E (cennik → płatność → konto → aplikacja)"
