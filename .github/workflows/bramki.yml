@@ -55,6 +55,35 @@ jobs:
       - run: npm ci
       - run: npm run bramka:tokeny
 
+  bramka-lint:
+    name: "Bramka: ESLint (reguły Next/TypeScript egzekwowane przy merge'u)"
+    runs-on: ubuntu-latest
+    # WPIĘTY 2026-08-19. Do tego dnia `npm run lint` nie był zadaniem CI:
+    # eslint przechodził na laptopie autora i nikt go nie egzekwował przy
+    # merge'u. Ta sama rodzina defektu, co „spece treści nigdy nie biegły"
+    # z 2026-08-14 — narzędzie istnieje, jest zielone i jest bez skutku,
+    # bo żaden mechanizm nie zatrzymuje czerwieni. ADR-018: brak dowodu =
+    # brak zabezpieczenia, a dowodem jest wykonany przebieg, nie zwyczaj.
+    #
+    # ZAKRES, ŻEBY NIE BYŁO ZŁUDZEŃ: `eslint .` kończy się czerwienią na
+    # regułach poziomu ERROR i przepuszcza WARNING. Sprawdzone mutacją
+    # 2026-08-19: hak wywołany warunkowo (react-hooks/rules-of-hooks,
+    # error) → „1 problem (1 error)", kod wyjścia 1; nieużywana zmienna
+    # (@typescript-eslint/no-unused-vars, warning) → „1 problem
+    # (0 errors, 1 warning)", kod wyjścia 0. Zaostrzenie do
+    # `--max-warnings=0` to zmiana progu, a nie wpięcie strażnika, więc
+    # zostaje decyzją właściciela.
+    #
+    # Bez `needs: build`: `eslint .` czyta źródła, nie artefakt builda,
+    # więc jest sygnałem najszybszym z całego zestawu (3,7 s lokalnie)
+    # i nie ma powodu, żeby na cokolwiek czekał.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run lint
+
   bramka-parytet:
     name: "Bramka: Parytet językowy (identyczne drzewa pl/en/de)"
     runs-on: ubuntu-latest
