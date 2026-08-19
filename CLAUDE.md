@@ -54,7 +54,14 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   samej mutacji **77** dwa dni później, bo osłaniany blok urósł. To ta
   sama rodzina co nieaktualny raport audytu — nieaktualność artefaktu daje
   fałszywy spokój — z jedną różnicą: raportu pilnuje bramka, a pojedynczej
-  liczby w prozie nie pilnuje nic poza tą regułą.
+  liczby w prozie nie pilnuje nic poza tą regułą. Commit w stemplu musi być
+  OSIĄGALNY z gałęzi w chwili zapisu, a nie ten, który istniał w chwili
+  pomiaru: `git commit --amend`, `rebase` i `squash` przepisują skróty, więc
+  stempel postawiony przed nimi wskazuje w pustkę i sam staje się tym, przed
+  czym ta reguła chroni. Sprawdzenie kosztuje jedno polecenie:
+  `git merge-base --is-ancestor <skrót> HEAD`. Wychwycone 2026-08-19 na
+  pierwszej liczbie objętej tą regułą (T15 stemplowany `72f664a` po amendzie
+  na `a826464`; drzewo identyczne, skrót martwy).
 - Nie oceniasz własnej pracy w tych czterech obszarach. Dowodem jest
   wykonany test, zwrócony status, log — nigdy Twoje przekonanie.
 - W konflikcie przegrywa termin i zakres, nigdy nieodwracalne.
