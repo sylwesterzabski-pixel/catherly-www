@@ -9,7 +9,7 @@
     "build": "next build",
     "tokeny:build": "style-dictionary build --config design/style-dictionary.config.mjs",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "prepare": "git config core.hooksPath .githooks",
     "bramka:tokeny": "node scripts/lint-tokeny.mjs",
     "bramka:liczby": "node scripts/lint-liczby.mjs",

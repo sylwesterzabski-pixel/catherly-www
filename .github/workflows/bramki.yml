@@ -65,14 +65,21 @@ jobs:
     # bo żaden mechanizm nie zatrzymuje czerwieni. ADR-018: brak dowodu =
     # brak zabezpieczenia, a dowodem jest wykonany przebieg, nie zwyczaj.
     #
-    # ZAKRES, ŻEBY NIE BYŁO ZŁUDZEŃ: `eslint .` kończy się czerwienią na
-    # regułach poziomu ERROR i przepuszcza WARNING. Sprawdzone mutacją
-    # 2026-08-19: hak wywołany warunkowo (react-hooks/rules-of-hooks,
-    # error) → „1 problem (1 error)", kod wyjścia 1; nieużywana zmienna
-    # (@typescript-eslint/no-unused-vars, warning) → „1 problem
-    # (0 errors, 1 warning)", kod wyjścia 0. Zaostrzenie do
-    # `--max-warnings=0` to zmiana progu, a nie wpięcie strażnika, więc
-    # zostaje decyzją właściciela.
+    # ZAKRES, ŻEBY NIE BYŁO ZŁUDZEŃ: od 2026-08-19 `npm run lint` to
+    # `eslint . --max-warnings=0` — czerwienią kończy się KAŻDY problem,
+    # także poziomu WARNING. Wcześniej tego samego dnia próg przepuszczał
+    # ostrzeżenia; zaostrzony decyzją właściciela, bo pomiar na commicie
+    # d178c26 (2026-08-19) dał 87 plików, 0 błędów, 0 ostrzeżeń, więc
+    # zaostrzenie kosztowało zero, a jutro już by nie kosztowało zera.
+    # Dowód mutacyjny z kontrolą negatywną w jednym przebiegu
+    # (2026-08-19, d178c26): nieużywana zmienna w src/components/Filar.tsx
+    # → stare `eslint .` „1 problem (0 errors, 1 warning)", kod wyjścia 0;
+    # nowe `eslint . --max-warnings=0` ten sam komunikat plus „ESLint found
+    # too many warnings (maximum: 0)", kod wyjścia 1. Ta sama mutacja, dwa
+    # progi, jeden przebieg — czerwień pochodzi z progu, nie z otoczenia.
+    # Reguły poziomu ERROR czerwieniły już przed zaostrzeniem (mutacja
+    # 2026-08-19: hak wywołany warunkowo, react-hooks/rules-of-hooks →
+    # „1 problem (1 error)", kod wyjścia 1).
     #
     # Bez `needs: build`: `eslint .` czyta źródła, nie artefakt builda,
     # więc jest sygnałem najszybszym z całego zestawu (3,7 s lokalnie)
