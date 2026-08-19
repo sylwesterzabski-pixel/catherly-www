@@ -13,6 +13,38 @@ on:
     branches: [main, "faza-*/**"]
   workflow_dispatch:
 
+# JEDEN PRZEBIEG NA GAŁĄŹ (rozstrzygnięcie właściciela 2026-08-19, T22).
+#
+# Bramka wydajności mierzy WSPÓLNY zasób: alias preview Vercela dla gałęzi.
+# Dopóki nic nie pilnowało równoległości, dwa przebiegi tej samej gałęzi
+# mierzyły ten sam adres jednocześnie — i mierzyły siebie nawzajem.
+# Zdarzyło się 2026-08-19 (przebiegi 32300222841 i 32300453626, commity
+# b51d0b8 i 4c22d6d): okna pomiarowe nachodziły przez 5 min 32 s, dokument
+# „/" identyczny co do bajta w obu (43 054 B), TTFB 611–615 ms w obu,
+# a Render Delay 876 → 1481 ms i werdykt 1491 → 2092 ms. Różnica między
+# commitami: 13 linii w dwóch plikach .md. Bez tego bloku wynik pomiaru
+# nie daje się przypisać do commita, a niepowtarzalny pomiar jest gorszy
+# niż jego brak, bo wygląda jak dowód.
+#
+# KLUCZ PO GAŁĘZI, NIE PO REF-ie. `github.ref` przy zdarzeniu
+# `pull_request` to `refs/pull/N/merge`, a przy `push` — `refs/heads/…`.
+# Klucz z samego `github.ref` rozdzieliłby więc dwa przebiegi TEJ SAMEJ
+# gałęzi do dwóch grup i defekt wróciłby w ciszy, dokładnie tam, gdzie
+# najbardziej boli (PR = moment merge'u). Bierzemy gałąź, którą Vercel
+# faktycznie wdraża pod alias — ta sama logika, co przy OCZEKIWANY_COMMIT
+# w bramce wydajności (`github.event.pull_request.head.sha || github.sha`).
+#
+# CENA, ŚWIADOMIE PRZYJĘTA: przy otwartym PR zdarzenia `push`
+# i `pull_request` dają dwa przebiegi tego samego commita i teraz jeden
+# anuluje drugi. To jest cel (jeden pomiar jednego aliasu), ale gdy
+# przegra przebieg z `pull_request`, jego wymagane sprawdzenie pokaże
+# „cancelled" i trzeba je powtórzyć przed merge'em. Kierunek awarii jest
+# bezpieczny: anulowane ≠ zielone, więc ADR-020 („main zawsze zielony")
+# nie ma jak zostać obejściony przez ten blok.
+concurrency:
+  group: bramki-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build (fundament pozostałych bramek)
@@ -330,10 +362,28 @@ jobs:
       # `lhci collect` + scripts/werdykt-po-lcp.mjs, który podaje `lhci assert`
       # jeden przebieg na trasę. Progi zostają w lighthouserc.cjs, nietknięte.
       - name: Pomiar
+        id: pomiar
         env:
           LHCI_BAZA: ${{ vars.LHCI_BAZA }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: npm run bramka:pomiar
+      # DRUGIE RAMIĘ KLAMRY PROWIENIENCJI (właściciel 2026-08-19, T22 b).
+      # Strażnik i rozgrzewka sprawdzają wydanie PRZED pomiarem i mówią
+      # o jednej chwili; alias preview jest przestawialny w każdej sekundzie.
+      # Bez tego kroku pomiar mógł zacząć się na jednym commicie, skończyć
+      # na drugim i zameldować liczbę przypisaną do commita, którego ona nie
+      # dotyczy — dokładnie to zdarzyło się 2026-08-19 (T22). `always()`,
+      # bo unieważnienie jest najbardziej potrzebne wtedy, gdy pomiar właśnie
+      # zapalił czerwień: czerwień nieprzypisywalna to nie jest diagnoza.
+      # WYNIK_POMIARU steruje wyłącznie BRZMIENIEM komunikatu, nie werdyktem.
+      - name: "Prowieniencja po pomiarze (klamra: to samo wdrożenie na końcu)"
+        if: always()
+        env:
+          LHCI_BAZA: ${{ vars.LHCI_BAZA }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          OCZEKIWANY_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          WYNIK_POMIARU: ${{ steps.pomiar.outcome }}
+        run: npm run bramka:po-pomiarze
       # `lhci assert` drukuje WYŁĄCZNIE to, co nie przeszło — o trasach
       # zielonych milczy, a ich raporty giną razem z runnerem. Po pierwszym
       # przebiegu na preview (e2ac0f3) nie dało się więc odpowiedzieć na
@@ -346,6 +396,28 @@ jobs:
         env:
           LHCI_BAZA: ${{ vars.LHCI_BAZA }}
         run: npm run bramka:podsumowanie
+      # WERDYKT MARGINESU (właściciel 2026-08-19, T22 c). Linijka „⚠ rozrzut
+      # większy niż zapas" istniała w logu od 2026-08-16 i była wypisana
+      # dla „/" w OBU przebiegach doby 2026-08-19 — także w tym ZIELONYM.
+      # Nikt jej nie przeczytał, bo siedziała w kilkuset linijkach logu
+      # zielonego zadania. Klasa nazwana przez właściciela: „raport, którego
+      # nikt nie czyta, przestaje być raportem".
+      #
+      # `continue-on-error` NIE jest tu osłabieniem bramki, tylko jedynym
+      # sposobem na ŻÓŁTY, jaki GitHub daje w obrębie jednego zadania:
+      # zadanie ma wyłącznie success/failure, więc „żółty" istnieje jako
+      # (1) krok z ⚠ zamiast zielonego znaczka, (2) adnotacja `::warning`
+      # na stronie podsumowania przebiegu — NAD listą zadań, czyli tam,
+      # gdzie patrzy ktoś, kto logu nie otworzy, (3) blok w $GITHUB_STEP_SUMMARY.
+      # Werdykt progowy zostaje nietknięty w kroku „Pomiar". Zdjęcie
+      # `continue-on-error` zamienia ten żółty w czerwień blokującą — to jedna
+      # linia i decyzja właściciela, nie zmiana konstrukcji.
+      - name: "Werdykt marginesu (żółty: margines pozorny)"
+        if: always()
+        continue-on-error: true
+        env:
+          LHCI_BAZA: ${{ vars.LHCI_BAZA }}
+        run: npm run bramka:margines
       # Raporty HTML: z tabeli wiadomo KTÓRA trasa i ile, z raportu — który
       # element jest LCP i z czego składa się jego czas (rozbiór fazowy).
       # Bez tego diagnoza czerwieni zaczyna się od zgadywania.

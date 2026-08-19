@@ -25,6 +25,8 @@
     "bramka:pomiar": "lhci collect --config=lighthouserc.cjs && node scripts/werdykt-po-lcp.mjs",
     "bramka:werdykt": "node scripts/werdykt-po-lcp.mjs",
     "bramka:tryb-pomiaru": "node scripts/tryb-pomiaru.mjs",
+    "bramka:po-pomiarze": "node scripts/straznik-po-pomiarze.mjs",
+    "bramka:margines": "node scripts/werdykt-marginesu.mjs",
     "bramka:podsumowanie": "node scripts/podsumowanie-pomiaru.mjs",
     "obrazy:pipeline": "node scripts/obrazy-pipeline.mjs",
     "test:e2e": "playwright test",
