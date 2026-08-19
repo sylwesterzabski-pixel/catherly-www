@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Arkusz próbny kroju — DO USUNIĘCIA 2026-08-31</title>
+
+<!--
+  ARKUSZ PRÓBNY KROJU I PALETY — stanowisko eksperymentalne, punkt 7.
+  Zadanie właściciela 2026-08-17. WYGASA 2026-08-31 razem z blokami
+  eksperymentu w src/app/globals.css i katalogiem public/fonts/eksperyment/.
+  Pozycja rejestru: T18 (docs/faza-2/rejestr-warunkow-powrotu.md).
+
+  DLACZEGO PLIK STATYCZNY, A NIE TRASA /proba-kroju.
+  Middleware (src/middleware.ts) przepisuje KAŻDY adres spoza rejestru
+  ISTNIEJACE_SCIEZKI na stronę 404. Trasa aplikacji wymagałaby więc wpisu do
+  rejestru — a rejestr jest wyprowadzony z mapy stopki i z założenia nie zna
+  stanu „strona istnieje, ale poza mapą" inaczej niż przez WYLACZONE_Z_MAPY,
+  czyli przez zmianę stałej produkcyjnej dla rzeczy jednorazowej. Wpis
+  wciągnąłby arkusz pod bramkę kontrastu stanów, gdzie palety eksperymentalne
+  dają CTA 1,12:1 wypełnienia do tła (obwódka niesie granicę) — czerwień
+  z hałasu, nie z defektu. Matcher middleware wypuszcza ścieżki z kropką
+  w nazwie, więc plik statyczny odpowiada pod /proba-kroju.html bez żadnej
+  zmiany w kodzie produkcyjnym. To jest wariant zapasowy przewidziany
+  w poleceniu.
+
+  ŻADNEJ WARTOŚCI BARWNEJ WŁASNEJ. Przeniesienie eksperymentu do public/
+  byłoby ominięciem lintera tokenów (skanował wyłącznie src/), a tego
+  właściciel zabronił wprost. Zamiast obiecywać, że z tej drogi nie
+  skorzystam, zamknąłem ją: scripts/lint-tokeny.mjs skanuje od 2026-08-17
+  także public/ (.html/.css/.svg/.js). Ten plik nie zawiera ani jednego
+  hexa, zapisu funkcyjnego barwy ani wymiaru w pikselach — kolory bierze z ról
+  (var(--kolor-rola-…)), a arkusze stylów zaciąga w czasie wykonania
+  z prawdziwego builda (patrz zaciagnijStyle()). Kopii wartości nie ma,
+  więc nie ma czego rozjechać.
+
+  WARTOŚCI TYPOGRAFICZNE — świadomy wyjątek merytoryczny. Interlinie,
+  tracking i stopnie pisma SĄ w tym pliku literałami, bo tokenów typografii
+  nie ma w ogóle (T13: tokeny.css to same kolory i wymiary). Arkusz służy
+  właśnie temu, żeby te wartości wybrać; nie da się ich wziąć ze źródła
+  prawdy, którego jeszcze nie ma. Do produkcji nie trafia ani jedna z nich —
+  plik jest niepodlinkowany, noindex i znika po decyzji.
+-->
+
+<style>
+  /* Układ i typografia arkusza. Zero barw własnych, zero pikseli. */
+  :root {
+    --arkusz-krój: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --arkusz-interlinia-h1: 1.15;
+  }
+
+  body {
+    margin: 0;
+    background: var(--kolor-rola-tlo-strony);
+    color: var(--kolor-rola-tekst-podstawowy);
+    font-family: var(--arkusz-krój);
+    line-height: 1.55;
+  }
+
+  .pulpit {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 2;
+    background: var(--kolor-rola-powierzchnia-2);
+    border-block-end: 0.0625rem solid var(--kolor-rola-kreska);
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    font-family: system-ui, sans-serif;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  .grupa {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .grupa > span {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.6875rem;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+
+  .grupa div {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+
+  button,
+  select {
+    font: inherit;
+    font-family: system-ui, sans-serif;
+    background: var(--kolor-rola-powierzchnia);
+    color: var(--kolor-rola-tekst-podstawowy);
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    border-radius: var(--wymiar-promien, 0.5rem);
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+  }
+
+  button[aria-pressed="true"] {
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+    border-color: var(--kolor-rola-tekst-podstawowy);
+  }
+
+  :focus-visible {
+    outline: 0.1875rem solid var(--kolor-rola-fokus);
+    outline-offset: 0.125rem;
+  }
+
+  main {
+    padding: 1.5rem 1rem 6rem;
+  }
+
+  /* Bez własnego padding-inline: 1rem marginesu strony daje już `main`,
+     więc kolumna wychodzi taka sama jak w produkcji (widok 390 → 358 px,
+     zmierzone na żywej stronie). Wcześniejsze dodatkowe 1rem zwężało ją do
+     324 px i zaniżało łamanie o 34 px. Kreska biegnie teraz dokładnie po
+     krawędzi kolumny, więc pokazuje, gdzie tekst faktycznie się łamie. */
+  .kadr {
+    margin-inline: auto;
+    border-inline: 0.0625rem dashed var(--kolor-rola-kreska);
+  }
+
+  /* Zakres zawężony do sekcji BEZPOŚREDNICH arkusza. Sekcje 6 i 7 stawiają
+     w środku własne <section> (patrz komentarz przy `.pole-jasne`), a te
+     mają wyglądać jak pole serwisu, nie jak kolejny rozdział arkusza. */
+  .kadr > section {
+    border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
+    padding-block: 2rem;
+  }
+
+  h2 {
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    margin: 0 0 1rem;
+    font-weight: 600;
+  }
+
+  .uwaga {
+    font-family: system-ui, sans-serif;
+    font-size: 0.8125rem;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    max-width: 46rem;
+    margin: 0.5rem 0 0;
+  }
+
+  .próbka {
+    font-family: var(--arkusz-krój);
+  }
+
+  /* 1. Etykieta wersalikowa w trzech trackingach. */
+  .etykieta {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin: 0 0 0.375rem;
+  }
+
+  .t08 { letter-spacing: 0.08em; }
+  .t12 { letter-spacing: 0.12em; }
+  .t16 { letter-spacing: 0.16em; }
+
+  .para-diakrytyczna {
+    display: grid;
+    gap: 0.125rem;
+    margin-block-end: 1.25rem;
+  }
+
+  .para-diakrytyczna .bez {
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+
+  /* 2. H1 w dwóch wariantach miary. */
+  .siatka-h1 {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .h1-próba {
+    margin: 0;
+    font-weight: 700;
+    line-height: var(--arkusz-interlinia-h1);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    border-inline-end: 0.0625rem dotted var(--kolor-rola-kreska);
+  }
+
+  .metka {
+    font-family: system-ui, sans-serif;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    margin: 0 0 0.25rem;
+  }
+
+  /* 3. Akapit. */
+  .akapit {
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: var(--wymiar-miara-akapitu, 38rem);
+    margin: 0 0 1.25rem;
+  }
+
+  /* 4. Kontrast wagi. */
+  .display {
+    font-weight: 300;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+  }
+
+  .mikro {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0;
+  }
+
+  /* 5. Tabela metryk. */
+  table {
+    border-collapse: collapse;
+    font-family: system-ui, sans-serif;
+    font-size: 0.8125rem;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    padding: 0.375rem 0.5rem;
+    text-align: start;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--kolor-rola-powierzchnia-2);
+    font-weight: 600;
+  }
+
+  td.liczba {
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+  }
+
+  .odczyt {
+    font-family: ui-monospace, monospace;
+    font-size: 0.75rem;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+
+  .ostrzezenie {
+    border-inline-start: 0.1875rem solid var(--kolor-rola-tekst-podstawowy);
+    padding-inline-start: 0.75rem;
+  }
+
+  /* ── 6 i 7. Stanowiska dowodowe barwy i przezroczystości ──────────────
+     Nadal ZERO barw własnych. Pola biorą role, a efekty (pasek, duch,
+     wygaszenie, przyciemnienie pod tekstem) przychodzą z globals.css przez
+     te same selektory, których używa serwis — arkusz ich nie przepisuje.
+     Tutaj są wyłącznie: układ, wymiary w rem i procenty. */
+  .siatka-dowod {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    margin-block-end: 1.5rem;
+  }
+
+  .panel {
+    border: 0.0625rem solid var(--kolor-rola-kreska);
+    border-radius: var(--wymiar-promien, 0.5rem);
+    overflow: hidden;
+  }
+
+  .panel > .tresc {
+    padding: 1rem;
+  }
+
+  .pomiar {
+    margin: 0;
+    padding: 0.5rem 0.75rem 0.625rem;
+    border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
+    background: var(--kolor-rola-powierzchnia-2);
+    color: var(--kolor-rola-tekst-drugorzedny);
+    font-family: ui-monospace, monospace;
+    font-size: 0.6875rem;
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+
+  .pole-ciemne {
+    background: var(--kolor-rola-tlo-strony);
+  }
+
+  .pole-akcent {
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+  }
+
+  /* Pole jasne NIE dostaje tu własnego przemapowania ról. Nośnikiem jest
+     <section> o nazwie klasy pasującej do wzorca CSS Modules, którego
+     pilnuje reguła inwersji w globals.css
+     (`section[class*="SekcjaRytmu_sekcja__"]`). Dzięki temu arkusz pokazuje
+     DZIAŁANIE tamtej reguły, a nie jej kopię — gdyby ktoś ją zepsuł,
+     arkusz zgaśnie razem z serwisem. Tło bierze rolę wprost, bo w serwisie
+     maluje je moduł komponentu, którego tu nie ma. */
+  .pole-jasne {
+    background: var(--kolor-rola-powierzchnia-akcentowa);
+    padding: 0;
+  }
+
+  .tekst-akcentem {
+    color: var(--kolor-rola-akcent);
+  }
+
+  /* Nawigacja w pasku niesie rolę LINKU, nie akcentu — tak jest w serwisie.
+     W czerni obie role mają tę samą wartość (limonka), więc liczba wychodzi
+     ta sama; w pozostałych paletach rola akcentu jest dekoracją i tekstu
+     nieść nie może (R-AKCENT-01), a rola linku może. */
+  .tekst-linkiem {
+    color: var(--kolor-rola-link);
+  }
+
+  .h1-dowod {
+    margin: 0;
+    font-weight: 700;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    line-height: var(--arkusz-interlinia-h1);
+    letter-spacing: -0.01em;
+  }
+
+  /* Scena paska: własny obszar przewijania, żeby treść dała się przeciągnąć
+     POD paskiem — bez tego półprzezroczystość nie ma czego przepuścić. */
+  .scena {
+    position: relative;
+    block-size: 11rem;
+    overflow: auto;
+  }
+
+  .pasek-proba {
+    position: sticky;
+    inset-block-start: 0;
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+  }
+
+  .scena-tresc {
+    padding: 1rem;
+  }
+
+  .scena-tresc p {
+    margin: 0 0 0.75rem;
+  }
+
+  /* Kontekst układania ducha — dokładnie ten sam zestaw, który globals.css
+     nakłada na sekcje serwisu (`position: relative; z-index: 0;
+     overflow: hidden`). Bez niego potomek z `z-index: -1` wypada pod tło
+     panelu i znika. */
+  .scena-duch {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    block-size: 9rem;
+    padding: 1rem;
+  }
+
+  .na-zdjeciu-proba {
+    max-inline-size: 100%;
+  }
+
+  .naglowek-panelu {
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    background: var(--kolor-rola-powierzchnia-2);
+    border-block-end: 0.0625rem solid var(--kolor-rola-kreska);
+    font-family: system-ui, sans-serif;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+
+  /* Punktory. W serwisie tę receptę niosą moduły Filar i SekcjaPlanow;
+     tutaj deklaruję ją ponownie, bo tamtych klas w arkuszu nie ma. To
+     odwołanie do ROLI, nie kopia wartości — w czerni rola niesie limonkę
+     i punktory robią się limonkowe same, bez wpisu w tym pliku. */
+  .lista-dowod {
+    margin: 0.75rem 0 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  .lista-dowod li::marker {
+    color: var(--kolor-rola-akcent);
+  }
+
+  .metka-wariantu {
+    font-family: system-ui, sans-serif;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--kolor-rola-tekst-drugorzedny);
+    margin: 0 0 0.375rem;
+  }
+</style>
+</head>
+
+<body>
+<div class="pulpit">
+  <div class="grupa">
+    <span>Krój</span>
+    <div id="pulpit-kroj"></div>
+  </div>
+  <div class="grupa">
+    <span>Paleta</span>
+    <div id="pulpit-paleta"></div>
+  </div>
+  <div class="grupa">
+    <span>Efekty (B3)</span>
+    <div id="pulpit-efekty"></div>
+  </div>
+  <div class="grupa">
+    <span>Miara H1</span>
+    <div id="pulpit-miara"></div>
+  </div>
+  <div class="grupa">
+    <span>Kadr</span>
+    <div id="pulpit-kadr"></div>
+  </div>
+  <div class="grupa">
+    <span>Miara docelowa</span>
+    <div>
+      <select id="wybor-rem" aria-label="Szerokość miary docelowej H1"></select>
+    </div>
+  </div>
+  <p class="odczyt" id="odczyt" style="margin: 0"></p>
+</div>
+
+<main>
+<div class="kadr" id="kadr">
+
+  <section>
+    <h2>1 · Etykieta wersalikowa — tracking 0,08 / 0,12 / 0,16 em</h2>
+    <div class="próbka" id="sekcja-etykiety"></div>
+    <p class="uwaga">
+      Każdy tracking pokazany dwa razy: górny wiersz z polskimi znakami
+      diakrytycznymi (Ś, Ó, Ł), dolny — ten sam ciąg bez nich. Rytm rozstrzyga
+      się na porównaniu tych dwóch wierszy, nie na wrażeniu z jednego.
+      Ł niesie poprzeczkę wychodzącą poza pionową oś litery, Ś i Ó dokładają
+      znak nad wersalikiem — oba mechanizmy potrafią zjeść światło dodane
+      trackingiem albo, przeciwnie, zrobić dziurę.
+    </p>
+  </section>
+
+  <section>
+    <h2>2 · H1 w trzech językach — miara <code>24ch</code> obok miary docelowej</h2>
+    <div class="siatka-h1 próbka" id="sekcja-h1"></div>
+    <p class="uwaga ostrzezenie">
+      Powód istnienia tej sekcji: <code>ch</code> to szerokość cyfry zero,
+      więc <code>24ch</code> wyznacza inną kolumnę w każdym kroju — przy
+      1440 px SF Pro daje 755,44 px, a Roboto 661,16 px (różnica 94,28 px,
+      pomiar 2026-08-17, pozycja T12 rejestru). Skutek widać dziś, bez
+      żadnego webfontu: H1 łamie się na 2 linie na iOS/macOS i na 3 na
+      Androidzie. Wymiana kroju losuje to łamanie po raz drugi. Miara
+      docelowa jest w rem, więc daje tę samą kolumnę wszędzie; liczba linii
+      i szerokość kolumny są wyliczane na żywo pod każdą próbką.
+      Stopień pisma liczony jest z szerokości KADRU wzorem produkcyjnym
+      <code>clamp(1.75rem, 5vw + 1rem, 3rem)</code> — inaczej symulowany kadr
+      kłamałby, bo <code>vw</code> odnosi się do okna, nie do ramki.
+    </p>
+  </section>
+
+  <section>
+    <h2>3 · Akapit pl / de / en — interlinia 1,55</h2>
+    <div class="próbka" id="sekcja-akapity"></div>
+    <p class="uwaga">
+      Teksty są prawdziwe — pobrane z wyrenderowanej strony głównej, bez ani
+      jednego zdania dopisanego na potrzeby próbki. Długości: pl 43 słowa,
+      en 54, de 58. Polecenie mówiło „około 60 słów"; biorę treść taką, jaka
+      jest, bo próbka na wymyślonym tekście oceniałaby wymyślony tekst.
+    </p>
+  </section>
+
+  <section>
+    <h2>4 · Kontrast wagi — display 300 obok mikroetykiety 600</h2>
+    <div class="próbka" id="sekcja-wagi"></div>
+    <p class="uwaga ostrzezenie" id="uwaga-wagi"></p>
+  </section>
+
+  <section>
+    <h2>5 · Metryki krojów — size-adjust wobec dwóch zamienników, waga pliku</h2>
+    <div id="sekcja-metryki"></div>
+  </section>
+
+  <section>
+    <h2>6 · Referencja — trzy chwyty barwne obok siebie</h2>
+    <div class="siatka-dowod" id="sekcja-referencja"></div>
+    <p class="uwaga ostrzezenie">
+      Kontrasty pod próbkami są liczone NA ŻYWO ze stylu wyliczonego tych
+      konkretnych elementów, po każdym przełączeniu palety — nie są
+      przepisane z polecenia ani z komentarza w globals.css. Tło wyznacza
+      stos malowania (kolory tła kolejnych przodków składane alfą), więc
+      liczba dotyczy tego, co widać, a nie deklaracji na samym elemencie.
+      Rachunek jest ten sam co w bramce (WCAG 2.x), z jedną różnicą podaną
+      przy kodzie: parser przyjmuje też zapis <code>color(srgb …)</code>,
+      do którego wylicza się <code>color-mix()</code>.
+      Trzeci panel to prawdziwe <code>&lt;section&gt;</code> o nazwie klasy
+      pasującej do wzorca, którego pilnuje reguła inwersji w globals.css —
+      pole jasne odwraca role tekstu tą samą regułą, co sekcja rytmu
+      w serwisie, a nie kopią wartości.
+      <br><br>
+      <strong>Krzyżyki przy „rola akcentu” w paletach innych niż czerń to nie
+      defekt, tylko dowód.</strong> Panele niosą akcent TEKSTEM, a poza czernią
+      rola akcentu jest dekoracją i tekstu nieść nie może (R-AKCENT-01,
+      zawieszona wyłącznie dla czerni). Ta sama próbka pokazuje więc dwie
+      rzeczy naraz: że na czerni limonka udźwignie tekst (13,13:1), i że na
+      jasnych paletach nie udźwignęłaby (2,87–6,57:1) — dlatego reguła
+      powstała. W serwisie akcent tekstem nie jest nigdzie poza czernią;
+      to stanowisko, nie strona.
+      Nawigacja w pasku (sekcja 7) niesie za to rolę LINKU — tak jak serwis.
+    </p>
+  </section>
+
+  <section>
+    <h2>7 · Przezroczystości — pasek, duch, wygaszenie, tekst na zdjęciu</h2>
+    <div id="sekcja-przezroczystosci"></div>
+    <p class="uwaga ostrzezenie" id="uwaga-przezroczystosci"></p>
+  </section>
+
+</div>
+</main>
+
+<script>
+/* ─────────────────────────────────────────────────────────────────────────
+   Dane arkusza. Wszystkie liczby są ZMIERZONE — źródła podane przy każdej
+   tabeli. Nic tu nie jest oszacowane ani przepisane z dokumentacji kroju.
+   ───────────────────────────────────────────────────────────────────────── */
+
+const TEKSTY = {
+  pl: {
+    h1: "Rozmawiasz z ludźmi — Catherly prowadzi kontakty i wyniki.",
+    akapit:
+      "Catherly pamięta to, co dotąd trzymałaś w głowie i notesach: komu co obiecałaś, jakie treści wysłałaś której klientce i co się sprzedało. Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak jej idzie. Sprzedajesz po swojemu, tylko już nie z pamięci.",
+    slowa: 43,
+  },
+  de: {
+    h1: "Du sprichst mit Menschen – Catherly führt deine Kontakte und Ergebnisse.",
+    akapit:
+      "Catherly merkt sich, was du bisher im Kopf und in Notizbüchern hattest: wem du was versprochen hast, welche Inhalte du welcher Kundin geschickt hast und was sich verkauft hat. Auch dein Team hast du zur Hand – du siehst, wen du gerade einarbeitest und wie sie vorankommt. Du verkaufst auf deine Art, nur nicht mehr aus dem Gedächtnis.",
+    slowa: 58,
+  },
+  en: {
+    h1: "You do the talking — Catherly keeps track of contacts and results.",
+    akapit:
+      "Catherly remembers what you’ve been carrying in your head and your notebooks: what you promised to whom, which content went to which customer, and what sold. Your team is close at hand too — you see who you’re bringing in and how she’s doing. You still sell your way, just not from memory anymore.",
+    slowa: 54,
+  },
+};
+
+const ETYKIETA_Z = "POZYSKIWANIE · TREŚCI · ZESPÓŁ · WYNIKI";
+const ETYKIETA_BEZ = "POZYSKIWANIE · TRESCI · ZESPOL · WYNIKI";
+
+/* Interlinie H1 z polecenia właściciela. */
+const KROJE = {
+  system: {
+    nazwa: "system-ui (produkcja, ADR-026)",
+    rodzina: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+    interliniaH1: 1.15,
+    osWagi: "zależna od systemu",
+    plikB: null,
+    znacznik: "zależny od systemu",
+  },
+  schibsted: {
+    nazwa: "Schibsted Grotesk",
+    rodzina: '"Eksperyment Schibsted Grotesk", system-ui, sans-serif',
+    interliniaH1: 1.18,
+    osWagi: "wght 400–900",
+    plikB: 29172,
+    znacznik: "BRAK glifu ✓",
+    sizeAdjust: {
+      SF: { rozmiar: 98.268, ascent: 95.4, descent: 19.08 },
+      Roboto: { rozmiar: 96.295, ascent: 97.36, descent: 25.96 },
+    },
+  },
+  onest: {
+    nazwa: "Onest",
+    rodzina: '"Eksperyment Onest", system-ui, sans-serif',
+    interliniaH1: 1.18,
+    osWagi: "wght 100–900",
+    plikB: 23808,
+    znacznik: "ma ✓ (jedyny z trzech)",
+    sizeAdjust: {
+      SF: { rozmiar: 97.661, ascent: 96, descent: 19.2 },
+      Roboto: { rozmiar: 95.7, ascent: 97.96, descent: 26.12 },
+    },
+  },
+  geist: {
+    nazwa: "Geist",
+    rodzina: '"Eksperyment Geist", system-ui, sans-serif',
+    interliniaH1: 1.15,
+    osWagi: "wght 100–900",
+    plikB: 19484,
+    znacznik: "BRAK glifu ✓",
+    sizeAdjust: {
+      SF: { rozmiar: 100.207, ascent: 93.56, descent: 18.71 },
+      Roboto: { rozmiar: 98.195, ascent: 95.47, descent: 25.46 },
+    },
+  },
+};
+
+const PALETY = {
+  produkcja: "paleta produkcyjna",
+  len: "P1 Len",
+  kosc: "P2 Kość",
+  popiol: "P3 Popiół",
+  czern: "P4 Czerń",
+};
+
+/* Alfy ducha z polecenia (zakres 0,06–0,10). Serwis używa środkowej. */
+const ALFY_DUCHA = ["6%", "8%", "10%"];
+
+const KADRY = { k390: 390, k1440: 1440, okno: null };
+
+const stan = {
+  kroj: "schibsted",
+  paleta: "produkcja",
+  efekty: "progowa",
+  miara: "obie",
+  kadr: "k1440",
+  rem: 42,
+};
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Style produkcyjne zaciągane z żywego builda. Nazwy plików CSS Next.js są
+   hashowane i zmieniają się przy każdej budowie, więc jedyny nierozjeżdżalny
+   sposób to odczytać je ze strony głównej w czasie wykonania. Dzięki temu
+   arkusz nie ma ANI JEDNEJ własnej wartości barwnej: role, palety
+   eksperymentalne i deklaracje @font-face przychodzą z globals.css.
+   ───────────────────────────────────────────────────────────────────────── */
+async function zaciagnijStyle() {
+  const odp = await fetch("/", { headers: { Accept: "text/html" } });
+  if (!odp.ok) throw new Error("strona główna odpowiedziała " + odp.status);
+  const html = await odp.text();
+  const dok = new DOMParser().parseFromString(html, "text/html");
+  const linki = [...dok.querySelectorAll('link[rel="stylesheet"]')];
+  if (linki.length === 0) throw new Error("brak <link rel=stylesheet> w HTML strony głównej");
+  await Promise.all(
+    linki.map(
+      (l) =>
+        new Promise((gotowe, blad) => {
+          const el = document.createElement("link");
+          el.rel = "stylesheet";
+          el.href = l.getAttribute("href");
+          el.onload = gotowe;
+          el.onerror = () => blad(new Error("nie wczytano " + el.href));
+          document.head.appendChild(el);
+        })
+    )
+  );
+  return linki.length;
+}
+
+/* ───────────────────────────── pulpit ───────────────────────────── */
+
+function przyciski(pojemnik, pozycje, klucz) {
+  pojemnik.replaceChildren();
+  for (const [wartosc, etykieta] of pozycje) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = etykieta;
+    b.setAttribute("aria-pressed", String(stan[klucz] === wartosc));
+    b.addEventListener("click", () => {
+      stan[klucz] = wartosc;
+      zastosuj();
+    });
+    pojemnik.appendChild(b);
+  }
+}
+
+function zbudujPulpit() {
+  przyciski(
+    document.getElementById("pulpit-kroj"),
+    Object.entries(KROJE).map(([k, v]) => [k, v.nazwa]),
+    "kroj"
+  );
+  przyciski(
+    document.getElementById("pulpit-paleta"),
+    Object.entries(PALETY),
+    "paleta"
+  );
+  przyciski(
+    document.getElementById("pulpit-efekty"),
+    [
+      ["progowa", "progowa (domyślna)"],
+      ["1do1", "1:1 jak referencja"],
+    ],
+    "efekty"
+  );
+  przyciski(
+    document.getElementById("pulpit-miara"),
+    [
+      ["obie", "obie obok siebie"],
+      ["ch", "tylko 24ch"],
+      ["rem", "tylko docelowa"],
+    ],
+    "miara"
+  );
+  przyciski(
+    document.getElementById("pulpit-kadr"),
+    [
+      ["k390", "390"],
+      ["k1440", "1440"],
+      ["okno", "okno"],
+    ],
+    "kadr"
+  );
+
+  const wybor = document.getElementById("wybor-rem");
+  wybor.replaceChildren();
+  for (let r = 36; r <= 48; r += 1) {
+    const o = document.createElement("option");
+    o.value = String(r);
+    o.textContent = r + " rem";
+    o.selected = r === stan.rem;
+    wybor.appendChild(o);
+  }
+  wybor.addEventListener("change", () => {
+    stan.rem = Number(wybor.value);
+    zastosuj();
+  });
+}
+
+/* ───────────────────────── budowa sekcji ───────────────────────── */
+
+/** Szerokość okna, którą kadr UDAJE. To ona, nie zmierzona szerokość ramki,
+ *  jest wejściem produkcyjnego clamp-a: `5vw` czyta widok, nie kontener.
+ *  Wiarygodna tylko wtedy, gdy okno jest w stanie kadr pomieścić — inaczej
+ *  ramka zwęża się do okna, a symulacja przestaje być symulacją. Pilnuje
+ *  tego ostrzeżenie w odczycie, liczone z `szerokoscRamki()`. */
+function viewportSymulowany() {
+  return KADRY[stan.kadr] ?? document.documentElement.clientWidth;
+}
+
+/** Szerokość ramki NARYSOWANEJ — czyli kolumna, w której łamie się H1. */
+function szerokoscRamki() {
+  return document.getElementById("kadr").getBoundingClientRect().width;
+}
+
+/** Stopień H1 wg produkcyjnego clamp(1.75rem, 5vw + 1rem, 3rem),
+ *  liczony z szerokości KADRU, nie okna. Zwraca wartość w rem. */
+function stopienH1(szerokoscKadruWPikselach) {
+  const korzen = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  const srodek = (5 * szerokoscKadruWPikselach) / 100 / korzen + 1;
+  return Math.min(3, Math.max(1.75, srodek));
+}
+
+function sekcjaEtykiet() {
+  const cel = document.getElementById("sekcja-etykiety");
+  cel.replaceChildren();
+  for (const [klasa, opis] of [
+    ["t08", "0,08 em"],
+    ["t12", "0,12 em"],
+    ["t16", "0,16 em"],
+  ]) {
+    const para = document.createElement("div");
+    para.className = "para-diakrytyczna";
+    const m = document.createElement("p");
+    m.className = "metka";
+    m.textContent = "tracking " + opis;
+    const a = document.createElement("p");
+    a.className = "etykieta " + klasa;
+    a.textContent = ETYKIETA_Z;
+    const b = document.createElement("p");
+    b.className = "etykieta bez " + klasa;
+    b.textContent = ETYKIETA_BEZ;
+    para.append(m, a, b);
+    cel.appendChild(para);
+  }
+}
+
+function liczLinie(el) {
+  const interlinia = parseFloat(getComputedStyle(el).lineHeight);
+  return Math.max(1, Math.round(el.getBoundingClientRect().height / interlinia));
+}
+
+function sekcjaH1() {
+  const cel = document.getElementById("sekcja-h1");
+  cel.replaceChildren();
+  const kroj = KROJE[stan.kroj];
+  const stopien = stopienH1(viewportSymulowany());
+
+  const warianty = [];
+  if (stan.miara !== "rem") warianty.push(["ch", "miara 24ch", "24ch"]);
+  if (stan.miara !== "ch") warianty.push(["rem", "miara docelowa", stan.rem + "rem"]);
+
+  for (const jezyk of ["pl", "en", "de"]) {
+    for (const [, opis, wartosc] of warianty) {
+      const blok = document.createElement("div");
+      const m = document.createElement("p");
+      m.className = "metka";
+      const h = document.createElement("p");
+      h.className = "h1-próba";
+      h.lang = jezyk;
+      h.style.maxWidth = wartosc;
+      h.style.fontSize = stopien.toFixed(3) + "rem";
+      h.style.setProperty("--arkusz-interlinia-h1", String(kroj.interliniaH1));
+      h.textContent = TEKSTY[jezyk].h1;
+      blok.append(m, h);
+      cel.appendChild(blok);
+      const szerokosc = h.getBoundingClientRect().width;
+      m.textContent =
+        jezyk.toUpperCase() +
+        " · " +
+        opis +
+        " · " +
+        szerokosc.toFixed(1) +
+        " px · " +
+        liczLinie(h) +
+        " linie · interlinia " +
+        String(kroj.interliniaH1).replace(".", ",");
+    }
+  }
+}
+
+function sekcjaAkapitow() {
+  const cel = document.getElementById("sekcja-akapity");
+  cel.replaceChildren();
+  for (const jezyk of ["pl", "de", "en"]) {
+    const m = document.createElement("p");
+    m.className = "metka";
+    m.textContent = jezyk.toUpperCase() + " · " + TEKSTY[jezyk].slowa + " słów · interlinia 1,55";
+    const a = document.createElement("p");
+    a.className = "akapit";
+    a.lang = jezyk;
+    a.textContent = TEKSTY[jezyk].akapit;
+    cel.append(m, a);
+  }
+}
+
+function sekcjaWagi() {
+  const cel = document.getElementById("sekcja-wagi");
+  cel.replaceChildren();
+  const d = document.createElement("p");
+  d.className = "display";
+  d.textContent = "Prowadzisz kontakty i wyniki";
+  const m = document.createElement("p");
+  m.className = "mikro";
+  m.textContent = ETYKIETA_Z;
+  cel.append(d, m);
+
+  const kroj = KROJE[stan.kroj];
+  const uwaga = document.getElementById("uwaga-wagi");
+  if (stan.kroj === "schibsted") {
+    uwaga.textContent =
+      "Schibsted Grotesk ma oś wght 400–900 (odczyt z tabeli fvar pliku woff2, " +
+      "2026-08-17). Waga 300 zamawiana wyżej jest przez przeglądarkę PRZYCINANA " +
+      "do 400 — display i mikroetykieta stoją więc na 400 i 600, a nie na 300 " +
+      "i 600. Kontrast wagi jest w tym kroju o jeden stopień płytszy niż " +
+      "w pozostałych dwóch i tego nie da się nadrobić ustawieniem.";
+  } else if (stan.kroj === "system") {
+    uwaga.textContent =
+      "system-ui: dostępne wagi zależą od systemu. Na macOS/iOS SF Pro ma pełną " +
+      "oś, na Androidzie Roboto zwykle daje 300 jako osobny plik — a przy jego " +
+      "braku przeglądarka podstawia 400. Ta próbka pokazuje więc stan MASZYNY, " +
+      "na której patrzysz, nie stan projektu.";
+  } else {
+    uwaga.textContent =
+      kroj.nazwa +
+      " ma oś wght 100–900 (odczyt z tabeli fvar pliku woff2, 2026-08-17), " +
+      "więc waga 300 jest realna, nie przycięta. Display stoi na 300, " +
+      "mikroetykieta na 600.";
+  }
+}
+
+function sekcjaMetryk() {
+  const cel = document.getElementById("sekcja-metryki");
+  cel.replaceChildren();
+
+  const tab = document.createElement("table");
+  const gl = document.createElement("thead");
+  gl.innerHTML =
+    "<tr><th>Krój</th><th>Zamiennik</th><th>size-adjust</th>" +
+    "<th>ascent-override</th><th>descent-override</th>" +
+    "<th>woff2</th><th>oś wagi</th><th>znacznik ✓</th></tr>";
+  tab.appendChild(gl);
+  const cialo = document.createElement("tbody");
+
+  for (const klucz of ["schibsted", "onest", "geist"]) {
+    const k = KROJE[klucz];
+    for (const zamiennik of ["SF", "Roboto"]) {
+      const w = k.sizeAdjust[zamiennik];
+      const tr = document.createElement("tr");
+      const kom = (t, liczba) => {
+        const td = document.createElement("td");
+        td.textContent = t;
+        if (liczba) td.className = "liczba";
+        return td;
+      };
+      if (zamiennik === "SF") {
+        const th = document.createElement("th");
+        th.rowSpan = 2;
+        th.textContent = k.nazwa;
+        tr.appendChild(th);
+      }
+      tr.appendChild(kom(zamiennik === "SF" ? "SF Pro (iOS/macOS)" : "Roboto (Android)"));
+      tr.appendChild(kom(w.rozmiar.toFixed(3).replace(".", ",") + " %", true));
+      tr.appendChild(kom(w.ascent.toFixed(2).replace(".", ",") + " %", true));
+      tr.appendChild(kom(w.descent.toFixed(2).replace(".", ",") + " %", true));
+      if (zamiennik === "SF") {
+        const t1 = kom((k.plikB / 1024).toFixed(1).replace(".", ",") + " KB", true);
+        t1.rowSpan = 2;
+        const t2 = kom(k.osWagi);
+        t2.rowSpan = 2;
+        const t3 = kom(k.znacznik);
+        t3.rowSpan = 2;
+        tr.append(t1, t2, t3);
+      }
+      cialo.appendChild(tr);
+    }
+  }
+  tab.appendChild(cialo);
+  cel.appendChild(tab);
+
+  const uwaga = document.createElement("p");
+  uwaga.className = "uwaga ostrzezenie";
+  uwaga.textContent =
+    "Wiersz pomiarowy: 16 px / waga 400, pomiar w przeglądarce 2026-08-17 " +
+    "(nie odczyt z dokumentacji kroju). Jedna deklaracja @font-face nie trafia " +
+    "w oba zamienniki naraz: rozjazd size-adjust między SF Pro a Roboto sięga " +
+    "2,012 punktu procentowego (Geist), a descent-override — 6,920 punktu " +
+    "procentowego (Onest). Dlatego globals.css NIE zawiera żadnej z tych " +
+    "wartości: wpisanie jednej udawałoby, że wybór nie istnieje. " +
+    "Rozmiary woff2 są po subsecie z 2026-08-17: 136 znaków (ASCII, polskie, " +
+    "niemieckie, interpunkcja, NBSP, ← , „ ” “ ’, –, —), cechy " +
+    "kern/liga/calt/ccmp/mark/mkmk/locl/tnum. Pokrycie znaków renderowanych " +
+    "przez serwis: pełne w każdym z trzech krojów — z jednym wyjątkiem, ✓ " +
+    "(U+2713), świadomie pominiętym: Schibsted i Geist nie mają tego glifu " +
+    "w ogóle, więc na /cennik rysuje go dziś krój zapasowy we WSZYSTKICH trzech " +
+    "wariantach jednakowo. Docelowo znacznik przechodzi na inline SVG (T14).";
+  cel.appendChild(uwaga);
+}
+
+/* ─────────────────── arytmetyka barwy (sekcje 6 i 7) ───────────────────
+   Ten sam rachunek, co w bramce (e2e/pomoc/sonda-stanow.mjs, WCAG 2.x),
+   z JEDNĄ różnicą, i to różnicą konieczną: parser przyjmuje także zapis
+   `color(srgb …)`. Do niego wylicza się `color-mix()`, którym zapisane są
+   pasek i duch — parser sondy repozytorium rozpoznaje wyłącznie zapis
+   funkcyjny rgb/rgba i na tych warstwach po prostu nic nie widzi. To defekt
+   sondy, zgłoszony w raporcie; tutaj obchodzę go u siebie, a nie w niej.
+
+   Wszystkie liczby pod próbkami są liczone TU, ze stylu wyliczonego, po
+   każdej zmianie palety. Nie ma w tym pliku ani jednej wpisanej z ręki. */
+
+function naRgba(zapis) {
+  const s = String(zapis || "").trim().toLowerCase();
+  if (s === "transparent") return [0, 0, 0, 0];
+  const otw = s.indexOf("(");
+  const zam = s.lastIndexOf(")");
+  if (otw < 0 || zam < otw) return null;
+  const nazwa = s.slice(0, otw);
+  const l = s.slice(otw + 1, zam).split(/[\s,/]+/).filter(Boolean);
+  if (nazwa === "rgb" || nazwa === "rgba") {
+    const c = l.map(Number);
+    return [c[0], c[1], c[2], l.length > 3 ? c[3] : 1];
+  }
+  /* color(srgb r g b / a) — kanały w zakresie 0–1. */
+  if (nazwa === "color" && l[0] === "srgb") {
+    const c = l.slice(1).map(Number);
+    return [c[0] * 255, c[1] * 255, c[2] * 255, c.length > 3 ? c[3] : 1];
+  }
+  return null;
+}
+
+function luminancja(kolor) {
+  const k = [kolor[0], kolor[1], kolor[2]].map((v) => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * k[0] + 0.7152 * k[1] + 0.0722 * k[2];
+}
+
+function kontrast(a, b) {
+  const l1 = luminancja(a);
+  const l2 = luminancja(b);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+}
+
+/** Złożenie warstwy `nad` (z alfą) na nieprzezroczystym `pod`. */
+function zloz(nad, pod) {
+  const a = nad[3];
+  return [0, 1, 2].map((i) => nad[i] * a + pod[i] * (1 - a));
+}
+
+/** Stos malowania: tła kolejnych przodków składane aż do pierwszego
+ *  nieprzezroczystego. Brak takiego = pomiar NIEOZNACZALNY, nie „białe". */
+function tloZa(el) {
+  const warstwy = [];
+  for (let n = el; n; n = n.parentElement) {
+    const c = naRgba(getComputedStyle(n).backgroundColor);
+    if (!c || c[3] === 0) continue;
+    warstwy.push(c);
+    if (c[3] >= 1) break;
+  }
+  const dno = warstwy[warstwy.length - 1];
+  if (!dno || dno[3] < 1) return null;
+  let wynik = [dno[0], dno[1], dno[2]];
+  for (let i = warstwy.length - 2; i >= 0; i--) wynik = zloz(warstwy[i], wynik);
+  return wynik;
+}
+
+function progTekstu(el) {
+  const cs = getComputedStyle(el);
+  const stopien = parseFloat(cs.fontSize);
+  const waga = parseInt(cs.fontWeight, 10) || 400;
+  return stopien >= 24 || (stopien >= 18.66 && waga >= 700) ? 3 : 4.5;
+}
+
+const licz2 = (x) => x.toFixed(2).replace(".", ",");
+const kanaly = (k) => [0, 1, 2].map((i) => Math.round(k[i])).join("·");
+
+/** Wiersz pomiaru dla elementu niosącego tekst. */
+function wierszTekstu(el, etykieta, opcje) {
+  const o = opcje || {};
+  const kolor = naRgba(o.kolor || getComputedStyle(el).color);
+  const tlo = o.tlo || tloZa(el);
+  if (!kolor || !tlo) return etykieta + ": NIEOZNACZALNE (brak dna stosu malowania)";
+  const prog = o.prog === undefined ? progTekstu(el) : o.prog;
+  const k = kontrast(kolor, tlo);
+  return (
+    etykieta + ": " + licz2(k) + ":1 " + (k >= prog ? "✓" : "✗") +
+    "  (próg " + licz2(prog) + ")  " + kanaly(kolor) + " na " + kanaly(tlo)
+  );
+}
+
+/** Alfa, przy której warstwa `barwa` na podłożu `spod` przepuszcza tekst
+ *  `tekst` dokładnie do progu. `null` = próg nieosiągalny nawet przy 1,0. */
+function alfaDoProgu(tekst, barwa, spod, prog) {
+  for (let a = 0; a <= 1.0001; a += 0.005) {
+    if (kontrast(tekst, zloz([barwa[0], barwa[1], barwa[2], a], spod)) >= prog) {
+      return Math.round(a * 1000) / 1000;
+    }
+  }
+  return null;
+}
+
+/* ───────────────── 6. Referencja — trzy chwyty barwne ───────────────── */
+
+function panelDowodu(tytul) {
+  const korzen = document.createElement("div");
+  korzen.className = "panel";
+  const naglowek = document.createElement("p");
+  naglowek.className = "naglowek-panelu";
+  naglowek.textContent = tytul;
+  const pomiar = document.createElement("p");
+  pomiar.className = "pomiar";
+  korzen.appendChild(naglowek);
+  return { korzen, pomiar };
+}
+
+function el(tag, klasa, tekst) {
+  const e = document.createElement(tag);
+  if (klasa) e.className = klasa;
+  if (tekst !== undefined) e.textContent = tekst;
+  return e;
+}
+
+function sekcjaReferencji() {
+  const cel = document.getElementById("sekcja-referencja");
+  cel.replaceChildren();
+
+  /* ① H1 akcentem na tle strony + punktory akcentem. */
+  const a = panelDowodu("① H1 akcentem na tle strony");
+  const poleA = el("div", "tresc pole-ciemne");
+  const h1 = el("p", "h1-dowod tekst-akcentem próbka", TEKSTY.pl.h1);
+  const proza = el("p", "akapit próbka", TEKSTY.pl.akapit);
+  const lista = el("ul", "lista-dowod próbka");
+  for (const poz of ["Pozyskiwanie", "Treści", "Zespół", "Wyniki"]) {
+    lista.appendChild(el("li", null, poz));
+  }
+  poleA.append(h1, proza, lista);
+  a.korzen.append(poleA, a.pomiar);
+  cel.appendChild(a.korzen);
+
+  /* ② Pole akcentowe z etykietą „na akcencie". Druga linia pomiaru to
+     dowód 1.4.11: sama PLAMA wobec tła strony, bez obwódki. */
+  const b = panelDowodu("② Pole akcentowe — etykieta na akcencie");
+  const poleB = el("div", "tresc pole-ciemne");
+  const plama = el("div", "pole-akcent");
+  plama.style.padding = "0.75rem 1rem";
+  plama.style.borderRadius = "var(--wymiar-promien, 0.5rem)";
+  plama.style.display = "inline-block";
+  plama.style.fontWeight = "600";
+  plama.appendChild(el("span", "próbka", "Zobacz, jak to działa"));
+  poleB.append(plama);
+  b.korzen.append(poleB, b.pomiar);
+  cel.appendChild(b.korzen);
+
+  /* ③ Pole jasne. Nośnikiem jest <section> o nazwie klasy pasującej do
+     wzorca reguły inwersji w globals.css — patrz komentarz w stylach. */
+  const c = panelDowodu("③ Sekcja jasna (inwersja)");
+  const poleC = el("section", "SekcjaRytmu_sekcja__proba pole-jasne");
+  const wnetrze = el("div", "scena-tresc");
+  const naglowekC = el("p", "h1-dowod próbka", "Rytm dnia, nie kolejna skrzynka");
+  const prozaC = el("p", "akapit próbka", TEKSTY.pl.akapit);
+  const akcentC = el("p", "tekst-akcentem próbka", "Ten wiersz niesie ROLĘ akcentu w polu jasnym.");
+  wnetrze.append(naglowekC, prozaC, akcentC);
+  poleC.appendChild(wnetrze);
+  c.korzen.append(poleC, c.pomiar);
+  cel.appendChild(c.korzen);
+
+  /* Pomiary — po wstawieniu do dokumentu, bo dopiero wtedy style są znane. */
+  a.pomiar.textContent = [
+    wierszTekstu(h1, "H1 akcentem × tło strony"),
+    wierszTekstu(proza, "proza × tło strony"),
+    wierszTekstu(lista.firstChild, "punktor (rola akcentu) × tło strony", {
+      kolor: getComputedStyle(lista.firstChild, "::marker").color,
+      prog: 3,
+    }),
+  ].join("\n");
+
+  const etykietaB = plama.firstChild;
+  const tloPlamy = naRgba(getComputedStyle(plama).backgroundColor);
+  const tloStronyB = tloZa(poleB);
+  b.pomiar.textContent = [
+    wierszTekstu(etykietaB, "etykieta × wypełnienie"),
+    tloPlamy && tloStronyB
+      ? "wypełnienie × tło strony (1.4.11, bez obwódki): " +
+        licz2(kontrast(tloPlamy, tloStronyB)) + ":1 " +
+        (kontrast(tloPlamy, tloStronyB) >= 3 ? "✓" : "✗ — plama nie rysuje granicy, obwódka konieczna") +
+        "  (próg 3,00)  " + kanaly(tloPlamy) + " na " + kanaly(tloStronyB)
+      : "wypełnienie × tło strony: NIEOZNACZALNE",
+  ].join("\n");
+
+  c.pomiar.textContent = [
+    wierszTekstu(naglowekC, "nagłówek × pole jasne"),
+    wierszTekstu(prozaC, "proza × pole jasne"),
+    wierszTekstu(akcentC, "ROLA AKCENTU × pole jasne"),
+  ].join("\n");
+}
+
+/* ──────────── 7. Przezroczystości — pasek, duch, B3 ──────────── */
+
+function grupaDowodu(cel, tytul) {
+  cel.appendChild(el("p", "metka", tytul));
+  const siatka = el("div", "siatka-dowod");
+  cel.appendChild(siatka);
+  return siatka;
+}
+
+/** B1 — pasek nad polem o ZNANEJ, jednolitej barwie.
+ *  Rozmycie jest tu bez znaczenia arytmetycznego i to nie jest wygoda:
+ *  `backdrop-filter: blur()` uśrednia sąsiednie piksele, a na polu
+ *  jednolitym średnia z identycznych pikseli równa się temu pikselowi.
+ *  Nad zdjęciem tak NIE jest — tam liczba musi pochodzić ze zrzutu
+ *  (pomiar w raporcie), nie ze stylu wyliczonego. */
+function panelPaska(siatka, jasne) {
+  const p = panelDowodu(jasne ? "Pasek nad polem jasnym" : "Pasek nad polem ciemnym");
+  const scena = el("div", "scena");
+  const pasek = el("div", "pasek-proba");
+  const logo = el("span", "próbka", "Catherly");
+  const nawigacja = el("span", "próbka tekst-linkiem", "Funkcje · Cennik · Dla kogo");
+  pasek.append(logo, nawigacja);
+
+  const pole = jasne
+    ? el("section", "SekcjaRytmu_sekcja__proba pole-jasne")
+    : el("div", "pole-ciemne");
+  const wnetrze = el("div", "scena-tresc");
+  for (let i = 0; i < 4; i++) wnetrze.appendChild(el("p", "próbka", TEKSTY.pl.akapit));
+  pole.appendChild(wnetrze);
+
+  scena.append(pasek, pole);
+  p.korzen.append(scena, p.pomiar);
+  siatka.appendChild(p.korzen);
+
+  const tloPola = naRgba(getComputedStyle(pole).backgroundColor);
+  const tloPaska = naRgba(getComputedStyle(pasek).backgroundColor);
+  if (!tloPola || !tloPaska || tloPola[3] < 1) {
+    p.pomiar.textContent = "NIEOZNACZALNE — pole pod paskiem nie jest jednolite";
+    return;
+  }
+  const zlozone = zloz(tloPaska, tloPola);
+  const wiersze = [
+    "pasek: alfa " + licz2(tloPaska[3]) + " · " + getComputedStyle(pasek).backdropFilter,
+    "pod paskiem " + kanaly(tloPola) + " → przez pasek " + kanaly(zlozone),
+  ];
+  for (const [nazwa, wezel] of [["logo", logo], ["nawigacja", nawigacja]]) {
+    wiersze.push(wierszTekstu(wezel, nazwa + " × pasek", { tlo: zlozone }));
+    const kolor = naRgba(getComputedStyle(wezel).color);
+    const prog = progTekstu(wezel);
+    const potrzebna = alfaDoProgu(kolor, tloPaska, tloPola, prog);
+    wiersze.push(
+      "   alfa minimalna dla progu: " +
+        (potrzebna === null ? "PRÓG NIEOSIĄGALNY przy alfie 1,00" : licz2(potrzebna))
+    );
+  }
+  p.pomiar.textContent = wiersze.join("\n");
+
+  /* Przewinięcie o pół wysokości paska — żeby treść od razu stała POD nim,
+     a nie dopiero po ruchu myszy. */
+  scena.scrollTop = Math.round(pasek.getBoundingClientRect().height / 2);
+}
+
+function panelDucha(siatka, alfa) {
+  const p = panelDowodu("Duch — alfa " + alfa);
+  const scena = el("div", "scena-duch pole-ciemne");
+  const duch = el("span", "duch duch-widoczny");
+  duch.setAttribute("aria-hidden", "true");
+  duch.dataset.duch = "CATHERLY";
+  duch.style.setProperty("--duch-alfa", alfa);
+  const tresc = el("p", "próbka", "Tekst normalny leży NAD duchem i to on niesie treść.");
+  scena.append(duch, tresc);
+  p.korzen.append(scena, p.pomiar);
+  siatka.appendChild(p.korzen);
+
+  const kolorDucha = naRgba(getComputedStyle(duch).color);
+  const tlo = tloZa(scena);
+  p.pomiar.textContent = [
+    kolorDucha && tlo
+      ? "duch × tło: " + licz2(kontrast(zloz(kolorDucha, tlo), tlo)) +
+        ":1 — DEKORACJA, próg nie dotyczy (WCAG 1.4.3)"
+      : "duch: NIEOZNACZALNE",
+    wierszTekstu(tresc, "tekst normalny × tło"),
+    'aria-hidden="' + duch.getAttribute("aria-hidden") + '" · w drzewie tekstu: ' +
+      (duch.textContent.length === 0 ? "brak (napis w ::before)" : "OBECNY — DEFEKT"),
+  ].join("\n");
+}
+
+/** `wariant === null` → panel BEZ lokalnego atrybutu, czyli podległy
+ *  przełącznikowi u góry. Bez takiego panelu przełącznik nie miałby
+ *  w arkuszu na co działać: wszystkie pozostałe wymuszają swój wariant. */
+function panelWygaszenia(siatka, wariant) {
+  const p = panelDowodu(
+    "Wygaszenie — " +
+      (wariant === null
+        ? "wg przełącznika u góry (teraz: " + (stan.efekty === "1do1" ? "1:1" : "progowa") + ")"
+        : wariant === "1do1"
+          ? "1:1 jak referencja"
+          : "wersja progowa (domyślna)")
+  );
+  const pole = el("div", "tresc pole-ciemne");
+  if (wariant !== null) pole.dataset.efekty = wariant;
+  const cytat = el("p", "wygaszany próbka h1-dowod", TEKSTY.pl.h1);
+  pole.appendChild(cytat);
+  p.korzen.append(pole, p.pomiar);
+  siatka.appendChild(p.korzen);
+
+  /* Mierzony jest zadeklarowany `color`, a on jest równy NAJGORSZEMU
+     punktowi gradientu — dolnej krawędzi liter. Tak ustawia go globals.css
+     właśnie po to, żeby deklaracja nie była korzystniejsza od obrazu. */
+  p.pomiar.textContent = [
+    wierszTekstu(cytat, "najgorszy punkt gradientu × tło"),
+    "gradient: " + getComputedStyle(cytat).backgroundImage.replace(/\s+/g, " "),
+  ].join("\n");
+}
+
+async function panelZdjecia(siatka, wariant) {
+  const p = panelDowodu(
+    "Tekst na zdjęciu — " +
+      (wariant === null
+        ? "wg przełącznika u góry (teraz: " + (stan.efekty === "1do1" ? "1:1" : "progowa") + ")"
+        : wariant === "1do1"
+          ? "1:1 jak referencja"
+          : "wersja progowa (domyślna)")
+  );
+  const pole = el("div", "pole-ciemne");
+  if (wariant !== null) pole.dataset.efekty = wariant;
+  const kadr = el("span", "na-zdjeciu na-zdjeciu-proba");
+  const obraz = new Image();
+  obraz.src = "/obrazy/filary/filar-2-tarcza-768.webp";
+  obraz.alt = "Kadr aplikacji użyty tu wyłącznie jako podkład dowodowy.";
+  const napis = el("p", "tekst-na-zdjeciu próbka", "Widzisz, kogo wprowadzasz");
+  kadr.append(obraz, napis);
+  pole.appendChild(kadr);
+  p.korzen.append(pole, p.pomiar);
+  siatka.appendChild(p.korzen);
+  p.pomiar.textContent = "pomiar w toku — czekam na piksele zdjęcia…";
+
+  try {
+    await obraz.decode();
+  } catch (e) {
+    p.pomiar.textContent = "NIEOZNACZALNE — zdjęcie się nie wczytało: " + e.message;
+    return;
+  }
+
+  /* Najjaśniejszy piksel PASA, na którym leży napis — najgorszy przypadek
+     dla jasnego tekstu. Czytany z natywnej rozdzielczości pliku, nie ze
+     skalowanego widoku. Obraz jest z tego samego źródła, więc płótno nie
+     jest skażone i getImageData działa. */
+  const wys = obraz.naturalHeight;
+  const szer = obraz.naturalWidth;
+  const udzial = Math.min(1, napis.getBoundingClientRect().height / kadr.getBoundingClientRect().height);
+  const odciecie = Math.max(1, Math.floor(wys * udzial));
+  const plotno = document.createElement("canvas");
+  plotno.width = szer;
+  plotno.height = odciecie;
+  const rys = plotno.getContext("2d", { willReadFrequently: true });
+  rys.drawImage(obraz, 0, wys - odciecie, szer, odciecie, 0, 0, szer, odciecie);
+  const dane = rys.getImageData(0, 0, szer, odciecie).data;
+  let najjasniejszy = null;
+  let najwiekszaL = -1;
+  for (let i = 0; i < dane.length; i += 4) {
+    const piksel = [dane[i], dane[i + 1], dane[i + 2]];
+    const L = luminancja(piksel);
+    if (L > najwiekszaL) {
+      najwiekszaL = L;
+      najjasniejszy = piksel;
+    }
+  }
+
+  const kolor = naRgba(getComputedStyle(napis).color);
+  const warstwa = naRgba(getComputedStyle(napis, "::before").backgroundColor);
+  const prog = progTekstu(napis);
+  const podSpodem = warstwa && warstwa[3] > 0 ? zloz(warstwa, najjasniejszy) : najjasniejszy;
+  const k = kontrast(kolor, podSpodem);
+  const bazaWarstwy = warstwa && warstwa[3] > 0 ? warstwa : naRgba(getComputedStyle(document.body).backgroundColor);
+  const potrzebna = alfaDoProgu(kolor, bazaWarstwy, najjasniejszy, prog);
+
+  p.pomiar.textContent = [
+    "najjaśniejszy piksel pasa pod napisem: " + kanaly(najjasniejszy) +
+      "  (" + szer + "×" + odciecie + " próbek)",
+    "warstwa przyciemniająca: " +
+      (warstwa && warstwa[3] > 0 ? "alfa " + licz2(warstwa[3]) + " · " + kanaly(warstwa) : "BRAK"),
+    "napis × najgorszy piksel: " + licz2(k) + ":1 " + (k >= prog ? "✓" : "✗") +
+      "  (próg " + licz2(prog) + ")",
+    "alfa minimalna dla progu: " +
+      (potrzebna === null ? "PRÓG NIEOSIĄGALNY przy alfie 1,00" : licz2(potrzebna)),
+  ].join("\n");
+}
+
+function sekcjaPrzezroczystosci() {
+  const cel = document.getElementById("sekcja-przezroczystosci");
+  cel.replaceChildren();
+
+  const pasek = grupaDowodu(cel, "B1 · pasek nawigacji — alfa 0,72 + rozmycie");
+  panelPaska(pasek, false);
+  panelPaska(pasek, true);
+
+  const duchy = grupaDowodu(cel, "B2 · duch pod treścią — trzy alfy z zakresu polecenia");
+  for (const alfa of ALFY_DUCHA) panelDucha(duchy, alfa);
+
+  const wygaszenia = grupaDowodu(cel, "B3 · wygaszenie — 1:1 obok progowej");
+  panelWygaszenia(wygaszenia, "progowa");
+  panelWygaszenia(wygaszenia, "1do1");
+  panelWygaszenia(wygaszenia, null);
+
+  const zdjecia = grupaDowodu(cel, "B3 · tekst na zdjęciu — 1:1 obok progowej");
+  panelZdjecia(zdjecia, "progowa");
+  panelZdjecia(zdjecia, "1do1");
+  panelZdjecia(zdjecia, null);
+
+  document.getElementById("uwaga-przezroczystosci").textContent =
+    "Pasek: liczba pochodzi ze złożenia alfą, bo pole pod nim jest jednolite — " +
+    "rozmycie uśrednia sąsiednie piksele, a średnia z identycznych pikseli to ten " +
+    "sam piksel. Nad treścią NIEjednolitą ten rachunek nie wystarcza i najgorszy " +
+    "przypadek serwisu (sekcja jasna przewijająca się pod paskiem) zmierzony jest " +
+    "na zrzucie ekranu, nie tutaj — wynik w raporcie. " +
+    "Duch: napis jedzie przez content: attr(data-duch), więc nie wchodzi do drzewa " +
+    "tekstu, a nośnik ma aria-hidden. Treść ducha jest tym samym łańcuchem, co " +
+    "widoczny nagłówek obok — warunek „nie niesie informacji, której nie ma w " +
+    "normalnym tekście” jest spełniony konstrukcyjnie, nie obietnicą. " +
+    "Kontrast duchów podany jest wyłącznie informacyjnie: WCAG 1.4.3 wyłącza " +
+    "dekorację, a bramka ich nie sprawdza. " +
+    "Tekst na zdjęciu: w serwisie NIE MA dziś ani jednego takiego miejsca — " +
+    "recepta .na-zdjeciu istnieje i jest tu pokazana, ale nie ma nośnika w treści. " +
+    "Kadr aplikacji służy tu wyłącznie za podkład dowodowy dla recepty; na stronie " +
+    "kadry są dowodem produktu i nie wolno ich przyciemniać ani filtrować (część A). " +
+    "Przełącznik „Efekty” u góry ustawia data-efekty na <html> dla całego arkusza; " +
+    "panele wyżej wymuszają swój wariant lokalnie, więc obie wersje stoją obok " +
+    "siebie niezależnie od jego położenia.";
+}
+
+/* ───────────────────────────── spinacz ───────────────────────────── */
+
+function zastosuj() {
+  const kroj = KROJE[stan.kroj];
+  document.documentElement.style.setProperty("--arkusz-krój", kroj.rodzina);
+  document.documentElement.style.setProperty("--arkusz-interlinia-h1", String(kroj.interliniaH1));
+
+  if (stan.paleta === "produkcja") delete document.documentElement.dataset.paleta;
+  else document.documentElement.dataset.paleta = stan.paleta;
+
+  /* Wersja progowa = BRAK atrybutu, dokładnie jak w serwisie. Nie ustawiam
+     data-efekty="progowa" na <html>, bo polecenie mówi „brak atrybutu →
+     wersja przechodząca próg”; wartość „progowa” istnieje wyłącznie na
+     panelach arkusza, żeby oparły się globalnemu ustawieniu 1:1. */
+  if (stan.efekty === "1do1") document.documentElement.dataset.efekty = "1do1";
+  else delete document.documentElement.dataset.efekty;
+
+  const kadr = document.getElementById("kadr");
+  const szer = KADRY[stan.kadr];
+  kadr.style.maxWidth = szer === null ? "none" : szer + "px";
+
+  zbudujPulpit();
+  sekcjaEtykiet();
+  sekcjaAkapitow();
+  sekcjaWagi();
+  sekcjaMetryk();
+  sekcjaReferencji();
+  sekcjaPrzezroczystosci();
+  sekcjaH1(); // ostatnia — mierzy szerokości, więc potrzebuje gotowego układu
+
+  const kolumna = Math.round(szerokoscRamki());
+  const symulowany = viewportSymulowany();
+  // Ramka bez własnego padding-inline ma dokładnie geometrię produkcji:
+  // widok minus 1rem marginesu strony z każdej strony (390 → 358 px,
+  // zmierzone na żywej stronie 2026-08-17). Gdy okno nie mieści zamówienia,
+  // symulacja jest nieważna i odczyt musi to powiedzieć, a nie przemilczeć.
+  const nieMiesci = szer !== null && kolumna < szer - 32 - 2;
+  document.getElementById("odczyt").textContent =
+    "widok " +
+    symulowany +
+    " px · kolumna " +
+    kolumna +
+    " px" +
+    (nieMiesci ? " ⚠ OKNO ZA WĄSKIE — symulacja nieważna" : "") +
+    " · H1 " +
+    stopienH1(symulowany).toFixed(3).replace(".", ",") +
+    " rem · miara docelowa " +
+    stan.rem +
+    " rem";
+
+  dopilnujKroju();
+}
+
+/* Pomiary H1 muszą iść PO wczytaniu kroju. Przy `font-display: swap` pierwsze
+   przełączenie rysuje jeszcze krojem zapasowym, więc `24ch` wychodzi wtedy
+   identyczne dla wszystkich krojów — dokładnie w tę pułapkę wpadł pierwszy
+   przebieg pomiaru (Onest i Geist pokazały co do setnej piksela wartość
+   system-ui). Licznik pokoleń chroni przed odświeżeniem po nieaktualnym
+   przełączeniu, gdy ktoś klika szybciej, niż ładuje się plik. */
+let pokolenieKroju = 0;
+
+function dopilnujKroju() {
+  const moje = ++pokolenieKroju;
+  const rodzina = KROJE[stan.kroj].rodzina.split(",")[0].trim();
+  if (!rodzina.startsWith('"')) return; // system-ui — nie ma czego dociągać
+  // Stopień w zapytaniu tylko WYBIERA krój z rodziny — nie wpływa na to, co
+  // się wczyta. Bierzemy go z dokumentu, więc w źródle nie ma wartości
+  // wizualnej (linter tokenów słusznie zapalił się na wpisanej wprost).
+  const stopien = getComputedStyle(document.documentElement).fontSize;
+  Promise.all(
+    [300, 400, 600, 700].map((waga) =>
+      document.fonts.load(waga + " " + stopien + " " + rodzina)
+    )
+  ).then(() => {
+    if (moje === pokolenieKroju) sekcjaH1();
+  });
+}
+
+zaciagnijStyle()
+  .then((ile) => {
+    zastosuj();
+    console.info("arkusz: wczytano " + ile + " arkuszy stylów z builda");
+  })
+  .catch((e) => {
+    document.body.replaceChildren();
+    const p = document.createElement("p");
+    p.textContent =
+      "Arkusz nie wystartował: " +
+      e.message +
+      ". Ten plik nie ma własnych barw ani deklaracji @font-face — bierze je " +
+      "z żywego builda, więc wymaga uruchomionego serwera (npm run build && " +
+      "npm run start) i otwarcia spod tego samego adresu.";
+    document.body.appendChild(p);
+  });
+</script>
+</body>
+</html>
