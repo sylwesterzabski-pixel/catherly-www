@@ -28,7 +28,8 @@
     "bramka:podsumowanie": "node scripts/podsumowanie-pomiaru.mjs",
     "obrazy:pipeline": "node scripts/obrazy-pipeline.mjs",
     "test:e2e": "playwright test",
-    "test:axe": "playwright test e2e/axe.spec.ts"
+    "test:axe": "playwright test e2e/axe.spec.ts",
+    "bramka:kontrast-stanow": "playwright test e2e/kontrast-stanow.spec.ts"
   },
   "dependencies": {
     "next": "^15.5.23",
