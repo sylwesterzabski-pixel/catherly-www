@@ -62,6 +62,20 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   `git merge-base --is-ancestor <skrót> HEAD`. Wychwycone 2026-08-19 na
   pierwszej liczbie objętej tą regułą (T15 stemplowany `72f664a` po amendzie
   na `a826464`; drzewo identyczne, skrót martwy).
+- KLASA „ODWOŁANIE DO STANU, KTÓRY PRZESTAŁ ISTNIEĆ" (właściciel,
+  2026-08-19). Zasięg szerszy niż stemple przy liczbach: **każde** odwołanie
+  do commita zapisane w dokumencie — stempel pomiaru, wpis rejestru,
+  adnotacja przy decyzji, nagłówek raportu — musi być osiągalne z gałęzi
+  w chwili zapisu. Amend, rebase i squash przepisują skróty BEZ OSTRZEŻENIA,
+  a dokument zostaje ze skrótem widmem: wygląda na udowodniony i nie jest,
+  bo nie ma już czego odtworzyć spod tego skrótu. Sprawdzenie:
+  `git merge-base --is-ancestor <skrót> HEAD`. Sprawdzasz OSIĄGALNOŚĆ,
+  nie istnienie obiektu — obiekt z reflogu istnieje na Twoim dysku i zniknie
+  na czystym klonie, więc `git cat-file -t` daje tu fałszywą zieleń.
+  Rodzina: `RECZ-286` w projekcie aplikacji („narzędzie potwierdza
+  poprawność artefaktu, którego nie da się użyć" — suma kontrolna dowodzi,
+  że plik się nie zepsuł, nie że da się wrócić); pełny opis poza tym
+  repozytorium, w `fbo-os/docs/ZADANIA_RECZNE.md`.
 - Nie oceniasz własnej pracy w tych czterech obszarach. Dowodem jest
   wykonany test, zwrócony status, log — nigdy Twoje przekonanie.
 - W konflikcie przegrywa termin i zakres, nigdy nieodwracalne.
