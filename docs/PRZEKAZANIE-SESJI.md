@@ -11,20 +11,79 @@ commit jest nadal osiągalny: `git merge-base --is-ancestor <skrót> HEAD`.
 
 ---
 
+## 0. START — przeczytaj to, zanim cokolwiek zrobisz
+
+Ten plik jest **punktem wejścia**. Wskazuje na niego `CLAUDE.md`, żeby nie dało
+się go minąć — reguła kanonu „raport, którego nikt nie czyta, przestaje być
+raportem" dotyczy także tego dokumentu.
+
+**Kolejność czytania (30 minut, nie skracaj):**
+
+1. `CLAUDE.md` (147 linii) — zasady wiążące. Ten plik ich nie zastępuje.
+2. **Ten dokument, w całości.**
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` (363 linie) — 24 pozycje treści
+   + 24 pozycje techniczne T1–T24. **Skorowidz wszystkich w rozdziale 15**,
+   szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
+   lektura rejestru**.
+4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
+   ADR-a, którego dotyczy Twoje zadanie.
+5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.
+
+**Pierwsze polecenia po starcie — sprawdź stan, nie zakładaj go:**
+
+```bash
+cd "/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www"
+git status --short && git log --oneline -1
+git log --oneline origin/faza-4/podstrony..HEAD   # co czeka na push
+lsof -ti:3000                                     # RAPORTUJ, nie zabijaj
+```
+
+**Czego NIE wolno zrobić na starcie, choćby wyglądało niewinnie:**
+
+- **Nie pushuj.** Siedem commitów (stan na 2026-08-20) czeka na zgodę właściciela
+  wyliczoną co do commita. Zgoda z poprzedniego pakietu jest wyczerpana i nie
+  przechodzi dalej. Liczbę **przelicz**, nie przepisuj — patrz wyżej.
+- **Nie uruchamiaj bramki wydajności równolegle z niczym innym** i nie pchaj
+  niczego w trakcie jej trwania — to jest dokładnie defekt T22.
+- **Nie naprawiaj defektów, których nikt nie zlecił.** Wpis do rejestru, i dalej.
+- **Nie zakładaj, że liczby w tym pliku są dziś aktualne.** Każda niesie datę
+  i commit właśnie po to, żebyś mógł je sprawdzić.
+
+**Stan świadomości właściciela:** wie o wszystkim, co jest w rozdziałach 4–6.
+Czeka na jego decyzję sześć rzeczy z rozdziału 7. Nie zaczynaj od zadawania
+pytań, na które odpowiedź jest w rozdziale 7 — zacznij od sprawdzenia, czy
+odpowiedź już padła.
+
+---
+
 ## 1. Stan repozytorium jednym rzutem oka
 
 | | |
 |---|---|
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
-| HEAD lokalny | `97399c8` |
-| HEAD zdalny (`origin`) | `69c2dab` |
-| Niewypchnięte | **4 commity** — `e8b3b73`, `6383580`, `7848900`, `97399c8` |
+| HEAD lokalny | `8f15c60` (stan 2026-08-20) |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `69c2dab` — odczytane `git ls-remote` **2026-08-20**, nie z lokalnego refa |
+| `origin/main` | `0896219` — j.w. |
+| Niewypchnięte | **7 commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`, `2599c88`, `8f15c60` **+ ten, który niesie ten dokument** (jego skrótu nie da się tu wpisać: commit nie może zawierać własnego skrótu — przelicz `git log --oneline origin/faza-4/podstrony..HEAD`) |
 | Drzewo robocze | czyste |
-| Ostatni backup | `catherly-www-2026-08-20-2118.zip` (8,0 MB) → `/Volumes/Extreme SSD/Catherly-www-ZIP`, kod 0 |
+| PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
+| Backupy repo | `/Volumes/Extreme SSD/Catherly-www-ZIP`, migawka po każdym zadaniu (hook `Stop`), ~8 MB każda. **Nazwy ostatniej nie wpisuję** — starzeje się przy każdym zadaniu; sprawdź: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
+| Archiwum katalogu sesyjnego | `/Volumes/Extreme SSD/Catherly-www-SESJE/scratchpad-sesja-2026-08-20-b5f46785-NIE-USUWAC.zip` — rozdział 11 |
 
-Cztery commity czekają na **wyliczoną zgodę właściciela na push**. Poprzednia
-zgoda obejmowała dokładnie `547b846`, `bb66141`, `69c2dab` i jest wyczerpana.
+**Środowisko:** Node `v20.20.2`, npm `10.8.2`, Next `^15.5.23`, `package-lock.json`
+(npm, nie pnpm/yarn), `core.hooksPath = .githooks`. Sekrety lokalne w `.env`
+(gitignored): `VERCEL_TOKEN`, `STRIPE_TEST_SECRET_KEY` — **nazwy wolno wymieniać,
+wartości nigdy**.
+
+Commity czekają na **wyliczoną zgodę właściciela na push**. Poprzednia zgoda
+obejmowała dokładnie `547b846`, `bb66141`, `69c2dab` i jest wyczerpana.
+
+**Ta tabela dezaktualizuje się przy KAŻDYM commicie** — łącznie z commitem, który
+ją poprawia. Dlatego liczba i lista są tu migawką, a źródłem prawdy jest
+polecenie z rozdziału 0. Nie przepisuj tych skrótów do prośby o zgodę bez
+przeliczenia; właściciel zatwierdza konkretne commity, więc lista rozbieżna
+z repozytorium unieważnia zgodę, zamiast ją przyspieszyć.
 
 ---
 
@@ -436,8 +495,15 @@ dotyczą bieżącej linii pracy:
 
 ### 7.1 Zablokowane na zgodzie właściciela
 
-1. **Push czterech commitów** `e8b3b73`, `6383580`, `7848900`, `97399c8`
-   z odczytem zdalnym. Prośba złożona, **odpowiedzi jeszcze nie ma**.
+1. **Push SIEDMIU commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`,
+   `2599c88`, `8f15c60` + commit niosący ten dokument (rozdz. 1) — z odczytem
+   zdalnym po pushu. Prośba złożona,
+   **odpowiedzi jeszcze nie ma**. Uwaga do liczby: wcześniejsza zgoda właściciela
+   obejmowała `547b846`, `bb66141`, `69c2dab` i jest **wyczerpana** — zgoda nie
+   przechodzi na następną paczkę, każdy push wymaga osobnej, wyliczonej
+   z nazwiska. Lista rośnie z każdym commitem tej sesji, więc **przed prośbą
+   przelicz ją poleceniem**, nie przepisuj z tego akapitu:
+   `git log --oneline origin/faza-4/podstrony..HEAD`.
 2. **Dowód przyjęcia dla (a)** — dwa pushe w odstępie minuty, sprawdzić, że
    drugi anuluje pierwszy i że anulowanie widać w logu. Wymaga tej samej zgody.
    **Nie wolno go uruchamiać w trakcie żadnego pomiaru.** Właściciel został
@@ -600,6 +666,27 @@ przeoczone przy pierwszym spisaniu tego dokumentu:
   są, werdykt czerwony. Rozróżnienie robi się po obecności liczb, nie po treści
   komunikatu — i tylko ono decyduje, czy w ogóle jest co analizować.
 
+**Dopisane przy zabezpieczaniu sesji (2026-08-20)** — trzy nowe, wszystkie
+z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
+
+- **`origin/…` to lokalna migawka, nie stan zdalny.** `.git/FETCH_HEAD` miał datę
+  **13 sierpnia** przy pracy 20 sierpnia, więc każde zdanie o „stanie zdalnym"
+  oparte na `git rev-parse origin/…` opisywałoby stan sprzed tygodnia. Tym razem
+  migawka była zgodna — **przypadkiem**. Przed pisaniem czegokolwiek o zdalnym:
+  `git ls-remote --heads origin` (czyta, niczego nie zapisuje) albo `git fetch`.
+  To ta sama klasa co „odwołanie do stanu, który przestał istnieć", tylko
+  wycelowana w gałąź zamiast w commit.
+- **`zip -r` PODĄŻA ZA DOWIĄZANIAMI** → archiwum katalogu sesyjnego wyszło
+  **44 556 wpisów / 345 MB** zamiast 879 / 173 MB, bo wciągnęło `node_modules`
+  przez dowiązanie. Wymagane `-y`. Defekt jest podstępny, bo archiwum z fałszywą
+  liczbą wpisów wygląda na **pełniejsze**, a nie na zepsute.
+- **Potok porównujący pliki wywraca się na polskich nazwach.**
+  `sed: RE error: illegal byte sequence` przy domyślnej lokalizacji obciął listę
+  do 604 z 879 pozycji i wyprodukował długą, nieprawdziwą listę „braków" —
+  czyli **narzędzie weryfikujące samo stało się źródłem fałszywego alarmu**.
+  Wymagane `LC_ALL=C`. Osobno: `unzip -Z1` rysuje bajty spoza ASCII jako `?`,
+  co daje pozorne rozbieżności — rozstrzyga porównanie SHA-256, nie nazw.
+
 ---
 
 ## 10. Gdzie co leży
@@ -610,8 +697,13 @@ przeoczone przy pierwszym spisaniu tego dokumentu:
 - `scripts/straznik-po-pomiarze.mjs` — **nowy**, 180 linii
 - `scripts/werdykt-marginesu.mjs` — **nowy**, 220 linii
 - `package.json` — `bramka:po-pomiarze`, `bramka:margines`
-- `CLAUDE.md` — dwie nowe reguły kanonu ADR-018
+- `CLAUDE.md` — dwie nowe reguły kanonu ADR-018 **+ wskaźnik do tego pliku na
+  samej górze** (bez niego przekazanie byłoby raportem, do którego nikt nie
+  zagląda — kanon nazywa tę klasę wprost)
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — T22 przepisana, T23 i T24 nowe
+- `docs/PRZEKAZANIE-SESJI.md` — ten plik; **jedyne kanoniczne przekazanie**.
+  Drugiego nie ma i nie ma go być: dwa pliki przekazania to natychmiastowe
+  pytanie „który obowiązuje", czyli nowy defekt zamiast zabezpieczenia
 
 **Czytane, nośne, nietknięte**
 - `scripts/sprawdz-preview.mjs` — strażnik startowy, tylko `/`
@@ -626,10 +718,13 @@ przeoczone przy pierwszym spisaniu tego dokumentu:
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron
 
 **Rozmiary — żeby wiedzieć, czego NIE da się streścić w tym pliku**
+(zmierzone 2026-08-20 na `8f15c60` + zmiany robocze)
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — 363 linie, pozycje T1–T24
-- `docs/adr/` — 30 ADR-ów + `README.md` (indeks)
-- `CLAUDE.md` — 140 linii
+  (skorowidz: rozdz. 15)
+- `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
+- `CLAUDE.md` — 147 linii (wskaźnik do tego pliku dodany na górze)
+- `docs/PRZEKAZANIE-SESJI.md` — ten plik, 1049 linii
 
 **Sekrety — gdzie są, czego nie wolno wypisywać**
 - `.env` (gitignored) trzyma DWA klucze; wolno wymieniać NAZWY, nigdy wartości:
@@ -648,26 +743,81 @@ przeoczone przy pierwszym spisaniu tego dokumentu:
 
 ---
 
-## 11. Rzeczy ulotne — znikną razem z sesją
+## 11. Rzeczy ulotne — ZABEZPIECZONE ARCHIWUM
 
-Katalog sesyjny:
+Katalog sesyjny znika razem z sesją. To była **jedyna rzecz w tym projekcie
+faktycznie zagrożona** — pliki repozytorium są w gicie i w rotacyjnych
+migawkach, katalog sesyjny nie był nigdzie.
+
+Katalog:
 `/private/tmp/claude-502/-Users-sylwesterzabski-Documents-FBO-OS---www/b5f46785-71a6-4c33-a50c-96d9e76258b6/scratchpad`
 
-Leżą tam **harnesy dowodów mutacyjnych** — jedyne wykonywalne kopie:
+**Zawartość zmierzona 2026-08-20** (nie oszacowana): **844 pliki + 34 katalogi
++ 1 dowiązanie = 879 wpisów, 443 MB**. W tym **74 wykonywalne harnesy**
+(`.mjs`/`.sh`), **207 plików `lhr-*.json`** z surowymi danymi Lighthouse'a
+i **65 logów**. Poprzednia wersja tego rozdziału wymieniała pięć pozycji —
+było ich 74. Surowych danych pomiarowych **nie da się odtworzyć**: artefakty
+CI ich nie wożą, a runner mierzy za każdym razem inaczej.
 
-- `mutacja-po-pomiarze.mjs` — udawany preview na porcie 4331 ze sterowanym
-  `x-catherly-wydanie`; trzy przypadki dla (b)
-- `mutacja-cisza-przyrzadu.mjs` — port 4332; czwarty przypadek dla (b) (cel
-  zgaszony w trakcie)
-- `mutacja-marginesu.mjs` — mutuje LCP jednego niereprezentatywnego `lhr`,
-  sprawdza SHA-256 po przywróceniu; trzy przypadki dla (c)
-- `proba-klonu.sh` — dowód trzech klonów dla T23
-- logi: `wydajnosc-3.log` (samotny pomiar), `collect-lokalny.log`,
-  `werdykt-lokalny.log`, `step-summary.md`
+### 11.1 Archiwum — gdzie leży i czym jest udowodnione
 
-**Wyniki wszystkich tych dowodów są spisane w rejestrze**, więc nie ginie
-ustalenie — ginie możliwość powtórzenia go jednym poleceniem. Decyzja
-o utrwaleniu ich w repo czeka na właściciela (punkt 7.2.7).
+Plik: `/Volumes/Extreme SSD/Catherly-www-SESJE/scratchpad-sesja-2026-08-20-b5f46785-NIE-USUWAC.zip`
+
+| co | wartość |
+|---|---|
+| rozmiar | 173 MB (źródło 443 MB — różnica to kompresja, nie brak) |
+| wpisów | **879 — zgodne co do jednego ze źródłem** |
+| `unzip -t` | OK, bez błędów |
+| SHA-256 | `3d18119d5718317cedbb07b3e1f9cf0bb0f5630529f864df977da5dd87fba470` |
+
+Katalog `Catherly-www-SESJE/` jest **nowy i celowo osobny**: leży poza zasięgiem
+globu `catherly-www-*.zip`, którym prędzej czy później ktoś posprząta ponad 200
+migawek rotacyjnych — ta sama mechanika, co przy `KAMIENIE-MILOWE/`, ale inna
+semantyka (to nie jest kamień milowy repozytorium, tylko materiał dowodowy
+sesji). **Czy ma tam zostać, jest decyzją właściciela** — nie przenoszę go do
+`KAMIENIE-MILOWE/` z własnej inicjatywy.
+
+**Dwie pułapki, na których to archiwum już się przewróciło** — obie warte
+zapamiętania, bo obie dawały wynik wyglądający sensownie:
+
+1. **`zip -r` PODĄŻA ZA DOWIĄZANIAMI.** Pierwsze archiwum miało **44 556 wpisów
+   i 345 MB** przy 844 plikach źródłowych, bo `pw/node_modules` jest dowiązaniem
+   do `node_modules` repozytorium i `zip` wciągnął je w całość. Poprawka: `-y`
+   (`zip -qry`). Archiwum z fałszywą liczbą wpisów wygląda na *pełniejsze*, więc
+   ten defekt nie krzyczy — trzeba go szukać.
+2. **Porównanie archiwum ze źródłem wywróciło się na polskich nazwach.**
+   `sed: RE error: illegal byte sequence` przy domyślnej lokalizacji obciął listę
+   z archiwum do 604 z 879 pozycji i wyprodukował długą, **nieprawdziwą** listę
+   „braków". To był defekt narzędzia porównującego, nie archiwum. Poprawka:
+   `LC_ALL=C` + `unzip -Z1` (bez kolumn stałej szerokości). Po poprawce: 879 = 879.
+   Dodatkowo `unzip -Z1` rysuje bajty spoza ASCII jako `?`, co daje **pozorne**
+   cztery rozbieżności na `arkusz-*-onest-kośo.png` / `-popioł.png`; rozstrzygnięte
+   przez wypakowanie tych plików i porównanie SHA-256 — **identyczne co do bajtu**.
+
+### 11.2 Cztery harnesy dowodowe — czym są i jak je odzyskać
+
+Nie wklejam ich źródeł do tego dokumentu świadomie, z dwóch powodów: kod
+wykonywalny w pliku `docs/` nie jest wykonywalny, a punkt 7.2.7 pyta właściciela,
+czy utrwalić je w repozytorium (np. `scripts/dowody/`) — wklejenie ich tutaj
+przesądziłoby tę decyzję bokiem. Zamiast tego: gdzie są, co dowodzą, jak wrócić.
+
+| harnes | linii | SHA-256 (16 zn.) | co dowodzi |
+|---|---|---|---|
+| `mutacja-po-pomiarze.mjs` | 83 | `c02586cb423b5390` | (b) klamra prowieniencji: udawany preview na porcie **4331** ze sterowanym `x-catherly-wydanie`; wydanie zgodne → 7/7 ✔ wyjście 0; alias przestawiony → 7/7 rozjazdów, wyjście 1; brak nagłówka → 7/7 braków, wyjście 1 |
+| `mutacja-cisza-przyrzadu.mjs` | 68 | `0bef4dc6941c5b35` | (b) przypadek czwarty, port **4332**: serwer żywy → 0; **ten sam serwer zgaszony w trakcie** → 7/7 „adres nieosiągalny (fetch failed)", wyjście 1. Milczenie celu jest czerwienią, nie ciszą |
+| `mutacja-marginesu.mjs` | 92 | `093a1758501de866` | (c) werdykt marginesu: mutuje LCP **niereprezentatywnego** `lhr` dla `/funkcje` (→ 1500 ms), więc werdykt i zapas stoją, a zmienia się wyłącznie rozrzut; przywraca plik i porównuje SHA-256 |
+| `proba-klonu.sh` | 46 | `8b4c74a2ca4dd6b2` | T23, dowód trzech klonów na `cd06530`: pełny → osiągalny/zieleń; `--depth 1` → „not a valid object"/czerwień; po `fetch --unshallow` → zieleń. Plus przypadek D: widmo `72f664a` nie istnieje w ŻADNYM klonie |
+
+Odzysk pojedynczego harnesu z archiwum (nie trzeba rozpakowywać 173 MB):
+
+```bash
+Z="/Volumes/Extreme SSD/Catherly-www-SESJE/scratchpad-sesja-2026-08-20-b5f46785-NIE-USUWAC.zip"
+unzip -j "$Z" 'scratchpad/mutacja-*.mjs' 'scratchpad/proba-klonu.sh' -d ./dowody
+```
+
+**Wyniki wszystkich tych dowodów są spisane w rejestrze** (T22, T23), więc nawet
+bez archiwum nie ginie ustalenie — ginie możliwość powtórzenia go jednym
+poleceniem. Archiwum przywraca właśnie tę możliwość.
 
 `.lighthouseci/` w repo (gitignored) trzyma lokalne dane pomiarowe; zmutowany
 plik został przywrócony, SHA-256 sprawdzona i identyczna.
@@ -722,12 +872,13 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 Żeby nowa sesja nie wzięła braku streszczenia za brak tematu.
 
-- **Rejestr T1–T19** — rozdział 6 opisuje wyłącznie pozycje z tej linii pracy
-  (T2, T10, T20, T21, T22, T23, T24). Pozostałe — w tym T4, T7, T8, T9, T11–T19
-  — są w `docs/faza-2/rejestr-warunkow-powrotu.md` i **nie są tu streszczone**.
+- **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
+  linii pracy (T2, T10, T20–T24); rozdział 15 daje **skorowidz wszystkich** —
+  24 pozycji treści i T1–T24 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
-- **Treść ADR-ów.** Odwołania są po numerach (ADR-014, ADR-018, ADR-020,
-  ADR-027, ADR-030 i inne). Trzydzieści dokumentów leży w `docs/adr/`.
+- **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
+  trafić do właściwego pliku. Wiążąca jest treść w `docs/adr/`.
 - **`docs/RAPORT-POWYKONAWCZY-WWW.md`** — 1419 linii, nie do streszczenia.
 - **Pełny kanon `CLAUDE.md`** — rozdział 3 podaje siedem reguł ADR-018
   roboczo; wiążący jest plik.
@@ -745,10 +896,193 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 ---
 
-## 15. Uczciwa granica tego dokumentu
+## 15. Skorowidz rejestru warunków powrotu — WSZYSTKIE pozycje
 
-Rozdziały 12–15 dopisano po pytaniu właściciela „czy to są kompletnie wszystkie
+Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (364 linie). Poniżej
+**skorowidz, nie streszczenie**: jedna linia na pozycję, żeby żadna nie była
+niewidoczna dla nowej sesji. Kto ma dotknąć którejkolwiek — czyta rejestr.
+
+### 15.1 Treści zdjęte z powodu braku pokrycia (poz. 1–24)
+
+Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
+
+| # | rzecz | wraca po |
+|---|---|---|
+| 1 | „Rozliczenia" w H1 i podtytule hero | działające rozliczenia end-to-end (Stripe aktywny) |
+| 2 | pytanie o fakturę VAT w FAQ cennika | testowy zakup z OTRZYMANĄ fakturą + konfiguracja dashboardu Stripe |
+| 3 | trial 14 dni | Stripe end-to-end + decyzja właściciela o komunikacji trialu |
+| 4 | „20 GB przestrzeni" (karta Pro) + wiersz tabeli | klucz Storage aktywny + wykonany test uploadu |
+| 5 | „Wywołania AI 100/500/∞" | aktywny klucz Anthropic |
+| 6 | „Platformy social 2/5/∞" | zgody platform + działające łączenie kont |
+| 7 | RODO/GDPR/DSGVO jako potwierdzenie | weryfikacja procesów; wraca na `/bezpieczenstwo` |
+| 8 | TLS / szyfrowanie at-rest platformy | odczyt dashboardu Supabase (w repo brak śladu) |
+| 9 | szyfrowanie pól (AES-256-GCM) — FAKT z kodu | budowa `/bezpieczenstwo` z precyzyjnym zakresem |
+| 10 | import wyciągu FL | Storage aktywny + ekrany niepuste |
+| 11 | fraza Pulsu poza kartą Growth | zawsze pełna forma „W planie Growth…" |
+| 12 | pozostałe bramki GROWTH z Z1 | każde wejście = nowa obietnica → tabela obietnic + decyzja |
+| 13 | `robots: noindex,nofollow` | **wyłączyć przy publikacji (Faza 7)** — pozycja checklisty premiery |
+| 14 | „bez podawania powodu" (rezygnacja) | weryfikacja przepływu anulowania w aplikacji |
+| 15 | granice e-mail modułów pozyskiwania | aktywacja Resend → rewizja trzech granic |
+| 16 | granica jednokierunkowości subskrypcji kalendarza | integracja dwustronna (dziś SZKIELET) |
+| 17 | cel linku kodu QR polecającego | weryfikacja przy Z9+ |
+| 18 | 7 nazw modułów bez pozycji słownika | potwierdzenie zgodności z i18n aplikacji |
+| 19 | granica importu („importu hurtowego nie ma") | pojawienie się importu w aplikacji |
+| 20 | rejestr „cyfrowy odcisk SHA-256" | obowiązujące; rewizja przy zmianie decyzji głównej |
+| 21 | granica „nie wygeneruje szablonu" | aktywacja klucza Anthropic |
+| 22 | granica „zasięgów nie pokaże" | statystyki publikacji po zgodach platform |
+| 23 | widok liderki w Pierwszych 90 Dniach | odczyt `first90` przy najbliższym Z |
+| 24 | „Przesuwasz post" + nazwy poza słownikiem | weryfikacja przy Z9 |
+
+Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
+
+### 15.2 Pozycje techniczne i procesowe (T1–T24)
+
+**Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
+(design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
+
+| # | rzecz | stan |
+|---|---|---|
+| T1 | `next-intl` serializuje KOMPLET komunikatów do ładunku KAŻDEJ strony (+276 B za trzy klucze; wpływ na LCP w granicach szumu) | ⏸ blok designu |
+| T2 | audyt nieodwracalnych — bramka **PLANOWO czerwona**, nie defekt | ⏸ Faza 6 |
+| T3 | pomiar wydajności na preview Vercel + reguła werdyktu | ✅ 2026-08-16 (rozrzut wyszedł osobno → T10) |
+| T4 | „H1 ≤ 3 linie" — desktop naprawiony (ADR-029), **poniżej 768 px nadal nieprawdziwe** (DE 4–5 linii) i niepilnowane | ⚠ część mobilna otwarta |
+| T5 | pięć adresów Fazy 4 poza zakresem startu wg ADR-014 | ✅ 2026-08-15 — WCHODZĄ do zakresu |
+| T6 | `bramka:liczby` nie widziała warstwy `messages` | ✅ 2026-08-16 (inwentarz 16 kluczy, nie 14) |
+| T7 | **zdania z datą ważności** („Logowanie będzie dostępne przy premierze", `(wkrótce)` ×4 dokumenty) — brak rejestru i mechanizmu; w dniu premiery stają się fałszem i **nic tego nie zapali** | ⏸ checklista premiery, świadomie BEZ bramki |
+| T8 | `/pomoc` wycofana z zakresu startu; strona nie istnieje | ⏸ po premierze, warunek potrójny |
+| T9 | wskaźnik zagnieżdżenia w mapie stopki — wariant z kreską (1,34:1 przy progu 3:1) | ⏸ blok designu |
+| T10 | **rozrzut pomiaru szerszy niż zapas na 7 z 7 tras** — bezpośredni przodek T22(c) | 🔒 zamrożone 2026-08-16 |
+| T11 | `reuseExistingServer: !process.env.CI` — pakiet lokalny podpina się do CZYJEGOKOLWIEK procesu na porcie 3000, także zepsutego | ⏸ przegląd bramek |
+| T12 | `max-width: 24ch` na H1 — `ch` zależy od kroju (755 px vs 661 px); dziś 2 linie na iOS, 3 na Androidzie, przesuw CTA o 55,19 px | ⏸ blok designu |
+| T13 | brak tokenów CTA i **żadnego tokenu typografii**; recepta CTA powtórzona ręcznie w 3 modułach | ⏸ blok designu |
+| T14 | `✓` (U+2713) 15× na `/cennik` — Schibsted i Geist **nie mają tego glifu**; spada na fallback | ⏸ blok designu → inline SVG |
+| T15 | wyjątek lintera tokenów dla bloku palety — **wygasa 2026-08-31**; dowody mutacyjne `a826464`, mutacja „data cofnięta" → **77** naruszeń (nie 45 — liczba urosła sama, bo blok urósł) | ⚠ data jest strażnikiem |
+| T16 | bramka kontrastu w stanach interaktywnych z trzema świadomymi granicami (W-GRANICA-01, próg wyłączonych = 3 ponad normę, widżety poza zasięgiem sondy) | otwarte **jako opis granic, nie dług** |
+| T17 | lista 30 tras w `e2e/axe.spec.ts` **przepisana z ręki** — nowa podstrona zostanie pominięta w ciszy i na zielono | ⏸ przegląd bramek |
+| T18 | arkusz `public/proba-kroju.html` — tymczasowy, **wygasa 2026-08-31**; linter tokenów skanuje `public/`, żeby zamknąć drogę ucieczki | ⏸ razem z T15 |
+| T19 | warianty AVIF/WebP **nie mają dowodu, że powstały z bieżących źródeł**; podmiana źródła przechodzi dziś przez wszystkie bramki | propozycja manifestu SHA-256, bez implementacji |
+| T20 | zakres wyjątku lintera **szerszy niż jego dokumentacja** (osłona jest LINIOWA, nie „wyłącznie barwy") | ⚠ znika sam 2026-08-31 |
+| T21 | nic nie pilnuje, że skróty commitów w dokumentacji są osiągalne; 6 wiążących ustaleń konstrukcyjnych | ⚠ **czeka na decyzję** (7.2.4) |
+| T22 | bramka wydajności mierzyła CUDZE wdrożenie + brak `concurrency` | (a)(b)(c) wdrożone, (d) i (b') otwarte — **warunek zamknięcia niespełniony** |
+| T23 | `fetch-depth` — 15 × `checkout` bez niego, klon ma 1 commit | ⚠ **czeka na decyzję** (7.2.5) |
+| T24 | brak `timeout-minutes` — 4 zadania anulowane po 6 h 00 min | ⚠ **czeka na decyzję** (7.2.6) |
+
+---
+
+## 16. Skorowidz ADR — trzydzieści decyzji
+
+Katalog `docs/adr/` (30 plików + `README.md`). **Wiążąca jest treść pliku** —
+poniżej wyłącznie tytuły, żeby dało się trafić do właściwego bez zgadywania.
+
+| # | decyzja | # | decyzja |
+|---|---|---|---|
+| 001 | izolacja marki | 016 | zamknięty zestaw platform |
+| 002 | progi wydajności i dostępności | 017 | brak panelu administracyjnego |
+| 003 | zakaz ciemnych wzorców | 018 | **prymat nieodwracalnego** (kanon) |
+| 004 | jeden design system | 019 | toolchain języka poza ADR-016 |
+| 005 | auth wyłącznie w aplikacji | 020 | **main zawsze zielony** |
+| 006 | płatność przed kontem | 021 | własny serwer MCP higgsfield |
+| 007 | treść w repo bez CMS | 022 | kontrakt minimalny — szew logowania |
+| 008 | trzy języki od dnia pierwszego | 023 | ścieżka zakupu przez login |
+| 009 | jeden motyw | 024 | fazowanie hybrydowe per komponent |
+| 010 | analityka przez warstwę produktu | 025 | tokeny: powierzchnia, akcent, kreska, miara |
+| 011 | obrazy generowane tylko dekoracyjne | 026 | typografia tymczasowa `system-ui` |
+| 012 | waluty i prawo konsumenckie | 027 | krój pisma `system-ui` na premierę |
+| 013 | ciepła jakość | 028 | tokeny wymiarów, promieni, kontenera, progu |
+| 014 | **zakres zamrożony iteracji 1** (+ 3 doprecyzowania) | 029 | próg i proporcje hero |
+| 015 | paleta barw przez tokeny | 030 | **wdrożenie produkcyjne `main` dopiero przy Fazie 7** |
+
+Trzy najczęściej mylone: **ADR-020** mówi o bramkach merge'a, **ADR-030** o tym,
+że `main` nie ma dziś produkcji — nie są ze sobą sprzeczne. **ADR-018** jest
+nadrzędny wobec wszystkiego innego.
+
+---
+
+## 17. Mapa CI, tras i poleceń
+
+### 17.1 Piętnaście zadań w `.github/workflows/bramki.yml`
+
+`build` · `bramka-kontrakt-tokenow` · `bramka-tokeny-linter` · `bramka-lint` ·
+`bramka-parytet` · `bramka-prawdziwosc` · `bramka-cennik` · `bramka-linki` ·
+`bramka-kotwice` · `bramka-nojs` · `bramka-dostepnosc` · `bramka-e2e` ·
+`bramka-pelny-zestaw` · `bramka-wydajnosc` · `bramka-nieodwracalne`
+
+Sześć z nich potrzebuje `build`. **`bramka-nieodwracalne` jest planowo czerwona
+(T2) — to nie jest awaria.** Wyzwalacze: `pull_request`, `push` na `main`
+i `faza-*/**`, `workflow_dispatch`.
+
+Blok `concurrency` (wdrożony tej doby, kierunek T22(a)):
+```yaml
+group: "bramki-${{ github.event.pull_request.head.ref || github.ref_name }}"
+cancel-in-progress: true
+```
+Klucz **nie** z `github.ref` — przy `pull_request` to `refs/pull/N/merge`, więc
+klucz z `github.ref` rozdzieliłby dwa przebiegi tej samej gałęzi i defekt wróciłby
+w ciszy dokładnie w PR, czyli w chwili merge'u.
+
+**Dwie własności środowiska, których nie widać w pliku:** żaden z 15 kroków
+`actions/checkout@v4` nie ustawia `fetch-depth` (→ klon ma 1 commit, T23), żadne
+zadanie nie ma `timeout-minutes` (→ obowiązuje domyślne 6 h, T24).
+
+### 17.2 Siedem tras pod pomiarem (`lighthouserc.cjs`)
+
+`/` · `/funkcje` · `/dla-kogo` · `/funkcje/pozyskiwanie` · `/funkcje/tresci` ·
+`/funkcje/zespol` · `/funkcje/wyniki`
+
+`numberOfRuns: 5` (linia 189). Progi: **LCP 1800 ms · CLS 0,1 · TBT 200 ms ·
+a11y 1**. Werdykt zapada na **przebiegu o medianowym LCP** (`26c38f2`), a nie na
+`median-run` Lighthouse'a — patrz rozdz. 12.
+
+### 17.3 Polecenia, które są w `package.json`
+
+**Pomiar wydajności** — kolejność ma znaczenie:
+`bramka:preview` (strażnik startowy, tylko `/`) → `bramka:rozgrzewka`
+(prowieniencja na **wszystkich 7** trasach) → `bramka:pomiar`
+(`lhci collect` + `werdykt-po-lcp.mjs`) → `bramka:po-pomiarze` (klamra
+prowieniencji, `if: always()`) → `bramka:margines` (żółty: margines pozorny) →
+`bramka:podsumowanie`. Osobno: `bramka:werdykt`, `bramka:tryb-pomiaru`.
+
+**Bramki treści i kodu:** `bramka:tokeny` · `bramka:liczby` · `bramka:parytet` ·
+`bramka:kontrakt` · `bramka:linki` · `bramka:kotwice` · `bramka:nojs` ·
+`bramka:cennik` · `bramka:nieodwracalne` · `lint`.
+
+**Testy:** `test:e2e` · `test:axe` · `bramka:kontrast-stanow`.
+
+**Budowanie:** `build` (poprzedzone `prebuild` → `tokeny:build`, Style
+Dictionary). `prepare` ustawia `core.hooksPath .githooks` — dlatego hooki działają
+po `npm ci` i dlatego `--no-verify` jest zakazane. `obrazy:pipeline` jest
+**narzędziem ręcznym, nie bramką** (T19).
+
+---
+
+## 18. Uczciwa granica tego dokumentu
+
+Rozdziały 12–14 dopisano po pytaniu właściciela „czy to są kompletnie wszystkie
 informacje?". Odpowiedź brzmiała: nie — i te rozdziały są tym, co audyt wykrył.
+Rozdziały 0, 15–17 i przepisany 11 dopisano po poleceniu „zabezpieczyć system
+w razie zakończenia sesji".
+
 Dokument jest kompletny dla **linii pracy T21–T24 i doby 2026-08-19/20**.
 Poza nią jest **wskaźnikiem, nie streszczeniem** (rozdział 13). Kto go czyta
 i wychodzi poza tę linię, czyta rejestr i ADR-y, a nie ten plik.
+
+**Czego ten dokument NIE gwarantuje, choć mógłby na to wyglądać:**
+
+1. **Liczby są migawkami.** Każda niesie datę i commit, bo taka jest reguła
+   kanonu — ale reguła chroni przed *udawaniem faktu*, nie przed
+   zdezaktualizowaniem się. Wzorzec do zapamiętania: T15 zmierzone
+   2026-08-17 dawało **45**, a dwa dni później **77**, bez jednej zmiany
+   w linterze. Zanim oprzesz decyzję na liczbie stąd — zmierz ją ponownie.
+2. **Stan zdalny odczytano `git ls-remote` 2026-08-20.** `.git/FETCH_HEAD` miał
+   wtedy datę 13 sierpnia, więc lokalne refy `origin/*` były migawką sprzed
+   siedmiu dni (zgodną, ale przypadkiem). **Nie ufaj `origin/…` bez `fetch`
+   albo `ls-remote`** — to dokładnie klasa „odwołanie do stanu, który przestał
+   istnieć", tylko wycelowana w gałąź zamiast w commit.
+3. **Zieleń bramek nie jest tu udowodniona dla stanu wypchniętego.** Dla
+   `69c2dab` bramka `Dostępność` **nie ma werdyktu** (anulowana po 6 h, T24);
+   zieleń dostępności stoi wyłącznie na `b51d0b8`. Sześć commitów czekających na
+   push **nie było w CI ani razu**.
+4. **Kierunki (b) i (c) mają dowody wyłącznie lokalne** — z udawanego preview
+   i z danych z dysku, nigdy z runnera. Do czasu przebiegu CI ich poprawność
+   ma status „niesprawdzona na docelowym środowisku", a niesprawdzone liczy się
+   jak niedziałające.

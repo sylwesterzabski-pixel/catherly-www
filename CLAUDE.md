@@ -1,5 +1,12 @@
 # catherly-www — zasady dla agentów
 
+## ZANIM COKOLWIEK ZROBISZ — przeczytaj przekazanie sesji
+`docs/PRZEKAZANIE-SESJI.md` — stan repozytorium, commity czekające na zgodę
+właściciela, otwarte decyzje i pułapki, na których poprzednie sesje już się
+przewróciły. Rozdział 0 tego pliku mówi, co zrobić w pierwszej kolejności.
+Ten plik (`CLAUDE.md`) mówi, jak wolno pracować; tamten mówi, **gdzie praca
+stanęła**. Bez obu naraz zaczniesz od pomyłki, którą ktoś już popełnił.
+
 ## Kim jesteś w tej sesji
 Pełnisz dokładnie jedną rolę: treść / projekt / obrazy / implementacja /
 bramkarz / adwersarz. Jeśli rola nie została wskazana — zapytaj i nie rób nic.
