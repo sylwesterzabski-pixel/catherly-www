@@ -6,6 +6,8 @@ właściciela, otwarte decyzje i pułapki, na których poprzednie sesje już si�
 przewróciły. Rozdział 0 tego pliku mówi, co zrobić w pierwszej kolejności.
 Ten plik (`CLAUDE.md`) mówi, jak wolno pracować; tamten mówi, **gdzie praca
 stanęła**. Bez obu naraz zaczniesz od pomyłki, którą ktoś już popełnił.
+Przekazanie **utrzymujesz w prawdzie na bieżąco** — zasady na końcu tego
+pliku („Przekazanie sesji aktualizowane na bieżąco").
 
 ## Kim jesteś w tej sesji
 Pełnisz dokładnie jedną rolę: treść / projekt / obrazy / implementacja /
@@ -145,3 +147,34 @@ chroni przed człowiekiem, katalog chroni przed globem — potrzebne są
 obie warstwy. Po utworzeniu kopii milowej weryfikujesz ją tak samo jak
 zwykłą (test integralności) i dodatkowo porównujesz sumę SHA-256
 ze źródłem; przy przenoszeniu suma musi być ta sama przed i po.
+
+## Przekazanie sesji aktualizowane na bieżąco (właściciel, 2026-08-20)
+`docs/PRZEKAZANIE-SESJI.md` jest **jedynym kanonicznym przekazaniem** i ma
+mówić prawdę o stanie CIĄGLE, a nie raz na koniec sesji. Drugiego pliku
+przekazania nie zakładasz — dwa rodzą pytanie „który obowiązuje", czyli
+defekt zamiast zabezpieczenia.
+
+**Aktualizacja idzie W TYM SAMYM COMMICIE co zmiana, którą opisuje.**
+To nie jest szczegół porządkowy, tylko cały mechanizm: „dopiszę
+przekazanie osobnym commitem później" znaczy w praktyce „nigdy", bo
+sesja kończy się na limicie kontekstu bez ostrzeżenia. Commit, który
+zmienia stan repozytorium i zostawia przekazanie nieaktualnym, jest
+niekompletny — tak samo jak commit z niezaktualizowanym rejestrem.
+
+**Co sprawdzasz przed KAŻDYM commitem** (minuta, nie przegląd całości):
+- rozdz. 1 — skróty, liczba niewypchniętych commitów, stan zdalny,
+- rozdz. 7 — czy pozycja właśnie zrobiona nadal stoi jako „do zrobienia",
+- rozdz. 9 — czy przewróciłeś się na czymś, co warto zapisać,
+- rozdz. 15 — czy doszła pozycja rejestru,
+- rozdz. 17 — czy zmieniłeś bramkę, trasę albo polecenie `npm`.
+
+**Czego do tego pliku NIE wpisujesz, choć kusi:** wartości, które starzeją
+się same przy każdym commicie — skrótu commita niosącego ten dokument
+(commit nie może zawierać własnego skrótu; próba daje widmo) i nazwy
+ostatniego backupu. Zamiast wartości wpisujesz polecenie, którym się ją
+przelicza. Każda liczba i każdy skrót niesie datę i osiągalny commit —
+reguła kanonu obowiązuje ten plik tak samo jak każdy inny.
+
+Reguła nie ma dziś strażnika — pilnuje jej wyłącznie ten zapis, co jest
+dokładnie klasą „brak dowodu = brak zabezpieczenia". Odnotowane jako
+pozycja **T25** rejestru; budowa strażnika czeka na decyzję właściciela.

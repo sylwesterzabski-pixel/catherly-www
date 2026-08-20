@@ -21,8 +21,8 @@ raportem" dotyczy także tego dokumentu.
 
 1. `CLAUDE.md` (147 linii) — zasady wiążące. Ten plik ich nie zastępuje.
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` (363 linie) — 24 pozycje treści
-   + 24 pozycje techniczne T1–T24. **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` (364 linie) — 24 pozycje treści
+   + 25 pozycji technicznych T1–T25. **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -40,7 +40,7 @@ lsof -ti:3000                                     # RAPORTUJ, nie zabijaj
 
 **Czego NIE wolno zrobić na starcie, choćby wyglądało niewinnie:**
 
-- **Nie pushuj.** Siedem commitów (stan na 2026-08-20) czeka na zgodę właściciela
+- **Nie pushuj.** Osiem commitów (stan na 2026-08-20) czeka na zgodę właściciela
   wyliczoną co do commita. Zgoda z poprzedniego pakietu jest wyczerpana i nie
   przechodzi dalej. Liczbę **przelicz**, nie przepisuj — patrz wyżej.
 - **Nie uruchamiaj bramki wydajności równolegle z niczym innym** i nie pchaj
@@ -48,6 +48,31 @@ lsof -ti:3000                                     # RAPORTUJ, nie zabijaj
 - **Nie naprawiaj defektów, których nikt nie zlecił.** Wpis do rejestru, i dalej.
 - **Nie zakładaj, że liczby w tym pliku są dziś aktualne.** Każda niesie datę
   i commit właśnie po to, żebyś mógł je sprawdzić.
+
+**Masz obowiązek utrzymywać ten plik w prawdzie — na bieżąco**
+(polecenie właściciela 2026-08-20; wiążące brzmienie w `CLAUDE.md`, sekcja
+„Przekazanie sesji aktualizowane na bieżąco”).
+
+Reguła w jednym zdaniu: **aktualizacja idzie w TYM SAMYM commicie co zmiana,
+którą opisuje.** Nie osobnym commitem „potem" — sesja kończy się na limicie
+kontekstu bez ostrzeżenia, więc „potem" znaczy „nigdy". Commit zmieniający stan
+repozytorium i zostawiający ten plik nieaktualnym jest **niekompletny**.
+
+Przed każdym commitem przelatujesz pięć miejsc: rozdz. **1** (skróty, liczba
+niewypchniętych, stan zdalny), **7** (czy zrobione nadal stoi jako „do
+zrobienia"), **9** (czy przewróciłeś się na czymś wartym zapisania), **15**
+(nowa pozycja rejestru), **17** (zmiana bramki, trasy, polecenia `npm`).
+
+Ten dokument **unieważnia własną tabelę stanu przy każdym commicie** — łącznie
+z commitem, który ją poprawia. Rozwiązanie, którego się trzymaj: pól
+samostarzejących się nie wpisuje się wartością, tylko poleceniem do
+przeliczenia. Dotyczy to skrótu commita niosącego ten plik (commit nie może
+zawierać własnego skrótu — próba daje widmo, sprawdzone) i nazwy ostatniego
+backupu.
+
+**Reguła nie ma strażnika** — pilnuje jej wyłącznie zapis w `CLAUDE.md`, czyli
+dokładnie klasa „brak dowodu = brak zabezpieczenia". Odnotowane jako **T25**;
+budowa strażnika czeka na decyzję właściciela (7.2.8).
 
 **Stan świadomości właściciela:** wie o wszystkim, co jest w rozdziałach 4–6.
 Czeka na jego decyzję sześć rzeczy z rozdziału 7. Nie zaczynaj od zadawania
@@ -65,7 +90,7 @@ odpowiedź już padła.
 | HEAD lokalny | `8f15c60` (stan 2026-08-20) |
 | HEAD zdalny (`origin/faza-4/podstrony`) | `69c2dab` — odczytane `git ls-remote` **2026-08-20**, nie z lokalnego refa |
 | `origin/main` | `0896219` — j.w. |
-| Niewypchnięte | **7 commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`, `2599c88`, `8f15c60` **+ ten, który niesie ten dokument** (jego skrótu nie da się tu wpisać: commit nie może zawierać własnego skrótu — przelicz `git log --oneline origin/faza-4/podstrony..HEAD`) |
+| Niewypchnięte | **8 commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`, `2599c88`, `8f15c60`, `ec8d763` **+ ten, który niesie ten dokument** (jego skrótu nie da się tu wpisać: commit nie może zawierać własnego skrótu — przelicz `git log --oneline origin/faza-4/podstrony..HEAD`) |
 | Drzewo robocze | czyste |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
 | Backupy repo | `/Volumes/Extreme SSD/Catherly-www-ZIP`, migawka po każdym zadaniu (hook `Stop`), ~8 MB każda. **Nazwy ostatniej nie wpisuję** — starzeje się przy każdym zadaniu; sprawdź: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
@@ -456,7 +481,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T24. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T25. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -488,6 +513,9 @@ dotyczą bieżącej linii pracy:
   wdrożenia zamiast aliasu** — pozostaje niewdrożony.
 - **T23** — `fetch-depth` (4.4). Bez implementacji.
 - **T24** — `timeout-minutes` (4.5). Bez implementacji.
+- **T25** — reguła bieżącej aktualizacji tego pliku **bez strażnika**. Zapisana
+  w `CLAUDE.md` i rozdz. 0 na polecenie właściciela 2026-08-20; mechanizmu nie
+  budowano, bo tego nie zlecono. Trzy niezmienniki do wyboru — 7.2.8.
 
 ---
 
@@ -495,8 +523,8 @@ dotyczą bieżącej linii pracy:
 
 ### 7.1 Zablokowane na zgodzie właściciela
 
-1. **Push SIEDMIU commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`,
-   `2599c88`, `8f15c60` + commit niosący ten dokument (rozdz. 1) — z odczytem
+1. **Push OŚMIU commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`,
+   `2599c88`, `8f15c60`, `ec8d763` + commit niosący ten dokument (rozdz. 1) — z odczytem
    zdalnym po pushu. Prośba złożona,
    **odpowiedzi jeszcze nie ma**. Uwaga do liczby: wcześniejsza zgoda właściciela
    obejmowała `547b846`, `bb66141`, `69c2dab` i jest **wyczerpana** — zgoda nie
@@ -529,6 +557,17 @@ dotyczą bieżącej linii pracy:
    sesyjnym i znikną — sekcja 11). Kanon mówi „dowodem jest mutacja"; jeśli
    dowód ma być odtwarzalny, harnesy powinny trafić np. do `scripts/dowody/`.
    To zmiana zakresu, więc czeka na decyzję.
+8. **T25 — czy budować strażnika reguły „przekazanie na bieżąco".** Właściciel
+   polecił 2026-08-20 **zapisać** regułę; zapisana jest w `CLAUDE.md` i w rozdz. 0.
+   Bramki nie budowałem, bo tego nie zlecono. Do wyboru trzy niezmienniki różnej
+   mocy (pełny opis w T25): **(1)** zadeklarowana liczba niewypchniętych commitów
+   = liczba zmierzona — w pełni mechaniczne, natychmiast wykonalne;
+   **(2)** osiągalność wszystkich skrótów w pliku — to jest strażnik T21
+   nakierowany tutaj, więc dziedziczy `fetch-depth: 0` z T23; **(3)** „commit
+   dotknął `src/`, a nie dotknął przekazania" — **słaby, sprawdza dotknięcie, nie
+   prawdę**, jedna spacja go zaspokaja; jako bramka blokująca szkodliwy, bo uczy
+   obchodzenia. Rekomendacja: **(1) od razu, (2) razem z T21, (3) nigdy jako
+   blokada.**
 
 ### 7.3 Robota techniczna gotowa do wykonania po pushu
 
@@ -714,17 +753,19 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T24
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T25
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron
 
 **Rozmiary — żeby wiedzieć, czego NIE da się streścić w tym pliku**
 (zmierzone 2026-08-20 na `8f15c60` + zmiany robocze)
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — 363 linie, pozycje T1–T24
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — 364 linie, pozycje T1–T25
   (skorowidz: rozdz. 15)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — 147 linii (wskaźnik do tego pliku dodany na górze)
-- `docs/PRZEKAZANIE-SESJI.md` — ten plik, 1049 linii
+- `CLAUDE.md` — 180 linii (wskaźnik do tego pliku na górze + reguła bieżącej
+  aktualizacji na końcu)
+- `docs/PRZEKAZANIE-SESJI.md` — ten plik; długości nie wpisuję, bo starzeje się
+  przy każdej własnej zmianie — `wc -l docs/PRZEKAZANIE-SESJI.md`
 
 **Sekrety — gdzie są, czego nie wolno wypisywać**
 - `.env` (gitignored) trzyma DWA klucze; wolno wymieniać NAZWY, nigdy wartości:
@@ -874,7 +915,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
   linii pracy (T2, T10, T20–T24); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T24 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  24 pozycji treści i T1–T25 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -898,7 +939,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 ## 15. Skorowidz rejestru warunków powrotu — WSZYSTKIE pozycje
 
-Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (364 linie). Poniżej
+Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (364 linie, stan 2026-08-20). Poniżej
 **skorowidz, nie streszczenie**: jedna linia na pozycję, żeby żadna nie była
 niewidoczna dla nowej sesji. Kto ma dotknąć którejkolwiek — czyta rejestr.
 
@@ -935,7 +976,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T24)
+### 15.2 Pozycje techniczne i procesowe (T1–T25)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
@@ -966,6 +1007,7 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T22 | bramka wydajności mierzyła CUDZE wdrożenie + brak `concurrency` | (a)(b)(c) wdrożone, (d) i (b') otwarte — **warunek zamknięcia niespełniony** |
 | T23 | `fetch-depth` — 15 × `checkout` bez niego, klon ma 1 commit | ⚠ **czeka na decyzję** (7.2.5) |
 | T24 | brak `timeout-minutes` — 4 zadania anulowane po 6 h 00 min | ⚠ **czeka na decyzję** (7.2.6) |
+| T25 | reguła „przekazanie aktualizowane na bieżąco" **nie ma strażnika**; wariant naiwny sprawdzałby DOTKNIĘCIE pliku, nie prawdę | ⚠ zapisana, **strażnik czeka na decyzję** (7.2.8) |
 
 ---
 
@@ -1060,9 +1102,14 @@ po `npm ci` i dlatego `--no-verify` jest zakazane. `obrazy:pipeline` jest
 Rozdziały 12–14 dopisano po pytaniu właściciela „czy to są kompletnie wszystkie
 informacje?". Odpowiedź brzmiała: nie — i te rozdziały są tym, co audyt wykrył.
 Rozdziały 0, 15–17 i przepisany 11 dopisano po poleceniu „zabezpieczyć system
-w razie zakończenia sesji".
+w razie zakończenia sesji". Obowiązek utrzymywania tego pliku w prawdzie
+**na bieżąco** (rozdz. 0, `CLAUDE.md`, T25) dopisano po poleceniu z tego samego
+dnia: *„chcę aby plik był aktualizowany na bieżąco po każdej zmianie"*.
+Od tej chwili dokument nie jest sprawozdaniem z sesji — jest **stanem
+utrzymywanym**, a commit, który go rozjeżdża z rzeczywistością, jest
+niekompletny.
 
-Dokument jest kompletny dla **linii pracy T21–T24 i doby 2026-08-19/20**.
+Dokument jest kompletny dla **linii pracy T21–T25 i doby 2026-08-19/20**.
 Poza nią jest **wskaźnikiem, nie streszczeniem** (rozdział 13). Kto go czyta
 i wychodzi poza tę linię, czyta rejestr i ADR-y, a nie ten plik.
 
