@@ -572,6 +572,34 @@ Zapisane, żeby nie powtarzać.
 - **Rotacja klucza obejścia jest domknięta po stronie Vercela (1 klucz)**, ale
   „sekret ustawiony ≠ sekret właściwy" — sprawdzenie jest po prefiksie SHA-256.
 
+**Dopisane przy audycie kompletności (2026-08-20)** — pułapki znane wcześniej,
+przeoczone przy pierwszym spisaniu tego dokumentu:
+
+- **`aggregationMethod: pessimistic` w `lighthouserc.cjs:200` NIE jest regułą
+  bramki.** Kto przeczyta samą konfigurację, wyciągnie wniosek „bramka już jest
+  pesymistyczna" — i pomyli się. Ścieżka bramki (`npm run bramka:pomiar`) podaje
+  do `lhci assert` **dokładnie jeden przebieg na trasę** (`scripts/werdykt-po-lcp.mjs`),
+  a przy jednym przebiegu każda agregacja daje tę samą liczbę. `pessimistic`
+  działa dopiero, gdy ktoś ominie bramkę i puści `lhci autorun` na pełnym
+  komplecie — wtedy da werdykt SUROWSZY, nigdy łagodniejszy. **Ma to znaczenie
+  wprost dla kierunku (d)**: rozdział 8 rozważa regułę odporną na rozrzut i nie
+  wolno założyć, że część tej roboty jest już zrobiona. Nie jest.
+- **`actions/upload-artifact` od v4.4 pomija pliki ukryte.** `.lighthouseci/`
+  zaczyna się kropką, więc bez `include-hidden-files: true` artefakt jedzie PUSTY
+  i nikt tego nie zauważa. Ustawione w `bramki.yml:62` i `:438` — usunięcie tej
+  linii daje cichą stratę danych, nie czerwień.
+- **`overwrite: true` (`bramki.yml:68`, `:440`) jest po to, żeby `gh run rerun`
+  nie wywracał się na 409 (konflikt nazwy artefaktu).**
+- **`manifest.json` powstaje wyłącznie przy `lhci upload`.** Bramka go nie ma
+  i mieć nie będzie — czyta bezpośrednio `lhr-*.json`. Skrypt, który zacznie
+  szukać `manifest.json`, będzie się cicho pomijał.
+- **`gh secret set` — wartość WYŁĄCZNIE przez stdin, nigdy `--body`.** Wartość
+  podana flagą ląduje w historii powłoki i na liście procesów.
+- **Sygnatura czerwieni ŚRODOWISKOWEJ vs regresji.** Środowiskowa: strażnik celu
+  pomiaru pada PRZED pomiarem, w logu jest **ZERO liczb LCP**. Regresja: liczby
+  są, werdykt czerwony. Rozróżnienie robi się po obecności liczb, nie po treści
+  komunikatu — i tylko ono decyduje, czy w ogóle jest co analizować.
+
 ---
 
 ## 10. Gdzie co leży
@@ -596,6 +624,21 @@ Zapisane, żeby nie powtarzać.
   TBT 200
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T24
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron
+
+**Rozmiary — żeby wiedzieć, czego NIE da się streścić w tym pliku**
+- `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — 363 linie, pozycje T1–T24
+- `docs/adr/` — 30 ADR-ów + `README.md` (indeks)
+- `CLAUDE.md` — 140 linii
+
+**Sekrety — gdzie są, czego nie wolno wypisywać**
+- `.env` (gitignored) trzyma DWA klucze; wolno wymieniać NAZWY, nigdy wartości:
+  `VERCEL_TOKEN`, `STRIPE_TEST_SECRET_KEY` (Stripe wyłącznie w trybie testowym).
+- `VERCEL_AUTOMATION_BYPASS_SECRET` — sekret repozytorium GitHub, po stronie
+  Vercela JEDEN klucz obejścia. Sprawdzanie wyłącznie po prefiksie SHA-256.
+- Mapa `protectionBypass` z API Vercela — **nigdy surowo**, prefiksy SHA-256.
+- `Set-Cookie` z preview — **nigdy** (niesie `_vercel_jwt` z wartością obejścia
+  otwartym tekstem). Stąd `curl -o /dev/null -w '%{http_code}'`, nigdy `-i`/`-v`.
 
 **Poza tym repozytorium**
 - `RECZ-286` (rodzina „narzędzie potwierdza poprawność artefaktu, którego nie da
@@ -628,3 +671,84 @@ o utrwaleniu ich w repo czeka na właściciela (punkt 7.2.7).
 
 `.lighthouseci/` w repo (gitignored) trzyma lokalne dane pomiarowe; zmutowany
 plik został przywrócony, SHA-256 sprawdzona i identyczna.
+
+---
+
+## 12. Historia sprzed tej doby — żyła wyłącznie w pamięci projektu
+
+Rozdziały 1–11 opisują dobę 2026-08-19/20. Poniższe ustalenia są STARSZE
+i nie miały żadnego zapisu w tym dokumencie; ich jedynym nośnikiem był plik
+pamięci `catherly-www-projekt.md`, którego nowa sesja może nie dostać.
+
+- **Fazy 0–3 domknięte; trwa faza 4 (podstrony)**, gałąź `faza-4/podstrony`.
+- **ADR-030 (2026-08-16, PRZYJĘTY): `main` dostaje własne wdrożenie produkcyjne
+  dopiero przy Fazie 7.** Do tego czasu na `main` nie ma produkcji, a czerwień
+  środowiskowa na `main` bywa akceptowana — nie miesza się to z ADR-020
+  („main zawsze zielony" dotyczy bramek merge'a).
+- **Reguła werdyktu zmieniła się z `median-run` na przebieg o medianowym LCP —
+  commit `26c38f2`.** Powód w liczbach: przebieg `31955831699`, `/dla-kogo`
+  LCP `1504 · 1374 · 1934 · 1486 · 1488`; mediana 1488 ms (zapas +312), a
+  `median-run` wybrał 1934 ms i zapalił czerwień −134 ms. `median-run` wybiera
+  reprezentanta po odległości od median FCP i TTI — LCP nie bierze w tym
+  wyborze udziału. Bramka fałszywie alarmująca uczy ignorowania czerwieni.
+- **O2 (właściciel, 2026-08-16): 3 → 5 przebiegów.** Powód: przebieg
+  `31953862971`, rozrzut LCP w obrębie jednej trasy 1057 ms
+  (`/funkcje/zespol`: 2029 · 1892 · 972) przy zapasach rzędu 200–300 ms. Pięć
+  przebiegów nie zmniejsza rozrzutu — zmniejsza wpływ jednego wyskoku na wybór
+  reprezentanta. Koszt: ~286 s → ~480 s. **O3 wdrożone. Z6 zamknięte 4/4.**
+- **Czego 5 przebiegów NIE naprawia: obciążenia współdzielonego runnera.** Przy
+  `throttlingMethod: "simulate"` praca CPU jest mnożona przez
+  `cpuSlowdownMultiplier`, więc sąsiad na tej samej maszynie wchodzi do wyniku
+  zwielokrotniony. Pilnuje tego `benchmarkIndex` w podsumowaniu — i to on dał
+  rozstrzygnięcie w analizie kierunku (d) z rozdziału 8.
+- **Próg 1800 ms nie zmienia się w żadnym trybie.**
+- **`docs/RAPORT-POWYKONAWCZY-WWW.md` jest matrycą dla następnych stron** —
+  nie jest sprawozdaniem do archiwum, tylko wzorcem do powielenia.
+- **Kopie milowe** trafiają do `KAMIENIE-MILOWE/` z `NIE-USUWAC` w nazwie;
+  powód jest mechaniczny (glob `catherly-www-*.zip` przy sprzątaniu ponad 200
+  migawek rotacyjnych), więc katalog chroni przed globem, a nazwa przed
+  człowiekiem — potrzebne są obie warstwy.
+
+**Sprostowanie do pamięci projektu (sprawdzone dziś).** Pamięć niosła zapis, że
+commit `34710c7` (T6) jest NIEWYPCHNIĘTY, bo zlecenie brzmiało „commit bez
+pusha". Dziś to nieprawda: `git merge-base --is-ancestor 34710c7 HEAD` → TAK,
+`… origin/faza-4/podstrony` → TAK. Późniejsze pushe go zabrały. To ta sama
+rodzina co klasa „odwołanie do stanu, który przestał istnieć", tylko odwrócona:
+nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
+
+---
+
+## 13. Czego ten dokument świadomie NIE powtarza
+
+Żeby nowa sesja nie wzięła braku streszczenia za brak tematu.
+
+- **Rejestr T1–T19** — rozdział 6 opisuje wyłącznie pozycje z tej linii pracy
+  (T2, T10, T20, T21, T22, T23, T24). Pozostałe — w tym T4, T7, T8, T9, T11–T19
+  — są w `docs/faza-2/rejestr-warunkow-powrotu.md` i **nie są tu streszczone**.
+  Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
+- **Treść ADR-ów.** Odwołania są po numerach (ADR-014, ADR-018, ADR-020,
+  ADR-027, ADR-030 i inne). Trzydzieści dokumentów leży w `docs/adr/`.
+- **`docs/RAPORT-POWYKONAWCZY-WWW.md`** — 1419 linii, nie do streszczenia.
+- **Pełny kanon `CLAUDE.md`** — rozdział 3 podaje siedem reguł ADR-018
+  roboczo; wiążący jest plik.
+
+---
+
+## 14. Blokady spoza repozytorium
+
+- **Serwer MCP `higgsfield` wymaga autoryzacji OAuth.** Dopóki właściciel jej
+  nie przeprowadzi (ustawienia konektorów claude.ai), narzędzia generowania
+  obrazu/wideo i pokrewne są NIEDOSTĘPNE. W sesji nieinteraktywnej nie da się
+  tego zrobić. Dotyczy to bloku projektowego z rozdziału 7.4 — jeśli brief
+  wtorkowy zakłada generowanie materiału, autoryzacja jest warunkiem wstępnym,
+  a nie szczegółem technicznym.
+
+---
+
+## 15. Uczciwa granica tego dokumentu
+
+Rozdziały 12–15 dopisano po pytaniu właściciela „czy to są kompletnie wszystkie
+informacje?". Odpowiedź brzmiała: nie — i te rozdziały są tym, co audyt wykrył.
+Dokument jest kompletny dla **linii pracy T21–T24 i doby 2026-08-19/20**.
+Poza nią jest **wskaźnikiem, nie streszczeniem** (rozdział 13). Kto go czyta
+i wychodzi poza tę linię, czyta rejestr i ADR-y, a nie ten plik.
