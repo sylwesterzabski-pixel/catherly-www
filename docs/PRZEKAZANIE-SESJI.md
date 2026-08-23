@@ -23,8 +23,8 @@ raportem" dotyczy także tego dokumentu.
    **Od 2026-08-23 ma rozdział „Dziesięć zakazów"**, który mówi, czego nie
    wolno ZLECIĆ — wiążący także dla zleceń właściciela (T34).
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` (373 linie) — 24 pozycje treści
-   + 34 pozycje techniczne T1–T34. **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` (375 linii) — 24 pozycje treści
+   + 36 pozycji technicznych T1–T36. **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -535,6 +535,8 @@ własne. Wszystko wykonane w tym samym commicie co ta zmiana (T25).
 | **T32** | źródeł reguł wiążących jest **pięć**, nie trzy — i `CLAUDE.md` nie ma w hierarchii miejsca |
 | **T33** | próg 1800 ms przy rozrzucie 593 ms jest **nieinterpretowalny, a nie surowy** — pozycja checklisty premiery |
 | **T34** | dziesięć zakazów przyjęte jako **wiążące dla każdego zlecenia, także właściciela** — wpisane do `CLAUDE.md`, bez strażnika |
+| **T35** | zlecenie o konwencji walidacji kluczy trafiło pod **zły adres** — cały jego przedmiot jest w repozytorium aplikacji; **lustrzane odbicie T26** |
+| **T36** | **pierwsza wada idąca w drugą stronę** — bramka szkodząca przez POPRAWNOŚĆ; pokrycie rodzime: T33 i T34 |
 
 **Trzy rzeczy z tej doby, które zmieniają sposób pracy, nie tylko rejestr:**
 
@@ -601,7 +603,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T34. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T36. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -655,6 +657,18 @@ dotyczą bieżącej linii pracy:
   bramka wydajności nie może dać wiarygodnej zieleni ani czerwieni. **Pozycja
   checklisty premiery** — blokuje Fazę 7, nie bieżącą robotę.
 - **T34** — dziesięć zakazów w `CLAUDE.md`, wiążących dla **każdego** zlecenia.
+- **T35** — zlecenie pod **złym adresem**: konwencja walidacji kluczy `env`
+  (`REQUIRED_IN_PROD`, `RECZ-289`, „tor 8") należy w całości do repozytorium
+  aplikacji. Pomiar: zero trafień tutaj, komplet tam; `zod` nie jest nawet
+  zależnością tego projektu, a `.env` ma **dwa** klucze. Nic nie zostało
+  wykonane — zlecenie wraca nietknięte. **Lustrzane odbicie T26**: tam błędny
+  był adresat dokumentu, tutaj adresat zlecenia.
+- **T36** — **pierwsza pozycja opisująca bramkę, która przepuszcza za MAŁO.**
+  Wszystkie wcześniejsze opisują mechanizmy przepuszczające za dużo. Klasa
+  „strażnik poprawny co do reguły, szkodliwy co do skutku" ma tu rodzime
+  pokrycie w T33 (próg 1800 ms) i T34 (strażnik zakazów blokujący zlecenie
+  właściciela). Do kanonu **nie wpisana** — czeka na potwierdzenie w TYM
+  repozytorium, bo polecenie przyszło pod złym adresem (T35).
   Wdrożone; otwarta zostaje wyłącznie decyzja o strażniku cząstkowym — 7.2.11.
 
 ---
@@ -735,19 +749,34 @@ dotyczą bieżącej linii pracy:
     twardym warunkiem, że strażnik **jawnie deklaruje, czego NIE sprawdza**.
     Bez tej deklaracji sam stanie się „narzędziem, które potwierdza poprawność
     artefaktu" i uśpi czujność co do pozostałych ośmiu.
+12. **T35 — czy reguła zakresu dostaje drugą stronę.** Dziś brzmi „adresat jest
+    częścią zakresu" i wiąże tego, kto **wysyła** dokument. Nie wiąże tego, kto
+    **dostaje** zlecenie pod zły adres — a wykonawca ma pełną techniczną
+    możliwość wykonać je „w przybliżeniu" w niewłaściwym repozytorium albo
+    sięgnąć do drugiego repo i zdublować pracę sesji, która ma rzecz zmierzoną.
+    Proponowane brzmienie: **„zlecenie przychodzące pod zły adres odsyła się,
+    nie wykonuje w przybliżeniu"**. Do rozstrzygnięcia, czy wchodzi do ADR-018
+    (obowiązującego w obu repozytoriach), czy zostaje pozycją rejestru.
+13. **T36 — czy klasa „bramka szkodząca przez poprawność" wchodzi do kanonu.**
+    Sformułowanie właściciela: *„Konwencja wymuszająca kształt tam, gdzie
+    dostawca go nie gwarantuje, zablokuje wdrożenie przy pierwszej zmianie
+    formatu po stronie dostawcy."* Polecenie „do kanonu" przyszło w zleceniu
+    skierowanym do drugiej sesji, więc **nie promuję z własnej ręki**. Jeśli
+    wchodzi — kanon rośnie z 9 do 10 klas i pojawia się pytanie, czy klasa ma
+    żyć w obu rejestrach, czy wyłącznie w ADR-018 (dublowanie = zakaz 10).
 
 ### 7.3 Robota techniczna gotowa do wykonania po pushu
 
-12. **Powtórzyć bramkę `Dostępność` dla wypchniętego stanu** — dla `69c2dab` nie
+14. **Powtórzyć bramkę `Dostępność` dla wypchniętego stanu** — dla `69c2dab` nie
     ma werdyktu (zadanie anulowane po 6 h). Zieleń dostępności jest udowodniona
     tylko dla `b51d0b8`.
-13. **Sprawdzić, czy `concurrency` i dwa nowe kroki zachowują się na runnerze**
+15. **Sprawdzić, czy `concurrency` i dwa nowe kroki zachowują się na runnerze**
     tak jak lokalnie — dotąd (b) i (c) mają wyłącznie dowody z udawanego preview
     i z danych lokalnych, nigdy z CI. Zamyka **T29**.
 
 ### 7.4 Poza tą linią pracy
 
-14. **Blok designu (wtorek)** — właściciel: *„Reszta czeka do bloku designu."*
+16. **Blok designu (wtorek)** — właściciel: *„Reszta czeka do bloku designu."*
     Cała robota nad podstronami jest w stanie spoczynku do briefu designu.
 
 ---
@@ -948,7 +977,7 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
   starzeje") i **cały rozdział „Dziesięć zakazów"** — pierwszy w tym pliku
   adresowany do ZLECAJĄCEGO, nie do wykonawcy (T34)
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — T22 przepisana, **T23, T24,
-  T26–T34 nowe** (T26 z dopiskiem o odmowie wysłania briefingu poza jego zakres)
+  T26–T36 nowe** (T26 z dopiskiem o odmowie wysłania briefingu poza jego zakres)
 - `docs/PRZEKAZANIE-SESJI.md` — ten plik; **jedyne kanoniczne przekazanie**.
   Drugiego nie ma i nie ma go być: dwa pliki przekazania to natychmiastowe
   pytanie „który obowiązuje", czyli nowy defekt zamiast zabezpieczenia
@@ -966,7 +995,7 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T34
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T36
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
   **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
   (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
@@ -976,7 +1005,7 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
 (zmierzone 2026-08-20 na `8f15c60` + zmiany robocze)
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii; **zakres zadeklarowany
   w wierszach 3–6**, liczby w rozdziałach opisują stan tamtego zakresu (T26)
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — 373 linie, pozycje T1–T34
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — 375 linii, pozycje T1–T36
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
@@ -1132,8 +1161,8 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 Żeby nowa sesja nie wzięła braku streszczenia za brak tematu.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
-  linii pracy (T2, T10, T20–T34); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T34 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  linii pracy (T2, T10, T20–T36); rozdział 15 daje **skorowidz wszystkich** —
+  24 pozycji treści i T1–T36 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -1158,7 +1187,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 ## 15. Skorowidz rejestru warunków powrotu — WSZYSTKIE pozycje
 
-Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (373 linie, stan 2026-08-23). Poniżej
+Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (375 linii, stan 2026-08-23). Poniżej
 **skorowidz, nie streszczenie**: jedna linia na pozycję, żeby żadna nie była
 niewidoczna dla nowej sesji. Kto ma dotknąć którejkolwiek — czyta rejestr.
 
@@ -1195,7 +1224,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T34)
+### 15.2 Pozycje techniczne i procesowe (T1–T36)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
@@ -1230,12 +1259,14 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T26 | liczby w raporcie powykonawczym niosą stempel 1070 linii wyżej, w nagłówku dokumentu pisanego DO CYTOWANIA fragmentami; pozycja niesie też obaloną pierwszą diagnozę — **dokument z zadeklarowanym zakresem się nie starzeje, starzeje się cytat wyjęty bez zakresu**; dopisek 2026-08-23: **adresat też jest częścią zakresu** | ⚠ **czeka na decyzję** (7.2.9), bez implementacji |
 | T27 | zlecenie wskazuje plik, którego w repozytorium adresata NIE MA (`KANON-CATHERLY-STRONA.md`); właściciel: „trzeci raz dziś"; odwrotność klasy T21 — stan nie zaistniał nigdy, więc `merge-base` tego nie złapie | ⚠ zamyka je dopiero zlecenie, które **stanęło** na tym sprawdzeniu |
 | T28 | zamówiony pomiar był już wykonany (`32302412113`, `69c2dab`), a jego odpowiedź brzmi „nie zielone"; koszt powtórki = 8 min CI + push bez zgody | ⚠ zlecenie pomiaru ma najpierw czytać `gh run list` |
-| T29 | „PRZED i PO" niewykonalne — strażnik, werdykt marginesu i `concurrency` żyją wyłącznie w niewypchniętym `6383580`; zlecenie zakłada, że stan zdalny = lokalny | ⚠ zamyka push pakietu **+ dowód z runnera** (7.3.13) |
+| T29 | „PRZED i PO" niewykonalne — strażnik, werdykt marginesu i `concurrency` żyją wyłącznie w niewypchniętym `6383580`; zlecenie zakłada, że stan zdalny = lokalny | ⚠ zamyka push pakietu **+ dowód z runnera** (7.3.15) |
 | T30 | `workflow_dispatch` martwy, bo `main` (`0896219`) nie ma `.github`; **ta sama przyczyna co `RECZ-161`** po stronie aplikacji — odwołanie międzyrepozytoryjne, **którego żadna bramka stąd nie weryfikuje** (T21 ust. 5) | ⚠ dwa kierunki, oba **czekają na decyzję** |
 | T31 | „push obu commitów" = push dziesięciu; właściciel: „moja liczba z pamięci"; między zleceniem a wykonaniem liczba zmieniła się na dziewięć | ⚠ zgoda zbiorcza **nie zamyka** tej pozycji |
 | T32 | **źródeł reguł wiążących jest PIĘĆ, nie trzy** (STRATEGIA, PLAN, 30 ADR-ów, `CLAUDE.md`, ten rejestr), a `CLAUDE.md` jako jedyny nie deklaruje swojego miejsca; briefing mówił „dwa" — liczba za mała, wzięta z pola widzenia, nie z odczytu | ⚠ **czeka na decyzję** (7.2.10) — najcięższa z nowych |
 | T33 | **próg 1800 ms przy rozrzucie 593 ms jest NIEINTERPRETOWALNY, a nie surowy** — bramka nie może dać wiarygodnej zieleni ani czerwieni (rozstrzygnięcie właściciela) | ⚠ **pozycja checklisty premiery**, blokuje Fazę 7 |
 | T34 | dziesięć zakazów wiążących dla KAŻDEGO zlecenia, także właściciela — wpisane do `CLAUDE.md`; 4 z 10 sprawdzalne mechanicznie, 6 wymaga oceny zamiaru | wdrożone, **strażnik cząstkowy czeka na decyzję** (7.2.11) |
+| T35 | **zlecenie o konwencji walidacji kluczy `env` trafiło pod ZŁY ADRES** — `REQUIRED_IN_PROD`, `RECZ-289`, „tor 8" mają zero trafień tutaj i komplet w repozytorium aplikacji; `zod` nie jest zależnością tego projektu, `.env` ma dwa klucze, nie piętnaście. Czwarte wystąpienie klasy T27 tego dnia i **lustrzane odbicie T26** (tam błędny adresat dokumentu, tu — zlecenia). Nic nie wykonano, zlecenie wróciło nietknięte (rozdz. 7.2.12) | ⚠ **czeka na decyzję** — czy reguła zakresu dostaje drugą stronę |
+| T36 | **pierwsza pozycja rejestru opisująca bramkę, która przepuszcza ZA MAŁO** — „strażnik poprawny co do reguły, szkodliwy co do skutku". Cytat właściciela o wymuszaniu kształtu, którego dostawca nie gwarantuje, jest **międzyrepozytoryjny i niezweryfikowany stąd** (ten sam status co `RECZ-161` w T30), ale klasa ma pokrycie rodzime: T33 i T34. **Do kanonu nie wpisana** — polecenie przyszło pod złym adresem (rozdz. 7.2.13) | ⚠ **czeka na decyzję** — kanon 9 → 10 klas |
 
 ---
 
