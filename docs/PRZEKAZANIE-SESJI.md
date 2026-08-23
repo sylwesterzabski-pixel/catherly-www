@@ -42,9 +42,12 @@ lsof -ti:3000                                     # RAPORTUJ, nie zabijaj
 
 **Czego NIE wolno zrobić na starcie, choćby wyglądało niewinnie:**
 
-- **Nie pushuj.** Dziewięć commitów (stan na 2026-08-20) czeka na zgodę właściciela
-  wyliczoną co do commita. Zgoda z poprzedniego pakietu jest wyczerpana i nie
-  przechodzi dalej. Liczbę **przelicz**, nie przepisuj — patrz wyżej.
+- **Nie pushuj.** Gałąź niesie commity czekające na zgodę właściciela wyliczoną
+  co do commita; **liczby tu nie wpisuję, bo starzeje się przy każdym commicie** —
+  przelicz `git log --oneline origin/faza-4/podstrony..HEAD`. Zgoda z poprzedniego
+  pakietu jest wyczerpana i nie przechodzi dalej (zakaz 1, T31): **każda liczba
+  przepisana z tego pliku zamiast przeliczona jest dokładnie tym błędem**,
+  bo lista rozbieżna z zatwierdzoną to push bez zgody.
 - **Nie uruchamiaj bramki wydajności równolegle z niczym innym** i nie pchaj
   niczego w trakcie jej trwania — to jest dokładnie defekt T22.
 - **Nie naprawiaj defektów, których nikt nie zlecił.** Wpis do rejestru, i dalej.
@@ -101,7 +104,7 @@ zadeklarowane wprost: **ADR-018 wygrywa z wszystkim** (`docs/adr/README.md:7`,
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
 | HEAD zdalny (`origin/faza-4/podstrony`) | `69c2dab` — odczytane `git ls-remote` **2026-08-20**, nie z lokalnego refa |
 | `origin/main` | `0896219` — j.w. |
-| Niewypchnięte | **9 commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`, `2599c88`, `8f15c60`, `ec8d763`, `bd27f6a` **+ ten, który niesie ten dokument** (jego skrótu nie da się tu wpisać: commit nie może zawierać własnego skrótu — przelicz `git log --oneline origin/faza-4/podstrony..HEAD`) |
+| Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
 | Backupy repo | `/Volumes/Extreme SSD/Catherly-www-ZIP`, migawka po każdym zadaniu (hook `Stop`), ~8 MB każda. **Nazwy ostatniej nie wpisuję** — starzeje się przy każdym zadaniu; sprawdź: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
@@ -996,6 +999,19 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
   wymaga pliku workflow na gałęzi domyślnej — `main` (`0896219`) nie ma katalogu
   `.github`. Zanim zaczniesz mierzyć: sprawdź, czy wyzwalacz w ogóle istnieje na
   gałęzi, na której ma zadziałać.
+- **Ten plik złamał własną regułę i przez trzy doby wyglądał na prawdziwy**
+  (wychwycone 2026-08-23). Rozdz. 0 i rozdz. 1 niosły **„dziewięć commitów"**
+  wpisane 2026-08-20 — wartością, mimo że T25 wprost zakazuje wpisywania pól
+  samostarzejących się i każe wpisywać polecenie, którym się je przelicza.
+  Po dwóch commitach liczba była fałszywa, a leżała dokładnie w zdaniu
+  „nie pushuj, bo czeka N commitów". Skutek jest kierunkowy: kto przepisze
+  tę liczbę do prośby o zgodę, dostanie zgodę na listę rozbieżną z gałęzią,
+  czyli **push bez zgody na część commitów** — zakaz 1 złamany przez zaufanie
+  dokumentowi, nie przez pośpiech. Poprawione na polecenie; liczby nie ma tam
+  dziś w żadnej postaci. Wniosek szerszy: **reguła zapisana w dokumencie nie
+  pilnuje samego dokumentu** — to jest ta sama klasa co T25 („brak dowodu =
+  brak zabezpieczenia" po stronie przekazania) i argument za strażnikiem
+  z decyzji **D4**, a nie kolejny wpis rejestru.
 
 ---
 
