@@ -23,8 +23,8 @@ raportem" dotyczy także tego dokumentu.
    **Od 2026-08-23 ma rozdział „Dziesięć zakazów"**, który mówi, czego nie
    wolno ZLECIĆ — wiążący także dla zleceń właściciela (T34).
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` (375 linii) — 24 pozycje treści
-   + 36 pozycji technicznych T1–T36. **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` (442 linie) — 24 pozycje treści
+   + 40 pozycji technicznych T1–T40 + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -537,6 +537,10 @@ własne. Wszystko wykonane w tym samym commicie co ta zmiana (T25).
 | **T34** | dziesięć zakazów przyjęte jako **wiążące dla każdego zlecenia, także właściciela** — wpisane do `CLAUDE.md`, bez strażnika |
 | **T35** | zlecenie o konwencji walidacji kluczy trafiło pod **zły adres** — cały jego przedmiot jest w repozytorium aplikacji; **lustrzane odbicie T26** |
 | **T36** | **pierwsza wada idąca w drugą stronę** — bramka szkodząca przez POPRAWNOŚĆ; pokrycie rodzime: T33 i T34 |
+| **T37** | sprawdzenie **obaliło ustalenie**, decyzja utrzymana z innego uzasadnienia — zapisuje się **oba fakty**, nie jeden zamiast drugiego |
+| **T38** | proporcja **34 : 4** mówi o przepływie; 58% sprawdzeń drugą drogą zmieniło ustalenie — **dane toru 14, nie mój pomiar** |
+| **T39** | **rejestr liczy OGNIWA, nie źródła** — skorowidz ogniw dla 40 pozycji, „nieustalone" zamiast domysłu |
+| **T40** | ⚠ **jedynym kanałem między trzema obszarami jest jedna osoba i jedna warstwa dowodząca** — kanon rozłączny w praktyce |
 
 **Trzy rzeczy z tej doby, które zmieniają sposób pracy, nie tylko rejestr:**
 
@@ -603,7 +607,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T36. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T40. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -663,6 +667,24 @@ dotyczą bieżącej linii pracy:
   zależnością tego projektu, a `.env` ma **dwa** klucze. Nic nie zostało
   wykonane — zlecenie wraca nietknięte. **Lustrzane odbicie T26**: tam błędny
   był adresat dokumentu, tutaj adresat zlecenia.
+- **T37** — **sprawdzenie obaliło ustalenie, na którym stała decyzja, a decyzja
+  stoi, bo powód jest inny** (`A-05` po stronie aplikacji). Zapisuje się **oba
+  fakty razem**: co upadło i co mimo to zostaje w mocy. Korekta nie cofa
+  wszystkiego, co na obalonym ustaleniu stało — ale musi **wymienić, co cofa**.
+- **T38** — proporcja **34 : 4** (przyjęte bez sprawdzenia : sprawdzone, z tego
+  jedno obalone) mówi o **przepływie**, nie o rzetelności toru. Dane toru 14:
+  **11 z 19** sprawdzeń drugą drogą skończyło się zawężeniem albo rozszerzeniem
+  — **58%**. To **oszacowanie z cudzych danych i tak jest oznaczone.**
+- **T39** — **REJESTR LICZY OGNIWA, NIE ŹRÓDŁA.** Nowy **skorowidz ogniw**
+  w rejestrze, 40 pozycji. Pomiar własny: 30 z 36 wierszy wymieniało
+  właściciela, ale wzmianka ≠ pochodzenie. Dwa ogniwa mają dziś **T30, T36,
+  T38**, a **T37 stoi na trzech** (tor 8 → rejestr przepływu → właściciel) —
+  najdalsza pozycja rejestru. Gdzie nie wiem — stoi **„nieustalone"**,
+  nie domysł.
+- **T40** — ⚠ **jedynym kanałem między trzema obszarami jest jedna osoba
+  i jedna warstwa dowodząca.** Kanon wspólny w zamierzeniu, **rozłączny
+  w praktyce**: `CLAUDE.md` tej strony nie zawiera żadnej z klas kanonu
+  aplikacji. Pełna lista różnic — **rozdział 19**.
 - **T36** — **pierwsza pozycja opisująca bramkę, która przepuszcza za MAŁO.**
   Wszystkie wcześniejsze opisują mechanizmy przepuszczające za dużo. Klasa
   „strażnik poprawny co do reguły, szkodliwy co do skutku" ma tu rodzime
@@ -764,19 +786,35 @@ dotyczą bieżącej linii pracy:
     skierowanym do drugiej sesji, więc **nie promuję z własnej ręki**. Jeśli
     wchodzi — kanon rośnie z 9 do 10 klas i pojawia się pytanie, czy klasa ma
     żyć w obu rejestrach, czy wyłącznie w ADR-018 (dublowanie = zakaz 10).
+14. **T38 — czy 58% jest własnością PRZEPŁYWU, czy tamtej próbki.** Tor 14:
+    11 z 19 sprawdzeń drugą drogą skończyło się zawężeniem albo rozszerzeniem
+    ustalenia. Jeśli to własność przepływu, na 34 pozycje przyjęte bez
+    sprawdzenia wypada **około dziewiętnastu**, które po sprawdzeniu brzmiałyby
+    inaczej. Konsekwencją nie jest hurtowe unieważnienie rejestru, tylko
+    **kolejność sprawdzania** — i tę kolejność ustala właściciel, nie ja.
+15. **T39 — kolumna pochodzenia czy osobny skorowidz ogniw.** Tor 14 dodał
+    kolumnę; tutaj powstał skorowidz, bo wiersze tej tabeli mają po kilka
+    tysięcy znaków i dopisanie piątej kolumny wymaga przepisania każdego
+    w całości. **Zgłoszone przed wykonaniem, nie po.** Jeśli właściciel chce
+    kolumny mimo to — wykonalne, do rozstrzygnięcia.
+16. **T40 — które klasy kanonu aplikacji przechodzą na stronę.** Lista dziesięciu
+    bez odpowiednika i trzech z odpowiednikiem częściowym: **rozdział 19**.
+    Przeniesienia **nie wykonałem** — zlecenie mówiło „sama lista”. Przy każdej
+    klasie trzeba osobno rozstrzygnąć, czy dotyczy treści, i **do którego pliku**
+    wchodzi, żeby nie naruszyć zakazu 10 (mnożenie źródeł reguł).
 
 ### 7.3 Robota techniczna gotowa do wykonania po pushu
 
-14. **Powtórzyć bramkę `Dostępność` dla wypchniętego stanu** — dla `69c2dab` nie
+17. **Powtórzyć bramkę `Dostępność` dla wypchniętego stanu** — dla `69c2dab` nie
     ma werdyktu (zadanie anulowane po 6 h). Zieleń dostępności jest udowodniona
     tylko dla `b51d0b8`.
-15. **Sprawdzić, czy `concurrency` i dwa nowe kroki zachowują się na runnerze**
+18. **Sprawdzić, czy `concurrency` i dwa nowe kroki zachowują się na runnerze**
     tak jak lokalnie — dotąd (b) i (c) mają wyłącznie dowody z udawanego preview
     i z danych lokalnych, nigdy z CI. Zamyka **T29**.
 
 ### 7.4 Poza tą linią pracy
 
-16. **Blok designu (wtorek)** — właściciel: *„Reszta czeka do bloku designu."*
+19. **Blok designu (wtorek)** — właściciel: *„Reszta czeka do bloku designu."*
     Cała robota nad podstronami jest w stanie spoczynku do briefu designu.
 
 ---
@@ -977,7 +1015,7 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
   starzeje") i **cały rozdział „Dziesięć zakazów"** — pierwszy w tym pliku
   adresowany do ZLECAJĄCEGO, nie do wykonawcy (T34)
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — T22 przepisana, **T23, T24,
-  T26–T36 nowe** (T26 z dopiskiem o odmowie wysłania briefingu poza jego zakres)
+  T26–T40 nowe** (T26 z dopiskiem o odmowie wysłania briefingu poza jego zakres)
 - `docs/PRZEKAZANIE-SESJI.md` — ten plik; **jedyne kanoniczne przekazanie**.
   Drugiego nie ma i nie ma go być: dwa pliki przekazania to natychmiastowe
   pytanie „który obowiązuje", czyli nowy defekt zamiast zabezpieczenia
@@ -995,7 +1033,7 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T36
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T40
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
   **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
   (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
@@ -1005,7 +1043,7 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
 (zmierzone 2026-08-20 na `8f15c60` + zmiany robocze)
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii; **zakres zadeklarowany
   w wierszach 3–6**, liczby w rozdziałach opisują stan tamtego zakresu (T26)
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — 375 linii, pozycje T1–T36
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — 442 linie, pozycje T1–T40
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
@@ -1161,8 +1199,8 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 Żeby nowa sesja nie wzięła braku streszczenia za brak tematu.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
-  linii pracy (T2, T10, T20–T36); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T36 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  linii pracy (T2, T10, T20–T40); rozdział 15 daje **skorowidz wszystkich** —
+  24 pozycji treści i T1–T40 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -1187,7 +1225,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 ## 15. Skorowidz rejestru warunków powrotu — WSZYSTKIE pozycje
 
-Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (375 linii, stan 2026-08-23). Poniżej
+Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (442 linie, stan 2026-08-23). Poniżej
 **skorowidz, nie streszczenie**: jedna linia na pozycję, żeby żadna nie była
 niewidoczna dla nowej sesji. Kto ma dotknąć którejkolwiek — czyta rejestr.
 
@@ -1224,7 +1262,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T36)
+### 15.2 Pozycje techniczne i procesowe (T1–T40)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
@@ -1259,7 +1297,7 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T26 | liczby w raporcie powykonawczym niosą stempel 1070 linii wyżej, w nagłówku dokumentu pisanego DO CYTOWANIA fragmentami; pozycja niesie też obaloną pierwszą diagnozę — **dokument z zadeklarowanym zakresem się nie starzeje, starzeje się cytat wyjęty bez zakresu**; dopisek 2026-08-23: **adresat też jest częścią zakresu** | ⚠ **czeka na decyzję** (7.2.9), bez implementacji |
 | T27 | zlecenie wskazuje plik, którego w repozytorium adresata NIE MA (`KANON-CATHERLY-STRONA.md`); właściciel: „trzeci raz dziś"; odwrotność klasy T21 — stan nie zaistniał nigdy, więc `merge-base` tego nie złapie | ⚠ zamyka je dopiero zlecenie, które **stanęło** na tym sprawdzeniu |
 | T28 | zamówiony pomiar był już wykonany (`32302412113`, `69c2dab`), a jego odpowiedź brzmi „nie zielone"; koszt powtórki = 8 min CI + push bez zgody | ⚠ zlecenie pomiaru ma najpierw czytać `gh run list` |
-| T29 | „PRZED i PO" niewykonalne — strażnik, werdykt marginesu i `concurrency` żyją wyłącznie w niewypchniętym `6383580`; zlecenie zakłada, że stan zdalny = lokalny | ⚠ zamyka push pakietu **+ dowód z runnera** (7.3.15) |
+| T29 | „PRZED i PO" niewykonalne — strażnik, werdykt marginesu i `concurrency` żyją wyłącznie w niewypchniętym `6383580`; zlecenie zakłada, że stan zdalny = lokalny | ⚠ zamyka push pakietu **+ dowód z runnera** (7.3.18) |
 | T30 | `workflow_dispatch` martwy, bo `main` (`0896219`) nie ma `.github`; **ta sama przyczyna co `RECZ-161`** po stronie aplikacji — odwołanie międzyrepozytoryjne, **którego żadna bramka stąd nie weryfikuje** (T21 ust. 5) | ⚠ dwa kierunki, oba **czekają na decyzję** |
 | T31 | „push obu commitów" = push dziesięciu; właściciel: „moja liczba z pamięci"; między zleceniem a wykonaniem liczba zmieniła się na dziewięć | ⚠ zgoda zbiorcza **nie zamyka** tej pozycji |
 | T32 | **źródeł reguł wiążących jest PIĘĆ, nie trzy** (STRATEGIA, PLAN, 30 ADR-ów, `CLAUDE.md`, ten rejestr), a `CLAUDE.md` jako jedyny nie deklaruje swojego miejsca; briefing mówił „dwa" — liczba za mała, wzięta z pola widzenia, nie z odczytu | ⚠ **czeka na decyzję** (7.2.10) — najcięższa z nowych |
@@ -1267,6 +1305,10 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T34 | dziesięć zakazów wiążących dla KAŻDEGO zlecenia, także właściciela — wpisane do `CLAUDE.md`; 4 z 10 sprawdzalne mechanicznie, 6 wymaga oceny zamiaru | wdrożone, **strażnik cząstkowy czeka na decyzję** (7.2.11) |
 | T35 | **zlecenie o konwencji walidacji kluczy `env` trafiło pod ZŁY ADRES** — `REQUIRED_IN_PROD`, `RECZ-289`, „tor 8" mają zero trafień tutaj i komplet w repozytorium aplikacji; `zod` nie jest zależnością tego projektu, `.env` ma dwa klucze, nie piętnaście. Czwarte wystąpienie klasy T27 tego dnia i **lustrzane odbicie T26** (tam błędny adresat dokumentu, tu — zlecenia). Nic nie wykonano, zlecenie wróciło nietknięte (rozdz. 7.2.12) | ⚠ **czeka na decyzję** — czy reguła zakresu dostaje drugą stronę |
 | T36 | **pierwsza pozycja rejestru opisująca bramkę, która przepuszcza ZA MAŁO** — „strażnik poprawny co do reguły, szkodliwy co do skutku". Cytat właściciela o wymuszaniu kształtu, którego dostawca nie gwarantuje, jest **międzyrepozytoryjny i niezweryfikowany stąd** (ten sam status co `RECZ-161` w T30), ale klasa ma pokrycie rodzime: T33 i T34. **Do kanonu nie wpisana** — polecenie przyszło pod złym adresem (rozdz. 7.2.13) | ⚠ **czeka na decyzję** — kanon 9 → 10 klas |
+| T37 | **sprawdzenie OBALIŁO ustalenie, na którym stała decyzja — a decyzja stoi, bo powód jest inny** (`A-05`, `fbo-os/docs/wdrozenia/REJESTR-PRZEPLYWU.md:49`). Zapisuje się OBA fakty razem; korekta musi wymienić, co dokładnie cofa | ✅ reguła obowiązuje od zapisu |
+| T38 | proporcja **34 : 4** mówi o przepływie, nie o rzetelności toru; tor 14: **11 z 19 (58%)** sprawdzeń drugą drogą zawęziło albo rozszerzyło ustalenie; typowy kształt błędu to **nadmierny zasięg**, nie zmyślenie | ⚠ **czeka na decyzję** — czy 58% jest własnością przepływu |
+| T39 | **REJESTR LICZY OGNIWA, NIE ŹRÓDŁA** — skorowidz ogniw dla 40 pozycji; pomiar: 30 z 36 wierszy wymieniało właściciela, ale wzmianka ≠ pochodzenie, więc „25 z 34" **nie da się potwierdzić w tej postaci**; dwa ogniwa: T30, T36, T38 · **trzy ogniwa: T37** | ✅ skorowidz w rejestrze; ⚠ kolumna zamiast skorowidza — do decyzji |
+| T40 | ⚠ **JEDYNYM KANAŁEM MIĘDZY TRZEMA OBSZARAMI JEST JEDNA OSOBA I JEDNA WARSTWA DOWODZĄCA** — kanon wspólny w zamierzeniu, rozłączny w praktyce; `CLAUDE.md` tej strony nie zawiera żadnej klasy kanonu aplikacji; kanał ma **jeden punkt awarii** | ⚠ lista różnic gotowa (rozdz. 19), **przeniesienie = decyzja właściciela** |
 
 ---
 
@@ -1392,3 +1434,56 @@ i wychodzi poza tę linię, czyta rejestr i ADR-y, a nie ten plik.
    i z danych z dysku, nigdy z runnera. Do czasu przebiegu CI ich poprawność
    ma status „niesprawdzona na docelowym środowisku", a niesprawdzone liczy się
    jak niedziałające.
+
+---
+
+## 19. Klasy kanonu APLIKACJI bez odpowiednika w kanonie STRONY
+
+**Zlecenie właściciela 2026-08-23: „sama lista, bez przenoszenia".** Przeniesienie
+jest decyzją właściciela i wymaga sprawdzenia, czy klasa w ogóle dotyczy treści —
+tutaj nie ma żadnej takiej oceny. Podstawa: porównanie `catherly-www/CLAUDE.md`
+(kanon ADR-018, dziewięć klas, wiersze 32–136) z `fbo-os/CLAUDE.md` (442 wiersze),
+odczyt obu 2026-08-23. Kontekst: **T40**.
+
+Odwołania `plik:wiersz` po stronie aplikacji są **odczytem stąd, nie weryfikacją
+treści** — dokładnie ten sam status co `RECZ-161` w T30. Jeśli tamten plik się
+zmieni, ta lista tego nie zauważy.
+
+### 19.1 Brak odpowiednika — dziesięć klas
+
+| # | Klasa w kanonie aplikacji | Gdzie | Czego dokładnie brakuje po stronie strony |
+| --- | --- | --- | --- |
+| 1 | **ŁOWCA MUTACJI — „znajdź mutację, której naprawa nie łapie, ALBO WYKAŻ, ŻE JEJ NIE MA"** | `fbo-os/CLAUDE.md:101-113` | Kanon strony ma mutację jako formę dowodu, ale **nie ma brzmienia, w którym wynik negatywny jest pełnoprawny**. Źródło notuje, że poprzednie brzmienie zostało **uchylone**, bo premiowało jedną odpowiedź — i że **skrzywienie wpisane do kanonu kosztuje przy każdym użyciu, nie raz**. |
+| 2 | **KROK ODBIORU RĘCZNEGO TEŻ MUSI UMIEĆ ZAWIEŚĆ — „krok, który nie potrafi zawieść w warunkach wykonania, nie jest testem, tylko rytuałem"** | `fbo-os/CLAUDE.md:115-145` | Kanon strony obejmuje dowód **automatyczny** (mutacja, kontrola negatywna) i milczy o odbiorze **ręcznym**. Brak trzech podreguł: warunek wykonania jest częścią testu; krok, który po naprawie scenariusza zaczyna padać, jest krokiem **naprawionym**, nie zepsutym; brak sterownika w interfejsie to **„niewykonalne", nie ✅**. |
+| 3 | **ZLECENIE NIE PREMIUJE ODPOWIEDZI, KTÓRĄ MA ROZSTRZYGNĄĆ** + **sygnał ILOŚCIOWY: sprawdź ROZKŁAD, zanim spojrzysz na treść** | `fbo-os/CLAUDE.md:185-216` | Strona ma dziesięć zakazów adresowanych do zlecającego (T34), ale **żaden z nich nie dotyczy premiowania odpowiedzi**. Brak też całego sygnału ilościowego: „flaga zapalona na większości zbioru jest zepsuta niezależnie od tego, jak trafnie brzmi w pojedynczym przypadku". Przypadek źródłowy tam: 80 z 85 pozycji z flagą. |
+| 4 | **WYKROCZENIE POZA ZLECENIE ZGŁASZASZ PRZED, NIE PO** | `fbo-os/CLAUDE.md:218-242` | Brak w całości. Obejmuje też regułę o **kolizji pamięci trwałej z instrukcją środowiska**: zgłoś sprzeczność, nie wybieraj po cichu jednej strony, bo ciche wybranie ukrywa fakt, że to reguła mogła się zestarzeć. |
+| 5 | **NIEZALEŻNOŚĆ POMIARU TO DROGA, NIE FILTR — „cztery metody dzielące jedno źródło danych to jedna metoda"** | `fbo-os/CLAUDE.md:283-312` | Brak w całości, wraz z wynikającym zakazem: **połknięty wyjątek w narzędziu pomiarowym zamienia porażkę w brak wyniku, a brak wyniku w zestawieniu wygląda jak zero**. „Jeśli pomiar nie może się wykonać, ma PAŚĆ, nie milczeć." Strona ma kilka własnych narzędzi pomiarowych w `scripts/`, których ta reguła by dotyczyła. |
+| 6 | **NAPRAWA MODELU = INWENTARZ POWIERZCHNI** | `fbo-os/CLAUDE.md:329-347` | Brak w całości. „Nie te, o których pamiętasz — wyszukane komendą, wypisane na liście, każda z werdyktem." Osobno wyróżniona jest **powierzchnia niewidoczna z panelu**. |
+| 7 | **POMIAR WARTOŚCI FAZY REFUTACJI — typowy błąd to NADMIERNY ZASIĘG, a refutacja ZAWĘŻA** | `fbo-os/CLAUDE.md:168-183` | Brak w całości. To jest klasa, z której wprost wynika liczba przywołana w **T38** (58% sprawdzeń drugą drogą zmieniło ustalenie). Kanon strony nie zna pojęcia fazy refutacji. |
+| 8 | **WARTOŚĆ PRODUKCYJNA TYLKO TAM, GDZIE NIEZBĘDNA — „każde dodatkowe miejsce przechowywania sekretu to dodatkowa powierzchnia wycieku"** | `fbo-os/CLAUDE.md:314-327` | Strona ma **zakaz punktowy** (nie drukuj nagłówków preview, bo `_vercel_jwt` niesie jawnie Protection Bypass — zakaz 2 z T34), ale **nie ma reguły ogólnej o mnożeniu miejsc przechowywania**. Brak też podreguły „hex, nie base64" przy generowaniu sekretów. |
+| 9 | **ZERO SKRÓTÓW / ZERO CICHEGO POMIJANIA — nazwana luka zamiast atrapy** | `fbo-os/CLAUDE.md:6-16` | Strona ma węższe „niepewność zgłaszasz, nie zasypujesz" (`CLAUDE.md:135`). Brak części o **zalogowaniu nazwanej luki** i o tym, że kompletność jest obowiązkiem wykonawcy, a nie czytelnika. |
+| 10 | **TEST IMPORTUJE, NIE DUPLIKUJE — stała importowana z kodu, nigdy przepisana do testu; test bada WŁASNOŚĆ, nie pierwsze wystąpienie** | `fbo-os/CLAUDE.md:59-97` | Strona ma **skutek** tej klasy (asercja na podciągu wygasa cicho, `CLAUDE.md:37-46`), ale nie ma **przyczyny**: zakazu drugiej kopii prawdy w pliku testu ani reguły „`indexOf` zamiast pętli po wszystkich trafieniach to ta sama klasa błędu w miniaturze". Uwaga dla oceny stosowalności: **T17 tej strony to dokładnie ta wada** — lista tras w `e2e/axe.spec.ts` jest przepisana z ręki. |
+
+### 19.2 Odpowiednik częściowy — klasa ta sama, zasięg inny
+
+| # | Klasa w kanonie aplikacji | Gdzie | Co jest po stronie strony i czym się różni |
+| --- | --- | --- | --- |
+| 11 | **PUNKT WZNOWIENIA AKTUALIZOWANY PO KAŻDEJ ZMIANIE** | `fbo-os/CLAUDE.md:244-281` | Odpowiednik: **T25** (przekazanie utrzymywane w prawdzie na bieżąco, w tym samym commicie). Dwie różnice: tam stoi **strażnik w haku `pre-commit`**, tutaj nie ma żadnego (decyzja **D4** otwarta); tam obowiązuje **zakaz automatycznego stemplowania daty** — „automat wstawiałby świeży znacznik nad nieprzejrzaną treścią, czyli zielone światło, które niczego nie dowodzi". Ta druga rzecz jest wprost potrzebna przy projektowaniu strażnika z D4. |
+| 12 | **ARCHITEKTURA — kontrakty oznaczone „wygląda inaczej, niż działa"** | `fbo-os/CLAUDE.md:147-166` | Odpowiednik: klasa **„wygląda na regułę werdyktu przy pobieżnym czytaniu"** (`catherly-www/CLAUDE.md:110-122`). Różnica zasięgu: tam **praktyka inwentarzowa** (21 kontraktów z dowodem `plik:linia`, dziewięć oznaczonych), tutaj **pojedyncza klasa ograniczona do plików konfiguracyjnych**. |
+| 13 | **Guardrails — kolory wyłącznie przez tokeny, a11y ≥ WCAG AA** | `fbo-os/CLAUDE.md:48-57` | Po stronie strony żyje jako **bramki** (`bramka:tokeny`, axe, bramka kontrastu), nie jako klasa kanonu. Różnica nie jest kosmetyczna: bramka bez wpisu w kanonie znika razem z bramką. |
+
+### 19.3 Poza porównaniem — związane z produktem, nie z klasą wady
+
+`ZASADA ARCHITEKTONICZNA #1` (IR zamiast surowego JSON-a Fabric, `:25-33`) ·
+pełna edytowalność (`:35-40`) · integrate-not-duplicate (`:42-46`) · zasada
+kosztowa modułów · model produktu „jeden silnik + profile firm" · nazwy i komendy
+głosowe. Wypisane dla kompletności — dotyczą kodu generatora, nie klas wad.
+
+### 19.4 Czego ta lista NIE zawiera
+
+Kierunku odwrotnego: **które klasy kanonu strony nie mają odpowiednika
+w kanonie aplikacji**. Zlecenie prosiło o jeden kierunek i tylko ten został
+wykonany. Kandydaci widoczni z tej strony bez wykonywania pomiaru: „skażenie
+pomiaru sprawdza się wstecz", „raport, którego nikt nie czyta", „dokument
+z zadeklarowanym zakresem się nie starzeje" oraz **dziesięć zakazów adresowanych
+do zlecającego**. Lista w drugą stronę — na słowo właściciela.
