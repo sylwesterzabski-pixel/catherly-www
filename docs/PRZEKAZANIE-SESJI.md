@@ -25,8 +25,8 @@ raportem" dotyczy także tego dokumentu.
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` (449 linii, stan 2026-08-23) — 24 pozycje treści
-   + 40 pozycji technicznych T1–T40 + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` (457 linii, stan 2026-08-23) — 24 pozycje treści
+   + **41** pozycji technicznych **T1–T41** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -107,10 +107,11 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `f2db728` — odczytane `git ls-remote` **2026-08-23**, nie z lokalnego refa. Poprzednio `69c2dab` (2026-08-20); pakiet dwunastu commitów wypchnięty 2026-08-23 na wyliczoną zgodę właściciela |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `d7a2fe3` — odczytane `git ls-remote` **2026-08-23**, nie z lokalnego refa. Tego dnia dwa pushe na dwie osobne, wyliczone zgody: `69c2dab` → `f2db728` (pakiet dwunastu) i `f2db728` → `d7a2fe3` (jeden commit). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
+| **Bramki CI na gałęzi** | ⚠ **CZERWONE — dwa zadania z piętnastu.** Odczyt 2026-08-23, **oba dzisiejsze przebiegi tak samo** — `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`, czyli stan zdalny): **`Nieodwracalne`** — „Brak raportu audytu nieodwracalnych dla commita" (ADR-018 pkt 4; raport jest **per commit**, więc ta czerwień wraca przy KAŻDYM nowym commicie, dopóki audytu nie ma) i **`Wydajność`** — krok `Pomiar`, mediana LCP `/` **1856 ms** przy budżecie 1800 na transporcie HTTP/1.1+gzip; ten sam pomiar daje **1276 ms** na HTTP/2+brotli. Trzynaście pozostałych zielonych w obu przebiegach. **Żadnej z tych czerwieni nie ruszam** — obie są poza zakresem zlecenia (zakaz 8), obie mają swoje pozycje: audyt → ADR-018 pkt 4 i Faza 7, próg → **T33** i kierunek (d) |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
 | Backupy repo | `/Volumes/Extreme SSD/Catherly-www-ZIP`, migawka po każdym zadaniu (hook `Stop`), ~8 MB każda. **Nazwy ostatniej nie wpisuję** — starzeje się przy każdym zadaniu; sprawdź: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
 | Archiwum katalogu sesyjnego | `/Volumes/Extreme SSD/Catherly-www-SESJE/scratchpad-sesja-2026-08-20-b5f46785-NIE-USUWAC.zip` — rozdział 11 |
@@ -636,6 +637,155 @@ w tym samym commicie, co strażnik.
    **pięciu** plików; zapis stoi w jednym. Czytający sam rejestr albo samo
    przekazanie nadal nie wie, że trzyma rzecz podrzędną.
 
+### 4.10 Trzy decyzje i pomiar czasów — 2026-08-23, trzecia tura
+
+**Push wykonany na osobną zgodę.** Jeden commit, skrót wymieniony: `d7a2fe3`.
+Zdalny potwierdzony **odczytem `git ls-remote`** —
+`d7a2fe3801612494f2df73223c9318b0220265ac`. Zgoda z pakietu dwunastu **nie
+przeszła** na ten commit i właściciel to potwierdził: *„zgoda z pakietu dwunastu
+wyczerpana i nieprzechodząca na ten commit — właściwie"*.
+
+**Rozstrzygnięcie 1 — `bramka-pelny-zestaw` → 20 minut.** Właściciel zapisał
+przy tym własną przesłankę, i ona jest tu ważniejsza niż sama liczba:
+*„podałem próg per kategoria, nie znając zmierzonych czasów"*. `bramka-e2e`
+zostaje na 10 — rozstrzygnięcie dotyczyło jednego zadania.
+
+**Rozstrzygnięcie 2 — `::warning` bez kodu wyjścia to za mało.** Klasa „raport,
+którego nikt nie czyta" wymaga czegoś, co **zmienia stan przebiegu**. Właściciel
+orzekł „status ŻÓŁTY zadania" i dodał warunek: *„jeśli GitHub Actions tego nie
+umożliwia bez zmiany kodu wyjścia — powiedz."*
+
+**ODPOWIEDŹ: NIE DA SIĘ — i to nie z naszej winy.** Sprawdzone tego samego dnia
+ze źródeł pierwotnych (dokumentacja GitHuba, kod `actions/runner`, kod `cli/cli`,
+odczyty REST na cudzych publicznych przebiegach), z osobnym przebiegiem
+adwersaryjnym, którego zadaniem było te ustalenia **obalić**:
+
+- kod wyjścia kroku ustala konkluzję, *„which can be `success` or `failure`"* —
+  lista dwuelementowa;
+- adnotacja **z definicji** nie zmienia stanu: `ExecutionContext.AddIssue`
+  (`actions/runner`, `ExecutionContext.cs` ~796–860) maskuje sekrety, obcina
+  komunikat, zwiększa licznik i pisze do logu — **nie dotyka `Result` ani
+  `TaskResult`**. Zarzut właściciela wobec `::warning` jest **pokazywalny
+  w cudzym kodzie**, nie kwestią oceny;
+- jedyne konkluzje poza parą success/failure to `neutral` i `skipped`,
+  a dokumentacja nazywa obie **sukcesem**; wartości o znaczeniu „ostrzeżenie"
+  nie ma;
+- mapowania konkluzja→kolor w web UI GitHub **nie publikuje**; jedyne oficjalne
+  mapowanie (`cli/cli`, `output.go`) mówi: `pending` → żółty,
+  `cancelled`/`neutral`/`skipped` → **szary**. **Żółć jest kolorem stanu
+  TRWAJĄCEGO, nie konkluzji.** Wniosek o konkluzję ostrzegawczą leży u GitHuba
+  otwarty **od stycznia 2022**;
+- jedyna dosłowna żółć osiągalna z workflow — commit status `state: pending` —
+  **odrzucona**: kłamie o stanie i zostawia wieczystą żółtą kropkę.
+
+**USTALENIE, KTÓRE POTWIERDZA CAŁĄ PRZESŁANKĘ T24:** job ubity przez
+`timeout-minutes` dostaje konkluzję **`cancelled`** — **tę samą**, co job wyparty
+przez `concurrency`. Zmierzone na sześciu cudzych przebiegach w rozpiętości
+siedmiu miesięcy. Enum REST **ma** `timed_out`, ale GitHub go tu **nie
+wystawia**. Bez własnego kroku obu przypadków odróżnić się nie da — teza
+potwierdzona pomiarem, nie tylko rozumowaniem.
+
+⚠ **LUKA WAŻNIEJSZA NIŻ SAMO PYTANIE.** W całym materiale **nie znaleziono ani
+jednego publicznego przebiegu, w którym wykonałby się krok z warunkiem dokładnie
+`cancelled()`** — wszystkie obserwowane przypadki to `always()`. Że nasze
+piętnaście kroków się odpali, **wynika z kodu runnera** (`StepsRunner.cs`:
+przy anulowaniu wynik zadania idzie na `Canceled`, a pętla po krokach **nie ma
+`break`**; `CancelledFunction.cs`: `cancelled()` czyta status **ZADANIA**).
+**Wynikanie z kodu to nie jest pomiar.** Te 15 kroków ma dziś status
+NIESPRAWDZONE, czyli liczy się jak niedziałające.
+
+**Jedna dziura sprawdzona u siebie i zamknięta:** timeout na poziomie **KROKU**
+dawałby `TaskResult.Failed`, nie `Canceled` — `cancelled()` byłoby fałszem
+i krok by milczał. Odczyt `bramki.yml` 2026-08-23: **15 limitów na poziomie
+zadania, 0 na poziomie kroku.** U nas dziura jest teoretyczna i **ma taka
+zostać** — kto dopisze `timeout-minutes` do kroku, wyłączy przy okazji
+rozróżnianie anulowań, nie wiedząc o tym.
+
+**NAZWANA SŁABOŚĆ** (zapis wymagany przez właściciela — „nie zostawiaj tego jako
+«wystarczy»"): adnotacja `::warning` **nie zmienia konkluzji zadania i zmienić
+jej nie może**, bo platforma nie ma stanu pośredniego. Warstwa jest słabsza, niż
+wymaga klasa „raport, którego nikt nie czyta", i **pozostaje słabsza świadomie**.
+Dodatkowo: limit **10 ostrzeżeń na krok** i **4096 znaków**; nasze adnotacje
+niosą `path: ".github"`, więc w zakładce **„Files changed" PR-a się nie pokażą** —
+widać je wyłącznie w „Checks".
+
+**DO WYBORU (wybór właściciela):** **(A) czerwień** — zadanie zależne czytające
+`needs.<job>.result == 'cancelled'`. **Odradzam:** wyparcie przez `concurrency`
+jest zjawiskiem **oczekiwanym i częstym**, więc zamiana go w czerwień produkuje
+„czerwień, która nie jest werdyktem" — ten sam defekt z drugiej strony, uderzający
+w ADR-020. **(B) jawnie przyjęta warstwa słabsza** — dzisiejsza adnotacja
+wzmocniona wpisem do `$GITHUB_STEP_SUMMARY` (strona podsumowania przebiegu,
+nie log). **To jest rekomendacja, ale NIE do wdrożenia przed mutacją:**
+przetrwanie zapisu do podsumowania przy anulowaniu **nie zostało potwierdzone
+żadnym źródłem**, więc dopisanie go teraz byłoby kolejnym kodem, który wygląda
+poprawnie.
+
+**REKOMENDOWANA KOLEJNOŚĆ: najpierw mutacja, potem wybór** — dziś oba warianty
+stoją na niesprawdzonym założeniu, że krok w ogóle się odpala. Eksperyment
+rozstrzyga trzy rzeczy w jednym przebiegu: **(i)** zadanie z `timeout-minutes: 1`
+i `sleep 300` → czy krok odpala się przy przekroczeniu limitu; **(ii)** dwa pushe
+w odstępie minuty → czy odpala się przy wyparciu (to jest równocześnie zaległy
+**„dowód przyjęcia dla (a)"**, poz. 7.1.2); **(iii)** kontrola negatywna
+**w tym samym przebiegu** — zadanie kończące się normalnie, gdzie krok ma zostać
+`skipped`. **Warunek: nie w trakcie żadnego pomiaru** — `bramka-wydajnosc`
+zostałaby skażona (T22).
+
+**Rozstrzygnięcie 3 — D5 zapisane jako POMIAR, nie jako brak roboty.**
+*„D5 nie zmieniło ani jednej linii — i to jest wynik, nie brak wyniku."*
+Warunek powrotu przypięty do zdarzenia, które sami wywołamy (budowa T21),
+z odsyłaczem **po obu stronach**: przy T23 i przy T21.
+
+**POMIAR CZASÓW ZADAŃ — pierwszy w tym repozytorium.** Odczyt `gh api
+repos/.../actions/runs/<id>/jobs`, pola `started_at`/`completed_at`, dwa
+przebiegi z 2026-08-23: `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`),
+oba commity osiągalne.
+
+| zadanie | `f2db728` | `d7a2fe3` | limit | zapas |
+|---|---|---|---|---|
+| Wydajność | 8,05 min | 7,90 min | 20 | **2,48×** ← najcieńszy |
+| Pełny zestaw e2e | 3,55 min | 3,21 min | 20 | 5,63× |
+| Dostępność | 2,65 min | 2,53 min | 10 | **3,77×** |
+| E2E | 0,98 min | 1,03 min | 10 | 9,7× |
+| Build | 0,63 min | 0,83 min | 10 | 12,0× |
+| pozostałe dziewięć | 0,36–0,55 | 0,38–0,55 | 10 | ≥ 18× |
+
+**Wniosek mocniejszy niż liczba, od której się zaczęło:** `Pełny zestaw e2e` dał
+**5 min 23 s** (2026-08-20) i **3 min 13 s** (2026-08-23) — **rozrzut 1,67×
+między przebiegami tego samego kodu**. Zadanie o takim rozrzucie nie może stać
+na zapasie 1,86×; to jest właściwe uzasadnienie dwudziestki, a nie pojedyncza
+liczba. **Zgłoszone, nie zmienione:** po poprawce najcieńszy zapas ma
+`Wydajność` (2,48×), potem `Dostępność` (3,77×) — a nie zadanie, którego
+poprawka dotyczyła.
+
+**DOWÓD CZĘŚCIOWY, KTÓRY NIE JEST MUTACJĄ.** W przebiegu `32663550392` krok
+`Przyczyna anulowania` stoi w **15/15** zadań i wszędzie kończy się jako
+`skipped` — w tym w zadaniu `Nieodwracalne`, które **padło** (przy porażce
+`cancelled()` jest fałszem, więc krok słusznie milczy). To dowodzi **okablowania
+i braku fałszywych zapłonów**. **Nie dowodzi zapłonu** — do tego trzeba
+anulowania, a anulowania w tych przebiegach nie było.
+
+**BRAMKI NA GAŁĘZI SĄ CZERWONE — dwa zadania, oba przebiegi tak samo.**
+`Nieodwracalne`: brak raportu audytu dla commita (ADR-018 pkt 4 — raport jest
+**per commit**, więc ta czerwień wraca przy każdym nowym commicie).
+`Wydajność`: mediana LCP `/` **1856 ms** przy budżecie 1800 na HTTP/1.1+gzip,
+przy **1276 ms** na HTTP/2+brotli. **Żadnej nie ruszam** — obie leżą poza
+zakresem zlecenia (zakaz 8) i obie mają swoje miejsca: audyt → Faza 7,
+próg → T33 i kierunek (d).
+
+**NOWA POZYCJA REJESTRU — T41, znaleziona przy okazji, zapisana zamiast
+naprawiona.** Przy czytaniu logów po czasy zadań wyszło, że runner wypisuje
+w **każdym z 15 zadań**: *„Node.js 20 is deprecated… actions/checkout@v4,
+actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4”*
+— cztery akcje celują w Node 20, GitHub wymusza Node 24. Nic dziś nie jest
+zepsute; ryzyko ma **datę wygaśnięcia w cudzych rękach**, a gdy nadejdzie,
+padnie piętnaście zadań naraz, bo `checkout` i `setup-node` są w każdym.
+Podwójny przypadek klas już nazwanych: **„raport, którego nikt nie czyta"**
+(ostrzeżenie leżało w logu i wyszło przypadkiem, przy zupełnie innej robocie)
+oraz **„strażnik zerodowany przez zmianę OTOCZENIA"** (bramki zielone, podłoże
+inne). **Nie naprawiam — zakaz 8.**
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -676,7 +826,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T40. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T41. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -764,6 +914,12 @@ dotyczą bieżącej linii pracy:
   i jedna warstwa dowodząca.** Kanon wspólny w zamierzeniu, **rozłączny
   w praktyce**: `CLAUDE.md` tej strony nie zawiera żadnej z klas kanonu
   aplikacji. Pełna lista różnic — **rozdział 19**.
+- **T41** — **cztery akcje CI działają na środowisku, którego nie deklarują.**
+  Zmierzone 2026-08-23 na `d7a2fe3`: 15 ostrzeżeń o wymuszeniu Node 24 pod
+  akcjami celującymi w Node 20, po jednym w każdym zadaniu. Podwójny przypadek
+  klas już nazwanych: „raport, którego nikt nie czyta" (ostrzeżenie leżało
+  w logu i wyszło przypadkiem) oraz „strażnik zerodowany przez zmianę
+  OTOCZENIA" (bramki zielone, podłoże inne). **Nie naprawiane — zakaz 8.**
 - **T36** — **pierwsza pozycja opisująca bramkę, która przepuszcza za MAŁO.**
   Wszystkie wcześniejsze opisują mechanizmy przepuszczające za dużo. Klasa
   „strażnik poprawny co do reguły, szkodliwy co do skutku" ma tu rodzime
@@ -825,6 +981,15 @@ dotyczą bieżącej linii pracy:
    `checkout` dostanie `fetch-depth: 0` w tym samym commicie, co strażnik.
    Pozycja **otwarta** — warunek zamknięcia (zielony strażnik historii na
    runnerze) czeka na T21. Ryzyko wariantu węższego właściciel przyjął świadomie.
+   **Właściciel 2026-08-23 nazwał ten wynik wprost:** *„D5 nie zmieniło ani jednej
+   linii — i to jest wynik, nie brak wyniku."* Rozstrzygnięcie było **poprawne
+   i bezprzedmiotowe naraz**; zero jest pomiarem, nie luką w wykonaniu, więc stoi
+   w rejestrze z datą i osiągalnym commitem tak samo jak stałaby liczba różna od
+   zera. Warunek powrotu **przypięty do zdarzenia, które jest w naszych rękach** —
+   klasa „warunek zależny od zdarzenia" w łatwiejszym wariancie: zdarzenia nie
+   trzeba pilnować kalendarzem, bo sami je wywołamy. Odsyłacz stoi **po obu
+   stronach** — przy T23 i przy T21 — bo warunek zapisany tylko przy T23
+   przeczytałby ten, kto czyta T23, a nie ten, kto siada do budowy strażnika.
 6. **T24** — ~~jaki limit i czy dodać krok rozróżniający `cancelled`~~
    **ROZSTRZYGNIĘTE I WDROŻONE 2026-08-23 (D6).** Limit **per rodzaj zadania**:
    `timeout-minutes: 20` dla pomiarowych, `10` dla pozostałych. Krok
@@ -834,13 +999,33 @@ dotyczą bieżącej linii pracy:
    `Przyczyna anulowania` pod `if: cancelled()` wypisujący `::warning`
    z instrukcją odczytu. Pozycja **otwarta — brak mutacji**: obecność
    `timeout-minutes` w pliku to status NIESPRAWDZONE, a niesprawdzone liczy się
-   jak niedziałające. **Dwie rzeczy do rozstrzygnięcia**, obie opisane w T24:
-   **(a)** `bramka-pelny-zestaw` przy zmierzonych 5 min 23 s ma na limicie 10 min
-   zapas **1,86×**, podczas gdy uzasadnienie D6 mówiło o wielokrotności rzędu
-   20–30 min — przekroczenie da czerwień, która nie jest werdyktem; limitu **nie
-   podniosłem z własnej ręki**, bo to rozszerzenie rozstrzygnięcia poza literę;
-   **(b)** adnotacja `::warning` **nie ma własnego kodu wyjścia**, więc jest
-   słabszą warstwą, niż wymaga klasa „raport, którego nikt nie czyta".
+   jak niedziałające. **Obie zgłoszone rzeczy właściciel rozstrzygnął 2026-08-23:**
+   **(a) `bramka-pelny-zestaw` → 20 minut.** Uzasadnienie właściciela, przytoczone
+   jako **przesłanka**, nie ozdoba: *„podałem próg per kategoria, nie znając
+   zmierzonych czasów"* — reguła „20 dla pomiarowych, 10 dla reszty" zapadła przed
+   sprawdzeniem, do której grupy trafia zadanie o czasie 5 min 23 s.
+   `bramka-e2e` **zostaje na 10** (właściciel rozstrzygnął tylko o jednym zadaniu).
+   Osobnego „rejestru przesłanek" tu **nie ma i nie zakładam go** — nowy plik
+   z regułami wchodzi wyłącznie jako ADR albo rozdział `CLAUDE.md` (zakaz 10),
+   a przesłanka należy do pozycji, której dotyczy.
+   **(b) `::warning` bez kodu wyjścia — właściciel orzekł, że to za mało.**
+   Rozstrzygnięcie: anulowanie bez wyjaśnienia ma dawać **status żółty zadania**,
+   nie samą adnotację; jeśli GitHub Actions tego nie umożliwia bez zmiany kodu
+   wyjścia, wybór jest między czerwienią a **jawnym przyjęciem słabszej warstwy
+   z zapisem dlaczego** — i wtedy ma zostać zapisana jako **nazwana słabość**,
+   nigdy jako „wystarczy". Stan rozstrzygnięcia i to, co da się zrobić — niżej
+   w rozdz. 4.10.
+   **POMIAR CZASÓW ZADAŃ — 2026-08-23**, przebiegi `32661737288` (`f2db728`)
+   i `32663550392` (`d7a2fe3`), oba osiągalne, odczyt `gh api .../jobs`:
+   `Wydajność` **8,05** / **7,90**; `Pełny zestaw e2e` **3,55** / **3,21**; `Dostępność`
+   **2,65** / **2,53**; `E2E` **0,98** / **1,03**; `Build` **0,63** / **0,83**;
+   pozostałe dziewięć **0,36–0,55**. **Wniosek mocniejszy niż liczba, od której
+   się zaczęło:** to samo zadanie dało 5 min 23 s (2026-08-20) i 3 min 13 s
+   (2026-08-23) — **rozrzut 1,67× między przebiegami tego samego kodu**. Zadanie
+   o takim rozrzucie nie może stać na zapasie 1,86×. **Zgłoszone, nie zmienione:**
+   po poprawce najcieńszy zapas ma już nie `Pełny zestaw e2e` (5,6×), tylko
+   **`Wydajność`** (8,05 i 7,90 / 20 = **2,48×**) i **`Dostępność`** (2,65 / 10 =
+   **3,77×**). Progów nie ruszam — właściciel rozstrzygnął o jednym zadaniu.
 7. **Czy utrwalić harnesy mutacyjne w repozytorium** (dziś żyją w katalogu
    sesyjnym i znikną — sekcja 11). Kanon mówi „dowodem jest mutacja"; jeśli
    dowód ma być odtwarzalny, harnesy powinny trafić np. do `scripts/dowody/`.
@@ -856,6 +1041,22 @@ dotyczą bieżącej linii pracy:
    prawdę**, jedna spacja go zaspokaja; jako bramka blokująca szkodliwy, bo uczy
    obchodzenia. Rekomendacja: **(1) od razu, (2) razem z T21, (3) nigdy jako
    blokada.**
+   **WZORZEC Z ZEWNĄTRZ, PRZEKAZANY 2026-08-23 — CZYTAĆ Z OBOMA OZNACZENIAMI.**
+   Źródło w całości, bo bez niego to plotka: **tor 10, 2026-08-23,
+   `docs/weryfikacja-obietnic/` w repozytorium APLIKACJI, gałąź `feat/cs-build`.**
+   Tamtejszy **strażnik punktu wznowienia** został sprawdzony mutacją —
+   *wycofanie `PUNKT-WZNOWIENIA.md` z indeksu przy zostawionym `CLAUDE.md` →
+   EXIT=1; przywrócenie → EXIT=0.* Pierwszy realny dowód jego czułości, czyli
+   dokładnie ten rodzaj dowodu, którego po tej stronie brakuje. Tamten strażnik
+   pilnuje wymogu **analogicznego do naszego**, więc jego konstrukcja jest
+   gotowym wzorcem dla niezmiennika **(3)** powyżej. Dwa oznaczenia jadą razem
+   z wzorcem i **nie wolno ich zgubić przy cytowaniu**: **`P-19`** — sprawdź
+   wzorzec, zanim go powielisz (przeniesienie konstrukcji bez sprawdzenia to
+   przyjęcie cudzego dowodu za własny); **`P-22`** — **drogi weryfikacji z tej
+   strony NIE MA**, bo to inne repozytorium, więc ustalenie stoi na **dwóch
+   ogniwach**, z drugim stąd niesprawdzalnym. Definicji kodów `P-19` i `P-22`
+   po tej stronie nie ma i **nie przepisuję jej z pamięci** — kto ich potrzebuje,
+   czyta u źródła.
 9. **T26 — czy liczby w raporcie powykonawczym mają nosić stempel przy sobie.**
    Trzy kierunki (pełny opis w T26): **(1)** dopisać „(stan `3ca12a3`,
    2026-08-16)" tam, gdzie w §5.5 liczba opisuje rzecz żywą — najtańsze,
@@ -875,8 +1076,27 @@ dotyczą bieżącej linii pracy:
     `CLAUDE.md` 2026-08-23. **Czego brakuje do zamknięcia:** zdania o miejscu
     w hierarchii nie niosą jeszcze nagłówki pozostałych czterech dokumentów
     (`docs/adr/README.md`, rejestr, ten plik, dokumenty paneli) — a warunek
-    zamknięcia mówił o pięciu, nie o jednym. Dopóki tego nie ma, czytający sam
-    rejestr albo samo przekazanie nadal nie wie, że trzyma rzecz podrzędną.
+    zamknięcia mówił o pięciu, nie o jednym. Uzasadnienie właściciela:
+    *„hierarchia zapisana wyłącznie w źródle nadrzędnym jest znana temu, kto już
+    czyta nadrzędne."* Przy **(4)** warunek jest niewykonalny wprost, bo
+    `docs/faza-*/` to **klasa plików, nie plik** — do rozstrzygnięcia, czy zdanie
+    idzie do każdego z osobna, czy do jednego zbiorczego, na który reszta wskazuje.
+    ⚠ **ROZJAZD ZGŁOSZONY, NIE ROZSTRZYGNIĘTY — ta sama wada w nowym kształcie.**
+    Hierarchia właściciela wymienia ADR → `CLAUDE.md` → rejestr → przekazanie →
+    panele. Pomiar, na którym stoi T32, wymieniał pięć **innych** źródeł:
+    STRATEGIA, PLAN, ADR, `CLAUDE.md`, rejestr. **`docs/STRATEGIA.md`
+    i `docs/PLAN.md` wypadły z hierarchii, a nadal deklarują własne miejsce** —
+    odczyt 2026-08-23: `docs/STRATEGIA.md:3-5` *„Dokument nadrzędny projektu…
+    Sprzeczność rozstrzyga się na korzyść strategii, chyba że ADR jawnie stanowi
+    inaczej"*, `docs/PLAN.md:5` *„Nadrzędny wobec niego jest dokument strategii"*.
+    Czyli dziś STRATEGIA twierdzi, że wygrywa ze wszystkim poza ADR-em — a więc
+    i z `CLAUDE.md` — podczas gdy nowy rozdział `CLAUDE.md` stawia siebie na
+    drugim szczeblu i STRATEGII **nie wymienia wcale**. Dwie żywe, sprzeczne
+    deklaracje nadrzędności. **Żadnego z tych plików nie ruszam** — reguła
+    zapisana w tym samym rozstrzygnięciu mówi „rozjazd zgłaszasz, nie rozstrzygasz
+    po cichu". Do decyzji: czy STRATEGIA i PLAN wchodzą do hierarchii i na którym
+    szczeblu, czy przestały być źródłami reguł wiążących — a jeśli to drugie, ich
+    nagłówki wymagają poprawki, bo dziś mówią co innego.
 11. **T34 — czy budować strażnika cząstkowego dziesięciu zakazów.** Sprawdzalne
     mechanicznie są 4 z 10 (zakazy 1, 2, 6, 7); pozostałe wymagają oceny
     zamiaru. Rekomendacja: **tak dla zakazu 2 i 6** (grep po `--no-verify` oraz
@@ -1154,6 +1374,31 @@ wystąpienia w jednym przebiegu:**
   wyliczonej listy. Zamiast tego — wykonać literalnie i **zgłosić rozjazd**
   (T24, 7.2.6).
 
+**Dopisane po pomiarze czasów zadań (2026-08-23) — dwa razy ta sama wada:
+liczba zamiast pomiaru:**
+
+- **POJEDYNCZY CZAS TRWANIA NIE JEST CZASEM TRWANIA.** Zgłaszając cienki zapas
+  przy `Pełny zestaw e2e` oparłem się na **jednej liczbie z cudzego zapisu** —
+  „5 min 23 s", zmierzone 2026-08-20 i przepisane z T24. Godzinę później ten
+  sam kod dał **3 min 13 s**. Rozrzut **1,67×** między przebiegami. Zgłoszenie
+  było słuszne, ale **stało na złej podstawie**: gdyby przebiegi wypadły
+  odwrotnie, ta sama metoda kazałaby mi powiedzieć „zapas 3,1×, jest dobrze"
+  i defekt zostałby przeoczony. Dla wielkości z rozrzutem jedna wartość nie
+  ustala zapasu — ustala go **rozrzut**, a rozrzutu nie da się zobaczyć
+  z jednego pomiaru. Ta sama rodzina co „margines pozorny" przy wydajności,
+  tyle że przeniesiona na czas trwania zadania. **Reguła:** zanim policzysz
+  „zapas N×", sprawdź, ile pomiarów masz. Jeden — to nie jest zapas, to jest
+  anegdota z datą.
+- **MIAŁEM CZYM ZMIERZYĆ I NIE ZMIERZYŁEM.** Czasy wszystkich zadań stoją
+  w API GitHuba i wyciąga je jedno polecenie (`gh api
+  repos/.../actions/runs/<id>/jobs`, pola `started_at`/`completed_at`). Sięgnąłem
+  po nie dopiero, gdy poszedłem do logów w innej sprawie. Do tego czasu
+  operowałem cytatem z dokumentu, mając pod ręką pomiar. **To jest tańsza wersja
+  tej samej wady, którą kanon opisuje przy dowodach: przekonanie zamiast
+  odczytu.** Przy okazji tego samego wejścia do logów wyszło **T41** —
+  ostrzeżenie dostawcy widoczne 15 razy w każdym przebiegu, którego nikt nie
+  czytał. Oba znaleziska są skutkiem jednej decyzji: żeby w końcu spojrzeć.
+
 ---
 
 ## 10. Gdzie co leży
@@ -1200,7 +1445,7 @@ wystąpienia w jednym przebiegu:**
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T40
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T41
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
   **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
   (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
@@ -1210,7 +1455,7 @@ wystąpienia w jednym przebiegu:**
 (zmierzone 2026-08-20 na `8f15c60` + zmiany robocze)
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii; **zakres zadeklarowany
   w wierszach 3–6**, liczby w rozdziałach opisują stan tamtego zakresu (T26)
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — 442 linie, pozycje T1–T40
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — 457 linii (stan 2026-08-23), pozycje T1–T41
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
@@ -1369,7 +1614,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
   linii pracy (T2, T10, T20–T40); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T40 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  24 pozycji treści i T1–T41 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -1431,7 +1676,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T40)
+### 15.2 Pozycje techniczne i procesowe (T1–T41)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
@@ -1478,6 +1723,7 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T38 | proporcja **34 : 4** mówi o przepływie, nie o rzetelności toru; tor 14: **11 z 19 (58%)** sprawdzeń drugą drogą zawęziło albo rozszerzyło ustalenie; typowy kształt błędu to **nadmierny zasięg**, nie zmyślenie | ⚠ **czeka na decyzję** — czy 58% jest własnością przepływu |
 | T39 | **REJESTR LICZY OGNIWA, NIE ŹRÓDŁA** — skorowidz ogniw dla 40 pozycji; pomiar: 30 z 36 wierszy wymieniało właściciela, ale wzmianka ≠ pochodzenie, więc „25 z 34" **nie da się potwierdzić w tej postaci**; dwa ogniwa: T30, T36, T38 · **trzy ogniwa: T37** | ✅ skorowidz w rejestrze; ⚠ kolumna zamiast skorowidza — do decyzji |
 | T40 | ⚠ **JEDYNYM KANAŁEM MIĘDZY TRZEMA OBSZARAMI JEST JEDNA OSOBA I JEDNA WARSTWA DOWODZĄCA** — kanon wspólny w zamierzeniu, rozłączny w praktyce; `CLAUDE.md` tej strony nie zawiera żadnej klasy kanonu aplikacji; kanał ma **jeden punkt awarii** | ⚠ lista różnic gotowa (rozdz. 19), **przeniesienie = decyzja właściciela** |
+| T41 | **cztery akcje CI działają na środowisku, którego nie deklarują** — `checkout@v4`, `setup-node@v4`, `download-artifact@v4`, `upload-artifact@v4` celują w Node 20, a runner wymusza Node 24; ostrzeżenie stoi w **15/15 zadań** każdego przebiegu i nikt go nie czytał, aż wejście do logu w innej sprawie (czasy zadań do T24) je odsłoniło. Nic nie jest dziś zepsute — pozycja opisuje **ryzyko z datą wygaśnięcia w cudzych rękach** | ⚠ **czeka na decyzję** — czy podnosić do `v5` (osobne zadanie, kontrola negatywna) i czy ostrzeżenia DOSTAWCY mają mieć miejsce w interfejsie (to samo pytanie co przy `::warning` z T24 — rozstrzygać raz, dla obu) |
 
 ---
 
@@ -1541,8 +1787,15 @@ w `scripts/check-audyt.mjs` — działa na płytkim klonie, bo czyta wskaźnik, 
 przodków. Pierwszym krokiem historycznym będzie strażnik T21.
 
 **Limity czasu (od 2026-08-23, D6 → T24).** Każde z **15** zadań ma
-`timeout-minutes`: `bramka-wydajnosc` → **20**, czternaście pozostałych → **10**.
-Domyślne 6 h już nie obowiązuje. Każde zadanie ma na końcu krok
+`timeout-minutes`: **`bramka-wydajnosc` → 20** i **`bramka-pelny-zestaw` → 20**
+(to drugie podniesione z 10 tego samego dnia, po zgłoszeniu cienkiego zapasu),
+trzynaście pozostałych → **10**. Domyślne 6 h już nie obowiązuje.
+**Zapas policzony z pomiaru** (2026-08-23, przebiegi `32661737288` / `32663550392`,
+commity `f2db728` / `d7a2fe3`, oba osiągalne): `Wydajność` 8,05 i 7,90 min → **2,48×**;
+`Dostępność` 2,65 min → **3,77×**; `Pełny zestaw e2e` 3,55 min → **5,6×**;
+`E2E` 1,03 min → **9,7×**; pozostałe ≥ **18×**. **Najcieńszy zapas ma dziś
+`Wydajność`, nie `Pełny zestaw e2e`** — i to jest zapisane jako zgłoszenie, nie
+jako zmiana. Każde zadanie ma na końcu krok
 `Przyczyna anulowania` pod `if: cancelled()`, który wypisuje adnotację
 `::warning` z instrukcją odczytu: **czas krótki (sekundy) = wyparcie przez
 `concurrency`, oczekiwane; czas bliski `timeout-minutes` = limit przekroczony,

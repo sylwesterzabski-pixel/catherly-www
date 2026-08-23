@@ -311,7 +311,12 @@ jobs:
     name: "Bramka: Pełny zestaw e2e (każdy spec, oba projekty)"
     runs-on: ubuntu-latest
     needs: build
-    timeout-minutes: 10
+    # 20, nie 10 (właściciel 2026-08-23). Zadanie zmierzono na 5 min 23 s
+    # (2026-08-20), więc limit 10 dawał zapas 1,86× — za mało przy zadaniu,
+    # które instaluje przeglądarkę i uruchamia każdy spec w obu projektach.
+    # Przekroczenie z powodu obciążenia runnera dałoby czerwień, która nie
+    # jest werdyktem — czyli dokładnie defekt opisany w T24, nie jego naprawę.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
