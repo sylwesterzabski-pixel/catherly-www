@@ -49,6 +49,7 @@ jobs:
   build:
     name: Build (fundament pozostałych bramek)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -66,30 +67,45 @@ jobs:
           # było `--failed`, czyli obejście, nie naprawa. Powtórzenie przebiegu
           # to normalny ruch przy diagnozie, więc ma po prostu działać.
           overwrite: true
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-kontrakt-tokenow:
     name: "Bramka: Kontrakt tokenów (0 rozjazdów strona↔aplikacja)"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
       - run: npm ci
       - run: npm run bramka:kontrakt
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-tokeny-linter:
     name: "Bramka: Linter tokenów (wartości wizualne tylko z tokens.json)"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
       - run: npm ci
       - run: npm run bramka:tokeny
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-lint:
     name: "Bramka: ESLint (reguły Next/TypeScript egzekwowane przy merge'u)"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     # WPIĘTY 2026-08-19. Do tego dnia `npm run lint` nie był zadaniem CI:
     # eslint przechodził na laptopie autora i nikt go nie egzekwował przy
     # merge'u. Ta sama rodzina defektu, co „spece treści nigdy nie biegły"
@@ -122,20 +138,30 @@ jobs:
         with: { node-version: 20, cache: npm }
       - run: npm ci
       - run: npm run lint
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-parytet:
     name: "Bramka: Parytet językowy (identyczne drzewa pl/en/de)"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
       - run: npm ci
       - run: npm run bramka:parytet
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-prawdziwosc:
     name: "Bramka: Prawdziwość (każda liczba ↔ facts.json)"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -144,10 +170,15 @@ jobs:
       - run: npm run bramka:liczby
       # Soczewka 5 (agent `claude -p` na wyrenderowanej stronie) dochodzi
       # w Fazie 6 — wymaga klucza API po stronie właściciela (ADR-016).
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-cennik:
     name: "Bramka: Cennik (snapshot Stripe ↔ strona, tryb testowy)"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -156,11 +187,16 @@ jobs:
       - run: npm run bramka:cennik
         env:
           STRIPE_TEST_SECRET_KEY: ${{ secrets.STRIPE_TEST_SECRET_KEY }}
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-linki:
     name: "Bramka: Linki (0 martwych linków wewnętrznych)"
     runs-on: ubuntu-latest
     needs: build
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -169,11 +205,16 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { name: next-build, path: .next/ }
       - run: npm run bramka:linki
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-kotwice:
     name: "Bramka: Kotwice (0 linków do nieistniejących kotwic)"
     runs-on: ubuntu-latest
     needs: build
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -182,11 +223,16 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { name: next-build, path: .next/ }
       - run: npm run bramka:kotwice
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-nojs:
     name: "Bramka: No-JS (treść czytelna bez JavaScriptu)"
     runs-on: ubuntu-latest
     needs: build
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -195,11 +241,16 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { name: next-build, path: .next/ }
       - run: npm run bramka:nojs
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-dostepnosc:
     name: "Bramka: Dostępność (axe + klawiatura + nazwy linków + kontrast stanów)"
     runs-on: ubuntu-latest
     needs: build
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -232,11 +283,16 @@ jobs:
       # tędy. Dzieli też artefakt builda i instalację chromium, więc
       # kosztuje sekundy zamiast kolejnej pełnej rozgrzewki.
       - run: npx playwright test e2e/axe.spec.ts e2e/klawiatura.spec.ts e2e/oznaczenie-kierunku.spec.ts e2e/kontrast-stanow.spec.ts
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-e2e:
     name: "Bramka: E2E (cennik → płatność → konto → aplikacja)"
     runs-on: ubuntu-latest
     needs: build
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -246,11 +302,16 @@ jobs:
         with: { name: next-build, path: .next/ }
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test e2e/sciezka-zakupu.spec.ts
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-pelny-zestaw:
     name: "Bramka: Pełny zestaw e2e (każdy spec, oba projekty)"
     runs-on: ubuntu-latest
     needs: build
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -280,11 +341,16 @@ jobs:
       # szybki, konkretny sygnał („padła dostępność", nie „padło e2e").
       # Koszt dublowania: 39 testów z 272 na projekt, kilka sekund.
       - run: npx playwright test
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-wydajnosc:
     name: "Bramka: Wydajność (LCP < 1,8 s · CLS < 0,1 · TBT < 200 ms)"
     runs-on: ubuntu-latest
     needs: build
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -444,13 +510,22 @@ jobs:
         env:
           LHCI_BAZA: ${{ vars.LHCI_BAZA }}
         run: npm run bramka:tryb-pomiaru -- --po-czerwieni
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
   bramka-nieodwracalne:
     name: "Bramka: Nieodwracalne (ADR-018 — raport audytu dla commita)"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
       - run: npm ci
       - run: npm run bramka:nieodwracalne
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."

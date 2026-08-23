@@ -13,6 +13,23 @@ pliku („Przekazanie sesji aktualizowane na bieżąco").
 Pełnisz dokładnie jedną rolę: treść / projekt / obrazy / implementacja /
 bramkarz / adwersarz. Jeśli rola nie została wskazana — zapytaj i nie rób nic.
 
+## Hierarchia źródeł reguł (T32 — właściciel 2026-08-23)
+Kolejność od nadrzędnego — przy konflikcie wygrywa źródło wyższe:
+1. **ADR** (`docs/adr/`) — decyzje architektoniczne, wiążą wszystko poniżej.
+2. **CLAUDE.md** (ten plik) — kanon operacyjny repozytorium, czytany na
+   starcie sesji.
+3. **Rejestr warunków powrotu** (`docs/faza-2/rejestr-warunkow-powrotu.md`)
+   — pozycje z warunkami powrotu, nie reguły.
+4. **Przekazanie sesji** (`docs/PRZEKAZANIE-SESJI.md`) — stan repozytorium,
+   nie reguły.
+5. **Dokumenty paneli** (`docs/faza-*/`) — historia rozstrzygnięć, nie
+   źródło reguł.
+
+Przy równym poziomie wygrywa nowsze, ale **rozjazd między dokumentami tego
+samego poziomu zgłaszasz, nie rozstrzygasz po cichu**. Brak miejsca
+`CLAUDE.md` w hierarchii był sam w sobie wadą (T32) — ten rozdział ją
+zamyka.
+
 ## Zakazy bezwzględne
 - Żadnych wzmianek o konkretnych firmach z branży, logotypów, twarzy osób.
   Przykłady w UI: neutralne, wymyślone nazwy.
@@ -129,6 +146,17 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   **adresata**: adresat jest częścią zakresu, nie metadanymi, więc
   dokument wyjęty poza swojego adresata traci ważność tak samo jak cytat
   bez daty.
+- KLASA „BRAMKA SZKODZĄCA PRZEZ POPRAWNOŚĆ" (właściciel, 2026-08-23).
+  Pierwsza klasa z kierunkiem odwrotnym — wszystkie poprzednie opisują
+  mechanizmy robiące za mało; ta opisuje mechanizm robiący za dużo.
+  Konwencja wymuszająca konkretny kształt tam, gdzie dostawca go nie
+  gwarantuje kontraktem, zablokuje wdrożenie przy pierwszej zmianie formatu
+  po stronie dostawcy. Wzorzec (T36, T33, T34): strażnik sprawdzający format
+  klucza `env`, próg wydajności nieinterpretowalny przy obecnym rozrzucie,
+  strażnik zakazów blokujący zlecenie właściciela. Reguła: **zanim napiszesz
+  strażnika wymuszającego konkretny kształt lub wartość, sprawdź, czy
+  dostawca/kontrakt gwarantuje ten kształt. Jeśli nie — strażnik sprawdza
+  OBECNOŚĆ, nie kształt.** (obok zakazu 10 — T32)
 - Nie oceniasz własnej pracy w tych czterech obszarach. Dowodem jest
   wykonany test, zwrócony status, log — nigdy Twoje przekonanie.
 - W konflikcie przegrywa termin i zakres, nigdy nieodwracalne.

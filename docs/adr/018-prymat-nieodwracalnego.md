@@ -49,6 +49,16 @@ wszystko i przestaje odróżniać rzeczy ważne od poprawialnych.
    w aplikacji jest naruszeniem tego ADR-a po stronie **strony**, nie
    aplikacji: usuwa się obietnicę, nie zapowiada się funkcji.
 
+7. **Zlecenie pod złym adresem odsyła się, nie wykonuje w przybliżeniu.**
+   Reguła obowiązuje w obu kierunkach: odbiorca nie wykonuje zlecenia
+   w repozytorium, do którego ono nie należy; nadawca sprawdza adres
+   przed wysłaniem. Przedmiot zlecenia jest częścią jego zakresu —
+   wykonanie „w przybliżeniu" w niewłaściwym miejscu niesie ryzyko
+   zdublowania pracy i ukrycia faktu, że rzecz leży gdzie indziej.
+   Wzorzec: T35 (2026-08-23) — pięciokrotne wysłanie zlecenia pod zły
+   adres przez nadawcę; T27 (2026-08-23) — wykonanie po stronie strony
+   rzeczy należącej wyłącznie do repozytorium aplikacji.
+
 ## Konsekwencje
 - `docs/audyt/` staje się artefaktem obowiązkowym w obu repozytoriach.
 - Bramka „Nieodwracalne" wchodzi do tabeli sekcji 5 PLAN.md.
