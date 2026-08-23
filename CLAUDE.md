@@ -107,11 +107,91 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   zadania. Jeśli ostrzeżenie ma znaczyć, dostaje własny kod wyjścia
   i własne miejsce w interfejsie (adnotacja przebiegu, podsumowanie),
   a nie kolejną linię logu. Rodzina: nieaktualny raport audytu.
+- KLASA „WYGLĄDA NA REGUŁĘ WERDYKTU PRZY POBIEŻNYM CZYTANIU" (właściciel,
+  2026-08-23). Ustawienie w pliku konfiguracyjnym, które **nazywa się** tak
+  jak reguła rozstrzygająca, a nią nie jest, kosztuje więcej niż jego brak:
+  czytający wyciąga wniosek „to już jest zrobione" i przestaje szukać.
+  Wzorzec: `aggregationMethod: 'pessimistic'` w `lighthouserc.cjs:200`.
+  Ścieżka bramki (`npm run bramka:pomiar`) podaje do `lhci assert` **jeden
+  przebieg na trasę** (`scripts/werdykt-po-lcp.mjs`), a przy jednym
+  przebiegu każda agregacja daje tę samą liczbę — ustawienie działa dopiero
+  poza bramką. Skutek jest kierunkowy: kto oprze na nim plan naprawy
+  rozrzutu, uzna połowę roboty za wykonaną, choć nie jest. Reguła: **zanim
+  powiesz „konfiguracja to załatwia", prześledź ścieżkę wykonania do
+  miejsca, gdzie zapada werdykt.** Rodzina: „brak dowodu = brak
+  zabezpieczenia", bo tu też mamy przekonanie zamiast odczytu.
+- DOKUMENT Z ZADEKLAROWANYM ZAKRESEM SIĘ NIE STARZEJE — STARZEJE SIĘ CYTAT
+  WYJĘTY Z NIEGO BEZ ZAKRESU (2026-08-20, T26). Odwrotność klasy
+  „odwołanie do stanu, który przestał istnieć": tam przeterminował się
+  dokument, tu przeterminowuje się czytelnik. Zanim nazwiesz liczbę
+  w cudzym dokumencie nieaktualną — przeczytaj jego nagłówek; zanim ją
+  zacytujesz gdzie indziej — zabierz zakres razem z nią. To samo dotyczy
+  **adresata**: adresat jest częścią zakresu, nie metadanymi, więc
+  dokument wyjęty poza swojego adresata traci ważność tak samo jak cytat
+  bez daty.
 - Nie oceniasz własnej pracy w tych czterech obszarach. Dowodem jest
   wykonany test, zwrócony status, log — nigdy Twoje przekonanie.
 - W konflikcie przegrywa termin i zakres, nigdy nieodwracalne.
 - Niepewność zgłaszasz, nie zasypujesz. „Prawdopodobnie działa" nie istnieje.
 - Nigdy nie obiecujesz na stronie tego, czego aplikacja nie robi.
+
+## Dziesięć zakazów — wiążące dla KAŻDEGO zlecenia, także zlecenia właściciela
+Rozstrzygnięcie właściciela 2026-08-23: *„przyjmuję wszystkie, wchodzą do
+kanonu strony jako wiążące dla każdego zlecenia, także mojego."*
+
+Reszta tego pliku mówi, czego **nie wolno zrobić** wykonawcy. Ten rozdział
+mówi, czego **nie wolno zlecić** — i dlatego czyta się go w drugą stronę:
+zlecenie łamiące którykolwiek z dziesięciu punktów **wraca z pytaniem, a nie
+z wykonaniem**, niezależnie od tego, kto je wysłał. Odmowa nie jest tu
+nieposłuszeństwem, tylko wykonaniem tej reguły.
+
+1. **Żadnego pushu bez wyliczenia commitów.** Zgoda właściciela jest
+   jednorazowa i imienna, nie przechodzi między pakietami. „Wypchnij zmiany",
+   „push obu commitów", „push razem z resztą", „na koniec wypchnij" — każde
+   z tych zdań wraca z listą przeliczoną
+   `git log --oneline origin/<gałąź>..HEAD` i czeka na zgodę wymieniającą
+   skróty (T31).
+2. **Żadnego `--no-verify` ani obejścia hooków** (`core.hooksPath=.githooks`).
+   Nigdy, także „tylko na chwilę, żeby sprawdzić".
+3. **Żadnego osłabiania bramek.** Podniesienie progu, `continue-on-error`,
+   wyłączenie zadania, zawężenie zakresu spec-a, wykluczenie trasy z pomiaru —
+   to jest zamiana czerwieni na ciszę. ADR-020: main zawsze zielony,
+   a **czerwień uzasadniona też jest czerwienią**.
+4. **Żadnych zmian na `main`.** Faza kumuluje się na gałęzi roboczej;
+   wdrożenie produkcyjne to ADR-030, Faza 7.
+5. **Stripe wyłącznie w trybie testowym.** Żadnych kluczy produkcyjnych,
+   żadnych sekretów w gicie ani w treści zadania.
+6. **Nigdy nie drukuj nagłówków odpowiedzi z preview** — `curl -i`, `-v`,
+   `-D -` wypisują `Set-Cookie: _vercel_jwt`, który niesie **jawnie** wartość
+   Protection Bypass. Status sprawdza się przez
+   `curl -o /dev/null -w '%{http_code}'`. Tak samo mapa `protectionBypass`
+   z API Vercela — wyłącznie prefiksy SHA-256, nigdy surowo. **To jedyny
+   z dziesięciu punktów o skutku bezpieczeństwa, nie porządku** — złamanie
+   wypuszcza sekret, a sekretu nie da się cofnąć z logu przebiegu.
+7. **Nie zabijaj procesu na porcie 3000.** Port sprawdza się `lsof -ti:3000`
+   i **raportuje**; za tym procesem może stać praca właściciela.
+8. **Żadnego „przy okazji napraw X".** Defekt spoza zakresu zadania trafia do
+   `docs/faza-2/rejestr-warunkow-powrotu.md` jako pozycja z warunkiem powrotu,
+   a nie do kodu. Naprawa bez zlecenia to zmiana, której nikt nie zamawiał
+   i nikt nie sprawdzi.
+9. **Żadnych treści ani liczb bez pokrycia.** Każda liczba pochodzi
+   z `content/facts.json` (literalna liczba w JSX nie przejdzie lintera), każda
+   wartość wizualna z `design/tokens.json`. Brak pokrycia → pozycja
+   w rejestrze, nigdy wyjątek w kodzie.
+10. **Nie mnóż źródeł reguł wiążących.** Nowy dokument z regułami wchodzi
+    wyłącznie jako **ADR** albo jako **rozdział tego pliku** — nigdy jako
+    kolejny plik obok. Rozjazd między dwoma źródłami reguł jest gorszy niż
+    brak jednego z nich (T32).
+
+**Punkty 9 i 10 właściciel wskazał jako celujące w jego własne zlecenia** —
+i tak mają działać. Wykonawca, który je egzekwuje wobec zlecenia właściciela,
+robi dokładnie to, po co ten rozdział powstał.
+
+**Ten rozdział NIE MA STRAŻNIKA** i w całości mieć go nie może: punkty 1, 2,
+6 i 7 są sprawdzalne mechanicznie w treści polecenia, punkty 3, 8, 9 i 10
+wymagają oceny zamiaru. To jest ta sama klasa co T25 — „brak dowodu = brak
+zabezpieczenia" stosuje się także do tej strony. Odnotowane jako **T34**;
+budowa strażnika cząstkowego czeka na decyzję właściciela.
 
 ## Progi (bramki CI — blokujące)
 LCP < 1,8 s · INP < 200 ms na 4G · CLS < 0,1 · kontrast AA wszędzie ·

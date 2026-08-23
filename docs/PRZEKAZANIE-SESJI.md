@@ -19,10 +19,12 @@ raportem" dotyczy także tego dokumentu.
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (147 linii) — zasady wiążące. Ten plik ich nie zastępuje.
+1. `CLAUDE.md` (260 linii) — zasady wiążące. Ten plik ich nie zastępuje.
+   **Od 2026-08-23 ma rozdział „Dziesięć zakazów"**, który mówi, czego nie
+   wolno ZLECIĆ — wiążący także dla zleceń właściciela (T34).
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` (364 linie) — 24 pozycje treści
-   + 25 pozycji technicznych T1–T25. **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` (373 linie) — 24 pozycje treści
+   + 34 pozycje techniczne T1–T34. **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -40,7 +42,7 @@ lsof -ti:3000                                     # RAPORTUJ, nie zabijaj
 
 **Czego NIE wolno zrobić na starcie, choćby wyglądało niewinnie:**
 
-- **Nie pushuj.** Osiem commitów (stan na 2026-08-20) czeka na zgodę właściciela
+- **Nie pushuj.** Dziewięć commitów (stan na 2026-08-20) czeka na zgodę właściciela
   wyliczoną co do commita. Zgoda z poprzedniego pakietu jest wyczerpana i nie
   przechodzi dalej. Liczbę **przelicz**, nie przepisuj — patrz wyżej.
 - **Nie uruchamiaj bramki wydajności równolegle z niczym innym** i nie pchaj
@@ -75,9 +77,18 @@ dokładnie klasa „brak dowodu = brak zabezpieczenia". Odnotowane jako **T25**;
 budowa strażnika czeka na decyzję właściciela (7.2.8).
 
 **Stan świadomości właściciela:** wie o wszystkim, co jest w rozdziałach 4–6.
-Czeka na jego decyzję sześć rzeczy z rozdziału 7. Nie zaczynaj od zadawania
+Czeka na jego decyzję siedem rzeczy z rozdziału 7. Nie zaczynaj od zadawania
 pytań, na które odpowiedź jest w rozdziale 7 — zacznij od sprawdzenia, czy
 odpowiedź już padła.
+
+**Jedna rzecz, którą właściciel rozstrzygnie, a której NIE MA jeszcze
+w żadnym pliku** (stan 2026-08-23): **hierarchia źródeł reguł**. W repozytorium
+jest ich **pięć** — `docs/STRATEGIA.md`, `docs/PLAN.md`, `docs/adr/` (30),
+`CLAUDE.md` i ten rejestr — a `CLAUDE.md`, czyli plik czytany pierwszy, jako
+jedyny **nie deklaruje swojego miejsca** względem pozostałych. Pełny odczyt
+deklaracji nadrzędności: **T32**. Do czasu rozstrzygnięcia obowiązuje to, co
+zadeklarowane wprost: **ADR-018 wygrywa z wszystkim** (`docs/adr/README.md:7`,
+`docs/adr/018-…:4`, `docs/PLAN.md:473-474` — trzy niezależne miejsca).
 
 ---
 
@@ -87,10 +98,10 @@ odpowiedź już padła.
 |---|---|
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
-| HEAD lokalny | `8f15c60` (stan 2026-08-20) |
+| HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
 | HEAD zdalny (`origin/faza-4/podstrony`) | `69c2dab` — odczytane `git ls-remote` **2026-08-20**, nie z lokalnego refa |
 | `origin/main` | `0896219` — j.w. |
-| Niewypchnięte | **8 commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`, `2599c88`, `8f15c60`, `ec8d763` **+ ten, który niesie ten dokument** (jego skrótu nie da się tu wpisać: commit nie może zawierać własnego skrótu — przelicz `git log --oneline origin/faza-4/podstrony..HEAD`) |
+| Niewypchnięte | **9 commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`, `2599c88`, `8f15c60`, `ec8d763`, `bd27f6a` **+ ten, który niesie ten dokument** (jego skrótu nie da się tu wpisać: commit nie może zawierać własnego skrótu — przelicz `git log --oneline origin/faza-4/podstrony..HEAD`) |
 | Drzewo robocze | czyste |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
 | Backupy repo | `/Volumes/Extreme SSD/Catherly-www-ZIP`, migawka po każdym zadaniu (hook `Stop`), ~8 MB każda. **Nazwy ostatniej nie wpisuję** — starzeje się przy każdym zadaniu; sprawdź: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
@@ -196,6 +207,20 @@ obietnice**. Reguły, o które w tej linii pracy najczęściej chodzi:
    zagląda, działa jak jego brak — z jedną różnicą na gorsze: pozwala potem
    powiedzieć „przecież było napisane". Ostrzeżenie, które ma znaczyć, dostaje
    **własny kod wyjścia i własne miejsce w interfejsie**.
+8. **KLASA „WYGLĄDA NA REGUŁĘ WERDYKTU PRZY POBIEŻNYM CZYTANIU"** (właściciel,
+   2026-08-23). Ustawienie, które **nazywa się** jak reguła rozstrzygająca,
+   a nią nie jest, kosztuje więcej niż jego brak — czytający uznaje rzecz za
+   zrobioną i przestaje szukać. Wzorzec: `aggregationMethod: 'pessimistic'`.
+   **Prześledź ścieżkę wykonania do miejsca, gdzie zapada werdykt**, zanim
+   powiesz „konfiguracja to załatwia".
+9. **DOKUMENT Z ZADEKLAROWANYM ZAKRESEM SIĘ NIE STARZEJE — starzeje się cytat
+   wyjęty z niego bez zakresu** (2026-08-20, T26; dopisane 2026-08-23).
+   Odwrotność reguły 5: tam przeterminował się dokument, tu przeterminowuje się
+   czytelnik. **Adresat jest częścią zakresu, nie metadanymi.**
+
+Osobno, od 2026-08-23, `CLAUDE.md` ma rozdział **„Dziesięć zakazów"** — reguły
+adresowane do ZLECAJĄCEGO, wiążące także dla zleceń właściciela (T34). Nie są
+częścią kanonu ADR-018, ale mają tę samą moc i ten sam brak strażnika.
 
 ---
 
@@ -428,7 +453,7 @@ Poszlaka co do przyczyny, **nie dowód**: w tym samym oknie lokalny `gh` straci�
 sieciowe wieczoru, a nie defekt kodu. Trwałym ustaleniem jest brak limitu, który
 **każde** takie zdarzenie zamienia w sześć godzin ciszy.
 
-### 4.6 Cztery commity tej doby
+### 4.6 Commity tej doby
 
 | commit | co |
 |---|---|
@@ -436,10 +461,105 @@ sieciowe wieczoru, a nie defekt kodu. Trwałym ustaleniem jest brak limitu, któ
 | `6383580` | T22 (a)(b)(c) — workflow +72 linie, 2 nowe skrypty (400 linii), `package.json` |
 | `7848900` | rejestr: T22 rozstrzygnięte trzema kierunkami, T23 osobno |
 | `97399c8` | rejestr T24 + czwarty dowód mutacyjny dopisany do T22 |
+| `2599c88` | pierwsze spisanie tego przekazania |
+| `8f15c60` | audyt kompletności przekazania — rozdz. 12–15 i sześć przeoczonych pułapek |
+| `ec8d763` | zabezpieczenie sesji — jeden kanoniczny punkt wejścia + skorowidze |
+| `bd27f6a` | reguła właściciela: przekazanie utrzymywane w prawdzie na bieżąco (T25) |
+| **ten** | briefing dla sesji aplikacji + T26; rozstrzygnięcia z 2026-08-23 → T27–T34, dziesięć zakazów w `CLAUDE.md`, dwie nowe klasy kanonu (4.7, 4.8); skrótu nie da się tu wpisać — rozdz. 1 |
 
 Przed każdym commitem: `eslint . --max-warnings=0` → 0; bramki `tokeny`,
 `liczby`, `parytet`, `kontrakt`, `kotwice` → zielone; `bramki.yml` parsuje się
 i ma kroki w zamierzonej kolejności; hook pre-commit przeszedł bez `--no-verify`.
+
+### 4.7 Recenzja zadania z sesji aplikacji i briefing zwrotny
+
+Właściciel przyniósł 2026-08-20 zadanie spisane w sesji pracującej po stronie
+aplikacji, z jawnym warunkiem: **„sprawdź, zanim wykonasz"**. Nie zostało
+wykonane nic — ani pomiar, ani commit kanonu, ani push. Sześć ustaleń
+z odczytu, nie z lektury zadania:
+
+1. **`docs/KANON-CATHERLY-STRONA.md` nie istnieje** — sprawdzone w `docs/` na
+   HEAD, w drzewie `docs/` gałęzi zdalnej, w całym drzewie roboczym, w `Downloads`,
+   `Desktop` i obu pozostałych katalogach FBO OS. Cała druga połowa zadania nie
+   ma przedmiotu.
+2. **Pomiar, o który prosiło zadanie, jest już wykonany** (rozdz. 5) i jego
+   odpowiedź brzmi „nie zieleń": rozrzut 593 ms przy zapasie 279 ms, dwa z pięciu
+   przebiegów ponad progiem. Powtórzenie nie da czystszej liczby — kolizji
+   w tamtym oknie nie było, więc rozrzut jest własnością przyrządu.
+3. **„Sprawdź wydanie PRZED i PO" nie da się wykonać na stanie wypchniętym** —
+   `straznik-po-pomiarze.mjs`, `werdykt-marginesu.mjs` i blok `concurrency` żyją
+   wyłącznie w niewypchniętym `6383580`. Zadanie każe mierzyć czysto, zanim
+   wypchnie narzędzia zapewniające czystość.
+4. **„Uruchom sam krok wydajności" jest niewykonalne**: `workflow_dispatch`
+   wymaga pliku workflow na gałęzi domyślnej, a `main` (`0896219`) nie ma
+   katalogu `.github`. Jedyny wyzwalacz to push, a ten uruchamia wszystkie 15
+   zadań; `bramka-wydajnosc` ma na dokładkę `needs: build`.
+5. **„Push obu commitów" wypchnąłby dziesięć** i nie jest zgodą wyliczoną
+   z commitów.
+6. **Wskaźnik „przeczytaj najpierw" koliduje** z blokiem dodanym na górze
+   `CLAUDE.md` przy `ec8d763` i tworzy trzecie źródło reguł wiążących.
+
+Odpowiedź zwrotna spisana jako `docs/BRIEFING-MIEDZY-SESJAMI.md` — sześć części:
+co było nie tak, stan faktyczny z datami, dziesięć rzeczy, których **nie wolno
+zlecać** stronie, kanon pomiarowy, pułapki środowiska, decyzje dla właściciela.
+Powód, dla którego to jest plik w repozytorium, a nie wiadomość: reguła
+„raport, którego nikt nie czyta, przestaje być raportem" działa też w drugą
+stronę — zlecający potrzebuje trwałego adresu, nie wklejki, która ginie razem
+z oknem czatu.
+
+**Przy pisaniu briefingu popełniony i naprawiony błąd — zapisany jako T26.**
+Pierwsza wersja twierdziła, że `RAPORT-POWYKONAWCZY-WWW.md` §5.5 niesie
+nieaktualny fakt („34 pozycje", „349 linii", gdy rejestr ma dziś 50 pozycji).
+Sprawdzenie nagłówka to obaliło: raport deklaruje zakres **`0896219` →
+`3ca12a3` (2026-08-16)** i wobec tego zakresu obie liczby są prawdziwe.
+**Dokument z zadeklarowanym zakresem się nie starzeje — starzeje się cytat
+wyjęty z niego bez zakresu.** To odwrotność klasy „odwołanie do stanu, który
+przestał istnieć": tam przeterminował się dokument, tu może się przeterminować
+czytelnik. W rejestrze została słabsza, prawdziwa obserwacja: raport jest
+z założenia „matrycą do cytowania", a §5.5 wyjęty bez nagłówka rozjeżdża się
+z repozytorium o 16 pozycji.
+
+### 4.8 Rozstrzygnięcia właściciela z 2026-08-23 — osiem nowych pozycji rejestru
+
+Właściciel odczytał sześć ustaleń z 4.7 **jako pozycje rejestru, nie jako
+wytknięcie**, i polecił zapisać po jednej na punkt. Do tego trzy rozstrzygnięcia
+własne. Wszystko wykonane w tym samym commicie co ta zmiana (T25).
+
+| poz. | co zostało zapisane |
+|---|---|
+| **T27** | zlecenie wskazuje plik, którego w repozytorium adresata nie ma; właściciel do protokołu: **„trzeci raz dziś"** |
+| **T28** | zamówiony pomiar był już wykonany; odpowiedź „nie zielone" jest **gorsza, niż zakładał** |
+| **T29** | „PRZED i PO" niewykonalne — narzędzie zapewniające czystość siedzi w niewypchniętym `6383580` |
+| **T30** | `workflow_dispatch` martwy bez `.github` na `main`; **ta sama przyczyna co `RECZ-161`** po stronie aplikacji, niepołączona |
+| **T31** | „push obu commitów" = push dziesięciu; **„moja liczba z pamięci"** |
+| **T32** | źródeł reguł wiążących jest **pięć**, nie trzy — i `CLAUDE.md` nie ma w hierarchii miejsca |
+| **T33** | próg 1800 ms przy rozrzucie 593 ms jest **nieinterpretowalny, a nie surowy** — pozycja checklisty premiery |
+| **T34** | dziesięć zakazów przyjęte jako **wiążące dla każdego zlecenia, także właściciela** — wpisane do `CLAUDE.md`, bez strażnika |
+
+**Trzy rzeczy z tej doby, które zmieniają sposób pracy, nie tylko rejestr:**
+
+1. **`CLAUDE.md` urósł o rozdział „Dziesięć zakazów"** (180 → 260 linii).
+   Zmiana jest kierunkowa: dotąd plik mówił, czego nie wolno **zrobić**
+   wykonawcy; teraz mówi też, czego nie wolno **zlecić**. Wykonawca ma
+   obowiązek odesłać zlecenie właściciela, jeśli łamie któryś z dziesięciu —
+   i to nie jest nieposłuszeństwo, tylko wykonanie reguły. Właściciel wyróżnił
+   zakaz 6 (`_vercel_jwt` niesie jawnie Protection Bypass — **jedyny o skutku
+   bezpieczeństwa**) oraz zakazy 9 i 10 z adnotacją *„celują we mnie — tak ma
+   być"*.
+2. **Dwie nowe klasy w kanonie ADR-018**: „wygląda na regułę werdyktu przy
+   pobieżnym czytaniu" (nazwana przez właściciela przy `aggregationMethod:
+   'pessimistic'`) oraz „dokument z zadeklarowanym zakresem się nie starzeje"
+   (T26), rozszerzona o adresata — **adresat jest częścią zakresu, nie
+   metadanymi**.
+3. **Bramka wydajności nie może dziś dać wiarygodnej zieleni ANI czerwieni**
+   (T33). To jest mocniejsze niż dotychczasowe „margines pozorny": zieleń nie
+   dowodzi, że trasa mieści się pod progiem, bo ten sam kod dał 2102 ms;
+   czerwień nie dowodzi regresji z tego samego powodu. Stan gorszy niż bramka
+   za surowa — tamta mówi prawdę zbyt często, ta nie mówi jej wcale.
+
+**Odmowa wysłania briefingu do pięciu obcych sesji** (`souffle-de-nature-*`,
+niezwiązany projekt) uznana przez właściciela za właściwą i odnotowana **jako
+zastosowanie reguły o zakresie** — dopisek w T26.
 
 ---
 
@@ -481,7 +601,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T25. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T34. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -516,6 +636,26 @@ dotyczą bieżącej linii pracy:
 - **T25** — reguła bieżącej aktualizacji tego pliku **bez strażnika**. Zapisana
   w `CLAUDE.md` i rozdz. 0 na polecenie właściciela 2026-08-20; mechanizmu nie
   budowano, bo tego nie zlecono. Trzy niezmienniki do wyboru — 7.2.8.
+- **T26** — liczby w `RAPORT-POWYKONAWCZY-WWW.md` niosą stempel 1070 linii
+  wyżej, w nagłówku dokumentu przeznaczonego do cytowania fragmentami (4.7).
+  Pozycja niesie też **obaloną pierwszą diagnozę** — to nie jest dygresja,
+  tylko sedno: dokument z zadeklarowanym zakresem się nie starzeje. Bez
+  implementacji, trzy kierunki do wyboru przez właściciela — 7.2.9.
+- **T27–T31** — pięć pozycji o **sposobie formułowania zleceń** między sesjami
+  (4.8). Nie są długiem w kodzie i nie da się ich spłacić commitem: zamyka je
+  dopiero pierwsze zlecenie, które przyszło już bez tej wady. T30 niesie
+  dodatkowo **jedyne w tym repozytorium odwołanie międzyrepozytoryjne**
+  (`RECZ-161`), którego **żadna bramka stąd nie weryfikuje** — ustalenie
+  T21(5) mówi, że takie odwołanie musi to deklarować wprost, i tu deklaruje.
+- **T32** — **pięć źródeł reguł wiążących**, `CLAUDE.md` bez miejsca
+  w hierarchii. Najcięższa z nowych: dopóki nie ma rozstrzygnięcia, dwa
+  dokumenty mogą powiedzieć co innego i nic tego nie rozsądzi. Czeka na
+  właściciela — 7.2.10.
+- **T33** — **próg 1800 ms jest dziś nieinterpretowalny**, nie surowy;
+  bramka wydajności nie może dać wiarygodnej zieleni ani czerwieni. **Pozycja
+  checklisty premiery** — blokuje Fazę 7, nie bieżącą robotę.
+- **T34** — dziesięć zakazów w `CLAUDE.md`, wiążących dla **każdego** zlecenia.
+  Wdrożone; otwarta zostaje wyłącznie decyzja o strażniku cząstkowym — 7.2.11.
 
 ---
 
@@ -523,8 +663,8 @@ dotyczą bieżącej linii pracy:
 
 ### 7.1 Zablokowane na zgodzie właściciela
 
-1. **Push OŚMIU commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`,
-   `2599c88`, `8f15c60`, `ec8d763` + commit niosący ten dokument (rozdz. 1) — z odczytem
+1. **Push DZIEWIĘCIU commitów** — `e8b3b73`, `6383580`, `7848900`, `97399c8`,
+   `2599c88`, `8f15c60`, `ec8d763`, `bd27f6a` + commit niosący ten dokument (rozdz. 1) — z odczytem
    zdalnym po pushu. Prośba złożona,
    **odpowiedzi jeszcze nie ma**. Uwaga do liczby: wcześniejsza zgoda właściciela
    obejmowała `547b846`, `bb66141`, `69c2dab` i jest **wyczerpana** — zgoda nie
@@ -568,19 +708,46 @@ dotyczą bieżącej linii pracy:
    prawdę**, jedna spacja go zaspokaja; jako bramka blokująca szkodliwy, bo uczy
    obchodzenia. Rekomendacja: **(1) od razu, (2) razem z T21, (3) nigdy jako
    blokada.**
+9. **T26 — czy liczby w raporcie powykonawczym mają nosić stempel przy sobie.**
+   Trzy kierunki (pełny opis w T26): **(1)** dopisać „(stan `3ca12a3`,
+   2026-08-16)" tam, gdzie w §5.5 liczba opisuje rzecz żywą — najtańsze,
+   niczego nie unieważnia; **(2)** znacznik świeżości przy każdym
+   rozdziale-matrycy; **(3)** nic — uznać nagłówek za wystarczający i zapisać
+   to w §0.1 jako świadomą granicę dokumentu. **Czego robić nie wolno przy
+   żadnym z nich:** podmieniać liczb na dzisiejsze — dokument deklaruje zakres
+   `0896219` → `3ca12a3`, więc podmiana zamieniłaby spójną migawkę
+   w mieszankę dwóch dat, czyli zepsułaby rzecz, która dziś jest w porządku.
+10. **T32 — hierarchia pięciu źródeł reguł.** Właściciel zapowiedział
+    rozstrzygnięcie 2026-08-23. Dwie rzeczy naraz, bo bez drugiej pierwsza nie
+    działa: **(a)** gdzie w łańcuchu STRATEGIA → PLAN → ADR stoi `CLAUDE.md`
+    i czy rejestr jest źródłem reguł, czy listą warunków; **(b)** czy kanon
+    z sesji aplikacji w ogóle wchodzi, a jeśli tak — jako **ADR-031** czy jako
+    **rozdział `CLAUDE.md`** (trzecia droga, „szósty plik obok", jest wykluczona
+    zakazem 10). Rekomendacja wykonawcy w T32: ADR-018 bezwzględnie nad
+    wszystkim (już tak zadeklarowany w trzech niezależnych miejscach), dalej
+    ADR-y, STRATEGIA, PLAN; `CLAUDE.md` **nie jako szczebel, tylko jako
+    operacyjne przepisanie tamtych**, z jawnym zdaniem „przy rozjeździe
+    wygrywa ADR" na górze pliku.
+11. **T34 — czy budować strażnika cząstkowego dziesięciu zakazów.** Sprawdzalne
+    mechanicznie są 4 z 10 (zakazy 1, 2, 6, 7); pozostałe wymagają oceny
+    zamiaru. Rekomendacja: **tak dla zakazu 2 i 6** (grep po `--no-verify` oraz
+    po `curl -i`/`-v`/`-D -` na adresie preview), **nie dla reszty** — i pod
+    twardym warunkiem, że strażnik **jawnie deklaruje, czego NIE sprawdza**.
+    Bez tej deklaracji sam stanie się „narzędziem, które potwierdza poprawność
+    artefaktu" i uśpi czujność co do pozostałych ośmiu.
 
 ### 7.3 Robota techniczna gotowa do wykonania po pushu
 
-8. **Powtórzyć bramkę `Dostępność` dla wypchniętego stanu** — dla `69c2dab` nie
-   ma werdyktu (zadanie anulowane po 6 h). Zieleń dostępności jest udowodniona
-   tylko dla `b51d0b8`.
-9. **Sprawdzić, czy `concurrency` i dwa nowe kroki zachowują się na runnerze**
-   tak jak lokalnie — dotąd (b) i (c) mają wyłącznie dowody z udawanego preview
-   i z danych lokalnych, nigdy z CI.
+12. **Powtórzyć bramkę `Dostępność` dla wypchniętego stanu** — dla `69c2dab` nie
+    ma werdyktu (zadanie anulowane po 6 h). Zieleń dostępności jest udowodniona
+    tylko dla `b51d0b8`.
+13. **Sprawdzić, czy `concurrency` i dwa nowe kroki zachowują się na runnerze**
+    tak jak lokalnie — dotąd (b) i (c) mają wyłącznie dowody z udawanego preview
+    i z danych lokalnych, nigdy z CI. Zamyka **T29**.
 
 ### 7.4 Poza tą linią pracy
 
-10. **Blok designu (wtorek)** — właściciel: *„Reszta czeka do bloku designu."*
+14. **Blok designu (wtorek)** — właściciel: *„Reszta czeka do bloku designu."*
     Cała robota nad podstronami jest w stanie spoczynku do briefu designu.
 
 ---
@@ -726,6 +893,43 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
   Wymagane `LC_ALL=C`. Osobno: `unzip -Z1` rysuje bajty spoza ASCII jako `?`,
   co daje pozorne rozbieżności — rozstrzyga porównanie SHA-256, nie nazw.
 
+**Nazwane przez właściciela 2026-08-23 — klasa, nie pojedyncza pułapka:**
+
+- **„WYGLĄDA NA REGUŁĘ WERDYKTU PRZY POBIEŻNYM CZYTANIU."** Ustawienie
+  w konfiguracji, które **nazywa się** jak reguła rozstrzygająca, a nią nie
+  jest, kosztuje więcej niż jego brak: czytający uznaje rzecz za zrobioną
+  i przestaje szukać. Wzorzec to `aggregationMethod: 'pessimistic'` (opis niżej,
+  w bloku z audytu kompletności). Reguła praktyczna: **zanim powiesz
+  „konfiguracja to załatwia", prześledź ścieżkę wykonania do miejsca, gdzie
+  zapada werdykt.** Wpisane do kanonu w `CLAUDE.md`.
+
+**Dopisane przy recenzji zadania z sesji aplikacji (2026-08-20):**
+
+- **DOKUMENT Z ZADEKLAROWANYM ZAKRESEM SIĘ NIE STARZEJE — STARZEJE SIĘ CYTAT
+  WYJĘTY Z NIEGO BEZ ZAKRESU.** Pułapka złapała mnie na gorącym uczynku:
+  zobaczyłem w `RAPORT-POWYKONAWCZY-WWW.md` §5.5 „rejestr ma 34 pozycje",
+  policzyłem dzisiejsze 50 i napisałem w briefingu „nieaktualny fakt
+  w repozytorium". Nagłówek dokumentu (wiersze 3–6) to obalił: raport deklaruje
+  zakres `0896219` → `3ca12a3` (2026-08-16) i wobec **tego** zakresu liczba jest
+  prawdziwa co do jedności. To **odwrotność** klasy „odwołanie do stanu, który
+  przestał istnieć": tam przeterminował się dokument, tu przeterminował się
+  czytelnik. Reguła praktyczna: **zanim nazwiesz liczbę w cudzym dokumencie
+  nieaktualną, przeczytaj jego nagłówek** — a zanim ją zacytujesz gdzie indziej,
+  zabierz zakres razem z nią. Zapisane jako T26; naprawiać nie ma czego.
+- **Zadanie z innej sesji może odwoływać się do pliku, którego nie ma.**
+  `docs/KANON-CATHERLY-STRONA.md` z zadania nie istniał nigdzie — ani na HEAD,
+  ani na gałęzi zdalnej, ani w drzewie roboczym, ani w `Downloads`/`Desktop`.
+  Sesja pisząca zadanie miała go u siebie i założyła, że jest wspólny.
+  Pierwszy odruch („pewnie gdzieś jest, poszukam po treści") kosztuje mniej niż
+  wykonanie zadania na wyobrażonym pliku — **istnienie pliku sprawdza się
+  przed, nie w trakcie**.
+- **„Zrób pomiar na czysto" bywa niewykonalne z powodu, którego zlecający nie
+  widzi.** Narzędzia zapewniające czystość (strażnik po pomiarze, werdykt
+  marginesu, `concurrency`) siedzą w commitach NIEWYPCHNIĘTYCH, a `workflow_dispatch`
+  wymaga pliku workflow na gałęzi domyślnej — `main` (`0896219`) nie ma katalogu
+  `.github`. Zanim zaczniesz mierzyć: sprawdź, czy wyzwalacz w ogóle istnieje na
+  gałęzi, na której ma zadziałać.
+
 ---
 
 ## 10. Gdzie co leży
@@ -736,13 +940,22 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
 - `scripts/straznik-po-pomiarze.mjs` — **nowy**, 180 linii
 - `scripts/werdykt-marginesu.mjs` — **nowy**, 220 linii
 - `package.json` — `bramka:po-pomiarze`, `bramka:margines`
-- `CLAUDE.md` — dwie nowe reguły kanonu ADR-018 **+ wskaźnik do tego pliku na
-  samej górze** (bez niego przekazanie byłoby raportem, do którego nikt nie
-  zagląda — kanon nazywa tę klasę wprost)
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — T22 przepisana, T23 i T24 nowe
+- `CLAUDE.md` — **180 → 260 linii.** Dwie nowe reguły kanonu ADR-018 z doby
+  19/20 + wskaźnik do tego pliku na samej górze (bez niego przekazanie byłoby
+  raportem, do którego nikt nie zagląda — kanon nazywa tę klasę wprost);
+  2026-08-23 doszły **dwie kolejne klasy kanonu** („wygląda na regułę werdyktu
+  przy pobieżnym czytaniu", „dokument z zadeklarowanym zakresem się nie
+  starzeje") i **cały rozdział „Dziesięć zakazów"** — pierwszy w tym pliku
+  adresowany do ZLECAJĄCEGO, nie do wykonawcy (T34)
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — T22 przepisana, **T23, T24,
+  T26–T34 nowe** (T26 z dopiskiem o odmowie wysłania briefingu poza jego zakres)
 - `docs/PRZEKAZANIE-SESJI.md` — ten plik; **jedyne kanoniczne przekazanie**.
   Drugiego nie ma i nie ma go być: dwa pliki przekazania to natychmiastowe
   pytanie „który obowiązuje", czyli nowy defekt zamiast zabezpieczenia
+- `docs/BRIEFING-MIEDZY-SESJAMI.md` — **nowy**; odpowiedź dla sesji pracującej
+  po stronie aplikacji (4.7). Nie jest źródłem reguł wiążących i nie ma nim
+  być — reguły są w `CLAUDE.md` i w 30 ADR-ach, briefing tylko je streszcza
+  i wskazuje. Jeśli kiedykolwiek się z nimi rozejdzie, obowiązują tamte
 
 **Czytane, nośne, nietknięte**
 - `scripts/sprawdz-preview.mjs` — strażnik startowy, tylko `/`
@@ -753,17 +966,22 @@ z tej samej rodziny „wynik wyglądał sensownie i był fałszywy":
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T25
-- `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T34
+- `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
+  **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
+  (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
+  stan TAMTEGO zakresu, nie dzisiejszy (T26, rozdz. 9)
 
 **Rozmiary — żeby wiedzieć, czego NIE da się streścić w tym pliku**
 (zmierzone 2026-08-20 na `8f15c60` + zmiany robocze)
-- `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — 364 linie, pozycje T1–T25
+- `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii; **zakres zadeklarowany
+  w wierszach 3–6**, liczby w rozdziałach opisują stan tamtego zakresu (T26)
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — 373 linie, pozycje T1–T34
   (skorowidz: rozdz. 15)
+- `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — 180 linii (wskaźnik do tego pliku na górze + reguła bieżącej
-  aktualizacji na końcu)
+- `CLAUDE.md` — 260 linii (wskaźnik do tego pliku na górze, kanon ADR-018,
+  rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu)
 - `docs/PRZEKAZANIE-SESJI.md` — ten plik; długości nie wpisuję, bo starzeje się
   przy każdej własnej zmianie — `wc -l docs/PRZEKAZANIE-SESJI.md`
 
@@ -914,15 +1132,16 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 Żeby nowa sesja nie wzięła braku streszczenia za brak tematu.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
-  linii pracy (T2, T10, T20–T24); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T25 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  linii pracy (T2, T10, T20–T34); rozdział 15 daje **skorowidz wszystkich** —
+  24 pozycji treści i T1–T34 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
   trafić do właściwego pliku. Wiążąca jest treść w `docs/adr/`.
 - **`docs/RAPORT-POWYKONAWCZY-WWW.md`** — 1419 linii, nie do streszczenia.
-- **Pełny kanon `CLAUDE.md`** — rozdział 3 podaje siedem reguł ADR-018
-  roboczo; wiążący jest plik.
+- **Pełny kanon `CLAUDE.md`** — rozdział 3 podaje dziewięć reguł ADR-018
+  roboczo i wymienia rozdział „Dziesięć zakazów" jednym zdaniem; wiążący jest
+  plik, w całości.
 
 ---
 
@@ -939,7 +1158,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 ## 15. Skorowidz rejestru warunków powrotu — WSZYSTKIE pozycje
 
-Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (364 linie, stan 2026-08-20). Poniżej
+Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (373 linie, stan 2026-08-23). Poniżej
 **skorowidz, nie streszczenie**: jedna linia na pozycję, żeby żadna nie była
 niewidoczna dla nowej sesji. Kto ma dotknąć którejkolwiek — czyta rejestr.
 
@@ -976,7 +1195,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T25)
+### 15.2 Pozycje techniczne i procesowe (T1–T34)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
@@ -1008,6 +1227,15 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T23 | `fetch-depth` — 15 × `checkout` bez niego, klon ma 1 commit | ⚠ **czeka na decyzję** (7.2.5) |
 | T24 | brak `timeout-minutes` — 4 zadania anulowane po 6 h 00 min | ⚠ **czeka na decyzję** (7.2.6) |
 | T25 | reguła „przekazanie aktualizowane na bieżąco" **nie ma strażnika**; wariant naiwny sprawdzałby DOTKNIĘCIE pliku, nie prawdę | ⚠ zapisana, **strażnik czeka na decyzję** (7.2.8) |
+| T26 | liczby w raporcie powykonawczym niosą stempel 1070 linii wyżej, w nagłówku dokumentu pisanego DO CYTOWANIA fragmentami; pozycja niesie też obaloną pierwszą diagnozę — **dokument z zadeklarowanym zakresem się nie starzeje, starzeje się cytat wyjęty bez zakresu**; dopisek 2026-08-23: **adresat też jest częścią zakresu** | ⚠ **czeka na decyzję** (7.2.9), bez implementacji |
+| T27 | zlecenie wskazuje plik, którego w repozytorium adresata NIE MA (`KANON-CATHERLY-STRONA.md`); właściciel: „trzeci raz dziś"; odwrotność klasy T21 — stan nie zaistniał nigdy, więc `merge-base` tego nie złapie | ⚠ zamyka je dopiero zlecenie, które **stanęło** na tym sprawdzeniu |
+| T28 | zamówiony pomiar był już wykonany (`32302412113`, `69c2dab`), a jego odpowiedź brzmi „nie zielone"; koszt powtórki = 8 min CI + push bez zgody | ⚠ zlecenie pomiaru ma najpierw czytać `gh run list` |
+| T29 | „PRZED i PO" niewykonalne — strażnik, werdykt marginesu i `concurrency` żyją wyłącznie w niewypchniętym `6383580`; zlecenie zakłada, że stan zdalny = lokalny | ⚠ zamyka push pakietu **+ dowód z runnera** (7.3.13) |
+| T30 | `workflow_dispatch` martwy, bo `main` (`0896219`) nie ma `.github`; **ta sama przyczyna co `RECZ-161`** po stronie aplikacji — odwołanie międzyrepozytoryjne, **którego żadna bramka stąd nie weryfikuje** (T21 ust. 5) | ⚠ dwa kierunki, oba **czekają na decyzję** |
+| T31 | „push obu commitów" = push dziesięciu; właściciel: „moja liczba z pamięci"; między zleceniem a wykonaniem liczba zmieniła się na dziewięć | ⚠ zgoda zbiorcza **nie zamyka** tej pozycji |
+| T32 | **źródeł reguł wiążących jest PIĘĆ, nie trzy** (STRATEGIA, PLAN, 30 ADR-ów, `CLAUDE.md`, ten rejestr), a `CLAUDE.md` jako jedyny nie deklaruje swojego miejsca; briefing mówił „dwa" — liczba za mała, wzięta z pola widzenia, nie z odczytu | ⚠ **czeka na decyzję** (7.2.10) — najcięższa z nowych |
+| T33 | **próg 1800 ms przy rozrzucie 593 ms jest NIEINTERPRETOWALNY, a nie surowy** — bramka nie może dać wiarygodnej zieleni ani czerwieni (rozstrzygnięcie właściciela) | ⚠ **pozycja checklisty premiery**, blokuje Fazę 7 |
+| T34 | dziesięć zakazów wiążących dla KAŻDEGO zlecenia, także właściciela — wpisane do `CLAUDE.md`; 4 z 10 sprawdzalne mechanicznie, 6 wymaga oceny zamiaru | wdrożone, **strażnik cząstkowy czeka na decyzję** (7.2.11) |
 
 ---
 
