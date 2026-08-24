@@ -16,6 +16,11 @@ różnych miejscach i żaden nie wiedział o pozostałych. **To była pierwsza
 reguła, którą trzeba było zastosować do samej siebie** — zlecenie właściciela
 2026-08-24, `WWW/014`.
 
+**Wymóg kanonu wobec TEGO dokumentu** (właściciel, 2026-08-24): **każda tabela
+dowodów wartości niesie kolumnę kosztu albo deklarację, że go nie mierzy.**
+Ten plik niesie **jedno i drugie** — tabelę kosztów oraz jawne zastrzeżenie, że
+jej zasięg jest krótszy niż historia projektu.
+
 **Kolumna, której klasa 17 nie miała.** Właściciel dodał ją przy zleceniu:
 **czy dowód jest WŁASNY, czy PRZEJĘTY**. Rozróżnienie decyduje o tym, czy
 reguła stoi na jednym pomiarze, czy na dwóch niezależnych — a to jest różnica
@@ -82,18 +87,100 @@ istnieć" w części o rodzinie `RECZ-286` (#4) — ale jej **własne** pokrycie
 stoi obok, w #3.
 
 **Skupienie w czasie jest samo w sobie ustaleniem.** Siedemnaście z
-dwudziestu pięciu dowodów nosi datę **2026-08-24**. Dwa czytania są możliwe
-i nie da się ich stąd rozstrzygnąć: albo tego dnia intensywnie sprawdzano
-rzeczy dotąd niesprawdzone, albo **dowody wcześniejsze istnieją, tylko nie
-zostały zapisane jako dowody**. Drugie jest prawdopodobniejsze i oznacza, że
-ta tabela jest **niepełna od pierwszego dnia** — nie zawiera niczego sprzed
-2026-08-19, choć projekt jest starszy.
+dwudziestu pięciu dowodów nosi datę **2026-08-24**. Możliwe są **trzy**
+czytania i **żadnego nie da się stąd rozstrzygnąć — wszystkie zostają
+otwarte**:
+**(a)** tego dnia intensywnie sprawdzano rzeczy dotąd niesprawdzone;
+**(b)** dowody wcześniejsze **istnieją, tylko nie zostały zapisane jako
+dowody** — wtedy tabela jest **niepełna od pierwszego dnia**, bo nie zawiera
+niczego sprzed 2026-08-19, choć projekt jest starszy;
+**(c)** reguły powstałe przed 2026-08-19 **mogły nie mieć dowodów w ogóle**,
+bo powstawały jako **zalecenia, nie mechanizmy** — a zalecenie nie ma czym się
+opłacić, więc nie zostawia dowodu. Przy tym czytaniu brak jest **własnością
+tamtego okresu, nie luką zapisu**, i tabela nie jest niepełna, tylko krótsza
+niż projekt.
+Czytanie **(b)** wskazał wykonawca jako prawdopodobniejsze; **(c)** dopisał
+właściciel 2026-08-24, wprost zastrzegając, że rozstrzygać nie należy.
+Praktyczna różnica: przy **(b)** warto przekopać historię sprzed 19.08, przy
+**(c)** byłoby to szukaniem czegoś, czego nie ma.
 
-**Czego w tabeli NIE MA, a czego reguły dotyczą:** żadnego dowodu **negatywnego**
-— przypadku, w którym reguła kosztowała więcej, niż dała. Brak takich wpisów
-nie znaczy, że ich nie było; znaczy, że nikt ich nie szukał. Tabela jest
-zbudowana z rzeczy, które regułom przyznają rację, i **to jest jej wbudowana
-stronniczość**, nazwana tu wprost, żeby nikt nie odczytał jej jako bilansu.
+## Dwie zadeklarowane stronniczości tego dokumentu
+
+Obie są nazwane **wprost i na stałe**, bo tabela bez nich czyta się jak bilans,
+a bilansem nie jest.
+
+**(1) Do 2026-08-24 nie było tu żadnego dowodu NEGATYWNEGO** — przypadku,
+w którym reguła kosztowała więcej, niż dała. Brak nie znaczył, że ich nie było;
+znaczył, że **nikt ich nie szukał**. Zbiór przeszukany pod jednym kątem nie
+mierzy proporcji. Luka jest domknięta w części — patrz tabela kosztów niżej —
+ale domknięta **jednym przeszukaniem o zadeklarowanym zasięgu**, nie
+wyczerpująco.
+
+**(2) „Własny" nie znaczy „niezależny".** Dwadzieścia jeden dowodów z dwudziestu
+pięciu jest własnych, i to brzmi lepiej, niż jest: wszystkie powstały
+**w jednym repozytorium, w kilkunastu dobach, w jednym przepływie pracy**. Mierzą
+więc także **wspólny sposób pracy**, nie wyłącznie same reguły. Ten dokument nie
+rozstrzyga, ile z nich przetrwałoby w innym przepływie — i nie da się tego
+rozstrzygnąć stąd.
+
+---
+
+## Tabela kosztów — przypadki, w których reguła kosztowała
+
+Zlecenie właściciela `WWW/015`, 2026-08-24: *„przejdź nasze reguły i poszukaj
+przypadków, w których reguła kosztowała więcej, niż dała. Nie oceniaj — sama
+lista z powodem."* **Oceny tu nie ma**: żaden wpis nie mówi, czy koszt był
+wart zapłacenia. Kolumna „koszt zmaterializowany" odróżnia szkodę, która
+zaszła, od ryzyka, które zostało poniesione i nie wypaliło — bo mieszanie
+tych dwóch rzeczy jest tym samym błędem, co mieszanie dowodu z anegdotą.
+
+| # | Reguła | Co kosztowała | Koszt zmaterializowany? | Własny / przejęty |
+|---|---|---|---|---|
+| K1 | **Zakaz 1 — zgoda imienna na każdy push** | Siedem osobnych rund zgody w dwie doby na dwanaście commitów. Konkretnie 2026-08-24: poprawka `CLAUDE.md` usuwająca **fałszywe zdanie o automacie backupu** — czyli zabezpieczenie przed cichą utratą pracy — powstała **po** udzieleniu zgody i musiała czekać lokalnie całą rundę. Gdyby sesja padła w tym oknie, ochrona nie byłaby na zdalnym | **nie** — okno się zamknęło bez awarii; koszt był **poniesionym ryzykiem** | **własny** |
+| K2 | **Zakaz 8 — żadnego „przy okazji napraw X"** | **T43** (`.env.example` wycięty z każdej migawki) jest znany, tani do naprawy i **nadal działa**: od wykrycia powstały **cztery** migawki, każda z tym samym defektem. Tak samo **T41**. Reguła zamienia tanią poprawkę w pozycję rejestru plus rundę zgody | **tak** — cztery wadliwe migawki, defekt czynny | **własny** |
+| K3 | **„Brak dowodu = brak zabezpieczenia" + „mutacja przed wyborem"** | Wzmocnienie komunikatu o anulowaniu wpisem do `$GITHUB_STEP_SUMMARY` — **ściśle lepsze od stanu dzisiejszego i nieosłabiające żadnej bramki** — nie zostało dopisane, bo jego przetrwanie przy anulowaniu jest niepotwierdzone. Warstwa słabsza zostaje **do czasu eksperymentu CI, którego termin nie jest wyznaczony** | **tak** — stan słabszy trwa, bez daty końcowej | **własny** |
+| K4 | **Literalne wykonanie zgody, bez rozszerzania poza literę** | `bramka-pelny-zestaw` została na limicie 10 min przez jedną rundę wymiany, przy zmierzonym wtedy zapasie **1,86×**. W tym oknie przekroczenie dałoby czerwień, która nie jest werdyktem | **nie** — żaden przebieg w tym oknie limitu nie przekroczył | **własny** |
+| K5 | **Pełna prowieniencja przy każdej pozycji rejestru** | Wiersze urosły do kilku tysięcy znaków, więc **dopisanie piątej kolumny wymagałoby przepisania każdego wiersza w całości**. Z tego powodu powstał osobny skorowidz ogniw zamiast kolumny — obejście, nie rozwiązanie | **tak** — zapisane jako **T39**, zmiana struktury rejestru jest dziś droga | **własny** |
+| K6 | **„Odesłanie bez treści" — zakaz uzupełniania domysłem** | W **T26** stoją dziś dwa odwołania (ustalenie toru 13 o parytecie, korekta „158→156" do toru 8) **bez treści**. Reguła uchroniła przed fałszywą pewnością **i zostawiła zapis niepełny** — czytelnik po tej stronie nie może z nich skorzystać | **tak** — dwa odwołania bezużyteczne stąd | **własny** |
+| K7 | **Reguły o zapisie: przekazanie w tym samym commicie, rejestr, prowieniencja, stemple** | Zmierzone `git log --numstat` od 2026-08-23: **dwanaście commitów**, `docs/` **+2122 / −263**, pliki korzenia (`CLAUDE.md`, `STRATEGIA.md`) **+322 / −18**, `.github/` **+81 / −1**, **`src/` `content/` `design/` — zero linii**. **Uwaga o pomyleniu przyczyn, bez której ta liczba wprowadza w błąd:** Faza 4 stoi w spoczynku do bloku designu **z decyzji właściciela**, więc zero w `src/` jest w części zamierzone, a nie wyłącznie kosztem reguł. Rozdzielić tych dwóch przyczyn stąd się nie da | **fakt zmierzony**, nie przypisany jednej przyczynie | **własny** |
+| K8 | *(kandydat właściciela)* **Ostrożność wobec nieistniejącego ryzyka** | *„wstrzymanie naprawy na trzy doby"* — **treści po tej stronie nie ma**. Odnotowane jako fakt przekazany, bez opisu; uzupełnienie domysłem byłoby złamaniem reguły 18 kanonu | nieustalone stąd | **przejęty** — repozytorium aplikacji, 2026-08-24, `P-22` |
+
+### Kandydat właściciela, którego NIE potwierdziłem
+
+**„Odmowa wykonania zlecenia z powodu reguły, gdy zlecenie było trafne"** —
+**nie znalazłem takiego przypadku po tej stronie.** Najbliższy to **T35**:
+zlecenie o konwencji walidacji kluczy `env` było trafne **co do treści**, ale
+jego przedmiot w całości leżał w repozytorium aplikacji (grep: zero trafień
+tutaj, komplet tam; `zod` nie jest nawet zależnością tego projektu), więc
+odesłanie było poprawne, a nie kosztowne. **Wynik „zero" — z podanym zasięgiem
+poszukiwania niżej.**
+
+### Kandydat, który jest czym innym, niż się wydaje
+
+**„Odesłanie do dokumentu, którego nie było" (trzy razy)** — to **nie jest koszt
+reguły**, bo w chwili tych trzech przypadków reguła jeszcze nie istniała;
+powstała **z nich**, 2026-08-24. To jest **defekt, który regułę wywołał**, więc
+jego miejsce jest w tabeli dodatniej (poz. 24), nie w kosztach. Rozróżnienie ma
+znaczenie praktyczne: gdyby wpisać je tutaj, kolumna kosztów obciążałaby regułę
+szkodą, której reguła zapobiegła.
+
+### Jak szukałem — i czego NIE przeszukałem
+
+**Zasięg przeszukania (2026-08-24):** dziewiętnaście klas kanonu w `CLAUDE.md`,
+przy każdej pytanie „czy jest przypadek, w którym jej zastosowanie kosztowało";
+pozycje rejestru **T21–T43** (dopisane 2026-08-19…24); rozdział 9 przekazania
+(pułapki); rozkład zmian policzony `git log --numstat --since=2026-08-23`.
+
+**Czego NIE przeszukałem, i to jest ta sama luka, co w tabeli dodatniej:**
+pozycji **T1–T20**, dwudziestu czterech pozycji treściowych i **całego okresu
+sprzed 2026-08-19**. Tabela kosztów ma więc **ten sam horyzont** co tabela
+dowodów — pięć dób. Wynik „osiem pozycji" opisuje ten horyzont, nie całą
+historię projektu.
+
+**Czego to przeszukanie z natury nie znajdzie:** kosztu w postaci rzeczy, która
+**nie powstała**, bo reguła zniechęciła do jej zaczęcia. Takie przypadki nie
+zostawiają śladu w repozytorium ani w rejestrze i **żadne przeszukanie stąd ich
+nie wykryje** — odnotowane jako granica metody, nie zasypane.
 
 ---
 

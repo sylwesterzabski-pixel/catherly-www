@@ -157,7 +157,32 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   jedna tabela, kolumny: reguła · dowód · data · gdzie leżał przed zebraniem ·
   **własny czy przejęty**. Ostatnia kolumna rozstrzyga, czy reguła stoi na
   jednym pomiarze, czy na dwóch niezależnych; przy dowodzie przejętym podaje
-  się źródło i `P-22`, gdy drogi weryfikacji stąd nie ma. Pojedynczy przypadek, w którym reguła się opłaciła, czyta się
+  się źródło i `P-22`, gdy drogi weryfikacji stąd nie ma.
+- KAŻDA TABELA DOWODÓW WARTOŚCI NIESIE KOLUMNĘ KOSZTU ALBO DEKLARACJĘ, ŻE GO
+  NIE MIERZY (właściciel, 2026-08-24). **Zbiór przeszukany pod jednym kątem
+  nie mierzy proporcji.** Spis przypadków, w których reguły się opłaciły,
+  zbudowany wyłącznie z takich przypadków, czyta się jak bilans i bilansem nie
+  jest — a czytający wyciąga z niego wniosek o **skuteczności**, choć są tam
+  wyłącznie sukcesy. Dopuszczalne są dwa wyjścia i **żadne trzecie**: albo
+  kolumna kosztu z realnym przeszukaniem, albo zdanie „ten dokument kosztów
+  nie mierzy" postawione **w nim samym**, nie w cudzej głowie. Przy kolumnie
+  kosztu odróżnia się **koszt zmaterializowany** od **poniesionego ryzyka,
+  które nie wypaliło** — mieszanie ich jest tym samym błędem, co mieszanie
+  dowodu z anegdotą. Zapisuje się też **zasięg przeszukania** i to, **czego
+  ono z natury nie znajdzie**: koszt w postaci rzeczy, która nie powstała, bo
+  reguła zniechęciła do jej zaczęcia, nie zostawia śladu w repozytorium
+  i żadne przeszukanie go nie wykryje.
+- DWA DOWODY Z JEDNEGO ŹRÓDŁA MIERZĄ POWTARZALNOŚĆ ZJAWISKA, NIE NIEZALEŻNOŚĆ
+  POTWIERDZENIA (właściciel, 2026-08-24). Dwa przypadki z tego samego
+  repozytorium, tego samego przepływu pracy i tej samej pary rąk pokazują, że
+  zjawisko **wraca** — nie że ktokolwiek **niezależnie** potwierdził regułę.
+  Do niezależności potrzeba **innego źródła albo innego mechanizmu awarii**;
+  bez tego mamy jedną obserwację powtórzoną, a nie dwie. Konsekwencja
+  praktyczna: licząc, na czym reguła stoi, licz **źródła, nie wystąpienia** —
+  inaczej reguła z pięcioma przypadkami z jednego miejsca wygląda mocniej niż
+  reguła z dwoma z dwóch, a jest odwrotnie. Wzorzec (2026-08-24): na 25
+  dowodów wartości w `docs/faza-2/dowody-wartosci-regul.md` **jedna** para jest
+  naprawdę niezależna — reszta powtarza się w obrębie tego repozytorium. Pojedynczy przypadek, w którym reguła się opłaciła, czyta się
   jak **anegdota**; dwa niezależne, zapisane obok siebie, pokazują, **czego
   poprzednia metoda nie widziała z definicji**. Wzorzec: reguła „weryfikuj
   backup odtworzeniem, nie sumą" weszła rano 2026-08-24 i tego samego dnia

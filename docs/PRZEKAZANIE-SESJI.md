@@ -19,7 +19,7 @@ raportem" dotyczy także tego dokumentu.
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (484 linie, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (509 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
@@ -112,7 +112,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `6f13ed8` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Siedem pushy na siedem osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80` i `6d55a80` → `6f13ed8` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `84a7037` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Osiem pushy na osiem osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80`, `6d55a80` → `6f13ed8` i `6f13ed8` → `84a7037` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
@@ -307,6 +307,18 @@ obietnice**. Reguły, o które w tej linii pracy najczęściej chodzi:
     na czytelnika **ostrożnego**; zakaz działa na **przekonanego**, a to ten
     drugi robi szkodę. Zakaz stawia się **w obie strony**, jeśli ustalenie ma
     parę po drugiej stronie granicy. Wzorzec: T43.
+20. **KAŻDA TABELA DOWODÓW WARTOŚCI NIESIE KOLUMNĘ KOSZTU ALBO DEKLARACJĘ, ŻE
+    GO NIE MIERZY** (właściciel, 2026-08-24). **Zbiór przeszukany pod jednym
+    kątem nie mierzy proporcji.** Odróżnia się **koszt zmaterializowany** od
+    **poniesionego ryzyka, które nie wypaliło**; zapisuje się **zasięg
+    przeszukania** i to, **czego ono z natury nie znajdzie** — koszt w postaci
+    rzeczy, która nie powstała, nie zostawia śladu.
+21. **DWA DOWODY Z JEDNEGO ŹRÓDŁA MIERZĄ POWTARZALNOŚĆ ZJAWISKA, NIE
+    NIEZALEŻNOŚĆ POTWIERDZENIA** (właściciel, 2026-08-24). Do niezależności
+    trzeba **innego źródła albo innego mechanizmu awarii**. Licząc, na czym
+    reguła stoi, licz **źródła, nie wystąpienia** — inaczej reguła z pięcioma
+    przypadkami z jednego miejsca wygląda mocniej niż reguła z dwoma z dwóch,
+    a jest odwrotnie.
 
 Sam **ADR-018 zyskał 2026-08-23 punkt 7** (T35): **zlecenie pod złym adresem
 odsyła się, nie wykonuje w przybliżeniu** — w obu kierunkach. Odbiorca nie
@@ -1179,6 +1191,84 @@ którejś migawce defekt zniknął albo urósł, opis byłby niepełny.
 
 ---
 
+### 4.16 Tabela kosztów — druga strona tego samego dokumentu (`WWW/015`)
+
+**Push `84a7037`** jawnym refspec; zdalny: `84a70371698d23d4fbf41edf3cfd94d3316de76c`.
+
+**Zlecenie: znaleźć przypadki, w których reguła kosztowała więcej, niż dała.**
+Wynik: **osiem pozycji** w `docs/faza-2/dowody-wartosci-regul.md`, tabela
+kosztów. **Bez oceny** — żaden wpis nie mówi, czy koszt był wart zapłacenia.
+Dodana kolumna, której zlecenie nie wymagało: **czy koszt się
+zmaterializował**, czy było to **poniesione ryzyko, które nie wypaliło** —
+mieszanie tych dwóch to ten sam błąd, co mieszanie dowodu z anegdotą.
+
+| | reguła | koszt | zmaterializowany |
+|---|---|---|---|
+| K1 | zakaz 1 — zgoda imienna | poprawka kanonu chroniąca przed cichą utratą pracy czekała lokalnie całą rundę | **nie** — ryzyko |
+| K2 | zakaz 8 — bez „przy okazji" | **cztery** wadliwe migawki od wykrycia T43; defekt czynny | **tak** |
+| K3 | mutacja przed wyborem | wzmocnienie `$GITHUB_STEP_SUMMARY` niedopisane; warstwa słabsza **bez daty końcowej** | **tak** |
+| K4 | literalne wykonanie zgody | `pelny-zestaw` na 10 min przy zapasie 1,86× przez jedną rundę | **nie** — ryzyko |
+| K5 | pełna prowieniencja w rejestrze | wiersze po kilka tysięcy znaków; piąta kolumna wymagałaby przepisania wszystkich (**T39**) | **tak** |
+| K6 | zakaz uzupełniania domysłem | dwa odwołania w T26 **bez treści**, bezużyteczne stąd | **tak** |
+| K7 | reguły o zapisie | 12 commitów od 23.08: `docs/` **+2122/−263**, korzeń **+322/−18**, `.github/` **+81/−1**, **`src/` `content/` `design/` — zero** | fakt zmierzony |
+| K8 | *(kandydat właściciela)* ostrożność wobec nieistniejącego ryzyka | treści stąd nie ma — `P-22` | nieustalone |
+
+**Przy K7 stoi zastrzeżenie, bez którego liczba wprowadza w błąd:** Faza 4 jest
+w spoczynku do bloku designu **z decyzji właściciela**, więc zero w `src/` jest
+w części zamierzone, a nie wyłącznie kosztem reguł. **Rozdzielić tych dwóch
+przyczyn stąd się nie da** i tak jest zapisane.
+
+**Kandydat właściciela, którego NIE potwierdziłem:** „odmowa wykonania zlecenia
+z powodu reguły, gdy zlecenie było trafne". Najbliższy to **T35** — zlecenie
+trafne co do treści, ale jego przedmiot w całości leżał w drugim repozytorium,
+więc odesłanie było poprawne, nie kosztowne. **Wynik zero, z podanym
+zasięgiem.**
+
+**Kandydat, który jest czym innym, niż się wydaje:** „odesłanie do dokumentu,
+którego nie było" (trzy razy) **nie jest kosztem reguły** — w chwili tych
+przypadków reguła jeszcze nie istniała, powstała **z nich**. To defekt, który
+regułę wywołał, więc jego miejsce jest w tabeli **dodatniej**. Wpisany do
+kosztów obciążałby regułę szkodą, której reguła zapobiegła.
+
+**Zasięg przeszukania, zadeklarowany w dokumencie:** 19 klas kanonu, pozycje
+**T21–T43**, rozdz. 9 przekazania, `git log --numstat --since=2026-08-23`.
+**Czego nie przeszukałem:** T1–T20, 24 pozycji treściowych i całego okresu
+sprzed 2026-08-19 — **ten sam horyzont pięciu dób**, co w tabeli dodatniej.
+**Czego to przeszukanie z natury nie znajdzie:** kosztu w postaci rzeczy, która
+**nie powstała**, bo reguła zniechęciła do jej zaczęcia — takie przypadki nie
+zostawiają śladu i żadne przeszukanie stąd ich nie wykryje.
+
+**Dwie nowe klasy kanonu (20, 21)** — obie w brzmieniu właściciela:
+**tabela dowodów niesie kolumnę kosztu albo deklarację, że go nie mierzy**
+(*zbiór przeszukany pod jednym kątem nie mierzy proporcji*) oraz **dwa dowody
+z jednego źródła mierzą powtarzalność, nie niezależność** (*licz źródła, nie
+wystąpienia*).
+
+**Punkt 3 — dopisana trzecia możliwość właściciela, wszystkie trzy otwarte.**
+Skupienie 17 z 25 dowodów na dacie 2026-08-24 może znaczyć: **(a)** tego dnia
+dużo sprawdzano; **(b)** dowody wcześniejsze istnieją i nie zostały zapisane
+jako dowody; **(c)** reguły sprzed 19.08 **mogły nie mieć dowodów w ogóle**, bo
+powstawały jako **zalecenia, nie mechanizmy** — a zalecenie nie ma czym się
+opłacić. Przy **(c)** brak jest **własnością tamtego okresu, nie luką zapisu**.
+Praktyczna różnica: przy (b) warto przekopać historię sprzed 19.08, przy (c)
+byłoby to szukaniem czegoś, czego nie ma.
+
+**Druga zadeklarowana stronniczość dopisana obok pierwszej:** „własny" nie
+znaczy „niezależny" — 21 z 25 dowodów powstało w jednym repozytorium,
+w kilkunastu dobach, w jednym przepływie pracy, więc mierzą także **wspólny
+sposób pracy**, nie wyłącznie same reguły.
+
+**T26 — pierwszy przypadek, w którym reguła stosowana do siebie UCHRONIŁA,
+zamiast opisać po fakcie.** Wszystkie wcześniejsze samozastosowania były
+retrospektywne (przekazanie łamiące własną regułę, hierarchia odtwarzająca
+defekt szczebel wyżej, kanon twierdzący o nieistniejącym mechanizmie). Tu
+reguła zadziałała **w chwili pisania** i zatrzymała rękę przed dopisaniem
+domyślonej treści. Wartość diagnostyczna: retrospekcja dowodzi, że reguła jest
+**trafna**; uchronienie dowodzi, że jest **czytana w chwili pracy** — a to
+jedyny moment, w którym reguła cokolwiek zmienia.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -1982,9 +2072,10 @@ liczba zamiast pomiaru:**
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T43
-- `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 109 linii;
-  jedna tabela dowodów wartości reguł (25 pozycji), kolumna własny/przejęty.
-  **Nie jest źródłem reguł** — szczebel 7, deklaruje to w nagłówku
+- `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 196 linii;
+  **dwie** tabele — dowodów wartości (**25** pozycji) i **kosztów** (**8**),
+  obie z kolumną własny/przejęty. **Nie jest źródłem reguł** — szczebel 7,
+  deklaruje to w nagłówku; niesie też **dwie zadeklarowane stronniczości**
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
   **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
   (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
@@ -1998,7 +2089,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **484 linie, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **509 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`
