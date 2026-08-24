@@ -841,7 +841,14 @@ przekazanie → panele.** Kanon stoi **nad** strategią, bo strategia mówi CO,
 a kanon JAK. Zdanie o pierwszeństwie strategii **wykreślone** z
 `docs/STRATEGIA.md` — **osobnym commitem**, z cytatem starego brzmienia
 w opisie. Przesłanka zapisana jako klasa **„zły podzbiór"**: lista podana bez
-policzenia **wygląda jak komplet** i zatrzymuje szukanie.
+policzenia **wygląda jak komplet** i zatrzymuje szukanie. Nagłówek
+`docs/STRATEGIA.md` niesie teraz zdanie: *„Miejsce w hierarchii źródeł reguł:
+szczebel 3 z siedmiu"*, z odesłaniem do `CLAUDE.md` — czyli **drugi z pięciu
+brakujących plików warunku zamknięcia T32 jest odhaczony**. Zostaje pięć:
+`docs/adr/README.md`, `docs/PLAN.md`, rejestr, to przekazanie i dokumenty
+paneli. Kolejność commitów była wymuszona: `CLAUDE.md` musiało **najpierw**
+wymienić siedem szczebli, bo inaczej STRATEGIA odsyłałaby do hierarchii,
+która jej nie zawiera.
 
 **T41 — dopisane, co konkretnie może się zepsuć.** Akcja celująca w Node 20 na
 runnerze z Node 24 może przestać działać **przy dowolnej aktualizacji tej

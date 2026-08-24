@@ -1,8 +1,13 @@
 # catherly.com — dokument strategii (50 punktów)
 
-Dokument nadrzędny projektu. Plan inżynierski (docs/PLAN.md) mówi JAK —
-ten dokument mówi CO i DLACZEGO. Sprzeczność rozstrzyga się na korzyść
-strategii, chyba że ADR jawnie stanowi inaczej.
+Ten dokument mówi **CO** robimy i **DLACZEGO**. Plan inżynierski
+(`docs/PLAN.md`) mówi JAK w sensie wykonawczym i jest wobec tego dokumentu
+podrzędny.
+
+**Miejsce w hierarchii źródeł reguł: szczebel 3 z siedmiu.** Nad tym
+dokumentem stoją **ADR** (`docs/adr/`) i **`CLAUDE.md`**. Pełna kolejność
+i uzasadnienie — rozdział „Hierarchia źródeł reguł" w `CLAUDE.md`; przy
+sprzeczności rozstrzyga tamten zapis, nie ten.
 
 ## ZASADY NACZELNE
 
