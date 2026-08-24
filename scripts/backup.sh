@@ -56,6 +56,41 @@ if ! zip -r -q "$CEL/$PLIK" . \
   blad "zip zakończył się błędem (brak miejsca albo błąd zapisu)"
 fi
 
+# T43 (2026-08-24). Wykluczenie `.env.*` wycinało też `.env.example` — plik
+# ŚLEDZONY w gicie. Skutkiem było archiwum, z którego odtworzenie daje repo
+# z `D .env.example`, czyli zmianą, której nikt nie wprowadził; odtwarzający
+# po awarii uznaje, że sam skasował plik.
+#
+# Kolejność jest tu całą treścią: NAJPIERW wyklucz wszystko (`.env`,
+# `.env.*`), POTEM dołóż z powrotem jedną nazwę z listy. Odwrotnie — zawężając
+# wzorzec wykluczenia — nowy plik `.env.cokolwiek` z sekretami trafiłby na SSD
+# i nikt by tego nie zauważył. Domyślnie odmawiamy; wyjątek jest imienny.
+DOZWOLONE_ENV=(".env.example")
+for plik in "${DOZWOLONE_ENV[@]}"; do
+  [ -f "$plik" ] || continue
+  zip -q -u "$CEL/$PLIK" "$plik" || {
+    rm -f "$CEL/$PLIK"
+    blad "nie udało się dołożyć $plik do archiwum"
+  }
+done
+
+# Dryf listy wyjątków wykrywa się GŁOŚNO, nie po cichu. Jeśli git śledzi
+# jakiś `.env*` spoza listy, to albo trzeba go dopisać (i wtedy wraca do
+# migawek), albo ktoś przez pomyłkę dodał do repozytorium plik z sekretami —
+# obie sytuacje wymagają decyzji człowieka, a nie milczącego pominięcia.
+while IFS= read -r sledzony; do
+  [ -n "$sledzony" ] || continue
+  dozwolony=nie
+  for plik in "${DOZWOLONE_ENV[@]}"; do
+    [ "$sledzony" = "$plik" ] && dozwolony=tak
+  done
+  if [ "$dozwolony" = nie ]; then
+    echo "UWAGA: git śledzi '$sledzony', a nie ma go na liście wyjątków" >&2
+    echo "       → NIE trafił do migawki. Dopisz go do DOZWOLONE_ENV" >&2
+    echo "       albo sprawdź, czy nie zawiera sekretów (T43)." >&2
+  fi
+done < <(git ls-files -- '.env*' 2>/dev/null)
+
 # Dowód, nie przekonanie: test integralności archiwum po zapisie.
 unzip -t -qq "$CEL/$PLIK" >/dev/null 2>&1 || {
   rm -f "$CEL/$PLIK"
