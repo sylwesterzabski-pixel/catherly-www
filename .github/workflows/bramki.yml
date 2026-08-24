@@ -520,6 +520,40 @@ jobs:
         run: |
           echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
 
+  bramka-deklaracje:
+    # ZAPADKA, nie bramka żółta. Rozstrzygnięcie właściciela WWW/026, 2026-08-24
+    # (pozycja T44). Tor 9 przysłał to zadanie z `continue-on-error: true` —
+    # kształt trafny co do intencji i niedopuszczalny tutaj, bo ZAKAZ 3 kanonu
+    # strony wymienia `continue-on-error` z nazwy jako zamianę czerwieni w ciszę.
+    #
+    # TRZECI KSZTAŁT: próg odniesienia w `scripts/deklaracje-baseline.json`.
+    # Zadanie jest zwyczajnie czerwone albo zielone — bez wyjątków, bez ciszy.
+    # Dziś ZIELONE (10 naruszeń przy progu 10), więc nie uczy obchodzenia;
+    # jedenaste naruszenie zapala czerwień OD PIERWSZEGO DNIA.
+    #
+    # PRÓG CHODZI WYŁĄCZNIE W DÓŁ i schodzi W TYM SAMYM COMMICIE co naprawa —
+    # spadek liczby naruszeń poniżej progu też jest czerwienią. Bez tego próg
+    # zostałby zapasem, w który wolno wrócić: ktoś naprawia dwa rozjazdy, ktoś
+    # inny dokłada dwa nowe, a bramka milczy.
+    #
+    # CZEGO TA ZIELEŃ NIE ZNACZY: nie „deklaracje są poprawne", tylko „nie
+    # przybyło nowych". Dziesięć rozjazdów stoi i jest wypisane imiennie
+    # w pliku progu oraz w rejestrze (T44) jako kolejka napraw — zapadka bez
+    # kolejki napraw byłaby konserwowaniem długu.
+    name: "Bramka: Deklaracje długości (zapadka — próg schodzi tylko w dół)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run bramka:deklaracje
+      - name: "Przyczyna anulowania"
+        if: cancelled()
+        run: |
+          echo "::warning title=Anulowanie::Zbadaj czas trwania: krotki (sekundy) = wyparcie przez concurrency, oczekiwane; bliski timeout-minutes = limit przekroczony, brak werdyktu."
+
   bramka-nieodwracalne:
     name: "Bramka: Nieodwracalne (ADR-018 — raport audytu dla commita)"
     runs-on: ubuntu-latest

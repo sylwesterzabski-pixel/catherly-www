@@ -1567,6 +1567,64 @@ zapisane.
 
 ---
 
+### 4.21 T45 naprawione, T44 rozstrzygnięte zapadką (`WWW/026`)
+
+**T45 — zależności przywrócone, bramki znów wykonalne.** Oba warunki właściciela
+sprawdzone **przed** instalacją: lockfile śledzony w repozytorium (416 914 B);
+wolne **18 GiB** przy spodziewanej instalacji rzędu 0,3–1,5 GiB. `npm ci` →
+kod **0**, **533 pakiety, 691 MB**, wolne po instalacji **17 GiB**.
+
+**Lint przed/po: `127` → `0`.** Zero ostrzeżeń, zero błędów, puste wyjście —
+czyli commity z `WWW/025` przechodzą eslint, co wcześniej było **argumentem,
+a nie dowodem**. Po odbudowie (`npm run build`, kod 0) `bramka:kotwice` też
+wraca **zielona**. Pełny zestaw lokalny na `e906013`: **zielone** — `tokeny`,
+`liczby`, `parytet`, `kontrakt`, `kotwice`, `linki`, `nojs`, `lint`;
+**czerwone dwie, obie wyjaśnione i znane**: `cennik` (wymaga klucza testowego
+Stripe po stronie właściciela — w CI ta bramka była zielona) oraz
+`nieodwracalne` (brak raportu audytu dla commita, ADR-018 pkt 4 — wraca przy
+każdym nowym commicie).
+
+**T44 — trzeci kształt istnieje i jest wdrożony: ZAPADKA.** Rozjazd dwóch
+kanonów rozstrzygnął właściciel; odmowa wymyślenia kształtu po cichu została
+uznana za właściwą. Kształt: **próg odniesienia** w
+`scripts/deklaracje-baseline.json` (dziś **10**), bramka czerwona **wyłącznie
+ponad próg**. Zero `continue-on-error` — sprawdzone maszynowo: **w całym
+`bramki.yml` zero zadań z tym kluczem**. Zielona dziś, więc nie uczy
+obchodzenia; **jedenaste naruszenie zapala czerwień od pierwszego dnia**.
+
+**Dwie decyzje projektowe, które nie były w zleceniu, i dlatego je nazywam:**
+**(1)** skryptu toru 9 **nie modyfikowałem** — zapadka jest **opakowaniem**
+(`scripts/bramka-deklaracje.mjs`), bo `lint-deklaracje.mjs` wróci przy
+następnym imporcie i rozjazd kopii kosztowałby więcej; **(2) spadek poniżej
+progu też jest czerwienią** — inaczej próg zostaje zapasem, w który wolno
+wrócić, i zapadka zapadałaby się tylko z jednej strony. Obie wchodzą **poza
+literę zlecenia** i są tak oznaczone.
+
+**Dowód mutacyjny z kontrolą negatywną, jeden przebieg:**
+
+| | co zrobiono | wynik |
+|---|---|---|
+| regres | `content/pl/obawy.md:24`, `48 zn` → `47 zn` | **11 przy progu 10 → CZERWIEŃ**, kod 1 |
+| kontrola negatywna | cofnięcie przez `git checkout HEAD --` | **10 → ZIELEŃ**, kod 0, `status` czysty |
+| druga gałąź | próg podniesiony do 11 przy 10 naruszeniach | **„POSTĘP NIEZAPISANY" → CZERWIEŃ**, kod 1 |
+
+Cofnięcie zrobione `git checkout HEAD --`, **nie `git checkout --`** — wprost
+z lekcji przeniesionej dziś z toru 9 („`checkout --` bierze z indeksu").
+
+**Kolejka napraw wpisana imiennie** — dziesięć rozjazdów w pliku progu i w T44.
+To warstwa treści, więc naprawa idzie z redakcją tras, w których te ciągi
+siedzą; **zapadka bez kolejki byłaby konserwowaniem długu**.
+
+**T44 pozostaje otwarte:** warunek zamknięcia żąda **przebiegu CI**, w którym
+zadanie daje werdykt. Dziś dowód jest wyłącznie lokalny.
+
+**`package.json` dostał wpis `bramka:deklaracje`** — wcięcie 4 spacje, jak
+sąsiedzi. **To zapis własny, nie przeniesienie**: wersja toru 9 miała 2 spacje
+i grupa 5 zlecenia `WWW/024` zakazywała jej przenoszenia; bez wpisu zadanie CI
+nie miałoby czego wywołać.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -2718,7 +2776,9 @@ kroków w bramkach dziś nie ma. Jedyne wywołanie gita to `git rev-parse HEAD`
 w `scripts/check-audyt.mjs` — działa na płytkim klonie, bo czyta wskaźnik, nie
 przodków. Pierwszym krokiem historycznym będzie strażnik T21.
 
-**Limity czasu (od 2026-08-23, D6 → T24).** Każde z **15** zadań ma
+**Od 2026-08-24 zadań jest 16** — doszła `bramka-deklaracje` (zapadka z progiem odniesienia, T44).
+
+**Limity czasu (od 2026-08-23, D6 → T24).** Każde z **16** zadań ma
 `timeout-minutes`: **`bramka-wydajnosc` → 20** i **`bramka-pelny-zestaw` → 20**
 (to drugie podniesione z 10 tego samego dnia, po zgłoszeniu cienkiego zapasu),
 trzynaście pozostałych → **10**. Domyślne 6 h już nie obowiązuje.

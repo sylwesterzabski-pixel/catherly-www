@@ -20,6 +20,7 @@
     "bramka:nojs": "node scripts/check-nojs.mjs",
     "bramka:cennik": "node scripts/stripe-snapshot.mjs",
     "bramka:nieodwracalne": "node scripts/check-audyt.mjs",
+    "bramka:deklaracje": "node scripts/bramka-deklaracje.mjs",
     "bramka:preview": "node scripts/sprawdz-preview.mjs",
     "bramka:rozgrzewka": "node scripts/rozgrzewka-preview.mjs",
     "bramka:pomiar": "lhci collect --config=lighthouserc.cjs && node scripts/werdykt-po-lcp.mjs",

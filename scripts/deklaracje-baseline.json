@@ -1,0 +1,19 @@
+{
+    "naruszen": 10,
+    "zmierzone": "2026-08-24",
+    "commit": "e906013",
+    "polecenie": "node scripts/lint-deklaracje.mjs",
+    "zasada": "Liczba schodzi w DÓŁ razem z naprawą, w tym samym commicie. Nigdy w górę.",
+    "pozycje": [
+        "content/en/cennik.md — Cennik.plany.starter.pozycja2 (deklaracja 65, faktycznie 57)",
+        "content/pl/definicja.md — Definicja.tresc (deklaracja 275, faktycznie 256)",
+        "content/pl/filary.md — Filary.filar1.konkret1 (deklaracja 71, faktycznie 68)",
+        "content/pl/filary.md — Filary.filar1.konkret2 (deklaracja 74, faktycznie 73)",
+        "content/pl/filary.md — Filary.filar1.konkret3 (deklaracja 67, faktycznie 66)",
+        "content/pl/filary.md — Filary.filar2.konkret2 (deklaracja 65, faktycznie 66)",
+        "content/pl/filary.md — Filary.filar3.konkret1 (deklaracja 75, faktycznie 72)",
+        "content/pl/filary.md — Filary.filar3.konkret3 (deklaracja 60, faktycznie 63)",
+        "content/pl/naglowek.md — Hero.naglowek (deklaracja 62, faktycznie 58)",
+        "content/pl/obawy.md — Obawy.p1 (deklaracja 41, faktycznie 42)"
+    ]
+}
