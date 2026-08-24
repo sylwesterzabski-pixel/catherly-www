@@ -19,7 +19,7 @@ raportem" dotyczy także tego dokumentu.
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (456 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (484 linie, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
@@ -112,7 +112,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `6d55a80` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Sześć pushy na sześć osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db` i `361c7db` → `6d55a80` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `6f13ed8` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Siedem pushy na siedem osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80` i `6d55a80` → `6f13ed8` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
@@ -294,8 +294,19 @@ obietnice**. Reguły, o które w tej linii pracy najczęściej chodzi:
 17. **DOWODY WARTOŚCI REGUŁY ZAPISUJE SIĘ RAZEM, NIE OSOBNO** (właściciel,
     2026-08-24). Pojedynczy przypadek czyta się jak **anegdota**; dwa
     niezależne obok siebie pokazują, **czego poprzednia metoda nie widziała
-    z definicji**. Dopisując dowód, dopisz go tam, gdzie leżą pozostałe —
-    a jeśli leży sam, wskaż, gdzie są inne.
+    z definicji**. **Miejsce zbiórki:
+    `docs/faza-2/dowody-wartosci-regul.md`** — jedna tabela, kolumna
+    **własny/przejęty** obowiązkowa.
+18. **ODESŁANIE BEZ TREŚCI: DOŁĄCZ TREŚĆ ALBO NAPISZ WPROST, ŻE JEJ NIE
+    DOŁĄCZASZ** (właściciel, 2026-08-24). **Asymetria kosztu jest tu całą
+    treścią: jedno pytanie u nadawcy — cała fałszywa pewność u odbiorcy.**
+    Wiąże obie strony: nadawcę przy wysyłce, odbiorcę przy odbiorze —
+    **odesłanie bez treści zwraca się z pytaniem, nie uzupełnia z pamięci.**
+19. **PRZY USTALENIU ZE ZNANYM FAŁSZYWYM WNIOSKIEM — ZAKAZ, NIE SAMO
+    OZNACZENIE** (właściciel, 2026-08-24). Oznaczenie (`P-22`, ogniwa) działa
+    na czytelnika **ostrożnego**; zakaz działa na **przekonanego**, a to ten
+    drugi robi szkodę. Zakaz stawia się **w obie strony**, jeśli ustalenie ma
+    parę po drugiej stronie granicy. Wzorzec: T43.
 
 Sam **ADR-018 zyskał 2026-08-23 punkt 7** (T35): **zlecenie pod złym adresem
 odsyła się, nie wykonuje w przybliżeniu** — w obu kierunkach. Odbiorca nie
@@ -1096,12 +1107,75 @@ i dopiero to drugie zatrzymuje kogoś, kto już uwierzył.
 **Zakaz 1 z uzasadnieniem idzie do kanonu OBU repozytoriów** — właściciel
 przekaże aplikacji. Po tej stronie stoi już w `CLAUDE.md`.
 
-**Uwaga porządkowa, zgłoszona przez właściciela i niewykonana:** dowody
-wartości reguł leżą dziś **rozproszone** — reguła o odtworzeniu ma je przy
-T43, „wynikanie z kodu to nie pomiar" przy T24, „pojedynczy czas trwania nie
-jest czasem trwania" w rozdz. 9. Klasa **17** mówi, że mają leżeć razem.
-Zebranie ich w jedno miejsce to **osobne zadanie** — nie robię go przy okazji
-(zakaz 8), czeka na zlecenie.
+~~**Uwaga porządkowa, zgłoszona przez właściciela i niewykonana:** dowody
+wartości reguł leżą rozproszone.~~ **ZLECONE I WYKONANE 2026-08-24
+(`WWW/014`)** — `docs/faza-2/dowody-wartosci-regul.md`, rozdz. 4.15.
+
+---
+
+### 4.15 Dowody wartości reguł zebrane w jedno — 2026-08-24, `WWW/014`
+
+**Push `6f13ed8`** jawnym refspec; zdalny: `6f13ed80181286511bdecb5f6f1663288fd75eaf`.
+
+**Zlecenie wykonane: `docs/faza-2/dowody-wartosci-regul.md`.** Jedna tabela,
+**25 pozycji**, kolumny: reguła · dowód · data · **gdzie leżał przed
+zebraniem** · **własny czy przejęty**. Ostatnia kolumna to dopisek właściciela
+przy zleceniu — klasa 17 jej nie miała, a **to ona rozstrzyga, czy reguła stoi
+na jednym pomiarze, czy na dwóch niezależnych**.
+
+**Nagłówek deklaruje miejsce w hierarchii od pierwszego commita** („szczebel 7,
+**nie jest źródłem reguł**"). Nowy dokument bez takiego zdania byłby dokładnie
+defektem, który otworzył **T32**; przy okazji to **trzeci z siedmiu nagłówków**
+w warunku zamknięcia T32. Zakaz 10 nie jest naruszony: zakazuje mnożenia
+**źródeł reguł wiążących**, a ten plik jest rejestrem dowodów i mówi to wprost.
+
+**Znalezione przy przeglądzie: nie trzy, tylko dwadzieścia pięć.** Trzy, które
+zgłosiłem, były wierzchołkiem — reszta siedziała we wzorcach przy klasach
+kanonu, w T15, T22, T26, T35, T41, T42, T43 i w rozdz. 9. Wszystkie dowody
+leżały **przy regułach, których dowodzą**, i żaden nie wiedział o pozostałych.
+
+**Cztery rzeczy widać dopiero po zebraniu — i po to była ta tabela:**
+1. **Tylko JEDNA para dowodów jest naprawdę niezależna** — „weryfikuj
+   odtworzeniem, nie sumą": jeden dowód własny (T43), jeden z drugiego
+   repozytorium (`RECZ-287`), dwa różne mechanizmy awarii. Pozostałe pary
+   („raport, którego nikt nie czyta" — T22 i T41) pochodzą z jednego
+   repozytorium i jednej pary rąk, więc dowodzą **powtarzalności, nie
+   niezależności**.
+2. **21 z 25 dowodów jest własnych — i to brzmi lepiej, niż jest.** Własny nie
+   znaczy niezależny: wszystkie powstały w jednym repozytorium, w kilkunastu
+   dobach, w jednym przepływie pracy, więc mierzą też **wspólny sposób
+   pracy**, nie tylko same reguły.
+3. **17 z 25 dowodów nosi datę 2026-08-24.** Dwa czytania i stąd się ich nie
+   rozstrzygnie: albo tego dnia sprawdzono wiele rzeczy dotąd
+   niesprawdzonych, albo **dowody wcześniejsze istnieją, tylko nie zostały
+   zapisane jako dowody**. Drugie jest prawdopodobniejsze, co znaczy, że
+   tabela jest **niepełna od pierwszego dnia** — nie ma w niej niczego sprzed
+   2026-08-19.
+4. **Nie ma ani jednego dowodu NEGATYWNEGO** — przypadku, w którym reguła
+   kosztowała więcej, niż dała. Brak nie znaczy, że ich nie było; znaczy, że
+   nikt ich nie szukał. **Wbudowana stronniczość nazwana w dokumencie
+   wprost**, żeby nikt nie odczytał tabeli jako bilansu.
+
+**Dwie nowe reguły kanonu, obie w brzmieniu właściciela.**
+**(18) „Odesłanie bez treści"** — z asymetrią kosztu jako całą treścią:
+*jedno pytanie u nadawcy, cała fałszywa pewność u odbiorcy*; wiąże **obie**
+strony, więc odbiorca **zwraca odesłanie z pytaniem, nie uzupełnia
+z pamięci**. **(19) „Przy ustaleniu ze znanym fałszywym wnioskiem — zakaz, nie
+samo oznaczenie"** — oznaczenie działa na czytelnika **ostrożnego**, zakaz na
+**przekonanego**, a szkodę robi ten drugi.
+
+**Właściciel policzył swoje wystąpienia wady „odesłanie bez treści": trzy tego
+samego dnia** — trzy pytania o strażnikach, ustalenie toru 13 o parytecie,
+korekta „158→156" do toru 8. **Treści dwóch ostatnich po tej stronie nie ma
+i nie uzupełniam jej domysłem** — odnotowany jest sam fakt, tak jak został
+przekazany. Zapisanie ich z domyślonym znaczeniem byłoby popełnieniem tej
+wady w akapicie, który ją opisuje.
+
+**T43 — powtarzalność zapisana jako potwierdzenie, nie uciążliwość.** Defekt
+pokazał się identycznie przy **trzech** niezależnych migawkach tego dnia:
+za każdym razem `git status` odtworzonego repo daje dokładnie `D .env.example`,
+ani mniej, ani więcej. To dowód, że **opis pozycji jest poprawny**; gdyby przy
+którejś migawce defekt zniknął albo urósł, opis byłby niepełny.
 
 ---
 
@@ -1908,6 +1982,9 @@ liczba zamiast pomiaru:**
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T43
+- `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 109 linii;
+  jedna tabela dowodów wartości reguł (25 pozycji), kolumna własny/przejęty.
+  **Nie jest źródłem reguł** — szczebel 7, deklaruje to w nagłówku
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
   **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
   (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
@@ -1921,7 +1998,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **456 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **484 linie, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`

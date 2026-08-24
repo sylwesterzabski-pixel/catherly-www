@@ -128,8 +128,36 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   `scripts/backup.sh`. Warunek zamknięcia takiej pozycji też jest jeden
   i podwójny — obie strony sprawdzone **w tym samym przebiegu**, bo osobno
   każdą da się spełnić kosztem drugiej.
+- ODESŁANIE BEZ TREŚCI: DOŁĄCZ TREŚĆ ALBO NAPISZ WPROST, ŻE JEJ NIE
+  DOŁĄCZASZ (właściciel, 2026-08-24). Odsyłając do dokumentu spoza
+  repozytorium adresata, nie zostawiaj samego wskazania. **Asymetria kosztu
+  jest tu całą treścią: kosztuje jedno pytanie u nadawcy — i całą fałszywą
+  pewność u odbiorcy.** Nadawca traci sekundę, odbiorca traci wiedzę, że
+  czegoś nie wie: odesłanie wygląda na kompletne, więc brakującą treść
+  uzupełnia domysłem i **nie oznacza go jako domysłu**. Reguła wiąże obie
+  strony — nadawcę przy wysyłce, odbiorcę przy odbiorze: **odesłanie bez
+  treści zwraca się z pytaniem, nie uzupełnia z pamięci.** Wzorzec
+  (2026-08-24): odesłanie do „trzech pytań o strażniku", których po tej
+  stronie nie było; sesja odmówiła przepisania z pamięci, nadawca uzupełnił
+  treść ze źródłem. To jest `P-22` widziane **od strony nadawcy** — tańszy
+  moment niż wykrycie po stronie odbiorcy.
+- PRZY USTALENIU ZE ZNANYM FAŁSZYWYM WNIOSKIEM — ZAKAZ, NIE SAMO OZNACZENIE
+  (właściciel, 2026-08-24). Oznaczenie pochodzenia (`P-22`, liczba ogniw)
+  mówi **„to jest cudze i niesprawdzone"**. Gdy wiadomo, jaki błędny wniosek
+  ktoś z tego wyciągnie, to za mało — trzeba napisać **„a konkretnie TEGO
+  wniosku nie wyciągaj"**, bo dopiero zakaz zatrzymuje kogoś, kto już
+  uwierzył. Oznaczenie działa na czytelnika ostrożnego; zakaz działa na
+  czytelnika przekonanego, a to ten drugi robi szkodę. Zakaz stawia się
+  **w obie strony**, jeśli ustalenie ma parę po drugiej stronie granicy.
+  Wzorzec (T43): tam 75 archiwów niosło żywe klucze, tu wykluczenie działa —
+  zapisane razem z jawnym zakazem przenoszenia **obu** wniosków („archiwa
+  niosą sekrety" i „wykluczanie `.env*` jest bezpieczne").
 - DOWODY WARTOŚCI REGUŁY ZAPISUJE SIĘ RAZEM, NIE OSOBNO (właściciel,
-  2026-08-24). Pojedynczy przypadek, w którym reguła się opłaciła, czyta się
+  2026-08-24). **Miejsce zbiórki: `docs/faza-2/dowody-wartosci-regul.md`** —
+  jedna tabela, kolumny: reguła · dowód · data · gdzie leżał przed zebraniem ·
+  **własny czy przejęty**. Ostatnia kolumna rozstrzyga, czy reguła stoi na
+  jednym pomiarze, czy na dwóch niezależnych; przy dowodzie przejętym podaje
+  się źródło i `P-22`, gdy drogi weryfikacji stąd nie ma. Pojedynczy przypadek, w którym reguła się opłaciła, czyta się
   jak **anegdota**; dwa niezależne, zapisane obok siebie, pokazują, **czego
   poprzednia metoda nie widziała z definicji**. Wzorzec: reguła „weryfikuj
   backup odtworzeniem, nie sumą" weszła rano 2026-08-24 i tego samego dnia
