@@ -25,14 +25,14 @@ z własnej ręki.** Drzewo czyste, zdalny zsynchronizowany, zero niewypchniętyc
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (612 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (722 linie, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
 3. `docs/faza-2/rejestr-warunkow-powrotu.md` (463 linie, stan 2026-08-24) — 24 pozycje treści
-   + **43** pozycje techniczne **T1–T43** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
+   + **45** pozycji technicznych **T1–T45** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -122,7 +122,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
-| **STAN PRACY** | ⏸ **SPOCZYNEK do odwołania** (właściciel, 2026-08-24, `WWW/018`). Następne zlecenie **dopiero po podjęciu toru 9 i meldunku „2 PILNE”** — obie rzeczy leżą po stronie właściciela, nie tego repozytorium. Do tego czasu **nie zaczynaj pracy z własnej ręki**: sesja otwarta na nowo czyta stan, melduje i czeka |
+| **STAN PRACY** | ▶ **spoczynek uchylony na import toru 9** (`WWW/022`–`WWW/025`, 2026-08-24); wraca po zakończeniu. Poprzednio: ⏸ **SPOCZYNEK do odwołania** (właściciel, 2026-08-24, `WWW/018`). Następne zlecenie **dopiero po podjęciu toru 9 i meldunku „2 PILNE”** — obie rzeczy leżą po stronie właściciela, nie tego repozytorium. Do tego czasu **nie zaczynaj pracy z własnej ręki**: sesja otwarta na nowo czyta stan, melduje i czeka |
 | **Bramki CI na gałęzi** | ⚠ **CZERWONE — dwa zadania z piętnastu.** Odczyt 2026-08-23, **oba dzisiejsze przebiegi tak samo** — `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`, czyli stan zdalny): **`Nieodwracalne`** — „Brak raportu audytu nieodwracalnych dla commita" (ADR-018 pkt 4; raport jest **per commit**, więc ta czerwień wraca przy KAŻDYM nowym commicie, dopóki audytu nie ma) i **`Wydajność`** — krok `Pomiar`, mediana LCP `/` **1856 ms** przy budżecie 1800 na transporcie HTTP/1.1+gzip; ten sam pomiar daje **1276 ms** na HTTP/2+brotli. Trzynaście pozostałych zielonych w obu przebiegach. **Żadnej z tych czerwieni nie ruszam** — obie są poza zakresem zlecenia (zakaz 8), obie mają swoje pozycje: audyt → ADR-018 pkt 4 i Faza 7, próg → **T33** i kierunek (d) |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
 | Backupy repo | ⚠ `/Volumes/Extreme SSD/Catherly-www-ZIP`, ~9 MB każda. **BACKUP NIE DZIEJE SIĘ SAM — haka `Stop` NIE MA** (T42, zmierzone 2026-08-24: zero trafień na `hooks` w czterech plikach konfiguracji). Skutkiem była przerwa **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. **Uruchamiaj `bash scripts/backup.sh` RĘCZNIE po każdym zadaniu i raportuj wynik** — to jedyne działające zabezpieczenie, jakie tu dziś jest. Fałszywe zdanie o automacie **usunięte z `CLAUDE.md` 2026-08-24**; kanon mówi teraz prawdę. **Weryfikuj migawkę ODTWORZENIEM, nie sumą** — rozpakuj, `git log` w odtworzonym repo, skasuj katalog; **T43** pokazuje, po co. **Nazwy ostatniej nie wpisuję**: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
@@ -1493,6 +1493,80 @@ i decyzja należy do niego), czy zostaje tam, gdzie stoi.
 
 ---
 
+### 4.20 Import toru 9 — pomiar, uzgodnienie tożsamości, przeniesienie selektywne (`WWW/022`–`WWW/025`)
+
+**Tożsamość nośnika uzgodniona ścieżką „nowsze odświeżenie".** Gałąź nośnika
+ruszyła **trzy razy** w czasie tej wymiany: `8bb5cc4` → `95de99d` → `432fe88`.
+Zmierzone na ostatnim stanie: bundle **sha256 `db67489b…c36d5`**, **2 971 117 B**,
+czubek **`924b5802788a00e6d06a54904347aff818ea60f3`**, **236 commitów**,
+odtworzenie do pustego czyste (349 plików, `fsck` bez uszkodzeń), **`9a15f26`
+i `6ec17d2` przodkami czubka**. Wobec deklaracji nadawcy (`eab06655…` · `6ec17d2`
+· 235) to **nowsze odświeżenie**, więc zgodnie z `WWW/025`: zgłoszone
+i kontynuowane na nim, bez pytania.
+
+**Delta `6ec17d2..924b580`:** jeden commit, trzy pliki, wszystkie
+`docs/redakcja/*`, **zero plików wspólnych** — bez odchyłki.
+
+**Przeniesienie selektywne, pięć grup:**
+
+| grupa | co weszło | commit |
+|---|---|---|
+| 1 | 10 plików **istniejących wyłącznie w imporcie** — `docs/redakcja/*` (8), `scripts/lint-deklaracje.mjs`, `content/deklaracje-zlozone.json` | `6e859b4` |
+| 2 | `docs/faza-2/rejestr-decyzji-stojacych.md` — plik nowy, wprost | `f9e934a` |
+| 3 | `rejestr-warunkow-powrotu` poz. 20 → `~~20~~ PRZENIESIONE`, **ręcznie**, `+1/−1` | `e2d86da` |
+| 4 | `CLAUDE.md` — integracja treści zwrotki **własnym osądem**; `bramki.yml` — **NIC** | ten commit |
+| 5 | `package.json` — **NIC** | — |
+
+**Dlaczego `bramki.yml` nie dostał nic — i to jest ustalenie, nie pominięcie.**
+Tor 9 przysyła zadanie `bramka-deklaracje` w kształcie **ŻÓŁTYM**
+(`continue-on-error: true`). Uzasadnienie jest trafne i sprawdziłem je
+pomiarem: `node scripts/lint-deklaracje.mjs` jest u nas **CZERWONY na 10
+naruszeniach**. Ale `continue-on-error` **wymienia z nazwy zakaz 3** jako
+zamianę czerwieni na ciszę. Zostają dwa kształty i **oba coś łamią**; trzeciego
+nie ma, a wymyślenie go po cichu byłoby rozstrzygnięciem rozjazdu między dwoma
+kanonami. **Zapisane jako T44**, do rozstrzygnięcia właściciela.
+
+**Co z zwrotki weszło do kanonu, a co pominąłem.** Weszło **jedenaście** zapisów,
+zgrupowanych w rodziny zamiast wpisanych pojedynczo — bo liczba reguł ma swój
+koszt (pytanie otwarte, `WWW/018`), a rozbicie tego samego na osobne klasy
+podniosłoby licznik bez podniesienia treści. **Pominięte jako duplikaty:**
+„liczba starzeje się w tranzycie" (mamy T26 i regułę o stemplu z datą
+i commitem) oraz „artefakt sprawdza się odtworzeniem, nie verify" **jako osobna
+klasa** — to już stoi w rozdziale o backupie; przeniesione zostało wyłącznie
+**ostrzejsze sformułowanie** („verify mierzy spójność wobec NADAWCY,
+odtworzenie wobec świata, w którym nadawcy już nie ma").
+
+**Trzy zapisy trafiły w błędy popełnione po tej stronie i dlatego weszły
+z rodzimym wzorcem:** „zdanie o własnej niedostępności podlega dowodowi"
+(nasze `P-22` „drogi weryfikacji nie ma" — obalone jednym odczytem z dysku),
+„adres konkretny to nie adres zmierzony / odczyt częściowy zgłasza się jako
+kompletny" (`WWW/019` — przeszukanie gałęzi **pobranych** podane jako
+przeszukanie repozytorium), „klasa opisana nie jest klasą unikaną" (tego samego
+dnia odmowa rozszerzenia zgody i **nieoznaczony** dodatek poza zleceniem).
+
+⚠ **ZOBOWIĄZANIE, KTÓRE Z TEGO WYNIKA I NIE JEST WYKONANE.** Przeniesiona
+reguła mówi: **po sprostowaniu przypadku przelicz WSZYSTKIE zdania tej samej
+formy.** W `WWW/022` sprostowałem **jedno** zdanie o niedostępności. Pozostałe
+adnotacje `P-22` w rejestrze (T25, T30, T36, T38, T43, T44) **nie zostały
+przeliczone** — część z nich dotyczy wyników mutacji wykonanych po tamtej
+stronie i tam `P-22` prawdopodobnie zostaje, część dotyczy istnienia
+dokumentów i tam pewnie nie. **Rozstrzygnięcia nie ma i nie robię go przy
+okazji** — to osobne zlecenie, zgłoszone razem z dwoma wcześniej zgłoszonymi
+wpisami czekającymi na ten sam ruch.
+
+⚠ **T45 — `node_modules` i `.next` zniknęły w trakcie sesji, przyczyna nie po
+mojej stronie.** `npm run lint` dawał kod 0 o ~15:2x, o 17:5x daje **127**
+(`eslint: command not found`); `mtime` katalogu repozytorium: **15:47:42**,
+poza jakimkolwiek moim poleceniem. Hooki, `backup.sh` i brak miejsca
+**wykluczone odczytem**. **`npm ci` NIE uruchomione** — kilkaset megabajtów na
+dysku zajętym w 92%, a usunięcie mogło być celowe. **Skutek zapisany jawnie:
+dwie bramki są dziś niewykonalne lokalnie** (`lint`, `kotwice`), więc commity
+tej sesji przeszły wyłącznie przez bramki hooka. Że dziedzina tych bramek nie
+pokrywa się z treścią commitów, **jest argumentem, nie dowodem** — i tak jest
+zapisane.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -1533,7 +1607,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T43. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T45. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -2297,7 +2371,7 @@ liczba zamiast pomiaru:**
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T43
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T45
 - `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 292 linie;
   **trzy** tabele — dowodów wartości (**25**), **kosztów** (**8**) i sprawdzenia
   wstecznego przypisań. **Nie jest źródłem reguł** — szczebel 7, deklaruje to
@@ -2315,7 +2389,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **612 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **722 linie, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`
@@ -2470,7 +2544,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
   linii pracy (T2, T10, T20–T40); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T43 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  24 pozycji treści i T1–T45 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -2532,7 +2606,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T43)
+### 15.2 Pozycje techniczne i procesowe (T1–T45)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.

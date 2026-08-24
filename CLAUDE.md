@@ -186,6 +186,29 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   **własny czy przejęty**. Ostatnia kolumna rozstrzyga, czy reguła stoi na
   jednym pomiarze, czy na dwóch niezależnych; przy dowodzie przejętym podaje
   się źródło i `P-22`, gdy drogi weryfikacji stąd nie ma.
+- MANIFEST RÓŻNIC DEKLARUJE BAZĘ ALBO NIE JEST MANIFESTEM (właściciel,
+  2026-08-24). Strona **dodana** bez strony **usuwanej** i bez podanej podstawy
+  opisuje **każdą** zmianę jako addytywną — bo wobec punktu rozejścia każda
+  zmiana taka jest. Czytelnik bierze to za opis zmiany wobec **swojego** stanu
+  i nie ma jak zauważyć różnicy. To klasa **cytatu wyjętego bez zakresu**
+  (T26), widziana od strony dokumentu, nie czytelnika. Wzorzec (WWW/023,
+  2026-08-24): manifest podawał `CLAUDE.md +612`, `bramki.yml +32`,
+  `package.json +1` — wszystkie zgodne co do jednej z diffem wobec `69c2dab`
+  i wszystkie `−0`; wobec naszego stanu te same zmiany usuwały
+  **501 + 152 + 105 linii**. Manifest nie kłamał — **nie deklarował bazy**.
+  Praktycznie: manifest niesie **obie kolumny** — „wobec bazy" i „wobec stanu
+  odbiorcy" — albo odbiorca liczy drugą sam, zanim cokolwiek przeniesie.
+- TOŻSAMOŚCI ARTEFAKTU NIE WPISUJE SIĘ W ZLECENIE Z WYPRZEDZENIEM (właściciel,
+  2026-08-24). Sumy, rozmiary i czubki **ruchomego** artefaktu wpisane do
+  zlecenia w tranzycie starzeją się, zanim zlecenie dotrze — a odbiorca
+  wykonuje wtedy poprawną procedurę na nieaktualnej wartości i zatrzymuje się
+  na fałszywym rozjeździe. **Odbiorca MIERZY, zlecający UZGADNIA pomiar
+  z deklaracją nadawcy PO fakcie.** Uzgodnienie ma trzy wyjścia i wszystkie
+  trzy zapisuje się w zleceniu: zgodne z deklaracją → kontynuuj bez pytania;
+  inne, ale **przodek TAK i odtworzenie czyste** → to nowsze odświeżenie,
+  zgłoś tożsamość i kontynuuj; **przodek NIE albo odtworzenie brudne** → stop,
+  to nie ta historia. **Ruch gałęzi nośnika jest przewidywanym zachowaniem
+  nadawcy odświeżającego kopię, nie anomalią** — wiersz raportu, nie stop.
 - KAŻDA TABELA DOWODÓW WARTOŚCI NIESIE KOLUMNĘ KOSZTU ALBO DEKLARACJĘ, ŻE GO
   NIE MIERZY (właściciel, 2026-08-24). **Zbiór przeszukany pod jednym kątem
   nie mierzy proporcji.** Spis przypadków, w których reguły się opłaciły,
@@ -520,6 +543,93 @@ wymagają oceny zamiaru. To jest ta sama klasa co T25 — „brak dowodu = brak
 zabezpieczenia" stosuje się także do tej strony. Odnotowane jako **T34**;
 budowa strażnika cząstkowego czeka na decyzję właściciela.
 
+## Zapisy przeniesione z toru 9 (2026-08-24, przez okno WWW)
+
+Źródło: `docs/redakcja/ZWROTKA-KANON-DO-WWW.md`, przeniesiona zwrotką, nie
+zapisem — pliki wspólne strony pisze wyłącznie to okno (rozstrzygnięcie
+właściciela `TOR9/023`). Poniżej **wybór dokonany osądem**, nie przepisanie:
+pominięte jest wszystko, co ten kanon już niesie. Co pominięto i dlaczego —
+`docs/PRZEKAZANIE-SESJI.md`, rozdz. 4.20.
+
+- **KOMENDA RAPORTUJE SUKCES SWOJEJ OPERACJI, NIE OSIĄGNIĘCIE TWOJEGO CELU.**
+  Rodzina zmierzona po tamtej stronie w trzy doby, po tej rozpoznana przy
+  backupie: `git status` „brak zmian" **nie jest dowodem przywrócenia**;
+  `git checkout --` bierze **z indeksu**, nie z `HEAD`; `git bundle verify`
+  mówi *„complete history"* także na klonie płytkim; łańcuch `cp && test`
+  raportuje „OK", gdy `cp` się nie wykonał i test poszedł na **starym** pliku.
+  Dwie zasady wykonawcze: **artefakt ratunkowy sprawdza się ODTWORZENIEM DO
+  PUSTEGO, nie weryfikacją** — *verify mierzy spójność wobec NADAWCY,
+  odtworzenie wobec świata, w którym nadawcy już nie ma, a tylko taki świat
+  uzasadnia istnienie kopii*; oraz **test drukuje TOŻSAMOŚĆ przedmiotu, nie sam
+  werdykt** — „OK" bez identyfikatora potwierdza istnienie **czegokolwiek**, nie
+  tego. Test wypisuje czubek i liczność. Przy artefaktach ratunkowych: **jeden
+  plik, nie trzy o zbliżonych nazwach** — w chwili, gdy kopia jest potrzebna,
+  nikt nie czyta tabeli różnic, sięga po pierwszy z brzegu.
+- **ZDANIE O WŁASNEJ NIEDOSTĘPNOŚCI PODLEGA DOWODOWI TAK SAMO JAK KAŻDE INNE.**
+  *„Nie mam dostępu do X"* jest twierdzeniem o nieistnieniu i **niesie komendę
+  oraz jej wynik albo nie wchodzi do sprawozdania** — także wtedy, gdy dotyczy
+  mnie. Odmiana najkosztowniejsza jest odruchowa: mówiący jest **jedynym
+  świadkiem**, więc nikt tego nie sprawdza; zdanie o własnych ograniczeniach
+  jest **najsłabiej weryfikowanym zdaniem w całym obiegu**. Wzorzec rodzimy
+  (WWW/022, 2026-08-24): kilka pozycji rejestru niosło „drogi weryfikacji z tej
+  strony nie ma, bo to inne repozytorium" — **nieprawdę dla istnienia
+  i treści plików**, obaloną jednym odczytem z dysku. **Granica przyjęta
+  z przekonania nie ma daty, więc nie ma momentu, w którym wypada ją sprawdzić
+  — żyje, dopóki ktoś przypadkiem nie spróbuje.**
+- **PO SPROSTOWANIU PRZYPADKU PRZELICZ WSZYSTKIE ZDANIA TEJ SAMEJ FORMY.**
+  Sprostowanie jednego wystąpienia **nie domyka klasy**, a daje **poczucie**
+  domknięcia — i przez to naraża bardziej, nie mniej. Kto poprawił jedno zdanie
+  o granicy, ma obowiązek przeliczyć pozostałe **tej samej formy**, nie
+  odnotować przypadek.
+- **ADRES KONKRETNY TO NIE ADRES ZMIERZONY; ODCZYT CZĘŚCIOWY ZGŁASZA SIĘ JAKO
+  KOMPLETNY.** Konkretność brzmienia **działa jak dowód, nie będąc nim**: nazwa
+  gałęzi, ścieżka, numer wiersza — im dokładniej wyglądają, tym mniej
+  prawdopodobne, że ktokolwiek je uruchomi. Druga strona tej samej wady:
+  narzędzie czytające źródło wybiórczo **nie mówi „przeczytałem połowę"**, mówi
+  „oto wynik" — a brak wygląda wtedy na **brak w źródle**, nie na brak
+  w odczycie. Wzorzec rodzimy (WWW/019 → WWW/022): przeszukanie gałęzi
+  **pobranych** zgłoszone jako przeszukanie repozytorium; jedna gałąź na `origin`
+  nie była pobrana i to właśnie ona niosła szukane pliki. Rodzina „złego
+  podzbioru": **zbiór, który widzisz, nazwany zbiorem.**
+- **ZERO BEZ KONTROLI POZYTYWNEJ JEST ZEREM NARZĘDZIA, NIE WYNIKIEM.** Druga
+  strona kontroli negatywnej: żeby ogłosić „nie ma ani jednego X", ta sama
+  komenda musi **w tym samym przebiegu** znaleźć X tam, gdzie X jest. Wzorzec
+  rodzimy (T43, 2026-08-24): „`.env` nie ma w archiwum" wolno było ogłosić
+  dopiero po pokazaniu, że `.env` **istnieje lokalnie** — inaczej zero mogło
+  znaczyć „plik nie istnieje", a nie „wykluczenie działa".
+- **KAŻDY LICZNIK POD TABELĄ JEST LICZONY ZE ŹRÓDŁA PRZY KAŻDEJ EDYCJI TABELI
+  ALBO NIE MA GO WCALE.** Licznik przepisywany ręcznie **jest datą, nie liczbą**
+  — starzeje się **w miejscu**, bez tranzytu i bez upływu dni: wiersze edytuje
+  się, a sumy pod nimi nie. To samo dotyczy **liczebności w strażnikach**: lista
+  wypisana ręcznie w teście starzeje się tak samo jak licznik. Dotyczy wprost
+  „Rozkładu policzonego ze skorowidza" w rejestrze warunków powrotu.
+- **PROGNOZA PODANA SKŁADNIĄ ODCZYTU.** Zdanie ma formę wyniku („bilans wynosi
+  7 · 11"), a jest przewidywaniem tego, co wynik pokaże — **czytelnik nie ma jak
+  odróżnić jednego od drugiego, obie formy wyglądają identycznie.** Stąd:
+  **liczba wchodzi do dokumentu wyłącznie z regułą wypisaną obok i ze ślepotą
+  nazwaną przy niej**, inaczej mierzy narzędzie i podaje się za pomiar świata.
+  Przy poprawianiu: **korekta bez zamazania śladu — obie liczby zostają
+  widoczne**, także gdy nieważną próbą jest własne zdanie sprzed minuty.
+- **WERDYKT SPRAWDZIANU OBOWIĄZUJE W SWOJEJ ZADEKLAROWANEJ DZIEDZINIE; POZA NIĄ
+  NIE MA WERDYKTU, JEST MILCZENIE.** Kolumna „spełnia" bez wypisanych wyłączeń
+  **staje się kolumną „czyste" w pierwszym cytowaniu** — nie w drugim, nie po
+  miesiącu. Forma wymuszająca: **nazwa kolumny niesie dziedzinę** („spełnia
+  w warstwie klucz↔klucz", nie „spełnia").
+- **KLASA OPISANA NIE JEST KLASĄ UNIKANĄ.** Opis i odruch to dwa różne stany
+  wiedzy, a kod i pośpiech piszą **odruch**. „Kto właśnie opisał klasę, jest
+  bardziej narażony" nie jest przestrogą moralną, tylko opisem tego, gdzie się
+  co zapisuje. Wzorzec rodzimy (2026-08-24): tego samego dnia, w którym sesja
+  odmówiła rozszerzenia zgody poza literę, **sama dołożyła do naprawy strażnika
+  spoza zlecenia i nie oznaczyła go**.
+- **RÓŻNICA LICENCJONOWANA WYGLĄDA IDENTYCZNIE JAK DEFEKT I JEST JEGO
+  PRZECIWIEŃSTWEM.** Zanim „ujednolicisz, bo się różni" — sprawdź, czy różnica
+  nie jest dozwolona wprost. Ujednolicenie zepsułoby wtedy zgodność, a nie
+  naprawiło. Zapis jest szczepionką przeciw przyszłemu „porządkowaniu".
+- **PRZYCZYNY PROSTE SPRAWDZA SIĘ PRZED WYRAFINOWANYMI** — wielkość liter, białe
+  znaki, kodowanie, flagi wyrażenia regularnego, szyk wyrazów. **Im dłużej
+  rozważana była przyczyna złożona, tym trudniejszy powrót do prostej**:
+  hipoteza wyrafinowana zajmuje miejsce, na którym stałaby banalna.
+
 ## Progi (bramki CI — blokujące)
 LCP < 1,8 s · INP < 200 ms na 4G · CLS < 0,1 · kontrast AA wszędzie ·
 pełna obsługa klawiaturą · treść czytelna bez JS · parytet pl/en/de ·
@@ -561,7 +671,7 @@ kopie. **Napis zamiast mechanizmu — w kanonie.** Dopóki hak nie powstanie
 i nie zostanie sprawdzony mutacją, jedynym działającym zabezpieczeniem
 jest polecenie powyżej, uruchomione Twoją ręką.
 
-**Weryfikacja migawki: ODTWORZENIEM, nie sumą** (właściciel, 2026-08-24).
+**Weryfikacja migawki: ODTWORZENIEM, nie sumą** (właściciel, 2026-08-24). **Przy odtwarzaniu z bundla podaj NAZWĘ GAŁĘZI** (`git clone -b <gałąź>`): bundle bez użytecznego `HEAD` daje po `clone` **puste drzewo robocze** i wygląda na pusty, choć dane są kompletne — objawy są mylące, bo brakuje tylko wskaźnika.
 Suma kontrolna dowodzi, że plik się nie zepsuł — **nie dowodzi, że da się
 z niego wrócić**. Sprawdzenie: rozpakuj archiwum do katalogu tymczasowego,
 wykonaj `git log` w odtworzonym repozytorium, skasuj katalog. To ta sama
