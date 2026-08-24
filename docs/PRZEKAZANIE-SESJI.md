@@ -19,7 +19,7 @@ raportem" dotyczy także tego dokumentu.
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (405 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (456 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
@@ -112,7 +112,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `361c7db` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Pięć pushy na pięć osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) i `74fdfe8` → `361c7db` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `6d55a80` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Sześć pushy na sześć osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db` i `361c7db` → `6d55a80` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
@@ -266,11 +266,36 @@ obietnice**. Reguły, o które w tej linii pracy najczęściej chodzi:
     o zachowaniu milczy przy nieistnieniu dokładnie tak samo, jak przy
     strażniku sprawnym i niepotrzebnym. Wzorzec: **T42**. **Skutek widziany
     na dysku dowodzi, że COŚ go tworzyło — nie że tworzył go TEN mechanizm.**
+    Od 2026-08-24 kanon niesie **pełny zestaw czterech pytań**: **0.** czy
+    istnieje (odczyt konfiguracji) · **1.** czy umie upaść (zapłon) ·
+    **2.** czy upada, gdy zniknie zachowanie (mutacja) · **3.** czy upada
+    **wyłącznie** wtedy, kiedy trzeba — **na to dowodu nie ma w repertuarze
+    po żadnej stronie** i jest to zapisane jako luka, nie zasypane. Pytania
+    1–3 pochodzą z toru 8 (rejestr `B-16`/`B-17`, 2026-08-23), podane przez
+    właściciela ze źródłem; **`P-22` — drogi weryfikacji stąd nie ma.**
 14. **ZALEŻNOŚĆ TWARDA W DOKUMENTACJI WYMAGA ZAPISU, W KODZIE NIE**
     (właściciel, 2026-08-24). Jeśli dokument A odsyła do treści w B, **zmiana
     B idzie pierwsza** — albo obie w jednym commicie. Uzasadnienie osobnego
     zapisu: w kodzie taką zależność wyłapuje kompilator albo test; **w prozie
     nie wyłapuje jej nic.**
+
+15. **KLASA „DEFEKT KOPII UTRWALANY PRZY ODTWARZANIU"** (właściciel,
+    2026-08-24). Wada archiwum nie zostaje w archiwum — **przenosi się do
+    repozytorium przez ręce tego, kto z niego odtwarza**: różnicy nie da się
+    odróżnić od własnej pomyłki, więc albo szuka się nieistniejącego błędu,
+    albo „porządkuje" różnicę i **commituje defekt kopii**. Wzorzec: T43.
+    **Backup ma usuwać niepewność, a ten ją dokłada w chwili, gdy jest
+    najdroższa.**
+16. **DWIE STRONY JEDNEGO WZORCA ROZBITE NA DWIE POZYCJE DAJĄ DWA ŁATWE
+    ROZWIĄZANIA, KTÓRE SIĘ WYKLUCZAJĄ** (właściciel, 2026-08-24). Gdy ten sam
+    mechanizm **chroni i szkodzi naraz**, obie strony są jedną pozycją.
+    Rozbite — każda kusi do naprawy, która psuje drugą stronę, **nie wiedząc
+    o niej**. Wzorzec: `-x ".env.*"` w `scripts/backup.sh` (T43).
+17. **DOWODY WARTOŚCI REGUŁY ZAPISUJE SIĘ RAZEM, NIE OSOBNO** (właściciel,
+    2026-08-24). Pojedynczy przypadek czyta się jak **anegdota**; dwa
+    niezależne obok siebie pokazują, **czego poprzednia metoda nie widziała
+    z definicji**. Dopisując dowód, dopisz go tam, gdzie leżą pozostałe —
+    a jeśli leży sam, wskaż, gdzie są inne.
 
 Sam **ADR-018 zyskał 2026-08-23 punkt 7** (T35): **zlecenie pod złym adresem
 odsyła się, nie wykonuje w przybliżeniu** — w obu kierunkach. Odbiorca nie
@@ -1019,6 +1044,64 @@ w którym reguła powstała.** Reguła weszła do `CLAUDE.md` rano; do wieczora 
 użyciu). Osobno każdy wygląda na przypadek; razem pokazują, **czego suma
 kontrolna nie widzi z definicji** — ani nadmiaru, ani braku, wyłącznie to, że
 bajty się nie zmieniły.
+
+---
+
+### 4.14 Trzy pytania dopisane, trzy klasy do kanonu — 2026-08-24
+
+**Push `6d55a80`** jawnym refspec; zdalny potwierdzony odczytem:
+`6d55a806dff405a98795f3b42fc5c87dc90f8c9e`.
+
+**Pytanie zerowe ma już swoją listę.** Poprzednia sesja odmówiła przepisania
+trzech pytań o strażniku z pamięci i zapisała pytanie zerowe samodzielnie,
+z jawną adnotacją o braku. Właściciel uznał to za **`P-22` rozpoznane po
+stronie NADAWCY** — *„przekazałem Ci odesłanie do listy, której nie masz"* —
+i **podał treść ze źródłem**: tor 8, rejestr `B-16`/`B-17`, 2026-08-23. Zestaw
+stoi teraz w `CLAUDE.md` w całości:
+
+| | pytanie | dowód |
+|---|---|---|
+| **0** | czy ta rzecz w ogóle **istnieje** | **odczyt konfiguracji** (pomiar własny, T42) |
+| **1** | czy strażnik **umie upaść** | zapłon na żywo |
+| **2** | czy upada, **gdy zniknie zachowanie** | **mutacja** — zapłon tego nie dowodzi |
+| **3** | czy upada **wyłącznie** wtedy, kiedy trzeba | ⚠ **dowodu nie ma w repertuarze, po żadnej stronie** |
+
+Pytania 1–3 są oznaczone **`P-22`** — drogi weryfikacji stąd nie ma.
+**Pytanie 3 jest zapisane jako luka, nie zasypane**: strażnik czuły, trafny
+i nadgorliwy daje fałszywe alarmy i po tygodniu nikt go nie czyta, a udawanie,
+że mamy na to dowód, byłoby dokładnie tym, przed czym broni reszta kanonu.
+Kolejność ma znaczenie — **0 przed 1**, bo pytania o zachowanie są wobec
+nieistnienia ślepe.
+
+**Reguła, która z tego została** (T26, przesłanka właściciela): **odsyłając do
+dokumentu spoza repozytorium adresata, dołącz treść albo jawnie napisz, że jej
+nie dołączasz.** Odesłanie bez treści kosztuje jedno pytanie, jeśli złapie je
+nadawca — i całą fałszywą pewność, jeśli odbiorca uzupełni je domysłem.
+
+**Trzy nowe klasy kanonu, wszystkie z T43:**
+**(15) „defekt kopii utrwalany przy odtwarzaniu"** — wada archiwum przenosi się
+do repozytorium **przez ręce odtwarzającego**. **(16) „dwie strony jednego
+wzorca rozbite na dwie pozycje dają dwa łatwe rozwiązania, które się
+wykluczają"** — rozbite, każda kusi do naprawy psującej drugą stronę, **nie
+wiedząc o niej**. **(17) „dowody wartości reguły zapisuje się razem, nie
+osobno"** — pojedynczy przypadek czyta się jak anegdota.
+
+**Odnotowane przez właściciela jako pierwsze w tym repozytorium:** przekazanie
+międzyrepozytoryjne z **jawnym zakazem przeniesienia w obie strony** (T43).
+Dotąd oznaczaliśmy pochodzenie (`P-22`, liczba ogniw), ale nie zakazywaliśmy
+wprost wnioskowania. Różnica jest praktyczna: oznaczenie mówi „to jest cudze
+i niesprawdzone", zakaz mówi **„a konkretnie TEGO wniosku nie wyciągaj"** —
+i dopiero to drugie zatrzymuje kogoś, kto już uwierzył.
+
+**Zakaz 1 z uzasadnieniem idzie do kanonu OBU repozytoriów** — właściciel
+przekaże aplikacji. Po tej stronie stoi już w `CLAUDE.md`.
+
+**Uwaga porządkowa, zgłoszona przez właściciela i niewykonana:** dowody
+wartości reguł leżą dziś **rozproszone** — reguła o odtworzeniu ma je przy
+T43, „wynikanie z kodu to nie pomiar" przy T24, „pojedynczy czas trwania nie
+jest czasem trwania" w rozdz. 9. Klasa **17** mówi, że mają leżeć razem.
+Zebranie ich w jedno miejsce to **osobne zadanie** — nie robię go przy okazji
+(zakaz 8), czeka na zlecenie.
 
 ---
 
@@ -1838,7 +1921,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **405 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **456 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`

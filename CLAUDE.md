@@ -83,10 +83,61 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   widziany na dysku dowodzi, że COŚ go tworzyło — nie że tworzył go TEN
   mechanizm.** Praktycznie: zanim zaczniesz sprawdzać, czy zabezpieczenie
   działa, sprawdź poleceniem, czy jest — i zapisz, którym poleceniem.
-  Właściciel wskazał, że po stronie torów 8 i 13 istnieją trzy pytania
-  o zachowaniu strażnika, przed którymi to pytanie ma stanąć; **ich treści
-  po tej stronie nie ma i nie przepisuję jej z pamięci** — pytanie zerowe
-  stoi tu samodzielnie.
+  **PEŁNY ZESTAW — pytanie zerowe plus trzy o zachowaniu.** Trzy poniższe
+  pochodzą **spoza tego repozytorium** (`P-22`): źródło — **tor 8, rejestr
+  `B-16`/`B-17`, 2026-08-23**, podane przez właściciela 2026-08-24. **Drogi
+  weryfikacji z tej strony nie ma**, bo to inne repozytorium; przepisane
+  dosłownie z jego przekazu, nie z pamięci, i tak mają być czytane — jako
+  wskazówka o rodowodzie, nie jako pomiar własny.
+  - **0. Czy ta rzecz w ogóle ISTNIEJE** — dowód: **odczyt konfiguracji**.
+    Pomiar własny (T42).
+  - **1. Czy strażnik UMIE UPAŚĆ** — dowód: **zapłon na żywo**.
+  - **2. Czy upada, GDY ZNIKNIE ZACHOWANIE** — dowód: **mutacja**. Zapłon
+    tego nie dowodzi; dowodzi tylko, że strażnik umie upaść **na tym
+    wejściu**.
+  - **3. Czy upada WYŁĄCZNIE wtedy, kiedy trzeba** — **dowodu na to nie ma
+    w repertuarze, po żadnej ze stron.** Strażnik czuły, trafny
+    i nadgorliwy daje fałszywe alarmy i po tygodniu nikt go nie czyta.
+    Ta luka jest zapisana jako luka, a nie zasypana — udawanie, że pytanie 3
+    ma odpowiedź, byłoby dokładnie tym, przed czym broni reszta tego
+    rozdziału.
+  Kolejność ma znaczenie: **0 przed 1**, bo pytania 1–3 są wobec
+  nieistnienia ślepe i milczą przy nim tak samo, jak przy strażniku sprawnym
+  i niepotrzebnym.
+- KLASA „DEFEKT KOPII UTRWALANY PRZY ODTWARZANIU" (właściciel, 2026-08-24).
+  Wada archiwum nie zostaje w archiwum — **przenosi się do repozytorium przez
+  ręce tego, kto z niego odtwarza**. Mechanizm: kopia różni się od oryginału
+  w sposób, którego odtwarzający nie umie odróżnić od własnej pomyłki, więc
+  albo szuka nieistniejącego błędu, albo „porządkuje" różnicę i **commituje
+  defekt kopii jako zmianę w repozytorium**. Wzorzec (T43): `git status`
+  w odtworzonym repo pokazuje `D .env.example` — zmianę, **której nikt nie
+  wprowadził** — a widzi to człowiek po awarii, czyli w jedynej sytuacji,
+  w której ktokolwiek sięga po backup, i w najgorszym możliwym momencie na
+  zagadki. **Backup ma usuwać niepewność, a ten ją dokłada w chwili, gdy jest
+  najdroższa.** Praktycznie: różnica między kopią a oryginałem musi być
+  **zerowa albo udokumentowana** — kopia, o której trzeba pamiętać, czego jej
+  brakuje, przenosi ten obowiązek na najgorszy moment.
+- DWIE STRONY JEDNEGO WZORCA ROZBITE NA DWIE POZYCJE DAJĄ DWA ŁATWE
+  ROZWIĄZANIA, KTÓRE SIĘ WYKLUCZAJĄ (właściciel, 2026-08-24). Gdy ten sam
+  mechanizm **chroni i szkodzi naraz**, obie strony są jedną pozycją, nie
+  dwiema. Rozbite: „nie gub śledzonych plików" ma oczywiste rozwiązanie
+  (zawęź wzorzec), „nie kopiuj sekretów" ma oczywiste rozwiązanie (poszerz
+  wzorzec) — a razem te dwa rozwiązania **znoszą się**. Zapisane osobno,
+  każda pozycja wygląda na łatwą i **kusi do naprawy, która psuje drugą
+  stronę, nie wiedząc o niej**. Wzorzec (T43): `-x ".env.*"` w
+  `scripts/backup.sh`. Warunek zamknięcia takiej pozycji też jest jeden
+  i podwójny — obie strony sprawdzone **w tym samym przebiegu**, bo osobno
+  każdą da się spełnić kosztem drugiej.
+- DOWODY WARTOŚCI REGUŁY ZAPISUJE SIĘ RAZEM, NIE OSOBNO (właściciel,
+  2026-08-24). Pojedynczy przypadek, w którym reguła się opłaciła, czyta się
+  jak **anegdota**; dwa niezależne, zapisane obok siebie, pokazują, **czego
+  poprzednia metoda nie widziała z definicji**. Wzorzec: reguła „weryfikuj
+  backup odtworzeniem, nie sumą" weszła rano 2026-08-24 i tego samego dnia
+  dostała dwa potwierdzenia z niezależnych stron — `RECZ-287` (75 archiwów
+  przyjętych samą sumą, z żywymi kluczami; repozytorium aplikacji) i **T43**
+  (defekt znaleziony przy pierwszym sprawdzeniu tutaj). Dopisując dowód
+  wartości reguły, **dopisz go do miejsca, gdzie leżą pozostałe** — a jeśli
+  leży sam, wskaż, gdzie są inne.
 - ZALEŻNOŚĆ TWARDA W DOKUMENTACJI WYMAGA ZAPISU, W KODZIE NIE (właściciel,
   2026-08-24). Jeśli dokument A odsyła do treści w dokumencie B, **zmiana B
   idzie pierwsza** — albo obie w jednym commicie. Odwrotna kolejność daje
