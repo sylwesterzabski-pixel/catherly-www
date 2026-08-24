@@ -124,12 +124,35 @@ w przekazaniu. **Żaden nasz rejestr nie ma miejsca na pozycję, której nikt ni
 otworzył.** Konsekwencja, którą trzeba widzieć wprost: przy **dwudziestu
 jeden klasach kanonu** i **dziesięciu zakazach** (stan 2026-08-24) ta ślepota
 **rośnie z każdym wpisem**, a jej rozmiaru **nie da się zmierzyć z wnętrza** —
-mierzyłby ją ten sam przepływ pracy, który ją wytwarza. Wniosek właściciela,
-zapisany jako otwarty: **to jest argument, żeby LICZBA reguł też miała swój
-koszt, nie tylko treść każdej z osobna.** Właściciel wskazał, że oś dotyczy
-„wszystkich ośmiu okien"; **czym jest tych osiem okien, po tej stronie nie
-wiadomo** — treści nie dołączono, a domysłem jej nie uzupełniam (reguła 18
-kanonu). Odnotowane jako odesłanie do rozstrzygnięcia poza tym repozytorium.
+mierzyłby ją ten sam przepływ pracy, który ją wytwarza. **ODESŁANIE „OSIEM OKIEN" — ZAPISANE JAKO BRAK, ROZWIĄZANE PRZEZ NADAWCĘ.**
+Właściciel wskazał, że oś dotyczy „wszystkich ośmiu okien", a treści nie
+dołączył; sesja **nie uzupełniła jej domysłem** (reguła 18 kanonu) i zapisała
+sam brak. Nadawca uzupełnił nazajutrz: **osiem okien = osiem równoległych okien
+roboczych, w których toczy się praca nad Catherly — tory po obu
+repozytoriach.** To słownik jego strony, nie tego repozytorium, więc odczytać
+go stąd nie było z czego. **Przebieg tej wymiany jest sam w sobie wzorcem
+reguły 18:** brak zapisany jawnie → zauważony przez nadawcę → treść dołączona;
+koszt wyniósł jedno zdanie. Uzupełnienie domysłem kosztowałoby definicję
+wymyśloną po tej stronie i zapisaną jako cudzą.
+
+**Konsekwencja rozwiązania tego odesłania — większa niż samo odesłanie:**
+skoro okien jest **osiem**, to opisana wyżej ślepota **nie jest własnością tego
+repozytorium, tylko całego przepływu**. Rejestru „pozycji, których nikt nie
+otworzył" nie ma w **żadnym** z ośmiu okien, a **każde widzi tylko własne
+wnętrze**.
+
+**PYTANIE OTWARTE — I MA POZOSTAĆ OTWARTE** (rozstrzygnięcie właściciela,
+2026-08-24): *„czy liczba reguł też powinna mieć koszt".* Właściciel **zakazał
+robienia z tego reguły**, i to z powodu, który jest częścią samego pytania:
+**reguła o koszcie liczby reguł powiększa licznik, który miałaby mierzyć.**
+Byłaby dwudziestą piątą klasą kanonu, powołaną do zmierzenia szkody płynącej
+z liczby klas kanonu — pierwszym mechanizmem w tym repozytorium, który
+**z definicji** pogarsza wielkość, której pilnuje. **Warunek pomiaru: punkt
+spoza okna.** Mierzone z wnętrza, mierzyłby je ten sam przepływ pracy, który je
+wytwarza. **Kandydat na zadanie:** świeże okno, **bez kanonu w kontekście**,
+żeby ocena nie była skażona znajomością reguł, których koszt ma szacować.
+**Kiedyś, nie teraz** — i to również jest częścią rozstrzygnięcia, nie
+odkładaniem go.
 
 **(2) „Własny" nie znaczy „niezależny".** Dwadzieścia jeden dowodów z dwudziestu
 pięciu jest własnych, i to brzmi lepiej, niż jest: wszystkie powstały

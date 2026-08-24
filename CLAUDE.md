@@ -186,7 +186,22 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   którego nie było" — trzy przypadki, wszystkie **przed** powstaniem reguły 18,
   która się z nich wzięła. Sprawdzenie wsteczne ośmiu pozycji tabeli kosztów
   wykryło tą metodą **jedno błędne przypisanie** (koszt objętości rejestru
-  przypisany regule młodszej niż sam koszt).
+  przypisany regule młodszej niż sam koszt). **Dowód czytania, nie tylko
+  trafności — z zastrzeżeniem co do kategorii (2026-08-24).** Reguła wykryła
+  błąd **przy pierwszym zastosowaniu poza swoim źródłem**, w materiale, którego
+  jej autor nie miał na myśli, i wskazała pomyłkę, **której autor tabeli sam nie
+  widział**. Właściciel podciągnął to pod rozróżnienie „retrospekcja kontra
+  uchronienie" jako dowód czytania — **i tu potrzebne jest doprecyzowanie, bo
+  ściśle to ani jedno, ani drugie**: uchronienie zatrzymuje rękę **w chwili
+  pisania**, a tu błąd był już zapisany i zacommitowany, więc reguła zadziałała
+  **po fakcie**. Nie jest to też zwykła retrospekcja, bo ta odnosi się do
+  **własnego przypadku źródłowego**. To **trzecia kategoria: retrospekcja na
+  cudzym materiale** — reguła przeniesiona na przypadek, dla którego nie
+  powstała, i tam znajdująca defekt. Dowodzi **przenośności** reguły, czyli
+  tego, że opisuje klasę, a nie jeden przypadek. Wartość jest realna, tylko
+  inna niż uchronienia: uchronienie mówi „reguła jest czytana **w chwili
+  pracy**", przenośność mówi „reguła **działa poza miejscem, w którym
+  powstała**". Liczy się je osobno, tak samo jak dwa poprzednie.
 - RETROSPEKCJA I UCHRONIENIE MIERZĄ DWIE RÓŻNE RZECZY (właściciel,
   2026-08-24). Reguła zastosowana **po fakcie**, do wady już popełnionej,
   dowodzi, że jest **trafna**. Reguła, która **zatrzymała rękę w chwili
