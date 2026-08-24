@@ -26,7 +26,7 @@ Data założenia: 2026-08-09 (po Z1–Z4).
 | 17 | Cel linku kodu QR polecającego (teksty zakładają adres polecający) | /funkcje/pozyskiwanie | Weryfikacja przy zleceniu zrzutów Z9+ (dokąd QR prowadzi w aplikacji) |
 | 18 | 7 nazw opisowych modułów bez pozycji słownika (kalendarz, subskrypcja, vCard, QR, program poleceń, zadania, plany rozmów) | /funkcje/* | Potwierdzenie zgodności z i18n aplikacji przy najbliższym zleceniu Z (decyzja właściciela 2026-08-12) |
 | 19 | Granica importu (moduł 4: „importu hurtowego nie ma”) | /funkcje/pozyskiwanie + obawy Para 2 | Pojawienie się importu w aplikacji (strona app „Formularze & Import” — potwierdzenie zakresu przy najbliższym Z) → rewizja granicy i Pary 2 (adwersarz B F4) |
-| 20 | Rejestr „cyfrowy odcisk SHA-256” na podstronach funkcji (D-C3) | /funkcje/wyniki | Obowiązujące; przy zmianie decyzji głównej — rewizja |
+| ~~20~~ | **PRZENIESIONE 2026-08-21 → `rejestr-decyzji-stojacych.md` poz. D-1.** Nie był to warunek powrotu, tylko decyzja obowiązująca; nie było czego przywracać. Numer zostaje pusty — przenumerowanie unieważniłoby odesłania w tabeli obietnic, plikach treści i komentarzach kodu | — | — |
 | 21 | Granica „nie wygeneruje szablonu” | /funkcje/tresci | Aktywacja klucza Anthropic → rewizja |
 | 22 | Granica „zasięgów nie pokaże” | /funkcje/tresci | Statystyki publikacji po zgodach platform → rewizja |
 | 23 | Widok liderki w Pierwszych 90 Dniach (W2 odrzucony — brak dowodu) | /funkcje/zespol | Odczyt first90 przy najbliższym Z |
