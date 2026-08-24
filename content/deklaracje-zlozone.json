@@ -1,0 +1,19 @@
+{
+  "_o_czym": "Rozstrzygnięcia dla bramki deklaracji (scripts/lint-deklaracje.mjs).",
+  "_dlaczego": "Deklaracja długości stojąca w content/*/*.md opisuje CZASEM sumę dwóch kluczy messages, bo plik treści prowadzi je jednym akapitem. To konstrukcja legalna i celowa. Bramka nie może zgadywać po kształcie (T21 pkt 3) — potrzebuje notacji jawnej. Wzorzec zapisu: content/liczby-w-tresci.json.",
+  "_jak_czytac": "plik + klucze = deklaracja stojąca po OSTATNIM z kluczy opisuje ich konkatenację złączoną wartością laczenie. Obowiązuje we WSZYSTKICH trzech językach.",
+  "zlozone": [
+    {
+      "plik": "problem.md",
+      "klucze": ["Problem.tresc", "Problem.kropka"],
+      "laczenie": " ",
+      "powod": "content prowadzi treść i kropkę jednym akapitem; deklaracja opisuje całość. Zmierzone 2026-08-21: pl 155+1+57=213, en 170+1+71=242, de 192+1+89=282 — zgodne co do znaku z deklaracjami."
+    },
+    {
+      "plik": "rytm-dnia.md",
+      "klucze": ["RytmDnia.krok3Tresc", "RytmDnia.kropka"],
+      "laczenie": " ",
+      "powod": "krok wieczorny stoi w content JEDNYM akapitem (krok3Tresc + kotwica) — ta sama konstrukcja, którą e2e/zlozenie.spec.ts:316-318 pilnuje po stronie tekstu, porównując KONKATENACJĘ. Zmierzone 2026-08-21: pl 56+1+36=93, en 64+1+39=104, de 73+1+47=121."
+    }
+  ]
+}
