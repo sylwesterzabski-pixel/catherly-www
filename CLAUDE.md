@@ -70,6 +70,34 @@ Cztery obszary mają pierwszeństwo przed wyglądem, zakresem i terminem:
 dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze:
 - Brak dowodu = brak zabezpieczenia. Kod, który wygląda poprawnie, ma
   status niesprawdzony, a niesprawdzony liczy się jak niedziałający.
+- PYTANIE ZEROWE: **CZY TA RZECZ W OGÓLE ISTNIEJE** (właściciel, 2026-08-24).
+  Zadaje się je **przed** wszystkimi pytaniami o zachowanie strażnika i
+  **odpowiada na nie odczyt konfiguracji, nigdy mutacja**. Powód jest
+  mechaniczny: mutacja sprawdza, czy mechanizm reaguje, gdy zniknie
+  pilnowane zachowanie — a **mechanizmu, którego nie ma, nie da się
+  zmutować**. Zestaw pytań o zachowaniu jest wobec nieistnienia ślepy i
+  milczy dokładnie tak samo, jak przy strażniku sprawnym i niepotrzebnym.
+  Wzorzec (T42): `CLAUDE.md` przez ponad dwieście migawek twierdził, że
+  backup robi hak `Stop`; klucza `hooks` nie było w **żadnym** pliku
+  konfiguracji. Trzy doby bez kopii minęły bez jednego sygnału. **Skutek
+  widziany na dysku dowodzi, że COŚ go tworzyło — nie że tworzył go TEN
+  mechanizm.** Praktycznie: zanim zaczniesz sprawdzać, czy zabezpieczenie
+  działa, sprawdź poleceniem, czy jest — i zapisz, którym poleceniem.
+  Właściciel wskazał, że po stronie torów 8 i 13 istnieją trzy pytania
+  o zachowaniu strażnika, przed którymi to pytanie ma stanąć; **ich treści
+  po tej stronie nie ma i nie przepisuję jej z pamięci** — pytanie zerowe
+  stoi tu samodzielnie.
+- ZALEŻNOŚĆ TWARDA W DOKUMENTACJI WYMAGA ZAPISU, W KODZIE NIE (właściciel,
+  2026-08-24). Jeśli dokument A odsyła do treści w dokumencie B, **zmiana B
+  idzie pierwsza** — albo obie w jednym commicie. Odwrotna kolejność daje
+  stan pośredni, w którym odesłanie wskazuje na miejsce, gdzie szukanej
+  rzeczy jeszcze nie ma: **wygląda poprawnie i jest fałszywy**. Uzasadnienie
+  osobnego zapisu: w kodzie taką zależność wyłapuje kompilator albo test, więc
+  nie trzeba jej pamiętać; **w prozie nie wyłapuje jej nic** — żadna bramka
+  nie sprawdza, czy odesłanie trafia w treść, która już istnieje. Wzorzec
+  (2026-08-24): wykreślenie zdania o pierwszeństwie z `docs/STRATEGIA.md`
+  musiało pójść **po** wpisaniu siedmiu szczebli do tego pliku, bo nowy
+  nagłówek STRATEGII odsyła do rozdziału „Hierarchia źródeł reguł".
 - Strażnik może ZERODOWAĆ przez zmianę OTOCZENIA, bez zmiany własnego
   kodu. Asercja na podciągu globalnego artefaktu (`toContain` na całym
   HTML, grep po całym repo) wygasa w chwili, gdy szukany ciąg staje się
@@ -225,6 +253,24 @@ nieposłuszeństwem, tylko wykonaniem tej reguły.
    z tych zdań wraca z listą przeliczoną
    `git log --oneline origin/<gałąź>..HEAD` i czeka na zgodę wymieniającą
    skróty (T31).
+
+   **ZGODA WYMIENIAJĄCA SKRÓTY WYMAGA PUSHU WYMIENIAJĄCEGO SKRÓTY**
+   (właściciel, 2026-08-24 — mechanizm, nie zalecenie):
+
+   ```bash
+   git push origin <skrót>:refs/heads/<gałąź>    # dokładnie do tego commita
+   ```
+
+   `git push` bez refspec bierze **wszystko, co stoi na gałęzi** — łącznie
+   z commitami powstałymi **po** udzieleniu zgody. Zgoda na **listę** zamienia
+   się wtedy w zgodę na **stan**, i to bez śladu: polecenie kończy się
+   sukcesem, a wypchnięte zostaje więcej, niż ktokolwiek zatwierdził.
+   Wywołanie deklaruje „wyślij zatwierdzone", robi „wyślij wszystko" — klasa
+   **„mechanizm robi więcej, niż deklaruje wywołanie"**. Skrót w refspec jest
+   jedyną formą, w której zakres pushu jest **sprawdzalny w samym poleceniu**,
+   a nie zależny od tego, co akurat leży na gałęzi.
+   Przypadek źródłowy (2026-08-24): zgoda obejmowała `69e0b52` i `74fdfe8`,
+   a poprawka kanonu powstała **po** jej udzieleniu i leżała już na gałęzi.
 2. **Żadnego `--no-verify` ani obejścia hooków** (`core.hooksPath=.githooks`).
    Nigdy, także „tylko na chwilę, żeby sprawdzić".
 3. **Żadnego osłabiania bramek.** Podniesienie progu, `continue-on-error`,

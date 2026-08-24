@@ -19,7 +19,7 @@ raportem" dotyczy także tego dokumentu.
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (359 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (405 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
@@ -112,7 +112,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `74fdfe8` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Cztery pushe na cztery osobne, wyliczone zgody: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity; wypchnięte jawnie `git push origin 74fdfe8:refs/heads/…`, żeby nie zabrać trzeciego, spoza zgody). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `361c7db` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Pięć pushy na pięć osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) i `74fdfe8` → `361c7db` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
@@ -126,7 +126,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 (gitignored): `VERCEL_TOKEN`, `STRIPE_TEST_SECRET_KEY` — **nazwy wolno wymieniać,
 wartości nigdy**.
 
-Commity czekają na **wyliczoną zgodę właściciela na push**. Ostatnia zgoda
+Commity czekają na **wyliczoną zgodę właściciela na push**, wypychane **jawnym refspec ze skrótem**. Ostatnia zgoda
 (2026-08-23) obejmowała dokładnie dwanaście skrótów — `e8b3b73 · 6383580 ·
 7848900 · 97399c8 · 2599c88 · 8f15c60 · ec8d763 · bd27f6a · 85fed58 · 1a57256 ·
 96f8894 · f2db728` — została wykonana i **jest wyczerpana**. Zgoda jest
@@ -258,6 +258,19 @@ obietnice**. Reguły, o które w tej linii pracy najczęściej chodzi:
     otoczeniu. Odczyt jest mocniejszy od domysłu i **słabszy od przebiegu** —
     nie zamyka pozycji i nie zastępuje mutacji. Taki odczyt oznaczasz jako
     **granicę pomiaru**, nie jako brak wykonania.
+
+13. **PYTANIE ZEROWE: CZY TA RZECZ W OGÓLE ISTNIEJE** (właściciel,
+    2026-08-24). Zadaje się je **przed** wszystkimi pytaniami o zachowanie
+    strażnika, a **odpowiada na nie odczyt konfiguracji, nigdy mutacja** —
+    bo mechanizmu, którego nie ma, **nie da się zmutować**, a zestaw pytań
+    o zachowaniu milczy przy nieistnieniu dokładnie tak samo, jak przy
+    strażniku sprawnym i niepotrzebnym. Wzorzec: **T42**. **Skutek widziany
+    na dysku dowodzi, że COŚ go tworzyło — nie że tworzył go TEN mechanizm.**
+14. **ZALEŻNOŚĆ TWARDA W DOKUMENTACJI WYMAGA ZAPISU, W KODZIE NIE**
+    (właściciel, 2026-08-24). Jeśli dokument A odsyła do treści w B, **zmiana
+    B idzie pierwsza** — albo obie w jednym commicie. Uzasadnienie osobnego
+    zapisu: w kodzie taką zależność wyłapuje kompilator albo test; **w prozie
+    nie wyłapuje jej nic.**
 
 Sam **ADR-018 zyskał 2026-08-23 punkt 7** (T35): **zlecenie pod złym adresem
 odsyła się, nie wykonuje w przybliżeniu** — w obu kierunkach. Odbiorca nie
@@ -946,6 +959,69 @@ osobnego przebiegu.**
 
 ---
 
+### 4.13 Trzy zapisy do kanonu — 2026-08-24, popołudnie
+
+**Push `361c7db`** wykonany jawnym refspec, zdalny potwierdzony odczytem:
+`361c7db2ff399ea4039fb2302e6b2b33b0228da4`.
+
+**(1) Zakaz 1 zyskał MECHANIZM, nie zalecenie.** *„Zgoda wymieniająca skróty
+wymaga pushu wymieniającego skróty."* Push idzie odtąd wyłącznie jako
+`git push origin <skrót>:refs/heads/<gałąź>`. Powód: `git push` bez refspec
+bierze **wszystko, co stoi na gałęzi**, łącznie z commitami powstałymi **po**
+udzieleniu zgody — **zgoda na listę zamienia się w zgodę na stan**, i to bez
+śladu, bo polecenie kończy się sukcesem. Wywołanie deklaruje „wyślij
+zatwierdzone", robi „wyślij wszystko". Właściciel nazwał to **dziesiątym tego
+dnia wystąpieniem klasy „mechanizm robi więcej, niż deklaruje wywołanie"** —
+i pierwszym, w którym obejście zbudował wykonawca, nie on. Przypadek źródłowy:
+zgoda obejmowała `69e0b52` i `74fdfe8`, a poprawka kanonu leżała już na gałęzi.
+
+**(2) PYTANIE ZEROWE — czy ta rzecz w ogóle istnieje.** Właściciel: *„mieliśmy
+trzy pytania o strażniku (umie upaść / upada gdy trzeba / wyłącznie gdy
+trzeba). Brakowało czwartego, wcześniejszego niż wszystkie."* Odpowiada na nie
+**odczyt konfiguracji, nigdy mutacja** — mechanizmu, którego nie ma, **nie da
+się zmutować**, a zestaw pytań o zachowaniu milczy przy nieistnieniu dokładnie
+tak samo, jak przy strażniku sprawnym i niepotrzebnym. **Uwaga o zakresie:
+tych trzech pytań PO TEJ STRONIE NIE MA** — sprawdzone grepem w `CLAUDE.md`,
+rejestrze i tym pliku; należą do torów 8 i 13. Pytanie zerowe zapisane więc
+tak, żeby stało **samodzielnie**, z jawną adnotacją, że treści tamtych trzech
+nie przepisuję z pamięci. Właściciel zapowiedział przekazanie ustalenia obu
+torom — *„żaden nie sprawdzał istnienia, tylko zachowanie"*.
+
+**(3) Zależność twarda w dokumentacji.** Jeśli dokument A odsyła do treści
+w B, **zmiana B idzie pierwsza** — albo obie w jednym commicie. Uzasadnienie,
+którego właściciel zażądał osobno: **w kodzie taką zależność wyłapuje
+kompilator albo test, w prozie nie wyłapuje jej nic.** Żadna bramka nie
+sprawdza, czy odesłanie trafia w treść, która już istnieje.
+
+**T43 — dopisany skutek, którego nie nazwałem.** Archiwum nie jest wiernym
+odbiciem drzewa roboczego, więc odtworzenie daje repozytorium, w którym
+`git status` pokazuje **zmianę, której nikt nie wprowadził**. Człowiek
+odtwarzający po awarii — w jedynej sytuacji, w której ktokolwiek sięga po
+backup — zobaczy `D .env.example` i **uzna, że sam go skasował**. Dalej dwie
+drogi, obie złe: szukanie nieistniejącej pomyłki albo zacommitowanie usunięcia,
+czyli utrwalenie defektu archiwum w repozytorium. **Backup ma usuwać
+niepewność, a ten ją dokłada w chwili, gdy jest najdroższa.**
+
+**T43 — zapisany jako PARA, nie dwie pozycje** (polecenie właściciela). Wzorzec
+`-x ".env.*"` **chroni i szkodzi tą samą regułą**: żaden `.env*` nie trafia na
+SSD (sekrety niekopiowane — sprawdzone wykazem **nazw**, nigdy wartości)
+**i** wycina śledzony `.env.example`. Nie da się poprawić jednej strony, nie
+dotykając drugiej — rozbite na dwie pozycje, każda miałaby oczywiste
+rozwiązanie; razem mają jedno trudne. **Ustalenie odwrotne niż po stronie
+aplikacji**, ze źródłem: tam 75 archiwów przeszło z żywymi kluczami
+(**`RECZ-287`**, dwa ogniwa, drugie stąd niesprawdzalne); **tu wykluczenie
+działa**. Zapisane razem, żeby nikt nie przeniósł stamtąd wniosku „archiwa
+niosą sekrety" ani stąd wniosku „wykluczanie `.env*` jest bezpieczne".
+
+**Dwa niezależne dowody wartości reguły o odtworzeniu — tego samego dnia,
+w którym reguła powstała.** Reguła weszła do `CLAUDE.md` rano; do wieczora ma
+`RECZ-287` (cudzy pomiar) i **T43** (pomiar własny, defekt przy pierwszym
+użyciu). Osobno każdy wygląda na przypadek; razem pokazują, **czego suma
+kontrolna nie widzi z definicji** — ani nadmiaru, ani braku, wyłącznie to, że
+bajty się nie zmieniły.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -1092,7 +1168,15 @@ dotyczą bieżącej linii pracy:
   drzewa roboczego**. Znaczenie większe niż sam plik: **pierwsze w historii
   sprawdzenie przez ODTWORZENIE od razu znalazło rozjazd, którego półtora
   miesiąca sum kontrolnych znaleźć nie mogło** — suma dowodzi, że plik się nie
-  zepsuł, nie że da się z niego wrócić. Sekrety **nie** trafiają na SSD.
+  zepsuł, nie że da się z niego wrócić. **Skutek groźniejszy niż brakujący
+  plik:** odtworzenie daje repo, w którym `git status` pokazuje zmianę,
+  **której nikt nie wprowadził** — człowiek odtwarzający po awarii uzna, że
+  sam skasował plik. **Para, nie dwie pozycje:** ten sam wzorzec `-x ".env.*"`
+  **chroni** (żaden `.env*` nie trafia na SSD — sekrety nie są kopiowane)
+  **i szkodzi** (wycina śledzony `.env.example`); nie da się poprawić jednej
+  strony, nie dotykając drugiej. Ustalenie **odwrotne** niż po stronie
+  aplikacji, gdzie 75 archiwów przeszło z żywymi kluczami (`RECZ-287`, dwa
+  ogniwa, stąd niesprawdzalne).
 - **T36** — **pierwsza pozycja opisująca bramkę, która przepuszcza za MAŁO.**
   Wszystkie wcześniejsze opisują mechanizmy przepuszczające za dużo. Klasa
   „strażnik poprawny co do reguły, szkodliwy co do skutku" ma tu rodzime
@@ -1685,7 +1769,14 @@ liczba zamiast pomiaru:**
   cudzym pomiarem i tak zostaje oznaczony: półtora miesiąca weryfikacji samą
   sumą po tamtej stronie, ponad 75 archiwów przyjętych z żywymi kluczami.
   **U nas kluczy w archiwach nie ma** — sprawdzone wykazem nazw, nigdy
-  wartości.
+  wartości. **Dwa niezależne dowody wartości tej reguły tego samego dnia,
+  w którym reguła powstała** (wskazane przez właściciela): `RECZ-287` po
+  stronie aplikacji — półtora miesiąca weryfikacji samą sumą i 75 archiwów
+  przyjętych z żywymi kluczami — oraz **T43** tutaj, defekt znaleziony przy
+  **pierwszym** sprawdzeniu odtworzeniem. Osobno każdy wygląda na przypadek;
+  razem pokazują, **czego suma nie widzi z definicji**: ani tego, co
+  w archiwum jest nadmiarowo, ani tego, czego brakuje — wyłącznie to, że
+  bajty się nie zmieniły.
 
 ---
 
@@ -1747,7 +1838,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **359 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **405 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`
@@ -2013,7 +2104,7 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T40 | ⚠ **JEDYNYM KANAŁEM MIĘDZY TRZEMA OBSZARAMI JEST JEDNA OSOBA I JEDNA WARSTWA DOWODZĄCA** — kanon wspólny w zamierzeniu, rozłączny w praktyce; `CLAUDE.md` tej strony nie zawiera żadnej klasy kanonu aplikacji; kanał ma **jeden punkt awarii** | ⚠ lista różnic gotowa (rozdz. 19), **przeniesienie = decyzja właściciela** |
 | T41 | **cztery akcje CI działają na środowisku, którego nie deklarują** — `checkout@v4`, `setup-node@v4`, `download-artifact@v4`, `upload-artifact@v4` celują w Node 20, a runner wymusza Node 24; ostrzeżenie stoi w **15/15 zadań** każdego przebiegu i nikt go nie czytał, aż wejście do logu w innej sprawie (czasy zadań do T24) je odsłoniło. Nic nie jest dziś zepsute — pozycja opisuje **ryzyko z datą wygaśnięcia w cudzych rękach** | ⚠ **czeka na decyzję** — czy podnosić do `v5` (osobne zadanie, kontrola negatywna) i czy ostrzeżenia DOSTAWCY mają mieć miejsce w interfejsie (to samo pytanie co przy `::warning` z T24 — rozstrzygać raz, dla obu) |
 | T42 | ⚠ **HAK, KTÓRY MIAŁ ROBIĆ BACKUPY, NIE ISTNIEJE — a `CLAUDE.md:239-241` twierdzi, że istnieje.** Zero trafień na `hooks` w czterech plikach konfiguracji (odczyt 2026-08-24); `backup.sh` nie pada w żadnej. Skutek: przerwa w migawkach **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. Skrypt sprawny — ręcznie kod 0, `unzip -t` bez błędów. Najcięższy przypadek „brak dowodu = brak zabezpieczenia": zabezpieczenie uznane za działające przez 200+ migawek, a cichy brak backupu wygląda jak brak potrzeby backupu | ⚠ **czeka na decyzję** — czy budować hak (i wtedy koniecznie GŁOŚNY przy porażce), i co zrobić ze zdaniem w `CLAUDE.md`, które dopóki haka nie ma, jest fałszem w źródle drugiego szczebla. Do tego czasu: **`bash scripts/backup.sh` ręcznie po każdym zadaniu** |
-| T43 | **Migawka backupu nie zawiera pliku ŚLEDZONEGO w gicie — złapane PIERWSZYM sprawdzeniem przez odtworzenie.** `catherly-www-2026-08-24-0910.zip` rozpakowane 2026-08-24: `git log` pełny, `HEAD` = `74fdfe8`, `fsck` bez uszkodzeń — ale `git status` pokazuje **`D .env.example`**, plik śledzony. Przyczyna: `backup.sh:52-53` wyklucza `.env` **oraz** `.env.*`, a drugi wzorzec łapie przy okazji `.env.example`. Wzorzec szerszy niż zamiar — rodzina **T20**. Dobra wiadomość zmierzona przy okazji: **żaden `.env*` nie trafia na SSD**, czyli sekrety nie są kopiowane | ⚠ **czeka na decyzję** — jak zawęzić wykluczenie, **nie wpuszczając sekretów**. Warunek zamknięcia: odtworzenie archiwum po poprawce z **czystym** `git status` **i** wykazem bez `.env*` z sekretami — obie rzeczy w jednym sprawdzeniu, bo osobno każda da się spełnić kosztem drugiej |
+| T43 | **Migawka backupu nie zawiera pliku ŚLEDZONEGO w gicie — złapane PIERWSZYM sprawdzeniem przez odtworzenie.** `catherly-www-2026-08-24-0910.zip` rozpakowane 2026-08-24: `git log` pełny, `HEAD` = `74fdfe8`, `fsck` bez uszkodzeń — ale `git status` pokazuje **`D .env.example`**, plik śledzony. Przyczyna: `backup.sh:52-53` wyklucza `.env` **oraz** `.env.*`, a drugi wzorzec łapie przy okazji `.env.example`. Wzorzec szerszy niż zamiar — rodzina **T20**. Dobra wiadomość zmierzona przy okazji: **żaden `.env*` nie trafia na SSD**, czyli sekrety nie są kopiowane | ⚠ **czeka na decyzję** — jak zawęzić wykluczenie, **nie wpuszczając sekretów**. Skutek do zapamiętania: odtworzone repo pokazuje zmianę, **której nikt nie wprowadził**, więc odtwarzający po awarii uzna, że sam skasował plik. Warunek zamknięcia: odtworzenie archiwum po poprawce z **czystym** `git status` **i** wykazem bez `.env*` z sekretami — obie rzeczy w jednym sprawdzeniu, bo osobno każda da się spełnić kosztem drugiej |
 
 ---
 
