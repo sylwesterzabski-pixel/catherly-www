@@ -13,22 +13,41 @@ pliku („Przekazanie sesji aktualizowane na bieżąco").
 Pełnisz dokładnie jedną rolę: treść / projekt / obrazy / implementacja /
 bramkarz / adwersarz. Jeśli rola nie została wskazana — zapytaj i nie rób nic.
 
-## Hierarchia źródeł reguł (T32 — właściciel 2026-08-23)
-Kolejność od nadrzędnego — przy konflikcie wygrywa źródło wyższe:
+## Hierarchia źródeł reguł (T32 — właściciel, uzupełniona 2026-08-24)
+**SIEDEM szczebli.** Kolejność od nadrzędnego — przy konflikcie wygrywa
+źródło wyższe:
 1. **ADR** (`docs/adr/`) — decyzje architektoniczne, wiążą wszystko poniżej.
+   W obrębie ADR-ów **ADR-018 jest nadrzędny wobec pozostałych**.
 2. **CLAUDE.md** (ten plik) — kanon operacyjny repozytorium, czytany na
    starcie sesji.
-3. **Rejestr warunków powrotu** (`docs/faza-2/rejestr-warunkow-powrotu.md`)
+3. **`docs/STRATEGIA.md`** — CO robimy i DLACZEGO.
+4. **`docs/PLAN.md`** — JAK, w sensie inżynierskim; wykonawczy wobec strategii.
+5. **Rejestr warunków powrotu** (`docs/faza-2/rejestr-warunkow-powrotu.md`)
    — pozycje z warunkami powrotu, nie reguły.
-4. **Przekazanie sesji** (`docs/PRZEKAZANIE-SESJI.md`) — stan repozytorium,
+6. **Przekazanie sesji** (`docs/PRZEKAZANIE-SESJI.md`) — stan repozytorium,
    nie reguły.
-5. **Dokumenty paneli** (`docs/faza-*/`) — historia rozstrzygnięć, nie
+7. **Dokumenty paneli** (`docs/faza-*/`) — historia rozstrzygnięć, nie
    źródło reguł.
+
+**Dlaczego kanon stoi NAD strategią** (rozstrzygnięcie właściciela
+2026-08-24): strategia opisuje **CO** robimy, kanon opisuje **JAK** — a przy
+sprzeczności wygrywa sposób pracy, nie zamiar. Zdanie o pierwszeństwie
+strategii zostało z `docs/STRATEGIA.md` **wykreślone** i zastąpione
+odesłaniem tutaj.
 
 Przy równym poziomie wygrywa nowsze, ale **rozjazd między dokumentami tego
 samego poziomu zgłaszasz, nie rozstrzygasz po cichu**. Brak miejsca
 `CLAUDE.md` w hierarchii był sam w sobie wadą (T32) — ten rozdział ją
 zamyka.
+
+**Historia tego rozdziału jest jego własnym ostrzeżeniem.** Pierwsza wersja
+(2026-08-23) wymieniała **pięć** źródeł i pomijała STRATEGIĘ oraz PLAN —
+oba deklarowały wtedy własne pierwszeństwo, więc powstały dwie żywe,
+sprzeczne deklaracje nadrzędności: dokładnie defekt, który ten rozdział miał
+zamknąć, odtworzony szczebel wyżej. Wychwycone przez odczyt nagłówków, nie
+z pamięci. Wniosek wiążący: **zanim wypiszesz zamkniętą listę źródeł,
+policz je w repozytorium.** Lista podana z pola widzenia jest złym
+podzbiorem, a zły podzbiór wygląda jak komplet.
 
 ## Zakazy bezwzględne
 - Żadnych wzmianek o konkretnych firmach z branży, logotypów, twarzy osób.
@@ -157,6 +176,33 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   strażnika wymuszającego konkretny kształt lub wartość, sprawdź, czy
   dostawca/kontrakt gwarantuje ten kształt. Jeśli nie — strażnik sprawdza
   OBECNOŚĆ, nie kształt.** (obok zakazu 10 — T32)
+- KLASA „WNIOSEK SŁUSZNY Z METODY NIERZETELNEJ" (właściciel, 2026-08-24).
+  **Trafność wyniku nie uzasadnia metody** — a przy JEDNYM pomiarze nie da
+  się odróżnić jednego od drugiego. To jest odwrotność „brak dowodu = brak
+  zabezpieczenia": tam brakowało dowodu przy dobrym wniosku, tu dowód jest
+  pozorny, a wniosek przypadkiem wyszedł dobry. Groźniejsza od zwykłej
+  pomyłki, bo **nagradza złą metodę** i utrwala ją na przyszłość.
+  Wzorzec (2026-08-24): zgłoszenie cienkiego zapasu przy `Pełny zestaw e2e`
+  oparte na JEDNEJ liczbie przepisanej z cudzego zapisu — 5 min 23 s. Ten
+  sam kod dał godzinę później 3 min 13 s; **rozrzut 1,67×**. Zgłoszenie było
+  słuszne, ale przy odwrotnym losie ta sama metoda kazałaby powiedzieć „jest
+  dobrze" i defekt zostałby przeoczony. Reguła: **dla wielkości z rozrzutem
+  jedna wartość nie ustala zapasu — ustala go rozrzut, a rozrzutu nie widać
+  z jednego pomiaru.** Zanim policzysz „zapas N×", sprawdź, ile masz
+  pomiarów; jeden to nie zapas, to anegdota z datą. Rodzina: „margines
+  pozorny" przy wydajności, przeniesiony na czas trwania zadania.
+- WYNIKANIE Z KODU TO NIE POMIAR (`B-17` z toru 8, przyjęte 2026-08-24).
+  Odczyt cudzego źródła — dokumentacji, kodu runnera, biblioteki — mówi, co
+  mechanizm **ma** robić. Pomiarem jest dopiero jego zachowanie na naszym
+  otoczeniu. Odczyt jest mocniejszy od domysłu i **słabszy od przebiegu**,
+  więc nie zamyka pozycji i nie wystarcza za mutację. Wzorzec (T24): zapłon
+  piętnastu kroków `if: cancelled()` wynika z `StepsRunner.cs`
+  i `CancelledFunction.cs`, a mimo to **nie znaleziono ani jednego
+  publicznego przebiegu**, w którym wykonałby się krok z warunkiem dokładnie
+  `cancelled()` — wszystkie obserwowane to `always()`. Status: NIESPRAWDZONE.
+  Zapisując taki odczyt, oznaczasz go jako **granicę pomiaru**, nie jako
+  brak wykonania — to dwie różne rzeczy i mieszanie ich zaciera, czego
+  naprawdę brakuje.
 - Nie oceniasz własnej pracy w tych czterech obszarach. Dowodem jest
   wykonany test, zwrócony status, log — nigdy Twoje przekonanie.
 - W konflikcie przegrywa termin i zakres, nigdy nieodwracalne.

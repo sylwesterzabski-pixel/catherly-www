@@ -19,14 +19,14 @@ raportem" dotyczy także tego dokumentu.
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (288 linii, stan 2026-08-23) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (334 linie, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` (457 linii, stan 2026-08-23) — 24 pozycje treści
-   + **41** pozycji technicznych **T1–T41** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` (459 linii, stan 2026-08-24) — 24 pozycje treści
+   + **42** pozycji technicznych **T1–T42** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -86,9 +86,14 @@ Czeka na jego decyzję siedem rzeczy z rozdziału 7. Nie zaczynaj od zadawania
 pytań, na które odpowiedź jest w rozdziale 7 — zacznij od sprawdzenia, czy
 odpowiedź już padła.
 
-**Hierarchia źródeł reguł — ROZSTRZYGNIĘTA 2026-08-23 (T32).** Kolejność od
-nadrzędnego: **1. ADR** (`docs/adr/`) → **2. `CLAUDE.md`** → **3. rejestr
-warunków powrotu** → **4. to przekazanie** → **5. dokumenty paneli**. Przy równym
+**Hierarchia źródeł reguł — SIEDEM SZCZEBLI, uzupełniona 2026-08-24 (T32).**
+Kolejność od nadrzędnego: **1. ADR** (`docs/adr/`) → **2. `CLAUDE.md`** →
+**3. `docs/STRATEGIA.md`** → **4. `docs/PLAN.md`** → **5. rejestr warunków
+powrotu** → **6. to przekazanie** → **7. dokumenty paneli**. Pierwsza wersja
+(2026-08-23) wymieniała **pięć** i pomijała STRATEGIĘ oraz PLAN — oba
+deklarowały wtedy własne pierwszeństwo, więc powstały dwie sprzeczne
+deklaracje nadrzędności. **Kanon stoi nad strategią**, bo strategia mówi CO,
+a kanon JAK — przy sprzeczności wygrywa sposób pracy, nie zamiar. Przy równym
 poziomie wygrywa nowsze, ale **rozjazd między dokumentami tego samego poziomu
 zgłaszasz, nie rozstrzygasz po cichu**. Zapis stoi w `CLAUDE.md`, w rozdziale
 „Hierarchia źródeł reguł" — jako rozdział, nie jako szósty plik (zakaz 10).
@@ -107,13 +112,13 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `d7a2fe3` — odczytane `git ls-remote` **2026-08-23**, nie z lokalnego refa. Tego dnia dwa pushe na dwie osobne, wyliczone zgody: `69c2dab` → `f2db728` (pakiet dwunastu) i `f2db728` → `d7a2fe3` (jeden commit). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `231a17b` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Trzy pushe na trzy osobne, wyliczone zgody: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
 | **Bramki CI na gałęzi** | ⚠ **CZERWONE — dwa zadania z piętnastu.** Odczyt 2026-08-23, **oba dzisiejsze przebiegi tak samo** — `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`, czyli stan zdalny): **`Nieodwracalne`** — „Brak raportu audytu nieodwracalnych dla commita" (ADR-018 pkt 4; raport jest **per commit**, więc ta czerwień wraca przy KAŻDYM nowym commicie, dopóki audytu nie ma) i **`Wydajność`** — krok `Pomiar`, mediana LCP `/` **1856 ms** przy budżecie 1800 na transporcie HTTP/1.1+gzip; ten sam pomiar daje **1276 ms** na HTTP/2+brotli. Trzynaście pozostałych zielonych w obu przebiegach. **Żadnej z tych czerwieni nie ruszam** — obie są poza zakresem zlecenia (zakaz 8), obie mają swoje pozycje: audyt → ADR-018 pkt 4 i Faza 7, próg → **T33** i kierunek (d) |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
-| Backupy repo | `/Volumes/Extreme SSD/Catherly-www-ZIP`, migawka po każdym zadaniu (hook `Stop`), ~8 MB każda. **Nazwy ostatniej nie wpisuję** — starzeje się przy każdym zadaniu; sprawdź: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
+| Backupy repo | ⚠ `/Volumes/Extreme SSD/Catherly-www-ZIP`, ~9 MB każda. **BACKUP NIE DZIEJE SIĘ SAM — haka `Stop` NIE MA** (T42, zmierzone 2026-08-24: zero trafień na `hooks` w czterech plikach konfiguracji). Skutkiem była przerwa **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. Skrypt jest sprawny — **uruchamiaj `bash scripts/backup.sh` RĘCZNIE po każdym zadaniu i raportuj wynik**; to jedyne działające zabezpieczenie, jakie tu dziś jest. `CLAUDE.md:239-241` nadal twierdzi, że hak to robi — **to zdanie jest dziś fałszem** i czeka na rozstrzygnięcie (T42). **Nazwy ostatniej nie wpisuję**: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
 | Archiwum katalogu sesyjnego | `/Volumes/Extreme SSD/Catherly-www-SESJE/scratchpad-sesja-2026-08-20-b5f46785-NIE-USUWAC.zip` — rozdział 11 |
 
 **Środowisko:** Node `v20.20.2`, npm `10.8.2`, Next `^15.5.23`, `package-lock.json`
@@ -238,6 +243,22 @@ obietnice**. Reguły, o które w tej linii pracy najczęściej chodzi:
     sprawdź, czy dostawca gwarantuje ten kształt. Jeśli nie — strażnik sprawdza
     OBECNOŚĆ, nie kształt.** Pokrycie rodzime: T33, T34.
 
+11. **KLASA „WNIOSEK SŁUSZNY Z METODY NIERZETELNEJ"** (właściciel,
+    2026-08-24). **Trafność wyniku nie uzasadnia metody** — a przy JEDNYM
+    pomiarze nie da się odróżnić jednego od drugiego. Odwrotność reguły 1:
+    tam brakowało dowodu przy dobrym wniosku, tu dowód jest pozorny,
+    a wniosek przypadkiem wyszedł dobry. Groźniejsza od pomyłki, bo
+    **nagradza złą metodę**. Wzorzec: zapas przy `Pełny zestaw e2e`
+    policzony z JEDNEJ liczby, przy rozrzucie **1,67×** na tym samym
+    zadaniu. **Dla wielkości z rozrzutem zapas ustala rozrzut, nie jedna
+    wartość** — a rozrzutu nie widać z jednego pomiaru.
+12. **WYNIKANIE Z KODU TO NIE POMIAR** (`B-17` z toru 8, przyjęte
+    2026-08-24). Odczyt cudzej dokumentacji albo cudzego kodu mówi, co
+    mechanizm **ma** robić; pomiarem jest jego zachowanie na naszym
+    otoczeniu. Odczyt jest mocniejszy od domysłu i **słabszy od przebiegu** —
+    nie zamyka pozycji i nie zastępuje mutacji. Taki odczyt oznaczasz jako
+    **granicę pomiaru**, nie jako brak wykonania.
+
 Sam **ADR-018 zyskał 2026-08-23 punkt 7** (T35): **zlecenie pod złym adresem
 odsyła się, nie wykonuje w przybliżeniu** — w obu kierunkach. Odbiorca nie
 wykonuje zlecenia w repozytorium, do którego ono nie należy; nadawca sprawdza
@@ -246,8 +267,8 @@ regułę mogą wyegzekwować obie sesje, także wobec zlecenia właściciela.
 
 Osobno, od 2026-08-23, `CLAUDE.md` ma rozdział **„Dziesięć zakazów"** — reguły
 adresowane do ZLECAJĄCEGO, wiążące także dla zleceń właściciela (T34) — oraz
-rozdział **„Hierarchia źródeł reguł"** (T32): ADR → `CLAUDE.md` → rejestr →
-przekazanie → dokumenty paneli. Nie są częścią kanonu ADR-018, ale mają tę samą
+rozdział **„Hierarchia źródeł reguł"** (T32), od 2026-08-24 siedmioszczeblowy:
+ADR → `CLAUDE.md` → STRATEGIA → PLAN → rejestr → przekazanie → panele. Nie są częścią kanonu ADR-018, ale mają tę samą
 moc i ten sam brak strażnika.
 
 ---
@@ -786,6 +807,78 @@ inne). **Nie naprawiam — zakaz 8.**
 
 ---
 
+### 4.11 Cztery rozstrzygnięcia i diagnoza backupu — 2026-08-24
+
+**Push wykonany na osobną, wyliczoną zgodę:** jeden commit `231a17b`, zdalny
+potwierdzony odczytem `git ls-remote` → `231a17bcd84c4a46a2bd854b9c393906990a29ce`.
+
+**BACKUP — zrobione przed czymkolwiek innym, na polecenie właściciela.**
+`bash scripts/backup.sh` uruchomiony ręcznie: `catherly-www-2026-08-24-0858.zip`,
+**9,0 MB**, kod wyjścia **0**, `unzip -t` → *„No errors detected"*. Skrypt jest
+sprawny. Wada leży gdzie indziej — patrz **T42** niżej.
+
+**T24 — właściciel przyjął obalenie własnego rozstrzygnięcia w całości.**
+Żółtego statusu konkluzji nie ma; wariant „czerwień" odrzucony jego słowami:
+*„bramka czerwieniejąca na zdarzeniu zamierzonym uczy ignorowania czerwieni"*.
+Zostaje `::warning` jako **nazwana słabość z powodem „to jedyne, co istnieje"** —
+nie „to wystarczy". Kolejność zatwierdzona: **mutacja przed wyborem**. Luka
+o braku publicznych przebiegów z warunkiem dokładnie `cancelled()` zapisana jako
+**granica pomiaru, nie brak wykonania** — pierwsze domyka się robotą, drugie
+**wyłącznie eksperymentem**, więc mieszanie ich zaciera, czego brakuje.
+
+**Dwie nowe klasy w kanonie** (`CLAUDE.md`, rozdz. „Prymat nieodwracalnego"):
+**(11) „wniosek słuszny z metody nierzetelnej"** — trafność wyniku nie
+uzasadnia metody, a przy jednym pomiarze nie da się odróżnić jednego od
+drugiego; groźniejsza od pomyłki, bo **nagradza złą metodę**. **(12) „wynikanie
+z kodu to nie pomiar"** (`B-17` z toru 8) — odczyt cudzego kodu jest mocniejszy
+od domysłu i **słabszy od przebiegu**; nie zamyka pozycji i nie zastępuje
+mutacji.
+
+**T32 — hierarchia ma siedem szczebli, nie pięć.** Właściciel przyjął
+zgłoszenie i nazwał je swoim błędem: *„wymieniłem pięć źródeł, nie sprawdziwszy,
+ile ich jest"*. Obowiązuje: **ADR → `CLAUDE.md` → STRATEGIA → PLAN → rejestr →
+przekazanie → panele.** Kanon stoi **nad** strategią, bo strategia mówi CO,
+a kanon JAK. Zdanie o pierwszeństwie strategii **wykreślone** z
+`docs/STRATEGIA.md` — **osobnym commitem**, z cytatem starego brzmienia
+w opisie. Przesłanka zapisana jako klasa **„zły podzbiór"**: lista podana bez
+policzenia **wygląda jak komplet** i zatrzymuje szukanie.
+
+**T41 — dopisane, co konkretnie może się zepsuć.** Akcja celująca w Node 20 na
+runnerze z Node 24 może przestać działać **przy dowolnej aktualizacji tej
+akcji, bez zmiany po naszej stronie**. Nie trzeba decyzji GitHuba ani naszego
+commita. Ponieważ `checkout` i `setup-node` stoją w każdym z 15 zadań, **padnie
+cała bramka naraz**. Kwalifikacja właściciela: **pozycja przedpremierowa, nie
+higiena** — do checklisty Fazy 7, obok T33.
+
+**⚠ T42 — NOWA POZYCJA, NAJCIĘŻSZA Z DZISIEJSZYCH: haka `Stop` NIE MA.**
+`CLAUDE.md:239-241` twierdzi, że migawki robi hak automatycznie. Sprawdzenie
+2026-08-24: **klucz `hooks` nie występuje w żadnym pliku konfiguracji** —
+`~/.claude/settings.json` (0 trafień), `~/.claude.json` (0),
+`.claude/settings.local.json` (brak klucza), `.claude/settings.json`
+i `~/.claude/settings.local.json` (pliki nie istnieją), `managed-settings.json`
+(nie istnieje). Ciąg `backup.sh` **nie pada w żadnej konfiguracji**. To nie hak
+zepsuty ani wyłączony — **haka nie ma**. Skutek: przerwa **20.08 22:02 →
+24.08 08:58**, obejmująca całą pracę z 23.08. Dwa powody, dla których to jest
+cięższe niż każda inna pozycja: zabezpieczenie było uznane za działające przez
+**ponad 200 migawek**, a gdy przestało powstawać, **nie było żadnego sygnału**;
+i fałszywe twierdzenie stoi w `CLAUDE.md`, czyli na **drugim szczeblu
+hierarchii**, więc każda sesja liczy na mechanizm, którego nie ma.
+**Nieustalone i nie zgaduję:** czy hak kiedykolwiek istniał, czy migawki do
+20.08 powstawały z ręcznych uruchomień. Nie naprawiam — polecenie brzmiało
+„zgłoś jako pozycję", a założenie haka w cudzej konfiguracji jest zmianą poza
+repozytorium. **Do tego czasu: `bash scripts/backup.sh` ręcznie po każdym
+zadaniu.**
+
+**Progi czasowe nietknięte** (rozstrzygnięcie właściciela): `Wydajność` 2,48×
+i `Dostępność` 3,77× zostają — *„Wydajność ma osobny problem (rozrzut 593 przy
+zapasie 279), a limit czasu jest przy niej wtórny"*. Te dwie liczby są
+**właściciela, nie z pomiaru tutaj** — jedno ogniwo, stąd niesprawdzone.
+
+**Bramki na gałęzi nadal czerwone** (`Nieodwracalne`, `Wydajność`) — obie mają
+swoje miejsca, zostawiamy zgodnie z rozstrzygnięciem.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -826,7 +919,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T41. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T42. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -920,6 +1013,12 @@ dotyczą bieżącej linii pracy:
   klas już nazwanych: „raport, którego nikt nie czyta" (ostrzeżenie leżało
   w logu i wyszło przypadkiem) oraz „strażnik zerodowany przez zmianę
   OTOCZENIA" (bramki zielone, podłoże inne). **Nie naprawiane — zakaz 8.**
+- **T42** — ⚠ **haka `Stop` nie ma, a kanon twierdzi, że jest.** Zmierzone
+  2026-08-24: zero trafień na `hooks` w `~/.claude/settings.json`,
+  `~/.claude.json`, `.claude/settings.local.json`; pozostałe pliki nie
+  istnieją. Trzy doby bez migawki. Skrypt sprawny — wada jest w tym, że
+  **nikt go nie uruchamia**, bo `CLAUDE.md` obiecuje automat. Dopóki to
+  zdanie stoi, każda sesja liczy na mechanizm, którego nie ma.
 - **T36** — **pierwsza pozycja opisująca bramkę, która przepuszcza za MAŁO.**
   Wszystkie wcześniejsze opisują mechanizmy przepuszczające za dużo. Klasa
   „strażnik poprawny co do reguły, szkodliwy co do skutku" ma tu rodzime
@@ -1026,6 +1125,30 @@ dotyczą bieżącej linii pracy:
    po poprawce najcieńszy zapas ma już nie `Pełny zestaw e2e` (5,6×), tylko
    **`Wydajność`** (8,05 i 7,90 / 20 = **2,48×**) i **`Dostępność`** (2,65 / 10 =
    **3,77×**). Progów nie ruszam — właściciel rozstrzygnął o jednym zadaniu.
+   **ZAMKNIĘTE CO DO ROZSTRZYGNIĘCIA 2026-08-24, POZYCJA OTWARTA CO DO
+   DOWODU.** Właściciel przyjął obalenie własnego rozstrzygnięcia w całości
+   i wybrał **nazwaną słabość bez czerwieni** — wariant (A) odrzucony jego
+   słowami: *„bramka czerwieniejąca na zdarzeniu zamierzonym uczy ignorowania
+   czerwieni"*. Zostaje `::warning` z jawnym zapisem, że jest warstwą słabszą,
+   **i z powodem: „to jedyne, co istnieje"**, nie „to wystarczy". Kolejność
+   zatwierdzona: **mutacja przed wyborem** wzmocnień. `$GITHUB_STEP_SUMMARY`
+   **nie dopisany** — przetrwanie przy anulowaniu niepotwierdzone, więc
+   byłoby to kolejnym kodem, który wygląda poprawnie. **Progi czasowe
+   zostają na dziś**: `Wydajność` ma osobny problem (właściciel: *„rozrzut
+   593 przy zapasie 279"* — liczby jego, **nie z pomiaru tutaj**, jedno
+   ogniwo, do zestawienia z T33), a limit czasu jest przy niej wtórny.
+6b. ⚠ **T42 — czy budować hak backupu, i co zrobić ze zdaniem w `CLAUDE.md`.**
+   Dwie rzeczy, żadna nie zastępuje drugiej. **(1) Hak:** jeśli budować, to
+   z warunkiem, którego dziś nie ma po żadnej stronie — **musi być głośny przy
+   porażce**. Hak, który cicho nie zadziałał, jest tą samą klasą wady, co
+   wszystko w tym rejestrze; hak zgłaszający porażkę tylko do logu sesji to
+   „raport, którego nikt nie czyta". **(2) Zdanie w `CLAUDE.md:239-241`:**
+   dopóki haka nie ma, jest to **fałsz w źródle reguł drugiego szczebla**,
+   który usypia dokładnie tę czujność, jakiej kanon wymaga. Wykreślić je
+   i zostawić obowiązek ręcznego uruchomienia z raportem — albo zbudować hak
+   i **zweryfikować mutacją** (dysk odłączony → głośna porażka; podpięty →
+   migawka i zielony raport). Do rozstrzygnięcia: **każda sesja uruchamia
+   `bash scripts/backup.sh` ręcznie i raportuje wynik.**
 7. **Czy utrwalić harnesy mutacyjne w repozytorium** (dziś żyją w katalogu
    sesyjnym i znikną — sekcja 11). Kanon mówi „dowodem jest mutacja"; jeśli
    dowód ma być odtwarzalny, harnesy powinny trafić np. do `scripts/dowody/`.
@@ -1097,6 +1220,21 @@ dotyczą bieżącej linii pracy:
     po cichu". Do decyzji: czy STRATEGIA i PLAN wchodzą do hierarchii i na którym
     szczeblu, czy przestały być źródłami reguł wiążących — a jeśli to drugie, ich
     nagłówki wymagają poprawki, bo dziś mówią co innego.
+    **ROZSTRZYGNIĘTE 2026-08-24 — SIEDEM SZCZEBLI.** Właściciel przyjął
+    zgłoszenie i nazwał je swoim błędem: *„wymieniłem pięć źródeł, nie
+    sprawdziwszy, ile ich jest"*. Kolejność: **ADR → `CLAUDE.md` → STRATEGIA
+    → PLAN → rejestr → przekazanie → panele.** Zdanie o pierwszeństwie
+    strategii **wykreślone** z `docs/STRATEGIA.md`, zastąpione odesłaniem do
+    `CLAUDE.md`; zrobione **osobnym commitem**, z cytatem starego brzmienia
+    w opisie. Uzasadnienie właściciela: *„strategia opisuje CO robimy, kanon
+    opisuje JAK — a przy sprzeczności wygrywa sposób pracy, nie zamiar"*.
+    **Do rejestru przesłanek, klasa „zły podzbiór"** (źródło: tor 10, jedno
+    ogniwo, stąd niesprawdzone): przesłanką pierwszej wersji była lista pięciu
+    źródeł **podana bez policzenia**. Zły podzbiór jest groźniejszy od pustej
+    listy, bo **wygląda jak komplet** i zatrzymuje szukanie. **Warunek
+    zamknięcia nadal niespełniony:** zdanie o miejscu w hierarchii niosą dziś
+    `CLAUDE.md` i `docs/STRATEGIA.md`; brakuje pięciu — `docs/adr/README.md`,
+    `docs/PLAN.md`, rejestr, to przekazanie i dokumenty paneli.
 11. **T34 — czy budować strażnika cząstkowego dziesięciu zakazów.** Sprawdzalne
     mechanicznie są 4 z 10 (zakazy 1, 2, 6, 7); pozostałe wymagają oceny
     zamiaru. Rekomendacja: **tak dla zakazu 2 i 6** (grep po `--no-verify` oraz
@@ -1399,6 +1537,31 @@ liczba zamiast pomiaru:**
   ostrzeżenie dostawcy widoczne 15 razy w każdym przebiegu, którego nikt nie
   czytał. Oba znaleziska są skutkiem jednej decyzji: żeby w końcu spojrzeć.
 
+**Dopisane po diagnozie backupu (2026-08-24) — najcięższa z całego zestawu:**
+
+- **ZABEZPIECZENIE, KTÓRE NIGDY NIE ISTNIAŁO, WYGLĄDA IDENTYCZNIE JAK
+  ZABEZPIECZENIE, KTÓRE DZIAŁA — dopóki nie przestanie być potrzebne.**
+  `CLAUDE.md` od początku mówi, że migawki robi hak `Stop`. Migawek jest
+  ponad dwieście, więc nikt tego nie sprawdził — a **klucza `hooks` nie ma
+  w żadnym pliku konfiguracji** (odczyt 2026-08-24, cztery lokalizacje).
+  Trzy doby bez kopii minęły **bez jednego sygnału**, bo cichy brak backupu
+  jest nieodróżnialny od backupu, którego nie było potrzeby robić. Trzy
+  reguły opisują to trafnie i **wszystkie trzy były w kanonie już przed tym
+  zdarzeniem**: „brak dowodu = brak zabezpieczenia" (nikt nie zmierzył, czy
+  hak istnieje), „raport, którego nikt nie czyta" (porażka nie miała gdzie
+  się pokazać) i „strażnik zerodowany przez zmianę otoczenia" (z tą różnicą,
+  że tu nie było czego zerować). **Czego się nauczyć:** zdanie „mechanizm X
+  robi to automatycznie" jest **twierdzeniem sprawdzalnym jednym poleceniem**
+  i dopóki go nie sprawdzisz, ma status niesprawdzony — także gdy stoi
+  w kanonie, także gdy jego skutki widzisz na dysku. Skutek na dysku dowodzi,
+  że coś je tworzyło; **nie dowodzi, że tworzył je ten mechanizm.**
+- **Rzecz osobna, warta jednego zdania.** Nagłówek zlecenia mówił
+  „23.08.2026, 21:02", a zegar maszyny w chwili wykonania — **2026-08-24,
+  08:58 CEST**. Stemple w tym commicie noszą **datę faktyczną**, nie datę
+  z nagłówka: przy regule „każda liczba niesie datę i commit" rozjazd o dobę
+  nie jest drobiazgiem redakcyjnym, bo to on decyduje, czy pomiar da się
+  potem odtworzyć.
+
 ---
 
 ## 10. Gdzie co leży
@@ -1445,7 +1608,7 @@ liczba zamiast pomiaru:**
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T41
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T42
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
   **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
   (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
@@ -1455,11 +1618,11 @@ liczba zamiast pomiaru:**
 (zmierzone 2026-08-20 na `8f15c60` + zmiany robocze)
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii; **zakres zadeklarowany
   w wierszach 3–6**, liczby w rozdziałach opisują stan tamtego zakresu (T26)
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — 457 linii (stan 2026-08-23), pozycje T1–T41
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — 459 linii (stan 2026-08-24), pozycje T1–T42
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **288 linii, stan 2026-08-23** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **334 linie, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`
@@ -1614,7 +1777,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
   linii pracy (T2, T10, T20–T40); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T41 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  24 pozycji treści i T1–T42 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -1676,7 +1839,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T41)
+### 15.2 Pozycje techniczne i procesowe (T1–T42)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
@@ -1724,6 +1887,7 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T39 | **REJESTR LICZY OGNIWA, NIE ŹRÓDŁA** — skorowidz ogniw dla 40 pozycji; pomiar: 30 z 36 wierszy wymieniało właściciela, ale wzmianka ≠ pochodzenie, więc „25 z 34" **nie da się potwierdzić w tej postaci**; dwa ogniwa: T30, T36, T38 · **trzy ogniwa: T37** | ✅ skorowidz w rejestrze; ⚠ kolumna zamiast skorowidza — do decyzji |
 | T40 | ⚠ **JEDYNYM KANAŁEM MIĘDZY TRZEMA OBSZARAMI JEST JEDNA OSOBA I JEDNA WARSTWA DOWODZĄCA** — kanon wspólny w zamierzeniu, rozłączny w praktyce; `CLAUDE.md` tej strony nie zawiera żadnej klasy kanonu aplikacji; kanał ma **jeden punkt awarii** | ⚠ lista różnic gotowa (rozdz. 19), **przeniesienie = decyzja właściciela** |
 | T41 | **cztery akcje CI działają na środowisku, którego nie deklarują** — `checkout@v4`, `setup-node@v4`, `download-artifact@v4`, `upload-artifact@v4` celują w Node 20, a runner wymusza Node 24; ostrzeżenie stoi w **15/15 zadań** każdego przebiegu i nikt go nie czytał, aż wejście do logu w innej sprawie (czasy zadań do T24) je odsłoniło. Nic nie jest dziś zepsute — pozycja opisuje **ryzyko z datą wygaśnięcia w cudzych rękach** | ⚠ **czeka na decyzję** — czy podnosić do `v5` (osobne zadanie, kontrola negatywna) i czy ostrzeżenia DOSTAWCY mają mieć miejsce w interfejsie (to samo pytanie co przy `::warning` z T24 — rozstrzygać raz, dla obu) |
+| T42 | ⚠ **HAK, KTÓRY MIAŁ ROBIĆ BACKUPY, NIE ISTNIEJE — a `CLAUDE.md:239-241` twierdzi, że istnieje.** Zero trafień na `hooks` w czterech plikach konfiguracji (odczyt 2026-08-24); `backup.sh` nie pada w żadnej. Skutek: przerwa w migawkach **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. Skrypt sprawny — ręcznie kod 0, `unzip -t` bez błędów. Najcięższy przypadek „brak dowodu = brak zabezpieczenia": zabezpieczenie uznane za działające przez 200+ migawek, a cichy brak backupu wygląda jak brak potrzeby backupu | ⚠ **czeka na decyzję** — czy budować hak (i wtedy koniecznie GŁOŚNY przy porażce), i co zrobić ze zdaniem w `CLAUDE.md`, które dopóki haka nie ma, jest fałszem w źródle drugiego szczebla. Do tego czasu: **`bash scripts/backup.sh` ręcznie po każdym zadaniu** |
 
 ---
 
