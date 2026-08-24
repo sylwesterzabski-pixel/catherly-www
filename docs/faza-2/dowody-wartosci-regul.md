@@ -148,11 +148,41 @@ robienia z tego reguły**, i to z powodu, który jest częścią samego pytania:
 Byłaby dwudziestą piątą klasą kanonu, powołaną do zmierzenia szkody płynącej
 z liczby klas kanonu — pierwszym mechanizmem w tym repozytorium, który
 **z definicji** pogarsza wielkość, której pilnuje. **Warunek pomiaru: punkt
-spoza okna.** Mierzone z wnętrza, mierzyłby je ten sam przepływ pracy, który je
-wytwarza. **Kandydat na zadanie:** świeże okno, **bez kanonu w kontekście**,
+spoza PRZEPŁYWU — nie spoza repozytorium** (doprecyzowane 2026-08-24 po
+rozwiązaniu odesłania „osiem okien"). Pierwotnie brzmiał „spoza okna", ale
+skoro ślepota jest własnością **całego przepływu** — osiem równoległych okien
+nad Catherly, tory po obu repozytoriach — to punkt w innym oknie **też jest
+w środku**: widzi własne wnętrze i dzieli ten sam kanon. Mierzone stamtąd,
+mierzyłby je ten sam przepływ pracy, który je wytwarza, tylko z sąsiedniego
+krzesła. **Kandydat na zadanie:** świeże okno, **bez kanonu w kontekście**,
 żeby ocena nie była skażona znajomością reguł, których koszt ma szacować.
 **Kiedyś, nie teraz** — i to również jest częścią rozstrzygnięcia, nie
 odkładaniem go.
+
+---
+
+## Pomiar metody: korekta płynie w obie strony
+
+**Ustalenie właściciela, 2026-08-24** — zapisane tutaj, a nie przy pozycji,
+bo dotyczy **sposobu pracy**, nie żadnej pojedynczej reguły.
+
+W jednej wymianie zdjęto **po jednym błędzie na stronę, każdy wykryty przez
+drugą stronę**:
+- **pytanie kontrolne właściciela** („czy reguła istniała, gdy koszt powstał")
+  zdjęło **błędne przypisanie w K5** — pomyłkę wykonawcy, której autor tabeli
+  sam nie widział;
+- **analiza wykonawcy** zdjęła **podciągnięcie K5 pod rozróżnienie z T26** —
+  pomyłkę właściciela, bo ściśle był to trzeci przypadek (przenośność), a nie
+  drugi (uchronienie).
+
+**To jest pomiar metody, nie anegdota:** gdyby korekta płynęła tylko w jedną
+stronę, druga strona byłaby wyłącznie wykonawcza, a jej błędy zostawałyby
+w dokumentach. **Korekta płynie w obie strony albo nie płynie wcale.** Zapis
+ma wartość dopiero jako **para** — pojedyncza korekta w którąkolwiek stronę
+dowodzi uważności jednej osoby, dopiero obie naraz dowodzą, że sprawdzanie
+jest własnością przepływu. Ta sama zasada, co przy dowodach wartości reguł
+(klasa 17): osobno każdy z tych dwóch przypadków wygląda jak zwykłe
+poprawienie, razem mierzą coś innego.
 
 **(2) „Własny" nie znaczy „niezależny".** Dwadzieścia jeden dowodów z dwudziestu
 pięciu jest własnych, i to brzmi lepiej, niż jest: wszystkie powstały

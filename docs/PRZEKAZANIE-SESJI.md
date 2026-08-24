@@ -17,9 +17,15 @@ Ten plik jest **punktem wejścia**. Wskazuje na niego `CLAUDE.md`, żeby nie da�
 się go minąć — reguła kanonu „raport, którego nikt nie czyta, przestaje być
 raportem" dotyczy także tego dokumentu.
 
+⏸ **STAN NA 2026-08-24: WWW W SPOCZYNKU DO ODWOŁANIA.** Właściciel
+(`WWW/018`): następne zlecenie **dopiero po podjęciu toru 9 i meldunku
+„2 PILNE”**. Obie te rzeczy dzieją się **poza tym repozytorium**. Sesja
+otwarta na nowo: **przeczytaj stan, zamelduj i czekaj — nie zaczynaj pracy
+z własnej ręki.** Drzewo czyste, zdalny zsynchronizowany, zero niewypchniętych.
+
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (561 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (612 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
@@ -112,10 +118,11 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `8999f0e` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Dziesięć pushy na dziesięć osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80`, `6d55a80` → `6f13ed8`, `6f13ed8` → `84a7037`, `84a7037` → `9b3a2dd` i `9b3a2dd` → `8999f0e` (24.08, dwa commity). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `bd1c2ff` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Jedenaście pushy na jedenaście osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80`, `6d55a80` → `6f13ed8`, `6f13ed8` → `84a7037`, `84a7037` → `9b3a2dd`, `9b3a2dd` → `8999f0e` (dwa commity) i `8999f0e` → `bd1c2ff` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
+| **STAN PRACY** | ⏸ **SPOCZYNEK do odwołania** (właściciel, 2026-08-24, `WWW/018`). Następne zlecenie **dopiero po podjęciu toru 9 i meldunku „2 PILNE”** — obie rzeczy leżą po stronie właściciela, nie tego repozytorium. Do tego czasu **nie zaczynaj pracy z własnej ręki**: sesja otwarta na nowo czyta stan, melduje i czeka |
 | **Bramki CI na gałęzi** | ⚠ **CZERWONE — dwa zadania z piętnastu.** Odczyt 2026-08-23, **oba dzisiejsze przebiegi tak samo** — `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`, czyli stan zdalny): **`Nieodwracalne`** — „Brak raportu audytu nieodwracalnych dla commita" (ADR-018 pkt 4; raport jest **per commit**, więc ta czerwień wraca przy KAŻDYM nowym commicie, dopóki audytu nie ma) i **`Wydajność`** — krok `Pomiar`, mediana LCP `/` **1856 ms** przy budżecie 1800 na transporcie HTTP/1.1+gzip; ten sam pomiar daje **1276 ms** na HTTP/2+brotli. Trzynaście pozostałych zielonych w obu przebiegach. **Żadnej z tych czerwieni nie ruszam** — obie są poza zakresem zlecenia (zakaz 8), obie mają swoje pozycje: audyt → ADR-018 pkt 4 i Faza 7, próg → **T33** i kierunek (d) |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
 | Backupy repo | ⚠ `/Volumes/Extreme SSD/Catherly-www-ZIP`, ~9 MB każda. **BACKUP NIE DZIEJE SIĘ SAM — haka `Stop` NIE MA** (T42, zmierzone 2026-08-24: zero trafień na `hooks` w czterech plikach konfiguracji). Skutkiem była przerwa **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. **Uruchamiaj `bash scripts/backup.sh` RĘCZNIE po każdym zadaniu i raportuj wynik** — to jedyne działające zabezpieczenie, jakie tu dziś jest. Fałszywe zdanie o automacie **usunięte z `CLAUDE.md` 2026-08-24**; kanon mówi teraz prawdę. **Weryfikuj migawkę ODTWORZENIEM, nie sumą** — rozpakuj, `git log` w odtworzonym repo, skasuj katalog; **T43** pokazuje, po co. **Nazwy ostatniej nie wpisuję**: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
@@ -1433,6 +1440,59 @@ ocena nie była skażona znajomością reguł, których koszt ma szacować.
 
 ---
 
+### 4.19 Domknięcia `WWW/018` i przejście w spoczynek
+
+**Push `bd1c2ff`**; zdalny: `bd1c2ff853b7fc952f77d3730bfb69414925b543`,
+zero niewypchniętych. **Po tym pushu WWW przechodzi w SPOCZYNEK do odwołania.**
+
+**Format zwrotki zatwierdzony i zdefiniowany w JEDNYM miejscu** — `CLAUDE.md`,
+rozdział „Zlecenie i zwrotka". Pierwsza linia:
+`WYKONANO — WWW · <sha zdalnego HEAD>`, gdzie `sha` pochodzi z **odczytu
+`git ls-remote`**, nie z komunikatu pushu. **Kolejne zlecenia formatu nie
+powtarzają — odsyłają tam.** Rozjazd, który to wywołał (dwa różne brzmienia
+pierwszej linii w jednym zleceniu), właściciel uznał za swój defekt.
+
+**Nowa reguła kanonu: ZLECENIE Z NOWEGO OKNA SPRAWDZA SIĘ PRZED WYKONANIEM,
+NIE PO.** Weryfikacja przed wykonaniem obejmuje: adres (ADR-018 pkt 7), czy
+wymienione skróty to **dokładnie** to, co czeka, zgodność stanu, zgodność daty
+z zegarem i zgodność z dziesięcioma zakazami. **Rozjazdy zgłasza się także
+wtedy, gdy są drobne** i gdy wykonanie i tak jest oczywiste.
+
+**Przenośność przyjęta jako TRZECIA kategoria — trzy liczniki, osobno:**
+**retrospekcja** → reguła **TRAFNA**; **uchronienie** → **CZYTANA**;
+**przenośność** → **OPISUJE KLASĘ, nie przypadek**. Trzeciej nie da się
+sprowadzić do dwóch pierwszych: błąd był już zapisany (więc nie uchronienie),
+a materiał nie był przypadkiem źródłowym reguły (więc nie retrospekcja).
+
+**Pomiar metody, nie anegdota** (zapisany w `dowody-wartosci-regul.md`, bo
+dotyczy sposobu pracy, nie pojedynczej reguły): w jednej wymianie zdjęto **po
+jednym błędzie na stronę, każdy wykryty przez drugą stronę** — pytanie
+kontrolne właściciela zdjęło błędne przypisanie w K5, analiza wykonawcy zdjęła
+podciągnięcie K5 pod T26. **Korekta płynie w obie strony albo nie płynie
+wcale.** Zapis ma wartość dopiero jako **para**: pojedyncza korekta dowodzi
+uważności jednej osoby, dopiero obie naraz — że sprawdzanie jest własnością
+przepływu.
+
+**Warunek pomiaru pytania otwartego POSZERZONY:** punkt **spoza PRZEPŁYWU**,
+nie spoza repozytorium. Skoro ślepota „pozycji, których nikt nie otworzył" jest
+własnością całego przepływu (osiem okien), to punkt w innym oknie **też jest
+w środku** — widzi własne wnętrze i dzieli ten sam kanon.
+
+**⚠ ZGŁOSZONE: reguły, do której właściciel kazał dopisać uzasadnienie, w tym
+kanonie NIE BYŁO.** Polecenie brzmiało: *„zdanie «rozszerzenie zakresu łatwiej
+zauważyć, gdy szkodzi, niż gdy pomaga» dopisz przy regule o oznaczaniu wejść
+poza zleceniem"* — a `grep` po `CLAUDE.md` dał **zero trafień**: obowiązek
+oznaczania wejść poza zleceniem istniał dotąd wyłącznie jako **polecenie
+właściciela z `WWW/017`** i jako wpis w **T43**, nigdy jako tekst kanonu.
+Wykonane tak, żeby **nie mnożyć reguł** (zakaz 10, na który właściciel powołał
+się w tym samym zleceniu): obowiązek i jego uzasadnienie dopisane **wewnątrz
+granicy zakazu 8**, czyli w miejscu, które i tak reguluje wejścia poza zakres —
+nie jako nowa, osobna klasa. **Do rozstrzygnięcia, jeśli właściciel chce
+inaczej:** czy ma to być samodzielna reguła (wtedy jest to nowa klasa kanonu
+i decyzja należy do niego), czy zostaje tam, gdzie stoi.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -2238,7 +2298,7 @@ liczba zamiast pomiaru:**
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T43
-- `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 262 linie;
+- `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 292 linie;
   **trzy** tabele — dowodów wartości (**25**), **kosztów** (**8**) i sprawdzenia
   wstecznego przypisań. **Nie jest źródłem reguł** — szczebel 7, deklaruje to
   w nagłówku; niesie **trzy zadeklarowane stronniczości**
@@ -2255,7 +2315,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **561 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **612 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`

@@ -9,6 +9,34 @@ stanęła**. Bez obu naraz zaczniesz od pomyłki, którą ktoś już popełnił.
 Przekazanie **utrzymujesz w prawdzie na bieżąco** — zasady na końcu tego
 pliku („Przekazanie sesji aktualizowane na bieżąco").
 
+## Zlecenie i zwrotka — format zdefiniowany w JEDNYM miejscu
+
+**Format pierwszej linii zwrotki** (zatwierdzony przez właściciela
+2026-08-24). Pierwsza linia odpowiedzi na zlecenie brzmi:
+
+```
+WYKONANO — WWW · <sha zdalnego HEAD>
+```
+
+`sha` pochodzi **z odczytu `git ls-remote origin <gałąź>`**, nie z komunikatu
+`git push` i nie z lokalnego refa. **Kolejne zlecenia formatu nie powtarzają —
+odsyłają tutaj.** Powód, dla którego to stoi w jednym miejscu, jest tej samej
+klasy co cała hierarchia: format powtórzony w każdym zleceniu rozjeżdża się
+przy pierwszym przeoczeniu i rodzi pytanie „który obowiązuje". Przypadek
+źródłowy (2026-08-24): jedno zlecenie podało **dwa różne brzmienia pierwszej
+linii** w dwóch swoich rozdziałach.
+
+**ZLECENIE Z NOWEGO OKNA SPRAWDZA SIĘ PRZED WYKONANIEM, NIE PO** (właściciel,
+2026-08-24). Zlecenie przychodzące z sesji, która nie prowadziła poprzedniej
+pracy, weryfikujesz **zanim cokolwiek wykonasz**: czy adres jest właściwy
+(ADR-018 pkt 7), czy wymienione skróty to **dokładnie** to, co czeka
+(`git log --oneline origin/<gałąź>..HEAD`), czy stan repozytorium zgadza się
+z opisanym, czy data zgadza się z zegarem i czy zlecenie nie łamie któregoś
+z dziesięciu zakazów. **Rozjazdy zgłaszasz, nie rozstrzygasz po cichu** —
+także wtedy, gdy są drobne i gdy wykonanie i tak jest oczywiste. Nowe okno nie
+widzi tego, co widziało poprzednie; sprawdzenie kosztuje jedno polecenie,
+a wykonanie zlecenia opartego na nieaktualnym stanie kosztuje odtwarzanie.
+
 ## Kim jesteś w tej sesji
 Pełnisz dokładnie jedną rolę: treść / projekt / obrazy / implementacja /
 bramkarz / adwersarz. Jeśli rola nie została wskazana — zapytaj i nie rób nic.
@@ -212,6 +240,17 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   przypadek uchronienia w tym repozytorium — reguła 18 zatrzymała dopisanie
   domyślonej treści do akapitu, który tę właśnie wadę opisuje. Wszystkie
   wcześniejsze samozastosowania były retrospektywne.
+  **TRZY LICZNIKI, NIE DWA** (właściciel przyjął 2026-08-24 wobec własnego
+  podciągnięcia): **RETROSPEKCJA** dowodzi, że reguła jest **TRAFNA** —
+  zastosowana po fakcie, do własnego przypadku źródłowego. **UCHRONIENIE**
+  dowodzi, że jest **CZYTANA** — zatrzymała rękę w chwili pisania.
+  **PRZENOŚNOŚĆ** dowodzi, że **OPISUJE KLASĘ, nie przypadek** — zadziałała na
+  **cudzym materiale**, dla którego nie powstała, i znalazła tam defekt, którego
+  autor nie widział. Trzeciej nie da się sprowadzić do żadnej z dwóch
+  pierwszych: błąd był już zapisany (więc nie uchronienie), a materiał nie był
+  przypadkiem źródłowym reguły (więc nie retrospekcja). **Liczy się je
+  osobno**, bo mierzą trzy różne własności — i reguła może mieć jedną bez
+  pozostałych.
 - DWA DOWODY Z JEDNEGO ŹRÓDŁA MIERZĄ POWTARZALNOŚĆ ZJAWISKA, NIE NIEZALEŻNOŚĆ
   POTWIERDZENIA (właściciel, 2026-08-24). Dwa przypadki z tego samego
   repozytorium, tego samego przepływu pracy i tej samej pary rąk pokazują, że
@@ -450,6 +489,18 @@ nieposłuszeństwem, tylko wykonaniem tej reguły.
    kolejne co godzinę, przy przyczynie zdiagnozowanej i naprawie na kilka
    linii. **Pierwszy przypadek w tym repozytorium, w którym koszt reguły
    przewyższył jej wartość w POMIARZE, a nie w przypuszczeniu.**
+
+   **Cokolwiek wchodzi poza literę zlecenia — także wtedy, gdy pomaga —
+   oznaczasz jako wejście poza zleceniem** (właściciel, 2026-08-24: *„ta
+   kolumna obowiązuje także dla rzeczy dobrych"*). Uzasadnienie, nie osobna
+   reguła: **rozszerzenie zakresu łatwiej zauważyć, gdy szkodzi, niż gdy
+   pomaga — a reguła o zakresie tej różnicy nie zna.** Przypadek źródłowy
+   (2026-08-24): do naprawy `backup.sh` dołożono strażnika dryfu, który nie
+   mieścił się w literze zlecenia; wykonawca **nie oznaczył** dodatku, wykrył
+   go właściciel. Tego samego dnia ten sam wykonawca **odmówił** podniesienia
+   limitu `bramka-pelny-zestaw`, powołując się na „rozszerzenie zgody poza
+   literę" — ta sama reguła zastosowana w jedną stronę i pominięta w drugą,
+   pominięta akurat tam, gdzie rozszerzenie wypadło korzystnie.
 9. **Żadnych treści ani liczb bez pokrycia.** Każda liczba pochodzi
    z `content/facts.json` (literalna liczba w JSX nie przejdzie lintera), każda
    wartość wizualna z `design/tokens.json`. Brak pokrycia → pozycja
