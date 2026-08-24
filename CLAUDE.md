@@ -281,14 +281,39 @@ a źródłem prawdy = naprawiasz kod, nigdy źródło bez ADR.
 Mobile-first od 390 px. Ruch tylko celowy, zawsze z prefers-reduced-motion.
 Wątpliwość co do zasad → zatrzymaj się i zapytaj. Zgadywanie jest droższe.
 
-## Backup po każdym zadaniu
-Po każdym ukończonym zadaniu uruchamia się scripts/backup.sh — migawka
-ZIP całego repo (z .git, bez node_modules) na zewnętrzny SSD; hook Stop
-w ustawieniach Claude Code robi to automatycznie. Wynik raportujesz
-krótko: nazwa pliku + rozmiar, albo „backup nieudany: <powód>".
-Niepowodzenie backupu (dysk odłączony, brak miejsca, błąd zapisu)
-zgłaszasz WYRAŹNIE i czekasz na decyzję właściciela — cichy brak backupu
-jest gorszy niż jego brak, bo usypia czujność. Nie udajesz sukcesu.
+## Backup po każdym zadaniu — URUCHAMIASZ GO RĘCZNIE
+**Nie ma żadnego automatu. Backup nie wykona się sam.** Po każdym
+ukończonym zadaniu **sam** uruchamiasz:
+
+```bash
+bash scripts/backup.sh
+```
+
+Skrypt robi migawkę ZIP całego repo (z `.git`, bez `node_modules`) na
+zewnętrzny SSD. Wynik raportujesz krótko: nazwa pliku + rozmiar, albo
+„backup nieudany: <powód>". Niepowodzenie (dysk odłączony, brak miejsca,
+błąd zapisu) zgłaszasz WYRAŹNIE i czekasz na decyzję właściciela — cichy
+brak backupu jest gorszy niż jego brak, bo usypia czujność. Nie udajesz
+sukcesu.
+
+**Dlaczego to zdanie zostało przepisane (T42, 2026-08-24).** Do tego dnia
+stało tu: *„hook Stop w ustawieniach Claude Code robi to automatycznie"*.
+**To była nieprawda** — klucz `hooks` nie występuje w żadnym pliku
+konfiguracji (sprawdzone w czterech lokalizacjach), a ciąg `backup.sh` nie
+pada w żadnej. Kosztowało to **trzy doby bez migawki** (20.08 22:02 →
+24.08 08:58), bo cichy brak backupu jest nieodróżnialny od backupu,
+którego nie było potrzeby robić. Zdanie stało na drugim szczeblu
+hierarchii, więc każda sesja czytała je na starcie i przestawała robić
+kopie. **Napis zamiast mechanizmu — w kanonie.** Dopóki hak nie powstanie
+i nie zostanie sprawdzony mutacją, jedynym działającym zabezpieczeniem
+jest polecenie powyżej, uruchomione Twoją ręką.
+
+**Weryfikacja migawki: ODTWORZENIEM, nie sumą** (właściciel, 2026-08-24).
+Suma kontrolna dowodzi, że plik się nie zepsuł — **nie dowodzi, że da się
+z niego wrócić**. Sprawdzenie: rozpakuj archiwum do katalogu tymczasowego,
+wykonaj `git log` w odtworzonym repozytorium, skasuj katalog. To ta sama
+klasa co `RECZ-286` („narzędzie potwierdza poprawność artefaktu, którego
+nie da się użyć") i ta sama co reguła o osiągalności skrótów.
 
 **Kopie milowe (decyzja właściciela 2026-08-16).** Migawka oznaczona
 przez właściciela jako kamień milowy NIE leży wśród migawek rotacyjnych.

@@ -19,14 +19,14 @@ raportem" dotyczy także tego dokumentu.
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (334 linie, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (359 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` (459 linii, stan 2026-08-24) — 24 pozycje treści
-   + **42** pozycji technicznych **T1–T42** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` (463 linie, stan 2026-08-24) — 24 pozycje treści
+   + **43** pozycje techniczne **T1–T43** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -112,13 +112,13 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `231a17b` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Trzy pushe na trzy osobne, wyliczone zgody: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `74fdfe8` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Cztery pushe na cztery osobne, wyliczone zgody: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity; wypchnięte jawnie `git push origin 74fdfe8:refs/heads/…`, żeby nie zabrać trzeciego, spoza zgody). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
 | **Bramki CI na gałęzi** | ⚠ **CZERWONE — dwa zadania z piętnastu.** Odczyt 2026-08-23, **oba dzisiejsze przebiegi tak samo** — `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`, czyli stan zdalny): **`Nieodwracalne`** — „Brak raportu audytu nieodwracalnych dla commita" (ADR-018 pkt 4; raport jest **per commit**, więc ta czerwień wraca przy KAŻDYM nowym commicie, dopóki audytu nie ma) i **`Wydajność`** — krok `Pomiar`, mediana LCP `/` **1856 ms** przy budżecie 1800 na transporcie HTTP/1.1+gzip; ten sam pomiar daje **1276 ms** na HTTP/2+brotli. Trzynaście pozostałych zielonych w obu przebiegach. **Żadnej z tych czerwieni nie ruszam** — obie są poza zakresem zlecenia (zakaz 8), obie mają swoje pozycje: audyt → ADR-018 pkt 4 i Faza 7, próg → **T33** i kierunek (d) |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
-| Backupy repo | ⚠ `/Volumes/Extreme SSD/Catherly-www-ZIP`, ~9 MB każda. **BACKUP NIE DZIEJE SIĘ SAM — haka `Stop` NIE MA** (T42, zmierzone 2026-08-24: zero trafień na `hooks` w czterech plikach konfiguracji). Skutkiem była przerwa **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. Skrypt jest sprawny — **uruchamiaj `bash scripts/backup.sh` RĘCZNIE po każdym zadaniu i raportuj wynik**; to jedyne działające zabezpieczenie, jakie tu dziś jest. `CLAUDE.md:239-241` nadal twierdzi, że hak to robi — **to zdanie jest dziś fałszem** i czeka na rozstrzygnięcie (T42). **Nazwy ostatniej nie wpisuję**: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
+| Backupy repo | ⚠ `/Volumes/Extreme SSD/Catherly-www-ZIP`, ~9 MB każda. **BACKUP NIE DZIEJE SIĘ SAM — haka `Stop` NIE MA** (T42, zmierzone 2026-08-24: zero trafień na `hooks` w czterech plikach konfiguracji). Skutkiem była przerwa **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. **Uruchamiaj `bash scripts/backup.sh` RĘCZNIE po każdym zadaniu i raportuj wynik** — to jedyne działające zabezpieczenie, jakie tu dziś jest. Fałszywe zdanie o automacie **usunięte z `CLAUDE.md` 2026-08-24**; kanon mówi teraz prawdę. **Weryfikuj migawkę ODTWORZENIEM, nie sumą** — rozpakuj, `git log` w odtworzonym repo, skasuj katalog; **T43** pokazuje, po co. **Nazwy ostatniej nie wpisuję**: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
 | Archiwum katalogu sesyjnego | `/Volumes/Extreme SSD/Catherly-www-SESJE/scratchpad-sesja-2026-08-20-b5f46785-NIE-USUWAC.zip` — rozdział 11 |
 
 **Środowisko:** Node `v20.20.2`, npm `10.8.2`, Next `^15.5.23`, `package-lock.json`
@@ -886,6 +886,66 @@ swoje miejsca, zostawiamy zgodnie z rozstrzygnięciem.
 
 ---
 
+### 4.12 Kanon poprawiony, backup zweryfikowany odtworzeniem — 2026-08-24
+
+**Kolejność narzucona przez właściciela: zdanie w kanonie przed wszystkim
+innym.** Uzasadnienie jego słowami: *„dopóki to zdanie stoi, każda nowa sesja
+czyta je na starcie i przestaje robić backup; naprawa kanonu jest tańsza od
+haka i chroni natychmiast"*. Rozdział „Backup po każdym zadaniu" w `CLAUDE.md`
+mówi teraz wprost: **automatu nie ma, polecenie uruchamia sesja**, plus opis,
+skąd wzięła się nieprawda i ile kosztowała.
+
+**Push dwóch zatwierdzonych skrótów, bez zabierania trzeciego.** Zgoda
+wymieniała `69e0b52` i `74fdfe8`; poprawka kanonu powstała **przed** pushem
+i nie była objęta zgodą, więc wypchnięte zostało jawnie
+`git push origin 74fdfe8:refs/heads/faza-4/podstrony` — nie `git push` bez
+argumentów, który zabrałby wszystko, co leży na gałęzi. Zdalny potwierdzony
+odczytem: `74fdfe8bd9ebb63093c1ba0bb5b040c6081223e7`.
+
+**T42 — właściciel nazwał odmianę klasy, której rejestr nie miał.** Dotąd
+opisywaliśmy **napis zamiast zachowania** (strażnik istnieje, ale nie mierzy
+tego, co deklaruje). To jest **napis zamiast MECHANIZMU** — nie ma czego
+uruchomić, a kanon twierdzi, że jest. Różnica jest praktyczna: napis zamiast
+zachowania wykrywa **mutacja**; napisu zamiast mechanizmu mutacja **nie wykryje
+wcale**, bo nie ma czego mutować — wykrywa go dopiero **odczyt konfiguracji**,
+czyli osobne pytanie „czy ta rzecz w ogóle istnieje". **Specyfikacja haka
+gotowa i zapisana w T42** — do budowy przez właściciela, z obowiązkową
+głośnością przy porażce i kryterium przyjęcia **mutacja, nie zapłon**.
+
+**⚠ WERYFIKACJA ODTWORZENIEM ZNALAZŁA DEFEKT PRZY PIERWSZYM UŻYCIU — T43.**
+Archiwum `catherly-www-2026-08-24-0910.zip` rozpakowane do katalogu
+tymczasowego (skasowanego po sprawdzeniu): `git log` pełny, `HEAD` =
+`74fdfe8`, `git fsck` bez uszkodzeń — **ale** `git status` w odtworzonym
+repozytorium pokazuje `D .env.example`, plik **śledzony** i nieobecny
+w archiwum. Przyczyna: `scripts/backup.sh:52-53` wyklucza `.env` **oraz**
+`.env.*`, a drugi wzorzec łapie `.env.example`. Rodzina **T20** — wzorzec
+szerszy niż zamiar. Archiwum pozostaje **pełnym repozytorium** (`.git`
+kompletny, więc `git checkout` odzyskuje plik), ale **nie jest wiernym
+odbiciem drzewa roboczego**. **Nie naprawiam — zakaz 8**, zlecenie brzmiało
+„sprawdź odtworzeniem", nie „popraw skrypt".
+
+**Rzecz zmierzona przy okazji, warta osobnego zdania:** wykaz zawartości
+archiwum (**same nazwy, nigdy wartości**) potwierdza, że **żaden plik `.env*`
+nie trafia na SSD** — `VERCEL_TOKEN` i `STRIPE_TEST_SECRET_KEY` **nie są
+kopiowane na dysk zewnętrzny**. To przeciwieństwo ustalenia z repozytorium
+aplikacji, które kazało to sprawdzić (ponad 75 archiwów przyjętych samą sumą,
+z żywymi kluczami — **cudzy pomiar, stąd niesprawdzony**).
+
+**Przesłanka po stronie właściciela, zgłoszona przez niego samego.** Nagłówki
+zleceń nosiły datę 23.08, gdy zegar wskazywał 24.08. Klasa **„stempel poprawny
+w chwili powstania, fałszywy w chwili cytowania"**, zapisana przy **T26**.
+Zasięgu nie da się odtworzyć — właściciel nie umie wskazać, od którego
+momentu. **Gdzie nagłówek rozchodzi się ze stemplem wykonania, obowiązuje
+odczyt zegara.**
+
+**T32 — drugi z siedmiu nagłówków odhaczony.** `docs/STRATEGIA.md` niesie
+teraz zdanie o swoim miejscu („szczebel 3 z siedmiu"). Brakuje pięciu:
+`docs/adr/README.md`, `docs/PLAN.md`, rejestr, to przekazanie, dokumenty
+paneli. Właściciel: **dopisywać przy okazji pracy nad tymi plikami, bez
+osobnego przebiegu.**
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -926,7 +986,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T42. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T43. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -1026,6 +1086,13 @@ dotyczą bieżącej linii pracy:
   istnieją. Trzy doby bez migawki. Skrypt sprawny — wada jest w tym, że
   **nikt go nie uruchamia**, bo `CLAUDE.md` obiecuje automat. Dopóki to
   zdanie stoi, każda sesja liczy na mechanizm, którego nie ma.
+- **T43** — **backup gubi plik śledzony w gicie.** `.env.example` wypada przez
+  wzorzec `-x ".env.*"` w `backup.sh:52-53`. Archiwum jest **pełnym
+  repozytorium** (`.git` kompletny, `fsck` czysty), ale **nie wiernym odbiciem
+  drzewa roboczego**. Znaczenie większe niż sam plik: **pierwsze w historii
+  sprawdzenie przez ODTWORZENIE od razu znalazło rozjazd, którego półtora
+  miesiąca sum kontrolnych znaleźć nie mogło** — suma dowodzi, że plik się nie
+  zepsuł, nie że da się z niego wrócić. Sekrety **nie** trafiają na SSD.
 - **T36** — **pierwsza pozycja opisująca bramkę, która przepuszcza za MAŁO.**
   Wszystkie wcześniejsze opisują mechanizmy przepuszczające za dużo. Klasa
   „strażnik poprawny co do reguły, szkodliwy co do skutku" ma tu rodzime
@@ -1156,6 +1223,22 @@ dotyczą bieżącej linii pracy:
    i **zweryfikować mutacją** (dysk odłączony → głośna porażka; podpięty →
    migawka i zielony raport). Do rozstrzygnięcia: **każda sesja uruchamia
    `bash scripts/backup.sh` ręcznie i raportuje wynik.**
+   **STAN 2026-08-24 — (1) ZROBIONE, (2) CZEKA NA WŁAŚCICIELA.**
+   **(1)** Zdanie w `CLAUDE.md` **poprawione** — rozdział „Backup po każdym
+   zadaniu" mówi teraz wprost, że automatu nie ma i że polecenie uruchamia
+   sesja. Właściciel nakazał to jako pierwsze, przed wszystkim innym, z
+   uzasadnieniem: *„dopóki to zdanie stoi, każda nowa sesja czyta je na starcie
+   i przestaje robić backup; naprawa kanonu jest tańsza od haka i chroni
+   natychmiast"*. **(2) Hak — do zbudowania przez WŁAŚCICIELA, nie przez
+   sesję** (konfiguracja leży poza repozytorium). **Specyfikacja gotowa
+   i zapisana w T42**: co ma robić, warunek zapłonu (`Stop`, także po zadaniu
+   nieudanym), obowiązkowa **głośność przy porażce** — hak cichy przy porażce
+   odtwarza dokładnie ten stan i jest wprost klasą „raport, którego nikt nie
+   czyta". **Kryterium przyjęcia: MUTACJA, nie zapłon** (`B-17`, tor 8) —
+   zapłon dowodzi, że mechanizm **umie** zadziałać na tym wejściu; mutacja
+   dowodzi, że **reaguje, gdy zniknie zachowanie**. Do czasu tej pary hak ma
+   status NIESPRAWDZONE i **nie wolno na jego podstawie skreślać obowiązku
+   ręcznego uruchomienia**.
 7. **Czy utrwalić harnesy mutacyjne w repozytorium** (dziś żyją w katalogu
    sesyjnym i znikną — sekcja 11). Kanon mówi „dowodem jest mutacja"; jeśli
    dowód ma być odtwarzalny, harnesy powinny trafić np. do `scripts/dowody/`.
@@ -1567,7 +1650,42 @@ liczba zamiast pomiaru:**
   08:58 CEST**. Stemple w tym commicie noszą **datę faktyczną**, nie datę
   z nagłówka: przy regule „każda liczba niesie datę i commit" rozjazd o dobę
   nie jest drobiazgiem redakcyjnym, bo to on decyduje, czy pomiar da się
-  potem odtworzyć.
+  potem odtworzyć. **Właściciel przyjął to 2026-08-24 jako własną pozycję:**
+  *„stemplowałem datą, która przestała obowiązywać, i nie sprawdziłem tego ani
+  razu"* — klasa **„stempel poprawny w chwili powstania, fałszywy w chwili
+  cytowania"**, zapisana przy **T26**. Praktyczna konsekwencja dla czytającego
+  archiwum: **daty w nagłówkach zleceń z 23.08 są niepewne od nieustalonego
+  momentu**; gdzie nagłówek rozchodzi się ze stemplem wykonania, **obowiązuje
+  odczyt zegara, nie nagłówek**.
+
+**Dopisane po weryfikacji backupu odtworzeniem (2026-08-24):**
+
+- **ZALEŻNOŚĆ TWARDA ISTNIEJE TAKŻE W DOKUMENTACJI, NIE TYLKO W KODZIE**
+  (nazwane przez właściciela 2026-08-24). Wykreślenie zdania z
+  `docs/STRATEGIA.md` **musiało** pójść po wpisaniu siedmiu szczebli do
+  `CLAUDE.md`, nie przed: nowy nagłówek STRATEGII odsyła do hierarchii
+  w kanonie, więc przy odwrotnej kolejności commit `74fdfe8` wskazywałby na
+  listę, **która STRATEGII nie zawiera** — dokument odsyłający do miejsca, gdzie
+  go nie ma. W kodzie taką zależność wyłapuje kompilator albo test; w prozie
+  **nie wyłapuje jej nic** — żadna bramka nie sprawdza, czy odesłanie trafia
+  w treść, która już istnieje. Reguła praktyczna: **jeśli dokument A ma odsyłać
+  do B, zmiana B idzie pierwsza** — albo obie w jednym commicie. Rozbicie na
+  dwa commity w odwrotnej kolejności daje stan pośredni, który wygląda
+  poprawnie i jest fałszywy.
+- **SUMA KONTROLNA NIE JEST WERYFIKACJĄ BACKUPU — ODTWORZENIE JEST.** Pierwsze
+  w historii tego repozytorium sprawdzenie archiwum przez rozpakowanie
+  (2026-08-24, `catherly-www-2026-08-24-0910.zip`) **od razu** znalazło
+  rozjazd: brak śledzonego `.env.example`, wycięty zbyt szerokim wzorcem
+  `-x ".env.*"` (**T43**). Suma kontrolna nie mogła tego pokazać **z definicji**
+  — dowodzi, że plik się nie zepsuł, a nie że da się z niego wrócić do tego, co
+  się miało. To ta sama klasa co `RECZ-286` w repozytorium aplikacji
+  („narzędzie potwierdza poprawność artefaktu, którego nie da się użyć") i ta
+  sama co osiągalność skrótów: **istnienie obiektu to nie to samo, co
+  możliwość powrotu.** Powód, dla którego właściciel kazał to sprawdzić, jest
+  cudzym pomiarem i tak zostaje oznaczony: półtora miesiąca weryfikacji samą
+  sumą po tamtej stronie, ponad 75 archiwów przyjętych z żywymi kluczami.
+  **U nas kluczy w archiwach nie ma** — sprawdzone wykazem nazw, nigdy
+  wartości.
 
 ---
 
@@ -1615,7 +1733,7 @@ liczba zamiast pomiaru:**
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T42
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T43
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
   **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
   (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
@@ -1625,11 +1743,11 @@ liczba zamiast pomiaru:**
 (zmierzone 2026-08-20 na `8f15c60` + zmiany robocze)
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — 1419 linii; **zakres zadeklarowany
   w wierszach 3–6**, liczby w rozdziałach opisują stan tamtego zakresu (T26)
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — 459 linii (stan 2026-08-24), pozycje T1–T42
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — 463 linie (stan 2026-08-24), pozycje T1–T43
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **334 linie, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **359 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`
@@ -1784,7 +1902,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
   linii pracy (T2, T10, T20–T40); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T42 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  24 pozycji treści i T1–T43 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -1846,7 +1964,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T42)
+### 15.2 Pozycje techniczne i procesowe (T1–T43)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
@@ -1895,6 +2013,7 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T40 | ⚠ **JEDYNYM KANAŁEM MIĘDZY TRZEMA OBSZARAMI JEST JEDNA OSOBA I JEDNA WARSTWA DOWODZĄCA** — kanon wspólny w zamierzeniu, rozłączny w praktyce; `CLAUDE.md` tej strony nie zawiera żadnej klasy kanonu aplikacji; kanał ma **jeden punkt awarii** | ⚠ lista różnic gotowa (rozdz. 19), **przeniesienie = decyzja właściciela** |
 | T41 | **cztery akcje CI działają na środowisku, którego nie deklarują** — `checkout@v4`, `setup-node@v4`, `download-artifact@v4`, `upload-artifact@v4` celują w Node 20, a runner wymusza Node 24; ostrzeżenie stoi w **15/15 zadań** każdego przebiegu i nikt go nie czytał, aż wejście do logu w innej sprawie (czasy zadań do T24) je odsłoniło. Nic nie jest dziś zepsute — pozycja opisuje **ryzyko z datą wygaśnięcia w cudzych rękach** | ⚠ **czeka na decyzję** — czy podnosić do `v5` (osobne zadanie, kontrola negatywna) i czy ostrzeżenia DOSTAWCY mają mieć miejsce w interfejsie (to samo pytanie co przy `::warning` z T24 — rozstrzygać raz, dla obu) |
 | T42 | ⚠ **HAK, KTÓRY MIAŁ ROBIĆ BACKUPY, NIE ISTNIEJE — a `CLAUDE.md:239-241` twierdzi, że istnieje.** Zero trafień na `hooks` w czterech plikach konfiguracji (odczyt 2026-08-24); `backup.sh` nie pada w żadnej. Skutek: przerwa w migawkach **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. Skrypt sprawny — ręcznie kod 0, `unzip -t` bez błędów. Najcięższy przypadek „brak dowodu = brak zabezpieczenia": zabezpieczenie uznane za działające przez 200+ migawek, a cichy brak backupu wygląda jak brak potrzeby backupu | ⚠ **czeka na decyzję** — czy budować hak (i wtedy koniecznie GŁOŚNY przy porażce), i co zrobić ze zdaniem w `CLAUDE.md`, które dopóki haka nie ma, jest fałszem w źródle drugiego szczebla. Do tego czasu: **`bash scripts/backup.sh` ręcznie po każdym zadaniu** |
+| T43 | **Migawka backupu nie zawiera pliku ŚLEDZONEGO w gicie — złapane PIERWSZYM sprawdzeniem przez odtworzenie.** `catherly-www-2026-08-24-0910.zip` rozpakowane 2026-08-24: `git log` pełny, `HEAD` = `74fdfe8`, `fsck` bez uszkodzeń — ale `git status` pokazuje **`D .env.example`**, plik śledzony. Przyczyna: `backup.sh:52-53` wyklucza `.env` **oraz** `.env.*`, a drugi wzorzec łapie przy okazji `.env.example`. Wzorzec szerszy niż zamiar — rodzina **T20**. Dobra wiadomość zmierzona przy okazji: **żaden `.env*` nie trafia na SSD**, czyli sekrety nie są kopiowane | ⚠ **czeka na decyzję** — jak zawęzić wykluczenie, **nie wpuszczając sekretów**. Warunek zamknięcia: odtworzenie archiwum po poprawce z **czystym** `git status` **i** wykazem bez `.env*` z sekretami — obie rzeczy w jednym sprawdzeniu, bo osobno każda da się spełnić kosztem drugiej |
 
 ---
 
