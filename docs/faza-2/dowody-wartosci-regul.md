@@ -116,6 +116,21 @@ mierzy proporcji. Luka jest domknięta w części — patrz tabela kosztów niż
 ale domknięta **jednym przeszukaniem o zadeklarowanym zasięgu**, nie
 wyczerpująco.
 
+**(3) OŚ ŚLEPOTY, KTÓREJ ŻADNE PRZESZUKANIE STĄD NIE DOMKNIE — i która
+dotyczy naszej METODY PRACY, nie narzędzi ani kodu.** Koszt w postaci rzeczy,
+która **nie powstała**, bo reguła zniechęciła do jej zaczęcia, **nie zostawia
+śladu**: nie ma commita, nie ma pozycji rejestru, nie ma nawet zdania
+w przekazaniu. **Żaden nasz rejestr nie ma miejsca na pozycję, której nikt nie
+otworzył.** Konsekwencja, którą trzeba widzieć wprost: przy **dwudziestu
+jeden klasach kanonu** i **dziesięciu zakazach** (stan 2026-08-24) ta ślepota
+**rośnie z każdym wpisem**, a jej rozmiaru **nie da się zmierzyć z wnętrza** —
+mierzyłby ją ten sam przepływ pracy, który ją wytwarza. Wniosek właściciela,
+zapisany jako otwarty: **to jest argument, żeby LICZBA reguł też miała swój
+koszt, nie tylko treść każdej z osobna.** Właściciel wskazał, że oś dotyczy
+„wszystkich ośmiu okien"; **czym jest tych osiem okien, po tej stronie nie
+wiadomo** — treści nie dołączono, a domysłem jej nie uzupełniam (reguła 18
+kanonu). Odnotowane jako odesłanie do rozstrzygnięcia poza tym repozytorium.
+
 **(2) „Własny" nie znaczy „niezależny".** Dwadzieścia jeden dowodów z dwudziestu
 pięciu jest własnych, i to brzmi lepiej, niż jest: wszystkie powstały
 **w jednym repozytorium, w kilkunastu dobach, w jednym przepływie pracy**. Mierzą
@@ -140,10 +155,38 @@ tych dwóch rzeczy jest tym samym błędem, co mieszanie dowodu z anegdotą.
 | K2 | **Zakaz 8 — żadnego „przy okazji napraw X"** | **T43** (`.env.example` wycięty z każdej migawki) jest znany, tani do naprawy i **nadal działa**: od wykrycia powstały **cztery** migawki, każda z tym samym defektem. Tak samo **T41**. Reguła zamienia tanią poprawkę w pozycję rejestru plus rundę zgody | **tak** — cztery wadliwe migawki, defekt czynny | **własny** |
 | K3 | **„Brak dowodu = brak zabezpieczenia" + „mutacja przed wyborem"** | Wzmocnienie komunikatu o anulowaniu wpisem do `$GITHUB_STEP_SUMMARY` — **ściśle lepsze od stanu dzisiejszego i nieosłabiające żadnej bramki** — nie zostało dopisane, bo jego przetrwanie przy anulowaniu jest niepotwierdzone. Warstwa słabsza zostaje **do czasu eksperymentu CI, którego termin nie jest wyznaczony** | **tak** — stan słabszy trwa, bez daty końcowej | **własny** |
 | K4 | **Literalne wykonanie zgody, bez rozszerzania poza literę** | `bramka-pelny-zestaw` została na limicie 10 min przez jedną rundę wymiany, przy zmierzonym wtedy zapasie **1,86×**. W tym oknie przekroczenie dałoby czerwień, która nie jest werdyktem | **nie** — żaden przebieg w tym oknie limitu nie przekroczył | **własny** |
-| K5 | **Pełna prowieniencja przy każdej pozycji rejestru** | Wiersze urosły do kilku tysięcy znaków, więc **dopisanie piątej kolumny wymagałoby przepisania każdego wiersza w całości**. Z tego powodu powstał osobny skorowidz ogniw zamiast kolumny — obejście, nie rozwiązanie | **tak** — zapisane jako **T39**, zmiana struktury rejestru jest dziś droga | **własny** |
+| K5 | **Pełne udokumentowanie każdej pozycji rejestru** (opis, pomiar, data, osiągalny commit, warunek powrotu) — praktyka obowiązująca od początku rejestru, **nie** reguła o ogniwach z T39 | Wiersze urosły do kilku tysięcy znaków, więc **dopisanie piątej kolumny wymagałoby przepisania każdego wiersza w całości**. Z tego powodu powstał osobny skorowidz ogniw zamiast kolumny — obejście, nie rozwiązanie. **Przypisanie poprawione 2026-08-24:** T39 tego kosztu nie spowodowała, tylko go **ujawniła** — wiersze urosły przed nią | **tak** — zmiana struktury rejestru jest dziś droga; ujawnione przy **T39** | **własny** |
 | K6 | **„Odesłanie bez treści" — zakaz uzupełniania domysłem** | W **T26** stoją dziś dwa odwołania (ustalenie toru 13 o parytecie, korekta „158→156" do toru 8) **bez treści**. Reguła uchroniła przed fałszywą pewnością **i zostawiła zapis niepełny** — czytelnik po tej stronie nie może z nich skorzystać | **tak** — dwa odwołania bezużyteczne stąd | **własny** |
 | K7 | **Reguły o zapisie: przekazanie w tym samym commicie, rejestr, prowieniencja, stemple** | Zmierzone `git log --numstat` od 2026-08-23: **dwanaście commitów**, `docs/` **+2122 / −263**, pliki korzenia (`CLAUDE.md`, `STRATEGIA.md`) **+322 / −18**, `.github/` **+81 / −1**, **`src/` `content/` `design/` — zero linii**. **Uwaga o pomyleniu przyczyn, bez której ta liczba wprowadza w błąd:** Faza 4 stoi w spoczynku do bloku designu **z decyzji właściciela**, więc zero w `src/` jest w części zamierzone, a nie wyłącznie kosztem reguł. Rozdzielić tych dwóch przyczyn stąd się nie da | **fakt zmierzony**, nie przypisany jednej przyczynie | **własny** |
 | K8 | *(kandydat właściciela)* **Ostrożność wobec nieistniejącego ryzyka** | *„wstrzymanie naprawy na trzy doby"* — **treści po tej stronie nie ma**. Odnotowane jako fakt przekazany, bez opisu; uzupełnienie domysłem byłoby złamaniem reguły 18 kanonu | nieustalone stąd | **przejęty** — repozytorium aplikacji, 2026-08-24, `P-22` |
+
+### Sprawdzenie wsteczne: czy reguła istniała, gdy koszt powstał
+
+Pytanie kontrolne właściciela (2026-08-24): *„czy reguła istniała w chwili, gdy
+koszt powstał"* — bo **defekt, z którego reguła powstała, nie jest jej
+kosztem**. Przeszedłem wszystkie osiem pozycji.
+
+| poz. | reguła istniała? | uwaga |
+|---|---|---|
+| K1 | **tak** — zakaz 1 od 2026-08-23 (T31), koszt 2026-08-24 | bez zastrzeżeń |
+| K2 | **tak** — zakaz 8 od 2026-08-23, koszt 2026-08-24 | bez zastrzeżeń |
+| K3 | **tak, złożone** — „brak dowodu = brak zabezpieczenia" z ADR-018 (2026-08-07); „mutacja przed wyborem" to rozstrzygnięcie z 2026-08-24, a koszt powstał **tego samego dnia, po nim** | odnotowane jako złożenie dwóch reguł o różnym wieku |
+| K4 | **tak** — zakaz 1 i zasada nierozszerzania zgody poza literę, od 2026-08-23 | bez zastrzeżeń |
+| **K5** | ⚠ **wymagało poprawki — patrz niżej** | pierwotny zapis przypisywał koszt regule młodszej niż sam koszt |
+| K6 | **tak, ale najciaśniej** — reguła 18 weszła do kanonu **2026-08-24**, a oba odwołania bez treści zapisano **tego samego dnia, już pod nią** | najcieńszy margines w tabeli; gdyby zapis wyprzedził regułę o godzinę, pozycja byłaby nieprawidłowa |
+| K7 | **tak** — reguły o zapisie działały przez cały mierzony okres | bez zastrzeżeń |
+| K8 | **nieustalone** — treści przekazu po tej stronie nie ma | `P-22` |
+
+**Poprawka K5, znaleziona tym sprawdzeniem.** Pierwotnie kosztu przypisano
+regule o **ogniwach** (T39, wprowadzona przez właściciela 2026-08-23) — a
+wiersze rejestru urosły do kilku tysięcy znaków **wcześniej**, więc T39 tego
+kosztu nie spowodowała, tylko go **ujawniła**: to przy niej wyszło, że dopisanie
+piątej kolumny wymagałoby przepisania wszystkich wierszy. Koszt należy do
+**szerszej praktyki pełnego udokumentowania każdej pozycji** (opis, pomiar,
+data, osiągalny commit, warunek powrotu), która obowiązuje od początku
+rejestru. Zapis w tabeli został poprawiony. **To jest dokładnie ta pułapka,
+przed którą ostrzega reguła** — szkoda była realna, data się zgadzała, a
+przypisanie było błędne.
 
 ### Kandydat właściciela, którego NIE potwierdziłem
 

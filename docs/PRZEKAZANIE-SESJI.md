@@ -19,7 +19,7 @@ raportem" dotyczy także tego dokumentu.
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (509 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (546 linii, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
@@ -112,7 +112,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `84a7037` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Osiem pushy na osiem osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80`, `6d55a80` → `6f13ed8` i `6f13ed8` → `84a7037` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | `9b3a2dd` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Dziewięć pushy na dziewięć osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80`, `6d55a80` → `6f13ed8`, `6f13ed8` → `84a7037` i `84a7037` → `9b3a2dd` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
@@ -319,6 +319,25 @@ obietnice**. Reguły, o które w tej linii pracy najczęściej chodzi:
     reguła stoi, licz **źródła, nie wystąpienia** — inaczej reguła z pięcioma
     przypadkami z jednego miejsca wygląda mocniej niż reguła z dwoma z dwóch,
     a jest odwrotnie.
+
+22. **DEFEKT, Z KTÓREGO REGUŁA POWSTAŁA, NIE JEST JEJ KOSZTEM** (właściciel,
+    2026-08-24). Przy tabeli kosztów **najłatwiejsza do popełnienia pomyłka**,
+    bo szkoda jest realna i data się zgadza. Sprawdzenie to jedno pytanie przy
+    **każdej** pozycji: **czy reguła istniała, gdy koszt powstał.**
+    Sprawdzenie wsteczne ośmiu pozycji wykryło tą metodą **jedno błędne
+    przypisanie**.
+23. **RETROSPEKCJA I UCHRONIENIE MIERZĄ DWIE RÓŻNE RZECZY** (właściciel,
+    2026-08-24). Reguła zastosowana **po fakcie** dowodzi, że jest **trafna**;
+    reguła, która **zatrzymała rękę w chwili pisania**, dowodzi, że jest
+    **czytana w chwili pracy** — a to jedyny moment, w którym cokolwiek
+    zmienia. Trafna i nieczytana wygląda w dokumentach identycznie jak trafna
+    i czytana, więc **liczy się je osobno**.
+24. **GRANICA ZAKAZU 8** (właściciel, 2026-08-24). **Zakaz naprawiania przy
+    okazji NIE OBEJMUJE defektu, który produkuje nowe wadliwe artefakty
+    w trakcie odraczania.** Odroczenie zakłada, że defekt czeka; gdy defekt
+    **pracuje**, odroczenie przestaje być zachowaniem stanu i staje się jego
+    pogarszaniem. **Rozstrzyga właściciel, punktowo** — wykonawca zgłasza
+    z liczbą wytworzonych artefaktów, nie zdejmuje zakazu sam.
 
 Sam **ADR-018 zyskał 2026-08-23 punkt 7** (T35): **zlecenie pod złym adresem
 odsyła się, nie wykonuje w przybliżeniu** — w obu kierunkach. Odbiorca nie
@@ -1269,6 +1288,82 @@ jedyny moment, w którym reguła cokolwiek zmienia.
 
 ---
 
+### 4.17 T43 naprawione — pierwszy raz, gdy koszt reguły przewyższył jej wartość w pomiarze (`WWW/016`)
+
+**Push `9b3a2dd`**; zdalny: `9b3a2dd113057862351a496017ef852e68bf45b8`.
+
+**Właściciel zdjął zakaz 8 punktowo, dla jednej nazwanej pozycji.** Powód:
+koszt odraczania był **czynny i mierzalny** — cztery wadliwe migawki od
+wykrycia, kolejne co godzinę, przy przyczynie zdiagnozowanej i naprawie na
+kilka linii. Z tego wzięła się **granica zakazu 8** w kanonie: *zakaz
+naprawiania przy okazji nie obejmuje defektu, który produkuje nowe wadliwe
+artefakty w trakcie odraczania.* **Rozstrzyga właściciel, punktowo** —
+wykonawca zgłasza z liczbą wytworzonych artefaktów, **nie zdejmuje zakazu
+sam**.
+
+**Naprawa: `18c03f2`, tylko `scripts/backup.sh`** (warunek właściciela
+o pojedynczym pliku). Kolejność jest tu całą treścią: **najpierw wyklucz
+wszystko** (`-x ".env" -x ".env.*"`), **potem dołóż z powrotem jedną nazwę**
+z listy `DOZWOLONE_ENV`. Odwrotnie — przez zawężenie wzorca wykluczenia — nowy
+`.env.cokolwiek` z sekretami trafiłby na SSD i nikt by tego nie zauważył.
+**Domyślnie odmawiamy, wyjątek jest imienny.** Dołożony **strażnik dryfu**:
+jeśli git zacznie śledzić jakikolwiek `.env*` spoza listy, skrypt **krzyczy na
+`stderr`** zamiast pominąć plik po cichu.
+
+**Odstępstwo od reguły o przekazaniu w tym samym commicie — jawne, nie
+przemilczane.** Właściciel zażądał osobnego commita z jednym plikiem, więc
+rejestr i przekazanie idą commitem **następnym**. Odnotowane w opisie
+`18c03f2`.
+
+**DOWÓD — obie strony wzorca w jednym przebiegu** (migawka
+`catherly-www-2026-08-24-1318.zip`, `HEAD` odtworzony `18c03f2`, osiągalny):
+
+| | co sprawdzone | wynik |
+|---|---|---|
+| **A — chroni** | wykaz `.env*` w archiwum (nazwy, nigdy wartości) | dokładnie `.env.example`, nic więcej |
+| **A — kontrola negatywna** | czy `.env` w ogóle istnieje lokalnie | **istnieje** (2 linie) i w archiwum go **nie ma** |
+| **B — nie gubi** | `git status` odtworzonego repozytorium | **czysty** |
+| **B** | `git fsck` | bez uszkodzeń |
+
+Kontrola negatywna jest tu istotą, nie ozdobą: bez sprawdzenia, że `.env`
+w ogóle istnieje, „brak `.env` w archiwum" nie dowodziłby niczego.
+
+**Strażnik dryfu udowodniony MUTACJĄ, nie zapłonem** (pytanie 2 z zestawu,
+`B-17`) — w **izolowanym klonie z przekierowanym katalogiem docelowym**, żeby
+nie tknąć prawdziwych migawek. **Mutacja:** `git add -f .env.local` →
+ostrzeżenie wypisane, plik **nie** trafił do archiwum. **Kontrola negatywna
+w tym samym przebiegu:** cofnięcie mutacji → ostrzeżenia **brak**. Katalog
+mutacji skasowany. **T43 zamknięte.**
+
+**Sprawdzenie wsteczne ośmiu pozycji kosztów** pytaniem właściciela („czy
+reguła istniała, gdy koszt powstał") — **wykryło jedno błędne przypisanie**.
+**K5** przypisywał koszt objętości rejestru regule o **ogniwach** (T39,
+2026-08-23), a wiersze urosły **wcześniej**: T39 tego kosztu nie spowodowała,
+tylko go **ujawniła**. Koszt należy do szerszej praktyki pełnego
+udokumentowania każdej pozycji. Poprawione. **K6 przeszedł najciaśniej** —
+reguła 18 weszła do kanonu tego samego dnia, w którym powstał koszt.
+
+**Trzy nowe klasy kanonu (22, 23, 24)** — „defekt, z którego reguła powstała,
+nie jest jej kosztem", „retrospekcja i uchronienie mierzą dwie różne rzeczy",
+„granica zakazu 8". Przy klasie 20 dopisane: **kolumna „koszt
+zmaterializowany" jest obowiązkowa**, bo tabela bez niej **zawyża
+systematycznie** — ryzyko zapisuje się łatwiej niż jego brak.
+
+**⚠ TRZECIA ZADEKLAROWANA STRONNICZOŚĆ — oś ślepoty dotycząca METODY PRACY,
+nie narzędzi.** Koszt w postaci rzeczy, która **nie powstała**, bo reguła
+zniechęciła do jej zaczęcia, **nie zostawia śladu**: nie ma commita, pozycji
+ani zdania w przekazaniu. **Żaden nasz rejestr nie ma miejsca na pozycję,
+której nikt nie otworzył.** Przy **21 klasach kanonu** i **10 zakazach** (stan
+2026-08-24) ta ślepota **rośnie z każdym wpisem**, a jej rozmiaru **nie da się
+zmierzyć z wnętrza** — mierzyłby ją ten sam przepływ pracy, który ją wytwarza.
+Wniosek właściciela, zapisany jako **otwarty**: to jest argument, żeby
+**LICZBA reguł też miała swój koszt**, nie tylko treść każdej z osobna.
+**Odesłanie bez treści, odnotowane zgodnie z regułą 18:** właściciel wskazał,
+że oś dotyczy „wszystkich ośmiu okien" — **czym jest tych osiem okien, po tej
+stronie nie wiadomo**, treści nie dołączono i domysłem jej nie uzupełniam.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -1409,14 +1504,16 @@ dotyczą bieżącej linii pracy:
   istnieją. Trzy doby bez migawki. Skrypt sprawny — wada jest w tym, że
   **nikt go nie uruchamia**, bo `CLAUDE.md` obiecuje automat. Dopóki to
   zdanie stoi, każda sesja liczy na mechanizm, którego nie ma.
-- **T43** — **backup gubi plik śledzony w gicie.** `.env.example` wypada przez
+- ~~**T43**~~ **ZAMKNIĘTE 2026-08-24** — backup gubił plik śledzony w gicie. `.env.example` wypada przez
   wzorzec `-x ".env.*"` w `backup.sh:52-53`. Archiwum jest **pełnym
   repozytorium** (`.git` kompletny, `fsck` czysty), ale **nie wiernym odbiciem
   drzewa roboczego**. Znaczenie większe niż sam plik: **pierwsze w historii
   sprawdzenie przez ODTWORZENIE od razu znalazło rozjazd, którego półtora
   miesiąca sum kontrolnych znaleźć nie mogło** — suma dowodzi, że plik się nie
-  zepsuł, nie że da się z niego wrócić. **Skutek groźniejszy niż brakujący
-  plik:** odtworzenie daje repo, w którym `git status` pokazuje zmianę,
+  zepsuł, nie że da się z niego wrócić. **Naprawione `18c03f2`** po punktowym
+  zdjęciu zakazu 8; obie strony wzorca sprawdzone w jednym przebiegu, strażnik
+  dryfu udowodniony **mutacją** z kontrolą negatywną. **Skutek groźniejszy niż
+  brakujący plik:** odtworzenie daje repo, w którym `git status` pokazuje zmianę,
   **której nikt nie wprowadził** — człowiek odtwarzający po awarii uzna, że
   sam skasował plik. **Para, nie dwie pozycje:** ten sam wzorzec `-x ".env.*"`
   **chroni** (żaden `.env*` nie trafia na SSD — sekrety nie są kopiowane)
@@ -2072,10 +2169,10 @@ liczba zamiast pomiaru:**
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T43
-- `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 196 linii;
-  **dwie** tabele — dowodów wartości (**25** pozycji) i **kosztów** (**8**),
-  obie z kolumną własny/przejęty. **Nie jest źródłem reguł** — szczebel 7,
-  deklaruje to w nagłówku; niesie też **dwie zadeklarowane stronniczości**
+- `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 239 linii;
+  **trzy** tabele — dowodów wartości (**25**), **kosztów** (**8**) i sprawdzenia
+  wstecznego przypisań. **Nie jest źródłem reguł** — szczebel 7, deklaruje to
+  w nagłówku; niesie **trzy zadeklarowane stronniczości**
 - `docs/RAPORT-POWYKONAWCZY-WWW.md` — matryca dla następnych stron.
   **Czytając: zacznij od wierszy 3–6** — dokument deklaruje tam swój zakres
   (`0896219` → `3ca12a3`, 2026-08-16) i wszystkie liczby w rozdziałach opisują
@@ -2089,7 +2186,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **509 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **546 linii, stan 2026-08-24** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`
@@ -2355,7 +2452,7 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T40 | ⚠ **JEDYNYM KANAŁEM MIĘDZY TRZEMA OBSZARAMI JEST JEDNA OSOBA I JEDNA WARSTWA DOWODZĄCA** — kanon wspólny w zamierzeniu, rozłączny w praktyce; `CLAUDE.md` tej strony nie zawiera żadnej klasy kanonu aplikacji; kanał ma **jeden punkt awarii** | ⚠ lista różnic gotowa (rozdz. 19), **przeniesienie = decyzja właściciela** |
 | T41 | **cztery akcje CI działają na środowisku, którego nie deklarują** — `checkout@v4`, `setup-node@v4`, `download-artifact@v4`, `upload-artifact@v4` celują w Node 20, a runner wymusza Node 24; ostrzeżenie stoi w **15/15 zadań** każdego przebiegu i nikt go nie czytał, aż wejście do logu w innej sprawie (czasy zadań do T24) je odsłoniło. Nic nie jest dziś zepsute — pozycja opisuje **ryzyko z datą wygaśnięcia w cudzych rękach** | ⚠ **czeka na decyzję** — czy podnosić do `v5` (osobne zadanie, kontrola negatywna) i czy ostrzeżenia DOSTAWCY mają mieć miejsce w interfejsie (to samo pytanie co przy `::warning` z T24 — rozstrzygać raz, dla obu) |
 | T42 | ⚠ **HAK, KTÓRY MIAŁ ROBIĆ BACKUPY, NIE ISTNIEJE — a `CLAUDE.md:239-241` twierdzi, że istnieje.** Zero trafień na `hooks` w czterech plikach konfiguracji (odczyt 2026-08-24); `backup.sh` nie pada w żadnej. Skutek: przerwa w migawkach **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. Skrypt sprawny — ręcznie kod 0, `unzip -t` bez błędów. Najcięższy przypadek „brak dowodu = brak zabezpieczenia": zabezpieczenie uznane za działające przez 200+ migawek, a cichy brak backupu wygląda jak brak potrzeby backupu | ⚠ **czeka na decyzję** — czy budować hak (i wtedy koniecznie GŁOŚNY przy porażce), i co zrobić ze zdaniem w `CLAUDE.md`, które dopóki haka nie ma, jest fałszem w źródle drugiego szczebla. Do tego czasu: **`bash scripts/backup.sh` ręcznie po każdym zadaniu** |
-| T43 | **Migawka backupu nie zawiera pliku ŚLEDZONEGO w gicie — złapane PIERWSZYM sprawdzeniem przez odtworzenie.** `catherly-www-2026-08-24-0910.zip` rozpakowane 2026-08-24: `git log` pełny, `HEAD` = `74fdfe8`, `fsck` bez uszkodzeń — ale `git status` pokazuje **`D .env.example`**, plik śledzony. Przyczyna: `backup.sh:52-53` wyklucza `.env` **oraz** `.env.*`, a drugi wzorzec łapie przy okazji `.env.example`. Wzorzec szerszy niż zamiar — rodzina **T20**. Dobra wiadomość zmierzona przy okazji: **żaden `.env*` nie trafia na SSD**, czyli sekrety nie są kopiowane | ⚠ **czeka na decyzję** — jak zawęzić wykluczenie, **nie wpuszczając sekretów**. Skutek do zapamiętania: odtworzone repo pokazuje zmianę, **której nikt nie wprowadził**, więc odtwarzający po awarii uzna, że sam skasował plik. Warunek zamknięcia: odtworzenie archiwum po poprawce z **czystym** `git status` **i** wykazem bez `.env*` z sekretami — obie rzeczy w jednym sprawdzeniu, bo osobno każda da się spełnić kosztem drugiej |
+| ~~T43~~ **ZAMKNIĘTE** | **Migawka backupu nie zawiera pliku ŚLEDZONEGO w gicie — złapane PIERWSZYM sprawdzeniem przez odtworzenie.** `catherly-www-2026-08-24-0910.zip` rozpakowane 2026-08-24: `git log` pełny, `HEAD` = `74fdfe8`, `fsck` bez uszkodzeń — ale `git status` pokazuje **`D .env.example`**, plik śledzony. Przyczyna: `backup.sh:52-53` wyklucza `.env` **oraz** `.env.*`, a drugi wzorzec łapie przy okazji `.env.example`. Wzorzec szerszy niż zamiar — rodzina **T20**. Dobra wiadomość zmierzona przy okazji: **żaden `.env*` nie trafia na SSD**, czyli sekrety nie są kopiowane | ✔ **ZAMKNIĘTE 2026-08-24** — właściciel zdjął zakaz 8 punktowo (koszt czynny: cztery wadliwe migawki). Naprawa `18c03f2`: najpierw wyklucz wszystko, potem dołóż imienny wyjątek; plus **strażnik dryfu** głośny na `stderr`. Obie strony sprawdzone w jednym przebiegu, strażnik udowodniony **mutacją** z kontrolą negatywną. Dawniej: Skutek do zapamiętania: odtworzone repo pokazuje zmianę, **której nikt nie wprowadził**, więc odtwarzający po awarii uzna, że sam skasował plik. Warunek zamknięcia: odtworzenie archiwum po poprawce z **czystym** `git status` **i** wykazem bez `.env*` z sekretami — obie rzeczy w jednym sprawdzeniu, bo osobno każda da się spełnić kosztem drugiej |
 
 ---
 

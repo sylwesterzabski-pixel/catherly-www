@@ -171,7 +171,32 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   dowodu z anegdotą. Zapisuje się też **zasięg przeszukania** i to, **czego
   ono z natury nie znajdzie**: koszt w postaci rzeczy, która nie powstała, bo
   reguła zniechęciła do jej zaczęcia, nie zostawia śladu w repozytorium
-  i żadne przeszukanie go nie wykryje.
+  i żadne przeszukanie go nie wykryje. **Kolumna „koszt zmaterializowany"
+  jest obowiązkowa, nie ozdobna: tabela kosztów bez niej ZAWYŻA
+  SYSTEMATYCZNIE**, bo ryzyko zapisuje się łatwiej niż jego brak — poniesione
+  ryzyko, które nie wypaliło, wygląda w zapisie identycznie jak szkoda, która
+  zaszła.
+- DEFEKT, Z KTÓREGO REGUŁA POWSTAŁA, NIE JEST JEJ KOSZTEM (właściciel,
+  2026-08-24). Przy tabeli kosztów to **najłatwiejsza do popełnienia pomyłka**,
+  bo szkoda jest realna i data się zgadza — a mimo to przypisanie jest
+  odwrotne: reguła powstała **z** tego defektu, więc wpisana do kosztów
+  obciążałaby regułę szkodą, **której zapobiegła**. Sprawdzenie jest jednym
+  pytaniem, zadawanym przy **każdej** pozycji kosztów: **czy reguła istniała
+  w chwili, gdy koszt powstał.** Wzorzec (2026-08-24): „odesłanie do dokumentu,
+  którego nie było" — trzy przypadki, wszystkie **przed** powstaniem reguły 18,
+  która się z nich wzięła. Sprawdzenie wsteczne ośmiu pozycji tabeli kosztów
+  wykryło tą metodą **jedno błędne przypisanie** (koszt objętości rejestru
+  przypisany regule młodszej niż sam koszt).
+- RETROSPEKCJA I UCHRONIENIE MIERZĄ DWIE RÓŻNE RZECZY (właściciel,
+  2026-08-24). Reguła zastosowana **po fakcie**, do wady już popełnionej,
+  dowodzi, że jest **trafna**. Reguła, która **zatrzymała rękę w chwili
+  pisania**, dowodzi czegoś innego i mocniejszego: że jest **czytana w chwili
+  pracy** — a to jedyny moment, w którym reguła cokolwiek zmienia. Trafna
+  i nieczytana wygląda w dokumentach identycznie jak trafna i czytana, więc
+  **te dwie rzeczy liczy się osobno**. Wzorzec (T26, 2026-08-24): pierwszy
+  przypadek uchronienia w tym repozytorium — reguła 18 zatrzymała dopisanie
+  domyślonej treści do akapitu, który tę właśnie wadę opisuje. Wszystkie
+  wcześniejsze samozastosowania były retrospektywne.
 - DWA DOWODY Z JEDNEGO ŹRÓDŁA MIERZĄ POWTARZALNOŚĆ ZJAWISKA, NIE NIEZALEŻNOŚĆ
   POTWIERDZENIA (właściciel, 2026-08-24). Dwa przypadki z tego samego
   repozytorium, tego samego przepływu pracy i tej samej pary rąk pokazują, że
@@ -398,6 +423,18 @@ nieposłuszeństwem, tylko wykonaniem tej reguły.
    `docs/faza-2/rejestr-warunkow-powrotu.md` jako pozycja z warunkiem powrotu,
    a nie do kodu. Naprawa bez zlecenia to zmiana, której nikt nie zamawiał
    i nikt nie sprawdzi.
+
+   **GRANICA TEGO ZAKAZU** (właściciel, 2026-08-24): **zakaz naprawiania przy
+   okazji NIE OBEJMUJE defektu, który produkuje nowe wadliwe artefakty
+   w trakcie odraczania.** Odroczenie zakłada, że defekt czeka; gdy defekt
+   **pracuje** — psuje kolejne kopie, wpisy, pomiary — odroczenie przestaje
+   być zachowaniem stanu, a staje się jego pogarszaniem. Rozstrzyga
+   **właściciel**, punktowo i dla nazwanej pozycji; wykonawca **zgłasza** taki
+   przypadek z liczbą wytworzonych artefaktów, nie zdejmuje zakazu sam.
+   Wzorzec (T43, 2026-08-24): **cztery wadliwe migawki** od wykrycia defektu,
+   kolejne co godzinę, przy przyczynie zdiagnozowanej i naprawie na kilka
+   linii. **Pierwszy przypadek w tym repozytorium, w którym koszt reguły
+   przewyższył jej wartość w POMIARZE, a nie w przypuszczeniu.**
 9. **Żadnych treści ani liczb bez pokrycia.** Każda liczba pochodzi
    z `content/facts.json` (literalna liczba w JSX nie przejdzie lintera), każda
    wartość wizualna z `design/tokens.json`. Brak pokrycia → pozycja
