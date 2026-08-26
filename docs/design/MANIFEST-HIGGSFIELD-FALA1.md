@@ -71,7 +71,13 @@ Razem: **1085 kB** wobec 41.8 MB źródeł. Największy plik: **118.1 kB** przy 
 | `wyniki-A-4x5` | `/funkcje/wyniki`, moduł 1 (eager) |
 | `wyniki-B-21x9` | `/funkcje/wyniki`, pas szerokości (lazy) |
 
-## Rozjazdy nazw wobec plików — zgłoszone, nie poprawione
+## Rozjazdy nazw wobec plików — ZGŁOSZONE I PRZYJĘTE
+
+> **Rozstrzygnięcie właściciela (`WWW/046`, 2026-08-26): rozjazdy
+> przyjęte. Nazwy slotów ZOSTAJĄ w brzmieniu ze zlecenia; wiążące są
+> LICZBY z tego manifestu, nie proporcje zapisane w nazwach.** Kto
+> sięga po wymiary, bierze je z tabel wyżej — nazwa slotu jest
+> identyfikatorem, nie deklaracją geometrii.
 
 Nazwy slotów pochodzą ze zlecenia i **nie zgadzają się z proporcjami**
 dostarczonych plików. Nazw nie zmieniam, żeby ślad zlecenia został
