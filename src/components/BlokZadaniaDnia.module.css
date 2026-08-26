@@ -20,13 +20,24 @@
 /* Wnętrze sekcji na kontener strony — w makiecie klasa współdzielona
    .wnetrze; w CSS Modules klas współdzielonych między komponentami
    nie ma, więc element bloku nosi własną nazwę. */
+/* ZADANIE 6 (ADR-031): blok schodzi z tła strony na powierzchnię.
+   Do 2026-08-26 bloki rozdzielała WYŁĄCZNIE włosowa kreska między
+   rodzeństwem — wzorzec, który audyt wskazał jako defekt: przy
+   powierzchni równej tłu (1,09:1) struktura znikała na słabszym ekranie.
+   Po zmianie tokenu powierzchnia ma 1,30:1 wobec tła, więc blok
+   rysuje się plamą, a nie samą kreską.
+
+   Powierzchnia siedzi na WNĘTRZU, nie na `.blok`: `.blok` jest sekcją
+   pełnej szerokości i niesie zewnętrzny margines (2.5rem 1rem), więc
+   pomalowanie jej rozlałoby biel na całą szerokość okna i tło strony
+   przestałoby być widoczne. Karta ma leżeć NA tle, nie zamiast niego. */
 .blok__wnetrze {
   max-width: var(--wymiar-kontener-strony);
   margin-inline: auto;
-}
-
-.blok + .blok {
-  border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
+  background: var(--kolor-rola-powierzchnia);
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: var(--wymiar-promien);
+  padding: 1.5rem 1rem;
 }
 
 .blok h2 {

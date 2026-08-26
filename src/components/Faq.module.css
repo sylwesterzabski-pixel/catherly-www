@@ -16,9 +16,26 @@
   max-width: var(--wymiar-miara-kolumny);
 }
 
+/* ZADANIE 6 (ADR-031): karta FAQ schodzi z tła strony na powierzchnię.
+   Do 2026-08-26 pozycję rysowała WYŁĄCZNIE włosowa kreska u dołu, a przy
+   powierzchni równej tłu (1,09:1) nie było czego odróżniać — audyt
+   wskazał to jako defekt struktury. Po zmianie tokenu powierzchnia ma
+   1,30:1 wobec tła, więc każde pytanie jest osobną plamą.
+
+   `border-block-end` zastąpiony pełnym obrysem: kreska u dołu rozdzielała
+   sąsiadów, a obrys zamyka pozycję — przy rozwiniętej odpowiedzi widać
+   wtedy, dokąd ta odpowiedź sięga. Odstęp między pozycjami zamiast
+   stykających się krawędzi, bo dwie karty krawędź w krawędź czytają się
+   jak jedna z linią w środku. */
 .lista details {
-  border-block-end: 0.0625rem solid var(--kolor-rola-kreska);
-  padding-block: 0.75rem;
+  background: var(--kolor-rola-powierzchnia);
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: var(--wymiar-promien);
+  padding: 0.75rem 1rem;
+}
+
+.lista details + details {
+  margin-block-start: 0.5rem;
 }
 
 .lista summary {
