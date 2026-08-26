@@ -25,7 +25,7 @@ z własnej ręki.** Drzewo czyste, zdalny zsynchronizowany, zero niewypchniętyc
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (722 linie, stan 2026-08-24) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (742 linii, stan 2026-08-26) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
@@ -1697,6 +1697,80 @@ i nie naprawiam czegoś, co u mnie się zgadza.**
 
 ---
 
+### 4.23 Arkusz do stanu decyzyjnego i strażnik daty na trzy bloki (`WWW/031`)
+
+⚠ **Najpierw korekta własnego pomiaru, bo poszedł do właściciela jako
+ustalenie.** Zwrotka `WWW/029` orzekła, że arkusz **nie ma przełącznika
+palet**. **Nieprawda.** Grep szukał literału `data-paleta`, a kod ustawia
+atrybut przez **`dataset.paleta`** — camelCase API DOM, w którym ten ciąg nie
+występuje. Sprawdzone na żywo: **pięć przycisków**, przełączanie bez
+przeładowania, `czern` → tło `#0a0a0a`, akcent `#a3e635`. **Trzecie w tej
+sesji zero narzędzia — i pierwsze, które zdążyło wyjść na zewnątrz.** Dwa
+poprzednie złapała kontrola pozytywna przed zapisem; ten wrócił dopiero przy
+próbie zbudowania rzeczy, która już istniała. Wniosek zapisany przy T47:
+**przy orzekaniu o nieobecności w kodzie sprawdź, czy szukany byt nie ma
+drugiej postaci** — zero z jednej postaci nie jest zerem bytu.
+
+**A — NIE WYKONANE CELOWO, zgłoszone.** Zlecenie mówi „przenieś wartości ról
+do arkusza, nie linkuj do src". Arkusz jest zbudowany **odwrotnie i lepiej**:
+nie ma **ani jednej własnej wartości barwnej**, tylko zaciąga CSS żywego
+builda ze strony głównej w czasie wykonania. Przeniesienie utworzyłoby
+**kopię recepty**, która rozjedzie się z `globals.css` i nikt tego nie
+zauważy — klasa zapisana w tej sesji kilkakrotnie. **Czekam na
+rozstrzygnięcie zamiast cofać projekt arkusza po cichu.**
+
+**B — już istniało:** `wybor-rem` 36–48 rem (domyślnie 42), obie miary jedna
+pod drugą ×3 języki, `text-wrap: balance` w `.h1-próba`.
+
+**C — wykonane.** Każda próbka H1 dostała **podtytuł i CTA** (teksty
+przepisane z `Hero.podtytul` i `Hero.cta`, nie wymyślone), a metka liczy na
+żywo: kolumnę, linie, **wysokość H1, Y podtytułu, Y CTA** względem górnej
+krawędzi H1. Y względne, bo bezwzględne zależy od pozycji sekcji.
+Zmierzone: `PL · 24ch` → kolumna **727,9 px**, 3 linie, Y CTA **+297,1 px**;
+`PL · miara docelowa` → kolumna **672,0 px**, 3 linie, Y CTA **+247,5 px**.
+**Po to ta sekcja jest:** sama miara mówi, ile linii; dopiero położenie rzeczy
+**pod** nagłówkiem pokazuje, ile kosztuje jedna linia różnicy (T12: 55,19 px).
+
+**D — wykonane.** `W-POMIAR-01`: `document.fonts.check` **plus** pomiar
+szerokości próbki rodziną docelową wobec samego zapasu. Werdykt stoi **przy
+liczbach i przed nimi**, bo „mierzy fallback" unieważnia wszystko pod nim.
+Zmierzone: *„mierzy: Schibsted Grotesk · próbka 1347,4 px wobec zapasu
+1574,7 px (różnica 227,3 px) · document.fonts.check: zna"*. **Karta ograniczeń
+dopisana w arkuszu**, nie tylko w komentarzu — cztery granice, w tym ta
+najważniejsza: `CSS.getPlatformFontsForNode` jest protokołem DevTools i w
+statycznym HTML nie istnieje, więc stoją tam **dwa pomiary pośrednie, nie
+jeden wprost**.
+
+**E — strażnik daty na trzy bloki.** Stan sprzed zmiany był **odwrotnością
+tego, co wyglądał**: blok, którego termin **jest** egzekwowany, daty
+w nagłówku nie miał; dwa, które termin **ogłaszały**, nie miały egzekucji.
+Zasięg rozdzielony: **osłona** dalej tylko dla palety, **termin** dla
+wszystkich trzech. Dołożona asercja **poza literą zlecenia i tak oznaczona**:
+nagłówek niosący datę musi nieść **tę samą** datę co mechanizm.
+
+**Dowód obu stron, jeden przebieg:** dziś **zielony** → mutacja
+`WYJATEK_WYGASA` na `2026-08-25` (zegar przesunięty **w kodzie**, nie
+w systemie) → **czerwień, 80 naruszeń**, komunikat wymienia **wszystkie trzy**
+bloki z nazwy i niesie linię o `onest.woff2` → przywrócenie z kopii,
+potwierdzone **sumą SHA** (`28dc73f8e4bf` przed i po) → **zielony**.
+Przywracałem z kopii, **nie** `git checkout HEAD --`: w `HEAD` nie było
+jeszcze tej naprawy, więc checkout skasowałby pracę zamiast cofnąć mutację.
+
+**G — rozjazd notacji, nie wartości. Nic nie zmieniam.** Pomiar na żywym
+arkuszu: `getComputedStyle(html).fontSize` = **16 px**, `backdrop-filter`
+zapisany jako `blur(1rem)` daje computed **`blur(16px)`**. Wartość identyczna.
+
+**Dwie klasy do kanonu z `WWW/030`**, zaległe z tury czysto odczytowej:
+**wyłączenie ze sprawdzania ma własnego strażnika liczebności** oraz **przy
+naprawie strażnika dowodem jest ślepota starego obok wzroku nowego, na
+identycznym wejściu**.
+
+**Odstępstwo od układu commitów, jawne:** zlecenie przewidywało dwa commity
+(arkusz, strażnik). Ten trzeci niesie **wyłącznie dokumentację** — inaczej
+złamałby warunek „wyłącznie `scripts/lint-tokeny.mjs`" przy commicie E.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -2519,7 +2593,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **722 linie, stan 2026-08-24** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **742 linii, stan 2026-08-26** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`

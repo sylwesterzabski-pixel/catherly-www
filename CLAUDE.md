@@ -274,6 +274,26 @@ dane · pieniądze · bezpieczeństwo · obietnice. Zasady obowiązujące zawsze
   przypadkiem źródłowym reguły (więc nie retrospekcja). **Liczy się je
   osobno**, bo mierzą trzy różne własności — i reguła może mieć jedną bez
   pozostałych.
+- WYŁĄCZENIE ZE SPRAWDZANIA MA WŁASNEGO STRAŻNIKA LICZEBNOŚCI (właściciel,
+  2026-08-26). Strażnik czerpiący zbiór ze źródła bywa niepełny z powodu
+  legalnego — część elementów naprawdę nie podlega sprawdzeniu. Wyłączenie
+  jest wtedy decyzją, ale **bez własnego strażnika staje się furtką**: nowy
+  element może wpaść w lukę między „sprawdzane" a „wyłączone" i zniknąć,
+  a wyłączenie może przeżyć element, którego dotyczyło. Stąd dwa wymogi przy
+  każdej liście wyłączeń: **sprawdzane + wyłączone równa się liczbie
+  elementów źródła**, i **każdy wyłączony element nadal w źródle istnieje**.
+  Pierwszy zamyka lukę, drugi wykrywa wyłączenie przeterminowane — udaje
+  decyzję, a opisuje rzecz, której już nie ma. Wzorzec: `e2e/cennik.spec.ts`,
+  14 kluczy = 11 sprawdzanych + 3 wyłączone.
+- PRZY NAPRAWIE STRAŻNIKA DOWODEM JEST ŚLEPOTA STAREGO POKAZANA OBOK WZROKU
+  NOWEGO, NA IDENTYCZNYM WEJŚCIU (właściciel, 2026-08-26). Sama czerwień
+  nowego strażnika na zmutowanym wejściu nie dowodzi, że naprawa cokolwiek
+  zmieniła — może zapalać się na czymś, co stary też widział. **Uruchom obie
+  wersje na TYM SAMYM wejściu w jednym przebiegu** i pokaż dwa różne wyniki:
+  wtedy przyczyna jest odizolowana do zmiany strażnika, a nie do otoczenia.
+  To jest mutacja i kontrola negatywna złożone w jedno. Wzorzec (2026-08-26):
+  nowy klucz `Cennik.tabela.*` nieobecny w treści — stary strażnik **14
+  passed**, nowy **1 failed**, ta sama mutacja, to samo otoczenie.
 - DWA DOWODY Z JEDNEGO ŹRÓDŁA MIERZĄ POWTARZALNOŚĆ ZJAWISKA, NIE NIEZALEŻNOŚĆ
   POTWIERDZENIA (właściciel, 2026-08-24). Dwa przypadki z tego samego
   repozytorium, tego samego przepływu pracy i tej samej pary rąk pokazują, że
