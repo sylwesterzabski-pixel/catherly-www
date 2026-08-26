@@ -3,25 +3,32 @@
  */
 
 :root {
-  --kolor-tlo: #e8e1d5; /** Tło strony — owsiany papier, paleta „kancelaria" (decyzja właściciela 2026-08-26, ADR-031; zastępuje ciepły greige #eee6e0 z ADR-013). JEDYNE miejsce definicji tła: bramka kontraktu (scripts/check-kontrakt-tokenow.mjs) czyta kolor.tlo.value i porównuje ze szwem logowania — rola tlo-strony odwołuje się tutaj, żeby wartość nie istniała w dwóch miejscach. */
-  --kolor-rola-powierzchnia: #ffffff; /** Karty, panele, wiersze tabeli — jedyna rola z prawem do bieli. Kontrasty zmierzone 2026-08-26 na aff7947: ×tło strony 1,30:1 (próg zadania 6) · ×tekst-podstawowy 17,76:1 · ×tekst-drugorzedny 7,65:1 · ×kreska-mocna 4,67:1 · ×interakcja 11,48:1. */
-  --kolor-rola-powierzchnia-2: #f3eee6; /** Pasy sekcyjne i plama pigułki okresu (SekcjaPlanow). NIE na kartach — 1,13:1 wobec tła to za mały odstęp. Zmierzone 2026-08-26 na aff7947: ×tekst-podstawowy 15,38:1 · ×tekst-drugorzedny 6,62:1. */
-  --kolor-rola-powierzchnia-akcentowa: #dccdac; /** Tło akcentowe lustra L1 (ADR-025): S10 SekcjaRytmu i SekcjaTekstowa.akcentowa. Zmierzone 2026-08-26 na aff7947: ×tekst-podstawowy 11,31:1 · ×tekst-drugorzedny 4,87:1 (AA, zapas 0,37) · ×link 11,31:1 · ×interakcja 7,31:1 · ×fokus 11,31:1. GRANICA: ×akcent = 2,53:1 — punktor ::marker w tej roli NIE MA tu pokrycia 3:1; dziś nie występuje (jedyne dwa ::marker w akcencie to Filar.konkrety i SekcjaPlanow.lista, żaden nie leży na tej powierzchni). Lista punktowana wstawiona do S10 wymaga osobnej decyzji. */
-  --kolor-rola-tekst-podstawowy: #16181d; /** Nagłówki i proza. Zmierzone 2026-08-26 na aff7947: ×tło 13,67:1 · ×powierzchnia 17,76:1 · ×powierzchnia-2 15,38:1 · ×powierzchnia-akcentowa 11,31:1 — AA/AAA wszędzie. */
-  --kolor-rola-tekst-drugorzedny: #4e545c; /** Podpisy, metadane — 22 użycia, najczęstsza rola w serwisie. DOLNA GRANICA, nie schodzić niżej: zmierzone 2026-08-26 na aff7947 ×tło 5,88:1 · ×powierzchnia 7,65:1 · ×powierzchnia-2 6,62:1 · ×powierzchnia-akcentowa 4,87:1 — ostatnia wartość ma zapas 0,37 nad progiem AA. */
-  --kolor-rola-kreska: #d2c9b9; /** Kreski dekoracyjne: nagłówek, stopka, separatory, obrysy kart (1,26:1 na tle; ADR-025). Nie niesie informacji — do obrysów kontrolek służy kreska-mocna. */
-  --kolor-rola-kreska-mocna: #7d7361; /** NOWA (ADR-031). Obrys pól formularza i kontrolek — tu próg 3:1 obowiązuje (WCAG 1.4.11). Zmierzone 2026-08-26 na aff7947: ×powierzchnia 4,67:1 · ×tło 3,59:1. */
-  --kolor-rola-akcent: #9a7b3f; /** R-AKCENT-01: wyłącznie dekoracja — punktory i podkreślenia, NIGDY tekst ani samodzielny komunikat. Zmierzone 2026-08-26 na aff7947: ×tło 3,06:1. Poprzednia wartość dawała 2,87:1 i broniono jej argumentem „akcent nie niesie tekstu"; 3,06:1 usuwa cały wyjątek. GRANICA: ×powierzchnia-akcentowa 2,53:1 — patrz komentarz tej roli. */
-  --kolor-rola-interakcja: #1f3a5f; /** Wypełnienie CTA — jedyna nasycona plama w kadrze. Zmierzone 2026-08-26 na aff7947: ×tło 8,84:1 · ×powierzchnia 11,48:1 · ×powierzchnia-akcentowa 7,31:1 — 1.4.11 z zapasem, plama sama rysuje granicę przycisku (obwódka niepotrzebna, inaczej niż w wariantach limonkowych). */
-  --kolor-rola-interakcja-aktywna: #142a47; /** Hover i stan wciśnięty. Zmierzone 2026-08-26 na aff7947: ×tekst-na-interakcji 14,46:1 · ×tło 11,13:1. Para stała jak link/link-aktywny. */
-  --kolor-rola-tekst-na-interakcji: #ffffff; /** Etykieta na granacie. Zmierzone 2026-08-26 na aff7947: ×interakcja 11,48:1 · ×interakcja-aktywna 14,46:1 — AA/AAA w obu stanach. */
-  --kolor-rola-link: #16181d; /** DECYZJA 5 paczki — link NIE JEST KOLOREM: kolor tekstu podstawowego + podkreślenie w akcencie. Granat pojawia się dopiero w hover/focus. Powód: w kadrze ma być jedna granatowa plama i ma nią być akcja. Wcześniej jeden kolor pełnił pięć ról naraz i hierarchia nie istniała. */
-  --kolor-rola-link-aktywny: #1f3a5f; /** Hover i odwiedzony — dopiero tu pojawia się granat. Zmierzone 2026-08-26 na aff7947: ×tło 8,84:1 · ×powierzchnia-akcentowa 7,31:1. */
-  --kolor-rola-fokus: #16181d; /** R-AKCENT-02: ≠ akcent, ≠ interakcja — sprawdzane NA WARTOŚCIACH przez scripts/straznik-tokenow.mjs, nie na nazwach. Poprzednia paleta eksperymentu spełniała tę regułę z nazwy i łamała z wartości. Obwódka pada na TŁO STRONY dzięki outline-offset, nie na wypełnienie przycisku: para fokus×interakcja ma 1,55:1 i to jest powód istnienia odsunięcia, nie defekt (stan sprzed zmiany dawał na tej parze 1,38:1 — zmierzone razem 2026-08-26 na aff7947). */
-  --kolor-rola-stan-sukces: #2f6b46; /** NOWA (ADR-031). Potwierdzenia. Zmierzone 2026-08-26 na aff7947: ×powierzchnia 6,34:1 · ×tło 4,88:1 · ×powierzchnia-2 5,49:1. */
-  --kolor-rola-stan-ostrzezenie: #8a5a12; /** NOWA (ADR-031). Limity planu, zbliżające się granice. Zmierzone 2026-08-26 na aff7947: ×powierzchnia 5,91:1 · ×tło 4,55:1 · ×powierzchnia-2 5,12:1. */
-  --kolor-rola-stan-blad: #a32617; /** NOWA (ADR-031). Walidacja. Zmierzone 2026-08-26 na aff7947: ×powierzchnia 7,38:1 · ×tło 5,68:1 · ×powierzchnia-2 6,39:1. Błąd NIGDY nie jest komunikowany samym kolorem (WCAG 1.4.1) — zawsze kolor + obrys pola + tekst komunikatu. */
-  --kolor-rola-stan-wylaczony: #767c84; /** NOWA (ADR-031). 3,24:1 na tle — wyjęte spod progu przez WCAG 1.4.3 (kontrolki nieaktywne). UWAGA: e2e/kontrast-stanow.spec.ts trzyma dla stanu wyłączonego próg 3:1 jako DECYZJĘ projektu ponad normę; ta wartość go spełnia. Dziś serwis nie ma ani jednej wyłączonej kontrolki. */
+  --kolor-tlo: #f0efe8; /** Tło strony — krem palety „natura" (decyzja właściciela 2026-08-26, ADR-032; zastępuje owsiany #e8e1d5 z ADR-031). JEDYNE miejsce definicji tła: bramka kontraktu czyta kolor.tlo.value. */
+  --kolor-rola-powierzchnia: #faf7f1; /** Karty na kremie. Zmierzone 2026-08-26: ×tło strony 1,08:1 — PONIŻEJ progu 1,30, który wprowadziło zadanie 6 z ADR-031. Dla porównania: kancelaria dawała 1,30, a stan sprzed niej — nazwany przez audyt defektem — 1,12. Rozdział niesie kreska. Pozycja otwarta T52. */
+  --kolor-rola-powierzchnia-2: #e7e1d4; /** Pas sekcyjny jasny. Zmierzone: ×tekst-podstawowy 12,50:1. */
+  --kolor-rola-powierzchnia-akcentowa: #e3d6bc; /** Tło akcentowe lustra L1 (S10, SekcjaTekstowa.akcentowa). */
+  --kolor-rola-tekst-podstawowy: #221f20; /** Zmierzone 2026-08-26: ×tło 14,18:1 · ×powierzchnia 15,29:1. */
+  --kolor-rola-tekst-drugorzedny: #5a544a; /** Zmierzone: ×tło 6,50:1 — AA. */
+  --kolor-rola-kreska: #d8d2c4; /** Zmierzone: ×tło strony 1,31:1 · ×powierzchnia 1,41:1. W palecie „natura" kreska NIE JEST wyłącznie dekoracją — to ona niesie rozdział karty od strony, bo wypełnienia różnią się o 1,08. Zmiana jej wartości jest zmianą struktury, nie ozdoby. */
+  --kolor-rola-kreska-mocna: #8a8172; /** Obrys pól formularza. Zmierzone: ×powierzchnia 3,59:1 — 1.4.11 spełnione. */
+  --kolor-rola-akcent: #9c7434; /** Złoto — dekoracja i duże napisy. R-AKCENT-01 dalej obowiązuje: nigdy nie niesie zwykłego tekstu. */
+  --kolor-rola-interakcja: #221f20; /** Grafit — wypełnienie CTA na jasnym. Zmierzone: ×tło 14,18:1. */
+  --kolor-rola-interakcja-aktywna: #3a342e; /** Hover CTA grafitowego. */
+  --kolor-rola-tekst-na-interakcji: #f0efe8; /** Etykieta na graficie. Zmierzone: ×interakcja 14,18:1. */
+  --kolor-rola-link: #221f20; /** Link nie jest kolorem — kolor tekstu + podkreślenie akcentem (decyzja 5, ADR-031, obowiązuje dalej). */
+  --kolor-rola-link-aktywny: #7e6425; /** Złoto ciemne — hover linku. */
+  --kolor-rola-fokus: #7e6425; /** Zmierzone: ×tło 4,88:1. RÓWNE --link-aktywny i to jest DOZWOLONE (zlecenie WWW/040): strażnik wymaga rozdzielności trójki fokus/akcent/interakcja, a nie fokus/link-aktywny. Sprawdzone: fokus ≠ akcent (#9c7434) i fokus ≠ interakcja (#221f20), więc wariant zapasowy #6B5520 ze zlecenia NIE BYŁ potrzebny. */
+  --kolor-rola-stan-sukces: #2f6b46; /** Zmierzone: ×powierzchnia 5,93:1. */
+  --kolor-rola-stan-ostrzezenie: #8a5a12; /** Zmierzone: ×powierzchnia 5,53:1. */
+  --kolor-rola-stan-blad: #a32617; /** Zmierzone: ×powierzchnia 6,90:1. */
+  --kolor-rola-stan-wylaczony: #8b857b; /** Wyjęte spod progu przez WCAG 1.4.3. */
+  --kolor-rola-tlo-inwersji: #2a2622; /** NOWA (ADR-032). Espresso — hero, sekcja cytatowa, zamknięcie. Włączana atrybutem sekcyjnym data-ton="ciemny". */
+  --kolor-rola-tlo-inwersji-2: #564e43; /** NOWA (ADR-032). Oliwkowy brąz — sekcja filarów. Zmierzone: ×tekst-na-inwersji 7,10:1 · ×tekst-2-na-inwersji 4,62:1. */
+  --kolor-rola-tekst-na-inwersji: #f0efe8; /** NOWA (ADR-032). Zmierzone: ×tlo-inwersji 13,02:1 · ×tlo-inwersji-2 7,10:1. */
+  --kolor-rola-tekst-2-na-inwersji: #c9c2b4; /** NOWA (ADR-032). Zmierzone: ×tlo-inwersji 8,48:1 · ×tlo-inwersji-2 4,62:1 — AA z zapasem 0,12; DOLNA GRANICA na oliwce. */
+  --kolor-rola-akcent-na-inwersji: #c9a25e; /** NOWA (ADR-032). Złoto jasne. Zmierzone: ×tlo-inwersji 6,30:1 · ×tlo-inwersji-2 3,43:1. */
+  --kolor-rola-interakcja-inwersji: #7e6425; /** NOWA (ADR-032). Złoty CTA na ciemnym; etykieta --tekst-na-inwersji ma na nim 4,88:1 (AA ✔). ⚠ SAMO WYPEŁNIENIE ma wobec espresso 2,67:1, czyli PONIŻEJ 3:1 z WCAG 1.4.11 — i nie da się tego naprawić doborem złota: dla jasnej etykiety okno luminancji NIE ISTNIEJE (wymagane L ≥ 0,1598 i L ≤ 0,1524 wykluczają się). Dlatego granicę przycisku niesie OBWÓDKA w --tekst-na-inwersji: 13,02:1 wobec espresso i 4,88:1 wobec wypełnienia. Ten sam wzorzec, co obwódka CTA przy limonce w eksperymencie palety. */
+  --kolor-dekoracja-poswiata: #905f47; /** Poświata radialna hero i zamknięcia (ADR-032, zlecenie WWW/040 krok 2). CELOWO POZA `kolor.rola` — to nie jest rola systemu, tylko jedna barwa dekoracyjna, i trzymanie jej poza rolami utrzymuje liczbę ról na 25, czyli zgodną z decyzją i ze strażnikiem. Używana wyłącznie przez color-mix z alfą ≤35% na tle inwersji; aria-neutralna, nie niesie treści, nie stanowi granicy ani wskaźnika stanu. */
   --kroj: "Onest", "Onest zapasowy", system-ui, sans-serif; /** Krój produkcyjny (ADR-031, decyzja właściciela 2026-08-26). Onest — font ZMIENNY, oś wght 100–900, jeden plik public/fonts/onest.woff2, self-host, zero domen zewnętrznych. Tu, a nie w arkuszu: ADR-026 zapowiadał w Konsekwencjach, że „tokeny typografii (rodzina, skala) wejdą do tokens.json wraz z ADR-em kroju". GRANICA ZMIERZONA 2026-08-26 na aff7947: cmap ma 136 znaków i NIE zawiera U+2713 ✓ — a ten znak stoi 15× na /cennik i wypadnie w kroju zapasowym (poz. T14 rejestru). „Onest zapasowy" to nazwa własna rodziny zastępczej definiowanej w globals.css; paczka nazywała ją „Onest fallback" — nazwa polska dla spójności z resztą repozytorium, bez kontraktu na zewnątrz. */
   --tekst-xs: 0.875rem; /** 14 px — metadane, przypisy, etykiety pól. */
   --tekst-s: 1rem; /** 16 px — tekst czytany, domyślny. */
@@ -45,5 +52,5 @@
   --wymiar-promien: 0.5rem; /** Promień podstawowy: karty, CTA, ramki obrazów (ADR-028; skala K2–K5). */
   --wymiar-promien-pigulki: 2rem; /** Promień pełny pigułki (przełącznik K6; ADR-028). */
   --wymiar-prog-ukladu: 48rem; /** Próg przełączenia układów mobile→desktop (ADR-028). WYŁĄCZNIE DOKUMENTACYJNY: @media nie czyta var() — wartość powielona literalnie w media queries modułów; zmiana wymaga ADR i sync wszystkich @media. */
-  --kolor-rola-tlo-strony: var(--kolor-tlo); /** Celowo ciemniejsze od bieli — dopiero przy tej jasności biała karta odcina się od tła o 1,30:1 (zadanie 6 paczki). */
+  --kolor-rola-tlo-strony: var(--kolor-tlo); /** Krem — tło treści. Wartość zmierzona ze wzorca (referencja `glowna-natura.html`, paleta „natura", decyzja właściciela 2026-08-26, ADR-032). ⚠ GRANICA STRUKTURALNA: przy tej jasności próg 1,30 dla pary karta/tło jest NIEOSIĄGALNY ŻADNĄ powierzchnią — czysta biel daje wobec tego tła 1,153. Rozdział karty od strony niesie w tej palecie KRESKA (1,31 wobec tła), nie plama. Patrz poz. T52. */
 }

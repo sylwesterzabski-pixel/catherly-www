@@ -74,7 +74,7 @@ export function Filar({
     ? `${styles.uklad} ${styles.obrazPoLewej}`
     : styles.uklad;
   return (
-    <section className={styles.filar} aria-labelledby={idNaglowka}>
+    <section className={styles.filar} aria-labelledby={idNaglowka} data-ton="ciemny-oliwka">
       <div className={styles.wnetrze}>
         <div className={klasyUkladu}>
           <div className={styles.tekst}>

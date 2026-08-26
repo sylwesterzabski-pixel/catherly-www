@@ -1,5 +1,22 @@
 # ADR-031: Paleta produkcyjna „kancelaria" i krój Onest
 
+> ⚠ **WARTOŚCI BARW ZASTĄPIONE TEGO SAMEGO DNIA przez
+> [ADR-032](032-paleta-natura-i-warstwa-inwersji.md)** — paleta „natura",
+> decyzja właściciela 2026-08-26 po oglądzie makiety.
+>
+> **Co z tego ADR-a ZOSTAJE W MOCY — czyli prawie wszystko poza samymi
+> hexami:** tokeny przez `design/tokens.json` i generator, krój Onest,
+> pięciokrokowa skala typograficzna, strażnik tokenów, kasacja bloku
+> eksperymentu i arkusza, uchylenie ADR-026 i ADR-027, korekta stałej
+> tła w ADR-013 (z tą różnicą, że stałą jest teraz `#f0efe8`), reguły
+> R-AKCENT-01 i R-AKCENT-02, decyzja „link nie jest kolorem" i granica
+> fokusu przez `outline-offset`.
+>
+> **Co zostaje NIEUNIEWAŻNIONE i nadal otwarte:** warunek twardy ADR-026
+> pkt 3 (re-pomiar LCP z zapasem dla webfontu na H1) oraz pomiar
+> z ADR-027 o zerowym zapasie budżetu. Zmiana palety ich nie dotyczy —
+> krój został ten sam.
+
 Data: 2026-08-26. Status: **PRZYJĘTY (decyzja właściciela 2026-08-26,
 zlecenie `WWW/038-bis`, decyzja ② + imienna zgoda na kasację bloku
 eksperymentu).**

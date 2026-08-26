@@ -57,7 +57,7 @@ export function Stopka({ locale }: Props) {
   const etykieta = (wpis: { przestrzen: string; klucz: string }) =>
     tPelne(`${wpis.przestrzen}.${wpis.klucz}`);
   return (
-    <footer className={styles.stopka}>
+    <footer className={styles.stopka} data-ton="grafit">
       <div className={styles.kolumny}>
         <section>
           <h2>{t("mapaStrony")}</h2>

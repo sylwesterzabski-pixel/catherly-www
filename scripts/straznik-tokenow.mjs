@@ -115,18 +115,18 @@ const ostrzezenia = [];
    LICZBA_ROL jest literałem CELOWO i jest MECHANIZMEM, nie dryfem.
    Rozstrzyga o tym jedno pytanie z kanonu: czy zmiana tej liczby ma
    być DECYZJĄ. Ma — ADR-031 wylicza dokładnie 19 ról z wartościami
-   i uzasadnieniem każdej, a dołożenie dwudziestej albo skasowanie
+   i uzasadnieniem każdej, a dołożenie kolejnej albo skasowanie
    którejś jest zmianą systemu barw, nie porządkiem. Gdyby liczba
    pochodziła z pliku, nowa rola weszłaby do palety BEZ decyzji
    i bez przeliczenia kontrastów — czyli strażnik straciłby to,
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 19;
+const LICZBA_ROL = 25;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-031 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-032 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -148,6 +148,55 @@ for (const [a, b, prog, opis] of PARY) {
   const w = kontrast(role[a], role[b]);
   if (w < prog) {
     bledy.push(`KONTRAST: --${a} na --${b} = ${w.toFixed(2)}:1, wymagane ${prog}:1 — ${opis}`);
+  }
+}
+
+/* ─── WARSTWA INWERSJI (ADR-032) ───────────────────────────────
+   Dołożone razem z sześcioma rolami. Bez tych par nowe role byłyby
+   w zbiorze, ale POZA sprawdzaniem — czyli dokładnie furtka, przed
+   którą broni kanon („wyłączenie ze sprawdzania ma własnego strażnika
+   liczebności"). Zasięg par idzie za tym, co NAPRAWDĘ występuje
+   w kompozycji z referencji `glowna-natura.html`:
+   złoty CTA stoi wyłącznie na espresso (hero, zamknięcie), a na
+   oliwkowym brązie CTA jest grafitowe — dlatego pary
+   `interakcja-inwersji × tlo-inwersji-2` tu NIE MA. Gdyby złoty CTA
+   trafił kiedyś na oliwkę, miałby 1,46:1 i ta para musi wtedy wejść. */
+const PARY_INWERSJI = [
+  ["tekst-na-inwersji",    "tlo-inwersji",        4.5, "proza na espresso"],
+  ["tekst-2-na-inwersji",  "tlo-inwersji",        4.5, "tekst drugorzędny na espresso"],
+  ["tekst-na-inwersji",    "tlo-inwersji-2",      4.5, "proza na oliwkowym brązie"],
+  ["tekst-2-na-inwersji",  "tlo-inwersji-2",      4.5, "tekst drugorzędny na oliwkowym"],
+  ["tekst-na-inwersji",    "interakcja-inwersji", 4.5, "etykieta na złotym CTA"],
+  ["tekst-na-inwersji",    "interakcja",          4.5, "etykieta na grafitowym CTA (stopka, filary)"],
+  ["akcent-na-inwersji",   "tlo-inwersji",        3.0, "złoto jasne na espresso"],
+  ["akcent-na-inwersji",   "tlo-inwersji-2",      3.0, "złoto jasne na oliwkowym"],
+];
+for (const [a, b, prog, opis] of PARY_INWERSJI) {
+  if (!role[a] || !role[b]) { bledy.push(`BRAK ROLI: --${a} lub --${b} (${opis})`); continue; }
+  const w = kontrast(role[a], role[b]);
+  if (w < prog) {
+    bledy.push(`KONTRAST (inwersja): --${a} na --${b} = ${w.toFixed(2)}:1, wymagane ${prog}:1 — ${opis}`);
+  }
+}
+
+/* GRANICA ZŁOTEGO CTA — sprawdzana OSOBNO, bo nie jest parą kontrastu,
+   tylko warunkiem istnienia mechanizmu. Samo wypełnienie ma wobec
+   espresso 2,67:1, czyli poniżej 3:1 z WCAG 1.4.11, i doborem złota
+   nie da się tego naprawić: przy jasnej etykiecie okno luminancji nie
+   istnieje (wymagane L ≥ 0,1598 i L ≤ 0,1524). Granicę niesie więc
+   OBWÓDKA, a ten strażnik pilnuje, żeby barwa obwódki dawała 3:1
+   wobec obu stron. Gdyby ktoś zdjął obwódkę z CTA, tego ten strażnik
+   NIE wykryje — od tego jest e2e/kontrast-stanow.spec.ts; tutaj
+   pilnowana jest WYKONALNOŚĆ mechanizmu, nie jego obecność. */
+if (role["tekst-na-inwersji"] && role["interakcja-inwersji"] && role["tlo-inwersji"]) {
+  const doTla = kontrast(role["tekst-na-inwersji"], role["tlo-inwersji"]);
+  const doWypelnienia = kontrast(role["tekst-na-inwersji"], role["interakcja-inwersji"]);
+  if (doTla < 3.0 || doWypelnienia < 3.0) {
+    bledy.push(
+      `GRANICA CTA: obwódka w --tekst-na-inwersji ma ${doTla.toFixed(2)}:1 wobec espresso ` +
+        `i ${doWypelnienia.toFixed(2)}:1 wobec wypełnienia; 1.4.11 wymaga 3:1 wobec OBU — ` +
+        `bez tego złoty CTA nie ma perceptowalnej granicy`
+    );
   }
 }
 

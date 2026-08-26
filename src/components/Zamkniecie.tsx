@@ -24,7 +24,7 @@ export function Zamkniecie({
   zdaniePo,
 }: Props) {
   return (
-    <section className={styles.sekcja}>
+    <section className={styles.sekcja} data-ton="ciemny">
       <div className={styles.wnetrze}>
         {zdaniePrzed === undefined ? null : (
           <p className={styles.zdanieProwadzace}>{zdaniePrzed}</p>

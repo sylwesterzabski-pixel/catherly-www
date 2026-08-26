@@ -22,7 +22,7 @@ type Props = {
 export function Hero({ locale }: Props) {
   const t = useTranslations("Hero");
   return (
-    <section className={styles.hero} aria-labelledby="hero-h1">
+    <section className={styles.hero} aria-labelledby="hero-h1" data-ton="ciemny">
       <div className={styles.wnetrze}>
         <div className={styles.kolumny}>
           <div>

@@ -13,6 +13,14 @@ od tła o 1,30:1; przy poprzedniej wartości karty miały 1,09:1 i na
 słabszym ekranie struktura znikała. Kierunek ADR-013 nie jest tą korektą
 uchylany ani osłabiany; zmienia się jedna wartość, nie zasada.
 
+**Korekta druga, tego samego dnia ([ADR-032](032-paleta-natura-i-warstwa-inwersji.md)):**
+stałą tła jest **`#f0efe8`** (krem palety „natura"). Kierunek bez zmiany —
+nadal ciepły krem, nie szpitalna biel. **Odnotowane, bo dwie korekty tej
+samej stałej w jednej dobie to sygnał, nie ciekawostka:** wartość tła
+przestała być „stałą decyzji właściciela" w sensie, w jakim ADR-013 ją
+zapisał, i jest dziś parametrem palety. Kto się na nią powołuje, powołuje
+się na ADR palety, nie na ten dokument.
+
 ## Kontekst
 Strona ma dawać odczucie miejsca wyjątkowego, ale nie może peszyć
 („to nie moja liga", „strona dla bogatych"). Luksus komunikuje status
