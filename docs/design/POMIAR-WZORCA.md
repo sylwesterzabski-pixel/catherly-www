@@ -375,9 +375,37 @@ obu** — czyli ta akurat karta ma stałą szerokość, nie płynną.
 
 **Dokument rośnie z 10 301 px (1440) do 14 798 px (390)** — ×1,44.
 
-⚠ **Czego ten rozdział NIE mierzy:** zachowania hero-mockupu przy
-zwężaniu (chowa się czy skaluje) — wymaga porównania kadrowania obrazu,
-nie odczytu prostokąta, i zostaje do sekcji hero w KROKU 2.
+### (d) HERO-MOCKUP przy zwężaniu — **WERDYKT: SKALUJE SIĘ**
+
+Pozycja otwarta z tego rozdziału, zamknięta pomiarem 2026-08-26
+(`WWW/058`, w ramach 2.2). Pytanie brzmiało: chowa się, kadruje czy
+skaluje.
+
+| kadr | plik naturalnie | renderowany | **proporcja** |
+| ---: | ---: | ---: | ---: |
+| 1440 px | 1170 × 750 | 1170 × 750,0 | **1,560** |
+| 768 px | 728 × 466 | 728 × 466,7 | **1,560** |
+| 390 px | 350 × 224 | 350 × 224,3 | **1,560** |
+
+**Proporcja jest STAŁA co do trzeciego miejsca po przecinku na wszystkich
+trzech kadrach — to jest cały dowód.** Gdyby wzorzec kadrował, proporcja
+renderowana rozjechałaby się z naturalną albo między kadrami; gdyby
+chował, obrazu nie byłoby na wąskim kadrze. Jest na wszystkich trzech
+i zawsze w tej samej proporcji.
+
+`object-fit: cover` przy proporcji pliku RÓWNEJ proporcji ramki **nie
+przycina niczego** — to zabezpieczenie na wypadek rozjazdu, nie kadrowanie.
+Sam plik jest serwowany w trzech naturalnych rozmiarach (1170, 728, 350),
+czyli wzorzec zmienia ŹRÓDŁO, nie wycinek.
+
+Mockup zajmuje **pełną szerokość kontenera treści** na każdym kadrze
+(1170 przy wcięciu 135 px · 728 przy 20 px · 350 przy 20 px).
+
+⚠ **Drugie ustalenie z tego samego pomiaru, nieoczekiwane:** wzorzec ma
+w hero **dwa** obrazy przy 1440 px, a **jeden** przy 768 i 390. Ten
+dodatkowy to pełnoekranowa dekoracja tła sekcji (1440 × 1290,
+`object-position: 50% 0%`). **Dekoracyjne tło hero jest więc wyłącznie
+desktopowe** — na wąskich kadrach sekcja ma jednolite tło strony.
 
 ## Co ten pomiar ZMIENIA w naszym stanie — cztery rzeczy, nie jedna
 
