@@ -25,7 +25,7 @@ z własnej ręki.** Drzewo czyste, zdalny zsynchronizowany, zero niewypchniętyc
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
-1. `CLAUDE.md` (742 linii, stan 2026-08-26) — zasady wiążące. Ten plik ich nie
+1. `CLAUDE.md` (785 linii, stan 2026-08-26) — zasady wiążące. Ten plik ich nie
    zastępuje; **`CLAUDE.md` jest nad nim w hierarchii** (T32: ADR → `CLAUDE.md`
    → rejestr → to przekazanie → dokumenty paneli). Od 2026-08-23 ma rozdział
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
@@ -1819,6 +1819,69 @@ w kolejnej wklejce** — kolejność wykrywa zgubę bez osobnego mechanizmu.
 
 ---
 
+### 4.25 Zwężenie reguły o liczbach w strażnikach; rozjazd 6 vs 7 rozstrzygnięty (`WWW/033`)
+
+**Potwierdzenie do `WWW/032`: trzy pozycje weszły, ale w DWÓCH commitach.**
+Dwa wpisy kanonu — `a316b53`; wiersz mapy klas→strażników — `287fc9f`
+(zgoda `WWW/032` przyszła po tym, jak `WWW/031` był już wypchnięty). Oba na
+zdalnym.
+
+**Korekta kanonu od toru 9 — moje brzmienie było ZA SZEROKIE.** Zapis
+„liczebność strażnik bierze z pliku, nie z ręki" zastosowany do
+`toHaveCount(6)` **usunąłby własność, dla której ten strażnik istnieje**.
+Obowiązuje zwężenie: **liczba wpisana ręcznie w strażniku jest defektem albo
+mechanizmem; rozstrzyga jedno pytanie — czy jej zmiana ma być decyzją.**
+Plus wymóg wykonawczy: **przy każdej liczbie w strażniku zdanie w kodzie, po
+co ona tam jest** — bez niego następny czytający zgadnie zgodnie z modą, czyli
+„to literał, wyprowadźmy go z pliku".
+
+⚠ **Moje własne pytanie rozstrzygające też było błędne — i obaliła je pierwsza
+próba użycia.** W mapie stało: *„czy istnieje zbiór źródłowy, którego
+liczebność ta liczba ma odwzorowywać?"*. Przy `toHaveCount(6)` odpowiada
+**TAK** (`Obawy.p*` liczy 6), więc kazałoby wyprowadzić liczbę z pliku — czyli
+zepsuć strażnika. **Istnienie zbioru nie rozstrzyga niczego, bo zbiór istnieje
+w obu klasach.** Rozstrzyga **status zmiany**. Pytanie w mapie zastąpione
+brzmieniem właściciela, stare zapisane obok z powodem obalenia.
+
+**ROZJAZD 6 vs 7 — ROZSTRZYGNIĘTY ODCZYTEM, nie czekaniem.** Materiał
+rozstrzygający **przyszedł importem `WWW/024` i leży w tym repozytorium**:
+`docs/redakcja/LISTA-WYKONAWCZA-R2.md:30` i `REJESTR-PRZEPLYWU.md:139`
+opisują **decyzję O-7** — *„siódma para obaw: treść + `toHaveCount(6)→7` +
+`STRATEGIA.md` pkt 24 + `Obawy.naglowek` «Sześć»→«Siedem» ×3 języki, jednym
+pakietem albo wcale"*. **Siódemka toru 9 to stan PLANOWANY, nie pomiar stanu
+bieżącego.** Rozjazdu nie było — była **różnica dziedziny**: my mierzyliśmy,
+co jest, tamci opisywali, co ma być. Szóstka stoi; O-7 wejdzie **pakietem**,
+nie zmianą literału.
+
+**Zbieżność odnotowana** (właściciel): rozróżnienie zbiór-kontra-decyzja
+powstało niezależnie po obu stronach w tej samej dobie — tor 9 przy §162.6,
+to okno przy `toBe(8)`. **Dwa źródła, jeden wynik** — i to jest jedyna para
+w tej sesji, która spełnia warunek niezależności z klasy 21.
+
+**Wykonanie wymogu — commit `a6e2062`, wyłącznie komentarze w `e2e/`**
+(sprawdzone: 28 linii dodanych, 0 usuniętych, każda zaczyna się od `//`).
+`toHaveCount(6)` → mechanizm, pakiet O-7 · `toBe(8)` → mechanizm, decyzja
+F4-5 · `toHaveCount(2)` → **status nierozstrzygnięty, zapisany jako
+nierozstrzygnięty**. **Poza literą zlecenia i tak oznaczone:** dopisałem także
+dwie nieznane (`zlozenie.spec.ts:170` i `:194`) **bez badania ich** — bo nowy
+wymóg mówi „przy KAŻDEJ liczbie", a spełniony wybiórczo nie pozwoliłby
+odróżnić „nie ustalono" od „nie sprawdzono". Przy `:194` odnotowany
+**kandydat** widoczny linijkę niżej (`PLANY.length`), jawnie jako kandydat.
+
+**Klasa do kanonu: „zero z jednej postaci nie jest zerem bytu"** — w moim
+brzmieniu, z adnotacją: **pierwsze zero narzędzia, które wyszło na zewnątrz
+jako ustalenie**, wykryte przy próbie budowy rzeczy istniejącej. **Para
+z drugiego okna, ta sama doba, ta sama klasa, inna postać**: tor 9 —
+*„pusty wynik znaczy: narzędzie nic nie wskazało, nie: nie ma czego szukać"*.
+Tamto o **interpretacji pustego wyniku**, to o **wielopostaciowości szukanego
+bytu**; razem domykają obie strony.
+
+**A z `WWW/031` — rozstrzygnięte przez właściciela: projekt arkusza zostaje.**
+Zlecenie („przenieś wartości, nie linkuj do src") tworzyłoby klasę
+kopii-recepty. **Zero pracy do wykonania.**
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -2645,7 +2708,7 @@ liczba zamiast pomiaru:**
   (skorowidz: rozdz. 15)
 - `docs/BRIEFING-MIEDZY-SESJAMI.md` — 271 linii, sześć części (4.7)
 - `docs/adr/` — 30 ADR-ów + `README.md` (skorowidz: rozdz. 16)
-- `CLAUDE.md` — **742 linii, stan 2026-08-26** (wskaźnik do tego pliku na górze,
+- `CLAUDE.md` — **785 linii, stan 2026-08-26** (wskaźnik do tego pliku na górze,
   rozdział „Hierarchia źródeł reguł", kanon ADR-018 z dziesięcioma klasami,
   rozdział „Dziesięć zakazów", reguła bieżącej aktualizacji na końcu).
   Liczba starzeje się przy każdej zmianie kanonu — przelicz: `wc -l CLAUDE.md`

@@ -611,6 +611,24 @@ pominięte jest wszystko, co ten kanon już niesie. Co pominięto i dlaczego —
   **pobranych** zgłoszone jako przeszukanie repozytorium; jedna gałąź na `origin`
   nie była pobrana i to właśnie ona niosła szukane pliki. Rodzina „złego
   podzbioru": **zbiór, który widzisz, nazwany zbiorem.**
+- **ZERO Z JEDNEJ POSTACI NIE JEST ZEREM BYTU** (2026-08-26). Rozszerzenie
+  reguły niżej na przypadek, w którym kontrola pozytywna **nie wystarcza**:
+  przeszukanie potwierdzone na wzorcu nadal orzeka o **jednej postaci** bytu,
+  a byt może mieć w kodzie drugą. Zanim ogłosisz NIEOBECNOŚĆ, sprawdź, czy
+  szukana rzecz nie zapisuje się inaczej: atrybut HTML kontra `dataset`
+  (`data-paleta` kontra `dataset.paleta`), kebab-case kontra camelCase, ciąg
+  kontra stała, jedna linia kontra fraza złamana na dwie — `grep` czyta
+  liniami. **Cztery wystąpienia w jednej dobie 2026-08-24/26**, w tym jedno
+  z adnotacją, której nie chcę powtórzyć: **pierwsze zero narzędzia, które
+  wyszło na zewnątrz jako ustalenie** — zwrotka `WWW/029` orzekła, że arkusz
+  nie ma przełącznika palet; wykryte dopiero **przy próbie zbudowania rzeczy,
+  która już istniała**. Pozostałe trzy złapała kontrola pozytywna przed
+  zapisem.
+  **Para z drugiego okna, ta sama doba, ta sama klasa, inna postać** (tor 9,
+  2026-08-26): *„pusty wynik znaczy: narzędzie nic nie wskazało, nie: nie ma
+  czego szukać"*. Tamto zdanie mówi o **interpretacji pustego wyniku**, to
+  o **wielopostaciowości szukanego bytu** — razem domykają obie strony:
+  nie ufaj zeru ani co do metody, ani co do kształtu przedmiotu.
 - **ZERO BEZ KONTROLI POZYTYWNEJ JEST ZEREM NARZĘDZIA, NIE WYNIKIEM.** Druga
   strona kontroli negatywnej: żeby ogłosić „nie ma ani jednego X", ta sama
   komenda musi **w tym samym przebiegu** znaleźć X tam, gdzie X jest. Wzorzec
@@ -620,9 +638,34 @@ pominięte jest wszystko, co ten kanon już niesie. Co pominięto i dlaczego —
 - **KAŻDY LICZNIK POD TABELĄ JEST LICZONY ZE ŹRÓDŁA PRZY KAŻDEJ EDYCJI TABELI
   ALBO NIE MA GO WCALE.** Licznik przepisywany ręcznie **jest datą, nie liczbą**
   — starzeje się **w miejscu**, bez tranzytu i bez upływu dni: wiersze edytuje
-  się, a sumy pod nimi nie. To samo dotyczy **liczebności w strażnikach**: lista
-  wypisana ręcznie w teście starzeje się tak samo jak licznik. Dotyczy wprost
-  „Rozkładu policzonego ze skorowidza" w rejestrze warunków powrotu.
+  się, a sumy pod nimi nie. Dotyczy wprost „Rozkładu policzonego ze skorowidza"
+  w rejestrze warunków powrotu.
+
+  ⚠ **NIE ROZCIĄGAJ TEGO NA LICZBY W STRAŻNIKACH — pierwsze brzmienie było ZA
+  SZEROKIE i zostało obalone** (tor 9, §162.6, przekazane przez właściciela
+  2026-08-26). Zastosowane do `toHaveCount(6)` przy sześciu parach obaw
+  **usunęłoby własność, dla której ten strażnik istnieje**: liczba czerpana
+  z pliku przepuściłaby siódmą parę bez decyzji, a decyzja **O-7** wiąże ją
+  w jeden pakiet z treścią, `STRATEGIA.md` pkt 24 i `Obawy.naglowek`
+  („Sześć"→„Siedem" ×3 języki) — *„jednym pakietem albo wcale"*. Obowiązuje
+  brzmienie zwężone:
+
+  > **LICZBA WPISANA RĘCZNIE W STRAŻNIKU JEST DEFEKTEM ALBO MECHANIZMEM;
+  > ROZSTRZYGA JEDNO PYTANIE: CZY JEJ ZMIANA MA BYĆ DECYZJĄ.**
+
+  Jeśli zmiana ma być **decyzją** — literał jest mechanizmem i ma zostać; jego
+  czerwień to sygnał, że ktoś rusza rzecz wymagającą pakietu. Jeśli zmiana ma
+  iść **za zbiorem** — literał jest defektem i zbiór czerpie się ze źródła.
+  **Wymóg wykonawczy, bez którego to rozróżnienie żyje w cudzej głowie: przy
+  KAŻDEJ liczbie w strażniku stoi zdanie W KODZIE, po co ona tam jest.**
+  Bez tego zdania następny czytający musi zgadnąć, a zgadnie zgodnie z modą —
+  czyli „to literał, wyprowadźmy go z pliku". Mapa wystąpień:
+  `docs/faza-2/mapa-klas-straznikow.md`.
+
+  **Zbieżność odnotowana** (właściciel, 2026-08-26): to samo rozróżnienie
+  powstało niezależnie po tej stronie przy `toBe(8)` w `e2e/rejestr-mapy.spec.ts`
+  — jako „liczebność ze zbioru kontra liczebność z decyzji", w tej samej dobie,
+  bez kontaktu między oknami. Dwa źródła, jeden wynik.
 - **PROGNOZA PODANA SKŁADNIĄ ODCZYTU.** Zdanie ma formę wyniku („bilans wynosi
   7 · 11"), a jest przewidywaniem tego, co wynik pokaże — **czytelnik nie ma jak
   odróżnić jednego od drugiego, obie formy wyglądają identycznie.** Stąd:

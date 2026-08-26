@@ -23,12 +23,20 @@ w obie strony: naprawianie decyzji „bo literał" psuje zadeklarowany
 niezmiennik, a przymykanie oka na dryf „bo to przecież decyzja" zostawia
 strażnika, który po cichu przestał pokrywać zbiór.
 
-**Jak je odróżnić — jedno pytanie:** *czy istnieje zbiór źródłowy, którego
-liczebność ta liczba ma odwzorowywać?*
+**Jak je odróżnić — jedno pytanie** (brzmienie właściciela, `WWW/033`):
+*czy zmiana tej liczby ma być **decyzją**?*
+
+⚠ **Pierwsze brzmienie tego pytania, postawione tu 2026-08-26, było BŁĘDNE
+i obaliła je pierwsza próba użycia.** Brzmiało: *„czy istnieje zbiór źródłowy,
+którego liczebność ta liczba ma odwzorowywać?"* — i przy `toHaveCount(6)`
+odpowiada **TAK** (`Obawy.p*` jest zbiorem, liczy 6), więc kazałoby wyprowadzić
+liczbę z pliku. **To zepsułoby strażnika**, bo siódma para obaw przeszłaby bez
+pozostałych trzech członów pakietu O-7. Istnienie zbioru **nie rozstrzyga
+niczego** — zbiór istnieje w obu klasach. Rozstrzyga **status zmiany**.
 
 | | **liczebność ZE ZBIORU** | **liczebność Z DECYZJI** |
 |---|---|---|
-| skąd liczba | z policzenia zbioru źródłowego (klucze, pliki, wiersze) | z rozstrzygnięcia człowieka |
+| kiedy wolno jej się zmienić | **sama, za zbiorem** — zmiana zbioru jest jedyną przyczyną | **wyłącznie z decyzją**, zwykle w pakiecie z innymi zmianami |
 | co się psuje | zbiór rośnie, literał zostaje — **strażnik cicho przestaje pokrywać** | nic samo z siebie; zmiana wymaga nowej decyzji |
 | właściwy strażnik | **czerp zbiór ze źródła**, nie wypisuj ręką; wyłączenia jawne, z powodem i z własnym strażnikiem liczebności | literał **z odesłaniem do decyzji** w komentarzu; zmiana literału bez zmiany decyzji = czerwień |
 | objaw dryfu | „lista mówi *oto lista*, nie *przeczytałem dziesięć z czternastu*" | brak — dryf tu nie występuje |
@@ -49,17 +57,28 @@ pomiar własny, nie przepisanie.
 | adres | klasa | źródło | stan |
 |---|---|---|---|
 | `e2e/cennik.spec.ts` — etykiety `Cennik.tabela.*` | **ze zbioru** | `Object.keys(messages.Cennik.tabela)` = **14** | ✅ **NAPRAWIONE** (`WWW/028`): zbiór czerpany ze źródła, 11 sprawdzanych + 3 wyłączone jawnie i z powodem, dwa strażniki pilnują samego podziału. Dowód: ślepota starego obok wzroku nowego na tym samym wejściu |
-| `e2e/zlozenie.spec.ts:226` — `toHaveCount(6)` | **ze zbioru** | `Obawy.p*` = **6** | ⚠ literał; **zgodny dziś** (6 = 6). Siódma para obaw przejdzie niezauważona |
-| `e2e/hero.spec.ts:59` — `toHaveCount(2)` | **ze zbioru** | `Hero.potwierdzenie*` = **2** | ⚠ literał; **zgodny dziś** (2 = 2). Trzecie potwierdzenie przejdzie niezauważone |
+| `e2e/zlozenie.spec.ts:226` — `toHaveCount(6)` | **z decyzji** *(przeklasyfikowane 2026-08-26)* | **decyzja O-7**, nie zbiór; `Obawy.p*` = 6 dziś | ✅ **poprawne jak jest — literał jest MECHANIZMEM.** Czerpanie ze zbioru przepuściłoby siódmą parę bez pozostałych trzech członów pakietu O-7 |
+| `e2e/hero.spec.ts:59` — `toHaveCount(2)` | ⚠ **nierozstrzygnięta** | `Hero.potwierdzenie*` = **2** | ⚠ literał, zgodny dziś. **Nie wiadomo, czy trzecie potwierdzenie ma być decyzją** — brak zapisanego rozstrzygnięcia w rodzaju O-7. Pytanie do właściciela, nie do wyprowadzenia z kodu |
 | `e2e/zlozenie.spec.ts:170` — `toHaveCount(3)` | **nieustalona** | ⚠ **źródła nie ustaliłem** | ⚠ nie badane — polecenie `WWW/030`: *„nie badaj teraz; wiersz do mapy"* |
 | `e2e/zlozenie.spec.ts:194` — `toHaveCount(3)` | **nieustalona** | ⚠ **źródła nie ustaliłem** | j.w. |
 | `e2e/rejestr-mapy.spec.ts:69` — `toBe(8)` | **z decyzji** | **DECYZJA F4-5**, wypisana w komentarzu przy asercji | ✅ **poprawne jak jest** — literał z odesłaniem do decyzji, zadeklarowany niezmiennik, **nie dryf** |
 
-**Rozjazd z torem 9, otwarty.** Tor 9 opisuje `toHaveCount(6)` jako stojące
-**przy siedmiu parach obaw**; pomiar po tej stronie daje **sześć** kluczy
-`Obawy.p*`, czyli zgodność. Zgłoszone, **nie przyjęte** — właściciel skierował
-pytanie o pomiar źródłowy do toru 9 (`WWW/030`). Do czasu odpowiedzi **szóstka
-stoi i nic się nie zmienia**.
+**Rozjazd z torem 9 — ROZSTRZYGNIĘTY ODCZYTEM, 2026-08-26.** Tor 9 opisywał
+`toHaveCount(6)` jako stojące **przy siedmiu parach obaw**; pomiar tutaj dawał
+**sześć**. Wyglądało to na rozjazd pomiarów i zostało zgłoszone jako otwarte.
+**Materiał rozstrzygający przyszedł importem `WWW/024` i leży w tym
+repozytorium:** `docs/redakcja/LISTA-WYKONAWCZA-R2.md:30` oraz
+`docs/redakcja/REJESTR-PRZEPLYWU.md:139` opisują **decyzję O-7** — *„siódma
+para obaw: treść + `toHaveCount(6)→7` + `STRATEGIA.md` pkt 24 +
+`Obawy.naglowek` «Sześć»→«Siedem» ×3 języki, **jednym pakietem albo wcale**"*.
+**Siódemka toru 9 to stan PLANOWANY pod O-7, a nie pomiar stanu bieżącego.**
+Rozjazdu więc nie było — była różnica dziedziny: my mierzyliśmy, co jest, tamci
+opisywali, co ma być. **Szóstka stoi i nic się nie zmienia**, dopóki O-7 nie
+wejdzie w całości; wejdzie **pakietem**, nie zmianą literału.
+
+To jest zarazem powód, dla którego ta liczba **jest mechanizmem, nie defektem**:
+gdyby czerpała ze zbioru, siódma para przeszłaby **bez trzech pozostałych
+członów pakietu** i nikt by tego nie zauważył.
 
 ---
 
