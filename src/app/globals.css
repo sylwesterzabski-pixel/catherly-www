@@ -39,19 +39,61 @@ body {
    w CSS i połowicznie w domyślnych stylach przeglądarki. Sprawdzone:
    wszystkie pięć reguł gaszących podkreślenie (.cta ×3, .logo,
    .jezyki a[aria-current]) są klasowe, więc biją ten selektor. */
+/* DECYZJA 5 (paleta „kancelaria", ADR-031): LINK NIE JEST KOLOREM.
+   Barwę linku niesie rola `link` = kolor tekstu podstawowego, a rozróżnienie
+   od prozy niesie PODKREŚLENIE W AKCENCIE. Granat (`link-aktywny`) wchodzi
+   dopiero w hover/active. Powód jest hierarchiczny, nie estetyczny: w kadrze
+   ma być JEDNA granatowa plama i ma nią być akcja (CTA). Wcześniej jeden
+   kolor pełnił pięć ról naraz — akcent, wypełnienie CTA, link, obwódka
+   fokusu i punktor — więc kontrast był wzorowy, a hierarchii nie było.
+
+   `text-underline-offset: 0.2em` ZOSTAJE bez zmiany. 02-tokeny.css paczki
+   podaje w tym miejscu trzy piksele; nie przenoszę tej wartości i zgłaszam rozjazd.
+   Powody są dwa i oba są twarde: (1) 0.2em to decyzja właściciela z
+   2026-08-14, wsparta pomiarem 224 linków na dziewięciu stronach, które
+   niosły OSIEM różnych receptur; (2) pilnuje jej strażnik
+   `e2e/podkreslenia.spec.ts`, którego uzasadnienie mówi wprost, dlaczego
+   miara jest w `em`, a nie w pikselach — odsunięcie ma skalować się
+   z wielkością pisma, więc próg pikselowy czerwieniłby się na poprawnym
+   kodzie. Wpisanie tej wartości złamałoby zarazem tę decyzję i tę bramkę.
+
+   Grubość podkreślenia zapisana jako 0.0625rem, nie w pikselach — w tym
+   repozytorium każdy włos ma taką postać, a linter tokenów nie przepuszcza
+   wymiaru pikselowego (nagłówek tego pliku: „Wymiary w rem — zero px"). */
 a {
   color: var(--kolor-rola-link);
   text-decoration-line: underline;
+  text-decoration-color: var(--kolor-rola-akcent);
+  text-decoration-thickness: 0.0625rem;
   text-underline-offset: 0.2em;
 }
 
 a:hover,
 a:active {
   color: var(--kolor-rola-link-aktywny);
+  text-decoration-color: currentColor;
 }
 
+/* DECYZJA 6 (ADR-031): obwódka fokusu pada na TŁO STRONY, nigdy na
+   wypełnienie przycisku — to robi `outline-offset`, i dlatego jest tu
+   obowiązkowy, a nie ozdobny. Zmierzone 2026-08-26 na aff7947: para
+   fokus × interakcja ma 1,55:1, więc obwódka rysowana WEWNĄTRZ granatowego
+   CTA byłaby niewidoczna; odsunięta o 0.125rem leży na tle strony, gdzie ma
+   13,67:1. Kontrola negatywna z tego samego przebiegu: poprzednia paleta
+   dawała na tej samej parze 1,38:1, czyli mechanizm odsunięcia był
+   konieczny już wcześniej i nic tu nie pogarszamy.
+
+   SELEKTOR ZOSTAJE UNIWERSALNY. 02-tokeny.css paczki zawęża regułę do
+   `:where(a, button, [role="button"], input, select, textarea, summary)`.
+   Nie przenoszę tego zawężenia i zgłaszam rozjazd: `:where()` ma swoistość
+   zero, więc dowolna reguła modułu by ją pobiła, a lista nie obejmuje
+   elementów z `tabindex`. `e2e/kontrast-stanow.spec.ts` wymaga śladu fokusu
+   na KAŻDYM przystanku klawiatury — zawężenie byłoby osłabieniem strażnika
+   dostępności, a nie przeniesieniem decyzji o barwie.
+
+   Grubość 0.125rem (dwa piksele) — wprost z DECYZJI 6; poprzednio 0.1875rem. */
 :focus-visible {
-  outline: 0.1875rem solid var(--kolor-rola-fokus);
+  outline: 0.125rem solid var(--kolor-rola-fokus);
   outline-offset: 0.125rem;
 }
 
@@ -88,6 +130,70 @@ a:active {
    160,2 px pustki nad nagłówkiem) — patrz handoff-etap-d.md §10.4. */
 html {
   scroll-padding-block-start: 5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   REGUŁY TOWARZYSZĄCE PALECIE „KANCELARIA" (ADR-031, K1 zlecenia
+   WWW/038-bis). Przeniesione z 02-tokeny.css paczki WYŁĄCZNIE przez
+   var(--kolor-*) — ani jednej surowej wartości, wymiary w rem.
+
+   Dlaczego stoją tu, a nie w modułach: bez nich role rozjeżdżają się
+   w pierwszym tygodniu. To są recepty systemu, nie styl komponentu —
+   ta sama klasa co jedna recepta podkreślenia linku wyżej.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Karta = powierzchnia + kreska. Cień NIE JEST w systemie — nie dokładam
+   go, bo nie ma dla niego roli w tokenach. */
+.karta {
+  background: var(--kolor-rola-powierzchnia);
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+}
+
+/* Pola formularza używają `kreska-mocna`, nie `kreska`: obrys kontrolki
+   musi mieć 3:1 (WCAG 1.4.11), a kreska dekoracyjna ma 1,26:1 i go nie ma.
+   Zmierzone 2026-08-26 na aff7947: kreska-mocna × powierzchnia 4,67:1. */
+:where(input, select, textarea) {
+  background: var(--kolor-rola-powierzchnia);
+  border: 0.0625rem solid var(--kolor-rola-kreska-mocna);
+  color: var(--kolor-rola-tekst-podstawowy);
+}
+
+:where(input, select, textarea)[aria-invalid="true"] {
+  border-color: var(--kolor-rola-stan-blad);
+}
+
+:where(input, select, textarea):disabled {
+  background: var(--kolor-rola-powierzchnia-2);
+  border-color: var(--kolor-rola-kreska);
+  color: var(--kolor-rola-stan-wylaczony);
+}
+
+/* Błąd NIGDY nie jest komunikowany samym kolorem (WCAG 1.4.1) — zawsze
+   kolor + obrys pola + tekst komunikatu. Te trzy klasy niosą wyłącznie
+   barwę; obrys stoi w regule wyżej, a tekst w treści. */
+.komunikat-bledu {
+  color: var(--kolor-rola-stan-blad);
+}
+
+.komunikat-sukcesu {
+  color: var(--kolor-rola-stan-sukces);
+}
+
+.komunikat-ostrzezenia {
+  color: var(--kolor-rola-stan-ostrzezenie);
+}
+
+/* Punktory: JEDYNE miejsce, gdzie akcent maluje element strukturalny.
+   Przy 3,06:1 dopuszczalne tylko dlatego, że punktor nie jest jedynym
+   nośnikiem informacji — lista ma też wcięcie i odstępy.
+   GRANICA zmierzona 2026-08-26 na aff7947: akcent × powierzchnia-akcentowa
+   = 2,53:1. Lista punktowana postawiona na tej powierzchni (S10
+   SekcjaRytmu, SekcjaTekstowa.akcentowa) NIE MA pokrycia 3:1 i wymaga
+   osobnej decyzji. Dziś taki przypadek nie występuje: oba ::marker
+   w akcencie to Filar.konkrety i SekcjaPlanow.lista, a `.kroki` w S10 ma
+   `list-style: none`. */
+.lista-punktowana > li::marker {
+  color: var(--kolor-rola-akcent);
 }
 
 /* === EKSPERYMENT KROJU — DO USUNIĘCIA, WYGASA 2026-08-31 === */

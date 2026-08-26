@@ -39,6 +39,7 @@ sprzeczności wygrywa.
 | 028 | Tokeny wymiarów — promienie, kontener strony, próg układu | [028](028-tokeny-wymiarow-promienie-kontener-prog.md) |
 | 029 | Próg i proporcje kolumn hero — jedyny wyjątek od progu układu 48rem (ADR-028) | [029](029-prog-i-proporcje-hero.md) |
 | 030 | `main` dostaje wdrożenie produkcyjne przy Fazie 7 — do tego czasu planowa czerwień bramki wydajności na `main`, bez wyjątku w kodzie (dopełnia ADR-020) | [030](030-wdrozenie-produkcyjne-main-przy-fazie-7.md) |
+| 031 | Paleta produkcyjna „kancelaria" (19 ról) i krój Onest — **uchyla ADR-026 i ADR-027**, koryguje stałą tła z ADR-013 | [031](031-paleta-kancelaria-i-kroj-onest.md) |
 
 Wpisy 023–028 dopisano 2026-08-14 — powstały wcześniej, ale nie trafiły
 do tej tabeli. Pliki są źródłem, tabela tylko mapą; przy rozjeździe

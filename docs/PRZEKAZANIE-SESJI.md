@@ -122,8 +122,8 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
-| **STAN PRACY** | ▶ **spoczynek uchylony na import toru 9** (`WWW/022`–`WWW/025`, 2026-08-24); wraca po zakończeniu. Poprzednio: ⏸ **SPOCZYNEK do odwołania** (właściciel, 2026-08-24, `WWW/018`). Następne zlecenie **dopiero po podjęciu toru 9 i meldunku „2 PILNE”** — obie rzeczy leżą po stronie właściciela, nie tego repozytorium. Do tego czasu **nie zaczynaj pracy z własnej ręki**: sesja otwarta na nowo czyta stan, melduje i czeka |
-| **Bramki CI na gałęzi** | ⚠ **CZERWONE — dwa zadania z piętnastu.** Odczyt 2026-08-23, **oba dzisiejsze przebiegi tak samo** — `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`, czyli stan zdalny): **`Nieodwracalne`** — „Brak raportu audytu nieodwracalnych dla commita" (ADR-018 pkt 4; raport jest **per commit**, więc ta czerwień wraca przy KAŻDYM nowym commicie, dopóki audytu nie ma) i **`Wydajność`** — krok `Pomiar`, mediana LCP `/` **1856 ms** przy budżecie 1800 na transporcie HTTP/1.1+gzip; ten sam pomiar daje **1276 ms** na HTTP/2+brotli. Trzynaście pozostałych zielonych w obu przebiegach. **Żadnej z tych czerwieni nie ruszam** — obie są poza zakresem zlecenia (zakaz 8), obie mają swoje pozycje: audyt → ADR-018 pkt 4 i Faza 7, próg → **T33** i kierunek (d) |
+| **STAN PRACY** | ⏸ **STOP PO ZADANIU 6 — czekam na zatwierdzenie zrzutów** (`WWW/038-bis`, 2026-08-26, rola IMPLEMENTACJA). Wdrożona paleta „kancelaria" i krój Onest, zadania 1–6 z korektami K1–K6; zadania 7–14 poza zakresem. **Commity NIE SĄ WYPCHNIĘTE** — zlecenie mówi „push jawnym refspec", ale nie wymienia skrótów, a te powstały dopiero w trakcie; zakaz 1 wymaga zgody wyliczonej co do commita, więc lista czeka na zgodę (rozdz. 4.29). Poprzednio: ▶ spoczynek uchylony na import toru 9 (`WWW/022`–`WWW/025`, 2026-08-24); wcześniej ⏸ SPOCZYNEK (`WWW/018`) |
+| **Bramki CI na gałęzi** | ⚠ **CZERWONE — TRZY zadania od 2026-08-26.** Trzecią dołożyło wdrożenie palety (`WWW/038-bis`): **`Kontrakt tokenów`** — ΔE szwu logowania **6,46** przy progu **5,0** (ADR-022), bo decyzja ② przesunęła tło strony `#eee6e0` → `#e8e1d5`, a tło ekranów logowania po stronie aplikacji zostało `#f7f3ea`. **Czerwień znana, zgłoszona, NIENAPRAWIONA na polecenie zlecenia** („wynik w zwrotce, bez naprawiania"); progu nie ruszono (zakaz 3), pozycja **T51**, trzy drogi wyjścia w `design/kontrakt-aplikacji.json`. Poniżej stan dwóch pozostałych, odczyt 2026-08-23: | Odczyt 2026-08-23, **oba dzisiejsze przebiegi tak samo** — `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`, czyli stan zdalny): **`Nieodwracalne`** — „Brak raportu audytu nieodwracalnych dla commita" (ADR-018 pkt 4; raport jest **per commit**, więc ta czerwień wraca przy KAŻDYM nowym commicie, dopóki audytu nie ma) i **`Wydajność`** — krok `Pomiar`, mediana LCP `/` **1856 ms** przy budżecie 1800 na transporcie HTTP/1.1+gzip; ten sam pomiar daje **1276 ms** na HTTP/2+brotli. Trzynaście pozostałych zielonych w obu przebiegach. **Żadnej z tych czerwieni nie ruszam** — obie są poza zakresem zlecenia (zakaz 8), obie mają swoje pozycje: audyt → ADR-018 pkt 4 i Faza 7, próg → **T33** i kierunek (d) |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
 | Backupy repo | ⚠ `/Volumes/Extreme SSD/Catherly-www-ZIP`, ~9 MB każda. **BACKUP NIE DZIEJE SIĘ SAM — haka `Stop` NIE MA** (T42, zmierzone 2026-08-24: zero trafień na `hooks` w czterech plikach konfiguracji). Skutkiem była przerwa **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. **Uruchamiaj `bash scripts/backup.sh` RĘCZNIE po każdym zadaniu i raportuj wynik** — to jedyne działające zabezpieczenie, jakie tu dziś jest. Fałszywe zdanie o automacie **usunięte z `CLAUDE.md` 2026-08-24**; kanon mówi teraz prawdę. **Weryfikuj migawkę ODTWORZENIEM, nie sumą** — rozpakuj, `git log` w odtworzonym repo, skasuj katalog; **T43** pokazuje, po co. **Nazwy ostatniej nie wpisuję**: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
 | Archiwum katalogu sesyjnego | `/Volumes/Extreme SSD/Catherly-www-SESJE/scratchpad-sesja-2026-08-20-b5f46785-NIE-USUWAC.zip` — rozdział 11 |
@@ -2065,6 +2065,98 @@ D-D16) — **zielony**, pokrycie liczby 30 w `facts.json` nietknięte.
 
 ---
 
+
+### 4.29 Paleta „kancelaria" i krój Onest — wdrożenie `WWW/038-bis`
+
+**Zlecenie:** `WWW/038-bis` (26.08.2026, koordynator), rola IMPLEMENTACJA.
+Zadania 1–6 checklisty paczki `~/Documents/FBO OS - www/catherly-paczka-claude/`
+z korektami **K1–K6**, STOP po zadaniu 6 (zrzuty). Zadania 7–14 poza zakresem.
+Decyzja właściciela **②** (paleta „kancelaria") i **imienna zgoda na kasację
+bloku eksperymentu** potwierdzone z sesji koordynatora.
+
+**Poprzednik `WWW/038` nie przetrwał restartu sesji** i został odesłany
+z pytaniem, nie wykonany w przybliżeniu: brakowało treści korekt K1–K4,
+a pakiet obejmował operacje nieodwracalne. `WWW/038-bis` przyszedł kompletny
+i rozstrzygnął wszystkie cztery zgłoszone pytania (B1→K1, B2→K5, B3→K3,
+B4→K4). To jest reguła kanonu „odesłanie bez treści zwraca się z pytaniem,
+nie uzupełnia z pamięci" w działaniu — **drugie uchronienie w tym
+repozytorium**, tym razem przed wykonaniem, nie przed dopisaniem treści.
+
+#### Co ustalono POMIAREM, zanim cokolwiek ruszono
+
+Kolejność jest tu treścią, nie porządkiem: trzy z tych pomiarów mogły
+zatrzymać całe zlecenie i dlatego stoją **przed** pierwszą zmianą pliku.
+
+| pomiar | wynik | skutek |
+|---|---|---|
+| subset Onest (warunek STOP z K2) | **18/18** znaków `ąćęłńóśźżĄĆĘŁŃÓŚŹŻ`, 136 znaków w `cmap`, oś `wght` 100–900 | STOP nie zachodzi |
+| `tnum` w Onest (wymóg STRATEGII, cyfry cennika) | **OBECNE** | krój sam spełnia wymóg, nie tylko stos systemowy |
+| ΔE szwu logowania | **6,46** przy progu **5,0** | bramka `kontrakt` → CZERWONA, poz. **T51** |
+| macierz kontrastów, 34 pary z tego repozytorium | 2 pary pod progiem, obie wyjaśnione | patrz niżej |
+| bezpośrednie użycia ramp barwnych w `src/` | **zero** | rampy można usunąć |
+
+**Kontrola pozytywna przy każdym zerze** — bo zero bez niej jest zerem
+narzędzia, nie wynikiem: test subsetu potwierdzony na znakach spoza zakresu
+(`Ж漢😀` — nieobecne), ΔE potwierdzone na bieli (12,24) i na samym sobie
+(0,00), grep ramp potwierdzony trafieniem w pliku generowanym.
+
+#### Dwie pary kontrastu pod progiem — obie zmierzone, żadna nie jest defektem
+
+Strażnik z paczki sprawdza **siedem** par. To repozytorium ma ich więcej,
+więc policzono **34** — i dopiero tam wyszły obie:
+
+- **`fokus` × `interakcja` = 1,55:1.** To jest **powód istnienia
+  `outline-offset`**, nie defekt: obwódka pada na tło strony (13,67:1),
+  nie na wypełnienie CTA. **Kontrola negatywna w tym samym przebiegu:**
+  poprzednia paleta dawała na tej parze **1,38:1**, czyli mechanizm był
+  konieczny już wcześniej i nowa paleta tę parę **poprawia**, nie psuje.
+- **`akcent` × `powierzchnia-akcentowa` = 2,53:1.** Para **dziś nie
+  występuje**: oba `::marker` w akcencie to `Filar.konkrety`
+  i `SekcjaPlanow.lista`, żaden nie leży na tej powierzchni, a `.kroki`
+  w S10 ma `list-style: none`. Zapisana jako **granica** w tokenie
+  i w ADR-031, nie zasypana.
+
+#### Rozjazdy paczka ↔ repozytorium — zgłoszone, nie rozstrzygnięte po cichu
+
+| # | paczka | to repozytorium | co zrobiono |
+|---|---|---|---|
+| 1 | `text-underline-offset: 3px` | `0.2em` — decyzja właściciela 2026-08-14, pomiar 224 linków / 8 receptur, strażnik `e2e/podkreslenia.spec.ts` | **zostaje `0.2em`** — wpisanie pikseli złamałoby decyzję i bramkę |
+| 2 | fokus zawężony do `:where(a, button, …)` | `:focus-visible` uniwersalny | **zostaje uniwersalny** — `:where()` ma swoistość zero, lista pomija `[tabindex]`, a `kontrast-stanow` wymaga śladu na KAŻDYM przystanku |
+| 3 | `--szerokosc-tekstu: 68ch` | `wymiar.miara-akapitu: 65ch` (ADR-025) | **nierozstrzygnięte** — wchodzi z zadaniem 12, poza zakresem |
+| 4 | K5 unieważnia ADR-026 | żyje też **ADR-027**, nowszy i o tym samym | **uchylono oba**, uchylenie ADR-027 oznaczone jako wejście poza literę |
+| 5 | krój zapasowy 90% / 22% | zmierzone metryki Onest: **97% / 30,5%** | wartości z pomiaru; paczka sama nazywa swoje „punktem startowym do doprecyzowania narzędziem" |
+| 6 | K6 opisuje strażnika (zadanie 7) | zdanie „zadań 7–14 nie wykonuj" wymienia jako wyjątek tylko K5 | **wykonano K6** — instrukcja szczegółowa z wymaganym dowodem mutacyjnym; sprzeczność wewnątrz zlecenia zgłoszona |
+| 7 | ścieżki `app/`, `public/fonts/onest-400.woff2`, „01-tokeny.css" | `src/app/`, `public/fonts/eksperyment/onest.woff2`, `02-tokeny.css` | rozstrzygnięte przez K2 i sekcję ŚCIEŻKI zlecenia |
+
+#### Znalezisko cięższe niż rozjazd: ADR-027 i budżet LCP
+
+**ADR-027 (2026-08-12) zmierzył, że zapas LCP jest praktycznie zerowy
+JESZCZE BEZ webfontu** — 1,77 / 1,78 / 1,82 s przy progu 1,8 s, jeden
+przebieg nad progiem — i zapisał, że *„webfont na H1 kosztuje typowo
+0,2–0,5 s, więc warunek »z zapasem« jest dziś niespełnialny dla H1"*.
+Bramka wydajności na tej gałęzi jest **czerwona już dziś** (mediana LCP `/`
+1856 ms, odczyt 2026-08-23), a elementem LCP jest **tekst H1**.
+
+Decyzja ③ właściciela wprowadza Onest jako krój produkcyjny, czyli
+**na H1 również**. Warunek twardy ADR-026 pkt 3 — re-pomiar LCP na preview
+z zapasem — **pozostaje NIESPEŁNIONY i jest tak zapisany w ADR-031**, nie
+odhaczony. Spełnić go z tej strony nie sposób: wymaga wdrożenia preview
+i przebiegu bramki wydajności, obu poza zakresem, a bramki wydajności nie
+wolno uruchamiać równolegle z inną pracą (T22).
+
+**Alternatywa, którą ADR-027 opisał, a której nie wybrano** — webfont
+wyłącznie poniżej foldu i dla liczb cennika, H1 na `system-ui` — zostaje
+dostępna i jest jedyną opisaną drogą pogodzenia kroju z budżetem.
+
+#### Stan wykonania
+
+Zadania i commity — patrz rozdz. 1 (lista przeliczana poleceniem, nie
+przepisywana). **STOP po zadaniu 6 zgodnie ze zleceniem**: zrzuty `/`,
+`/cennik`, `/funkcje` × [1280, 390] czekają na zatwierdzenie właściciela,
+zadania 7–14 (poza K6) nietknięte.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -3076,7 +3168,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 ## 15. Skorowidz rejestru warunków powrotu — WSZYSTKIE pozycje
 
-Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (442 linie, stan 2026-08-23). Poniżej
+Plik wiążący: `docs/faza-2/rejestr-warunkow-powrotu.md` (stan 2026-08-26; liczba linii to pole samostarzejące się — przelicz `wc -l`). Poniżej
 **skorowidz, nie streszczenie**: jedna linia na pozycję, żeby żadna nie była
 niewidoczna dla nowej sesji. Kto ma dotknąć którejkolwiek — czyta rejestr.
 
@@ -3113,7 +3205,24 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T49)
+### 15.2 Pozycje techniczne i procesowe — **T1–T42 oraz T51; T43–T50 BRAKUJE**
+
+⚠ **NAGŁÓWEK MÓWI, CO JEST W ŚRODKU, BO POPRZEDNI MÓWIŁ, CO POWINNO BYĆ**
+(znalezione 2026-08-26 przy dopisywaniu T51). Do tej doby nagłówek
+deklarował „(T1–T49)", a tabela kończyła się na **T42** — czyli skorowidz
+obiecywał pokrycie, którego nie miał, i robił to **w dokumencie, którego
+jedynym zadaniem jest nie pozwolić, by pozycja była niewidoczna dla nowej
+sesji**. Policzone ze źródła, z kontrolą pozytywną metody (T1, T42 i T51
+znajdowane): w tabeli stoją **43 wiersze** — T1–T42 i T51. **Brakuje
+ośmiu: T43, T44, T45, T46, T47, T48, T49, T50.**
+
+**NIE UZUPEŁNIAM ICH — poza zakresem `WWW/038-bis`** (zakaz 8): osiem
+pozycji to praca redakcyjna, nie poprawka nagłówka, a rejestr wiążący
+`docs/faza-2/rejestr-warunkow-powrotu.md` **niesie je wszystkie**, więc
+nic nie zginęło — zgubił je wyłącznie ten skorowidz. Zmieniono sam
+nagłówek, żeby czytający wiedział, że **musi pójść do rejestru**, zamiast
+uznać tę listę za komplet. To ta sama klasa co „zły podzbiór nazwany
+zbiorem" (T47) i co licznik przepisywany ręką zamiast liczony ze źródła.
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
@@ -3162,11 +3271,12 @@ Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7
 | T40 | ⚠ **JEDYNYM KANAŁEM MIĘDZY TRZEMA OBSZARAMI JEST JEDNA OSOBA I JEDNA WARSTWA DOWODZĄCA** — kanon wspólny w zamierzeniu, rozłączny w praktyce; `CLAUDE.md` tej strony nie zawiera żadnej klasy kanonu aplikacji; kanał ma **jeden punkt awarii** | ⚠ lista różnic gotowa (rozdz. 19), **przeniesienie = decyzja właściciela** |
 | T41 | **cztery akcje CI działają na środowisku, którego nie deklarują** — `checkout@v4`, `setup-node@v4`, `download-artifact@v4`, `upload-artifact@v4` celują w Node 20, a runner wymusza Node 24; ostrzeżenie stoi w **15/15 zadań** każdego przebiegu i nikt go nie czytał, aż wejście do logu w innej sprawie (czasy zadań do T24) je odsłoniło. Nic nie jest dziś zepsute — pozycja opisuje **ryzyko z datą wygaśnięcia w cudzych rękach** | ⚠ **czeka na decyzję** — czy podnosić do `v5` (osobne zadanie, kontrola negatywna) i czy ostrzeżenia DOSTAWCY mają mieć miejsce w interfejsie (to samo pytanie co przy `::warning` z T24 — rozstrzygać raz, dla obu) |
 | T42 | ⚠ **HAK, KTÓRY MIAŁ ROBIĆ BACKUPY, NIE ISTNIEJE — a `CLAUDE.md:239-241` twierdzi, że istnieje.** Zero trafień na `hooks` w czterech plikach konfiguracji (odczyt 2026-08-24); `backup.sh` nie pada w żadnej. Skutek: przerwa w migawkach **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. Skrypt sprawny — ręcznie kod 0, `unzip -t` bez błędów. Najcięższy przypadek „brak dowodu = brak zabezpieczenia": zabezpieczenie uznane za działające przez 200+ migawek, a cichy brak backupu wygląda jak brak potrzeby backupu | ⚠ **czeka na decyzję** — czy budować hak (i wtedy koniecznie GŁOŚNY przy porażce), i co zrobić ze zdaniem w `CLAUDE.md`, które dopóki haka nie ma, jest fałszem w źródle drugiego szczebla. Do tego czasu: **`bash scripts/backup.sh` ręcznie po każdym zadaniu** |
+| T51 | **bramka `Kontrakt tokenów` czerwona przez decyzję o palecie, nie przez defekt** — ΔE szwu logowania **6,46** przy progu **5,0**; próg NIETKNIĘTY (zakaz 3), naprawa nie należy do wykonawcy. Uboczne: **kotwica progu straciła przedmiot** (odwoływała się do roli `neutralna-50`, której już nie ma) | ⚠ otwarte, czeka na decyzję właściciela — trzy drogi w `design/kontrakt-aplikacji.json` |
 | ~~T43~~ **ZAMKNIĘTE** | **Migawka backupu nie zawiera pliku ŚLEDZONEGO w gicie — złapane PIERWSZYM sprawdzeniem przez odtworzenie.** `catherly-www-2026-08-24-0910.zip` rozpakowane 2026-08-24: `git log` pełny, `HEAD` = `74fdfe8`, `fsck` bez uszkodzeń — ale `git status` pokazuje **`D .env.example`**, plik śledzony. Przyczyna: `backup.sh:52-53` wyklucza `.env` **oraz** `.env.*`, a drugi wzorzec łapie przy okazji `.env.example`. Wzorzec szerszy niż zamiar — rodzina **T20**. Dobra wiadomość zmierzona przy okazji: **żaden `.env*` nie trafia na SSD**, czyli sekrety nie są kopiowane | ✔ **ZAMKNIĘTE 2026-08-24** — właściciel zdjął zakaz 8 punktowo (koszt czynny: cztery wadliwe migawki). Naprawa `18c03f2`: najpierw wyklucz wszystko, potem dołóż imienny wyjątek; plus **strażnik dryfu** głośny na `stderr`. Obie strony sprawdzone w jednym przebiegu, strażnik udowodniony **mutacją** z kontrolą negatywną. Dawniej: Skutek do zapamiętania: odtworzone repo pokazuje zmianę, **której nikt nie wprowadził**, więc odtwarzający po awarii uzna, że sam skasował plik. Warunek zamknięcia: odtworzenie archiwum po poprawce z **czystym** `git status` **i** wykazem bez `.env*` z sekretami — obie rzeczy w jednym sprawdzeniu, bo osobno każda da się spełnić kosztem drugiej |
 
 ---
 
-## 16. Skorowidz ADR — trzydzieści decyzji
+## 16. Skorowidz ADR — trzydzieści jeden decyzji (031 dopisany 2026-08-26)
 
 Katalog `docs/adr/` (30 plików + `README.md`). **Wiążąca jest treść pliku** —
 poniżej wyłącznie tytuły, żeby dało się trafić do właściwego bez zgadywania.
@@ -3188,6 +3298,7 @@ poniżej wyłącznie tytuły, żeby dało się trafić do właściwego bez zgady
 | 013 | ciepła jakość | 028 | tokeny wymiarów, promieni, kontenera, progu |
 | 014 | **zakres zamrożony iteracji 1** (+ 3 doprecyzowania) | 029 | próg i proporcje hero |
 | 015 | paleta barw przez tokeny | 030 | **wdrożenie produkcyjne `main` dopiero przy Fazie 7** |
+| — | — | **031** | **paleta „kancelaria" (19 ról) + krój Onest — UCHYLA 026 i 027, koryguje stałą tła z 013** |
 
 Trzy najczęściej mylone: **ADR-020** mówi o bramkach merge'a, **ADR-030** o tym,
 że `main` nie ma dziś produkcji — nie są ze sobą sprzeczne. **ADR-018** jest

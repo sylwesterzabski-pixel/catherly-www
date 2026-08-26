@@ -23,9 +23,12 @@ const PRZYPADKI = [
 
 const KLUCZE_FILAROW = ["filar1", "filar2", "filar3", "filar4"] as const;
 
-// Wyliczony kolor --kolor-rola-akcent = terakota-500 (#e65b3d) —
-// decyzja wiążąca panelu K4 (a): marker ul jako dekoracja.
-const KOLOR_MARKERA = "rgb(230, 91, 61)";
+// Wyliczony kolor --kolor-rola-akcent = mosiądz #9a7b3f (paleta
+// „kancelaria", ADR-031, 2026-08-26) — decyzja wiążąca panelu K4 (a):
+// marker ul jako dekoracja. Poprzednio terakota-500 #e65b3d.
+// Asercja pozostaje na DOKŁADNYM kolorze roli, nie na „jakimkolwiek":
+// zmieniła się wartość decyzji, nie siła strażnika.
+const KOLOR_MARKERA = "rgb(154, 123, 63)";
 
 for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   test(`filary (${jezyk}): treść z messages i struktura nagłówków na ${adres}`, async ({

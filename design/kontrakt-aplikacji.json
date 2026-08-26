@@ -15,10 +15,14 @@
   },
   "wymaganie_szwu": {
     "opis": "Tło strony i tło ekranu logowania pozostają w jednej rodzinie ciepłych kremów — przejście strona → aplikacja bez zgrzytu barwnego.",
-    "strona_tlo_odniesienia": "#eee6e0",
+    "strona_tlo_odniesienia": "#e8e1d5",
     "metryka": "deltaE CIE76 w przestrzeni CIELAB (D65)",
     "prog": 5.0,
     "_kotwica_progu": "Próg nie jest arbitralny: równy (z zaokrągleniem) odległości tło strony ↔ neutralna-50 (4,9) — największej relacji tło↔powierzchnia akceptowanej wewnątrz samej strony. Szew nie może być bardziej odczuwalny niż wewnętrzne przejścia strony.",
-    "zmierzone_2026_08_09": 4.7
+    "zmierzone_2026_08_09": 4.7,
+    "zmierzone_2026_08_26": 6.5,
+    "_stan_2026_08_26": "PRZEKROCZENIE PROGU, ZGŁOSZONE, NIENAPRAWIONE. Paleta „kancelaria\" (ADR-031, decyzja właściciela 2026-08-26) przesunęła tło strony #eee6e0 → #e8e1d5. Zmierzone tą samą matematyką co bramka, w jednym przebiegu, z kontrolą negatywną: stan SPRZED zmiany 4,66 (zgodne z wpisem 4,7 z 2026-08-09), stan PO zmianie 6,46 — próg 5,0. Obie liczby zostają widoczne; korekta bez zamazania śladu.",
+    "_czego_NIE_zrobiono_i_dlaczego": "Progu 5,0 NIE podniesiono (zakaz 3 — podniesienie progu jest zamianą czerwieni na ciszę) i szew_logowania.tlo NIE zmieniono (wartość należy do aplikacji, aktualizuje ją ręcznie właściciel). Zmieniono WYŁĄCZNIE strona_tlo_odniesienia, bo bramka żąda tego wprost: „Zmiana palety strony wymaga świadomej aktualizacji kontraktu (ADR), nie przejdzie bokiem\" — świadomą aktualizacją jest ADR-031. Bez tej zmiany bramka zgłaszałaby rozjazd odniesienia i MASKOWAŁA prawdziwy powód czerwieni, którym jest deltaE.",
+    "_drogi_wyjscia_do_decyzji_wlasciciela": "Trzy i żadna nie należy do wykonawcy: (a) aplikacja przesuwa tło ekranów logowania w stronę #e8e1d5 — deltaE spada, kontrakt zielony bez ruszania progu; (b) nowy ADR świadomie podnosi próg z uzasadnieniem i przeliczoną kotwicą — dziś kotwica progu odwołuje się do neutralnej-50, roli, której po ADR-031 już nie ma; (c) tło strony wraca bliżej #eee6e0 — cofa decyzję ② właściciela. Do czasu rozstrzygnięcia bramka „Kontrakt tokenów\" jest CZERWONA i jest to czerwień uzasadniona, czyli nadal czerwień (ADR-020)."
   }
 }

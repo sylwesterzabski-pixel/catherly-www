@@ -1,5 +1,28 @@
 # ADR-027: Krój pisma — system-ui na premierę iteracji 1
 
+> ⚠ **UCHYLONY 2026-08-26 przez [ADR-031](031-paleta-kancelaria-i-kroj-onest.md)**
+> — krojem produkcyjnym jest Onest (decyzja właściciela, zlecenie
+> `WWW/038-bis`, decyzja ③).
+>
+> **Uchylenie zgłoszone jako rozszerzenie zlecenia.** K5 nakazywał
+> unieważnić wyłącznie ADR-026 i o tym ADR-ze nie wspominał. Uchylono go
+> mimo to, bo pozostawienie przy życiu **nowszej** i bardziej szczegółowej
+> decyzji o tym samym przedmiocie dałoby dwie sprzeczne, żywe reguły —
+> defekt tej samej klasy co T32 (dwie deklaracje nadrzędności).
+>
+> **POMIAR PONIŻEJ NIE ZOSTAJE UNIEWAŻNIONY.** Uchylenie dotyczy
+> rozstrzygnięcia („system-ui na premierę"), nie liczb. Ustalenie
+> o zerowym zapasie LCP i o koszcie webfontu na H1 (0,2–0,5 s) jest
+> pomiarem i obowiązuje do czasu, aż zastąpi je **nowszy pomiar**, a nie
+> nowsza decyzja. W chwili uchylenia bramka wydajności na gałęzi
+> `faza-4/podstrony` jest CZERWONA (mediana LCP `/` 1856 ms wobec budżetu
+> 1800 ms, odczyt 2026-08-23) — czyli budżet jest przekroczony **jeszcze
+> przed** dołożeniem webfontu.
+>
+> **Alternatywa z rozdziału „Alternatywa" niżej pozostaje dostępna**
+> i jest jedyną opisaną drogą pogodzenia kroju z budżetem: webfont
+> wyłącznie poniżej foldu i dla liczb cennika, H1 na `system-ui`.
+
 Data: 2026-08-12. Status: **PRZYJĘTY (decyzja właściciela
 2026-08-12)** — pomiary 1,70–1,82 s rozstrzygają: webfont nie
 mieści się w budżecie już dziś; cyfry tabelaryczne przez

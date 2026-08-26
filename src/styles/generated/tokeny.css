@@ -3,66 +3,31 @@
  */
 
 :root {
-  --kolor-tlo: #eee6e0; /** Tło strony — stała decyzji właściciela (Etap B, 2026-08-09). Ciepły greige, ADR-013. */
-  --kolor-neutralna-50: #fff1e9;
-  --kolor-neutralna-100: #fce3d6;
-  --kolor-neutralna-200: #e8d0c2;
-  --kolor-neutralna-300: #ceb7aa;
-  --kolor-neutralna-400: #b39c90;
-  --kolor-neutralna-500: #927d71;
-  --kolor-neutralna-600: #766156;
-  --kolor-neutralna-700: #624e43;
-  --kolor-neutralna-800: #4e3c31;
-  --kolor-neutralna-900: #3b2a20; /** Baza przypięta — tekst podstawowy (Etap B) */
-  --kolor-terakota-50: #fff1ed;
-  --kolor-terakota-100: #ffe2da;
-  --kolor-terakota-200: #ffc8b9;
-  --kolor-terakota-300: #ffa48d;
-  --kolor-terakota-400: #ff7858;
-  --kolor-terakota-500: #e65b3d; /** Baza przypięta — akcent główny (Etap A) */
-  --kolor-terakota-600: #bb351d;
-  --kolor-terakota-700: #a21c0a;
-  --kolor-terakota-800: #840a00;
-  --kolor-terakota-900: #630e00;
-  --kolor-szalwia-50: #c7fff2;
-  --kolor-szalwia-100: #acf7e6;
-  --kolor-szalwia-200: #98e2d2;
-  --kolor-szalwia-300: #7fc9b9;
-  --kolor-szalwia-400: #5ca596; /** Baza przypięta — akcent drugi (Etap A) */
-  --kolor-szalwia-500: #448e7f;
-  --kolor-szalwia-600: #257164;
-  --kolor-szalwia-700: #075d51;
-  --kolor-szalwia-800: #00493e;
-  --kolor-szalwia-900: #00382f;
-  --kolor-sliwka-50: #f9f1ff;
-  --kolor-sliwka-100: #f2e2ff;
-  --kolor-sliwka-200: #e6caff;
-  --kolor-sliwka-300: #ccb1e5;
-  --kolor-sliwka-400: #b196c9;
-  --kolor-sliwka-500: #9077a8;
-  --kolor-sliwka-600: #745c8b;
-  --kolor-sliwka-700: #5e4775; /** Baza przypięta — akcent tekstowy: linki, wyróżnienia (Etap B) */
-  --kolor-sliwka-800: #4c3663;
-  --kolor-sliwka-900: #3c2752;
-  --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). */
+  --kolor-tlo: #e8e1d5; /** Tło strony — owsiany papier, paleta „kancelaria" (decyzja właściciela 2026-08-26, ADR-031; zastępuje ciepły greige #eee6e0 z ADR-013). JEDYNE miejsce definicji tła: bramka kontraktu (scripts/check-kontrakt-tokenow.mjs) czyta kolor.tlo.value i porównuje ze szwem logowania — rola tlo-strony odwołuje się tutaj, żeby wartość nie istniała w dwóch miejscach. */
+  --kolor-rola-powierzchnia: #ffffff; /** Karty, panele, wiersze tabeli — jedyna rola z prawem do bieli. Kontrasty zmierzone 2026-08-26 na aff7947: ×tło strony 1,30:1 (próg zadania 6) · ×tekst-podstawowy 17,76:1 · ×tekst-drugorzedny 7,65:1 · ×kreska-mocna 4,67:1 · ×interakcja 11,48:1. */
+  --kolor-rola-powierzchnia-2: #f3eee6; /** Pasy sekcyjne i plama pigułki okresu (SekcjaPlanow). NIE na kartach — 1,13:1 wobec tła to za mały odstęp. Zmierzone 2026-08-26 na aff7947: ×tekst-podstawowy 15,38:1 · ×tekst-drugorzedny 6,62:1. */
+  --kolor-rola-powierzchnia-akcentowa: #dccdac; /** Tło akcentowe lustra L1 (ADR-025): S10 SekcjaRytmu i SekcjaTekstowa.akcentowa. Zmierzone 2026-08-26 na aff7947: ×tekst-podstawowy 11,31:1 · ×tekst-drugorzedny 4,87:1 (AA, zapas 0,37) · ×link 11,31:1 · ×interakcja 7,31:1 · ×fokus 11,31:1. GRANICA: ×akcent = 2,53:1 — punktor ::marker w tej roli NIE MA tu pokrycia 3:1; dziś nie występuje (jedyne dwa ::marker w akcencie to Filar.konkrety i SekcjaPlanow.lista, żaden nie leży na tej powierzchni). Lista punktowana wstawiona do S10 wymaga osobnej decyzji. */
+  --kolor-rola-tekst-podstawowy: #16181d; /** Nagłówki i proza. Zmierzone 2026-08-26 na aff7947: ×tło 13,67:1 · ×powierzchnia 17,76:1 · ×powierzchnia-2 15,38:1 · ×powierzchnia-akcentowa 11,31:1 — AA/AAA wszędzie. */
+  --kolor-rola-tekst-drugorzedny: #4e545c; /** Podpisy, metadane — 22 użycia, najczęstsza rola w serwisie. DOLNA GRANICA, nie schodzić niżej: zmierzone 2026-08-26 na aff7947 ×tło 5,88:1 · ×powierzchnia 7,65:1 · ×powierzchnia-2 6,62:1 · ×powierzchnia-akcentowa 4,87:1 — ostatnia wartość ma zapas 0,37 nad progiem AA. */
+  --kolor-rola-kreska: #d2c9b9; /** Kreski dekoracyjne: nagłówek, stopka, separatory, obrysy kart (1,26:1 na tle; ADR-025). Nie niesie informacji — do obrysów kontrolek służy kreska-mocna. */
+  --kolor-rola-kreska-mocna: #7d7361; /** NOWA (ADR-031). Obrys pól formularza i kontrolek — tu próg 3:1 obowiązuje (WCAG 1.4.11). Zmierzone 2026-08-26 na aff7947: ×powierzchnia 4,67:1 · ×tło 3,59:1. */
+  --kolor-rola-akcent: #9a7b3f; /** R-AKCENT-01: wyłącznie dekoracja — punktory i podkreślenia, NIGDY tekst ani samodzielny komunikat. Zmierzone 2026-08-26 na aff7947: ×tło 3,06:1. Poprzednia wartość dawała 2,87:1 i broniono jej argumentem „akcent nie niesie tekstu"; 3,06:1 usuwa cały wyjątek. GRANICA: ×powierzchnia-akcentowa 2,53:1 — patrz komentarz tej roli. */
+  --kolor-rola-interakcja: #1f3a5f; /** Wypełnienie CTA — jedyna nasycona plama w kadrze. Zmierzone 2026-08-26 na aff7947: ×tło 8,84:1 · ×powierzchnia 11,48:1 · ×powierzchnia-akcentowa 7,31:1 — 1.4.11 z zapasem, plama sama rysuje granicę przycisku (obwódka niepotrzebna, inaczej niż w wariantach limonkowych). */
+  --kolor-rola-interakcja-aktywna: #142a47; /** Hover i stan wciśnięty. Zmierzone 2026-08-26 na aff7947: ×tekst-na-interakcji 14,46:1 · ×tło 11,13:1. Para stała jak link/link-aktywny. */
+  --kolor-rola-tekst-na-interakcji: #ffffff; /** Etykieta na granacie. Zmierzone 2026-08-26 na aff7947: ×interakcja 11,48:1 · ×interakcja-aktywna 14,46:1 — AA/AAA w obu stanach. */
+  --kolor-rola-link: #16181d; /** DECYZJA 5 paczki — link NIE JEST KOLOREM: kolor tekstu podstawowego + podkreślenie w akcencie. Granat pojawia się dopiero w hover/focus. Powód: w kadrze ma być jedna granatowa plama i ma nią być akcja. Wcześniej jeden kolor pełnił pięć ról naraz i hierarchia nie istniała. */
+  --kolor-rola-link-aktywny: #1f3a5f; /** Hover i odwiedzony — dopiero tu pojawia się granat. Zmierzone 2026-08-26 na aff7947: ×tło 8,84:1 · ×powierzchnia-akcentowa 7,31:1. */
+  --kolor-rola-fokus: #16181d; /** R-AKCENT-02: ≠ akcent, ≠ interakcja — sprawdzane NA WARTOŚCIACH przez scripts/straznik-tokenow.mjs, nie na nazwach. Poprzednia paleta eksperymentu spełniała tę regułę z nazwy i łamała z wartości. Obwódka pada na TŁO STRONY dzięki outline-offset, nie na wypełnienie przycisku: para fokus×interakcja ma 1,55:1 i to jest powód istnienia odsunięcia, nie defekt (stan sprzed zmiany dawał na tej parze 1,38:1 — zmierzone razem 2026-08-26 na aff7947). */
+  --kolor-rola-stan-sukces: #2f6b46; /** NOWA (ADR-031). Potwierdzenia. Zmierzone 2026-08-26 na aff7947: ×powierzchnia 6,34:1 · ×tło 4,88:1 · ×powierzchnia-2 5,49:1. */
+  --kolor-rola-stan-ostrzezenie: #8a5a12; /** NOWA (ADR-031). Limity planu, zbliżające się granice. Zmierzone 2026-08-26 na aff7947: ×powierzchnia 5,91:1 · ×tło 4,55:1 · ×powierzchnia-2 5,12:1. */
+  --kolor-rola-stan-blad: #a32617; /** NOWA (ADR-031). Walidacja. Zmierzone 2026-08-26 na aff7947: ×powierzchnia 7,38:1 · ×tło 5,68:1 · ×powierzchnia-2 6,39:1. Błąd NIGDY nie jest komunikowany samym kolorem (WCAG 1.4.1) — zawsze kolor + obrys pola + tekst komunikatu. */
+  --kolor-rola-stan-wylaczony: #767c84; /** NOWA (ADR-031). 3,24:1 na tle — wyjęte spod progu przez WCAG 1.4.3 (kontrolki nieaktywne). UWAGA: e2e/kontrast-stanow.spec.ts trzyma dla stanu wyłączonego próg 3:1 jako DECYZJĘ projektu ponad normę; ta wartość go spełnia. Dziś serwis nie ma ani jednej wyłączonej kontrolki. */
+  --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). UWAGA: 03-typografia.css paczki niesie --szerokosc-tekstu: 68ch dla tego samego zastosowania — rozjazd zgłoszony, nierozstrzygnięty; wchodzi dopiero z zadaniem 12, które jest poza zakresem WWW/038-bis. */
   --wymiar-miara-kolumny: 38rem; /** Maksymalna szerokość kolumny tekstu sekcji (ADR-025). */
   --wymiar-kontener-strony: 70rem; /** Maksymalna szerokość wnętrza sekcji pełnej szerokości (ADR-028; dotąd literał K1–K7). */
   --wymiar-promien-maly: 0.25rem; /** Promień detali (skip-link K1; ADR-028). */
   --wymiar-promien: 0.5rem; /** Promień podstawowy: karty, CTA, ramki obrazów (ADR-028; skala K2–K5). */
   --wymiar-promien-pigulki: 2rem; /** Promień pełny pigułki (przełącznik K6; ADR-028). */
   --wymiar-prog-ukladu: 48rem; /** Próg przełączenia układów mobile→desktop (ADR-028). WYŁĄCZNIE DOKUMENTACYJNY: @media nie czyta var() — wartość powielona literalnie w media queries modułów; zmiana wymaga ADR i sync wszystkich @media. */
-  --kolor-rola-tlo-strony: var(--kolor-tlo);
-  --kolor-rola-powierzchnia: var(--kolor-neutralna-50); /** Karty i powierzchnie na tle strony. Kontrasty wyliczone (panel E, 2026-08-11): ×tekst-podstawowy 12,36:1 · ×tekst-drugorzedny 7,07:1 · ×fokus 7,22:1 · ×interakcja (non-text) 5,22:1 · ×interakcja-aktywna (non-text) 7,02:1 · ×akcent (dekoracja) 3,21:1 · ×kreska (dekoracja) 1,34:1. */
-  --kolor-rola-powierzchnia-2: var(--kolor-neutralna-100); /** Kontrasty wyliczone (panel E, 2026-08-11): ×tekst-podstawowy 11,12:1 · ×fokus 6,49:1. UWAGA: ×tło strony = 1,00:1 — nigdy jako JEDYNY wskaźnik stanu (odrzucony pod-wariant pigułki K6). */
-  --kolor-rola-tekst-podstawowy: var(--kolor-neutralna-900); /** 11,07:1 na tle — AA/AAA */
-  --kolor-rola-tekst-drugorzedny: var(--kolor-neutralna-700); /** 6,33:1 na tle — AA */
-  --kolor-rola-akcent: var(--kolor-terakota-500); /** Wyłącznie dekoracja (2,87:1) — nigdy tekst ani samodzielny komunikat */
-  --kolor-rola-interakcja: var(--kolor-terakota-600); /** Przyciski, elementy interaktywne — 4,68:1 na tle */
-  --kolor-rola-interakcja-aktywna: var(--kolor-terakota-700); /** Stan hover/active interakcji (panel K2, 2026-08-10). Kontrasty wyliczone: ×tekst-na-interakcji 7,02:1 — AA/AAA · ×tło strony 6,29:1 non-text ≥3:1. Para stała jak link/link-aktywny. */
-  --kolor-rola-tekst-na-interakcji: var(--kolor-neutralna-50); /** 5,22:1 na terakocie-600 — AA */
-  --kolor-rola-link: var(--kolor-sliwka-700); /** 6,47:1 na tle — AA */
-  --kolor-rola-link-aktywny: var(--kolor-sliwka-800);
-  --kolor-rola-fokus: var(--kolor-sliwka-700); /** Ślad fokusa — 6,47:1 względem tła */
-  --kolor-rola-powierzchnia-akcentowa: var(--kolor-terakota-100); /** Tło akcentowe lustra L1 (ADR-025). Kontrasty wyliczone: ×tekst-podstawowy 11,15:1 · ×link 6,51:1 · ×fokus 6,51:1 — AA z zapasem (warunek DECYZJI 6). */
-  --kolor-rola-kreska: var(--kolor-neutralna-200); /** Kreski dekoracyjne: nagłówek, stopka, separatory list (1,20:1 na tle; ADR-025; zakres rozszerzony — panel K2, 2026-08-10). */
+  --kolor-rola-tlo-strony: var(--kolor-tlo); /** Celowo ciemniejsze od bieli — dopiero przy tej jasności biała karta odcina się od tła o 1,30:1 (zadanie 6 paczki). */
 }

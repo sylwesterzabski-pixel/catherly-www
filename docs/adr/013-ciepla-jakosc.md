@@ -2,6 +2,17 @@
 
 Pełny tekst decyzji: PLAN.md, sekcja 14.
 
+**Korekta 2026-08-26 ([ADR-031](031-paleta-kancelaria-i-kroj-onest.md)) —
+stała tła strony.** Nowa stała decyzji właściciela to **`#e8e1d5`**
+(owsiany papier, paleta „kancelaria"); poprzednia — `#eee6e0` (ciepły
+greige, Etap B, 2026-08-09). **Kierunek tego ADR-a zostaje bez zmiany:**
+`#e8e1d5` jest cieplejsze i ciemniejsze od bieli, więc sygnał „tło ciepłe,
+kierunek kremowy, nie szpitalna biel" jest spełniony mocniej, nie słabiej.
+Ciemniejsze **celowo** — dopiero przy tej jasności biała karta odcina się
+od tła o 1,30:1; przy poprzedniej wartości karty miały 1,09:1 i na
+słabszym ekranie struktura znikała. Kierunek ADR-013 nie jest tą korektą
+uchylany ani osłabiany; zmienia się jedna wartość, nie zasada.
+
 ## Kontekst
 Strona ma dawać odczucie miejsca wyjątkowego, ale nie może peszyć
 („to nie moja liga", „strona dla bogatych"). Luksus komunikuje status
