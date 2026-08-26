@@ -2015,6 +2015,56 @@ Serwer na porcie **3987** zatrzymany po generacji; port **3000 nietknięty**.
 
 ---
 
+### 4.28 T49 zamknięte — A-16 dokończone w tabeli obietnic (`WWW/036`)
+
+**Przekwalifikowanie właściciela, i ono zmienia charakter roboty:** to **nie
+była nowa treść do werdyktu**, tylko **niedokończone wejście A-16**. Decyzja
+zapadła i weszła 26.08; tabela obietnic była **siódmym miejscem, którego
+materiał toru 9 nie wymieniał** — **druga pozycja klasy „manifest
+niekompletny"** po T48.
+
+**Naprawa — jeden wiersz, dwa człony** (`content/tabela-obietnic.md:37`):
+
+| | przed | po |
+|---|---|---|
+| kolumna nazwy | `Kalendarz + przypomnienie 30 min przed` | `Kalendarz + przypomnienie w ostatnich 30 min przed rozmową` |
+| kolumna opisu | `…przypomnienie 30 minut przed każdą rozmową.` | `…przypomnienie w ostatnich 30 minutach przed rozmową.` |
+
+Tabela istnieje **tylko po polsku** — sprawdzone `find`, nie ma odpowiedników
+`en`/`de`, więc poprawka jest jednoplikowa.
+
+⚠ **Dowód wymagał rozróżnienia, którego warunek nie zawierał.** Zlecenie żądało
+*„grep starego brzmienia po zmianie = zero w całym repo"*. **Literalnie jest to
+niewykonalne i szkodliwe** — wymagałoby skasowania **zapisu własnej zmiany**.
+Wynik z rozdzieleniem warstw:
+
+- **warstwa żywa (`content/`, `src/`) — ZERO** we wszystkich trzech językach;
+- **`docs/` — dziesięć wystąpień, wszystkie tam słusznie**: siedem to **zapis
+  samej zmiany** (to przekazanie, pozycja T49, materiał toru 9,
+  `PRZEKAZANIE-TOR10`), trzy to **dokumenty paneli z zadeklarowaną datą**
+  (`tresci-etap-d-po-panelach.md` 2026-08-13, `tresci-pozyskiwanie-po-panelu.md`,
+  `ekstrakcja-etap-a.json`).
+
+**Sprawdzone dodatkowo, czy któryś z tych dokumentów jest CZYTANY przez
+strażnika** — bo dopiero to czyniłoby rozjazd żywym: **wszystkie siedem odwołań**
+w `scripts/`, `e2e/` i `src/` to **komentarze**, nie odczyt pliku. Rozjazdu
+w mechanizmach nie ma.
+
+**Zgłaszam, nie ruszam** (poza zakresem — zlecenie mówi „wyłącznie
+tabela-obietnic"): `docs/faza-4/tresci-etap-d-po-panelach.md` deklaruje
+w nagłówku **„DECYZJE ZATWIERDZONE — TREŚĆ PL OBOWIĄZUJE"** w czasie
+teraźniejszym, a niesie brzmienie sprzed A-16. Ma datę (2026-08-13), więc wobec
+swojego zakresu jest prawdziwy — ale słowo **„obowiązuje"** czyta się jako stan
+bieżący. To ta sama para co T26: dokument z zakresem się nie starzeje, starzeje
+się **czytelnik** — a tu dokument sam zachęca do przeterminowania się.
+
+**Bramki:** `tokeny`, `liczby`, `parytet`, `kontrakt`, `kotwice`, `linki`,
+`nojs`, `deklaracje`, `lint` — zielone; `build` kod 0. **Strażnik tabeli
+obietnic** to `scripts/lint-liczby.mjs` (kategoria `cecha-funkcji`, decyzja
+D-D16) — **zielony**, pokrycie liczby 30 w `facts.json` nietknięte.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru

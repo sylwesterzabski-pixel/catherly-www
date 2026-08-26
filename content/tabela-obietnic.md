@@ -34,7 +34,7 @@ Reguły twarde (decyzja właściciela 2026-08-09):
 | Funkcja | Obietnica strony |
 |---|---|
 | Formularz z publiczną stroną /l/[slug] → CRM | Tworzysz własny formularz zgłoszeniowy z publiczną stroną — wypełnione zgłoszenia trafiają prosto do twojej bazy kontaktów. |
-| Kalendarz + przypomnienie 30 min przed | Planujesz kontakty w kalendarzu i dostajesz przypomnienie 30 minut przed każdą rozmową. |
+| Kalendarz + przypomnienie w ostatnich 30 min przed rozmową | Planujesz kontakty w kalendarzu i dostajesz przypomnienie w ostatnich 30 minutach przed rozmową. |
 | Subskrypcja kalendarza w telefonie | Twój kalendarz Catherly synchronizuje się z telefonem. |
 | Eksport kontaktów do vCard | Eksportujesz kontakty do telefonu jednym kliknięciem. |
 | QR polecający w eksportach Studia | Tworzysz kod QR polecający do materiałów i wizytówek. |
