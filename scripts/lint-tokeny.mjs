@@ -111,7 +111,9 @@ function oslonaWyjatku(plik, linie) {
   if (dzis > WYJATEK_WYGASA) {
     bledy.push(
       `blok eksperymentu palety wygasł ${WYJATEK_WYGASA} (dziś ${dzis}) — ` +
-        `usuń blok razem z public/fonts/eksperyment/; wyjątek nie obowiązuje`
+        `usuń blok razem z public/fonts/eksperyment/; wyjątek nie obowiązuje\n` +
+        `  UWAGA: onest.woff2 w tym katalogu może być krojem produkcyjnym — ` +
+        `decyzja właściciela przed usunięciem.`
     );
     return { osloniete: null, bledy };
   }
@@ -119,6 +121,82 @@ function oslonaWyjatku(plik, linie) {
   const osloniete = new Set();
   for (let i = otwarcia[0]; i <= zamkniecia[0]; i++) osloniete.add(i);
   return { osloniete, bledy };
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DATA OBEJMUJE TRZY BLOKI, NIE JEDEN (właściciel, WWW/031, 2026-08-26).
+
+   Stan sprzed tej zmiany był odwrotnością tego, co wyglądał: blok PALETY,
+   którego wygaśnięcie JEST egzekwowane, nie miał daty w nagłówku; bloki
+   KROJU i PRZEZROCZYSTOŚCI nosiły w nagłówkach „WYGASA 2026-08-31" i nie
+   pilnowało ich NIC. Po 31.08 czerwieniałby jeden, dwa zostałyby w ciszy —
+   przy czym to właśnie te dwa OGŁASZAŁY termin. Napis zamiast mechanizmu,
+   w tym samym pliku, w którym mechanizm działa poprawnie.
+
+   Zasięg jest inny niż osłony: OSŁONA obejmuje wyłącznie blok palety (tylko
+   tam surowe wartości są legalne). Data obejmuje WSZYSTKIE TRZY, bo termin
+   dotyczy ISTNIENIA bloku eksperymentu, nie tego, co jest w środku.
+
+   Nagłówki, które niosą datę, muszą nieść TĘ SAMĄ datę co WYJATEK_WYGASA —
+   inaczej komentarz i mechanizm mówiłyby co innego, czyli wracalibyśmy do
+   wady, którą ta zmiana zamyka. Rozjazd = czerwień.
+   ───────────────────────────────────────────────────────────────────────── */
+const BLOKI_Z_TERMINEM = [
+  {
+    nazwa: "palety",
+    otwarcie: /^\/\* === EKSPERYMENT PALETY — DO USUNIĘCIA/,
+    zamkniecie: "/* === KONIEC EKSPERYMENTU PALETY === */",
+  },
+  {
+    nazwa: "kroju",
+    otwarcie: /^\/\* === EKSPERYMENT KROJU — DO USUNIĘCIA/,
+    zamkniecie: "/* === KONIEC EKSPERYMENTU KROJU === */",
+  },
+  {
+    nazwa: "przezroczystości",
+    otwarcie: /^\/\* === EKSPERYMENT PRZEZROCZYSTOŚCI — DO USUNIĘCIA/,
+    zamkniecie: "/* === KONIEC EKSPERYMENTU PRZEZROCZYSTOŚCI === */",
+  },
+];
+
+/** Termin dotyczy ISTNIENIA bloków eksperymentu. Zwraca listę błędów;
+ *  po terminie wymienia z nazwy KAŻDY blok, który jeszcze stoi — bo
+ *  komunikat mówiący o jednym kazałby usunąć jeden i uznać rzecz za zrobioną. */
+function terminBlokow(plik, linie) {
+  const bledy = [];
+  if (plik !== WYJATEK_PLIK) return bledy;
+
+  const dzis = dzisiajLokalnie();
+  const stojace = [];
+
+  for (const blok of BLOKI_Z_TERMINEM) {
+    const otw = linie.findIndex((l) => blok.otwarcie.test(l.trim()));
+    if (otw === -1) continue;
+    stojace.push(blok.nazwa);
+
+    // Data w nagłówku, jeśli jest, musi zgadzać się z jedynym źródłem terminu.
+    const wNaglowku = linie[otw].match(/WYGASA (\d{4}-\d{2}-\d{2})/);
+    if (wNaglowku && wNaglowku[1] !== WYJATEK_WYGASA) {
+      bledy.push(
+        `nagłówek bloku eksperymentu ${blok.nazwa} podaje termin ${wNaglowku[1]}, ` +
+          `a mechanizm pilnuje ${WYJATEK_WYGASA} — komentarz i strażnik mówią co innego`
+      );
+    }
+    if (!linie.some((l) => l.trim() === blok.zamkniecie)) {
+      bledy.push(`blok eksperymentu ${blok.nazwa} otwarty i niedomknięty`);
+    }
+  }
+
+  if (stojace.length > 0 && dzis > WYJATEK_WYGASA) {
+    bledy.push(
+      `termin ${WYJATEK_WYGASA} minął (dziś ${dzis}), a bloki eksperymentu ` +
+        `nadal stoją: ${stojace.join(", ")} — usuń WSZYSTKIE wymienione ` +
+        `razem z public/fonts/eksperyment/\n` +
+        `  UWAGA: onest.woff2 w tym katalogu może być krojem produkcyjnym — ` +
+        `decyzja właściciela przed usunięciem.`
+    );
+  }
+  return bledy;
 }
 
 function plikiDoSkanowania() {
@@ -156,6 +234,7 @@ for (const plik of plikiDoSkanowania()) {
   const linie = tresc.split("\n");
 
   const { osloniete, bledy } = oslonaWyjatku(plik, linie);
+  bledy.push(...terminBlokow(plik, linie));
   for (const blad of bledy) {
     console.error(`✗ ${plik} — ${blad}`);
     naruszenia++;
