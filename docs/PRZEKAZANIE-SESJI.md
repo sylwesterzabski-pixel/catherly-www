@@ -2188,12 +2188,39 @@ przy `scroll-padding` uczciwie podawał, skąd wzięto 5rem — i to właśnie
 ten zapis pozwolił naprawić wartość w pięć minut zamiast szukać przyczyny.
 Gdyby stała tam goła liczba, diagnoza kosztowałaby wielokrotnie więcej.
 
-#### Stan wykonania
+#### Stan wykonania — ZADANIA 1–6 WYKONANE, STOP NA ZRZUTACH
 
-Zadania i commity — patrz rozdz. 1 (lista przeliczana poleceniem, nie
-przepisywana). **STOP po zadaniu 6 zgodnie ze zleceniem**: zrzuty `/`,
-`/cennik`, `/funkcje` × [1280, 390] czekają na zatwierdzenie właściciela,
-zadania 7–14 (poza K6) nietknięte.
+Zadania 1–6 z korektami K1–K6 wykonane; **zadania 7–14 nietknięte poza
+K6 i konsumpcją ADR z K5**. Lista commitów — **przelicz poleceniem**
+`git log --oneline origin/faza-4/podstrony..HEAD`, nie przepisuj stąd
+(rozdz. 1: to pole starzeje się przy każdym commicie).
+
+**COMMITY NIE SĄ WYPCHNIĘTE i to jest decyzja, nie zaniedbanie.**
+Zlecenie mówi „push jawnym refspec origin faza-4/podstrony", ale **nie
+wymienia skrótów** — bo w chwili jego pisania te commity jeszcze nie
+istniały. Zakaz 1 kanonu wymaga zgody **wyliczonej co do commita**
+i wprost wymienia zdania tego kształtu („na koniec wypchnij") jako
+wracające z listą, a nie z wykonaniem. Lista jest przeliczona i czeka
+w zwrotce; push pójdzie **jawnym refspec ze skrótem**, gdy zgoda
+wymieni skróty.
+
+**Zrzuty do zatwierdzenia** (pełne strony, 2× DPI, stan po zadaniu 6):
+`~/Documents/FBO OS - www/zrzuty-paleta-kancelaria-2026-08-26/` —
+`glowna`, `cennik`, `funkcje` × `1280` i `390`. Poza repozytorium
+świadomie: nikt nie zamawiał commitowania sześciu plików PNG. Żadna
+z sześciu stron **nie przewija się poziomo** (sprawdzone
+`scrollWidth === clientWidth` przy każdym zrzucie).
+
+**Bramki lokalne po ostatnim commicie:** `tokeny` (łańcuch: linter
++ nowy strażnik), `liczby`, `parytet`, `kotwice`, `linki`, `nojs`,
+`deklaracje`, `lint` — **zielone**; `build` kod 0; **pełny zestaw e2e
+634 passed, 4 skipped, zero upadków**; axe w haku pre-commit 60/60
+przy każdym z siedmiu commitów. **`kontrakt` — CZERWONA**, znana
+i opisana (T51).
+
+**Czego nie sprawdzono z tej strony i trzeba sprawdzić w CI:** bramki
+wydajności (LCP z webfontem na elemencie LCP — patrz wyżej o ADR-027)
+i bramki `Nieodwracalne`, która jest planowo czerwona (T2).
 
 ---
 
