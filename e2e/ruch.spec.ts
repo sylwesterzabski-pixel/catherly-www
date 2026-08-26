@@ -108,49 +108,72 @@ test.describe("ruch włączony — kontrola pozytywna", () => {
 
 test("animowane są wyłącznie własności nieruszające układu", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
+
+  /* KLATKI KLUCZOWE — z CSSOM. Kontrola pozytywna: jeśli nic nie
+     znajdziemy, znaczy że nie umiemy czytać arkuszy, a nie że nie ma
+     animacji. */
   await page.goto("/");
-  const znalezione = await page.evaluate(() => {
-    const klatki: Array<{ nazwa: string; wlasnosci: string[] }> = [];
-    const przejscia = new Set<string>();
-    const przejrzyj = (reguly: CSSRuleList) => {
-      for (const r of Array.from(reguly)) {
-        const zagniezdzone = (r as CSSGroupingRule).cssRules;
+  const klatki = await page.evaluate(() => {
+    const out: Array<{ nazwa: string; wlasnosci: string[] }> = [];
+    const idz = (rr: CSSRuleList) => {
+      for (const r of Array.from(rr)) {
         if (r.type === CSSRule.KEYFRAMES_RULE) {
           const kr = r as CSSKeyframesRule;
           const w = new Set<string>();
           for (const k of Array.from(kr.cssRules)) {
             for (const prop of Array.from((k as CSSKeyframeRule).style)) w.add(prop);
           }
-          klatki.push({ nazwa: kr.name, wlasnosci: [...w] });
+          out.push({ nazwa: kr.name, wlasnosci: [...w] });
           continue;
         }
-        if (zagniezdzone) { przejrzyj(zagniezdzone); continue; }
-        const st = (r as CSSStyleRule).style;
-        if (!st) continue;
-        const t = st.transitionProperty;
-        if (t && t !== "none") t.split(",").map((x) => x.trim()).forEach((x) => przejscia.add(x));
+        const z = (r as CSSGroupingRule).cssRules;
+        if (z) idz(z);
       }
     };
-    for (const ark of Array.from(document.styleSheets)) {
-      try { przejrzyj(ark.cssRules); } catch { /* arkusz z innej domeny */ }
+    for (const a of Array.from(document.styleSheets)) {
+      try { idz(a.cssRules); } catch { /* arkusz z innej domeny */ }
     }
-    return { klatki, przejscia: [...przejscia] };
+    return out;
   });
-
   expect(
-    znalezione.klatki.length,
+    klatki.length,
     "kontrola pozytywna: klatki kluczowe w ogóle znalezione",
   ).toBeGreaterThan(0);
 
+  /* PRZEJŚCIA — ze STYLU WYLICZONEGO na rzeczywistych elementach, nie
+     z CSSOM. Powód zapisany, bo to była realna dziura: odczyt
+     `transitionProperty` z reguł arkusza zwracał w tym projekcie PUSTĄ
+     listę, więc ta połowa sprawdzenia nic nie robiła, a test i tak
+     świecił na zielono. Kontrola pozytywna niżej zamyka tę furtkę:
+     jeśli nie znajdziemy ANI JEDNEGO przejścia, test upada. */
+  const przejscia = new Set<string>();
+  for (const [, trasa, sel] of CELE) {
+    await page.goto(trasa);
+    const el = page.locator(sel).first();
+    if ((await el.count()) === 0) continue;
+    const zebrane = await el.evaluate((e) => {
+      const z = (s: CSSStyleDeclaration) =>
+        s.transitionProperty && s.transitionProperty !== "none" ? s.transitionProperty : "";
+      return [z(getComputedStyle(e)), z(getComputedStyle(e, "::before")), z(getComputedStyle(e, "::after"))]
+        .filter(Boolean)
+        .join(",");
+    });
+    zebrane.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => przejscia.add(x));
+  }
+  expect(
+    przejscia.size,
+    "kontrola pozytywna: przejścia w ogóle znalezione (pusty zbiór = ślepy pomiar, nie brak ruchu)",
+  ).toBeGreaterThan(0);
+
   const zle: string[] = [];
-  for (const k of znalezione.klatki) {
+  for (const k of klatki) {
     for (const w of k.wlasnosci) {
       if (ZAKAZANE.some((z) => w === z || w.startsWith(`${z}-`))) {
         zle.push(`@keyframes ${k.nazwa} → ${w}`);
       }
     }
   }
-  for (const t of znalezione.przejscia) {
+  for (const t of przejscia) {
     if (t === WYJATEK_UKLADU) continue;
     if (ZAKAZANE.some((z) => t === z || t.startsWith(`${z}-`))) {
       zle.push(`transition → ${t}`);
