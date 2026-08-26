@@ -197,6 +197,31 @@
     border-inline-end: 0.0625rem dotted var(--kolor-rola-kreska);
   }
 
+  /* Podtytuł i CTA pod H1 — ich POŁOŻENIE jest tu przedmiotem pomiaru,
+     nie ozdobą. Odstępy w rem, żeby jedyną zmienną między wariantami
+     została liczba linii nagłówka. Barwy wyłącznie z ról produkcyjnych:
+     arkusz nie ma ani jednej własnej wartości barwnej. */
+  .h1-podtytuł {
+    margin: 0.75rem 0 0;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--kolor-rola-tekst-drugorzedny);
+  }
+
+  .h1-cta {
+    margin: 1rem 0 0;
+  }
+
+  .h1-cta-przycisk {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    background: var(--kolor-rola-interakcja);
+    color: var(--kolor-rola-tekst-na-interakcji);
+  }
+
   .metka {
     font-family: system-ui, sans-serif;
     font-size: 0.6875rem;
@@ -471,7 +496,25 @@
 
   <section>
     <h2>2 · H1 w trzech językach — miara <code>24ch</code> obok miary docelowej</h2>
+    <p class="uwaga" id="pomiar-kroju"></p>
     <div class="siatka-h1 próbka" id="sekcja-h1"></div>
+    <p class="uwaga ostrzezenie">
+      <strong>W-POMIAR-01 — czego ta asercja NIE potrafi.</strong> Werdykt
+      powyżej stoi na dwóch pomiarach pośrednich, bo pytania wprost nie ma:
+      <code>CSS.getPlatformFontsForNode</code> jest protokołem DevTools
+      i w statycznym HTML nie istnieje. Stąd cztery granice, wypisane, żeby
+      nikt nie odczytał werdyktu szerzej: <strong>(1)</strong> mierzy
+      <em>rodzinę</em>, nie wagę ani odmianę — inna waga tego samego kroju
+      przejdzie jako zgodna; <strong>(2)</strong> nie mówi, czy krój jest
+      zsubsetowany poprawnie: brakujący glif podstawia się z zapasu
+      pojedynczo, a próbka złożona z liter łacińskich tego nie pokaże;
+      <strong>(3)</strong> przy krojach o przypadkowo zbliżonej metryce
+      różnica szerokości może zejść poniżej progu 0,5 px i dać fałszywe
+      „mierzy fallback"; <strong>(4)</strong> <code>document.fonts.check</code>
+      odpowiada na pytanie „czy znam deklarację", nie „czym narysowałem" —
+      i dlatego sam nie wystarcza, a stoi obok pomiaru szerokości, nie
+      zamiast niego.
+    </p>
     <p class="uwaga ostrzezenie">
       Powód istnienia tej sekcji: <code>ch</code> to szerokość cyfry zero,
       więc <code>24ch</code> wyznacza inną kolumnę w każdym kroju — przy
@@ -556,18 +599,24 @@
 const TEKSTY = {
   pl: {
     h1: "Rozmawiasz z ludźmi — Catherly prowadzi kontakty i wyniki.",
+    podtytul: "Catherly to system do własnej sprzedaży bezpośredniej — kontakty, treści, zespół i wyniki w jednym miejscu.",
+    cta: "Sprawdź, jak działa",
     akapit:
       "Catherly pamięta to, co dotąd trzymałaś w głowie i notesach: komu co obiecałaś, jakie treści wysłałaś której klientce i co się sprzedało. Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak jej idzie. Sprzedajesz po swojemu, tylko już nie z pamięci.",
     slowa: 43,
   },
   de: {
     h1: "Du sprichst mit Menschen – Catherly führt deine Kontakte und Ergebnisse.",
+    podtytul: "Catherly ist ein System für deinen eigenen Direktvertrieb – Kontakte, Inhalte, Team und Ergebnisse an einem Ort.",
+    cta: "Sieh dir an, wie es funktioniert",
     akapit:
       "Catherly merkt sich, was du bisher im Kopf und in Notizbüchern hattest: wem du was versprochen hast, welche Inhalte du welcher Kundin geschickt hast und was sich verkauft hat. Auch dein Team hast du zur Hand – du siehst, wen du gerade einarbeitest und wie sie vorankommt. Du verkaufst auf deine Art, nur nicht mehr aus dem Gedächtnis.",
     slowa: 58,
   },
   en: {
     h1: "You do the talking — Catherly keeps track of contacts and results.",
+    podtytul: "Catherly is a system for running your own direct selling — contacts, content, team, and results in one place.",
+    cta: "See how it works",
     akapit:
       "Catherly remembers what you’ve been carrying in your head and your notebooks: what you promised to whom, which content went to which customer, and what sold. Your team is close at hand too — you see who you’re bringing in and how she’s doing. You still sell your way, just not from memory anymore.",
     slowa: 54,
@@ -806,6 +855,16 @@ function sekcjaH1() {
   const kroj = KROJE[stan.kroj];
   const stopien = stopienH1(viewportSymulowany());
 
+  /* W-POMIAR-01 stoi PRZED liczbami i przy nich, nie w osobnym miejscu:
+     werdykt „mierzy fallback" unieważnia wszystko, co pod nim. Ostrzeżenie
+     wypisane gdzie indziej byłoby raportem, którego nikt nie czyta. */
+  const pomiar = pomiarKroju();
+  const tabliczka = document.getElementById("pomiar-kroju");
+  if (tabliczka) {
+    tabliczka.classList.toggle("ostrzezenie", pomiar.ostrzezenie);
+    tabliczka.textContent = "W-POMIAR-01 · " + pomiar.werdykt + " · " + pomiar.opis;
+  }
+
   const warianty = [];
   if (stan.miara !== "rem") warianty.push(["ch", "miara 24ch", "24ch"]);
   if (stan.miara !== "ch") warianty.push(["rem", "miara docelowa", stan.rem + "rem"]);
@@ -822,21 +881,158 @@ function sekcjaH1() {
       h.style.fontSize = stopien.toFixed(3) + "rem";
       h.style.setProperty("--arkusz-interlinia-h1", String(kroj.interliniaH1));
       h.textContent = TEKSTY[jezyk].h1;
-      blok.append(m, h);
+
+      /* PODTYTUŁ I CTA — bez nich nie da się zobaczyć tego, po co ta sekcja
+         w ogóle jest. Sama miara H1 mówi tylko, ile linii; DOPIERO położenie
+         rzeczy POD H1 pokazuje, ile kosztuje jedna linia różnicy. To jest
+         pomiar z T12: dwie linie zamiast trzech przesuwały podtytuł i CTA
+         o 55,19 px, a zobaczyć to można wyłącznie wtedy, gdy oba stoją
+         w kadrze razem z nagłówkiem. Teksty są przepisane z messages
+         (Hero.podtytul, Hero.cta) — nie wymyślone tutaj. */
+      const pod = document.createElement("p");
+      pod.className = "h1-podtytuł";
+      pod.lang = jezyk;
+      pod.style.maxWidth = wartosc;
+      pod.textContent = TEKSTY[jezyk].podtytul;
+      const cta = document.createElement("p");
+      cta.className = "h1-cta";
+      cta.lang = jezyk;
+      const przycisk = document.createElement("span");
+      przycisk.className = "h1-cta-przycisk";
+      przycisk.textContent = TEKSTY[jezyk].cta;
+      cta.appendChild(przycisk);
+
+      blok.append(m, h, pod, cta);
       cel.appendChild(blok);
-      const szerokosc = h.getBoundingClientRect().width;
+
+      /* Wszystkie liczby liczone PO wstawieniu do dokumentu i wyłącznie
+         z pomiaru — żadna nie jest przepisana. Y podawane WZGLĘDEM górnej
+         krawędzi H1, bo wartość bezwzględna zależy od pozycji sekcji na
+         stronie i nie dałaby się porównać między wariantami. */
+      const rH = h.getBoundingClientRect();
+      const rPod = pod.getBoundingClientRect();
+      const rCta = cta.getBoundingClientRect();
       m.textContent =
         jezyk.toUpperCase() +
         " · " +
         opis +
-        " · " +
-        szerokosc.toFixed(1) +
+        " · kolumna " +
+        rH.width.toFixed(1) +
         " px · " +
         liczLinie(h) +
-        " linie · interlinia " +
+        " linie · wys. H1 " +
+        rH.height.toFixed(1) +
+        " px · Y podtytułu +" +
+        (rPod.top - rH.top).toFixed(1) +
+        " px · Y CTA +" +
+        (rCta.top - rH.top).toFixed(1) +
+        " px · interlinia " +
         String(kroj.interliniaH1).replace(".", ",");
     }
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   W-POMIAR-01 — CZY ARKUSZ RYSUJE TYM KROJEM, KTÓRY DEKLARUJE.
+
+   Po co: wszystkie liczby w sekcji H1 są prawdziwe tylko wtedy, gdy
+   przeglądarka rysuje wybranym krojem. Jeśli plik się nie wczytał, rysuje
+   krojem zapasowym — a liczby wyglądają dokładnie tak samo i nic ich nie
+   odróżnia. To jest ten sam kształt, co „zero bez kontroli pozytywnej":
+   pomiar bez sprawdzenia przedmiotu potwierdza istnienie czegokolwiek,
+   nie tego.
+
+   Dwa niezależne sprawdzenia, bo każde z osobna daje się oszukać:
+     (1) document.fonts.check — pyta przeglądarkę, czy zna deklarację
+         @font-face o tej rodzinie i czy jest gotowa do rysowania;
+     (2) POMIAR SZEROKOŚCI — ta sama próbka rysowana rodziną docelową
+         i samym zapasem. Równa szerokość co do 0,5 px = rysuje zapas.
+   Sprawdzenie (2) jest tym, które łapie przypadek „przeglądarka twierdzi,
+   że zna, a i tak rysuje czym innym".
+
+   CZEGO TA ASERCJA NIE POTRAFI — karta ograniczeń, żeby nikt nie odczytał
+   jej szerzej:
+     · nie odróżnia WAG ani odmian tego samego kroju — mierzy rodzinę;
+     · nie mówi, czy krój jest zsubsetowany poprawnie: brakujący glif
+       zostanie podstawiony z zapasu POJEDYNCZO i szerokość próbki
+       złożonej z liter łacińskich tego nie pokaże;
+     · przy krojach o przypadkowo zbliżonej metryce różnica szerokości
+       może zejść poniżej progu 0,5 px i dać fałszywe „mierzy zapas";
+     · CSS.getPlatformFontsForNode — jedyne pytanie wprost o krój UŻYTY
+       do rysowania — jest protokołem DevTools i w statycznym HTML nie
+       istnieje. Dlatego tu stoją dwa pomiary pośrednie, nie jeden wprost.
+   ───────────────────────────────────────────────────────────────────────── */
+function pomiarKroju() {
+  const kroj = KROJE[stan.kroj];
+  if (stan.kroj === "system") {
+    return {
+      werdykt: "nie dotyczy",
+      opis: "krój systemowy — nie ma pliku, więc nie ma czego sprawdzać",
+      ostrzezenie: false,
+    };
+  }
+
+  const rodzinaDocelowa = kroj.rodzina;
+  const pierwsza = rodzinaDocelowa.split(",")[0].trim();
+  const zapas = "monospace";
+
+  let zna = null;
+  try {
+    zna = document.fonts.check('1rem ' + pierwsza);
+  } catch {
+    zna = null;
+  }
+
+  const probka = "Rozmawiasz z ludźmi — Catherly 0123456789";
+  const zmierz = (rodzina) => {
+    const el = document.createElement("span");
+    el.textContent = probka;
+    /* Jednostki w rem, nie w px — nie dla stylu, tylko dlatego, że linter
+       tokenów skanuje także ten plik i surowy wymiar w px jest tu czerwienią
+       jak wszędzie indziej. Wartość bezwzględna i tak nie ma znaczenia:
+       porównujemy DWIE szerokości zmierzone tym samym stopniem. */
+    el.style.cssText =
+      "position:absolute;left:-999rem;top:0;white-space:pre;font-size:4rem;font-family:" +
+      rodzina;
+    document.body.appendChild(el);
+    const w = el.getBoundingClientRect().width;
+    el.remove();
+    return w;
+  };
+  const wDocelowa = zmierz(pierwsza + ", " + zapas);
+  const wZapas = zmierz(zapas);
+  const roznica = Math.abs(wDocelowa - wZapas);
+  const rysujeZapas = roznica < 0.5;
+
+  if (rysujeZapas) {
+    return {
+      werdykt: "UWAGA: mierzy fallback",
+      opis:
+        "szerokość próbki identyczna z zapasem (" +
+        wDocelowa.toFixed(1) +
+        " px wobec " +
+        wZapas.toFixed(1) +
+        " px, różnica " +
+        roznica.toFixed(2) +
+        " px) · document.fonts.check: " +
+        (zna === null ? "niedostępne" : zna ? "zna" : "nie zna") +
+        " — LICZBY W SEKCJI H1 NIE OPISUJĄ WYBRANEGO KROJU",
+      ostrzezenie: true,
+    };
+  }
+  return {
+    werdykt: "mierzy: " + kroj.nazwa,
+    opis:
+      "próbka " +
+      wDocelowa.toFixed(1) +
+      " px wobec zapasu " +
+      wZapas.toFixed(1) +
+      " px (różnica " +
+      roznica.toFixed(1) +
+      " px) · document.fonts.check: " +
+      (zna === null ? "niedostępne" : zna ? "zna" : "nie zna"),
+    ostrzezenie: zna === false,
+  };
 }
 
 function sekcjaAkapitow() {
