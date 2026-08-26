@@ -115,52 +115,115 @@
   box-sizing: border-box;
 }
 
-/* SKALA NAGŁÓWKÓW — PROGI, NIE `clamp()` (ADR-041, KROK 1.3).
-   Wzorzec skacze 70 → 53 → 34 px na dwóch progach (POMIAR 0.5,
-   zmierzone zwężaniem okna od 1600 do 320 px), a NIE skaluje płynnie.
-   To różnica konstrukcyjna, nie kosmetyczna: `clamp()` daje pośrednie
-   rozmiary, których wzorzec nigdy nie pokazuje.
+/* SKALA NAGŁÓWKÓW — PROGI, NIE `clamp()` (ADR-041, sprostowana ADR-044).
+   Wzorzec skacze na dwóch progach i NIE skaluje płynnie: `clamp()` daje
+   rozmiary pośrednie, których wzorzec nigdy nie pokazuje.
 
-   ZAKRESY ZMIERZONE: ≥ 1440 → 70 px · 810–1280 → 53 px · ≤ 768 → 34 px.
-   ⚠ ZAKRESY NIEZMIERZONE: 1281–1439 i 769–809. Punkty przełamania leżą
-   gdzieś w środku tych dwóch szczelin — pomiar dał krańce, nie miejsce
-   cięcia. Progi poniżej stawiam na 769 i 1440, czyli na krańcach
-   zgodnych ze wszystkimi trzema odczytami; to WYBÓR spośród zakresu
-   dopuszczalnego, nie odczyt, i dlatego stoi tu napisany.
+   ZMIERZONE NA DZIEWIĘCIU SZEROKOŚCIACH (320…1600), nie na trzech:
 
-   H2 NIE DOSTAJE PROGÓW. Zmierzone jest wyłącznie przy 1440 px (60 px);
-   nadanie mu progów H1 byłoby domysłem podanym składnią pomiaru.
-   Zamyka to pomiar 0.7. */
+     zakres        H1              H2              tracking H1
+     ≤ 768 px      34 / 40,8       38 / 53,2       −1 px
+     810–1280 px   53 / 63,6       42 / 50,4       −1,6 px
+     ≥ 1440 px     70 / 84         60 / 72         −3 px
+
+   ⚠ TRZY RZECZY, KTÓRYCH ADR-041 NIE WIEDZIAŁ I ZAPISAŁ JAKO OTWARTE —
+   pomiar je zamyka, i za każdym razem INACZEJ, niż podpowiadał domysł:
+
+   (1) TRACKING JEST PROGOWY, nie stały. ADR-041 wdrożył −3 px na
+       wszystkich progach i uczciwie oznaczył to jako niezmierzone. Nie
+       jest też stały w `em`: −3/70 = −0,043em, −1,6/53 = −0,030em,
+       −1/34 = −0,029em. Ani px, ani em — trzy osobne wartości.
+
+   (2) H2 MA WŁASNE PROGI i nie idzie za H1. H1 spada 70 → 53 → 34
+       (współczynnik 0,49), H2 tylko 60 → 42 → 38 (0,63). Nagłówki
+       sekcji trzymają się na wąskim kadrze BLIŻEJ desktopu. Gdyby
+       nadać H2 progi H1 „bo tak logicznie", byłoby o 8 px za mało.
+
+   (3) H2 NA WĄSKIM KADRZE MA INTERLINIĘ 1,40, nie 1,20 (53,2/38) —
+       H1 trzyma 1,20 na wszystkich progach.
+
+   (4) H2 NA WĄSKIM KADRZE MA TRACKING −0,6 px, nie −1 px jak H1.
+       Powyżej 810 px oba dzielą tę samą wartość.
+
+   Punkty (2), (3) i (4) mówią jedno: NA WĄSKIM KADRZE NAGŁÓWEK SEKCJI
+   JEST OSOBNĄ DECYZJĄ, nie pomniejszonym H1. Trzy razy założyłem
+   inaczej i trzy razy pomiar to obalił — dlatego H2 ma tu własne
+   tokeny na każdą z trzech własności, a nie współdzielone z H1.
+
+   Progi postawione na 769 i 1440 — krańce zgodne ze wszystkimi
+   odczytami. Punkty przełamania leżą w szczelinach 769–809 i 1281–1439;
+   to WYBÓR spośród zakresu dopuszczalnego, nie odczyt. */
+/* ZAWIJANIE DŁUGICH SŁÓW W NAGŁÓWKACH — WYMÓG REFLOW, NIE ESTETYKA.
+   Wzorzec tej reguły NIE MA i nie potrzebuje: składa po angielsku,
+   gdzie najdłuższe słowo nagłówka ma 10 znaków. Nasza treść jest
+   polska i niemiecka — „przypomnieniami" ma 15 znaków, a przy
+   zmierzonych 38 px na kolumnie 288 px (kadr 320) wystaje o 8 px
+   i strona zaczyna panoramować poziomo. To narusza WCAG 1.4.10
+   i zapala `reflow 320 px` w `funkcje-podstrony.spec.ts`.
+
+   ⚠ TO NIE JEST ODSTĘPSTWO OD SKALI WZORCA. Żadna zmierzona wartość
+   nie została ruszona — rozmiar, interlinia i tracking zostają.
+   Zmienia się wyłącznie zachowanie słowa, które i tak się nie mieści:
+   bez tej reguły wychodzi poza kadr, z nią łamie się w środku.
+   Odstępstwem byłoby zmniejszenie pisma, i tego nie robię.
+
+   `hyphens: auto` daje łamanie z dywizem tam, gdzie przeglądarka zna
+   wzorce dla `lang` dokumentu; `overflow-wrap: break-word` jest
+   zabezpieczeniem na wypadek, gdy ich nie zna — łamie dopiero wtedy,
+   gdy słowo NIE MIEŚCI SIĘ w wierszu, więc na krótkich nie działa. */
+:is(h1, h2, h3, h4, h5, h6) {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
 :is(h1) {
   font-size: var(--tekst-h1-male);
   line-height: var(--interlinia-naglowek);
-  letter-spacing: var(--tracking-naglowek);
+  letter-spacing: var(--tracking-naglowek-male);
+}
+
+:is(h2) {
+  font-size: var(--tekst-h2-male);
+  line-height: var(--interlinia-naglowek-male);
+  letter-spacing: var(--tracking-naglowek-sekcji-male);
 }
 
 @media (min-width: 48.0625rem) {
   :is(h1) {
     font-size: var(--tekst-h1-srednie);
+    letter-spacing: var(--tracking-naglowek-srednie);
+  }
+
+  :is(h2) {
+    font-size: var(--tekst-h2-srednie);
+    line-height: var(--interlinia-naglowek);
+    letter-spacing: var(--tracking-naglowek-srednie);
   }
 }
 
 @media (min-width: 90rem) {
   :is(h1) {
     font-size: var(--tekst-h1);
+    letter-spacing: var(--tracking-naglowek);
+  }
+
+  :is(h2) {
+    font-size: var(--tekst-h2);
+    letter-spacing: var(--tracking-naglowek);
   }
 }
 
-:is(h2) {
-  font-size: var(--tekst-h2);
-  line-height: var(--interlinia-naglowek);
-  letter-spacing: var(--tracking-naglowek);
-}
+/* RODZINA NAGŁÓWKOWA (ADR-040, sprostowana ADR-044).
+   ⚠ ADR-040 przypisał tu SATOSHI. To był błąd odziedziczony po POMIARZE
+   0.1, który opisał Satoshi jako krój nagłówkowy wzorca. Pomiar CDP na
+   wzorcu mówi co innego: 257 elementów tekstu niesie INTER (w tym
+   wszystkie H1 i H2, renderowane jako `Inter Medium`), a Satoshi
+   występuje na DWÓCH elementach po 12 px — plakietce.
 
-/* RODZINA NAGŁÓWKOWA (ADR-040). Reguła globalna, nie per-komponent:
-   wzorzec składa krojem nagłówkowym KAŻDY nagłówek, a rozsypanie tego
-   po arkuszach modułów daje sześć miejsc, w których następna zmiana
-   kroju musi trafić — i jedno, które przeoczy. `:is()` zamiast listy
-   selektorów trzyma swoistość na poziomie pojedynczego elementu, więc
-   moduły nadal nadpisują ją bez `!important`. */
+   Token `--kroj-naglowek` ZOSTAJE mimo równej wartości z `--kroj`:
+   nagłówki i proza to dwie różne decyzje typograficzne i mają móc się
+   rozejść bez przeszukiwania arkuszy. Równość wartości jest dziś stanem
+   wzorca, nie brakiem rozróżnienia. */
 :is(h1, h2, h3, h4, h5, h6) {
   font-family: var(--kroj-naglowek);
 }

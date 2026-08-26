@@ -36,11 +36,14 @@ export default async function LayoutJezyka({ children, params }: Props) {
   return (
     <html lang={locale}>
       <head>
-        {/* PRELOAD JEDNEGO PLIKU — nagłówkowego, nie prozy (ADR-040).
-            Wybór nie jest dowolny: jedyne `h1` strony jest elementem LCP
-            (kontrakt K2), a składa je Satoshi. Preload prozy przyspieszyłby
-            tekst, którego LCP nie mierzy, i konkurowałby o pasmo z tym,
-            który mierzy.
+        {/* PRELOAD JEDNEGO PLIKU — INTERA (ADR-044 prostuje ADR-040).
+            ⚠ ADR-040 preładował Satoshi z uzasadnieniem „h1 jest elementem
+            LCP, a składa je Satoshi". Druga połowa tego zdania była
+            nieprawdą: h1 składa INTER. Preload wskazywał więc na plik,
+            którego element LCP w ogóle nie używa — czyli robił dokładnie
+            to, przed czym miał chronić: zajmował pasmo krojem, którego
+            LCP nie mierzy. Satoshi niesie dwie plakietki po 12 px
+            i dojedzie na `font-display: swap`.
             Jeden, nie dwa: preload dwóch plików zamienia priorytet
             w jego brak — proza dojedzie `font-display: swap`, mając
             dostrojoną rodzinę zapasową, która trzyma szerokość
@@ -50,7 +53,7 @@ export default async function LayoutJezyka({ children, params }: Props) {
             bo żądanie fontu zawsze idzie w trybie CORS. */}
         <link
           rel="preload"
-          href="/fonts/satoshi-medium.woff2"
+          href="/fonts/inter-var.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

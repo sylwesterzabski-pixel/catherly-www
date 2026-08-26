@@ -14,8 +14,13 @@
 }
 
 .naglowek {
-  font-size: var(--tekst-l);
-  line-height: 1.25;
+  /* ROZMIAR I INTERLINIA ZDJĘTE (ADR-044, KROK 2).
+     Stało tu: font-size: var(--tekst-l) · line-height: 1.25
+     Skalę nagłówków sekcji niesie reguła globalna w `globals.css`,
+     progami 38 / 42 / 60 px z pomiaru wzorca. Osiem modułów powtarzało
+     tę samą parę wartości — czyli osiem miejsc, w których następna
+     zmiana skali musi trafić, i osiem, które może przeoczyć.
+     Margines, miara wiersza i zawijanie ZOSTAJĄ: to układ, nie skala. */
   margin: 0 0 0.75rem;
   max-width: 30ch;
   text-wrap: balance;
