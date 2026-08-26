@@ -22,6 +22,22 @@
   --kolor-rola-stan-ostrzezenie: #8a5a12; /** NOWA (ADR-031). Limity planu, zbliżające się granice. Zmierzone 2026-08-26 na aff7947: ×powierzchnia 5,91:1 · ×tło 4,55:1 · ×powierzchnia-2 5,12:1. */
   --kolor-rola-stan-blad: #a32617; /** NOWA (ADR-031). Walidacja. Zmierzone 2026-08-26 na aff7947: ×powierzchnia 7,38:1 · ×tło 5,68:1 · ×powierzchnia-2 6,39:1. Błąd NIGDY nie jest komunikowany samym kolorem (WCAG 1.4.1) — zawsze kolor + obrys pola + tekst komunikatu. */
   --kolor-rola-stan-wylaczony: #767c84; /** NOWA (ADR-031). 3,24:1 na tle — wyjęte spod progu przez WCAG 1.4.3 (kontrolki nieaktywne). UWAGA: e2e/kontrast-stanow.spec.ts trzyma dla stanu wyłączonego próg 3:1 jako DECYZJĘ projektu ponad normę; ta wartość go spełnia. Dziś serwis nie ma ani jednej wyłączonej kontrolki. */
+  --kroj: "Onest", "Onest zapasowy", system-ui, sans-serif; /** Krój produkcyjny (ADR-031, decyzja właściciela 2026-08-26). Onest — font ZMIENNY, oś wght 100–900, jeden plik public/fonts/onest.woff2, self-host, zero domen zewnętrznych. Tu, a nie w arkuszu: ADR-026 zapowiadał w Konsekwencjach, że „tokeny typografii (rodzina, skala) wejdą do tokens.json wraz z ADR-em kroju". GRANICA ZMIERZONA 2026-08-26 na aff7947: cmap ma 136 znaków i NIE zawiera U+2713 ✓ — a ten znak stoi 15× na /cennik i wypadnie w kroju zapasowym (poz. T14 rejestru). „Onest zapasowy" to nazwa własna rodziny zastępczej definiowanej w globals.css; paczka nazywała ją „Onest fallback" — nazwa polska dla spójności z resztą repozytorium, bez kontraktu na zewnątrz. */
+  --tekst-xs: 0.875rem; /** 14 px — metadane, przypisy, etykiety pól. */
+  --tekst-s: 1rem; /** 16 px — tekst czytany, domyślny. */
+  --tekst-m: 1.25rem; /** 20 px — lead akapitu, nagłówek karty. */
+  --tekst-l: 1.5625rem; /** 25 px — h3. */
+  --tekst-xl: 1.9375rem; /** 31 px — h2 sekcyjne. */
+  --tekst-h1: clamp(2.5rem, 5vw, 4rem); /** 40–64 px. Górna granica świadomie niska. */
+  --tekst-h2: clamp(1.75rem, 3vw, 2.5rem); /** 28–40 px. */
+  --waga-tekst: 400;
+  --waga-etykieta: 500;
+  --waga-naglowek: 600;
+  --waga-mocna: 700; /** Waga 100 USUNIĘTA ze skali całkowicie (ADR-031): na kroju systemowym była syntezą i wyglądała inaczej na każdym urządzeniu, zawsze zbyt cienko. */
+  --interlinia-tekst: 1.6;
+  --interlinia-naglowek: 1.15;
+  --tracking-naglowek: -0.02em; /** Nagłówki od 25 px w górę. */
+  --tracking-wersalik: 0.04em; /** WYMAGANE przy text-transform: uppercase — bez tego kapitaliki zlewają się w blok. Zastosowanie w komponentach to zadanie 11 checklisty, poza zakresem WWW/038-bis; token wchodzi teraz, bo należy do skali. */
   --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). UWAGA: 03-typografia.css paczki niesie --szerokosc-tekstu: 68ch dla tego samego zastosowania — rozjazd zgłoszony, nierozstrzygnięty; wchodzi dopiero z zadaniem 12, które jest poza zakresem WWW/038-bis. */
   --wymiar-miara-kolumny: 38rem; /** Maksymalna szerokość kolumny tekstu sekcji (ADR-025). */
   --wymiar-kontener-strony: 70rem; /** Maksymalna szerokość wnętrza sekcji pełnej szerokości (ADR-028; dotąd literał K1–K7). */

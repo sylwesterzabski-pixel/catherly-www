@@ -4,6 +4,72 @@
 
 @import "../styles/generated/tokeny.css";
 
+/* ═══════════════════════════════════════════════════════════════════════
+   KRÓJ PRODUKCYJNY — ONEST (ADR-031, decyzja właściciela ③, 2026-08-26).
+   Uchyla ADR-026 i ADR-027 (system-ui). Self-host, zero domen zewnętrznych.
+
+   JEDEN blok @font-face, nie dwa: u nas leży JEDEN plik i jest to font
+   ZMIENNY (oś `wght` 100–900, odczytana z `fvar` 2026-08-26). Paczka
+   zakładała dwa pliki statyczne (`onest-400` i `onest-600`) — u nas ich
+   nie ma, więc zakres wagi deklaruje jedna reguła. Skala używa 400 / 500 /
+   600 / 700; waga 100 jest ze skali USUNIĘTA, choć oś pliku sięga niżej.
+
+   `unicode-range` CELOWO POMINIĘTY. Paczka podawała listę zakresów pod
+   dwa pliki statyczne; przy jednym pliku zmiennym zawierającym komplet
+   potrzebnych znaków lista niczego nie oszczędza, a stwarza ryzyko, że
+   znak spoza niej nie trafi do kroju mimo obecności w pliku. Dobór glifu
+   i tak robi przeglądarka po `cmap`.
+
+   ⚠ GRANICA ZMIERZONA, nie założona (2026-08-26, `fontTools` 4.62.1):
+   `cmap` Onest ma 136 znaków i NIE zawiera **U+2713 ✓**, który stoi
+   **15× na /cennik**. Ten znak wypadnie w kroju zapasowym — dokładnie ta
+   sama wada, którą poz. T14 rejestru zapisała dla Schibsted i Geist.
+   Do tej doby była hipotetyczna (serwis stał na system-ui, więc ✓ i proza
+   szły jednym krojem); od tej zmiany jest STANEM FAKTYCZNYM. Naprawa
+   (inline SVG) należy do T14 i jest poza zakresem tego zlecenia.
+
+   KRÓJ ZAPASOWY — CO JEST ZMIERZONE, A CZEGO NIE UDOWODNIONO.
+   Wartości nadpisań pochodzą z metryk pliku Onest odczytanych 2026-08-26
+   (`unitsPerEm` 1000, `typoAscender` 970, `typoDescender` −305 → 97%
+   i 30,5%), a nie z wartości startowych paczki (90% / 22%), które są
+   metrykami samego Arialu i nie dopasowują niczego.
+
+   ⚠ ALE: pomiar na tej stronie pokazał, że **nadpisania nie zmieniają tu
+   NICZEGO mierzalnego** — próbka w rodzinie zapasowej i w gołym Arialu
+   ma identyczne wymiary (455,3 px w Onest → 448,2 px w obu, wysokość
+   51,2 px bez zmian). Powód: wysokość wiersza wyznacza `--interlinia-tekst`
+   (mnożnik 1.6), a nie metryki kroju, więc `ascent-override` /
+   `descent-override` mają wpływ dopiero przy `line-height: normal`.
+   Zostają, bo są poprawne i nieszkodliwe — ale **nie twierdzę, że
+   zmniejszają CLS**, bo tego nie zmierzono.
+
+   CO NAPRAWDĘ UZASADNIA ISTNIENIE TEJ RODZINY (pomiar, 32 px, ten sam
+   pangram): Onest → krój zapasowy różni się o **1,6%** szerokości,
+   a Onest → `system-ui` o **6,0%**. Bez tej rodziny stos schodziłby
+   wprost do system-ui, czyli do prawie czterokrotnie większego przeskoku
+   szerokości w chwili podmiany. `size-adjust` zostaje 100%: dopasowania
+   SZEROKOŚCI nie mierzono i nie zgaduję go.
+
+   Na Androidzie/Linuksie `local("Arial")` nie istnieje, więc rodzina
+   zapasowa po prostu nie powstaje i stos schodzi do system-ui.
+   ═══════════════════════════════════════════════════════════════════════ */
+@font-face {
+  font-family: "Onest";
+  src: url("/fonts/onest.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest zapasowy";
+  src: local("Arial");
+  size-adjust: 100%;
+  ascent-override: 97%;
+  descent-override: 30.5%;
+  line-gap-override: 0%;
+}
+
 :root {
   color-scheme: light; /* jeden motyw — ADR-009 */
 }
@@ -16,8 +82,11 @@ body {
   margin: 0;
   background: var(--kolor-rola-tlo-strony);
   color: var(--kolor-rola-tekst-podstawowy);
-  font-family: system-ui, sans-serif;
-  line-height: 1.5;
+  font-family: var(--kroj);
+  font-size: var(--tekst-s);
+  font-weight: var(--waga-tekst);
+  line-height: var(--interlinia-tekst);
+  -webkit-font-smoothing: antialiased;
 }
 
 /* JEDNA recepta podkreślenia linku na cały serwis (decyzja właściciela
