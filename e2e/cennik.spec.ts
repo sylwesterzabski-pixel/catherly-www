@@ -81,7 +81,17 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     }
 
     // FAQ: 4 pary details/summary; otwarcie ujawnia odpowiedź.
-    const faq = page.locator("details");
+    /* LOKATOR ZAWĘŻONY DO SEKCJI FAQ (2.1, ADR-045). Stało tu
+       `page.locator("details")` — asercja na WSZYSTKICH elementach
+       `details` w dokumencie. Wystarczyło, że nawigacja dostała własny
+       `details` (hamburger bez JS), a strażnik zaczął liczyć pięć
+       zamiast czterech. To nie jest usterka nawigacji, tylko klasa
+       „strażnik zerodowany przez zmianę OTOCZENIA" z kanonu: asercja
+       na podciągu globalnego artefaktu wygasa, gdy szukany element
+       przestaje być unikalny. Kanon każe wtedy przepisać lokator na
+       celujący w konkretne miejsce — i to jest zrobione tutaj, a nie
+       podniesienie liczby na pięć. */
+    const faq = page.locator("main details");
     await expect(faq).toHaveCount(4);
     await expect(
       page.getByText(c.faq.o1, { exact: true }),

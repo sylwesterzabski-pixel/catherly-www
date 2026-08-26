@@ -230,7 +230,30 @@ function sondaWezla(el) {
     const warstwy = wszystkie.slice(0, dno + 1);
 
     let obraz = false;
-    let kolor = [255, 255, 255, 1]; // kanwa przeglądarki pod wszystkim
+    /* KANWA — NIE ZAWSZE BIAŁA, i to była tu wada pomiaru.
+       Do 2026-08-26 stało: `[255, 255, 255, 1] // kanwa przeglądarki pod
+       wszystkim`. Kanwa bierze jednak tło z `body` (a gdy tam pusto —
+       z `html`) przez PROPAGACJĘ TŁA; biała jest tylko wtedy, gdy oba są
+       przezroczyste. Na ciemnej palecie wzorca kanwa ma #070806.
+
+       Wada ujawniła się dopiero, gdy nagłówek przestał być paskiem na
+       pełną szerokość i przestał zasłaniać lewy górny róg: skip-link
+       zawisł nad samą kanwą i sonda orzekła „biały ślad na białym tle,
+       1:1" dla elementu, który na zrzucie ma obwódkę białą na czerni.
+       Trzydzieści testów na wszystkich trasach — jedna przyczyna.
+
+       Ta poprawka jest PO STRONIE POMIARU, nie sceny (rozstrzygnięcie
+       WWW/041). Scena była poprawna; mierzyło ją narzędzie z wpisaną
+       na sztywno białą kanwą. */
+    const propagowane = () => {
+      for (const w of [document.body, document.documentElement]) {
+        if (!w) continue;
+        const b = naRgb(getComputedStyle(w).backgroundColor);
+        if (b && b[3] === 1) return b;
+      }
+      return [255, 255, 255, 1];
+    };
+    let kolor = propagowane();
     for (let k = warstwy.length - 1; k >= 0; k--) {
       const cs = getComputedStyle(warstwy[k]);
       if (cs.backgroundImage && cs.backgroundImage !== "none") obraz = true;

@@ -379,7 +379,14 @@ a:active {
    z powrotem obok tej reguły SUMUJE się z nią (zmierzone: 80,2 px →
    160,2 px pustki nad nagłówkiem) — patrz handoff-etap-d.md §10.4. */
 html {
-  scroll-padding-block-start: 5.75rem;
+  /* ⚠ PRZELICZONE PO RAZ TRZECI 2026-08-26 (5.75rem → 2rem), 2.1.
+     Poprzednie wartości chroniły przed PRZYKLEJONYM nagłówkiem. Po
+     przejściu na stylistykę wzorca nagłówek nie jest już przyklejony
+     (uzasadnienie w `Nawigacja.module.css`), więc nie ma czego omijać —
+     a 92 px pustki nad każdym celem kotwicy było odtąd kosztem bez
+     świadczenia. Zostaje 32 px oddechu, żeby cel nie dotykał krawędzi.
+     Pułapu 96 px z `odsuniecie-kotwic` ta wartość nie zbliża. */
+  scroll-padding-block-start: 2rem;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════

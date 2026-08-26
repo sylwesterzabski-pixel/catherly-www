@@ -11,7 +11,7 @@
    traciła z pola widzenia jedyne CTA konwersji na stronie.
 
    Sprawdza:
-     0. czy KOMPLET 19 ról w ogóle istnieje  (patrz LICZBA_ROL niżej)
+     0. czy KOMPLET 20 ról w ogóle istnieje  (patrz LICZBA_ROL niżej)
      1. kontrasty par ról wobec progów WCAG 2.x
      1b. rozdział karty od tła — PRZENIESIONE do e2e (ADR-038)
      2. akcent na każdej powierzchni ≥ 4,5:1            (R-AKCENT-01)
@@ -77,7 +77,19 @@ const luminancja = (hex) => {
   const [r, g, b] = p.map((x) => kanal(parseInt(x, 16) / 255));
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 };
+const KSZTALT_HEX = /^#[0-9a-f]{3,8}$/i;
 const kontrast = (a, b) => {
+  /* ODMOWA ZAMIAST CICHEJ LICZBY. Gdyby tu wpadła barwa z alfą, wzór
+     policzyłby ją tak, jakby była nieprzezroczysta — i zwrócił liczbę
+     wyglądającą na pomiar. Rzucenie zatrzymuje bramkę z nazwą
+     przyczyny; NaN albo wartość zmyślona przeszłyby dalej. */
+  for (const v of [a, b])
+    if (!KSZTALT_HEX.test(String(v)))
+      throw new Error(
+        `kontrast(): wartość „${v}" nie jest zapisem szesnastkowym. ` +
+          "Barwy z alfą nie mają kontrastu bez wiedzy o tle — mierzy je " +
+          "sonda rastrowa w e2e/kontrast-stanow.spec.ts (ADR-045)."
+      );
   const x = luminancja(a), y = luminancja(b);
   return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
 };
@@ -104,7 +116,15 @@ function rozwiaz(nazwa, widziane = new Set()) {
   if (v === undefined) return null;
   const odwolanie = v.match(/^var\(\s*(--[a-z0-9-]+)\s*\)$/i);
   if (odwolanie) return rozwiaz(odwolanie[1], widziane);
-  return /^#[0-9a-f]{3,8}$/i.test(v) ? v.toUpperCase() : null;
+  if (/^#[0-9a-f]{3,8}$/i.test(v)) return v.toUpperCase();
+  /* ROLA Z ALFĄ (ADR-045). Rozpoznawana, żeby LICZYŁA SIĘ DO KOMPLETU —
+     bez tego nowa rola byłaby dla punktu 0 niewidzialna i strażnik
+     meldowałby brak, choć rola istnieje. Zwracana w postaci surowej;
+     `kontrast()` niżej ODMAWIA jej przyjęcia, bo kontrast barwy
+     półprzezroczystej zależy od tego, co pod nią leży, a tego strażnik
+     tokenów nie wie. Mierzy to sonda rastrowa w e2e. */
+  if (/^rgba?\([\d\s.,%/]+\)$/i.test(v)) return v.replace(/\s+/g, " ").trim();
+  return null;
 }
 
 const role = {};
@@ -128,7 +148,7 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 19;
+const LICZBA_ROL = 20;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(

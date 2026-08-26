@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 import { rolaRgb } from "./pomoc/role";
 
@@ -50,6 +50,47 @@ test("klawiatura: skip-link pierwszy, potem logo → menu → Logowanie; fokus w
 }) => {
   await page.goto("/");
 
+  /* KOLEJNOŚĆ ZALEŻY OD KADRU, i to jest własność sceny, nie testu
+     (2.1, ADR-045). Na kadrze ≤ 768 px między logo a pozycjami stoi
+     HAMBURGER — kontrolka, która na szerokim kadrze nie istnieje
+     (`display: none`, więc i poza kolejnością fokusa).
+
+     Test NIE pomija tego przystanku i nie zmiękcza asercji: wstawia go
+     do oczekiwanej listy i sprawdza, że jest to element `SUMMARY` —
+     czyli że hamburger jest OSIĄGALNY KLAWIATURĄ. Gdyby zniknął z toru
+     fokusa, menu mobilne stałoby się nieotwieralne bez myszy, a ten
+     test to złapie. */
+  const hamburger = page.locator("header summary");
+  const waskiKadr = await hamburger.isVisible();
+
+  if (waskiKadr) {
+    await page.keyboard.press("Tab");
+    await expect(page.locator(":focus")).toHaveText(
+      pl.Nawigacja.przejdzDoTresci,
+    );
+    await page.keyboard.press("Tab");
+    await expect(page.locator(":focus")).toHaveText("Catherly");
+    await page.keyboard.press("Tab");
+    await expect(
+      page.locator(":focus"),
+      "hamburger osiągalny klawiaturą",
+    ).toHaveJSProperty("tagName", "SUMMARY");
+    /* Otwarcie klawiaturą — Enter na `summary` przełącza `details`.
+       To także jest asercja: gdyby rozwijanie wymagało myszy, ten krok
+       by nie zadziałał i pozycje nie weszłyby do toru fokusa. */
+    await page.keyboard.press("Enter");
+    for (const etykieta of KOLEJNOSC.slice(2)) {
+      await page.keyboard.press("Tab");
+      const aktywny = page.locator(":focus");
+      await expect(aktywny, `kolejność fokusa: „${etykieta}"`).toHaveText(
+        etykieta,
+      );
+      await expect(aktywny).toBeVisible();
+      await sprawdzObrys(aktywny, etykieta);
+    }
+    return;
+  }
+
   for (const etykieta of KOLEJNOSC) {
     await page.keyboard.press("Tab");
     const aktywny = page.locator(":focus");
@@ -70,6 +111,16 @@ test("klawiatura: skip-link pierwszy, potem logo → menu → Logowanie; fokus w
       ).toBeGreaterThanOrEqual(0);
     }
 
+    await sprawdzObrys(aktywny, etykieta);
+  }
+});
+
+/** Wspólne sprawdzenie śladu fokusa — jedno miejsce dla obu kadrów. */
+async function sprawdzObrys(
+  aktywny: ReturnType<Page["locator"]>,
+  etykieta: string,
+) {
+  {
     // Fokus widoczny: obrys niepusty (rola-fokus, nigdy usunięty)
     // w kolorze roli fokusa czerpanym z tokenów — nie dowolnym.
     // (nazwa barwy z komunikatu zdjęta: „śliwka-700" to paleta sprzed
@@ -91,7 +142,7 @@ test("klawiatura: skip-link pierwszy, potem logo → menu → Logowanie; fokus w
       KOLOR_FOKUSA,
     );
   }
-});
+}
 
 test("skip-link: przed fokusem poza kadrem; fokus + Enter prowadzi do #tresc", async ({
   page,

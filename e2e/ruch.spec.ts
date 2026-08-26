@@ -20,6 +20,19 @@ import { test, expect } from "@playwright/test";
  *     wymaga zmiany tego testu, czyli decyzji.
  */
 
+/* ⚠ DWA SELEKTORY ZAWĘŻONE DO `main` (2.1, ADR-045). Stało tam samo
+   `details …`. Od chwili, w której nawigacja dostała własny `details`
+   (hamburger bez JS), oba łapały NAJPIERW element nawigacji — a ten
+   ruchu nie ma, więc rodzina „FAQ — znacznik" wypadła z listy i próg
+   „co najmniej 8 rodzin z ruchem" spadł na 7.
+
+   Trzeci przypadek tej samej klasy w jednym zleceniu (obok `cennik`
+   i `rozdzial-kart`). Wniosek warty zapisania: DODANIE JEDNEGO ELEMENTU
+   POWSZECHNEGO TYPU unieważnia każdą asercję, która celowała w „pierwszy
+   taki w dokumencie" — i robi to CICHO, bo asercja nadal ma na czym
+   pracować. Przed dopisaniem `details`, `nav`, `ul` czy `section` do
+   elementu współdzielonego sprawdź, kto dziś celuje w ten typ globalnie. */
+
 /** Cele dobrane tak, żeby objąć każdą rodzinę ruchu z R1–R5. */
 const CELE: Array<[string, string, string]> = [
   ["hero — dzieci stagger", "/", ".ruch-stagger > *"],
@@ -29,8 +42,8 @@ const CELE: Array<[string, string, string]> = [
   ["kadr w ramce", "/funkcje/zespol", '[class*="_obraz__"] img'],
   ["pas obrazu", "/funkcje/wyniki", ".pas-obrazu img"],
   ["linia granicy", "/funkcje/zespol", 'p[class*="_granica__"]'],
-  ["FAQ — odpowiedź", "/", 'details [class*="odpowiedz"]'],
-  ["FAQ — znacznik", "/", "details summary"],
+  ["FAQ — odpowiedź", "/", 'main details [class*="odpowiedz"]'],
+  ["FAQ — znacznik", "/", "main details summary"],
 ];
 
 /** Własności układu — animowanie ich kosztuje przeliczenie w każdej klatce. */

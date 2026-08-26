@@ -22,6 +22,12 @@
   --kolor-rola-stan-ostrzezenie: #ae7117; /** WARTOŚĆ NASZA, FUNKCJONALNA, SPOZA WZORCA. Odcień zachowany (H=36°). Zmierzone: ×powierzchnia 4,55:1 · ×tło 4,94:1. Poprzednio #8a5a12 — 3,13:1. */
   --kolor-rola-stan-blad: #e24634; /** WARTOŚĆ NASZA, FUNKCJONALNA, SPOZA WZORCA. Odcień zachowany (H=6°). Zmierzone: ×powierzchnia 4,54:1 · ×tło 4,93:1. Poprzednio #a32617 — 2,51:1, najgorszy z czterech. */
   --kolor-rola-stan-wylaczony: #8b857b; /** BEZ ZMIANY — jako jedyny stan przechodził na ciemnym już wcześniej: ×powierzchnia 5,05:1 · ×tło 5,48:1. ⚠ Automatyczne szukanie „najbliższego odcienia spełniającego próg" zwróciło tu #847e74 (4,59:1) — wartość GORSZĄ od obecnej, bo algorytm szedł od ciemnych. Odrzucone: reguła mówi „spełniający próg", a nie „ledwo spełniający". */
+  /**
+   * Tło pigułki nagłówka (ADR-045, 2.1). ZMIERZONE we wzorcu: rgba(7, 8, 6, 0.6) — te same składowe co `kolor.tlo`, alfa 0,6. DWUDZIESTA ROLA; zmiana LICZBA_ROL z 19 na 20 jest DECYZJĄ, nie dryfem, i dlatego niesie ADR — tak każe zlecenie WWW/050-FINAL pkt 1.1.
+   * 
+   * ⚠ TA ROLA NIE WCHODZI DO PAR KONTRASTOWYCH i to jest świadome: kontrast liczy się na barwie WYNIKOWEJ, a ta zależy od tego, co akurat leży pod pigułką. Mierzy to sonda rastrowa w `kontrast-stanow.spec.ts`, która próbkuje wyrenderowany piksel — strażnik tokenów widzi tylko wartości ról i o barwie po złożeniu warstw nie wie nic. Wpisanie tu pary dałoby liczbę wyglądającą na pomiar, a będącą fikcją.
+   */
+  --kolor-rola-tlo-przezroczyste: rgba(7, 8, 6, 0.6);
   --kolor-dekoracja-poswiata: #905f47; /** Poświata radialna hero i zamknięcia (ADR-032, zlecenie WWW/040 krok 2). CELOWO POZA `kolor.rola` — to nie jest rola systemu, tylko jedna barwa dekoracyjna, i trzymanie jej poza rolami utrzymuje liczbę ról na 25, czyli zgodną z decyzją i ze strażnikiem. Używana wyłącznie przez color-mix z alfą ≤35% na tle inwersji; aria-neutralna, nie niesie treści, nie stanowi granicy ani wskaźnika stanu. */
   --kroj: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój GŁÓWNY — proza I NAGŁÓWKI (ADR-044 prostuje ADR-040). Inter 4.001, zmienny wght 100–900, oś opsz przypięta do 16, public/fonts/inter-var.woff2, 39,8 kB, źródło google/fonts, OFL. POMIAR: wzorzec niesie Interem 257 elementów tekstu — wszystkie nagłówki, prozę, nawigację i przyciski. */
   --tekst-xs: 0.875rem; /** 14 px — metadane, przypisy, etykiety pól. */

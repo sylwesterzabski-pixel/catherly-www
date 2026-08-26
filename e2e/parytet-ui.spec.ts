@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 
+import { otworzMenuJesliZwiniete } from "./pomoc/menu";
+
 import pl from "../src/i18n/messages/pl.json";
 import en from "../src/i18n/messages/en.json";
 import de from "../src/i18n/messages/de.json";
@@ -108,6 +110,12 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     );
 
     // Nagłówek: logo + trzy pozycje menu + Logowanie.
+    /* Na kadrze ≤ 768 px pozycje siedzą w zwiniętym panelu — tak jak we
+       wzorcu. Otwarcie menu NIE osłabia asercji: wszystkie sprawdzenia
+       poniżej (widoczność, href, parytet ×3) zostają bez zmian; zmienia
+       się wyłącznie to, że pytanie o widoczność zadajemy w stanie,
+       w którym ma sens. Patrz `e2e/pomoc/menu.ts`. */
+    await otworzMenuJesliZwiniete(page);
     const naglowek = page.locator("header");
     await expect(
       naglowek.getByRole("link", { name: "Catherly", exact: true }),

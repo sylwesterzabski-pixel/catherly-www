@@ -41,10 +41,18 @@ function parsuj(s: string): number[] | null {
   return n.slice(0, 3);
 }
 
+/* ⚠ SELEKTOR „karta FAQ" ZAWĘŻONY DO `main details` (2.1, ADR-045).
+   Stało tu samo `details`. Od chwili, w której nawigacja dostała własny
+   `details` (hamburger bez JS), lokator łapał NAJPIERW hamburgera —
+   a ten z definicji nie odcina się od tła żadnym z trzech mechanizmów,
+   bo kartą nie jest. Zmierzone: „plama 0.00 · kreska 0.00 · odstęp 6 px".
+   Klasa: strażnik zerodowany przez zmianę otoczenia. Naprawa polega na
+   wskazaniu miejsca, nie na złagodzeniu progu. */
+
 /** Rodziny kart w serwisie — selektory po wzorcu nazw CSS Modules. */
 const RODZINY: Array<[string, string, string]> = [
   ["karta planu", "/cennik", '[class*="SekcjaPlanow_karta__"]'],
-  ["karta FAQ", "/cennik", "details"],
+  ["karta FAQ", "/cennik", "main details"],
   ["blok funkcji", "/funkcje", '[class*="BlokZadaniaDnia_blok__wnetrze"]'],
   ["ramka kadru", "/", '[class*="Filar_obraz__"]'],
 ];

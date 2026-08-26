@@ -51,6 +51,7 @@ sprzeczności wygrywa.
 | 042 | **Szew logowania: stan przejsciowy uznany** — wymóg ΔE ≤ 5,0 zostaje, czerwień 93,92 jawna z adnotacją do przemalowania aplikacji; kotwica progu przepisana z nieistniejącej `neutralna-50` na **empiryczną z własnych werdyktów** (4,66 < 5,0 < 6,46); adnotacja dostaje strażnika przeterminowania | [042](042-szew-logowania-stan-przejsciowy-i-kotwica-progu.md) |
 | 043 | **Testy czerpią barwy ról ze źródła** (`design/tokens.json`), nie pamiętają literałów — przepięcie elementu na inną rolę nadal daje czerwień, zmiana wartości roli już nie (i tak ma być); helper dostaje własnego strażnika z kontrolą pozytywną | [043](043-testy-czerpia-barwy-rol-ze-zrodla.md) |
 | 044 | **Sprostowanie po pomiarze wzorca** — role krojów były ODWROTNE (Inter niesie nagłówki i prozę, Satoshi dwie plakietki 12 px; preload przepięty), tracking JEST progowy (−1 / −1,6 / −3 px), H2 ma własne progi i nie idzie za H1 — **prostuje ADR-040 i ADR-041** | [044](044-sprostowanie-krojow-i-skali-po-pomiarze-wzorca.md) |
+| 045 | **2.1 NAV w stylistyce wzorca** — pigułka 80 px / promień 50 / rozmycie, hamburger bez JS (panel jako RODZEŃSTWO `details`, bo Chromium chowa treść przez anonimowe pudełko), `sticky` ZDJĘTY po rachunku (pas 200 px łamał własny pułap 96 px), 20. rola `tlo-przezroczyste`, naprawiona biała kanwa w sondzie | [045](045-nawigacja-w-stylistyce-wzorca.md) |
 
 Wpisy 023–028 dopisano 2026-08-14 — powstały wcześniej, ale nie trafiły
 do tej tabeli. Pliki są źródłem, tabela tylko mapą; przy rozjeździe
