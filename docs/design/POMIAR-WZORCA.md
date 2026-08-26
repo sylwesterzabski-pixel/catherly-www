@@ -43,19 +43,36 @@ rozmiaru: przy 70 px to −0,043em, przy 34 px byłoby −0,088em. Przy
 przenoszeniu trzeba wybrać: albo px (wierność), albo em (skalowalność).
 **To jest decyzja, nie szczegół** — zapisana jako otwarta.
 
-### Warunki twarde ze zlecenia — stan sprawdzenia
+### Warunki twarde ze zlecenia — SPRAWDZONE NA PLIKACH
+
+Zlecenie kazało zatrzymać się, gdyby licencja nie pozwalała na self-host.
+**STOP nie zachodzi** — oba kroje pobrane i zmierzone.
 
 | warunek | stan |
 |---|---|
-| self-host | do wykonania w KROKU 1 |
-| subset latin + latin-ext (`ąćęłńóśźż`, `ß`, umlauty) | **do sprawdzenia na pliku po pobraniu** — wzorzec ładuje subset `latin`, więc polskich i niemieckich znaków w jego plikach NIE MA |
-| `font-display: swap` + dostrojony fallback | do wykonania |
-| budżet ≤ 120 kB łącznie | **ryzyko**: dwie rodziny × kilka wag; przy pełnym latin-ext trzeba będzie ciąć wagi |
+| pokrycie `ąćęłńóśźżĄĆĘŁŃÓŚŹŻ` | **KOMPLET w obu krojach ✔** |
+| pokrycie `äöüÄÖÜß` | **KOMPLET w obu krojach ✔** |
+| budżet ≤ 120 kB łącznie | **59,2 kB ✔** — z zapasem 60,8 kB |
+| self-host | do wykonania w KROKU 1.2 |
+| `font-display: swap` + dostrojony fallback | do wykonania w KROKU 1.2 |
 
-⚠ **Wzorzec ładuje wyłącznie subset `latin`** (widać w nazwach plików
-Framera: `Inter-Medium.latin-…`). Nasze trzy języki wymagają `latin-ext`.
-Nasze pliki będą więc **cięższe od jego przy tej samej liczbie wag** —
-budżet 120 kB trzeba będzie rozstrzygnąć liczbą wag, nie zakresem znaków.
+**Krój nagłówkowy:** 431 glifów, waga 500, **25,0 kB**, statyczny.
+Kontrola pozytywna metody: znaki spoza latin-ext (`Ж`, `漢`) nieobecne,
+czyli test odróżnia brak od obecności.
+
+**`Inter`: 34,2 kB jako JEDEN PLIK ZMIENNY** (oś `wght` 100–900), 206
+znaków — subset zbudowany dokładnie pod nasz zestaw, nie pobrany gotowy.
+
+⚠ **DROGA „GOTOWE PODZBIORY" NIE MIEŚCI SIĘ W BUDŻECIE i to jest
+ustalenie, nie przypuszczenie.** Google serwuje `Inter` w podzbiorach
+`latin` (47,3 kB) i `latin-ext` (83,3 kB) — **razem 130,6 kB, czyli ponad
+budżet już bez kroju nagłówkowego**. Sprawdzone sumami SHA-256: cztery
+„wagi" `latin-ext` to **jeden i ten sam plik** (font zmienny powtórzony
+w CSS), a podzbiór `latin-ext` **nie zawiera nawet `ó` ani liter
+podstawowych** — te siedzą w `latin`, więc trzeba obu.
+
+Własny subset schodzi z 130,6 kB do **34,2 kB**, czyli do **26%**, i to
+jest cała różnica między „mieści się" a „nie mieści się".
 
 ---
 
@@ -188,3 +205,7 @@ Nagrania ruchu: **do wykonania razem z pomiarem 0.4**.
 3. **Krój ustępuje.** Onest schodzi; wchodzą dwie rodziny zamiast jednej,
    a warunek 120 kB robi się ciasny przy `latin-ext`.
 4. **Skala przestaje być płynna.** `clamp()` ustępuje progom.
+5. **Wchodzą dwie rodziny zamiast jednej**, ale budżet nie jest
+   przeszkodą: 59,2 kB wobec 120 kB. Warunkiem jest **własny subset** —
+   gotowe podzbiory Google dają 130,6 kB i przekraczają limit same
+   z siebie.
