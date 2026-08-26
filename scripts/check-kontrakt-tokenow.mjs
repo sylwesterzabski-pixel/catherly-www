@@ -76,10 +76,46 @@ function hexNaLab(hex) {
 const [a, b] = [hexNaLab(tloStrony), hexNaLab(tloSzwu)];
 const deltaE = Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
 
-if (deltaE > prog)
+if (deltaE > prog) {
+  /* ADNOTACJA STANU PRZEJŚCIOWEGO (ADR-042). Czerwień ZOSTAJE czerwienią —
+     `czerwien()` kończy kodem 1 tak samo jak zawsze. Adnotacja mówi tylko,
+     CZEGO ta czerwień oczekuje, żeby czytający nie szukał defektu tam, gdzie
+     go nie ma, i żeby nie „naprawił" jej przez podniesienie progu.
+
+     ⚠ Adnotacja jest opisem oczekiwania, NIE wyłączeniem. Gdyby kiedykolwiek
+     zaczęła wpływać na kod wyjścia, przestałaby być adnotacją i stałaby się
+     dokładnie tym, czego zakazuje zakaz 3. Dlatego czyta się ją TYLKO do
+     wypisania i nie ma jej w żadnym warunku. */
+  const oczekiwanie = wymaganie._oczekiwanie
+    ? `\n\n  ⏳ OCZEKUJE NA PRZEMALOWANIE APLIKACJI — stan przejściowy uznany` +
+      `\n     (ADR-042; zdarzenie konsumujące: przemalowanie ekranu logowania` +
+      `\n     aplikacji na bazę wzorca). Wymóg ≤ ${prog} POZOSTAJE.` +
+      `\n     NIE wyłączać, NIE podnosić progu — to zakaz 3.`
+    : "";
   czerwien(
     `Szew przekracza próg: deltaE(tło strony ${tloStrony}, tło logowania ${tloSzwu}) = ` +
-      `${deltaE.toFixed(1)} > ${prog} (ADR-022).`
+      `${deltaE.toFixed(1)} > ${prog} (ADR-022).` + oczekiwanie
+  );
+}
+
+/* STRAŻNIK ADNOTACJI PRZETERMINOWANEJ (ADR-042).
+   Sam kontrakt mówi: „wtedy deltaE spadnie samo i adnotację trzeba USUNĄĆ".
+   Zdanie bez mechanizmu jest napisem, a ten napis miałby wyjątkowo złe
+   skutki: adnotacja „oczekuje na przemalowanie aplikacji" wisząca po tym,
+   jak aplikacja została przemalowana, opisuje rzecz, której już nie ma —
+   i przy następnej czerwieni zostanie odczytana jako „to normalne, czekamy".
+
+   To jest ta sama klasa co „wyłączenie przeterminowane": wyłączenie ma
+   własnego strażnika, bo inaczej przeżywa element, którego dotyczyło.
+   Tu warunek zamknięcia jest sprawdzalny wprost — deltaE zeszło pod próg,
+   więc zdarzenie konsumujące zaszło. */
+if (deltaE <= prog && wymaganie._oczekiwanie)
+  czerwien(
+    `Adnotacja stanu przejściowego PRZETERMINOWANA: deltaE = ${deltaE.toFixed(1)} ≤ próg ${prog},\n` +
+      "  czyli zdarzenie konsumujące (przemalowanie aplikacji) już zaszło —\n" +
+      "  a `wymaganie_szwu._oczekiwanie` nadal stoi w design/kontrakt-aplikacji.json.\n" +
+      "  Usuń to pole razem z adnotacją w strażniku (ADR-042).\n" +
+      "  Adnotacja, która przeżyła swoje zdarzenie, opisuje rzecz, której nie ma."
   );
 
 // --- zieleń z pełną etykietą zakresu (warunek uczciwości nr 2, ADR-022) ---
