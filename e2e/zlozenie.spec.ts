@@ -167,6 +167,10 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     );
     const kroki = rytm.getByRole("list");
     await expect(kroki).toHaveAttribute("role", "list");
+    // TRÓJKA — źródła nie ustalono (polecenie WWW/030: „nie badaj teraz").
+    // Zapisane jako nieustalone, nie jako jedno z dwojga: wpisanie tu klasy
+    // na oko byłoby zgadywaniem statusu, a od tego zależy, czy literał jest
+    // defektem, czy mechanizmem. Pozycja: docs/faza-2/mapa-klas-straznikow.md
     await expect(kroki.getByRole("listitem")).toHaveCount(3);
     await expect(rytm.locator("h3"), "nazwy kroków to frazy, nie h3").toHaveCount(
       0,
@@ -191,6 +195,11 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     // Trzy wiersze planów w kolejności W5 (Starter→Growth→Pro),
     // każdy z ceną miesięczną z NIEZALEŻNEGO rachunku z migawki.
     const wiersze = skrot.getByRole("listitem");
+    // TRÓJKA — źródła nie ustalono formalnie (polecenie WWW/030), ale widać
+    // je linijkę niżej: pętla chodzi po `PLANY`, więc kandydatem jest
+    // `PLANY.length`. Zapisane jako KANDYDAT, nie jako ustalenie — sprawdzenie,
+    // czy liczba planów ma zmieniać się sama, czy decyzją, nie zostało
+    // wykonane. Pozycja: docs/faza-2/mapa-klas-straznikow.md
     await expect(wiersze).toHaveCount(3);
     for (const [indeks, plan] of PLANY.entries()) {
       const wiersz = wiersze.nth(indeks);
@@ -222,6 +231,15 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     await page.goto(adres);
 
     // S12 — sześć par details/summary (K8); otwarcie 1. pary.
+    //
+    // SZÓSTKA JEST MECHANIZMEM, NIE DEFEKTEM — nie wyprowadzać jej z pliku.
+    // Zbiór źródłowy istnieje (`Obawy.p*` liczy dziś 6) i właśnie dlatego
+    // pokusa jest realna, ale liczba czerpana ze źródła przepuściłaby siódmą
+    // parę BEZ POZOSTAŁYCH TRZECH CZŁONÓW pakietu: decyzja O-7 wiąże treść,
+    // `toHaveCount(6)→7`, `STRATEGIA.md` pkt 24 i `Obawy.naglowek`
+    // („Sześć"→„Siedem" ×3 języki) — „jednym pakietem albo wcale"
+    // (`docs/redakcja/LISTA-WYKONAWCZA-R2.md:30`). Czerwień tego literału jest
+    // sygnałem, że ktoś rusza rzecz wymagającą pakietu, i ma nim zostać.
     const obawy = page.locator('section[aria-labelledby="obawy-h2"]');
     await expect(obawy.locator("details")).toHaveCount(6);
     for (const numer of [1, 2, 3, 4, 5, 6] as const) {

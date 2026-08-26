@@ -56,6 +56,13 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     // mutacja b).
     const potwierdzenia = hero.getByRole("list");
     await expect(potwierdzenia).toHaveAttribute("role", "list");
+    // DWÓJKA — STATUS NIEROZSTRZYGNIĘTY, i to jest tu zapisane zamiast
+    // domysłu. Zbiór źródłowy istnieje (`Hero.potwierdzenie*` liczy 2), ale
+    // nie ma zapisanego rozstrzygnięcia w rodzaju O-7, które mówiłoby, czy
+    // trzecie potwierdzenie ma wchodzić DECYZJĄ, czy samo za treścią. Do
+    // czasu odpowiedzi literał zostaje: nierozstrzygnięte zamienione na
+    // liczbę z pliku przepuściłoby zmianę, która może wymagać decyzji.
+    // Pozycja: docs/faza-2/mapa-klas-straznikow.md
     await expect(potwierdzenia.getByRole("listitem")).toHaveCount(2);
     await expect(potwierdzenia).toContainText(komunikaty.Hero.potwierdzenieUE);
     await expect(potwierdzenia).toContainText(

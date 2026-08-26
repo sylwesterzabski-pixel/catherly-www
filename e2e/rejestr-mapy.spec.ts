@@ -66,6 +66,9 @@ test("każdy adres z mapy i wyłączeń jest w rejestrze (a więc nie jest 404)"
   for (const sciezka of [...wMapie, ...WYLACZONE_Z_MAPY]) {
     expect(ISTNIEJACE_SCIEZKI, `${sciezka} w rejestrze`).toContain(sciezka);
   }
+  // ÓSEMKA JEST MECHANIZMEM: liczba pochodzi z DECYZJI F4-5, nie ze zbioru.
+  // Jej zmiana ma być decyzją, więc literał zostaje — czerwień znaczy „mapa
+  // stopki rozeszła się z rozstrzygnięciem", a to jest dokładnie jej zadanie.
   expect(wMapie.length, "osiem adresów treściowych (DECYZJA F4-5)").toBe(8);
 });
 
