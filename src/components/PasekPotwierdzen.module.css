@@ -12,7 +12,7 @@
   margin: 0;
   padding: 0;
   color: var(--kolor-rola-tekst-drugorzedny);
-  font-size: 0.9375rem;
+  font-size: var(--tekst-xs);
 }
 
 @media (min-width: 48rem) {

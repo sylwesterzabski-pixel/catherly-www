@@ -15,7 +15,7 @@
 
 .etykieta {
   margin: 0 0 0.5rem;
-  font-size: 0.9375rem;
+  font-size: var(--tekst-xs);
   color: var(--kolor-rola-tekst-drugorzedny);
 }
 
@@ -28,5 +28,5 @@
   display: grid;
   gap: 0.5rem;
   max-width: var(--wymiar-miara-kolumny);
-  font-size: 0.9375rem;
+  font-size: var(--tekst-xs);
 }

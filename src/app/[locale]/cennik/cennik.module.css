@@ -23,7 +23,7 @@
   margin: 0;
   max-width: var(--wymiar-miara-akapitu);
   color: var(--kolor-rola-tekst-drugorzedny);
-  font-size: 1.125rem;
+  font-size: var(--tekst-m);
 }
 
 .potwierdzenia {

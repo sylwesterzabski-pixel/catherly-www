@@ -39,7 +39,7 @@
 
 .logo {
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: var(--tekst-m);
   color: var(--kolor-rola-tekst-podstawowy);
   text-decoration: none;
   grid-row: 1;

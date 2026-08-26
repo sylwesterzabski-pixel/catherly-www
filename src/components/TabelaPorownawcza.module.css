@@ -40,7 +40,7 @@
 }
 
 .tabela thead th {
-  font-size: 0.9375rem;
+  font-size: var(--tekst-xs);
 }
 
 .tabela tbody th {

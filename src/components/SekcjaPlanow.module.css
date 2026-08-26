@@ -96,24 +96,24 @@
 }
 
 .karta h2 {
-  font-size: 1.25rem;
+  font-size: var(--tekst-m);
   margin: 0;
 }
 
 .cena {
-  font-size: 1.75rem;
+  font-size: var(--tekst-l);
   font-weight: 700;
   margin: 0;
 }
 
 .cena .interwal {
-  font-size: 0.9375rem;
+  font-size: var(--tekst-xs);
   font-weight: 400;
   color: var(--kolor-rola-tekst-drugorzedny);
 }
 
 .oszczednosc {
-  font-size: 0.9375rem;
+  font-size: var(--tekst-xs);
   color: var(--kolor-rola-tekst-drugorzedny);
   margin: 0;
 }

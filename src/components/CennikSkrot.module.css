@@ -47,7 +47,7 @@
 }
 
 .interwal {
-  font-size: 0.9375rem;
+  font-size: var(--tekst-xs);
   color: var(--kolor-rola-tekst-drugorzedny);
 }
 

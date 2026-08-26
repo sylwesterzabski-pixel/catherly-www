@@ -3,6 +3,6 @@
    żeby style nie rozjechały się przy zmianach. */
 
 .duet {
-  font-size: 1.125rem;
+  font-size: var(--tekst-m);
   font-weight: 600;
 }

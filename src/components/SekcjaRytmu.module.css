@@ -17,7 +17,7 @@
 }
 
 .sekcja h2 {
-  font-size: 1.5rem;
+  font-size: var(--tekst-l);
   line-height: 1.25;
   margin: 0 0 1rem;
 }

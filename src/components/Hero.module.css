@@ -51,7 +51,7 @@
 
 .podtytul {
   color: var(--kolor-rola-tekst-drugorzedny);
-  font-size: 1.125rem;
+  font-size: var(--tekst-m);
   max-width: var(--wymiar-miara-akapitu);
   margin: 0 0 1.75rem;
 }
@@ -62,7 +62,7 @@
   color: var(--kolor-rola-tekst-na-interakcji);
   text-decoration: none;
   font-weight: 600;
-  font-size: 1.0625rem;
+  font-size: var(--tekst-s);
   padding: 0.875rem 1.5rem;
   border-radius: var(--wymiar-promien);
 }

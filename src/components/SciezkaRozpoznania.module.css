@@ -23,7 +23,7 @@
 }
 
 .sciezka h2 {
-  font-size: 1.5rem;
+  font-size: var(--tekst-l);
   line-height: 1.25;
   margin: 0 0 0.75rem;
   max-width: 30ch;
@@ -39,7 +39,7 @@
 .sciezka__boli {
   margin: 0 0 1.5rem;
   max-width: var(--wymiar-miara-akapitu);
-  font-size: 1.125rem;
+  font-size: var(--tekst-m);
 }
 
 .sciezka__robi { margin: 0 0 1rem; max-width: var(--wymiar-miara-akapitu); }

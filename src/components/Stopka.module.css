@@ -8,11 +8,11 @@
   /* Kreska dekoracyjna — rola kreski (ADR-025). */
   border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
   padding: 1.5rem 1rem;
-  font-size: 0.9375rem;
+  font-size: var(--tekst-xs);
 }
 
 .stopka h2 {
-  font-size: 1rem;
+  font-size: var(--tekst-s);
   margin: 0 0 0.5rem;
 }
 
