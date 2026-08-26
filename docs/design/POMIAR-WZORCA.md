@@ -18,10 +18,31 @@ pomiaru, a nie pominięte.
 
 ### Rodziny faktycznie użyte
 
-| rodzina | gdzie |
-|---|---|
-| `Satoshi` | nagłówki (H1, H2), duże napisy |
-| `Inter` (Regular / Medium / SemiBold / Bold) | proza, nawigacja, przyciski, etykiety |
+> ⚠ **TABELA PONIŻEJ BYŁA BŁĘDNA I ZOSTAŁA ZASTĄPIONA (2026-08-26,
+> ADR-044). Zostaje jako ślad, bo to na niej stanął ADR-040.**
+>
+> Brzmienie źródłowe: *„`Satoshi` → nagłówki (H1, H2), duże napisy;
+> `Inter` → proza, nawigacja, przyciski, etykiety"*.
+>
+> **Role są odwrotne.** Pomiar CDP (`CSS.getPlatformFontsForNode`)
+> na wzorcu, liczony po elementach niosących tekst:
+
+| rodzina zadeklarowana | elementów | krój faktyczny | gdzie |
+|---|---:|---|---|
+| `Inter` | **137** | Inter Medium [własny] | **H1**, proza, etykiety |
+| `Inter-Medium` | **93** | Inter Medium [własny] | **H2**, nawigacja, przyciski |
+| `Inter-Bold` | **24** | Inter [własny] | nazwiska w opiniach |
+| `Inter-SemiBold` | **3** | Inter SemiBold [własny] | drobne podpisy |
+| **`Satoshi`** | **2** | — | **wyłącznie plakietka** |
+
+**Inter niesie 257 elementów tekstu, Satoshi dwa** — „Get 3 Free month"
+i „on Pro plan", oba **12 px / waga 700 / `#070806`**. To jest ta sama
+plakietka, którą tabela skali niżej opisuje jako „plakietka górna".
+Pierwotny odczyt trafił w Satoshi i **przypisał je do niewłaściwej
+warstwy**.
+
+**Kontrola pozytywna dwójki:** 2 wobec 257, policzone w tym samym
+przebiegu tą samą pętlą — dwójka jest wynikiem, nie zerem narzędzia.
 
 Pliki poszły z sieci jako **7 osobnych żądań `woff2`** — dwa dla kroju
 nagłówkowego (z CDN autora wzorca) i pięć dla `Inter` (z CDN Framera).
@@ -146,20 +167,95 @@ liczba wystąpień, czyli waga danej barwy w kompozycji.
 | `background, box-shadow` | 0 s | `ease` (czyli bez przejścia) |
 | `@keyframes` | **ZERO** | — |
 
-### ⚠ GRANICA POMIARU, nazwana wprost
+### GRANICA POMIARU — BYŁA, ZOSTAŁA ZDJĘTA 2026-08-26
 
-**Styl wyliczony pokazuje tylko ułamek ruchu tej strony i to nie jest
-przeoczenie pomiaru, tylko własność narzędzia, którym zbudowano wzorzec.**
-Framer Motion animuje przez **style nadawane w locie z JavaScriptu**,
-a nie przez `@keyframes` czy `transition` w arkuszu. Zero klatek
-kluczowych przy widocznym ruchu na stronie jest tego dowodem, nie
-sprzecznością.
+Do 2026-08-26 stało tu, że *„czasów, progów scrolla i prędkości marquee
+nie da się odczytać z CSS — trzeba je wyznaczyć z nagrań klatka po
+klatce"*, i że ten pomiar jest **zaplanowany i jeszcze nie wykonany**.
+Diagnoza była trafna: wzorzec animuje stylami nadawanymi z JavaScriptu,
+więc `@keyframes` naprawdę jest zero.
 
-Wniosek wykonawczy: **czasów, progów scrolla i prędkości marquee nie da
-się odczytać z CSS — trzeba je wyznaczyć z nagrań klatka po klatce.**
-Ten pomiar jest zaplanowany i jeszcze nie wykonany; do tego czasu żadna
-liczba o ruchu wzorca nie jest w tym dokumencie podana, bo nie byłaby
-pomiarem, tylko domysłem.
+**Wykonano go inaczej, niż zapowiadano — i to jest ustalenie samo w
+sobie.** Zamiast klatek wideo: **próbkowanie `requestAnimationFrame`
+ze znacznikami czasu**, odczytujące styl wyliczony i prostokąt
+w każdej klatce. Mierzy to, co przeglądarka **naprawdę rysuje**, więc
+obejmuje ruch nadawany z JavaScriptu — a daje liczby, nie oszacowanie
+z dekodowania wideo. Klatka ~16,7 ms.
+
+### ⚠ TRZY RAZY SONDA MIERZYŁA NIE TO, CO TRZEBA — i za każdym razem meldowała ZERO
+
+Zapisane, bo to najgroźniejszy tryb awarii tego pomiaru: **sonda
+celowana zwraca zero tak samo, gdy nic się nie rusza, jak wtedy, gdy
+patrzy nie tam.**
+
+| próba | co zrobiono | wynik | przyczyna |
+| --- | --- | --- | --- |
+| 1 | uchwyt do elementu wzięty RAZ, na starcie | zero | element menu **powstaje** dopiero po kliknięciu; sonda spadła na element zastępczy |
+| 2 | odpytywanie celu co klatkę | zero | pozycja menu pojawia się **gotowa**; ruch był na panelu, nie na niej |
+| 3 | odczyt `transform` marquee | 0 px/s | marquee przesuwa **przodka**, nie mierzony element |
+
+Stąd narzędzie użyte dalej: **skaner**, który nie zgaduje elementu, tylko
+snapshotuje prostokąt, przezroczystość i transform **wszystkich**
+elementów co klatkę i raportuje te, które się zmieniły. Pusta lista
+znaczy wtedy naprawdę pusto — a liczba skanowanych elementów jest
+wypisywana jako kontrola.
+
+### Kontrola negatywna: ruch ciągły przy górze strony
+
+`1200 skanowanych elementów · 91 klatek · **ruchomych 0**` — na **obu**
+kadrach (1440 i 390), bez interakcji. Zero jest tu wynikiem, bo ten sam
+skaner na tej samej stronie po kliknięciu daje 13 elementów ruchomych.
+
+### Menu mobilne — otwarcie (390 px)
+
+Trzy różne czasy w jednym geście, mierzone w jednym przebiegu:
+
+| co | czas | klatek | opis zmiany |
+| --- | ---: | ---: | --- |
+| **panel** | **177,2 ms** | 13 | wysokość nagłówka `80 → 684,8` px |
+| **kreski hamburgera** | **392,8 ms** | 26 | obrót do ±45° (`matrix(0.707…)`), zbieżne do środka |
+| **kreska środkowa** | **610 ms** | 39 | szerokość `24 → 2` px, przezroczystość `1 → 0` |
+
+### Wejście sekcji przy przewijaniu
+
+Mierzone **wyłącznie** na przezroczystości i macierzy transformacji —
+położenie prostokąta zmienia też samo przewinięcie, więc jako miara
+animacji jest artefaktem.
+
+| własność | 1440 px | 390 px |
+| --- | --- | --- |
+| przezroczystość `0 → 1` | **334,9 ms** (21 kl.) | **348,1 ms** (22 kl.) |
+| przesunięcie Y `20 px → 0` | **251,0 ms** (16 kl.) | **266,7 ms** (17 kl.) |
+| skala | **bez zmian** | **bez zmian** |
+
+**Krzywa: wyraźne `ease-out`.** Udział drogi po połowie czasu wynosi
+**0,72–0,76** dla przezroczystości (przy liniowej byłoby 0,50) i
+**0,61–0,68** dla przesunięcia. Zgadza się to z `cubic-bezier(0.2, 0, 0, 1)`
+odczytanym ze stylu wyliczonego — dla niej udział po połowie to ok. 0,79.
+
+**Fade i przesunięcie mają RÓŻNE czasy** (~340 wobec ~260 ms), więc nie
+jest to jedno przejście na dwóch własnościach.
+
+### Marquee — prędkości, wszystkie z regresji liniowej
+
+Prędkość liczona **regresją po wszystkich próbkach**, nie różnicą dwóch
+punktów: różnica nie odróżnia ruchu jednostajnego od zrywanego, a
+marquee restartuje się w pętli — skok wsteczny zafałszowałby wynik.
+Skoki pętli odcinane, brany najdłuższy ciąg monotoniczny.
+
+| pas | 1440 px | 390 px | R² |
+| --- | ---: | ---: | ---: |
+| logotypy | **−75 px/s** | **−75,1 px/s** | **1,0** |
+| opinie, pas górny | **−50 px/s** | **−50 px/s** | **1,0** |
+| opinie, pas dolny | **+50 px/s** | **+50 px/s** | **1,0** |
+
+**R² = 1,0 znaczy ruch idealnie jednostajny** — bez przyspieszania,
+bez zatrzymań. **Prędkości są niezależne od szerokości okna**: te same
+liczby na obu kadrach. Pasy opinii **biegną przeciwnie** względem siebie.
+
+Elementy, które skaner wskazał jako ruchome przy `framer-1j21v3c`
+i `framer-16hwuca`, **marquee NIE SĄ**: regresja daje im ≈ 0 px/s przy
+R² 0,006–0,06, czyli drganie w zakresie 8–29 px, nie przesuw.
 
 ---
 
@@ -167,11 +263,26 @@ pomiarem, tylko domysłem.
 
 Zmierzone przez zwężanie okna od 1600 do 320 px i odczyt H1:
 
-| zakres | H1 | interlinia |
-|---|---|---|
-| **≥ 1440 px** | 70 px | 84 px |
-| **810–1280 px** | **53 px** | 63,6 px |
-| **≤ 768 px** | **34 px** | 40,8 px |
+| zakres | H1 | interlinia | tracking H1 | H2 | interlinia H2 | tracking H2 |
+|---|---|---|---|---|---|---|
+| **≥ 1440 px** | 70 px | 84 px (1,20) | **−3 px** | **60 px** | 72 px (1,20) | −3 px |
+| **810–1280 px** | **53 px** | 63,6 px (1,20) | **−1,6 px** | **42 px** | 50,4 px (1,20) | −1,6 px |
+| **≤ 768 px** | **34 px** | 40,8 px (1,20) | **−1 px** | **38 px** | **53,2 px (1,40)** | **−0,6 px** |
+
+⚠ **UZUPEŁNIONE 2026-08-26 o kolumny tracking i H2** (ADR-044). Pierwsza
+wersja tej tabeli miała wyłącznie H1 i interlinię, a tracking podawała
+jednym zdaniem („−3 px") **zmierzonym tylko przy 1440** — co ADR-041
+wdrożył na wszystkich progach. Pomiar na dziewięciu szerokościach
+(320…1600) pokazuje trzy rzeczy:
+
+1. **Tracking jest progowy** — ani stały w px, ani w em
+   (−3/70 = −0,043em, −1,6/53 = −0,030em, −1/34 = −0,029em).
+2. **H2 nie idzie za H1**: rozmiar spada ×0,63, gdy H1 ×0,49.
+3. **H2 na wąskim kadrze ma interlinię 1,40 i tracking −0,6 px** —
+   jedyne dwa odstępstwa w całej skali nagłówków.
+
+Razem: **na wąskim kadrze nagłówek sekcji jest osobną decyzją
+typograficzną, nie pomniejszonym H1.**
 
 Punkty przełamania: **między 1440 a 1280** oraz **między 810 a 768**.
 Skok 70 → 53 → 34 px jest **skokowy, nie płynny** — wzorzec nie używa
@@ -191,33 +302,82 @@ Nagrania ruchu: **do wykonania razem z pomiarem 0.4**.
 
 ---
 
-## 0.7 MOBILE 390 px — **NIEZMIERZONE, POZYCJA OTWARTA**
+## 0.7 MOBILE 390 px — **ZMIERZONE 2026-08-26** (`WWW/056` pkt 3)
 
-Dopisek do `WWW/050-FINAL` z 2026-08-26 rozszerza KROK 0 o pomiar
-mobilny i **wiąże go z odbiorem KROKU 2**: odbiór obejmuje parę nagrań
-DESKTOP **oraz** parę MOBILE.
+Rozdział powstał 2026-08-26 jako pozycja otwarta i **tego samego dnia
+został wypełniony**. Poniżej pomiar; zapowiedź „do zmierzenia" zdjęta.
 
-**Stan na 2026-08-26: nic z poniższych nie jest zmierzone.** Rozdział
-istnieje po to, żeby brak był widoczny jako brak — pomiar desktopowy
-wyżej jest kompletny w swojej dziedzinie i bez tego rozdziału czytałby
-się jak pomiar wzorca w ogóle. To ta sama klasa co „werdykt obowiązuje
-w swojej zadeklarowanej dziedzinie; poza nią jest milczenie".
+### (a) Nawigacja mobilna
 
-| co | zakres | status |
+**Hamburger JEST.** Kwadrat **32 × 32 px**, prawa strona nagłówka
+(`x = 314` przy kadrze 390), trzy kreski jako trzy elementy potomne.
+
+**Nagłówek strony jest PIGUŁKĄ, nie paskiem** — i to samo na desktopie:
+
+| własność | ≤ 768 px | 810–1280 px | ≥ 1440 px |
+| --- | --- | --- | --- |
+| wcięcie od krawędzi | **20 px** | **40 px** | **120 px** |
+| wysokość | **80 px** | 80 px | 80 px |
+| promień | **50 px** | 50 px | 50 px |
+| tło | `rgba(7, 8, 6, 0.6)` | j.w. | j.w. |
+| rozmycie tła | `blur(10px)` | j.w. | j.w. |
+| pozycja | `relative` — **NIE sticky** | j.w. | j.w. |
+
+Wysokość **80 px na dziewięciu zmierzonych szerokościach, rozrzut zero**.
+
+**Postać otwarcia: panel rozwijany z nagłówka**, nie pełny ekran i nie
+wysuwka z boku. Nagłówek **rośnie w miejscu** z 80 na **684,8 px**
+(177,2 ms), a treść strony zostaje pod nim — nie jest przykryta
+nakładką i **przewijanie strony NIE jest blokowane** (`body overflow`
+pozostaje `visible` w obu stanach).
+
+**Geometria pozycji menu:**
+
+| co | wartość |
+| --- | --- |
+| pierwsza pozycja | `y = 136` px |
+| skok między pozycjami | **84,8 px**, równy dla wszystkich |
+| pismo | **16 px / waga 500**, wyśrodkowane |
+| pozycja bieżąca | limonka `#a0e00d`; pozostałe biel |
+| CTA obrysowe | `y = 548`, **310 × 46,4 px**, promień 50 px |
+| CTA wypełnione | `y = 618,4`, 310 × 46,4 px, tło limonkowe |
+| odstęp między CTA | **24 px** |
+| margines boczny CTA | **40 px** (310 = 390 − 2 × 40) |
+| zamknięcie | krzyżyk w limonce, prawy górny róg |
+
+### (b) Nagrania ruchu — patrz 0.4
+
+Ruch zmierzony **próbkowaniem rAF**, nie klatkami wideo, i **na obu
+kadrach**: wejścia sekcji, marquee i menu mobilne mają w 0.4 liczby dla
+1440 **i** 390. Prędkości marquee i czasy wejść okazały się **niezależne
+od kadru**. Pary nagrań do odbioru KROKU 2 — do wykonania przy STOP-ie.
+
+### (c) Sekcje na 390 px
+
+**Padding boczny sekcji: 135 px na 1440 → 20 px na 390.** To jedyna
+wielkość geometrii, która zmienia się drastycznie z kadrem.
+
+**Rytm pionowy jest niemal niezależny od kadru** — te same warianty
+paddingu góra/dół na obu:
+
+| sekcja | 1440 | 390 |
 | --- | --- | --- |
-| **(a) Nawigacja mobilna** | czy hamburger; postać otwarcia (pełny ekran / wysuwka); czasy animacji **z nagrania**; geometria pozycji menu | do zmierzenia |
-| **(b) Nagrania ruchu 390 px** | wejście, przewijanie, dotknięcia kart i FAQ — wzorzec **i** nasza strona | do zmierzenia |
-| **(c) Sekcje na 390 px** | kolejność składania kolumn, paddingi mobilne, zachowanie marquee, zachowanie hero-mockupu (chowa się czy skaluje) | do zmierzenia |
+| pierwsza po hero | 135 / 0 | **120 / 0** |
+| główna galeria funkcji | 160 / 160 | 160 / 160 |
+| integracje | 0 / 0 | 0 / 135 |
+| cennik | 130 / 160 | 130 / 160 |
+| FAQ | 0 / 160 | 0 / 160 |
+| zamknięcie | 0 / 135 | 0 / 135 |
 
-**Odtworzenie 1:1** dotyczy punktu (a) wprost. Punkty (b) i (c) dają
-liczby do tabel wyżej — dopisywane tam, nie tutaj, żeby nie powstały
-dwa miejsca z tą samą wielkością.
+**Karty i pasy zachowują wewnętrzny padding 10 px na obu kadrach**;
+szerokość karty opinii `1170 → 350` px, karty integracji **304 px na
+obu** — czyli ta akurat karta ma stałą szerokość, nie płynną.
 
-⚠ **Ograniczenie odziedziczone po 0.4:** ruchu wzorca nie zmierzono
-jeszcze klatka po klatce nawet na desktopie. Dopóki to nie nastąpi,
-**żadna liczba czasu trwania nie może być cytowana** — ani desktopowa,
-ani mobilna. Punkt (b) tego dopisku i otwarta część 0.4 to **jedna
-robota**, nie dwie, i tak zostaną wykonane.
+**Dokument rośnie z 10 301 px (1440) do 14 798 px (390)** — ×1,44.
+
+⚠ **Czego ten rozdział NIE mierzy:** zachowania hero-mockupu przy
+zwężaniu (chowa się czy skaluje) — wymaga porównania kadrowania obrazu,
+nie odczytu prostokąta, i zostaje do sekcji hero w KROKU 2.
 
 ## Co ten pomiar ZMIENIA w naszym stanie — cztery rzeczy, nie jedna
 
