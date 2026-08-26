@@ -18,11 +18,13 @@ const KOLEJNOSC = [
   pl.Nawigacja.logowanie,
 ] as const;
 
-// Wyliczony kolor --kolor-rola-fokus = #16181d (paleta „kancelaria",
-// ADR-031, 2026-08-26; poprzednio śliwka-700 #5e4775) — asercja I2:
-// obrys fokusa ma DOKŁADNIE kolor roli fokusa z tokenów, nie jakikolwiek
-// niepusty obrys. Wartość oczekiwana testu, nie wizualna.
-const KOLOR_FOKUSA = "rgb(22, 24, 29)";
+// Wyliczony kolor --kolor-rola-fokus = złoto ciemne #7e6425 (paleta
+// „natura", ADR-032; kolejno: śliwka-700 → #16181d kancelarii → tu).
+// Asercja I2: obrys fokusa ma DOKŁADNIE kolor roli fokusa z tokenów,
+// nie jakikolwiek niepusty obrys. Wartość oczekiwana testu, nie wizualna.
+// Przystanki tego testu leżą w nawigacji, czyli POZA sekcjami z tonem —
+// obowiązuje więc warstwa jasna, nie inwersja.
+const KOLOR_FOKUSA = "rgb(126, 100, 37)";
 
 test("klawiatura: skip-link pierwszy, potem logo → menu → Logowanie; fokus widoczny", async ({
   page,

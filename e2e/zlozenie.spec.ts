@@ -48,10 +48,10 @@ function formatuj(grosze: number, jezyk: keyof typeof WALUTA): string {
 // prowadzi plany w INNEJ kolejności (Pro/Starter/Growth).
 const PLANY = ["Starter", "Growth", "Pro"] as const;
 
-// Wyliczone tło S10: rola-powierzchnia-akcentowa = #dccdac (paleta
-// „kancelaria", ADR-031, 2026-08-26; poprzednio terakota-100 #ffe2da) —
+// Wyliczone tło S10: rola-powierzchnia-akcentowa = #e3d6bc (paleta
+// „natura", ADR-032; kolejno terakota-100 → #dccdac kancelarii → tu) —
 // warunek lustra L1 (DECYZJA 6; handoff Etapu F).
-const KOLOR_LUSTRA = "rgb(220, 205, 172)";
+const KOLOR_LUSTRA = "rgb(227, 214, 188)";
 
 // LUSTRO L1 (test kluczowy): S10 na tle akcentowym; kropka S3
 // („…liczysz…") i kropka S10 („…widzisz…") obecne znak w znak

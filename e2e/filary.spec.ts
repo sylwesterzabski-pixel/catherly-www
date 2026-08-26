@@ -23,12 +23,16 @@ const PRZYPADKI = [
 
 const KLUCZE_FILAROW = ["filar1", "filar2", "filar3", "filar4"] as const;
 
-// Wyliczony kolor --kolor-rola-akcent = mosiądz #9a7b3f (paleta
-// „kancelaria", ADR-031, 2026-08-26) — decyzja wiążąca panelu K4 (a):
-// marker ul jako dekoracja. Poprzednio terakota-500 #e65b3d.
-// Asercja pozostaje na DOKŁADNYM kolorze roli, nie na „jakimkolwiek":
-// zmieniła się wartość decyzji, nie siła strażnika.
-const KOLOR_MARKERA = "rgb(154, 123, 63)";
+// Marker filaru = --kolor-rola-akcent. UWAGA: filary stoją od ADR-032
+// w tonie `data-ton="ciemny-oliwka"`, więc obowiązuje tam WARSTWA
+// INWERSJI — akcent jest przemapowany na --akcent-na-inwersji, czyli
+// złoto jasne #c9a25e. Na warstwie jasnej akcent to #9c7434; ta asercja
+// mierzy marker WEWNĄTRZ sekcji ciemnej, więc oczekuje wartości
+// inwersji. Kolejno: terakota-500 (Etap A) → mosiądz #9a7b3f
+// (kancelaria, ADR-031) → złoto jasne (natura w inwersji, ADR-032).
+// Asercja nadal celuje w DOKŁADNY kolor roli — zmieniła się wartość
+// decyzji i warstwa, nie siła strażnika.
+const KOLOR_MARKERA = "rgb(201, 162, 94)";
 
 for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   test(`filary (${jezyk}): treść z messages i struktura nagłówków na ${adres}`, async ({

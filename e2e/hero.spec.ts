@@ -21,13 +21,13 @@ const PRZYPADKI = [
 ] as const;
 
 // Wyliczone kolory ról CTA (asercja empiryczna jak I2 w klawiatura.spec
-// — dokładny kolor roli, nie „jakikolwiek inny"): spoczynek
-// rola-interakcja = granat #1f3a5f; hover/active rola-interakcja-aktywna
-// = #142a47 (para 14,46:1 wobec białej etykiety — zmierzone 2026-08-26
-// na aff7947). Paleta „kancelaria", ADR-031; poprzednio terakota-600
-// #bb351d i terakota-700 #a21c0a.
-const KOLOR_CTA = "rgb(31, 58, 95)";
-const KOLOR_CTA_AKTYWNY = "rgb(20, 42, 71)";
+// — dokładny kolor roli, nie „jakikolwiek inny"). Kolejno: terakota-600/700
+// (Etap A) → granat kancelarii (ADR-031) → wartości poniżej.
+// ADR-032: hero stoi w tonie `data-ton="ciemny"`, więc CTA bierze rolę
+// z warstwy inwersji — wypełnienie --interakcja-inwersji (złoto #7e6425),
+// hover --akcent-na-inwersji (złoto jasne #c9a25e).
+const KOLOR_CTA = "rgb(126, 100, 37)";
+const KOLOR_CTA_AKTYWNY = "rgb(201, 162, 94)";
 
 for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   test(`hero (${jezyk}): treść z messages, jedyny h1, CTA → /funkcje na ${adres}`, async ({
