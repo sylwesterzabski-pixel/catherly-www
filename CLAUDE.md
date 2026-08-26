@@ -78,14 +78,51 @@ policz je w repozytorium.** Lista podana z pola widzenia jest złym
 podzbiorem, a zły podzbiór wygląda jak komplet.
 
 ## Zakazy bezwzględne
-- Żadnych wzmianek o konkretnych firmach z branży, logotypów, twarzy osób.
+- Żadnych wzmianek o konkretnych firmach z branży ani logotypów.
   Przykłady w UI: neutralne, wymyślone nazwy.
+- **TWARZE — reguła ZMIENIONA 2026-08-26** (decyzja właściciela, zlecenie
+  `WWW/052`; brzmienie źródłowe: *„mogą być z twarzami i ze wszystkim co
+  możliwe, aby strona oddała serce"*). Obowiązuje:
+  **twarze osób WYŁĄCZNIE GENEROWANE — osoby nieistniejące — i każdy kadr
+  zatwierdzany IMIENNIE przez właściciela. Zdjęcia realnych osób: nadal
+  zakaz bezwzględny.**
+  Brzmienie sprzed zmiany, zachowane jako ślad: *„Żadnych wzmianek
+  o konkretnych firmach z branży, logotypów, twarzy osób."*
+  **Czego ta zmiana NIE zdejmuje:** wizerunek realnej osoby to dane
+  osobowe i zgoda — tej granicy decyzja nie rusza i ruszyć nie może.
+  Kadr generowany nie ma podmiotu, który mógłby nie wyrazić zgody; zdjęcie
+  ma. **Dlatego warunek „generowane" jest tu całą treścią reguły, a nie
+  formalnością** — i dlatego zatwierdzenie jest imienne, per kadr, a nie
+  hurtowe na falę.
 - Żadnych zmyślonych liczb, opinii, klientek. Każda liczba pochodzi
   z content/facts.json — literalna liczba w JSX nie przejdzie lintera.
 - Żadnych wartości wizualnych spoza design/tokens.json. Potrzebujesz nowej —
   zaproponuj ADR, nie wyjątek.
-- Żadnych grafik udających interfejs aplikacji. Zrzuty produktu robi
-  wyłącznie Playwright na danych demo.
+- **OBRAZ PRODUKTU — reguła ZMIENIONA 2026-08-26** (decyzja właściciela,
+  zlecenie `WWW/052`; brzmienie źródłowe: *„z mockupów mają wyskakiwać
+  możliwości catherly w 3D"*). Obowiązują **DWIE WARSTWY, ROZDZIELONE**:
+  - **(a) DOWÓD PRODUKTU** — literalne zrzuty **wyłącznie z Playwrighta**
+    na danych demo, bajt w bajt, z sumami SHA-256, dokładnie jak dotąd.
+    Tu nic się nie zmienia.
+  - **(b) DEKORACJA MARKETINGOWA** — stylizowane elementy 3D (świecące
+    panele, karty, wykresy **bez czytelnego tekstu**) są DOZWOLONE jako
+    język wizualny mocy, **pod warunkiem że nie są podpisane ani
+    prezentowane jako zrzut produktu**.
+  Brzmienie sprzed zmiany, zachowane jako ślad: *„Żadnych grafik udających
+  interfejs aplikacji. Zrzuty produktu robi wyłącznie Playwright na danych
+  demo."*
+  **DUCH STAREJ REGUŁY PRZEŻYWA W ROZDZIELENIU, NIE W ZŁAGODZENIU.** Stara
+  reguła broniła jednej rzeczy: żeby odwiedzająca nie wzięła dekoracji za
+  dowód. Nowa broni tego samego innym mechanizmem — **rozdziałem warstw**.
+  Stąd trzy warunki wykonawcze, bez których zmiana staje się furtką:
+  **sekcje `features` trzymają obie warstwy jawnie rozdzielone**, w kodzie
+  widać, który slot jest którą warstwą, a **dekoracja nigdy nie dostaje
+  podpisu sugerującego, że pokazuje produkt**.
+  **Próba, którą stosuje się przy każdym kadrze:** czy odwiedzająca,
+  patrząc na ten obraz, mogłaby uznać, że **tak wygląda aplikacja**?
+  Jeśli tak — to warstwa (a) i obowiązuje Playwright. Czytelny tekst
+  w panelu jest tu granicą rozstrzygającą: **napis, który da się
+  przeczytać, zamienia dekorację w twierdzenie.**
 - Żadnych ciemnych wzorców: brak wymuszania rejestracji, pop-upów,
   liczników pilności, ukrytych cen. Odrzucenie ciasteczek = 1 kliknięcie.
 - Nie pushuj do main. Kończysz pracę wyłącznie przez PR z zielonymi bramkami.
