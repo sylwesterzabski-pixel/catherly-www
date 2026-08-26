@@ -47,6 +47,7 @@ export default async function StronaFunkcjeWyniki({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("FunkcjeWyniki");
+  const tObrazy = await getTranslations("ObrazyFala1");
   const tNawigacja = await getTranslations("Nawigacja");
 
   return (
@@ -81,8 +82,33 @@ export default async function StronaFunkcjeWyniki({ params }: Props) {
             poCo={t(`${klucz}_poco`)}
             granica={t(`${klucz}_nie`)}
             obrazPoLewej={indeks % 2 === 1}
+            /* Kadr A w module 1; kadr B tej podstrony idzie PASEM
+               szerokości niżej, nie w ramce modułu (WWW/045). */
+            obraz={
+              indeks === 0
+                ? { zrodlo: "/obrazy/fala1/wyniki-A-4x5.avif", alt: tObrazy("wynikiA"), szerokosc: 1600, wysokosc: 2133, pierwszy: true }
+                : undefined
+            }
           />
         ))}
+        {/* PAS SZEROKOŚCI — kadr B tej podstrony (WWW/045).
+            <figure> bez <figcaption>: kadr jest DEKORACJĄ (ADR-011),
+            więc nie podpisuje treści i nie niesie informacji, której nie
+            ma w tekście. `alt` opisuje scenę, bo obraz jest widoczny
+            i czytnik ma prawo wiedzieć, co pokazuje — to nie to samo, co
+            aria-hidden na pustej ramce. */}
+        <figure className="pas-obrazu">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/obrazy/fala1/wyniki-B-21x9.avif"
+            alt={tObrazy("wynikiB")}
+            width={1920}
+            height={1080}
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
+          />
+        </figure>
         {/* F8 dwuzdaniowe — rejestr poz. 11 (brief, Uzupełnienie C):
             zdanie Growth VERBATIM, celowo BEZ nazwy „Puls zespołu". */}
         <PlanJednymWierszem

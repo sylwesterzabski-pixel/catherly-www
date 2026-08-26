@@ -226,17 +226,42 @@ test("WARIANT KIERUNKU: #asystent-ai bez slotu zrzutu; 10 modułów z 1 ramką",
   ).toHaveCount(0);
   for (const kotwica of KOTWICE) {
     const modul = page.locator(`section[aria-labelledby="${kotwica}"]`);
-    // Asercja mocna (uwaga 2 adwersarza C): elementy aria-hidden
-    // DOWOLNEGO typu — ukryty <span> obok ramki nie może przejść…
-    await expect(
-      modul.locator('[aria-hidden="true"]'),
-      `moduł DZIAŁA #${kotwica}: dokładnie jeden element aria-hidden`,
-    ).toHaveCount(1);
-    // …a ten jedyny element musi być ramką slotu zrzutu.
-    await expect(
-      modul.locator('div[aria-hidden="true"]'),
-      `moduł DZIAŁA #${kotwica}: tym elementem jest ramka div`,
-    ).toHaveCount(1);
+    /* RAMKA MA DWA STANY (WWW/045) — bliźniacza reguła stoi w
+       e2e/funkcje-podstrony.spec.ts i tam jest pełne uzasadnienie.
+       Pilnowana własność bez zmiany: DOKŁADNIE JEDNA ramka slotu.
+       Zmienia się tylko to, że ramce wolno być wypełnioną kadrem —
+       a kadr widoczny nie może być aria-hidden.
+
+       ⚠ TA REGUŁA ISTNIEJE W DWÓCH PLIKACH i to jest jej słabość:
+       rozszerzenie trzeba było wprowadzić dwa razy, a pierwsze podejście
+       objęło tylko jeden plik i drugi natychmiast zaczerwienił. Zapisane,
+       bo następna zmiana tej reguły trafi na to samo. */
+    const ramkaPusta = modul.locator('div[aria-hidden="true"]');
+    const ramkaZKadrem = modul.locator("div:has(> img)");
+    const pustych = await ramkaPusta.count();
+    const zKadrem = await ramkaZKadrem.count();
+    expect(
+      pustych + zKadrem,
+      `moduł DZIAŁA #${kotwica}: dokładnie jedna ramka slotu (pusta ${pustych} + z kadrem ${zKadrem})`,
+    ).toBe(1);
+    if (pustych === 1) {
+      await expect(
+        modul.locator('[aria-hidden="true"]'),
+        `moduł DZIAŁA #${kotwica}: pusta ramka to JEDYNY element aria-hidden`,
+      ).toHaveCount(1);
+    } else {
+      const obraz = ramkaZKadrem.locator("img");
+      await expect(obraz, `moduł DZIAŁA #${kotwica}: jeden kadr`).toHaveCount(1);
+      const alt = await obraz.getAttribute("alt");
+      expect(
+        (alt ?? "").trim().length,
+        `moduł DZIAŁA #${kotwica}: kadr ma niepusty alt`,
+      ).toBeGreaterThan(0);
+      await expect(
+        modul.locator('[aria-hidden="true"]'),
+        `moduł DZIAŁA #${kotwica}: przy kadrze zero elementów aria-hidden`,
+      ).toHaveCount(0);
+    }
   }
 });
 

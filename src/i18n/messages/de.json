@@ -396,5 +396,15 @@
   },
   "Wspolne": {
     "stronaGlowna": "Startseite"
+  },
+  "ObrazyFala1": {
+    "pozyskA": "Ein Schreibtisch im Morgenlicht: ein Blatt Papier, ein Telefon und eine Tasse Kaffee.",
+    "pozyskB": "Ein Flur zu Hause: ein Mantel an der Tür, eine Tasche auf dem Regal abgestellt.",
+    "tresciA": "Eine Arbeitsecke am Abend: eine brennende Lampe und eine Decke über der Stuhllehne.",
+    "tresciB": "Ein aufgeschlagenes Notizbuch mit Stift, daneben Tasse und Untertasse.",
+    "wynikiA": "Ein Wandkalender mit abgehakten Tagen, darunter ein Regal mit einer Tasse.",
+    "wynikiB": "Ein stiller Raum mit einem Holzstuhl in der Nachmittagssonne.",
+    "zespolA": "Ein gemeinsamer Tisch, dazwischen ein aufgeschlagenes Notizbuch.",
+    "zespolB": "Eine Hand zeigt auf eine Notiz in einem Notizbuch auf einem Holztisch."
   }
 }

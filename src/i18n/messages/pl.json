@@ -396,5 +396,15 @@
   },
   "Wspolne": {
     "stronaGlowna": "Strona główna"
+  },
+  "ObrazyFala1": {
+    "pozyskA": "Biurko w porannym świetle: kartka, telefon i kubek kawy.",
+    "pozyskB": "Wejście do domu: płaszcz na drzwiach, torba odłożona na półce.",
+    "tresciA": "Kącik do pracy wieczorem: zapalona lampa i koc na oparciu krzesła.",
+    "tresciB": "Otwarty notes z piórem, obok filiżanka na spodku.",
+    "wynikiA": "Kalendarz ścienny z odhaczonymi dniami, pod nim półka z kubkiem.",
+    "wynikiB": "Spokojny pokój z drewnianym krzesłem w popołudniowym słońcu.",
+    "zespolA": "Wspólny stół, otwarty notatnik między rozmówcami.",
+    "zespolB": "Dłoń wskazuje zapisek w notesie leżącym na drewnianym stole."
   }
 }

@@ -439,7 +439,7 @@ test("R-AKCENT-03: znaczniki akcentu w parytecie ×3 i tylko w miejscach z decyz
   const pary: Record<string, number> = {};
   for (const { jezyk, komunikaty } of PRZYPADKI) {
     for (const klucz of Z_AKCENTEM) {
-      const wartosc = (komunikaty as Record<string, Record<string, string>>)[klucz]
+      const wartosc = (komunikaty as unknown as Record<string, Record<string, string>>)[klucz]
         .naglowek;
       const w = sprawdzZnaczniki(wartosc);
       expect(w.poprawny, `${jezyk}/${klucz}: zapis znaczników (${w.powod ?? ""})`).toBe(
@@ -449,7 +449,7 @@ test("R-AKCENT-03: znaczniki akcentu w parytecie ×3 i tylko w miejscach z decyz
       pary[`${klucz}`] = (pary[`${klucz}`] ?? 0) + w.pary;
     }
     for (const klucz of BEZ_AKCENTU) {
-      const grupa = (komunikaty as Record<string, Record<string, string>>)[klucz];
+      const grupa = (komunikaty as unknown as Record<string, Record<string, string>>)[klucz];
       if (!grupa?.naglowek) continue;
       expect(
         sprawdzZnaczniki(grupa.naglowek).pary,

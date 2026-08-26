@@ -72,3 +72,19 @@
     order: 1;
   }
 }
+
+/* Kadr dekoracyjny w ramce modułu (fala 1, ADR-011).
+   Ramka ZACHOWUJE proporcję 16/10 — to jest rezerwa CLS, która stała
+   tu od briefu K12 i której nie wolno zdjąć razem z wypełnieniem jej
+   treścią. Kadry fali 1 są pionowe (3:4), więc `object-fit: cover`
+   kadruje je do ramki: układ nie drgnie, a przycięcie jest świadome
+   i odnotowane w manifeście. Alternatywa — proporcja ramki równa
+   proporcji pliku — dawałaby na 390 px kolumnę obrazu wyższą niż kadr
+   telefonu. */
+.obraz img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}

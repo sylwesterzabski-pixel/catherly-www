@@ -396,5 +396,15 @@
   },
   "Wspolne": {
     "stronaGlowna": "Home page"
+  },
+  "ObrazyFala1": {
+    "pozyskA": "A desk in morning light: a sheet of paper, a phone and a mug of coffee.",
+    "pozyskB": "A hallway at home: a coat on the door, a bag set down on the shelf.",
+    "tresciA": "An evening work corner: a lit lamp and a blanket over the chair back.",
+    "tresciB": "An open notebook with a pen, a cup and saucer beside it.",
+    "wynikiA": "A wall calendar with days ticked off, a shelf with a mug beneath it.",
+    "wynikiB": "A quiet room with a wooden chair in the afternoon sun.",
+    "zespolA": "A shared table, an open notebook between the people at it.",
+    "zespolB": "A hand pointing at a note in a notebook on a wooden table."
   }
 }

@@ -459,18 +459,53 @@ for (const podstrona of PODSTRONY) {
         continue;
       }
       const modul = page.locator(`section[aria-labelledby="${kotwica}"]`);
-      // Asercja mocna (uwaga 2 adwersarza C): liczymy elementy
-      // aria-hidden DOWOLNEGO typu — inaczej ukryty <span> obok ramki
-      // byłby niewidzialny dla strażnika…
-      await expect(
-        modul.locator('[aria-hidden="true"]'),
-        `moduł DZIAŁA #${kotwica}: dokładnie jeden element aria-hidden`,
-      ).toHaveCount(1);
-      // …a ten jedyny element musi być ramką slotu zrzutu.
-      await expect(
-        modul.locator('div[aria-hidden="true"]'),
-        `moduł DZIAŁA #${kotwica}: tym elementem jest ramka div`,
-      ).toHaveCount(1);
+      /* RAMKA MA DWA STANY, NIE JEDEN (rozszerzone 2026-08-26, WWW/045).
+         Do tej doby ramka slotu była ZAWSZE pusta i aria-hidden, więc
+         strażnik liczył elementy aria-hidden. Od fali 1 część modułów
+         niesie w tej ramce kadr dekoracyjny — a kadr WIDOCZNY nie może
+         być aria-hidden, bo czytnik ma prawo wiedzieć, co pokazuje.
+
+         WŁASNOŚĆ PILNOWANA JEST TA SAMA: moduł ma DOKŁADNIE JEDNĄ ramkę
+         slotu. Zmienia się tylko to, że ramka wolno jej być wypełnioną.
+         Osłabieniem byłoby przestać liczyć ramki albo dopuścić dowolną
+         ich liczbę; tu liczba dalej wynosi jeden, a stan ramki jest
+         sprawdzany JAWNIE w obu wariantach.
+
+         Zachowana zostaje też uwaga 2 adwersarza C: przy ramce PUSTEJ
+         dalej liczymy elementy aria-hidden DOWOLNEGO typu, więc ukryty
+         <span> obok ramki nadal jest widzialny dla strażnika. */
+      const ramkaPusta = modul.locator('div[aria-hidden="true"]');
+      const ramkaZKadrem = modul.locator("div:has(> img)");
+      const pustych = await ramkaPusta.count();
+      const zKadrem = await ramkaZKadrem.count();
+      expect(
+        pustych + zKadrem,
+        `moduł DZIAŁA #${kotwica}: dokładnie jedna ramka slotu (pusta ${pustych} + z kadrem ${zKadrem})`,
+      ).toBe(1);
+      if (pustych === 1) {
+        await expect(
+          modul.locator('[aria-hidden="true"]'),
+          `moduł DZIAŁA #${kotwica}: pusta ramka to JEDYNY element aria-hidden`,
+        ).toHaveCount(1);
+      } else {
+        /* Ramka z kadrem: dokładnie jeden obraz, alt NIEPUSTY i NIE
+           aria-hidden. Pusty alt przy widocznym kadrze byłby ukryciem
+           treści przed czytnikiem, a nie dekoracją. */
+        const obraz = ramkaZKadrem.locator("img");
+        await expect(
+          obraz,
+          `moduł DZIAŁA #${kotwica}: dokładnie jeden kadr w ramce`,
+        ).toHaveCount(1);
+        const alt = await obraz.getAttribute("alt");
+        expect(
+          (alt ?? "").trim().length,
+          `moduł DZIAŁA #${kotwica}: kadr ma niepusty alt`,
+        ).toBeGreaterThan(0);
+        await expect(
+          modul.locator('[aria-hidden="true"]'),
+          `moduł DZIAŁA #${kotwica}: przy kadrze zero elementów aria-hidden`,
+        ).toHaveCount(0);
+      }
     }
   });
 

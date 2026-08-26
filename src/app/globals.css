@@ -424,3 +424,24 @@ html {
 .akcent-naglowka {
   color: var(--kolor-rola-akcent);
 }
+
+/* PAS OBRAZU — kadr dekoracyjny pełnej szerokości (fala 1, WWW/045).
+   Proporcja wpisana WPROST, żeby przeglądarka zarezerwowała miejsce
+   przed pobraniem pliku: bez tego pas wchodzi w układ dopiero po
+   dociągnięciu i spycha treść pod nim, czyli dokładnie CLS, którego
+   pilnuje bramka (próg 0,1). `object-fit: cover` pozwala pasowi zostać
+   pasem także wtedy, gdy plik ma inną proporcję niż nazwa slotu —
+   a tak jest: `wyniki-B-21x9` to w rzeczywistości 1920×1080, czyli
+   16:9, co odnotowano w manifeście. */
+.pas-obrazu {
+  margin: 0;
+  inline-size: 100%;
+}
+
+.pas-obrazu img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}

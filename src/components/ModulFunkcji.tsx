@@ -15,6 +15,18 @@ type Props = {
    *  parzyste obraz po lewej); na 390 px zawsze tekst nad obrazem
    *  (order tylko ≥48rem). */
   obrazPoLewej?: boolean;
+  /** Kadr dekoracyjny fali 1 (ADR-011: warstwa dekoracyjna, NIGDY
+   *  pseudo-zrzut). Bez propu ramka zostaje pusta i aria-hidden —
+   *  dokładnie jak przed dostawą. */
+  obraz?: {
+    zrodlo: string;
+    alt: string;
+    szerokosc: number;
+    wysokosc: number;
+    /** Pierwszy kadr na podstronie ładuje się zachłannie (zlecenie
+     *  WWW/045: „pierwszy obraz na podstronie: eager"). */
+    pierwszy?: boolean;
+  };
 };
 
 /**
@@ -32,6 +44,7 @@ export function ModulFunkcji({
   poCo,
   granica,
   obrazPoLewej = false,
+  obraz,
 }: Props) {
   const klasyUkladu = obrazPoLewej
     ? `${styles.uklad} ${styles.obrazPoLewej}`
@@ -47,7 +60,27 @@ export function ModulFunkcji({
             <p className={styles.poCo}>{poCo}</p>
             <p className={styles.granica}>{granica}</p>
           </div>
-          <div className={styles.obraz} aria-hidden="true" />
+          {obraz === undefined ? (
+            <div className={styles.obraz} aria-hidden="true" />
+          ) : (
+            <div className={styles.obraz}>
+              {/* Surowy <img>, nie next/image — z tego samego powodu co
+                  przy zrzutach filarów: optymalizator przekodowuje plik
+                  na żądanie, więc na produkcji lądowałby obraz o innej
+                  sumie niż ten z manifestu. Tu idą dokładnie te bajty,
+                  które przeszły weryfikację SHA-256. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={obraz.zrodlo}
+                alt={obraz.alt}
+                width={obraz.szerokosc}
+                height={obraz.wysokosc}
+                loading={obraz.pierwszy ? "eager" : "lazy"}
+                decoding="async"
+                fetchPriority={obraz.pierwszy ? "high" : "low"}
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

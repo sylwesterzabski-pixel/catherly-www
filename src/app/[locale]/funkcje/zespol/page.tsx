@@ -47,6 +47,7 @@ export default async function StronaFunkcjeZespol({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("FunkcjeZespol");
+  const tObrazy = await getTranslations("ObrazyFala1");
   const tNawigacja = await getTranslations("Nawigacja");
 
   return (
@@ -81,6 +82,16 @@ export default async function StronaFunkcjeZespol({ params }: Props) {
             poCo={t(`${klucz}_poco`)}
             granica={t(`${klucz}_nie`)}
             obrazPoLewej={indeks % 2 === 1}
+            /* Para kadrów fali 1: moduł 1 i moduł 4. Rozstawione, żeby
+               nie stały obok siebie; pierwszy ładuje się zachłannie
+               (zlecenie WWW/045), reszta leniwie. */
+            obraz={
+              indeks === 0
+                ? { zrodlo: "/obrazy/fala1/zespol-A-4x5.avif", alt: tObrazy("zespolA"), szerokosc: 1600, wysokosc: 2133, pierwszy: true }
+                : indeks === 3
+                  ? { zrodlo: "/obrazy/fala1/zespol-B-4x5.avif", alt: tObrazy("zespolB"), szerokosc: 1600, wysokosc: 2133 }
+                  : undefined
+            }
           />
         ))}
         {/* F8 wieloczęściowy — rejestr poz. 11 (brief, Uzupełnienie C):

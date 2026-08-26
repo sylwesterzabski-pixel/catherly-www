@@ -183,6 +183,26 @@ for (const plik of pliki) {
   for (const m of html.matchAll(/href="(\/[^"#?]*)/g)) {
     const cel = m[1] === "/" ? "/" : m[1].replace(/\/$/, "");
     if (cel.startsWith("/_next")) continue;
+    /* ZASÓB STATYCZNY TO NIE TRASA (dopisane 2026-08-26, WWW/045).
+       Ta pętla zakładała, że każdy `href="/…"` wskazuje adres z rejestru,
+       i było to prawdą dopóki żaden zasób nie trafiał do `href`. React 19
+       emituje `<link rel="preload" href="/obrazy/…">` dla obrazu ładowanego
+       zachłannie — plik LEŻY w `public/`, więc zgłoszenie go jako martwego
+       linku było FAŁSZYWYM ALARMEM, nie wykryciem.
+       Sprawdzenie zostaje SPRAWDZENIEM, nie wyjątkiem: cel musi istnieć
+       na dysku pod `public/`. Zmyślona ścieżka do zasobu daje czerwień —
+       zmierzone mutacją 2026-08-26: `/obrazy/fala1/NIE-ISTNIEJE.avif`
+       zapaliło bramkę w trzech językach naraz.
+
+       ⚠ ZASIĘG WĘŻSZY, NIŻ SIĘ WYDAJE — i wyszedł dopiero z pomiaru.
+       Ta pętla czyta WYŁĄCZNIE `href`, a obrazy trafiają do `href` tylko
+       wtedy, gdy React wystawi im `<link rel="preload">` — czyli przy
+       ładowaniu ZACHŁANNYM. Kadr `loading="lazy"` nie ma tu żadnego
+       śladu i zmyślona ścieżka w nim PRZEJDZIE BEZ SŁOWA: pierwsza próba
+       mutacji poszła właśnie na taki kadr i bramka została zielona.
+       Kadry leniwe pilnuje zamiast tego suita e2e (istnienie i niepusty
+       `alt`) — ale nie ta bramka i nie tutaj. */
+    if (existsSync(join(ROOT, "public", cel.replace(/^\//, "")))) continue;
     if (!zywe.has(cel)) {
       console.error(
         `✗ ${relative(ROOT, plik)} — martwy link wewnętrzny: ${m[1]}`,
