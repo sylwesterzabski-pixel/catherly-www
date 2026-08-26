@@ -73,10 +73,10 @@ zgłoszenia widzisz w aplikacji.
 ### PO CO TO
 
 Terminy rozmów nie muszą siedzieć w twojej głowie. Planujesz
-kontakty w kalendarzu, a 30 minut przed każdą rozmową Catherly
-przypomina ci o niej.
+kontakty w kalendarzu, a w ostatnich 30 minutach przed rozmową
+Catherly przypomina ci o niej.
 
-*(„30 minut" — facts.json: przypomnienie-kalendarza-minuty, D-B3)*
+*(„30 minutach" — facts.json: przypomnienie-kalendarza-minuty, D-B3)*
 
 ### CZEGO NIE ROBI
 

@@ -32,7 +32,7 @@ z własnej ręki.** Drzewo czyste, zdalny zsynchronizowany, zero niewypchniętyc
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
 3. `docs/faza-2/rejestr-warunkow-powrotu.md` (463 linie, stan 2026-08-24) — 24 pozycje treści
-   + **48** pozycji technicznych **T1–T48** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
+   + **49** pozycji technicznych **T1–T49** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -1882,6 +1882,78 @@ kopii-recepty. **Zero pracy do wykonania.**
 
 ---
 
+### 4.26 A-16 na stronie — dwanaście miejsc, i trzynaste znalezione (`WWW/034`)
+
+**Materiał:** `docs/redakcja/MATERIAL-A16-PRZEDZIAL.md` (przyszedł importem
+`WWW/024`, grupa 1). **Wariant B** — A odrzucony jako czytelny odwrotnie,
+C jako wywracający bramkę `podstawMinuty`.
+
+**Brzmienie kanoniczne z rzeczownikiem właściwym stronie** (`rozmowa` /
+`conversation` / `Gespräch`, nie `spotkanie` jak w aplikacji):
+
+| | przed | po |
+|---|---|---|
+| **PL** | `{minuty} minut przed każdą rozmową` | `w ostatnich {minuty} minutach przed rozmową` |
+| **EN** | `{minuty} minutes before each conversation` | `within the last {minuty} minutes before the conversation` |
+| **DE** | `{minuty} Minuten vor jedem Gespräch` | `in den letzten {minuty} Minuten vor dem Gespräch` |
+
+Zmiana usuwa **obie** wady z materiału: **W1** (liczba punktowa tam, gdzie
+mechanizm daje przedział) i **W2** („każdą / each / jedem" jest bezwarunkowe,
+a mechanizm ma budżet i przypomnienie może przepaść).
+
+**Dwanaście miejsc — sześć w `messages`, sześć w `content/`, jeden commit**
+(inaczej strażnicy porównujący znak w znak dają czerwień):
+
+| # | plik | miejsce |
+|---|---|---|
+| 1–3 | `src/i18n/messages/{pl,en,de}.json` | `FunkcjePozyskiwanie.mod2_poco` |
+| 4–6 | `src/i18n/messages/{pl,en,de}.json` | `DlaKogo.s1_robi_1` |
+| 7–9 | `content/{pl,en,de}/funkcje-pozyskiwanie.md` | akapit „PO CO TO" |
+| 10–12 | `content/{pl,en,de}/dla-kogo.md` | akapit „CO CATHERLY Z TYM ROBI" |
+
+Plus dwie adnotacje `*(„30 minut" — facts.json…)*` w plikach PL doprowadzone
+do zgodności z nowym brzmieniem („30 minutach").
+
+**Łańcuch równości utrzymany i wydłużony** — wspólny sufiks obu kluczy,
+zmierzony po zmianie: **PL 75 znaków** (było 66), **EN 88** (73), **DE 84**
+(71). Zmiana jednego klucza bez drugiego rozbiłaby łańcuch; oba poszły razem.
+
+**Dowody:** `liczby`, `parytet`, `kontrakt`, `tokeny`, `deklaracje` — zielone;
+`npm run build` kod 0; **`e2e/dla-kogo.spec.ts` + `e2e/funkcje-pozyskiwanie.spec.ts`
+→ 51 passed**, w tym oba strażniki porównujące znak w znak po podstawieniu
+`{minuty}`.
+
+**Kontrola punktu 3 — z poprawką własnej metody.** Pierwsza wersja kontroli
+dawała 1 dla EN i DE, i **to był artefakt regexu, nie pozostałość**: wzorzec
+`30 (minutes|Minuten) (before|vor)` łapie także **nową** frazę okna („within
+the last 30 minutes before…"). Kontrola precyzyjna, rozdzielająca konstrukcję
+starą od nowej: **stara — 0 we wszystkich sześciu plikach**, nowa (okno) —
+**1 w każdym**. W `messages` punktowych `30` jest **0**, `{minuty}` **2** na
+język. Fraza „każdą / each / jedem" **zniknęła ze wszystkich zmienionych
+miejsc**.
+
+⚠ **T49 — TRZYNASTE MIEJSCE, POZA INWENTARZEM MATERIAŁU.**
+`content/tabela-obietnic.md:37` niesie wciąż: *„dostajesz przypomnienie
+**30 minut przed każdą rozmową**"* — czyli **obie wady, które właśnie
+usunęliśmy**. Materiał policzył dwanaście **dla dwóch KLUCZY**, a tabela
+obietnic powtarza to twierdzenie **prozą, bez klucza**, więc wypadła
+z zapytania — ta sama klasa „złego podzbioru" co T47, tylko po stronie
+nadawcy materiału.
+
+**Nie ruszam — poza zakresem zlecenia** (zakaz 8). **Ale zgłaszam z wagą, nie
+jako porządek:** `tabela-obietnic.md` jest plikiem, **którego zadaniem jest
+wyliczać obietnice**, a obietnice to jeden z czterech obszarów nieodwracalnych
+ADR-018. **Do 2026-08-26 strona mówiła nieprawdę SPÓJNIE; od tej zmiany mówi
+nieprawdę w jednym miejscu i prawdę w sześciu** — a stan rozjechany jest
+trudniejszy do zauważenia niż błędny, bo każde miejsce z osobna wygląda na
+przemyślane. Poprawka jest **dwuczłonowa** (nazwa kolumny i opis) i plik czyta
+`scripts/lint-liczby.mjs`.
+
+**Nie tknięte, zgodnie z §4 zlecenia:** tabela `/cennik`, D-1/D-2, cokolwiek
+z redakcji `O-*`.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -1922,7 +1994,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T48. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T49. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -2686,7 +2758,7 @@ liczba zamiast pomiaru:**
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T48
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T49
 - `docs/faza-2/mapa-klas-straznikow.md` — **NOWY 2026-08-26**; mapa pokrycia
   klas wad strażnikami. Pierwsza klasa: **liczebność ze zbioru kontra
   liczebność z decyzji**. **Nie jest źródłem reguł** — szczebel 7, deklaruje
@@ -2863,7 +2935,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
   linii pracy (T2, T10, T20–T40); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T48 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  24 pozycji treści i T1–T49 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -2925,7 +2997,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T48)
+### 15.2 Pozycje techniczne i procesowe (T1–T49)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.

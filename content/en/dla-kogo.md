@@ -47,7 +47,7 @@ Every morning you decide from scratch where to start: your notes are on your pho
 
 ### CO CATHERLY Z TYM ROBI — akapit 1
 
-You set the order of your conversations in the Daily Action Plan — you start the day with something concrete instead of hesitating. You put your conversation dates into the calendar with reminders — 30 minutes before each conversation Catherly reminds you about it.
+You set the order of your conversations in the Daily Action Plan — you start the day with something concrete instead of hesitating. You put your conversation dates into the calendar with reminders — within the last 30 minutes before the conversation Catherly reminds you about it.
 
 **Linki:** „Daily Action Plan" → /funkcje/pozyskiwanie#dmo ·
 „calendar with reminders" → /funkcje/pozyskiwanie#kalendarz

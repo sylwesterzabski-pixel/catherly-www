@@ -50,13 +50,13 @@ nie masz pewności, czy o kimś ważnym nie zapomniałaś.
 
 Kolejność rozmów układasz w Dziennym Planie Działania — dzień zaczynasz
 od konkretu, nie od zastanawiania się. Terminy rozmów wpisujesz do
-kalendarza z przypomnieniami — 30 minut przed każdą rozmową Catherly
-przypomina ci o niej.
+kalendarza z przypomnieniami — w ostatnich 30 minutach przed rozmową
+Catherly przypomina ci o niej.
 
 **Linki:** „Dziennym Planie Działania" → /funkcje/pozyskiwanie#dmo ·
 „kalendarza z przypomnieniami" → /funkcje/pozyskiwanie#kalendarz
 
-*(„30 minut" wyłącznie komponentem liczby z content/facts.json —
+*(„30 minutach" wyłącznie komponentem liczby z content/facts.json —
 przypomnienie-kalendarza-minuty; literał w JSX nie przejdzie lintera)*
 
 ### CO CATHERLY Z TYM ROBI — akapit 2

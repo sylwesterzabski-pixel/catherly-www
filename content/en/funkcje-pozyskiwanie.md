@@ -76,8 +76,8 @@ submissions in the app.
 ### PO CO TO
 
 Your conversation dates don’t have to live in your head. You plan
-contacts in the calendar, and 30 minutes before each conversation
-Catherly reminds you about it.
+contacts in the calendar, and within the last 30 minutes before the
+conversation Catherly reminds you about it.
 
 ### CZEGO NIE ROBI
 

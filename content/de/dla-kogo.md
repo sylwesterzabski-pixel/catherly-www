@@ -47,7 +47,7 @@ Morgens entscheidest du wieder neu, womit du anfängst: Die Notizen liegen im Ha
 
 ### CO CATHERLY Z TYM ROBI — akapit 1
 
-Die Reihenfolge deiner Gespräche legst du im Täglichen Aktionsplan fest – dein Tag beginnt mit etwas Konkretem, ohne langes Überlegen. Deine Gesprächstermine trägst du in den Kalender mit Erinnerungen ein, und 30 Minuten vor jedem Gespräch erinnert Catherly dich daran.
+Die Reihenfolge deiner Gespräche legst du im Täglichen Aktionsplan fest – dein Tag beginnt mit etwas Konkretem, ohne langes Überlegen. Deine Gesprächstermine trägst du in den Kalender mit Erinnerungen ein, und in den letzten 30 Minuten vor dem Gespräch erinnert Catherly dich daran.
 
 **Linki:** „Täglichen Aktionsplan" → /funkcje/pozyskiwanie#dmo ·
 „Kalender mit Erinnerungen" → /funkcje/pozyskiwanie#kalendarz

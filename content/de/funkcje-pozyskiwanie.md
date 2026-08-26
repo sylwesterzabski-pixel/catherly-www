@@ -74,8 +74,8 @@ ausgefüllte Anmeldungen siehst du in der App.
 ### PO CO TO
 
 Gesprächstermine musst du nicht im Kopf behalten. Du planst deine
-Kontakte im Kalender, und 30 Minuten vor jedem Gespräch erinnert
-Catherly dich daran.
+Kontakte im Kalender, und in den letzten 30 Minuten vor dem Gespräch
+erinnert Catherly dich daran.
 
 ### CZEGO NIE ROBI
 
