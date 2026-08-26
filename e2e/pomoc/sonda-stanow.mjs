@@ -206,7 +206,29 @@ function sondaWezla(el) {
       }
     }
     if (i < 0) return { kolor: null, obraz: false, brakStosu: true };
-    const warstwy = stos.slice(wlacznie ? i : i + 1);
+    const wszystkie = stos.slice(wlacznie ? i : i + 1);
+
+    /* STOS OBCIĘTY DO WARSTW, KTÓRE WIDAĆ (ADR-033, krok 2 z WWW/041).
+       Do 2026-08-26 pomiar oznaczał `obraz: true`, gdy gradient miała
+       JAKAKOLWIEK warstwa stosu — także taka, którą całkowicie zasłania
+       warstwa nieprzezroczysta nad nią. Skutek był nadmiarowy i kosztowny:
+       poświata w sekcji zamknięcia unieważniała pomiar etykiety CTA, choć
+       etykieta leży na pełnym, nieprzezroczystym wypełnieniu przycisku
+       i gradientu pod nim nie widać ani jednym pikselem.
+
+       Warstwa bez obrazu i z alfą 1 zasłania wszystko pod sobą, więc
+       wszystko pod nią jest dla pikseli bez znaczenia. Szukamy jej od
+       góry i tam ucinamy stos. To NIE jest złagodzenie pomiaru — to
+       usunięcie z niego warstw, których w renderze nie ma. */
+    let dno = wszystkie.length - 1;
+    for (let k = 0; k < wszystkie.length; k++) {
+      const cs = getComputedStyle(wszystkie[k]);
+      const maObraz = cs.backgroundImage && cs.backgroundImage !== "none";
+      const b = naRgb(cs.backgroundColor);
+      if (!maObraz && b && b[3] === 1) { dno = k; break; }
+    }
+    const warstwy = wszystkie.slice(0, dno + 1);
+
     let obraz = false;
     let kolor = [255, 255, 255, 1]; // kanwa przeglądarki pod wszystkim
     for (let k = warstwy.length - 1; k >= 0; k--) {
@@ -600,6 +622,12 @@ export function ocenElement(trasa, kadr, pomiary) {
             selektor: naj.gdzie,
             powod: "tło pod śladem fokusa nieoznaczalne",
             probka: "ślad fokusa",
+            /* Dane do rozstrzygnięcia rastrem (ADR-033, krok 2): barwa,
+               której szukamy na tle, selektor do odnalezienia elementu
+               i próg, wobec którego zapadnie werdykt. */
+            rysunek: naj.slad?.kolor ? [naj.slad.kolor] : [],
+            selektorElementu: m.selektor,
+            prog: PROGI.ui,
           });
         } else {
           const k = kontrast(naj.slad.kolor, naj.tlo);
@@ -643,6 +671,17 @@ export function ocenElement(trasa, kadr, pomiary) {
           selektor: m.selektor,
           powod: "obraz/gradient pod granicą kontrolki",
           probka: "granica",
+          /* Składniki rysunku kontrolki — wypełnienie, krawędzie, ślad.
+             Rastrowe rozstrzygnięcie bierze NAJMOCNIEJSZY z nich wobec
+             każdej próbki tła, tak samo jak gałąź mierzalna wyżej:
+             użytkownikowi wystarczy jeden widoczny nośnik granicy. */
+          rysunek: [
+            m.wypelnienieZlozone,
+            ...m.krawedzie.filter((k) => k.szerokosc > 0 && k.styl !== "none" && k.kolor).map((k) => k.kolor),
+            m.slad?.kolor,
+          ].filter(Boolean),
+          selektorElementu: m.selektor,
+          prog: PROGI.ui,
         });
       } else {
         const maWypelnienie = zapis(m.wypelnienieZlozone) !== zapis(m.zaKontrolka);
@@ -669,4 +708,150 @@ export function ocenElement(trasa, kadr, pomiary) {
   }
 
   return { naruszenia, nieoznaczalne };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ROZSTRZYGANIE RASTREM — dla elementów nad tłem NIEJEDNOLITYM
+   (ADR-033, krok 2 zlecenia WWW/041).
+
+   PO CO. Sonda składa tło ze stylu wyliczonego. Gdy nad elementem stoi
+   gradient albo obraz, składanie nie ma czego policzyć i pomiar wypada
+   jako NIEOZNACZALNY — ani zielony, ani czerwony. To uczciwe, ale
+   kosztowne: poświata w hero i zamknięciu zdejmowała werdykt z granicy
+   CTA konwersji i ze śladu fokusa na KAŻDEJ trasie, bo stopka jest
+   wszędzie. Rozstrzygnięcie właściciela: naprawiamy POMIAR, nie scenę.
+
+   JAK. Zamiast liczyć tło z deklaracji, czytamy je z RENDERU: zrzut
+   otoczenia elementu, próbki piksela na pierścieniu tuż poza jego
+   ramką, kontrast każdego składnika rysunku wobec KAŻDEJ próbki.
+   Werdykt zapada z NAJGORSZEJ próbki — bo granica ma być widoczna na
+   całym obwodzie, a nie średnio.
+
+   ZAŁOŻENIE, WYPISANE, BO JEST ZAŁOŻENIEM: tło POD kontrolką nie zmienia
+   się razem z jej własnym stanem, więc próbki pobieramy raz na element
+   i zestawiamy z barwami rysunku ze wszystkich stanów. Reguły postaci
+   „X:hover Y", które mogłyby to złamać, są osobno pilnowane przez
+   `skanerRegulStanu` — dziś nie istnieje ani jedna.
+
+   CZEGO TA METODA NIE ROBI: nie próbkuje wnętrza elementu (od tekstu na
+   gradiencie jest gałąź tekstowa, która po naprawie składania stosu ma
+   już czym mierzyć), nie wykrywa animacji tła w czasie i nie zastępuje
+   oceny okiem przy obrazach fotograficznych o dużej wariancji. */
+
+const PROMIEN_PROBKI = 3;   // px poza ramką — tam pada obwódka przy offsecie 2
+const LICZBA_PROBEK = 40;   // punktów na obwodzie
+const MARGINES_ZRZUTU = 10; // px zapasu wokół ramki
+
+/**
+ * Rozstrzyga rastrem pozycje NIEOZNACZALNE, które niosą dane rysunku.
+ * @param {import("@playwright/test").Page} page
+ * @param {any[]} nieoznaczalne
+ * @returns {Promise<{naruszenia: any[], nadalNieoznaczalne: any[], rozstrzygniete: number}>}
+ */
+export async function rozstrzygnijRastrem(page, nieoznaczalne) {
+  const sharp = (await import("sharp")).default;
+  const naruszenia = [];
+  const nadalNieoznaczalne = [];
+  const probkiElementu = new Map(); // selektor → próbki tła (raz na element)
+  let rozstrzygniete = 0;
+
+  for (const poz of nieoznaczalne) {
+    if (!poz.rysunek?.length || !poz.selektorElementu) {
+      nadalNieoznaczalne.push(poz);
+      continue;
+    }
+
+    let probki = probkiElementu.get(poz.selektorElementu);
+    if (probki === undefined) {
+      probki = await pobierzProbkiTla(page, sharp, poz.selektorElementu);
+      probkiElementu.set(poz.selektorElementu, probki);
+    }
+    if (!probki || probki.length === 0) {
+      nadalNieoznaczalne.push({ ...poz, powod: poz.powod + " (raster: nie udało się pobrać próbek)" });
+      continue;
+    }
+
+    /* Najgorsza próbka: dla każdej liczymy NAJMOCNIEJSZY składnik rysunku,
+       a potem bierzemy najsłabszy z tych wyników po całym obwodzie. */
+    let najgorszy = Infinity;
+    let najgorszaProbka = null;
+    for (const t of probki) {
+      const najmocniejszy = Math.max(...poz.rysunek.map((c) => kontrast(c, t)));
+      if (najmocniejszy < najgorszy) {
+        najgorszy = najmocniejszy;
+        najgorszaProbka = t;
+      }
+    }
+
+    rozstrzygniete++;
+    if (najgorszy < poz.prog) {
+      naruszenia.push({
+        trasa: poz.trasa,
+        kadr: poz.kadr,
+        stan: poz.stan,
+        typ: poz.probka === "granica" ? "granica-raster" : "fokus-raster",
+        selektor: poz.selektor,
+        opis: `rysunek na tle niejednolitym (${zapis(najgorszaProbka)} — najgorsza z ${probki.length} próbek)`,
+        wartosc: +najgorszy.toFixed(2),
+        prog: poz.prog,
+        szczegol: `pomiar z renderu, ${probki.length} próbek na obwodzie`,
+      });
+    }
+  }
+  return { naruszenia, nadalNieoznaczalne, rozstrzygniete };
+}
+
+/** Próbki tła z renderu, na pierścieniu tuż poza ramką elementu. */
+async function pobierzProbkiTla(page, sharp, selektor) {
+  let el;
+  try {
+    el = page.locator(selektor).first();
+    if ((await el.count()) === 0) return null;
+    await el.scrollIntoViewIfNeeded({ timeout: 2000 });
+  } catch { return null; }
+
+  const r = await el.boundingBox();
+  if (!r || r.width <= 0 || r.height <= 0) return null;
+
+  const wycinek = {
+    x: Math.max(0, Math.floor(r.x - MARGINES_ZRZUTU)),
+    y: Math.max(0, Math.floor(r.y - MARGINES_ZRZUTU)),
+    width: Math.ceil(r.width + 2 * MARGINES_ZRZUTU),
+    height: Math.ceil(r.height + 2 * MARGINES_ZRZUTU),
+  };
+
+  let dane, info;
+  try {
+    const buf = await page.screenshot({ clip: wycinek });
+    ({ data: dane, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true }));
+  } catch { return null; }
+
+  const skala = info.width / wycinek.width; // deviceScaleFactor zrzutu
+  const piksel = (px, py) => {
+    const ix = Math.round((px - wycinek.x) * skala);
+    const iy = Math.round((py - wycinek.y) * skala);
+    if (ix < 0 || iy < 0 || ix >= info.width || iy >= info.height) return null;
+    const o = (iy * info.width + ix) * info.channels;
+    return [dane[o], dane[o + 1], dane[o + 2], 1];
+  };
+
+  /* Punkty na obwodzie, PROMIEN_PROBKI px poza ramką — tam, gdzie pada
+     obwódka fokusa przy offsecie 2 px i gdzie kończy się plama przycisku. */
+  const probki = [];
+  const d = PROMIEN_PROBKI;
+  const naBok = Math.max(2, Math.floor(LICZBA_PROBEK / 4));
+  for (let i = 0; i < naBok; i++) {
+    const fx = r.x + (r.width * (i + 0.5)) / naBok;
+    const fy = r.y + (r.height * (i + 0.5)) / naBok;
+    for (const pkt of [
+      [fx, r.y - d],
+      [fx, r.y + r.height + d],
+      [r.x - d, fy],
+      [r.x + r.width + d, fy],
+    ]) {
+      const c = piksel(pkt[0], pkt[1]);
+      if (c) probki.push(c);
+    }
+  }
+  return probki;
 }

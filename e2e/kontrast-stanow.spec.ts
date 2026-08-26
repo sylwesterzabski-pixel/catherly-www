@@ -11,6 +11,7 @@ import {
   odciskWygladu,
   stanZmieniaWyglad,
   zmierzStrone,
+  rozstrzygnijRastrem,
   STANY,
 } from "./pomoc/sonda-stanow.mjs";
 
@@ -108,11 +109,24 @@ for (const jezyk of routing.locales) {
         nieoznaczalne.push(...o.nieoznaczalne);
       }
 
-      /* Brak dowodu = brak zabezpieczenia (ADR-018). Punkt, którego sonda nie
-         umie policzyć (gradient pod tekstem, element poza stosem malowania),
-         nie jest zielony — jest niezmierzony i ma zatrzymać bramkę. */
+      /* ROZSTRZYGNIĘCIE RASTREM (ADR-033, krok 2). Punkt nad tłem
+         niejednolitym nie jest już porzucany jako niemierzalny — tło
+         czytamy z RENDERU i liczymy kontrast z najgorszej próbki na
+         obwodzie. Naprawiamy POMIAR, nie scenę: poświata zostaje.
+
+         Kolejność ma znaczenie: raster dostaje WYŁĄCZNIE to, czego
+         składanie stosu nie umiało policzyć, więc ścieżka mierzalna
+         pozostaje pierwszeństwem i nic nie traci na dokładności. */
+      const raster = await rozstrzygnijRastrem(page, nieoznaczalne);
+      naruszenia.push(...raster.naruszenia);
+
+      /* Brak dowodu = brak zabezpieczenia (ADR-018). To, czego nie
+         policzył ANI stos, ANI raster, nie jest zielone — jest
+         niezmierzone i ma zatrzymać bramkę. */
       expect(
-        nieoznaczalne.map((n) => `${n.stan} ${n.selektor} — ${n.powod} („${n.probka}")`),
+        raster.nadalNieoznaczalne.map(
+          (n) => `${n.stan} ${n.selektor} — ${n.powod} („${n.probka}")`,
+        ),
         "punkty niemożliwe do zmierzenia — kontrast w nich jest NIEZNANY",
       ).toEqual([]);
 
