@@ -3389,6 +3389,23 @@ prowieniencji, `if: always()`) → `bramka:margines` (żółty: margines pozorny
 `bramka:kontrakt` · `bramka:linki` · `bramka:kotwice` · `bramka:nojs` ·
 `bramka:cennik` · `bramka:nieodwracalne` · `lint`.
 
+⚠ **`bramka:tokeny` to od 2026-08-26 DWA skrypty w łańcuchu**
+(`WWW/038-bis`, K6): `lint-tokeny.mjs && straznik-tokenow.mjs`. Pierwszy
+pilnuje, żeby wartości wizualne szły przez tokeny (surowe hexy i piksele);
+drugi pilnuje **decyzji ADR-031 na wartościach ról** — kompletności 19 ról,
+kontrastów par, rozdzielności `fokus`/`akcent`/`interakcja` (R-AKCENT-02),
+zakazu akcentu jako koloru tekstu (R-AKCENT-01) oraz powrotu limonki i wagi
+100. Drugi da się uruchomić osobno: `bramka:straznik-tokenow`. **Nazwa
+zadania CI się nie zmieniła**, więc kto czyta wyłącznie listę zadań, nie
+zobaczy, że zakres urósł — stąd ten akapit.
+
+**Czego strażnik tokenów NIE sprawdza** (wypisane, żeby zieleń nie była
+czytana szerzej, niż sięga): par ról spoza swojej listy — w tym
+`akcent × powierzchnia-akcentowa` = 2,53:1, granicy opisanej w ADR-031 —
+barw wyliczonych na wyrenderowanej stronie (od tego jest
+`e2e/kontrast-stanow.spec.ts`) ani tego, czy rola jest **używana** zgodnie
+z przeznaczeniem.
+
 **Testy:** `test:e2e` · `test:axe` · `bramka:kontrast-stanow`.
 
 **Budowanie:** `build` (poprzedzone `prebuild` → `tokeny:build`, Style
