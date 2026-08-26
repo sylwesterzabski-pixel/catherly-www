@@ -1,0 +1,87 @@
+{
+ "_opis": "Typografia odczytana z plikow CSS repozytorium. Wartosci sa cytatami z kodu, nie interpretacja.",
+ "wygenerowano": "2026-08-26",
+ "pliki_krojow": [
+  {
+   "sciezka": "public/fonts/eksperyment/geist.woff2",
+   "bajty": 19484
+  },
+  {
+   "sciezka": "public/fonts/eksperyment/onest.woff2",
+   "bajty": 23808
+  },
+  {
+   "sciezka": "public/fonts/eksperyment/schibsted-grotesk.woff2",
+   "bajty": 29172
+  }
+ ],
+ "suma_bajtow_woff2": 72464,
+ "UWAGA_KROJE": "Pliki lezą w public/fonts/eksperyment/ i naleza do bloku eksperymentu WYGASAJACEGO 2026-08-31 (scripts/lint-tokeny.mjs). Krojem PRODUKCYJNYM jest system-ui (ADR-026) — zaden webfont nie jest dzis wdrozony.",
+ "skala_font_size_wszystkie_wystapienia": {
+  "1.5rem": [
+   "src/components/BlokZadaniaDnia.module.css",
+   "src/components/Filar.module.css",
+   "src/components/ModulFunkcji.module.css",
+   "src/components/SciezkaRozpoznania.module.css",
+   "src/components/SekcjaKierunku.module.css",
+   "src/components/SekcjaRytmu.module.css",
+   "src/components/SekcjaTekstowa.module.css"
+  ],
+  "0.9375rem": [
+   "src/components/CennikSkrot.module.css",
+   "src/components/Okruszki.module.css",
+   "src/components/PasekPotwierdzen.module.css",
+   "src/components/SekcjaPlanow.module.css",
+   "src/components/SekcjaPlanow.module.css",
+   "src/components/SpisTresci.module.css",
+   "src/components/SpisTresci.module.css",
+   "src/components/Stopka.module.css",
+   "src/components/TabelaPorownawcza.module.css",
+   "src/components/Zamkniecie.module.css"
+  ],
+  "clamp(1.75rem, 5vw + 1rem, 3rem)": [
+   "src/components/Hero.module.css"
+  ],
+  "1.125rem": [
+   "src/components/Hero.module.css",
+   "src/components/NaglowekPodstrony.module.css",
+   "src/components/Nawigacja.module.css",
+   "src/components/SciezkaRozpoznania.module.css",
+   "src/components/wyroznienie.module.css",
+   "src/app/[locale]/cennik/cennik.module.css"
+  ],
+  "1.0625rem": [
+   "src/components/Hero.module.css",
+   "src/components/Zamkniecie.module.css"
+  ],
+  "clamp(1.625rem, 4vw + 0.75rem, 2.5rem)": [
+   "src/components/NaglowekPodstrony.module.css",
+   "src/app/[locale]/cennik/cennik.module.css"
+  ],
+  "1.25rem": [
+   "src/components/SekcjaPlanow.module.css"
+  ],
+  "1.75rem": [
+   "src/components/SekcjaPlanow.module.css"
+  ],
+  "1rem": [
+   "src/components/Stopka.module.css"
+  ],
+  "clamp(3.5rem, 16vw, 11rem)": [
+   "src/app/globals.css"
+  ],
+  "clamp(1.25rem, 5vw, 2rem)": [
+   "src/app/globals.css"
+  ]
+ },
+ "clamp_w_globals_css": [
+  "clamp(3.5rem, 16vw, 11rem)",
+  "clamp(1.25rem, 5vw, 2rem)"
+ ],
+ "tracking_wersalikow": [],
+ "wagi_w_uzyciu": [
+  "100",
+  "400",
+  "700"
+ ]
+}

@@ -1,0 +1,5133 @@
+{
+ "_opis": "Struktura odczytana z WYRENDEROWANEGO DOM, nie z kodu zrodlowego. 'sekcja_id' pochodzi z nazwy klasy CSS Modules (prefiks = nazwa komponentu React). 'klucz_i18n' ustalony ODWROTNYM DOPASOWANIEM tekstu do messages/pl.json — null oznacza: nie dopasowano jednoznacznie, a nie: klucza nie ma.",
+ "wygenerowano": "2026-08-26",
+ "jezyk_odczytu": "pl",
+ "viewport": "1280x900",
+ "trasy": {
+  "/": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "section",
+     "sekcja_id": "Hero",
+     "aria_labelledby": "hero-h1",
+     "elementy": [
+      {
+       "typ": "h1",
+       "tekst": "Rozmawiasz z ludźmi — Catherly prowadzi kontakty i wyniki.",
+       "klucz_i18n": "Hero.naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly to system do własnej sprzedaży bezpośredniej — kontakty, treści, zespół i wyniki w jednym miejscu.",
+       "klucz_i18n": "Hero.podtytul"
+      },
+      {
+       "typ": "link",
+       "tekst": "Sprawdź, jak działa",
+       "klucz_i18n": [
+        "Hero.cta",
+        "ZamkniecieGlowna.cta",
+        "FunkcjeIndeks.zamkniecieCta",
+        "FunkcjePozyskiwanie.zamkniecieCta",
+        "FunkcjeTresci.zamkniecieCta",
+        "FunkcjeZespol.zamkniecieCta",
+        "FunkcjeWyniki.zamkniecieCta",
+        "DlaKogo.cta"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Dane przechowywane w UE",
+       "klucz_i18n": [
+        "Hero.potwierdzenieUE",
+        "Cennik.potwierdzenie3"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Rezygnacja w każdej chwili",
+       "klucz_i18n": [
+        "Hero.potwierdzenieRezygnacja",
+        "Cennik.potwierdzenie1"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 3,
+     "znacznik": "section",
+     "sekcja_id": "SekcjaTekstowa",
+     "aria_labelledby": "problem-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Wszystko gdzieś jest. Każde gdzie indziej.",
+       "klucz_i18n": "Problem.naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru, który gdzieś przecież zapisałaś. O tym, co w zespole, dowiadujesz się później, niż byś chciała.",
+       "klucz_i18n": "Problem.tresc"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wieczorem siadasz do zeszytu i liczysz, co z tego wyszło.",
+       "klucz_i18n": "Problem.kropka"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 4,
+     "znacznik": "section",
+     "sekcja_id": "SekcjaTekstowa",
+     "aria_labelledby": "definicja-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Catherly to pamięć twojej sprzedaży",
+       "klucz_i18n": "Definicja.naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly pamięta to, co dotąd trzymałaś w głowie i notesach: komu co obiecałaś, jakie treści wysłałaś której klientce i co się sprzedało. Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak jej idzie. Sprzedajesz po swojemu, tylko już nie z pamięci.",
+       "klucz_i18n": "Definicja.tresc"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 5,
+     "znacznik": "section",
+     "sekcja_id": "Filar",
+     "aria_labelledby": "filar-1-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Rano widzisz, do kogo się odezwać.",
+       "klucz_i18n": [
+        "Filary.filar1.naglowek",
+        "FunkcjeIndeks.blok1Naglowek",
+        "FunkcjePozyskiwanie.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Masz plan działania i bazę, która rośnie, gdy ty prowadzisz rozmowy.",
+       "klucz_i18n": [
+        "Filary.filar1.korzysc",
+        "FunkcjePozyskiwanie.zdanie"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "DMO układa kolejność rozmów — zaczynasz dzień bez zastanawiania się.",
+       "klucz_i18n": "Filary.filar1.konkret1"
+      },
+      {
+       "typ": "li",
+       "tekst": "Przypomnienie chwilę przed spotkaniem, żebyś była gotowa, nie zaskoczona.",
+       "klucz_i18n": "Filary.filar1.konkret2"
+      },
+      {
+       "typ": "li",
+       "tekst": "Każda polecona osoba przychodzi ze śladem — wiesz, kto ją polecił.",
+       "klucz_i18n": "Filary.filar1.konkret3"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 6,
+     "znacznik": "section",
+     "sekcja_id": "Filar",
+     "aria_labelledby": "filar-2-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Piszesz. Tarcza sprawdza. Pieczęć potwierdza.",
+       "klucz_i18n": [
+        "Filary.filar2.naglowek",
+        "FunkcjeTresci.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Studio uczy się twojego głosu i pilnuje, żeby żadna treść nie złamała twoich zasad.",
+       "klucz_i18n": [
+        "Filary.filar2.korzysc",
+        "FunkcjeTresci.zdanie"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Studio daje gotowe formaty i szablony — nie zaczynasz od pustej kartki.",
+       "klucz_i18n": "Filary.filar2.konkret1"
+      },
+      {
+       "typ": "li",
+       "tekst": "Tarcza zaznacza ryzykowne sformułowania, zanim klikniesz „wyślij”.",
+       "klucz_i18n": "Filary.filar2.konkret2"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pieczęć Etyczna daje wynik i certyfikat — masz dowód, nie tylko odczucie.",
+       "klucz_i18n": "Filary.filar2.konkret3"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 7,
+     "znacznik": "section",
+     "sekcja_id": "Filar",
+     "aria_labelledby": "filar-3-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Nowa osoba wie, co robić od pierwszego dnia",
+       "klucz_i18n": [
+        "Filary.filar3.naglowek",
+        "FunkcjeZespol.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zamiast tłumaczyć od nowa każdemu — kreator wdrożeniowy robi to za ciebie.",
+       "klucz_i18n": [
+        "Filary.filar3.korzysc",
+        "FunkcjeZespol.zdanie"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Kreator wdrożeniowy prowadzi nową osobę przez etapy — bez twojej pomocy.",
+       "klucz_i18n": "Filary.filar3.konkret1"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pierwsze 90 Dni z czterema fazami i misjami — nowa osoba widzi drogę przed sobą.",
+       "klucz_i18n": "Filary.filar3.konkret2"
+      },
+      {
+       "typ": "li",
+       "tekst": "Osiągnięcia i odznaki utrzymują zaangażowanie długo po starcie.",
+       "klucz_i18n": "Filary.filar3.konkret3"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 8,
+     "znacznik": "section",
+     "sekcja_id": "Filar",
+     "aria_labelledby": "filar-4-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Widzisz wzrost nawet po trudnym dniu",
+       "klucz_i18n": [
+        "Filary.filar4.naglowek",
+        "FunkcjeWyniki.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje.",
+       "klucz_i18n": [
+        "Filary.filar4.korzysc",
+        "FunkcjeWyniki.zdanie"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Twój Wrapped składa podsumowanie okresu — widzisz, co naprawdę zrobiłaś.",
+       "klucz_i18n": "Filary.filar4.konkret1"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cel z kamieniami milowymi mówi, jak daleko zaszłaś i co jest następne.",
+       "klucz_i18n": "Filary.filar4.konkret2"
+      },
+      {
+       "typ": "li",
+       "tekst": "Świadectwo z cyfrowym odciskiem zostaje — ktoś może zweryfikować twoje wyniki.",
+       "klucz_i18n": "Filary.filar4.konkret3"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 9,
+     "znacznik": "section",
+     "sekcja_id": "DbanieOSiebie",
+     "aria_labelledby": "dbanie-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Dbanie o siebie",
+       "klucz_i18n": "DbanieOSiebie.naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zbierasz dowody swojej pracy na Wall of Proof. To przestrzeń, w której świętujesz, nie tylko mierzysz.",
+       "klucz_i18n": "DbanieOSiebie.tresc"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 10,
+     "znacznik": "section",
+     "sekcja_id": "SekcjaRytmu",
+     "aria_labelledby": "rytm-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Jak wygląda twój dzień z Catherly",
+       "klucz_i18n": "RytmDnia.naglowek"
+      },
+      {
+       "typ": "li",
+       "tekst": "RanoOtwierasz Dzienny Plan Działania i zaczynasz rozmowy w ułożonej kolejności. Kalendarz przypomina o reszcie.",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Otwierasz Dzienny Plan Działania i zaczynasz rozmowy w ułożonej kolejności. Kalendarz przypomina o reszcie.",
+       "klucz_i18n": "RytmDnia.krok1Tresc"
+      },
+      {
+       "typ": "li",
+       "tekst": "W ciągu dniaZaglądasz do bazy kontaktów i wiesz, komu co obiecałaś. Post składasz z szablonu w Studiu.",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Zaglądasz do bazy kontaktów i wiesz, komu co obiecałaś. Post składasz z szablonu w Studiu.",
+       "klucz_i18n": "RytmDnia.krok2Tresc"
+      },
+      {
+       "typ": "li",
+       "tekst": "WieczoremNa Pulpicie masz swój dzień i dzień zespołu obok siebie.",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Na Pulpicie masz swój dzień i dzień zespołu obok siebie.",
+       "klucz_i18n": "RytmDnia.krok3Tresc"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wieczorem widzisz, co z tego wyszło.",
+       "klucz_i18n": "RytmDnia.kropka"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 11,
+     "znacznik": "section",
+     "sekcja_id": "CennikSkrot",
+     "aria_labelledby": "skrot-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Cennik w skrócie",
+       "klucz_i18n": "CennikSkrot.naglowek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Starter99 zł miesięcznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Growth199 zł miesięcznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Pro399 zł miesięcznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Wszystkie plany prowadzą twoje kontakty i wyniki — Growth dodaje do tego widok całego zespołu.",
+       "klucz_i18n": "CennikSkrot.roznica"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz pełny cennik",
+       "klucz_i18n": "CennikSkrot.link"
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz pełny cennik",
+       "klucz_i18n": "CennikSkrot.link"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 12,
+     "znacznik": "section",
+     "sekcja_id": "Faq",
+     "aria_labelledby": "obawy-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Sześć obaw",
+       "klucz_i18n": "Obawy.naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Kreator wdrożeniowy prowadzi cię krok po kroku. Pierwsze 90 Dni dają ci gotowy plan na start.",
+       "klucz_i18n": "Obawy.o1"
+      },
+      {
+       "typ": "p",
+       "tekst": "Importu hurtowego nie ma — kontakty wpisujesz ręcznie lub przez formularz. Dane eksportujesz do vCard zawsze.",
+       "klucz_i18n": "Obawy.o2"
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz kiedy chcesz. Eksportujesz kontakty do vCard, pobierasz CSV z rejestrem — wszystko jest twoje.",
+       "klucz_i18n": "Obawy.o3"
+      },
+      {
+       "typ": "p",
+       "tekst": "Do twojego konta masz dostęp tylko ty. Tarcza kontroluje etyczność treści — Świadectwo SHA-256 rejestruje każdą zmianę.",
+       "klucz_i18n": "Obawy.o4"
+      },
+      {
+       "typ": "p",
+       "tekst": "Projektowane pod telefon od początku — nie ma okrojonej wersji. Otwierasz, działa jak trzeba.",
+       "klucz_i18n": "Obawy.o5"
+      },
+      {
+       "typ": "p",
+       "tekst": "Paszport zgodności skanuje treść pod wymagania czterech jurysdykcji — ale ostatnie słowo ma twoje IT.",
+       "klucz_i18n": "Obawy.o6"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 13,
+     "znacznik": "section",
+     "sekcja_id": "Zamkniecie",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Sprawdź, jak działa",
+       "klucz_i18n": [
+        "Hero.cta",
+        "ZamkniecieGlowna.cta",
+        "FunkcjeIndeks.zamkniecieCta",
+        "FunkcjePozyskiwanie.zamkniecieCta",
+        "FunkcjeTresci.zamkniecieCta",
+        "FunkcjeZespol.zamkniecieCta",
+        "FunkcjeWyniki.zamkniecieCta",
+        "DlaKogo.cta"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz w każdej chwili.",
+       "klucz_i18n": [
+        "ZamkniecieGlowna.zdanie",
+        "FunkcjeIndeks.zamkniecieZdanie",
+        "FunkcjePozyskiwanie.zamkniecieZdanie",
+        "FunkcjeTresci.zamkniecieZdanie",
+        "FunkcjeZespol.zamkniecieZdanie",
+        "FunkcjeWyniki.zamkniecieZdanie",
+        "DlaKogo.ctaZdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 14,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 14,
+   "liczba_elementow": 95,
+   "dopasowanych_do_klucza": 62
+  },
+  "/funkcje": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "section",
+     "sekcja_id": "NaglowekPodstrony",
+     "aria_labelledby": "podstrona-h1",
+     "elementy": [
+      {
+       "typ": "h1",
+       "tekst": "Funkcje ułożone tak, jak idzie twój dzień",
+       "klucz_i18n": "FunkcjeIndeks.h1"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wybierasz to, co masz teraz do zrobienia, a nazwy funkcji znajdziesz po drodze.",
+       "klucz_i18n": "FunkcjeIndeks.zdanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 3,
+     "znacznik": "section",
+     "sekcja_id": "BlokZadaniaDnia",
+     "aria_labelledby": "pozyskiwanie",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Rano widzisz, do kogo się odezwać.",
+       "klucz_i18n": [
+        "Filary.filar1.naglowek",
+        "FunkcjeIndeks.blok1Naglowek",
+        "FunkcjePozyskiwanie.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Dzień zaplanowany w Dziennym Planie Działania zaczyna się od konkretu. Terminy, zadania i kontakty trzymasz w jednym miejscu, nie w głowie.",
+       "klucz_i18n": "FunkcjeIndeks.blok1Wprowadzenie"
+      },
+      {
+       "typ": "li",
+       "tekst": "formularz zgłoszeniowy z publiczną stroną",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod1_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "formularz zgłoszeniowy z publiczną stroną",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod1_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Kalendarz z przypomnieniami",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod2_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Kalendarz z przypomnieniami",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod2_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "subskrypcja kalendarza w telefonie",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod3_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "subskrypcja kalendarza w telefonie",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod3_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "eksport kontaktów do vCard",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod4_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "eksport kontaktów do vCard",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod4_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "kod QR polecający",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod5_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "kod QR polecający",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod5_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "program poleceń ze śledzeniem",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod6_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "program poleceń ze śledzeniem",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod6_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "DMO — Dzienny Plan Działania",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod7_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "DMO — Dzienny Plan Działania",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod7_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zadania",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod8_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Zadania",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod8_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Sala Treningowa",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod9_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Sala Treningowa",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod9_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "plany rozmów i debriefy",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod10_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "plany rozmów i debriefy",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod10_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "asystent AI — kierunek w pozyskiwaniu",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "asystent AI — kierunek w pozyskiwaniu",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz wszystko o pozyskiwaniu",
+       "klucz_i18n": "FunkcjeIndeks.blok1Link"
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz wszystko o pozyskiwaniu",
+       "klucz_i18n": "FunkcjeIndeks.blok1Link"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 4,
+     "znacznik": "section",
+     "sekcja_id": "BlokZadaniaDnia",
+     "aria_labelledby": "tresci",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Siadasz do postów i nie zaczynasz od pustej kartki.",
+       "klucz_i18n": "FunkcjeIndeks.blok2Naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Post układasz z gotowego szablonu, planujesz go w kalendarzu i wysyłasz do zatwierdzenia u liderki — publikujesz sama. Ryzykowne sformułowanie wyłapujesz przed publikacją, nie po niej.",
+       "klucz_i18n": "FunkcjeIndeks.blok2Wprowadzenie"
+      },
+      {
+       "typ": "li",
+       "tekst": "Studio",
+       "klucz_i18n": "FunkcjeTresci.mod1_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Studio",
+       "klucz_i18n": "FunkcjeTresci.mod1_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "szablony z wersjonowaniem",
+       "klucz_i18n": "FunkcjeTresci.mod2_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "szablony z wersjonowaniem",
+       "klucz_i18n": "FunkcjeTresci.mod2_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "zestawy hashtagów",
+       "klucz_i18n": "FunkcjeTresci.mod3_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "zestawy hashtagów",
+       "klucz_i18n": "FunkcjeTresci.mod3_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Kalendarz publikacji",
+       "klucz_i18n": "FunkcjeTresci.mod4_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Kalendarz publikacji",
+       "klucz_i18n": "FunkcjeTresci.mod4_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "zatwierdzanie u liderki",
+       "klucz_i18n": "FunkcjeTresci.mod5_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "zatwierdzanie u liderki",
+       "klucz_i18n": "FunkcjeTresci.mod5_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Tarcza",
+       "klucz_i18n": "FunkcjeTresci.mod6_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Tarcza",
+       "klucz_i18n": "FunkcjeTresci.mod6_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pieczęć Etyczna",
+       "klucz_i18n": "FunkcjeTresci.mod7_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pieczęć Etyczna",
+       "klucz_i18n": "FunkcjeTresci.mod7_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "uczenie profilu głosu",
+       "klucz_i18n": "FunkcjeTresci.mod8_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "uczenie profilu głosu",
+       "klucz_i18n": "FunkcjeTresci.mod8_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "tablica postów z filtrami",
+       "klucz_i18n": "FunkcjeTresci.mod9_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "tablica postów z filtrami",
+       "klucz_i18n": "FunkcjeTresci.mod9_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "asystent AI — kierunek w treściach",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "asystent AI — kierunek w treściach",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz wszystko o treściach",
+       "klucz_i18n": "FunkcjeIndeks.blok2Link"
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz wszystko o treściach",
+       "klucz_i18n": "FunkcjeIndeks.blok2Link"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 5,
+     "znacznik": "section",
+     "sekcja_id": "BlokZadaniaDnia",
+     "aria_labelledby": "zespol",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Nowa osoba dołącza, a ty nie tłumaczysz od nowa.",
+       "klucz_i18n": "FunkcjeIndeks.blok3Naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Kreator wdrożeniowy prowadzi nową osobę przez etapy, a przez Pierwsze 90 Dni z misjami i fazami prowadzisz ją ty. Treści zespołu zatwierdzasz, a komunikat sprawdzasz, zanim go wyślesz.",
+       "klucz_i18n": "FunkcjeIndeks.blok3Wprowadzenie"
+      },
+      {
+       "typ": "li",
+       "tekst": "kreator wdrożeniowy",
+       "klucz_i18n": "FunkcjeZespol.mod1_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "kreator wdrożeniowy",
+       "klucz_i18n": "FunkcjeZespol.mod1_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "zatwierdzanie treści zespołu",
+       "klucz_i18n": "FunkcjeZespol.mod2_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "zatwierdzanie treści zespołu",
+       "klucz_i18n": "FunkcjeZespol.mod2_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pierwsze 90 Dni",
+       "klucz_i18n": "FunkcjeZespol.mod3_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pierwsze 90 Dni",
+       "klucz_i18n": "FunkcjeZespol.mod3_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Osiągnięcia",
+       "klucz_i18n": "FunkcjeZespol.mod4_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Osiągnięcia",
+       "klucz_i18n": "FunkcjeZespol.mod4_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Paszport zgodności",
+       "klucz_i18n": "FunkcjeZespol.mod5_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Paszport zgodności",
+       "klucz_i18n": "FunkcjeZespol.mod5_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Akademia",
+       "klucz_i18n": "FunkcjeZespol.mod6_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Akademia",
+       "klucz_i18n": "FunkcjeZespol.mod6_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz wszystko o zespole",
+       "klucz_i18n": "FunkcjeIndeks.blok3Link"
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz wszystko o zespole",
+       "klucz_i18n": "FunkcjeIndeks.blok3Link"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 6,
+     "znacznik": "section",
+     "sekcja_id": "BlokZadaniaDnia",
+     "aria_labelledby": "wyniki",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Wieczorem wiesz, na czym stoisz.",
+       "klucz_i18n": "FunkcjeIndeks.blok4Naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje. Sukcesy swoje i zespołu zapisujesz i świętujesz, zanim przykryje je codzienność.",
+       "klucz_i18n": "FunkcjeIndeks.blok4Wprowadzenie"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pulpit",
+       "klucz_i18n": "FunkcjeWyniki.mod1_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pulpit",
+       "klucz_i18n": "FunkcjeWyniki.mod1_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Twój Wrapped",
+       "klucz_i18n": "FunkcjeWyniki.mod2_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Twój Wrapped",
+       "klucz_i18n": "FunkcjeWyniki.mod2_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cel z kamieniami milowymi",
+       "klucz_i18n": "FunkcjeWyniki.mod3_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cel z kamieniami milowymi",
+       "klucz_i18n": "FunkcjeWyniki.mod3_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Ściana sukcesów",
+       "klucz_i18n": "FunkcjeWyniki.mod4_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Ściana sukcesów",
+       "klucz_i18n": "FunkcjeWyniki.mod4_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Świadectwo",
+       "klucz_i18n": "FunkcjeWyniki.mod5_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Świadectwo",
+       "klucz_i18n": "FunkcjeWyniki.mod5_nazwa"
+      },
+      {
+       "typ": "li",
+       "tekst": "Wall of Proof",
+       "klucz_i18n": "FunkcjeWyniki.mod6_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wall of Proof",
+       "klucz_i18n": "FunkcjeWyniki.mod6_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz wszystko o wynikach",
+       "klucz_i18n": "FunkcjeIndeks.blok4Link"
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz wszystko o wynikach",
+       "klucz_i18n": "FunkcjeIndeks.blok4Link"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 7,
+     "znacznik": "section",
+     "sekcja_id": "PlanJednymWierszem",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "p",
+       "tekst": "Wszystko powyżej działa od planu Starter.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_1",
+        "FunkcjePozyskiwanie.f8_1",
+        "FunkcjeTresci.f8_1",
+        "FunkcjeZespol.f8_1",
+        "FunkcjeWyniki.f8_1",
+        "DlaKogo.s1_plan",
+        "DlaKogo.s2_plan_1",
+        "DlaKogo.s3_plan_1"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Asystenta AI nie dostajesz w żadnym planie.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_2",
+        "FunkcjePozyskiwanie.f8_2",
+        "FunkcjeTresci.f8_2"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 8,
+     "znacznik": "section",
+     "sekcja_id": "Zamkniecie",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Sprawdź, jak działa",
+       "klucz_i18n": [
+        "Hero.cta",
+        "ZamkniecieGlowna.cta",
+        "FunkcjeIndeks.zamkniecieCta",
+        "FunkcjePozyskiwanie.zamkniecieCta",
+        "FunkcjeTresci.zamkniecieCta",
+        "FunkcjeZespol.zamkniecieCta",
+        "FunkcjeWyniki.zamkniecieCta",
+        "DlaKogo.cta"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz w każdej chwili.",
+       "klucz_i18n": [
+        "ZamkniecieGlowna.zdanie",
+        "FunkcjeIndeks.zamkniecieZdanie",
+        "FunkcjePozyskiwanie.zamkniecieZdanie",
+        "FunkcjeTresci.zamkniecieZdanie",
+        "FunkcjeZespol.zamkniecieZdanie",
+        "FunkcjeWyniki.zamkniecieZdanie",
+        "DlaKogo.ctaZdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 9,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 9,
+   "liczba_elementow": 129,
+   "dopasowanych_do_klucza": 104
+  },
+  "/funkcje/pozyskiwanie": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "section",
+     "sekcja_id": "NaglowekPodstrony",
+     "aria_labelledby": "podstrona-h1",
+     "elementy": [
+      {
+       "typ": "h1",
+       "tekst": "Rano widzisz, do kogo się odezwać.",
+       "klucz_i18n": [
+        "Filary.filar1.naglowek",
+        "FunkcjeIndeks.blok1Naglowek",
+        "FunkcjePozyskiwanie.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Masz plan działania i bazę, która rośnie, gdy ty prowadzisz rozmowy.",
+       "klucz_i18n": [
+        "Filary.filar1.korzysc",
+        "FunkcjePozyskiwanie.zdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 3,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "formularz",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "formularz zgłoszeniowy z publiczną stroną",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod1_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Znajoma pyta cię o współpracę, a ty zamiast przepisywać jej dane z wiadomości przekazujesz link do swojego formularza. Wypełnia go na publicznej stronie — i zgłoszenie trafia prosto do twojej bazy kontaktów.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod1_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie wyśle ci e-maila o nowym zgłoszeniu — wypełnione zgłoszenia widzisz w aplikacji.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod1_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 4,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "kalendarz",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Kalendarz z przypomnieniami",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod2_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Terminy rozmów nie muszą siedzieć w twojej głowie. Planujesz kontakty w kalendarzu, a w ostatnich 30 minutach przed rozmową Catherly przypomina ci o niej.",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Przypomnienia nie przychodzą e-mailem ani SMS-em.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod2_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 5,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "subskrypcja-kalendarza",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "subskrypcja kalendarza w telefonie",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod3_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zaglądasz do kalendarza w telefonie i widzisz rozmowy zaplanowane w Catherly obok reszty swoich spraw. Niczego nie przepisujesz — co zaplanowałaś, po prostu tam jest.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod3_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Subskrypcja działa tylko w stronę telefonu — Catherly nie czyta twojego prywatnego kalendarza i niczego z niego nie pobiera.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod3_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 6,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "eksport-vcard",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "eksport kontaktów do vCard",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod4_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Jedziesz na spotkanie i numer klientki chcesz mieć tam, gdzie zawsze — w telefonie. Jednym kliknięciem eksportujesz kontakty do vCard i masz je pod ręką także bez otwierania aplikacji.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod4_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Eksport działa w jedną stronę — importu hurtowego nie ma, kontakty wpisujesz ręcznie lub przez formularz.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod4_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 7,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "qr-polecajacy",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "kod QR polecający",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod5_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Kończysz rozmowę i zostawiasz wizytówkę — z twoim kodem QR polecającym zamiast adresu do przepisywania. Tworzysz go w Catherly i dodajesz do materiałów i wizytówek przy eksporcie.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod5_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie publikuje ani nie rozsyła materiałów z kodem za ciebie — dostajesz gotowy eksport, a o tym, gdzie trafi grafika albo wydruk, decydujesz sama.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod5_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 8,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "program-polecen",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "program poleceń ze śledzeniem",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod6_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Podajesz znajomej zaproszenie ze swoim kodem i wracasz do swoich spraw. Kto z niego skorzystał, widzisz w Catherly — nie musisz dopytywać, czy coś z tego wyszło.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod6_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly niczego nie wysyła do twoich znajomych — zaproszenie przekazujesz sama, a program tylko pokazuje, kto z niego skorzystał.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod6_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 9,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "dmo",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "DMO — Dzienny Plan Działania",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod7_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Dzień zaplanowany w Dziennym Planie Działania zaczyna się od konkretu — nie zastanawiasz się, co teraz, tylko dzwonisz, piszesz, rozmawiasz. Przez dzień prowadzi cię twój plan.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod7_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Dzienny Plan Działania niczego nie wysyła za ciebie — do osób z planu dzwonisz i piszesz sama.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod7_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 10,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "zadania",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Zadania",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod8_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Po rozmowie zapisujesz zadanie przy osobie, której dotyczy: oddzwonić po weekendzie, dosłać katalog, zapytać o decyzję. Wracasz do kontaktu i to, co ustaliłaś, jest przy nim.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod8_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie przypomni ci o zadaniu e-mailem — listę zadań masz w aplikacji.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod8_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 11,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "sala-treningowa",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Sala Treningowa",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod9_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Przed trudną rozmową wchodzisz do Sali Treningowej i przechodzisz ją na sucho — obiekcja pada najpierw tu, nie przy klientce. Odpowiedzi bierzesz z biblioteki obiekcji uporządkowanej w siedem kategorii.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod9_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Sala Treningowa nie rozmawia z twoją klientką i niczego do niej nie wysyła — ćwiczysz tu sama, a prawdziwą rozmowę prowadzisz ty.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod9_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 12,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "plany-rozmow",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "plany rozmów i debriefy",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod10_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Przed spotkaniem zapisujesz plan rozmowy: o co zapytasz, co pokażesz, na czym ci zależy. Po spotkaniu piszesz debrief — szczegóły trafiają do notatki, zanim wypchnie je reszta dnia.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod10_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie napisze planu ani debriefu za ciebie — piszesz je sama, własnymi słowami.",
+       "klucz_i18n": "FunkcjePozyskiwanie.mod10_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 13,
+     "znacznik": "section",
+     "sekcja_id": "SekcjaKierunku",
+     "aria_labelledby": "asystent-ai",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "asystent AI — kierunek",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Z asystentem AI dostosowujesz wiadomości do konkretnej osoby.",
+       "klucz_i18n": "FunkcjePozyskiwanie.aiTresc"
+      },
+      {
+       "typ": "p",
+       "tekst": "Asystent nie napisze tekstu zamiast ciebie — proponuje, ty piszesz.",
+       "klucz_i18n": "FunkcjePozyskiwanie.aiGranica"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 14,
+     "znacznik": "section",
+     "sekcja_id": "PlanJednymWierszem",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "p",
+       "tekst": "Wszystko powyżej działa od planu Starter.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_1",
+        "FunkcjePozyskiwanie.f8_1",
+        "FunkcjeTresci.f8_1",
+        "FunkcjeZespol.f8_1",
+        "FunkcjeWyniki.f8_1",
+        "DlaKogo.s1_plan",
+        "DlaKogo.s2_plan_1",
+        "DlaKogo.s3_plan_1"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Asystenta AI nie dostajesz w żadnym planie.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_2",
+        "FunkcjePozyskiwanie.f8_2",
+        "FunkcjeTresci.f8_2"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 15,
+     "znacznik": "section",
+     "sekcja_id": "PrzejsciaFilarow",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Dalej: Treści →",
+       "klucz_i18n": "FunkcjePozyskiwanie.dalej"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 16,
+     "znacznik": "section",
+     "sekcja_id": "Zamkniecie",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Sprawdź, jak działa",
+       "klucz_i18n": [
+        "Hero.cta",
+        "ZamkniecieGlowna.cta",
+        "FunkcjeIndeks.zamkniecieCta",
+        "FunkcjePozyskiwanie.zamkniecieCta",
+        "FunkcjeTresci.zamkniecieCta",
+        "FunkcjeZespol.zamkniecieCta",
+        "FunkcjeWyniki.zamkniecieCta",
+        "DlaKogo.cta"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz w każdej chwili.",
+       "klucz_i18n": [
+        "ZamkniecieGlowna.zdanie",
+        "FunkcjeIndeks.zamkniecieZdanie",
+        "FunkcjePozyskiwanie.zamkniecieZdanie",
+        "FunkcjeTresci.zamkniecieZdanie",
+        "FunkcjeZespol.zamkniecieZdanie",
+        "FunkcjeWyniki.zamkniecieZdanie",
+        "DlaKogo.ctaZdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 17,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 17,
+   "liczba_elementow": 81,
+   "dopasowanych_do_klucza": 57
+  },
+  "/funkcje/tresci": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "section",
+     "sekcja_id": "NaglowekPodstrony",
+     "aria_labelledby": "podstrona-h1",
+     "elementy": [
+      {
+       "typ": "h1",
+       "tekst": "Piszesz. Tarcza sprawdza. Pieczęć potwierdza.",
+       "klucz_i18n": [
+        "Filary.filar2.naglowek",
+        "FunkcjeTresci.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Studio uczy się twojego głosu i pilnuje, żeby żadna treść nie złamała twoich zasad.",
+       "klucz_i18n": [
+        "Filary.filar2.korzysc",
+        "FunkcjeTresci.zdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 3,
+     "znacznik": "section",
+     "sekcja_id": "SekcjaKierunku",
+     "aria_labelledby": "studio",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Studio",
+       "klucz_i18n": "FunkcjeTresci.mod1_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Ten sam pomysł ma wyglądać dobrze w poście i na wydruku — a ty nie chcesz za każdym razem zaczynać od zera. Po to jest Studio: strefy bezpieczne i auto-układ dbają o to, żeby w żadnym formacie nic ważnego się nie ucięło.",
+       "klucz_i18n": "FunkcjeTresci.mod1_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Do Studia nie wgrasz zdjęć z telefonu — projekt składasz z tekstu, szablonów i elementów edytora.",
+       "klucz_i18n": "FunkcjeTresci.mod1_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 4,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "szablony",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "szablony z wersjonowaniem",
+       "klucz_i18n": "FunkcjeTresci.mod2_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wieczorem przygotowujesz post i zamiast pustej strony otwierasz gotowy szablon. Zmieniasz tekst na swój, zapisujesz własną wersję — i następnym razem zaczynasz od niej.",
+       "klucz_i18n": "FunkcjeTresci.mod2_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie wygeneruje szablonu za ciebie — wybierasz z gotowych i dopasowujesz po swojemu.",
+       "klucz_i18n": "FunkcjeTresci.mod2_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 5,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "hashtagi",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "zestawy hashtagów",
+       "klucz_i18n": "FunkcjeTresci.mod3_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zestawy hashtagów układasz raz i masz je pod ręką przy każdym poście — dodajesz je jednym kliknięciem. Niczego nie przepisujesz ze starych postów ani z notatek w telefonie.",
+       "klucz_i18n": "FunkcjeTresci.mod3_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie podpowie ci hashtagów — co jest w zestawie i do którego posta trafi, decydujesz sama.",
+       "klucz_i18n": "FunkcjeTresci.mod3_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 6,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "kalendarz-publikacji",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Kalendarz publikacji",
+       "klucz_i18n": "FunkcjeTresci.mod4_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Każdy pomysł na post od razu dostaje swoje miejsce i datę w kalendarzu. Widzisz, co zaplanowałaś i na kiedy, a gdy plan się zmienia, przesuwasz post na inny dzień — bez układania wszystkiego od nowa.",
+       "klucz_i18n": "FunkcjeTresci.mod4_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie opublikuje posta za ciebie — kalendarz pokazuje plan, a publikujesz sama.",
+       "klucz_i18n": "FunkcjeTresci.mod4_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 7,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "zatwierdzanie",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "zatwierdzanie u liderki",
+       "klucz_i18n": "FunkcjeTresci.mod5_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Gotowy post wysyłasz do zatwierdzenia — od tej chwili jest u twojej liderki. Gdy go przyjmie albo odrzuci, widzisz to od razu, bez dopytywania w wiadomościach.",
+       "klucz_i18n": "FunkcjeTresci.mod5_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "O decyzji liderki Catherly nie wyśle ci e-maila — status widzisz w aplikacji.",
+       "klucz_i18n": "FunkcjeTresci.mod5_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 8,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "tarcza",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Tarcza",
+       "klucz_i18n": "FunkcjeTresci.mod6_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Ryzykowne sformułowanie wyłapujesz przed publikacją, nie po niej. Reguły Tarczy działają w samej aplikacji — twoja treść nie wychodzi na zewnątrz do sprawdzenia.",
+       "klucz_i18n": "FunkcjeTresci.mod6_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Tarcza nie poprawi tekstu za ciebie — wskazuje ryzykowne sformułowania, a co z nimi zrobisz, decydujesz sama.",
+       "klucz_i18n": "FunkcjeTresci.mod6_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 9,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "pieczec-etyczna",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Pieczęć Etyczna",
+       "klucz_i18n": "FunkcjeTresci.mod7_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Kończysz projekt, a on dostaje Pieczęć Etyczną — wynik etyczny z publicznym certyfikatem. Na spotkaniu pokazujesz klientce kod QR: skanuje go i sama ogląda certyfikat.",
+       "klucz_i18n": "FunkcjeTresci.mod7_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie wyśle certyfikatu twojej klientce — komu i kiedy go pokazać, decydujesz sama.",
+       "klucz_i18n": "FunkcjeTresci.mod7_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 10,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "uczenie-glosu",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "uczenie profilu głosu",
+       "klucz_i18n": "FunkcjeTresci.mod8_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Piszesz posty tak, jak mówisz do swoich klientek — po swojemu. Catherly uczy się tego stylu z opublikowanych postów i buduje z niego profil głosu twojej marki.",
+       "klucz_i18n": "FunkcjeTresci.mod8_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie napisze postów za ciebie — profil głosu zapamiętuje twój styl, a piszesz ty sama, własnymi słowami.",
+       "klucz_i18n": "FunkcjeTresci.mod8_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 11,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "tablica-postow",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "tablica postów z filtrami",
+       "klucz_i18n": "FunkcjeTresci.mod9_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wracasz do swoich postów po paru dniach i nie musisz zgadywać, na czym stanęłaś. Filtrujesz tablicę i od razu widzisz, co czeka na zatwierdzenie, a co już zaplanowałaś.",
+       "klucz_i18n": "FunkcjeTresci.mod9_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zasięgów ani polubień tablica nie pokaże — widzisz statusy swoich postów, a ich wyniki sprawdzasz tam, gdzie je opublikowałaś.",
+       "klucz_i18n": "FunkcjeTresci.mod9_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 12,
+     "znacznik": "section",
+     "sekcja_id": "SekcjaKierunku",
+     "aria_labelledby": "asystent-ai",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "asystent AI — kierunek",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Z asystentem AI piszesz i edytujesz treści — on proponuje, ty decydujesz.",
+       "klucz_i18n": "FunkcjeTresci.aiTresc"
+      },
+      {
+       "typ": "p",
+       "tekst": "Asystent nie napisze treści zamiast ciebie — podsuwa pomysły i poprawki, a ty piszesz.",
+       "klucz_i18n": "FunkcjeTresci.aiGranica"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 13,
+     "znacznik": "section",
+     "sekcja_id": "PlanJednymWierszem",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "p",
+       "tekst": "Wszystko powyżej działa od planu Starter.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_1",
+        "FunkcjePozyskiwanie.f8_1",
+        "FunkcjeTresci.f8_1",
+        "FunkcjeZespol.f8_1",
+        "FunkcjeWyniki.f8_1",
+        "DlaKogo.s1_plan",
+        "DlaKogo.s2_plan_1",
+        "DlaKogo.s3_plan_1"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Asystenta AI nie dostajesz w żadnym planie.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_2",
+        "FunkcjePozyskiwanie.f8_2",
+        "FunkcjeTresci.f8_2"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 14,
+     "znacznik": "section",
+     "sekcja_id": "PrzejsciaFilarow",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "← Wstecz: Pozyskiwanie",
+       "klucz_i18n": "FunkcjeTresci.f9Wstecz"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dalej: Zespół →",
+       "klucz_i18n": "FunkcjeTresci.f9Dalej"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 15,
+     "znacznik": "section",
+     "sekcja_id": "Zamkniecie",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Sprawdź, jak działa",
+       "klucz_i18n": [
+        "Hero.cta",
+        "ZamkniecieGlowna.cta",
+        "FunkcjeIndeks.zamkniecieCta",
+        "FunkcjePozyskiwanie.zamkniecieCta",
+        "FunkcjeTresci.zamkniecieCta",
+        "FunkcjeZespol.zamkniecieCta",
+        "FunkcjeWyniki.zamkniecieCta",
+        "DlaKogo.cta"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz w każdej chwili.",
+       "klucz_i18n": [
+        "ZamkniecieGlowna.zdanie",
+        "FunkcjeIndeks.zamkniecieZdanie",
+        "FunkcjePozyskiwanie.zamkniecieZdanie",
+        "FunkcjeTresci.zamkniecieZdanie",
+        "FunkcjeZespol.zamkniecieZdanie",
+        "FunkcjeWyniki.zamkniecieZdanie",
+        "DlaKogo.ctaZdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 16,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 16,
+   "liczba_elementow": 79,
+   "dopasowanych_do_klucza": 56
+  },
+  "/funkcje/zespol": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "section",
+     "sekcja_id": "NaglowekPodstrony",
+     "aria_labelledby": "podstrona-h1",
+     "elementy": [
+      {
+       "typ": "h1",
+       "tekst": "Nowa osoba wie, co robić od pierwszego dnia",
+       "klucz_i18n": [
+        "Filary.filar3.naglowek",
+        "FunkcjeZespol.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zamiast tłumaczyć od nowa każdemu — kreator wdrożeniowy robi to za ciebie.",
+       "klucz_i18n": [
+        "Filary.filar3.korzysc",
+        "FunkcjeZespol.zdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 3,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "kreator-wdrozeniowy",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "kreator wdrożeniowy",
+       "klucz_i18n": "FunkcjeZespol.mod1_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Znajoma zdecydowała się dołączyć do twojego zespołu, a twój dzień jest już pełen własnych rozmów. Nie siadasz z nią nad każdym ustawieniem — kreator wdrożeniowy prowadzi ją przez sześć kroków, od profilu i celów po gotowy start.",
+       "klucz_i18n": "FunkcjeZespol.mod1_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Kreator nie przenosi danych z innych narzędzi — profil i cele nowa osoba wpisuje w nim sama, krok po kroku.",
+       "klucz_i18n": "FunkcjeZespol.mod1_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 4,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "zatwierdzanie-zespolu",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "zatwierdzanie treści zespołu",
+       "klucz_i18n": "FunkcjeZespol.mod2_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Osoba z twojego zespołu skończyła post i czeka na twoje zdanie. Akceptujesz albo odrzucasz — a zmianę statusu od razu widzi cała struktura.",
+       "klucz_i18n": "FunkcjeZespol.mod2_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie opublikuje zatwierdzonego posta za ciebie ani za osobę z zespołu — zatwierdzenie zmienia status, a treść publikuje jej autorka sama.",
+       "klucz_i18n": "FunkcjeZespol.mod2_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 5,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "pierwsze-90-dni",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Pierwsze 90 Dni",
+       "klucz_i18n": "FunkcjeZespol.mod3_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Nowa osoba pyta cię, co dalej — a ty nie układasz jej planu od zera. Prowadzisz ją przez Pierwsze 90 Dni: misje mówią jej, co teraz, a cztery fazy pokazują, dokąd zmierza.",
+       "klucz_i18n": "FunkcjeZespol.mod3_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie poprowadzi nowej osoby za ciebie — program daje jej misje i fazy, a rozmowy prowadzisz ty.",
+       "klucz_i18n": "FunkcjeZespol.mod3_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 6,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "osiagniecia",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Osiągnięcia",
+       "klucz_i18n": "FunkcjeZespol.mod4_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Współpracowniczka z twojego zespołu wraca po przerwie i jej seria nie zaczyna się od zera — chroni ją żeton łaski. Za kolejne kroki zbiera odznaki i widzi, że codzienna praca się liczy.",
+       "klucz_i18n": "FunkcjeZespol.mod4_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie pozwoli ci ułożyć własnych odznak ani zasad ich zdobywania — twój zespół zbiera osiągnięcia według gotowych reguł.",
+       "klucz_i18n": "FunkcjeZespol.mod4_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 7,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "paszport-zgodnosci",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Paszport zgodności",
+       "klucz_i18n": "FunkcjeZespol.mod5_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "To, co wolno napisać na jednym rynku, na innym bywa niedozwolone — i nie musisz trzymać tych różnic w głowie. Zgodność komunikacji z wymogami czterech jurysdykcji sprawdzasz w Paszporcie zgodności, zanim wyślesz.",
+       "klucz_i18n": "FunkcjeZespol.mod5_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Paszport zgodności nie daje prawnej gwarancji ani porady — skaner sprawdza komunikat według reguł, a o tym, co wyślesz, decydujesz sama.",
+       "klucz_i18n": "FunkcjeZespol.mod5_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 8,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "akademia",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Akademia",
+       "klucz_i18n": "FunkcjeZespol.mod6_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Nowa osoba z twojego zespołu otwiera Akademię i nie pyta cię, od czego zacząć — kolejny moduł odblokowuje się dopiero po ukończeniu poprzedniego. Ty wracasz do swoich rozmów, a jej ścieżka pilnuje się sama.",
+       "klucz_i18n": "FunkcjeZespol.mod6_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie przychodzi z gotowymi treściami szkoleniowymi — Akademia pilnuje kolejności przechodzenia modułów, nie tego, co w nich jest.",
+       "klucz_i18n": "FunkcjeZespol.mod6_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 9,
+     "znacznik": "section",
+     "sekcja_id": "PlanJednymWierszem",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "p",
+       "tekst": "Wszystko powyżej działa od planu Starter.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_1",
+        "FunkcjePozyskiwanie.f8_1",
+        "FunkcjeTresci.f8_1",
+        "FunkcjeZespol.f8_1",
+        "FunkcjeWyniki.f8_1",
+        "DlaKogo.s1_plan",
+        "DlaKogo.s2_plan_1",
+        "DlaKogo.s3_plan_1"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę.",
+       "klucz_i18n": [
+        "FunkcjeZespol.f8_2",
+        "FunkcjeWyniki.f8_2",
+        "DlaKogo.s2_plan_2"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "W planie Growth masz widok całego drzewa struktury.",
+       "klucz_i18n": [
+        "FunkcjeZespol.f8_3",
+        "DlaKogo.s3_plan_2"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 10,
+     "znacznik": "section",
+     "sekcja_id": "PrzejsciaFilarow",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "← Wstecz: Treści",
+       "klucz_i18n": "FunkcjeZespol.f9Wstecz"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dalej: Wyniki →",
+       "klucz_i18n": "FunkcjeZespol.f9Dalej"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 11,
+     "znacznik": "section",
+     "sekcja_id": "Zamkniecie",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Sprawdź, jak działa",
+       "klucz_i18n": [
+        "Hero.cta",
+        "ZamkniecieGlowna.cta",
+        "FunkcjeIndeks.zamkniecieCta",
+        "FunkcjePozyskiwanie.zamkniecieCta",
+        "FunkcjeTresci.zamkniecieCta",
+        "FunkcjeZespol.zamkniecieCta",
+        "FunkcjeWyniki.zamkniecieCta",
+        "DlaKogo.cta"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz w każdej chwili.",
+       "klucz_i18n": [
+        "ZamkniecieGlowna.zdanie",
+        "FunkcjeIndeks.zamkniecieZdanie",
+        "FunkcjePozyskiwanie.zamkniecieZdanie",
+        "FunkcjeTresci.zamkniecieZdanie",
+        "FunkcjeZespol.zamkniecieZdanie",
+        "FunkcjeWyniki.zamkniecieZdanie",
+        "DlaKogo.ctaZdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 12,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 12,
+   "liczba_elementow": 68,
+   "dopasowanych_do_klucza": 45
+  },
+  "/funkcje/wyniki": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "section",
+     "sekcja_id": "NaglowekPodstrony",
+     "aria_labelledby": "podstrona-h1",
+     "elementy": [
+      {
+       "typ": "h1",
+       "tekst": "Widzisz wzrost nawet po trudnym dniu",
+       "klucz_i18n": [
+        "Filary.filar4.naglowek",
+        "FunkcjeWyniki.naglowek"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje.",
+       "klucz_i18n": [
+        "Filary.filar4.korzysc",
+        "FunkcjeWyniki.zdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 3,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "pulpit",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Pulpit",
+       "klucz_i18n": "FunkcjeWyniki.mod1_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Na Pulpicie widzisz aktualny stan: sprzedaż, aktywne kontakty, aktywność zespołu — wszystko w jednym miejscu. Zanim zdecydujesz, co dziś najważniejsze, wiesz, na czym stoisz.",
+       "klucz_i18n": "FunkcjeWyniki.mod1_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Pulpit nie pokazuje danych spoza Catherly — widzisz to, co ty i twój zespół zapisujecie w aplikacji.",
+       "klucz_i18n": "FunkcjeWyniki.mod1_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 4,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "twoj-wrapped",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Twój Wrapped",
+       "klucz_i18n": "FunkcjeWyniki.mod2_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Otwierasz Twój Wrapped i czytasz podsumowanie swojego okresu: co zrobiłaś, co sprzedałaś, co działo się w zespole. Widzisz, co naprawdę się wydarzyło — nie tylko to, co zapamiętałaś.",
+       "klucz_i18n": "FunkcjeWyniki.mod2_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie zrobi z twojego podsumowania raportu PDF — Twój Wrapped oglądasz w aplikacji.",
+       "klucz_i18n": "FunkcjeWyniki.mod2_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 5,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "cel",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Cel z kamieniami milowymi",
+       "klucz_i18n": "FunkcjeWyniki.mod3_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wyznaczasz cel i śledzisz postęp kamieniami milowymi. Zamiast jednej odległej mety widzisz, jak daleko zaszłaś i co jest następne.",
+       "klucz_i18n": "FunkcjeWyniki.mod3_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie wyznacza celów za ciebie i nie pogania, gdy postęp zwalnia — cel jest twój, tempo też.",
+       "klucz_i18n": "FunkcjeWyniki.mod3_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 6,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "sciana-sukcesow",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Ściana sukcesów",
+       "klucz_i18n": "FunkcjeWyniki.mod4_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Pierwsza sprzedaż nowej osoby, twój domknięty kamień milowy — takie chwile zapisujesz na Ścianie sukcesów. Rejestrujesz i świętujesz sukcesy swoje i zespołu, zanim przykryje je codzienność.",
+       "klucz_i18n": "FunkcjeWyniki.mod4_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie zapisze sukcesu za ciebie — co trafia na Ścianę sukcesów, rejestrujesz sama.",
+       "klucz_i18n": "FunkcjeWyniki.mod4_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 7,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "swiadectwo",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Świadectwo",
+       "klucz_i18n": "FunkcjeWyniki.mod5_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Chcesz pokazać swoje wyniki komuś, kto nie widział twojej codziennej pracy. Eksportujesz CSV ze Świadectwa kiedy chcesz — a rejestr z cyfrowym odciskiem SHA-256 sprawia, że twoją historię aktywności można zweryfikować, nie tylko przeczytać.",
+       "klucz_i18n": "FunkcjeWyniki.mod5_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Świadectwo niczego nigdzie nie wysyła — rejestr widzisz ty, a CSV trafia tylko do tych, którym sama go przekażesz.",
+       "klucz_i18n": "FunkcjeWyniki.mod5_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 8,
+     "znacznik": "section",
+     "sekcja_id": "ModulFunkcji",
+     "aria_labelledby": "wall-of-proof",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Wall of Proof",
+       "klucz_i18n": "FunkcjeWyniki.mod6_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zbierasz dowody swojej pracy na Wall of Proof — osobistej osi czasu sukcesów. W trudniejszy dzień przewijasz ją i widzisz, ile już za tobą — to przestrzeń, w której świętujesz, nie tylko mierzysz.",
+       "klucz_i18n": "FunkcjeWyniki.mod6_poco"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wall of Proof nie jest ścianą zespołu — wspólne świętowanie ma swoje miejsce na Ścianie sukcesów.",
+       "klucz_i18n": "FunkcjeWyniki.mod6_nie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 9,
+     "znacznik": "section",
+     "sekcja_id": "PlanJednymWierszem",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "p",
+       "tekst": "Wszystko powyżej działa od planu Starter.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_1",
+        "FunkcjePozyskiwanie.f8_1",
+        "FunkcjeTresci.f8_1",
+        "FunkcjeZespol.f8_1",
+        "FunkcjeWyniki.f8_1",
+        "DlaKogo.s1_plan",
+        "DlaKogo.s2_plan_1",
+        "DlaKogo.s3_plan_1"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę.",
+       "klucz_i18n": [
+        "FunkcjeZespol.f8_2",
+        "FunkcjeWyniki.f8_2",
+        "DlaKogo.s2_plan_2"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 10,
+     "znacznik": "section",
+     "sekcja_id": "PrzejsciaFilarow",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "← Wstecz: Zespół",
+       "klucz_i18n": "FunkcjeWyniki.f9Wstecz"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 11,
+     "znacznik": "section",
+     "sekcja_id": "Zamkniecie",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Sprawdź, jak działa",
+       "klucz_i18n": [
+        "Hero.cta",
+        "ZamkniecieGlowna.cta",
+        "FunkcjeIndeks.zamkniecieCta",
+        "FunkcjePozyskiwanie.zamkniecieCta",
+        "FunkcjeTresci.zamkniecieCta",
+        "FunkcjeZespol.zamkniecieCta",
+        "FunkcjeWyniki.zamkniecieCta",
+        "DlaKogo.cta"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz w każdej chwili.",
+       "klucz_i18n": [
+        "ZamkniecieGlowna.zdanie",
+        "FunkcjeIndeks.zamkniecieZdanie",
+        "FunkcjePozyskiwanie.zamkniecieZdanie",
+        "FunkcjeTresci.zamkniecieZdanie",
+        "FunkcjeZespol.zamkniecieZdanie",
+        "FunkcjeWyniki.zamkniecieZdanie",
+        "DlaKogo.ctaZdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 12,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 12,
+   "liczba_elementow": 66,
+   "dopasowanych_do_klucza": 44
+  },
+  "/dla-kogo": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "section",
+     "sekcja_id": "NaglowekPodstrony",
+     "aria_labelledby": "podstrona-h1",
+     "elementy": [
+      {
+       "typ": "h1",
+       "tekst": "Pracujesz sama, budujesz zespół albo prowadzisz strukturę.",
+       "klucz_i18n": "DlaKogo.naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Przy każdej z tych dróg co innego jest trudne, co innego robi Catherly i gdzie indziej się zatrzymuje.",
+       "klucz_i18n": "DlaKogo.zdanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 3,
+     "znacznik": "section",
+     "sekcja_id": "SciezkaRozpoznania",
+     "aria_labelledby": "pracujesz-sama",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Wszystko trzymasz jeszcze w głowie i w wiadomościach.",
+       "klucz_i18n": "DlaKogo.s1_h2"
+      },
+      {
+       "typ": "p",
+       "tekst": "Rano decydujesz od nowa, od czego zacząć: notatki są w telefonie, ustalenia w wiadomościach, terminy w kilku miejscach naraz. Wieczorem nie masz pewności, czy o kimś ważnym nie zapomniałaś.",
+       "klucz_i18n": "DlaKogo.s1_boli"
+      },
+      {
+       "typ": "p",
+       "tekst": "Kolejność rozmów układasz w Dziennym Planie Działania — dzień zaczynasz od konkretu, nie od zastanawiania się. Terminy rozmów wpisujesz do kalendarza z przypomnieniami — w ostatnich 30 minutach przed rozmową Catherly przypomina ci o niej.",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Dziennym Planie Działania",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "kalendarza z przypomnieniami",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Gdy ktoś pyta cię o współpracę, przekazujesz link do swojego formularza zgłoszeniowego — wypełnione zgłoszenie trafia prosto do twojej bazy kontaktów. Trudną rozmowę przechodzisz najpierw na sucho w Sali Treningowej.",
+       "klucz_i18n": "DlaKogo.s1_robi_2"
+      },
+      {
+       "typ": "link",
+       "tekst": "formularza zgłoszeniowego",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Sali Treningowej",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Post zaczynasz od gotowego szablonu, nie od pustej strony. Tarcza zaznacza ryzykowne sformułowania, zanim go opublikujesz.",
+       "klucz_i18n": "DlaKogo.s1_robi_3"
+      },
+      {
+       "typ": "link",
+       "tekst": "gotowego szablonu",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Tarcza",
+       "klucz_i18n": "FunkcjeTresci.mod6_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wszystko powyżej działa od planu Starter.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_1",
+        "FunkcjePozyskiwanie.f8_1",
+        "FunkcjeTresci.f8_1",
+        "FunkcjeZespol.f8_1",
+        "FunkcjeWyniki.f8_1",
+        "DlaKogo.s1_plan",
+        "DlaKogo.s2_plan_1",
+        "DlaKogo.s3_plan_1"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie znajdzie za ciebie kontaktów ani nie poprowadzi rozmów — ludzi do formularza kierujesz sama, porządek dnia dostajesz.",
+       "klucz_i18n": "DlaKogo.s1_granica"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 4,
+     "znacznik": "section",
+     "sekcja_id": "SciezkaRozpoznania",
+     "aria_labelledby": "budujesz-zespol",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Masz zespół. Pytanie, komu dziś pomóc, a komu nie przeszkadzać.",
+       "klucz_i18n": "DlaKogo.s2_h2"
+      },
+      {
+       "typ": "p",
+       "tekst": "Każda osoba w twoim zespole jest w innym miejscu: jedna dopiero się wdraża, inna wyhamowała po dobrym starcie. Nie masz tego w jednym widoku, więc dowiadujesz się w rozmowie — zwykle później, niż chciałaś.",
+       "klucz_i18n": "DlaKogo.s2_boli"
+      },
+      {
+       "typ": "p",
+       "tekst": "Pulpit pokazuje aktualny stan: sprzedaż, aktywne kontakty, aktywność zespołu — wszystko w jednym miejscu. Nową osobę wdrażasz przez kreator wdrożeniowy: profil, cele, materiały, zaproszenie.",
+       "klucz_i18n": "DlaKogo.s2_robi_1"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pulpit",
+       "klucz_i18n": "FunkcjeWyniki.mod1_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "kreator wdrożeniowy",
+       "klucz_i18n": "FunkcjeZespol.mod1_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Potem prowadzisz ją przez Pierwsze 90 Dni: misje mówią jej, co teraz, a cztery fazy pokazują, dokąd zmierza. Osiągnięcia zbiera twój zespół według gotowych reguł: odznaki za kolejne kroki, a przy powrocie po przerwie serię chroni żeton łaski.",
+       "klucz_i18n": "DlaKogo.s2_robi_2"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pierwsze 90 Dni",
+       "klucz_i18n": "FunkcjeZespol.mod3_nazwa"
+      },
+      {
+       "typ": "link",
+       "tekst": "Osiągnięcia",
+       "klucz_i18n": "FunkcjeZespol.mod4_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wszystko powyżej działa od planu Starter.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_1",
+        "FunkcjePozyskiwanie.f8_1",
+        "FunkcjeTresci.f8_1",
+        "FunkcjeZespol.f8_1",
+        "FunkcjeWyniki.f8_1",
+        "DlaKogo.s1_plan",
+        "DlaKogo.s2_plan_1",
+        "DlaKogo.s3_plan_1"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "W planie Growth widzisz sygnały ryzyka odejścia i dostajesz gotowe zdanie otwierające rozmowę.",
+       "klucz_i18n": [
+        "FunkcjeZespol.f8_2",
+        "FunkcjeWyniki.f8_2",
+        "DlaKogo.s2_plan_2"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Catherly nie oceni za ciebie, kto wyhamował — widzisz tylko to, co ty i twój zespół zapisujecie w aplikacji, a rozmowę prowadzisz ty.",
+       "klucz_i18n": "DlaKogo.s2_granica"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 5,
+     "znacznik": "section",
+     "sekcja_id": "SciezkaRozpoznania",
+     "aria_labelledby": "prowadzisz-strukture",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Struktura urosła, a decyzje wciąż przechodzą przez ciebie.",
+       "klucz_i18n": "DlaKogo.s3_h2"
+      },
+      {
+       "typ": "p",
+       "tekst": "Pytania nowych osób, treści czekające na twoje zdanie, wątpliwość, co wolno napisać na którym rynku — każda z tych rzeczy czeka na ciebie. Godzin w tygodniu nie przybywa.",
+       "klucz_i18n": "DlaKogo.s3_boli"
+      },
+      {
+       "typ": "p",
+       "tekst": "Treści zespołu zatwierdzasz u siebie: akceptujesz albo odrzucasz, a zmianę statusu od razu widzi cała struktura. Paszport zgodności sprawdza twój komunikat pod kątem wymogów czterech jurysdykcji, zanim go wyślesz — różnic między rynkami nie musisz pamiętać.",
+       "klucz_i18n": "DlaKogo.s3_robi_1"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści zespołu zatwierdzasz",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Paszport zgodności",
+       "klucz_i18n": "FunkcjeZespol.mod5_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Akademia odblokowuje kolejny moduł dopiero po ukończeniu poprzedniego — nowa osoba nie pyta cię, od czego zacząć, a treści szkoleniowe dodaje administrator.",
+       "klucz_i18n": "DlaKogo.s3_robi_2"
+      },
+      {
+       "typ": "link",
+       "tekst": "Akademia",
+       "klucz_i18n": "FunkcjeZespol.mod6_nazwa"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wszystko powyżej działa od planu Starter.",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8_1",
+        "FunkcjePozyskiwanie.f8_1",
+        "FunkcjeTresci.f8_1",
+        "FunkcjeZespol.f8_1",
+        "FunkcjeWyniki.f8_1",
+        "DlaKogo.s1_plan",
+        "DlaKogo.s2_plan_1",
+        "DlaKogo.s3_plan_1"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "W planie Growth masz widok całego drzewa struktury.",
+       "klucz_i18n": [
+        "FunkcjeZespol.f8_3",
+        "DlaKogo.s3_plan_2"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Czysty eksport — twoje materiały bez sygnatury polecającej — jest w planie Pro.",
+       "klucz_i18n": "DlaKogo.s3_plan_3"
+      },
+      {
+       "typ": "p",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zobacz cennik",
+       "klucz_i18n": [
+        "FunkcjeIndeks.f8link",
+        "FunkcjePozyskiwanie.f8link",
+        "FunkcjeTresci.f8link",
+        "FunkcjeZespol.f8link",
+        "FunkcjeWyniki.f8link",
+        "DlaKogo.cennikLink"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Paszport zgodności nie daje prawnej gwarancji ani porady — sprawdza komunikat według reguł, a zatwierdzenia i rozmowy z ludźmi zostają po twojej stronie.",
+       "klucz_i18n": "DlaKogo.s3_granica"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 6,
+     "znacznik": "section",
+     "sekcja_id": "Zamkniecie",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Sprawdź, jak działa",
+       "klucz_i18n": [
+        "Hero.cta",
+        "ZamkniecieGlowna.cta",
+        "FunkcjeIndeks.zamkniecieCta",
+        "FunkcjePozyskiwanie.zamkniecieCta",
+        "FunkcjeTresci.zamkniecieCta",
+        "FunkcjeZespol.zamkniecieCta",
+        "FunkcjeWyniki.zamkniecieCta",
+        "DlaKogo.cta"
+       ]
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz w każdej chwili.",
+       "klucz_i18n": [
+        "ZamkniecieGlowna.zdanie",
+        "FunkcjeIndeks.zamkniecieZdanie",
+        "FunkcjePozyskiwanie.zamkniecieZdanie",
+        "FunkcjeTresci.zamkniecieZdanie",
+        "FunkcjeZespol.zamkniecieZdanie",
+        "FunkcjeWyniki.zamkniecieZdanie",
+        "DlaKogo.ctaZdanie"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 7,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 7,
+   "liczba_elementow": 84,
+   "dopasowanych_do_klucza": 50
+  },
+  "/cennik": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "section",
+     "sekcja_id": "cennik",
+     "aria_labelledby": "cennik-h1",
+     "elementy": [
+      {
+       "typ": "h1",
+       "tekst": "Plany różnią się zakresem, nie obietnicami",
+       "klucz_i18n": "Cennik.naglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Każdy plan to ten sam system. Różnica leży w zakresie — od twoich pierwszych kontaktów po całą strukturę zespołu.",
+       "klucz_i18n": "Cennik.wstep"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 3,
+     "znacznik": "section",
+     "sekcja_id": "SekcjaPlanow",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "label",
+       "tekst": "miesięcznie",
+       "klucz_i18n": "Cennik.miesiecznie"
+      },
+      {
+       "typ": "label",
+       "tekst": "rocznie",
+       "klucz_i18n": "Cennik.rocznie"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Starter",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "99 zł miesięcznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "890 zł rocznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "oszczędzasz 298 zł",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Dla ciebie, jeśli zaczynasz i chcesz mieć jasny plan na każdy dzień.",
+       "klucz_i18n": "Cennik.plany.starter.dlaKogo"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pulpit — jeden ekran, na którym widzisz swoje kontakty i wyniki",
+       "klucz_i18n": "Cennik.plany.starter.pozycja1"
+      },
+      {
+       "typ": "li",
+       "tekst": "DMO — Dzienny Plan Działania, który mówi, co dziś zrobić",
+       "klucz_i18n": "Cennik.plany.starter.pozycja2"
+      },
+      {
+       "typ": "li",
+       "tekst": "Formularz zgłoszeniowy z publiczną stroną — kontakty trafiają prosto do bazy",
+       "klucz_i18n": "Cennik.plany.starter.pozycja3"
+      },
+      {
+       "typ": "li",
+       "tekst": "Sala Treningowa — ćwiczysz trudne odpowiedzi, zanim padną naprawdę",
+       "klucz_i18n": "Cennik.plany.starter.pozycja4"
+      },
+      {
+       "typ": "li",
+       "tekst": "Tarcza — sprawdza ryzykowne sformułowania, zanim je wyślesz",
+       "klucz_i18n": "Cennik.plany.starter.pozycja5"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wybierz plan",
+       "klucz_i18n": [
+        "Cennik.cta",
+        "ZamkniecieCennik.cta"
+       ]
+      },
+      {
+       "typ": "h2",
+       "tekst": "Growth",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "199 zł miesięcznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "1790 zł rocznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "oszczędzasz 598 zł",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Dla ciebie, jeśli budujesz zespół i chcesz widzieć, jak radzi sobie każda z twoich osób.",
+       "klucz_i18n": "Cennik.plany.growth.dlaKogo"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wszystko ze Startera, a do tego:",
+       "klucz_i18n": "Cennik.plany.growth.dopisek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Puls zespołu — widzisz sygnały ryzyka odejścia i dostajesz zdanie otwierające rozmowę",
+       "klucz_i18n": "Cennik.plany.growth.pozycja1"
+      },
+      {
+       "typ": "li",
+       "tekst": "Widzisz całe drzewo struktury swojego zespołu",
+       "klucz_i18n": "Cennik.plany.growth.pozycja2"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wybierz plan",
+       "klucz_i18n": [
+        "Cennik.cta",
+        "ZamkniecieCennik.cta"
+       ]
+      },
+      {
+       "typ": "h2",
+       "tekst": "Pro",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "399 zł miesięcznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "3590 zł rocznie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "oszczędzasz 1198 zł",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "p",
+       "tekst": "Dla ciebie, jeśli prowadzisz dużą strukturę i część pracy chcesz przekazać innym.",
+       "klucz_i18n": "Cennik.plany.pro.dlaKogo"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wszystko z Growth, a do tego:",
+       "klucz_i18n": "Cennik.plany.pro.dopisek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Ranking — widzisz swoje miejsce na tle innych użytkowniczek",
+       "klucz_i18n": "Cennik.plany.pro.pozycja1"
+      },
+      {
+       "typ": "li",
+       "tekst": "Klucze API i webhooki — łączysz Catherly z własnymi narzędziami",
+       "klucz_i18n": "Cennik.plany.pro.pozycja2"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zniesione limity kontaktów, zespołu, postów i sesji treningowych",
+       "klucz_i18n": "Cennik.plany.pro.pozycja3"
+      },
+      {
+       "typ": "li",
+       "tekst": "Czysty eksport — twoje materiały bez sygnatury polecającej",
+       "klucz_i18n": "Cennik.plany.pro.pozycja4"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wybierz plan",
+       "klucz_i18n": [
+        "Cennik.cta",
+        "ZamkniecieCennik.cta"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 4,
+     "znacznik": "section",
+     "sekcja_id": "TabelaPorownawcza",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "caption",
+       "tekst": "Porównanie planów",
+       "klucz_i18n": "Cennik.tabela.caption"
+      },
+      {
+       "typ": "th",
+       "tekst": "Zakres",
+       "klucz_i18n": "Cennik.tabela.zakres"
+      },
+      {
+       "typ": "th",
+       "tekst": "Starter",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "th",
+       "tekst": "Growth",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "th",
+       "tekst": "Pro",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "th",
+       "tekst": "Kontakty",
+       "klucz_i18n": "Cennik.tabela.kontakty"
+      },
+      {
+       "typ": "td",
+       "tekst": "50",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "200",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "bez limitu",
+       "klucz_i18n": "Cennik.tabela.bezLimitu"
+      },
+      {
+       "typ": "th",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "td",
+       "tekst": "10",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "50",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "bez limitu",
+       "klucz_i18n": "Cennik.tabela.bezLimitu"
+      },
+      {
+       "typ": "th",
+       "tekst": "Posty miesięcznie",
+       "klucz_i18n": "Cennik.tabela.posty"
+      },
+      {
+       "typ": "td",
+       "tekst": "20",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "100",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "bez limitu",
+       "klucz_i18n": "Cennik.tabela.bezLimitu"
+      },
+      {
+       "typ": "th",
+       "tekst": "Sesje Sali Treningowej miesięcznie",
+       "klucz_i18n": "Cennik.tabela.sesje"
+      },
+      {
+       "typ": "td",
+       "tekst": "5",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "30",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "bez limitu",
+       "klucz_i18n": "Cennik.tabela.bezLimitu"
+      },
+      {
+       "typ": "th",
+       "tekst": "Kalendarz",
+       "klucz_i18n": "Cennik.tabela.kalendarz"
+      },
+      {
+       "typ": "td",
+       "tekst": "w każdym planie",
+       "klucz_i18n": "Cennik.tabela.wKazdymPlanie"
+      },
+      {
+       "typ": "th",
+       "tekst": "Puls zespołu",
+       "klucz_i18n": "Cennik.tabela.puls"
+      },
+      {
+       "typ": "td",
+       "tekst": "—poza planem",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "✓w planie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "✓w planie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "th",
+       "tekst": "Drzewo struktury",
+       "klucz_i18n": "Cennik.tabela.drzewo"
+      },
+      {
+       "typ": "td",
+       "tekst": "—poza planem",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "✓w planie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "✓w planie",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "th",
+       "tekst": "Ranking, klucze API i webhooki",
+       "klucz_i18n": "Cennik.tabela.ranking"
+      },
+      {
+       "typ": "td",
+       "tekst": "—poza planem",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "—poza planem",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "td",
+       "tekst": "✓w planie",
+       "klucz_i18n": null
+      }
+     ]
+    },
+    {
+     "kolejnosc": 5,
+     "znacznik": "section",
+     "sekcja_id": "Faq",
+     "aria_labelledby": "faq-h2",
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Pytania o płatność",
+       "klucz_i18n": "Cennik.faqNaglowek"
+      },
+      {
+       "typ": "p",
+       "tekst": "Ceny na tej stronie są w złotych. Każdy plan ma też cenę w euro — walutę widzisz przed płatnością.",
+       "klucz_i18n": "Cennik.faq.o1"
+      },
+      {
+       "typ": "p",
+       "tekst": "Wybierasz plan i zmieniasz go kiedy chcesz.",
+       "klucz_i18n": "Cennik.faq.o2"
+      },
+      {
+       "typ": "p",
+       "tekst": "Rezygnujesz kiedy chcesz. Nie musisz podawać powodu.",
+       "klucz_i18n": "Cennik.faq.o3"
+      },
+      {
+       "typ": "p",
+       "tekst": "Eksportujesz kontakty do vCard, pobierasz CSV z rejestrem — wszystko jest twoje.",
+       "klucz_i18n": "Cennik.faq.o4"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 6,
+     "znacznik": "section",
+     "sekcja_id": "cennik",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "li",
+       "tekst": "Rezygnacja w każdej chwili",
+       "klucz_i18n": [
+        "Hero.potwierdzenieRezygnacja",
+        "Cennik.potwierdzenie1"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Eksport danych zawsze: vCard i CSV",
+       "klucz_i18n": "Cennik.potwierdzenie2"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dane przechowywane w UE",
+       "klucz_i18n": [
+        "Hero.potwierdzenieUE",
+        "Cennik.potwierdzenie3"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 7,
+     "znacznik": "section",
+     "sekcja_id": "Zamkniecie",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "p",
+       "tekst": "Wybierz plan i sprawdź, jak działa Catherly w twojej codziennej pracy. Niczym się nie wiążesz — rezygnujesz kiedy chcesz.",
+       "klucz_i18n": "ZamkniecieCennik.zdanie"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wybierz plan",
+       "klucz_i18n": [
+        "Cennik.cta",
+        "ZamkniecieCennik.cta"
+       ]
+      }
+     ]
+    },
+    {
+     "kolejnosc": 8,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 8,
+   "liczba_elementow": 119,
+   "dopasowanych_do_klucza": 66
+  },
+  "/login": {
+   "tytul": "Catherly",
+   "sekcje": [
+    {
+     "kolejnosc": 1,
+     "znacznik": "header",
+     "sekcja_id": "Nawigacja",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "link",
+       "tekst": "Catherly",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "nav",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Logowanie",
+       "klucz_i18n": "Nawigacja.logowanie"
+      }
+     ]
+    },
+    {
+     "kolejnosc": 2,
+     "znacznik": "footer",
+     "sekcja_id": "Stopka",
+     "aria_labelledby": null,
+     "elementy": [
+      {
+       "typ": "h2",
+       "tekst": "Mapa strony",
+       "klucz_i18n": "Stopka.mapaStrony"
+      },
+      {
+       "typ": "li",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "link",
+       "tekst": "Strona główna",
+       "klucz_i18n": "Wspolne.stronaGlowna"
+      },
+      {
+       "typ": "li",
+       "tekst": "FunkcjePozyskiwanieTreściZespółWyniki",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Funkcje",
+       "klucz_i18n": "Nawigacja.funkcje"
+      },
+      {
+       "typ": "li",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Pozyskiwanie",
+       "klucz_i18n": "FunkcjePozyskiwanie.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Treści",
+       "klucz_i18n": "FunkcjeTresci.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "link",
+       "tekst": "Zespół",
+       "klucz_i18n": [
+        "Cennik.tabela.zespol",
+        "FunkcjeZespol.okruszek"
+       ]
+      },
+      {
+       "typ": "li",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "link",
+       "tekst": "Wyniki",
+       "klucz_i18n": "FunkcjeWyniki.okruszek"
+      },
+      {
+       "typ": "li",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "link",
+       "tekst": "Cennik",
+       "klucz_i18n": "Nawigacja.cennik"
+      },
+      {
+       "typ": "li",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "link",
+       "tekst": "Dla kogo",
+       "klucz_i18n": "Nawigacja.dlaKogo"
+      },
+      {
+       "typ": "h2",
+       "tekst": "Język",
+       "klucz_i18n": "Stopka.jezyk"
+      },
+      {
+       "typ": "li",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Polski",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "English",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "link",
+       "tekst": "Deutsch",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Dokumenty",
+       "klucz_i18n": "Stopka.dokumenty"
+      },
+      {
+       "typ": "li",
+       "tekst": "Regulamin (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Prywatność (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Ciasteczka (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "li",
+       "tekst": "Przetwarzanie danych (wkrótce)",
+       "klucz_i18n": null
+      },
+      {
+       "typ": "h2",
+       "tekst": "Kontakt",
+       "klucz_i18n": "Stopka.kontakt"
+      },
+      {
+       "typ": "li",
+       "tekst": "(wkrótce)",
+       "klucz_i18n": "Stopka.wkrotce"
+      }
+     ]
+    }
+   ],
+   "liczba_sekcji": 2,
+   "liczba_elementow": 39,
+   "dopasowanych_do_klucza": 25
+  }
+ }
+}

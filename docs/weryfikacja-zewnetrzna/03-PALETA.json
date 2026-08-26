@@ -1,0 +1,663 @@
+{
+ "_opis": "Palety odczytane DWOMA drogami: 'deklaracje_z_globals_css' to cytat z pliku zrodlowego; 'wartosci_rozwiazane' to te same role odczytane przez przegladarke przez getComputedStyle, wiec z rozwiazanymi var(). Kontrasty policzone wzorem WCAG 2.x z wartosci rozwiazanych.",
+ "wygenerowano": "2026-08-26",
+ "liczba_rol": 14,
+ "role": [
+  "tlo-strony",
+  "powierzchnia",
+  "powierzchnia-2",
+  "powierzchnia-akcentowa",
+  "tekst-podstawowy",
+  "tekst-drugorzedny",
+  "kreska",
+  "akcent",
+  "interakcja",
+  "interakcja-aktywna",
+  "tekst-na-interakcji",
+  "link",
+  "link-aktywny",
+  "fokus"
+ ],
+ "deklaracje_z_globals_css": {
+  "len": {
+   "rol": 14,
+   "role": {
+    "tlo-strony": {
+     "hex": "#f2ece1",
+     "uwaga": null
+    },
+    "powierzchnia": {
+     "hex": "#f2ece1",
+     "uwaga": null
+    },
+    "powierzchnia-2": {
+     "hex": "#d9d2c4",
+     "uwaga": null
+    },
+    "powierzchnia-akcentowa": {
+     "hex": "#d9d2c4",
+     "uwaga": null
+    },
+    "tekst-podstawowy": {
+     "hex": "#1e231b",
+     "uwaga": null
+    },
+    "tekst-drugorzedny": {
+     "hex": "#4e5548",
+     "uwaga": null
+    },
+    "kreska": {
+     "hex": "#d9d2c4",
+     "uwaga": null
+    },
+    "akcent": {
+     "hex": "#4e5548",
+     "uwaga": "R-AKCENT-01 — punktory, NIE limonka"
+    },
+    "interakcja": {
+     "hex": "#c7f04a",
+     "uwaga": "limonka — wyłącznie CTA"
+    },
+    "interakcja-aktywna": {
+     "hex": "#141a0c",
+     "uwaga": null
+    },
+    "tekst-na-interakcji": {
+     "hex": "#141a0c",
+     "uwaga": null
+    },
+    "link": {
+     "hex": "#1e231b",
+     "uwaga": null
+    },
+    "link-aktywny": {
+     "hex": "#4e5548",
+     "uwaga": null
+    },
+    "fokus": {
+     "hex": "#1e231b",
+     "uwaga": "NIGDY akcent — polecenie właściciela"
+    }
+   }
+  },
+  "kosc": {
+   "rol": 14,
+   "role": {
+    "tlo-strony": {
+     "hex": "#f7f3ea",
+     "uwaga": null
+    },
+    "powierzchnia": {
+     "hex": "#f7f3ea",
+     "uwaga": null
+    },
+    "powierzchnia-2": {
+     "hex": "#e2dcd0",
+     "uwaga": null
+    },
+    "powierzchnia-akcentowa": {
+     "hex": "#e2dcd0",
+     "uwaga": null
+    },
+    "tekst-podstawowy": {
+     "hex": "#22261f",
+     "uwaga": null
+    },
+    "tekst-drugorzedny": {
+     "hex": "#565c4f",
+     "uwaga": null
+    },
+    "kreska": {
+     "hex": "#e2dcd0",
+     "uwaga": null
+    },
+    "akcent": {
+     "hex": "#565c4f",
+     "uwaga": null
+    },
+    "interakcja": {
+     "hex": "#d4f55c",
+     "uwaga": null
+    },
+    "interakcja-aktywna": {
+     "hex": "#181e10",
+     "uwaga": null
+    },
+    "tekst-na-interakcji": {
+     "hex": "#181e10",
+     "uwaga": null
+    },
+    "link": {
+     "hex": "#22261f",
+     "uwaga": null
+    },
+    "link-aktywny": {
+     "hex": "#565c4f",
+     "uwaga": null
+    },
+    "fokus": {
+     "hex": "#22261f",
+     "uwaga": null
+    }
+   }
+  },
+  "popiol": {
+   "rol": 14,
+   "role": {
+    "tlo-strony": {
+     "hex": "#ede9e0",
+     "uwaga": null
+    },
+    "powierzchnia": {
+     "hex": "#ede9e0",
+     "uwaga": null
+    },
+    "powierzchnia-2": {
+     "hex": "#d3cdc0",
+     "uwaga": null
+    },
+    "powierzchnia-akcentowa": {
+     "hex": "#d3cdc0",
+     "uwaga": null
+    },
+    "tekst-podstawowy": {
+     "hex": "#191d16",
+     "uwaga": null
+    },
+    "tekst-drugorzedny": {
+     "hex": "#4a5044",
+     "uwaga": null
+    },
+    "kreska": {
+     "hex": "#d3cdc0",
+     "uwaga": null
+    },
+    "akcent": {
+     "hex": "#4a5044",
+     "uwaga": null
+    },
+    "interakcja": {
+     "hex": "#aee03c",
+     "uwaga": null
+    },
+    "interakcja-aktywna": {
+     "hex": "#12180a",
+     "uwaga": null
+    },
+    "tekst-na-interakcji": {
+     "hex": "#12180a",
+     "uwaga": null
+    },
+    "link": {
+     "hex": "#191d16",
+     "uwaga": null
+    },
+    "link-aktywny": {
+     "hex": "#4a5044",
+     "uwaga": null
+    },
+    "fokus": {
+     "hex": "#191d16",
+     "uwaga": null
+    }
+   }
+  },
+  "czern": {
+   "rol": 14,
+   "role": {
+    "tlo-strony": {
+     "hex": "#0a0a0a",
+     "uwaga": null
+    },
+    "powierzchnia": {
+     "hex": "#0a0a0a",
+     "uwaga": null
+    },
+    "powierzchnia-2": {
+     "hex": "#141414",
+     "uwaga": null
+    },
+    "powierzchnia-akcentowa": {
+     "hex": "#f2f2f0",
+     "uwaga": "inwersja — pole jasne"
+    },
+    "tekst-podstawowy": {
+     "hex": "#ededed",
+     "uwaga": null
+    },
+    "tekst-drugorzedny": {
+     "hex": "#a8a8a8",
+     "uwaga": null
+    },
+    "kreska": {
+     "hex": "#2e2e2e",
+     "uwaga": null
+    },
+    "akcent": {
+     "hex": "#a3e635",
+     "uwaga": "LIMONKA — zawieszenie R-AKCENT-01"
+    },
+    "interakcja": {
+     "hex": "#a3e635",
+     "uwaga": null
+    },
+    "tekst-na-interakcji": {
+     "hex": "#0a0a0a",
+     "uwaga": null
+    },
+    "interakcja-aktywna": {
+     "hex": "#ededed",
+     "uwaga": "inwersja pary na hover"
+    },
+    "link": {
+     "hex": "#a3e635",
+     "uwaga": null
+    },
+    "link-aktywny": {
+     "hex": "#ededed",
+     "uwaga": null
+    },
+    "fokus": {
+     "hex": "#a3e635",
+     "uwaga": null
+    }
+   }
+  }
+ },
+ "wartosci_rozwiazane": {
+  "produkcja": {
+   "tlo-strony": "#eee6e0",
+   "powierzchnia": "#fff1e9",
+   "powierzchnia-2": "#fce3d6",
+   "powierzchnia-akcentowa": "#ffe2da",
+   "tekst-podstawowy": "#3b2a20",
+   "tekst-drugorzedny": "#624e43",
+   "kreska": "#e8d0c2",
+   "akcent": "#e65b3d",
+   "interakcja": "#bb351d",
+   "interakcja-aktywna": "#a21c0a",
+   "tekst-na-interakcji": "#fff1e9",
+   "link": "#5e4775",
+   "link-aktywny": "#4c3663",
+   "fokus": "#5e4775"
+  },
+  "len": {
+   "tlo-strony": "#f2ece1",
+   "powierzchnia": "#f2ece1",
+   "powierzchnia-2": "#d9d2c4",
+   "powierzchnia-akcentowa": "#d9d2c4",
+   "tekst-podstawowy": "#1e231b",
+   "tekst-drugorzedny": "#4e5548",
+   "kreska": "#d9d2c4",
+   "akcent": "#4e5548",
+   "interakcja": "#c7f04a",
+   "interakcja-aktywna": "#141a0c",
+   "tekst-na-interakcji": "#141a0c",
+   "link": "#1e231b",
+   "link-aktywny": "#4e5548",
+   "fokus": "#1e231b"
+  },
+  "kosc": {
+   "tlo-strony": "#f7f3ea",
+   "powierzchnia": "#f7f3ea",
+   "powierzchnia-2": "#e2dcd0",
+   "powierzchnia-akcentowa": "#e2dcd0",
+   "tekst-podstawowy": "#22261f",
+   "tekst-drugorzedny": "#565c4f",
+   "kreska": "#e2dcd0",
+   "akcent": "#565c4f",
+   "interakcja": "#d4f55c",
+   "interakcja-aktywna": "#181e10",
+   "tekst-na-interakcji": "#181e10",
+   "link": "#22261f",
+   "link-aktywny": "#565c4f",
+   "fokus": "#22261f"
+  },
+  "popiol": {
+   "tlo-strony": "#ede9e0",
+   "powierzchnia": "#ede9e0",
+   "powierzchnia-2": "#d3cdc0",
+   "powierzchnia-akcentowa": "#d3cdc0",
+   "tekst-podstawowy": "#191d16",
+   "tekst-drugorzedny": "#4a5044",
+   "kreska": "#d3cdc0",
+   "akcent": "#4a5044",
+   "interakcja": "#aee03c",
+   "interakcja-aktywna": "#12180a",
+   "tekst-na-interakcji": "#12180a",
+   "link": "#191d16",
+   "link-aktywny": "#4a5044",
+   "fokus": "#191d16"
+  },
+  "czern": {
+   "tlo-strony": "#0a0a0a",
+   "powierzchnia": "#0a0a0a",
+   "powierzchnia-2": "#141414",
+   "powierzchnia-akcentowa": "#f2f2f0",
+   "tekst-podstawowy": "#ededed",
+   "tekst-drugorzedny": "#a8a8a8",
+   "kreska": "#2e2e2e",
+   "akcent": "#a3e635",
+   "interakcja": "#a3e635",
+   "interakcja-aktywna": "#ededed",
+   "tekst-na-interakcji": "#0a0a0a",
+   "link": "#a3e635",
+   "link-aktywny": "#ededed",
+   "fokus": "#a3e635"
+  }
+ },
+ "kontrasty": {
+  "produkcja": [
+   {
+    "para": "tekst podstawowy × tło",
+    "pierwszy_plan": "#3b2a20",
+    "tlo": "#eee6e0",
+    "wspolczynnik": 11.07,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "tekst drugorzędny × tło",
+    "pierwszy_plan": "#624e43",
+    "tlo": "#eee6e0",
+    "wspolczynnik": 6.33,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: etykieta × wypełnienie",
+    "pierwszy_plan": "#fff1e9",
+    "tlo": "#bb351d",
+    "wspolczynnik": 5.22,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: wypełnienie × tło",
+    "pierwszy_plan": "#bb351d",
+    "tlo": "#eee6e0",
+    "wspolczynnik": 4.68,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "link × tło",
+    "pierwszy_plan": "#5e4775",
+    "tlo": "#eee6e0",
+    "wspolczynnik": 6.47,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "fokus × tło",
+    "pierwszy_plan": "#5e4775",
+    "tlo": "#eee6e0",
+    "wspolczynnik": 6.47,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "akcent × tło",
+    "pierwszy_plan": "#e65b3d",
+    "tlo": "#eee6e0",
+    "wspolczynnik": 2.87,
+    "prog_AA": 3,
+    "werdykt": "NIE SPELNIA"
+   }
+  ],
+  "len": [
+   {
+    "para": "tekst podstawowy × tło",
+    "pierwszy_plan": "#1e231b",
+    "tlo": "#f2ece1",
+    "wspolczynnik": 13.62,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "tekst drugorzędny × tło",
+    "pierwszy_plan": "#4e5548",
+    "tlo": "#f2ece1",
+    "wspolczynnik": 6.57,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: etykieta × wypełnienie",
+    "pierwszy_plan": "#141a0c",
+    "tlo": "#c7f04a",
+    "wspolczynnik": 13.52,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: wypełnienie × tło",
+    "pierwszy_plan": "#c7f04a",
+    "tlo": "#f2ece1",
+    "wspolczynnik": 1.12,
+    "prog_AA": 3,
+    "werdykt": "NIE SPELNIA"
+   },
+   {
+    "para": "link × tło",
+    "pierwszy_plan": "#1e231b",
+    "tlo": "#f2ece1",
+    "wspolczynnik": 13.62,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "fokus × tło",
+    "pierwszy_plan": "#1e231b",
+    "tlo": "#f2ece1",
+    "wspolczynnik": 13.62,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "akcent × tło",
+    "pierwszy_plan": "#4e5548",
+    "tlo": "#f2ece1",
+    "wspolczynnik": 6.57,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   }
+  ],
+  "kosc": [
+   {
+    "para": "tekst podstawowy × tło",
+    "pierwszy_plan": "#22261f",
+    "tlo": "#f7f3ea",
+    "wspolczynnik": 13.89,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "tekst drugorzędny × tło",
+    "pierwszy_plan": "#565c4f",
+    "tlo": "#f7f3ea",
+    "wspolczynnik": 6.24,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: etykieta × wypełnienie",
+    "pierwszy_plan": "#181e10",
+    "tlo": "#d4f55c",
+    "wspolczynnik": 13.81,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: wypełnienie × tło",
+    "pierwszy_plan": "#d4f55c",
+    "tlo": "#f7f3ea",
+    "wspolczynnik": 1.11,
+    "prog_AA": 3,
+    "werdykt": "NIE SPELNIA"
+   },
+   {
+    "para": "link × tło",
+    "pierwszy_plan": "#22261f",
+    "tlo": "#f7f3ea",
+    "wspolczynnik": 13.89,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "fokus × tło",
+    "pierwszy_plan": "#22261f",
+    "tlo": "#f7f3ea",
+    "wspolczynnik": 13.89,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "akcent × tło",
+    "pierwszy_plan": "#565c4f",
+    "tlo": "#f7f3ea",
+    "wspolczynnik": 6.24,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   }
+  ],
+  "popiol": [
+   {
+    "para": "tekst podstawowy × tło",
+    "pierwszy_plan": "#191d16",
+    "tlo": "#ede9e0",
+    "wspolczynnik": 14.11,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "tekst drugorzędny × tło",
+    "pierwszy_plan": "#4a5044",
+    "tlo": "#ede9e0",
+    "wspolczynnik": 6.87,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: etykieta × wypełnienie",
+    "pierwszy_plan": "#12180a",
+    "tlo": "#aee03c",
+    "wspolczynnik": 11.65,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: wypełnienie × tło",
+    "pierwszy_plan": "#aee03c",
+    "tlo": "#ede9e0",
+    "wspolczynnik": 1.28,
+    "prog_AA": 3,
+    "werdykt": "NIE SPELNIA"
+   },
+   {
+    "para": "link × tło",
+    "pierwszy_plan": "#191d16",
+    "tlo": "#ede9e0",
+    "wspolczynnik": 14.11,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "fokus × tło",
+    "pierwszy_plan": "#191d16",
+    "tlo": "#ede9e0",
+    "wspolczynnik": 14.11,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "akcent × tło",
+    "pierwszy_plan": "#4a5044",
+    "tlo": "#ede9e0",
+    "wspolczynnik": 6.87,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   }
+  ],
+  "czern": [
+   {
+    "para": "tekst podstawowy × tło",
+    "pierwszy_plan": "#ededed",
+    "tlo": "#0a0a0a",
+    "wspolczynnik": 16.91,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "tekst drugorzędny × tło",
+    "pierwszy_plan": "#a8a8a8",
+    "tlo": "#0a0a0a",
+    "wspolczynnik": 8.33,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: etykieta × wypełnienie",
+    "pierwszy_plan": "#0a0a0a",
+    "tlo": "#a3e635",
+    "wspolczynnik": 13.13,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "CTA: wypełnienie × tło",
+    "pierwszy_plan": "#a3e635",
+    "tlo": "#0a0a0a",
+    "wspolczynnik": 13.13,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "link × tło",
+    "pierwszy_plan": "#a3e635",
+    "tlo": "#0a0a0a",
+    "wspolczynnik": 13.13,
+    "prog_AA": 4.5,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "fokus × tło",
+    "pierwszy_plan": "#a3e635",
+    "tlo": "#0a0a0a",
+    "wspolczynnik": 13.13,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   },
+   {
+    "para": "akcent × tło",
+    "pierwszy_plan": "#a3e635",
+    "tlo": "#0a0a0a",
+    "wspolczynnik": 13.13,
+    "prog_AA": 3,
+    "werdykt": "spelnia"
+   }
+  ]
+ },
+ "reguly": {
+  "R-AKCENT-01": {
+   "tresc": "rola akcentu niesie TEKST DRUGORZEDNY, nie limonke — punktory i ozdoby, nigdy nosnik tekstu",
+   "status_per_wariant": {
+    "len": "obowiazuje",
+    "kosc": "obowiazuje",
+    "popiol": "obowiazuje",
+    "czern": "ZAWIESZONA — i tylko dla tego wariantu; na czerni limonka ma 13,13:1, wiec niesie tekst, obwodki, fokus i punktory (globals.css:258-263)"
+   },
+   "straznik": "NIE ISTNIEJE jako kod wykonywalny — regula zyje wylacznie jako proza w globals.css:265-277. Zmierzone przeszukaniem repo."
+  },
+  "R-AKCENT-02": {
+   "tresc": "fokus NIGDY nie uzywa roli akcentu — polecenie wlasciciela, komentarz przy kazdym wariancie (globals.css:216 i odpowiedniki)",
+   "status_per_wariant": {
+    "produkcja": "obowiazuje",
+    "len": "obowiazuje",
+    "kosc": "obowiazuje",
+    "popiol": "obowiazuje",
+    "czern": "obowiazuje"
+   }
+  }
+ }
+}

@@ -1954,6 +1954,67 @@ z redakcji `O-*`.
 
 ---
 
+### 4.27 Pakiet weryfikacji zewnętrznej (`WWW/035`)
+
+**`docs/weryfikacja-zewnetrzna/` — 34 pliki, 9,7 MB.**
+Zero zmian w `src/` (sprawdzone `git status src/` — puste), zero interpretacji
+treści: wszystko z **odczytu i pomiaru**.
+
+| plik | co niesie | pomiar |
+|---|---|---|
+| `01-STRUKTURA.json` | 9 tras, sekcje **w kolejności DOM** | 97 sekcji, **760 elementów**, **509 dopasowanych do klucza i18n** |
+| `02-TEKSTY-{pl,en,de}.json` | klucze + surowe `content/*.md` | **330 kluczy** i **14 plików** na język |
+| `03-PALETA.json` | 5 palet × **14 ról**, dwiema drogami | + tabela kontrastów WCAG 2.x, 7 par na paletę |
+| `04-TYPOGRAFIA.json` | kroje, wagi, skala, `clamp`, tracking | 3 pliki `woff2`, **70,8 KB** |
+| `05-ZRZUTY/` | pełna wysokość strony | **26 zrzutów**, 9,7 MB |
+
+**Struktura wzięta z wyrenderowanego DOM, nie z kodu** — kolejność sekcji jest
+wtedy faktem, a nie odczytem `page.tsx`. Klucze i18n ustalone **odwrotnym
+dopasowaniem** tekstu do `messages/pl.json`; **`null` znaczy „nie dopasowano",
+nie „klucza nie ma"** i jest to napisane w legendzie, razem z listą powodów
+niedopasowania. Gdzie tekst pasuje do **kilku** kluczy, pole niesie **tablicę
+kandydatów** — nie wybrałem jednego.
+
+**Palety odczytane DWIEMA drogami:** cytat z `globals.css` **plus**
+`getComputedStyle` z przeglądarki (rozwiązane `var()`). Obie w pliku, bo
+pierwsza pokazuje, co napisano, a druga — co przeglądarka z tego robi.
+
+**Kontrasty policzone, nie przepisane** — wzorem WCAG 2.x, tym samym, którego
+używa `scripts/kontrast.mjs`. **Trzy wyniki poniżej progu i wszystkie trzy
+opisane jako NIE-defekty**, z powodem: `akcent × tło` w produkcji (2,87 — rola
+jest dekoracją, `R-AKCENT-01`) i `CTA wypełnienie × tło` w trzech jasnych
+paletach (`len` **1,12** — granicę niesie obwódka, nie wypełnienie).
+
+**Sekcja ROZJAZDY — osiem pozycji**, bo obce narzędzie bez nich wyciągnie złe
+wnioski. Najważniejsze trzy: **(1)** żaden webfont **nie jest wdrożony**,
+produkcja chodzi na `system-ui` (ADR-026) — zrzuty pokazują kroje systemowe;
+**(2)** cztery palety **znikną 2026-08-31** razem z blokiem eksperymentu, więc
+pakiet ma **datę ważności**; **(7)** ⚠ `content/tabela-obietnic.md:37` mówi co
+innego niż sześć miejsc poprawionych w `WWW/034` — **z jawnym ostrzeżeniem, żeby
+nie brać tego za dwa warianty do wyboru** (T49).
+
+**Legenda dwujęzyczna** (PL + EN), bo narzędzie może nie czytać polskiego —
+z zastrzeżeniem, że **nazwy pól i treść plików są po polsku**.
+
+**Skrypty generujące — jednorazowe, nie zapisane w repozytorium.** README mówi
+to wprost i podaje źródła odczytu; odtworzenie polega na powtórzeniu pomiarów,
+nie na uruchomieniu narzędzia. **Świadoma granica:** pakiet **nie jest
+odtwarzalny jednym poleceniem** i jest to napisane, a nie przemilczane.
+
+**Archiwum NIE leży w repozytorium — decyzja własna, oznaczona.** Zlecenie
+proponowało „np. archiwum zip w tym samym katalogu". Gotowy `pakiet.zip` ważył
+**9,5 MB** i dublował **bajt w bajt** pliki z tego samego commita, a raz dodany
+do historii gita zostaje w niej **na zawsze**. Zamiast tego README podaje
+`git archive --format=zip HEAD:docs/weryfikacja-zewnetrzna > pakiet.zip` —
+jeden ruch, zero duplikatu w historii, a archiwum budowane **z commita**, więc
+z definicji zgodne ze stanem, który opisuje. Sprawdzone: 34 pliki, 9 556 923 B,
+`unzip -t` bez błędów. **Jeśli właściciel woli zip w repozytorium — jedno
+słowo i wchodzi.**
+
+Serwer na porcie **3987** zatrzymany po generacji; port **3000 nietknięty**.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -2759,6 +2820,11 @@ liczba zamiast pomiaru:**
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T49
+- `docs/weryfikacja-zewnetrzna/` — **NOWY 2026-08-26**, 34 pliki / 19 MB;
+  pakiet do weryfikacji palety i treści w OBCYM narzędziu: struktura 9 tras
+  z DOM, teksty ×3 języki, 5 palet z kontrastami, typografia, 26 zrzutów.
+  Całość jednym ruchem: `git archive --format=zip HEAD:docs/weryfikacja-zewnetrzna`. Niesie sekcję **ROZJAZDY** — osiem rzeczy, których
+  obce narzędzie nie ma prawa założyć
 - `docs/faza-2/mapa-klas-straznikow.md` — **NOWY 2026-08-26**; mapa pokrycia
   klas wad strażnikami. Pierwsza klasa: **liczebność ze zbioru kontra
   liczebność z decyzji**. **Nie jest źródłem reguł** — szczebel 7, deklaruje
