@@ -42,6 +42,7 @@ sprzeczności wygrywa.
 | 031 | Paleta produkcyjna „kancelaria" (19 ról) i krój Onest — **uchyla ADR-026 i ADR-027**, koryguje stałą tła z ADR-013 | [031](031-paleta-kancelaria-i-kroj-onest.md) |
 | 032 | Paleta „natura" (25 ról: 19 jasnych + 6 inwersji) i tony sekcji `data-ton` — **zastępuje WARTOŚCI z ADR-031, zachowuje jego infrastrukturę** | [032](032-paleta-natura-i-warstwa-inwersji.md) |
 | 033 | Rozdział karty dwoma mechanizmami (plama ALBO kreska), sonda rastrowa dla teł niejednolitych, akcent w nagłówku (R-AKCENT-03) | [033](033-rozdzial-karty-sonda-rastrowa-akcent-w-naglowku.md) |
+| 034 | Interakcja pod palcem ciemnieje w obu warstwach — 26. rola `interakcja-aktywna-inwersji` | [034](034-hover-ciemnieje-w-obu-warstwach.md) |
 
 Wpisy 023–028 dopisano 2026-08-14 — powstały wcześniej, ale nie trafiły
 do tej tabeli. Pliki są źródłem, tabela tylko mapą; przy rozjeździe

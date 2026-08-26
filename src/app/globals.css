@@ -345,7 +345,12 @@ html {
   --kolor-rola-link-aktywny: var(--kolor-rola-akcent-na-inwersji);
   --kolor-rola-fokus: var(--kolor-rola-akcent-na-inwersji);
   --kolor-rola-interakcja: var(--kolor-rola-interakcja-inwersji);
-  --kolor-rola-interakcja-aktywna: var(--kolor-rola-akcent-na-inwersji);
+  /* Hover CIEMNIEJE, nie jaśnieje (ADR-034). Do 2026-08-26 stało tu
+     mapowanie na --akcent-na-inwersji, czyli złoto JASNE — a etykieta
+     zostaje kremowa, więc pod palcem robiło się jasne na jasnym:
+     2,07:1 przy progu 4,5:1. Defekt istniał od wdrożenia natury i był
+     niewidoczny, dopóki sonda zgłaszała te punkty jako nieoznaczalne. */
+  --kolor-rola-interakcja-aktywna: var(--kolor-rola-interakcja-aktywna-inwersji);
   --kolor-rola-tekst-na-interakcji: var(--kolor-rola-tekst-na-inwersji);
   --kolor-rola-kreska: var(--kolor-rola-tlo-inwersji-2);
   color: var(--kolor-rola-tekst-podstawowy);

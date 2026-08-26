@@ -24,10 +24,13 @@ const PRZYPADKI = [
 // — dokładny kolor roli, nie „jakikolwiek inny"). Kolejno: terakota-600/700
 // (Etap A) → granat kancelarii (ADR-031) → wartości poniżej.
 // ADR-032: hero stoi w tonie `data-ton="ciemny"`, więc CTA bierze rolę
-// z warstwy inwersji — wypełnienie --interakcja-inwersji (złoto #7e6425),
-// hover --akcent-na-inwersji (złoto jasne #c9a25e).
+// z warstwy inwersji — wypełnienie --interakcja-inwersji (złoto #7e6425).
+// ADR-034: hover to --interakcja-aktywna-inwersji (złoto PRZYCIEMNIONE
+// #6e5220), nie złoto jasne. Poprzednia wartość dawała kremowej etykiecie
+// 2,07:1 przy progu 4,5:1 — jasne na jasnym; teraz 6,30:1. Kierunek:
+// interakcja pod palcem CIEMNIEJE w obu warstwach.
 const KOLOR_CTA = "rgb(126, 100, 37)";
-const KOLOR_CTA_AKTYWNY = "rgb(201, 162, 94)";
+const KOLOR_CTA_AKTYWNY = "rgb(110, 82, 32)";
 
 for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   test(`hero (${jezyk}): treść z messages, jedyny h1, CTA → /funkcje na ${adres}`, async ({

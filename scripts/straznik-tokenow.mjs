@@ -123,11 +123,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 25;
+const LICZBA_ROL = 26;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-032 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-034 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -167,7 +167,8 @@ const PARY_INWERSJI = [
   ["tekst-2-na-inwersji",  "tlo-inwersji",        4.5, "tekst drugorzędny na espresso"],
   ["tekst-na-inwersji",    "tlo-inwersji-2",      4.5, "proza na oliwkowym brązie"],
   ["tekst-2-na-inwersji",  "tlo-inwersji-2",      4.5, "tekst drugorzędny na oliwkowym"],
-  ["tekst-na-inwersji",    "interakcja-inwersji", 4.5, "etykieta na złotym CTA"],
+  ["tekst-na-inwersji",    "interakcja-inwersji", 4.5, "etykieta na złotym CTA (spoczynek)"],
+  ["tekst-na-inwersji",    "interakcja-aktywna-inwersji", 4.5, "etykieta na złotym CTA (hover/active) — para dodana po defekcie 2,07:1 z ADR-033"],
   ["tekst-na-inwersji",    "interakcja",          4.5, "etykieta na grafitowym CTA (stopka, filary)"],
   ["akcent-na-inwersji",   "tlo-inwersji",        3.0, "złoto jasne na espresso"],
   ["akcent-na-inwersji",   "tlo-inwersji-2",      3.0, "złoto jasne na oliwkowym"],
