@@ -5,68 +5,100 @@
 @import "../styles/generated/tokeny.css";
 
 /* ═══════════════════════════════════════════════════════════════════════
-   KRÓJ PRODUKCYJNY — ONEST (ADR-031, decyzja właściciela ③, 2026-08-26).
-   Uchyla ADR-026 i ADR-027 (system-ui). Self-host, zero domen zewnętrznych.
+   KROJE PRODUKCYJNE — SATOSHI (nagłówki) + INTER (proza).
+   KROK 1.2 zlecenia WWW/050-FINAL, ADR-040. Uchyla ADR-031 (Onest),
+   ten zaś uchylił ADR-026 i ADR-027 (system-ui).
+   Self-host, zero domen zewnętrznych — jak dotąd.
 
-   JEDEN blok @font-face, nie dwa: u nas leży JEDEN plik i jest to font
-   ZMIENNY (oś `wght` 100–900, odczytana z `fvar` 2026-08-26). Paczka
-   zakładała dwa pliki statyczne (`onest-400` i `onest-600`) — u nas ich
-   nie ma, więc zakres wagi deklaruje jedna reguła. Skala używa 400 / 500 /
-   600 / 700; waga 100 jest ze skali USUNIĘTA, choć oś pliku sięga niżej.
+   ┌── SKĄD PLIKI. To jest istotne, nie formalne. ────────────────────┐
+   │ Wzorzec serwuje oba kroje z CDN swojego kreatora stron. Plików   │
+   │ stamtąd NIE bierzemy — zlecenie kopiuje WARTOŚCI, nie pliki.     │
+   │ Oba kroje pobrane z ich WŁASNYCH źródeł i podzbiory zbudowane    │
+   │ tutaj:                                                           │
+   │  · Satoshi Medium 2.000 — pakiet z fontshare.com, licencja       │
+   │    w tabeli `name` pliku (nameID 13/14 → fontshare.com/terms);   │
+   │  · Inter 4.001 — repozytorium google/fonts, OFL                  │
+   │    (openfontlicense.org, nameID 14).                             │
+   │ Licencje odczytane Z PLIKÓW, nie z opisów stron.                 │
+   └──────────────────────────────────────────────────────────────────┘
 
-   `unicode-range` CELOWO POMINIĘTY. Paczka podawała listę zakresów pod
-   dwa pliki statyczne; przy jednym pliku zmiennym zawierającym komplet
-   potrzebnych znaków lista niczego nie oszczędza, a stwarza ryzyko, że
-   znak spoza niej nie trafi do kroju mimo obecności w pliku. Dobór glifu
-   i tak robi przeglądarka po `cmap`.
+   PODZBIÓR NA ZADEKLAROWANYM ZAKRESIE, NIE NA DZISIEJSZEJ TREŚCI.
+   Zakres: Basic Latin + Latin-1 + Latin Extended-A + interpunkcja
+   typograficzna + strzałki + znaki matematyczne + U+2713. Podzbiór
+   zbudowany z listy dzisiejszych stringów byłby migawką, która pęka
+   przy pierwszym nowym zdaniu — a pęka CICHO, bo brakujący znak spada
+   do kroju zapasowego i wygląda tylko na „dziwnie złożony".
 
-   ⚠ GRANICA ZMIERZONA, nie założona (2026-08-26, `fontTools` 4.62.1):
-   `cmap` Onest ma 136 znaków i NIE zawiera **U+2713 ✓**, który stoi
-   **15× na /cennik**. Ten znak wypadnie w kroju zapasowym — dokładnie ta
-   sama wada, którą poz. T14 rejestru zapisała dla Schibsted i Geist.
-   Do tej doby była hipotetyczna (serwis stał na system-ui, więc ✓ i proza
-   szły jednym krojem); od tej zmiany jest STANEM FAKTYCZNYM. Naprawa
-   (inline SVG) należy do T14 i jest poza zakresem tego zlecenia.
+   ⚠ U+2713 ✓ WŁĄCZONY ŚWIADOMIE, i to zamyka poz. T14 dla warstwy
+   kroju. Onest nie miał tego znaku, więc wypadał w kroju zapasowym.
+   Oba nowe kroje ✓ mają — pominięcie go w zakresie byłoby odtworzeniem
+   znanego defektu własną ręką. Sprawdzone w plikach, nie założone;
+   po zmianie ZMIERZONE na renderze: znak składa Inter.
 
-   KRÓJ ZAPASOWY — CO JEST ZMIERZONE, A CZEGO NIE UDOWODNIONO.
-   Wartości nadpisań pochodzą z metryk pliku Onest odczytanych 2026-08-26
-   (`unitsPerEm` 1000, `typoAscender` 970, `typoDescender` −305 → 97%
-   i 30,5%), a nie z wartości startowych paczki (90% / 22%), które są
-   metrykami samego Arialu i nie dopasowują niczego.
+   Przy okazji sprostowana liczba: dawny zapis mówił „15× na /cennik".
+   Pomiar 2026-08-26 daje **5 na stronie**, jednakowo w pl, en i de —
+   piętnaście to suma z TRZECH stron. Liczba nie była fałszywa, była
+   podana bez zakresu i czyta się jak liczba dla jednej strony.
 
-   ⚠ ALE: pomiar na tej stronie pokazał, że **nadpisania nie zmieniają tu
-   NICZEGO mierzalnego** — próbka w rodzinie zapasowej i w gołym Arialu
-   ma identyczne wymiary (455,3 px w Onest → 448,2 px w obu, wysokość
-   51,2 px bez zmian). Powód: wysokość wiersza wyznacza `--interlinia-tekst`
-   (mnożnik 1.6), a nie metryki kroju, więc `ascent-override` /
-   `descent-override` mają wpływ dopiero przy `line-height: normal`.
-   Zostają, bo są poprawne i nieszkodliwe — ale **nie twierdzę, że
-   zmniejszają CLS**, bo tego nie zmierzono.
+   Zasięg naprawy: to naprawia znak w kroju TEKSTOWYM. Czy ✓ ma tam
+   w ogóle stać zamiast ikony SVG, pozostaje pytaniem T14.
 
-   CO NAPRAWDĘ UZASADNIA ISTNIENIE TEJ RODZINY (pomiar, 32 px, ten sam
-   pangram): Onest → krój zapasowy różni się o **1,6%** szerokości,
-   a Onest → `system-ui` o **6,0%**. Bez tej rodziny stos schodziłby
-   wprost do system-ui, czyli do prawie czterokrotnie większego przeskoku
-   szerokości w chwili podmiany. `size-adjust` zostaje 100%: dopasowania
-   SZEROKOŚCI nie mierzono i nie zgaduję go.
+   ⚠ CZEGO PODZBIÓR NIE OBEJMUJE i objąć nie może: ⚑ ✅ ❌ ⚠ nie
+   istnieją w żadnym z dwóch krojów tekstowych (sprawdzone w `cmap`
+   plików pełnych). Te znaki złoży systemowy krój emoji i tak ma być —
+   wpisane tutaj, żeby następny czytający nie szukał ich w podzbiorze.
 
-   Na Androidzie/Linuksie `local("Arial")` nie istnieje, więc rodzina
-   zapasowa po prostu nie powstaje i stos schodzi do system-ui.
+   KRÓJ ZAPASOWY — TYM RAZEM SZEROKOŚĆ ZMIERZONA.
+   Poprzedni blok trzymał `size-adjust: 100%` z uczciwym uzasadnieniem
+   „dopasowania SZEROKOŚCI nie mierzono i nie zgaduję go". Teraz jest
+   zmierzone: średnia szerokość znaku na próbce 161 znaków (pangramy
+   PL + DE + EN + cyfry), wobec Arialu jako rodziny zapasowej.
+     · Satoshi 0,4637 em wobec Arialu 0,4547 em → 102,0%
+     · Inter waga 500 0,4883 em → 107,4%
+   Bez dostrojenia podmiana kroju przesuwałaby tekst o 2,0% i 7,4%
+   szerokości. Nadpisania pionowe policzone tą samą drogą, z metryk
+   `hhea` podzielonych przez `size-adjust`.
+
+   ⚠ GRANICA, ta sama co poprzednio i nadal uczciwa: przy interlinii
+   podanej MNOŻNIKIEM nadpisania pionowe nie zmieniają wysokości
+   wiersza — działają dopiero przy `line-height: normal`. Zostają, bo
+   są poprawne; NIE twierdzę, że zmniejszają CLS, bo tego nie zmierzono.
+   Uzasadnienie tej rodziny niesie `size-adjust`, nie one.
+
+   Na Androidzie i Linuksie `local("Arial")` nie istnieje, więc rodzina
+   zapasowa nie powstaje i stos schodzi do system-ui.
    ═══════════════════════════════════════════════════════════════════════ */
 @font-face {
-  font-family: "Onest";
-  src: url("/fonts/onest.woff2") format("woff2");
+  font-family: "Satoshi";
+  src: url("/fonts/satoshi-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-var.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Onest zapasowy";
+  font-family: "Satoshi zapasowy";
   src: local("Arial");
-  size-adjust: 100%;
-  ascent-override: 97%;
-  descent-override: 30.5%;
+  size-adjust: 102%;
+  ascent-override: 99%;
+  descent-override: 23.5%;
+  line-gap-override: 9.8%;
+}
+
+@font-face {
+  font-family: "Inter zapasowy";
+  src: local("Arial");
+  size-adjust: 107.4%;
+  ascent-override: 90.2%;
+  descent-override: 22.5%;
   line-gap-override: 0%;
 }
 
@@ -81,6 +113,16 @@
 
 * {
   box-sizing: border-box;
+}
+
+/* RODZINA NAGŁÓWKOWA (ADR-040). Reguła globalna, nie per-komponent:
+   wzorzec składa krojem nagłówkowym KAŻDY nagłówek, a rozsypanie tego
+   po arkuszach modułów daje sześć miejsc, w których następna zmiana
+   kroju musi trafić — i jedno, które przeoczy. `:is()` zamiast listy
+   selektorów trzyma swoistość na poziomie pojedynczego elementu, więc
+   moduły nadal nadpisują ją bez `!important`. */
+:is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--kroj-naglowek);
 }
 
 body {

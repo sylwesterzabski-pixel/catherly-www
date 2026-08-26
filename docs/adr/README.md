@@ -39,13 +39,14 @@ sprzeczności wygrywa.
 | 028 | Tokeny wymiarów — promienie, kontener strony, próg układu | [028](028-tokeny-wymiarow-promienie-kontener-prog.md) |
 | 029 | Próg i proporcje kolumn hero — jedyny wyjątek od progu układu 48rem (ADR-028) | [029](029-prog-i-proporcje-hero.md) |
 | 030 | `main` dostaje wdrożenie produkcyjne przy Fazie 7 — do tego czasu planowa czerwień bramki wydajności na `main`, bez wyjątku w kodzie (dopełnia ADR-020) | [030](030-wdrozenie-produkcyjne-main-przy-fazie-7.md) |
-| 031 | Paleta produkcyjna „kancelaria" (19 ról) i krój Onest — **uchyla ADR-026 i ADR-027**, koryguje stałą tła z ADR-013 | [031](031-paleta-kancelaria-i-kroj-onest.md) |
+| 031 | ⚠ *część o kroju uchylona (ADR-040)* — paleta produkcyjna „kancelaria" (19 ról) i krój Onest — **uchyla ADR-026 i ADR-027**, koryguje stałą tła z ADR-013 | [031](031-paleta-kancelaria-i-kroj-onest.md) |
 | 032 | Paleta „natura" (25 ról: 19 jasnych + 6 inwersji) i tony sekcji `data-ton` — **zastępuje WARTOŚCI z ADR-031, zachowuje jego infrastrukturę** | [032](032-paleta-natura-i-warstwa-inwersji.md) |
 | 033 | ⚠ *rozstrzygnięcia 1 i 3 zastąpione (ADR-038, ADR-039)* — rozdział karty dwoma mechanizmami (plama ALBO kreska), sonda rastrowa dla teł niejednolitych, akcent w nagłówku (R-AKCENT-03) | [033](033-rozdzial-karty-sonda-rastrowa-akcent-w-naglowku.md) |
 | 034 | Interakcja pod palcem ciemnieje w obu warstwach — 26. rola `interakcja-aktywna-inwersji` | [034](034-hover-ciemnieje-w-obu-warstwach.md) |
 | 037 | Twarze wyłącznie generowane i zatwierdzane imiennie; dwie warstwy obrazowe (dowód produktu ↔ dekoracja) — **zawęża ADR-011**, zmienia dwa zakazy bezwzględne w `CLAUDE.md` | [037](037-twarze-generowane-i-dwie-warstwy-obrazowe.md) |
 | 038 | Paleta wzorca (19 ról), rozdział karty TRZEMA mechanizmami, koniec warstwy inwersji — **zastępuje wartości z ADR-032, przepisuje regułę z ADR-033** | [038](038-paleta-wzorca-trzy-mechanizmy-rozdzialu.md) |
 | 039 | R-AKCENT-01 i R-AKCENT-02 z zakazu barwy na **warunek kontrastowy**; rozdzielność trójki usunięta, mechanizm `outline-offset` dostaje strażnika — **przepisuje reguły z ADR-031/033, prostuje liczbę w ADR-037** | [039](039-r-akcent-jako-warunek-kontrastowy.md) |
+| 040 | **Kroje wzorca**: Satoshi w nagłówkach (statyczny 500) + Inter w prozie (zmienny `wght`, oś `opsz` przypięta), oba self-hostowane z własnych źródeł, 57,1 kB — **uchyla ADR-031 w części o kroju**; `U+2713 ✓` w podzbiorze zdejmuje T14 z warstwy kroju | [040](040-kroje-wzorca-satoshi-i-inter.md) |
 
 Wpisy 023–028 dopisano 2026-08-14 — powstały wcześniej, ale nie trafiły
 do tej tabeli. Pliki są źródłem, tabela tylko mapą; przy rozjeździe

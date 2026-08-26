@@ -35,6 +35,27 @@ export default async function LayoutJezyka({ children, params }: Props) {
 
   return (
     <html lang={locale}>
+      <head>
+        {/* PRELOAD JEDNEGO PLIKU — nagłówkowego, nie prozy (ADR-040).
+            Wybór nie jest dowolny: jedyne `h1` strony jest elementem LCP
+            (kontrakt K2), a składa je Satoshi. Preload prozy przyspieszyłby
+            tekst, którego LCP nie mierzy, i konkurowałby o pasmo z tym,
+            który mierzy.
+            Jeden, nie dwa: preload dwóch plików zamienia priorytet
+            w jego brak — proza dojedzie `font-display: swap`, mając
+            dostrojoną rodzinę zapasową, która trzyma szerokość
+            (size-adjust 107,4%), więc podmiana nie przesuwa układu.
+            `crossOrigin` jest wymagane nawet przy pliku z własnego
+            serwera: bez niego przeglądarka pobiera plik DRUGI RAZ,
+            bo żądanie fontu zawsze idzie w trybie CORS. */}
+        <link
+          rel="preload"
+          href="/fonts/satoshi-medium.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>
         {children}
         <Stopka locale={locale as Locale} />
