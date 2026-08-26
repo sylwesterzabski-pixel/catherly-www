@@ -29,23 +29,41 @@
   --tekst-m: 1.25rem; /** 20 px — lead akapitu, nagłówek karty. */
   --tekst-l: 1.5625rem; /** 25 px — h3. */
   --tekst-xl: 1.9375rem; /** 31 px — h2 sekcyjne. */
-  --tekst-h1: clamp(2.5rem, 5vw, 4rem); /** 40–64 px. Górna granica świadomie niska. */
-  --tekst-h2: clamp(1.75rem, 3vw, 2.5rem); /** 28–40 px. */
-  --waga-tekst: 400;
+  --tekst-h1: 4.375rem; /** H1 = 70 px (POMIAR 0.1, wzorzec przy 1440 px). Skala SKOKOWA, nie clamp — patrz `tekst.h1-srednie` i `h1-male`. Poprzednio clamp(2.5rem, 5vw, 4rem). */
+  --tekst-h2: 3.75rem; /** H2 = 60 px (POMIAR 0.1, przy 1440 px). ⚠ ZMIERZONE TYLKO PRZY 1440 — zachowanie H2 na węższych kadrach NIE JEST zmierzone; pomiar 0.7 (mobile) ma je dostarczyć. Do tego czasu H2 skaluje się progami H1 tylko z domysłu, więc progów mu NIE nadano. */
+  --tekst-h1-srednie: 3.3125rem; /** H1 = 53 px w zakresie 810–1280 px (POMIAR 0.5, zmierzone zwężaniem okna). */
+  --tekst-h1-male: 2.125rem; /** H1 = 34 px przy ≤ 768 px (POMIAR 0.5). */
+  --tekst-plakietka: 0.75rem; /** Plakietka górna = 12 px, waga 700, interlinia 1,20 (POMIAR 0.1). */
+  --waga-tekst: 500; /** Proza wzorca ma wagę 500, nie 400 (POMIAR 0.1). Inter jest zmienny, więc to nic nie kosztuje. */
   --waga-etykieta: 500;
-  --waga-naglowek: 600;
+  --waga-naglowek: 500; /** Nagłówki wzorca mają wagę 500, nie 600 (POMIAR 0.1). Satoshi jest u nas statyczny dokładnie w tej wadze — inna waga zeszłaby na syntezę przeglądarki. */
   --waga-mocna: 700; /** Waga 100 USUNIĘTA ze skali całkowicie (ADR-031): na kroju systemowym była syntezą i wyglądała inaczej na każdym urządzeniu, zawsze zbyt cienko. */
-  --interlinia-tekst: 1.6;
-  --interlinia-naglowek: 1.15;
-  --tracking-naglowek: -0.02em; /** Nagłówki od 25 px w górę. */
+  --interlinia-tekst: 1.8; /** Interlinia prozy = 1,80 (POMIAR 0.1: 28,8/16). Poprzednio 1.6 — różnica widoczna w każdym akapicie. */
+  --interlinia-naglowek: 1.2; /** Interlinia nagłówków = równo 1,20 (POMIAR 0.1: 84/70 i 72/60). Poprzednio 1.15. */
+  /**
+   * Tracking nagłówków = −3 px (POMIAR 0.1, przy 1440 px). W `rem`, bo px nie przechodzą lintera — i to jest wierne, nie obejście: `rem` daje stały odstęp niezależny od stopnia pisma, dokładnie jak px. Poprzednio −0.02em, czyli odstęp PROPORCJONALNY, który przy 70 px dawał −1,4 px zamiast −3.
+   * 
+   * ⚠ GRANICA: zmierzone WYŁĄCZNIE przy 1440 px. Czy wzorzec trzyma −3 px także przy 53 i 34 px, czy przelicza — NIE WIADOMO. Przy stałym −3 px tracking rośnie względnie: −0,043em przy 70 px, ale −0,088em przy 34 px. Pozycja otwarta z POMIARU 0.1, do zamknięcia pomiarem 0.7.
+   */
+  --tracking-naglowek: -0.1875rem;
   --tracking-wersalik: 0.04em; /** WYMAGANE przy text-transform: uppercase — bez tego kapitaliki zlewają się w blok. Zastosowanie w komponentach to zadanie 11 checklisty, poza zakresem WWW/038-bis; token wchodzi teraz, bo należy do skali. */
   --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). UWAGA: 03-typografia.css paczki niesie --szerokosc-tekstu: 68ch dla tego samego zastosowania — rozjazd zgłoszony, nierozstrzygnięty; wchodzi dopiero z zadaniem 12, które jest poza zakresem WWW/038-bis. */
-  --wymiar-miara-kolumny: 38rem; /** Maksymalna szerokość kolumny tekstu sekcji (ADR-025). */
-  --wymiar-kontener-strony: 70rem; /** Maksymalna szerokość wnętrza sekcji pełnej szerokości (ADR-028; dotąd literał K1–K7). */
+  --wymiar-miara-kolumny: 50rem; /** Kolumna prozy = 800 px (POMIAR 0.3, 8 wystąpień). Poprzednio 38rem = 608 px. */
+  --wymiar-kontener-strony: 90rem; /** Kontener treści = 1440 px (POMIAR 0.3, 16 wystąpień). Poprzednio 70rem = 1120 px. */
   --wymiar-promien-maly: 0.25rem; /** Promień detali (skip-link K1; ADR-028). */
-  --wymiar-promien: 0.5rem; /** Promień podstawowy: karty, CTA, ramki obrazów (ADR-028; skala K2–K5). */
-  --wymiar-promien-pigulki: 2rem; /** Promień pełny pigułki (przełącznik K6; ADR-028). */
+  --wymiar-promien: 0.5rem; /** Promień dominujący = 8 px (POMIAR 0.3, 88 wystąpień). Wartość BEZ ZMIANY — nasza skala trafiła w niego niezależnie. */
+  --wymiar-promien-pigulki: 3.125rem; /** Pigułki = 50 px (POMIAR 0.3, 11 wystąpień). Poprzednio 2rem = 32 px. */
   --wymiar-prog-ukladu: 48rem; /** Próg przełączenia układów mobile→desktop (ADR-028). WYŁĄCZNIE DOKUMENTACYJNY: @media nie czyta var() — wartość powielona literalnie w media queries modułów; zmiana wymaga ADR i sync wszystkich @media. */
+  --wymiar-kontener-waski: 80rem; /** Kontener węższy = 1280 px (POMIAR 0.3, 3 wystąpienia). */
+  --wymiar-odstep-sekcji: 10rem; /** Padding sekcji = 160 px (POMIAR 0.3, wariant dominujący). Warianty wzorca: 135/0, 130/160, 80/80 — nie wchodzą jako tokeny, dopóki KROK 2 nie pokaże, które sekcje ich używają. */
+  --wymiar-odstep-1: 0.25rem; /** Siatka odstępów = 4 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
+  --wymiar-odstep-2: 0.5rem; /** Siatka odstępów = 8 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
+  --wymiar-odstep-3: 0.625rem; /** Siatka odstępów = 10 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
+  --wymiar-odstep-4: 0.75rem; /** Siatka odstępów = 12 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
+  --wymiar-odstep-5: 1rem; /** Siatka odstępów = 16 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
+  --wymiar-odstep-6: 1.5rem; /** Siatka odstępów = 24 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
+  --wymiar-odstep-7: 2rem; /** Siatka odstępów = 32 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
+  --wymiar-promien-sredni: 0.75rem; /** Promień 12 px (POMIAR 0.3, 35 wystąpień). */
   --kroj-naglowek: "Satoshi", "Satoshi zapasowy", system-ui, sans-serif; /** Krój NAGŁÓWKÓW (ADR-040). Satoshi Medium 2.000, STATYCZNY w wadze 500 — wzorzec używa nagłówków wyłącznie w tej wadze, więc plik zmienny byłby zapłatą za zakres, którego nikt nie użyje. public/fonts/satoshi-medium.woff2, 17,3 kB. Źródło: pakiet z fontshare.com, licencja odczytana z tabeli `name` pliku (nameID 13/14). Rodzina zapasowa dostrojona z pomiaru: size-adjust 102,0%. Razem z prozą 57,1 kB przy budżecie 120 kB. */
   --kolor-rola-tlo-strony: var(--kolor-tlo); /** Tło strony — wartość wzorca ze zlecenia WWW/050-FINAL, zmierzona 2026-08-26 (`getComputedStyle`, nie z oka). Motyw ODWRÓCONY z jasnego na ciemny: to jest zmiana warstwy podstawowej, nie odcienia. */
 }

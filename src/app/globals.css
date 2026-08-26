@@ -115,6 +115,46 @@
   box-sizing: border-box;
 }
 
+/* SKALA NAGŁÓWKÓW — PROGI, NIE `clamp()` (ADR-041, KROK 1.3).
+   Wzorzec skacze 70 → 53 → 34 px na dwóch progach (POMIAR 0.5,
+   zmierzone zwężaniem okna od 1600 do 320 px), a NIE skaluje płynnie.
+   To różnica konstrukcyjna, nie kosmetyczna: `clamp()` daje pośrednie
+   rozmiary, których wzorzec nigdy nie pokazuje.
+
+   ZAKRESY ZMIERZONE: ≥ 1440 → 70 px · 810–1280 → 53 px · ≤ 768 → 34 px.
+   ⚠ ZAKRESY NIEZMIERZONE: 1281–1439 i 769–809. Punkty przełamania leżą
+   gdzieś w środku tych dwóch szczelin — pomiar dał krańce, nie miejsce
+   cięcia. Progi poniżej stawiam na 769 i 1440, czyli na krańcach
+   zgodnych ze wszystkimi trzema odczytami; to WYBÓR spośród zakresu
+   dopuszczalnego, nie odczyt, i dlatego stoi tu napisany.
+
+   H2 NIE DOSTAJE PROGÓW. Zmierzone jest wyłącznie przy 1440 px (60 px);
+   nadanie mu progów H1 byłoby domysłem podanym składnią pomiaru.
+   Zamyka to pomiar 0.7. */
+:is(h1) {
+  font-size: var(--tekst-h1-male);
+  line-height: var(--interlinia-naglowek);
+  letter-spacing: var(--tracking-naglowek);
+}
+
+@media (min-width: 48.0625rem) {
+  :is(h1) {
+    font-size: var(--tekst-h1-srednie);
+  }
+}
+
+@media (min-width: 90rem) {
+  :is(h1) {
+    font-size: var(--tekst-h1);
+  }
+}
+
+:is(h2) {
+  font-size: var(--tekst-h2);
+  line-height: var(--interlinia-naglowek);
+  letter-spacing: var(--tracking-naglowek);
+}
+
 /* RODZINA NAGŁÓWKOWA (ADR-040). Reguła globalna, nie per-komponent:
    wzorzec składa krojem nagłówkowym KAŻDY nagłówek, a rozsypanie tego
    po arkuszach modułów daje sześć miejsc, w których następna zmiana
@@ -257,11 +297,26 @@ a:active {
    5.5rem = 88 px daje 7,41 px zapasu, porównywalnie z pierwotnymi 6 px,
    i mieści się pod pułapem 96 px, którego pilnuje `odsuniecie-kotwic`.
 
+   ⚠ PRZELICZONA PONOWNIE 2026-08-26 (5.5rem → 5.75rem), KROK 1.3.
+   Skala wzorca podniosła interlinię prozy z 1,6 na 1,80, a nagłówek
+   z **80,59 px** na **87,797 px**. 5.5rem = 88 px dawało wtedy zapas
+   **0,20 px** — i to pękło nie na wysokości, tylko na ZAOKRĄGLENIU
+   PRZEWIJANIA: cel lądował 0,06 px za wysoko, sześć upadków W4
+   i `odsuniecie-kotwic` na kadrze 390 px. Wartość dodatnia, ale
+   mniejsza od błędu zaokrąglenia, jest wartością ujemną w praktyce.
+   Powtórzony ten sam rozrzut co poprzednio (42 kombinacje: 7 adresów
+   pl/en/de × 6 kadrów poniżej 48rem): wysokość **87,797 px wszędzie,
+   rozrzut 0,000 px**.
+   Wybór 5.75rem = 92 px, zapas **4,20 px**. `6rem = 96 px` ODRZUCONE
+   mimo większego zapasu: siadłoby dokładnie na pułapie 96 px, czyli
+   powtórzyłoby tę samą pomyłkę w drugą stronę — margines zerowy wobec
+   granicy, tyle że górnej.
+
    UWAGA przy zmianie: scroll-margin celów został ZDJĘTY. Dopisanie go
    z powrotem obok tej reguły SUMUJE się z nią (zmierzone: 80,2 px →
    160,2 px pustki nad nagłówkiem) — patrz handoff-etap-d.md §10.4. */
 html {
-  scroll-padding-block-start: 5.5rem;
+  scroll-padding-block-start: 5.75rem;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════

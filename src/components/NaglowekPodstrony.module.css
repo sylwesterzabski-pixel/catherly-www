@@ -12,8 +12,14 @@
 }
 
 .naglowek {
-  font-size: clamp(1.625rem, 4vw + 0.75rem, 2.5rem);
-  line-height: 1.2;
+  /* ROZMIAR, INTERLINIA I TRACKING ZDJĘTE (ADR-041, KROK 1.3).
+     Stało tu: font-size: clamp(1.625rem, 4vw + 0.75rem, 2.5rem); · line-height: 1.2;
+     Skalę nagłówków niesie teraz reguła globalna w `globals.css`,
+     progami 34 / 53 / 70 px z pomiaru wzorca. Nadpisanie zostawione
+     tutaj czyniłoby z tokenów `--tekst-h1*` napis bez skutku — token,
+     którego nikt nie czyta, jest gorszy niż jego brak, bo wygląda na
+     źródło prawdy. Margines i miara wiersza ZOSTAJĄ: to własności
+     układu tego komponentu, nie skali. */
   margin: 0 0 0.75rem;
   max-width: 22ch;
   text-wrap: balance;
