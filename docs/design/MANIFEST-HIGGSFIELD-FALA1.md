@@ -1,5 +1,21 @@
 # Manifest kadrów Higgsfield — fala 1
 
+> ⏳ **KADRY FALI 1 SĄ PRZEWIDZIANE DO WYCOFANIA — jeszcze NIE wycofane.**
+> Adnotacja właściciela (`WWW/053`, 2026-08-26): przy przebudowie podstron
+> funkcji wg wzorca z `WWW/050-FINAL` kadry fali 1 (paleta „natura")
+> **schodzą ze stron**. Konsumuje to niedoręczone zlecenie `WWW/048`.
+>
+> **Stan na dziś: kadry są OSADZONE i działają** — wycofanie następuje
+> dopiero przy przebudowie podstron, która jeszcze nie nastąpiła.
+> Wpisanie tu „wycofane" teraz byłoby nieprawdą o stanie repozytorium,
+> a manifest ma mówić, co JEST, nie co ma być. Zdanie „wycofane"
+> wchodzi tu **w tym samym commicie**, w którym kadry faktycznie znikną
+> ze stron — nie wcześniej.
+>
+> Powód wycofania nie jest wadą tych kadrów: paleta „natura" ustępuje
+> wzorcowi (ADR-032 → `WWW/050-FINAL`), a kadry były robione pod krem
+> i złoto, nie pod czerń i limonkę.
+
 Data dostawy: **2026-08-26**. Zlecenie: `WWW/045`. Rola: implementacja.
 
 ## Adnotacja przejrzystości
