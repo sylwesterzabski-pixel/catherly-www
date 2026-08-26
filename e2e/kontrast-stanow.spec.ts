@@ -11,6 +11,7 @@ import {
   odciskWygladu,
   stanZmieniaWyglad,
   zmierzStrone,
+  zerujPrzejscia,
   rozstrzygnijRastrem,
   STANY,
 } from "./pomoc/sonda-stanow.mjs";
@@ -74,6 +75,9 @@ for (const jezyk of routing.locales) {
       await cdp.send("DOM.enable");
       await cdp.send("CSS.enable");
       await page.goto(adres);
+      /* Stany mierzymy bez czasu przejścia — uzasadnienie przy
+         `zerujPrzejscia` w sondzie. Animacje zostają nietknięte. */
+      await zerujPrzejscia(page);
 
       const { elementy, podejrzaneReguly } = await zmierzStrone(page, cdp);
 
@@ -195,6 +199,11 @@ test("wymuszanie stanów zmienia wygląd CTA (czujnik żywy)", async ({
   await cdp.send("DOM.enable");
   await cdp.send("CSS.enable");
   await page.goto("/");
+  /* Ten czujnik też mierzy STANY, więc też bez czasu przejścia —
+     inaczej odcisk wyglądu hover łapałby klatkę pośrednią i czujnik
+     orzekałby „hover nic nie zmienia" wtedy, gdy zmienia wszystko,
+     tylko jeszcze nie zdążył. */
+  await zerujPrzejscia(page);
 
   const { elementy } = await zmierzStrone(page, cdp);
   const cta = elementy.filter((p) => /_cta__/.test(p.spoczynek?.selektor ?? ""));

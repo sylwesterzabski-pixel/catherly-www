@@ -93,12 +93,19 @@ test("hero: CTA hover/active przechodzi na rolę interakcja-aktywna", async ({
   expect(spoczynek, "CTA w spoczynku: rola-interakcja").toBe(KOLOR_CTA);
 
   await cta.hover();
-  const najechany = await cta.evaluate(
-    (el) => getComputedStyle(el).backgroundColor,
-  );
-  expect(najechany, "CTA po najechaniu: rola-interakcja-aktywna").toBe(
-    KOLOR_CTA_AKTYWNY,
-  );
+  /* CZEKANIE NA KONIEC PRZEJŚCIA, nie na moment po najechaniu.
+     Od warstwy ruchu (WWW/047) CTA ma `transition: background-color
+     180ms`, więc odczyt natychmiast po `hover()` łapie barwę
+     POŚREDNIĄ — pomiar mierzyłby wtedy klatkę animacji, a nie
+     docelową rolę. `expect.poll` czeka na wartość ustaloną, ale
+     asercja pozostaje na DOKŁADNYM kolorze: niezgodna barwa końcowa
+     dalej daje czerwień, tylko po upływie przejścia. */
+  await expect
+    .poll(
+      async () => cta.evaluate((el) => getComputedStyle(el).backgroundColor),
+      { message: "CTA po najechaniu: rola-interakcja-aktywna", timeout: 2000 },
+    )
+    .toBe(KOLOR_CTA_AKTYWNY);
 });
 
 test("K9: pion bez separatorów na 390 px, poziom z kreską od 48rem", async ({

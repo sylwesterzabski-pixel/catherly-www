@@ -432,6 +432,33 @@ export const ZRODLO_SKANERA = skanerRegulStanu.toString();
    ───────────────────────────────────────────────────────────────────────── */
 
 /**
+ * Zeruje CZAS PRZEJŚĆ na czas pomiaru — nie animacji.
+ *
+ * Po co: sonda mierzy STANY (spoczynek, hover, active, fokus), a nie
+ * drogę między nimi. Od warstwy ruchu (WWW/047) elementy interaktywne
+ * mają `transition`, więc odczyt tuż po wymuszeniu pseudoklasy łapał
+ * barwę POŚREDNIĄ i sonda orzekała o klatce animacji zamiast o stanie.
+ *
+ * Dlaczego zerowanie, a nie czekanie: pierwsze podejście czekało 400 ms
+ * po każdym wymuszeniu — przy czterech stanach i setkach elementów
+ * zestaw przestał się kończyć (przekroczył 6 min 40 s i został ubity).
+ * Zerowanie daje ten sam wynik NATYCHMIAST i deterministycznie.
+ *
+ * Dlaczego to NIE jest ukrywanie ruchu przed pomiarem: stan docelowy
+ * obowiązuje przez cały czas, gdy wskaźnik albo fokus stoi na
+ * elemencie, a klatki przejściowe są z definicji przelotne — norma
+ * kontrastu ich nie dotyczy. ANIMACJE zostają NIETKNIĘTE: położenie
+ * elementów przy osi `view()` musi pozostać prawdziwe, bo na nim opiera
+ * się próbkowanie rastrowe.
+ */
+export async function zerujPrzejscia(page) {
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+}
+
+/**
  * Mierzy jedną wyrenderowaną stronę we wszystkich stanach.
  * @param {import("@playwright/test").Page} page
  * @param {import("@playwright/test").CDPSession} cdp
@@ -738,7 +765,15 @@ export function ocenElement(trasa, kadr, pomiary) {
    już czym mierzyć), nie wykrywa animacji tła w czasie i nie zastępuje
    oceny okiem przy obrazach fotograficznych o dużej wariancji. */
 
-const PROMIEN_PROBKI = 3;   // px poza ramką — tam pada obwódka przy offsecie 2
+/* PROMIEŃ PRÓBKI MUSI MINĄĆ OBWÓDKĘ FOKUSU, a nie w nią trafić.
+   Ślad fokusa zajmuje pas od `outline-offset` (0.125rem = 2 px) do
+   offset + grubość (kolejne 2 px), czyli 2–4 px poza ramką. Pierwsza
+   wersja próbkowała na 3 px — czyli DOKŁADNIE W ŚRODKU obwódki —
+   i porównywała ślad fokusa sam ze sobą, dając 1,57:1 tam, gdzie
+   naprawdę było 10:1. Wykryte 2026-08-26 po dołożeniu warstwy ruchu,
+   ale defekt był starszy: wcześniej po prostu nie trafiał w te same
+   piksele. 7 px mija cały pas z zapasem. */
+const PROMIEN_PROBKI = 7;
 const LICZBA_PROBEK = 40;   // punktów na obwodzie
 const MARGINES_ZRZUTU = 10; // px zapasu wokół ramki
 
@@ -808,6 +843,19 @@ async function pobierzProbkiTla(page, sharp, selektor) {
     el = page.locator(selektor).first();
     if ((await el.count()) === 0) return null;
     await el.scrollIntoViewIfNeeded({ timeout: 2000 });
+    /* USTABILIZOWANIE PRZED POMIAREM (2026-08-26). Przy animacjach
+       sterowanych osią `view()` położenie elementu zależy od pozycji
+       przewijania, więc ramka odczytana ZANIM przewijanie się uspokoi
+       nie opisuje tego, co zaraz znajdzie się na zrzucie. Czekamy, aż
+       dwa kolejne odczyty dadzą tę samą pozycję — inaczej próbki
+       trafiają obok elementu i mierzą jego własne wypełnienie. */
+    let poprzednia = null;
+    for (let i = 0; i < 10; i++) {
+      const teraz = await el.boundingBox();
+      if (poprzednia && teraz && Math.abs(teraz.y - poprzednia.y) < 0.5) break;
+      poprzednia = teraz;
+      await page.waitForTimeout(60);
+    }
   } catch { return null; }
 
   const r = await el.boundingBox();
