@@ -32,7 +32,7 @@ z własnej ręki.** Drzewo czyste, zdalny zsynchronizowany, zero niewypchniętyc
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
 3. `docs/faza-2/rejestr-warunkow-powrotu.md` (463 linie, stan 2026-08-24) — 24 pozycje treści
-   + **45** pozycji technicznych **T1–T45** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
+   + **48** pozycji technicznych **T1–T48** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
@@ -118,7 +118,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | Katalog pracy | `/Users/sylwesterzabski/Documents/FBO OS - www/catherly-www` — **wyłącznie tu** |
 | Gałąź | `faza-4/podstrony` |
 | HEAD lokalny | **nie wpisuję wartością** — pole samostarzejące się, unieważnia je każdy commit łącznie z tym, który je poprawia: `git rev-parse --short HEAD` |
-| HEAD zdalny (`origin/faza-4/podstrony`) | `bd1c2ff` — odczytane `git ls-remote` **2026-08-24**, nie z lokalnego refa. Jedenaście pushy na jedenaście osobnych, wyliczonych zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80`, `6d55a80` → `6f13ed8`, `6f13ed8` → `84a7037`, `84a7037` → `9b3a2dd`, `9b3a2dd` → `8999f0e` (dwa commity) i `8999f0e` → `bd1c2ff` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
+| HEAD zdalny (`origin/faza-4/podstrony`) | **przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony`. Stan 2026-08-26 po `WWW/028`: patrz rozdz. 4.22. Każdy push szedł na osobną, wyliczoną zgodę i **jawnym refspec** (zakaz 1); od 2026-08-24 to jedyna dopuszczalna forma. Historia zgód: `69c2dab` → `f2db728` (pakiet dwunastu, 23.08), `f2db728` → `d7a2fe3` (23.08), `d7a2fe3` → `231a17b` (24.08), `231a17b` → `74fdfe8` (24.08, dwa commity) `74fdfe8` → `361c7db`, `361c7db` → `6d55a80`, `6d55a80` → `6f13ed8`, `6f13ed8` → `84a7037`, `84a7037` → `9b3a2dd`, `9b3a2dd` → `8999f0e` (dwa commity) i `8999f0e` → `bd1c2ff` (24.08). **Od 2026-08-24 push idzie WYŁĄCZNIE z jawnym refspec** — `git push origin <skrót>:refs/heads/<gałąź>` — bo `git push` bez refspec zamienia zgodę na listę w zgodę na stan (zakaz 1). **Skrót przelicz, nie przepisuj** — `git ls-remote origin faza-4/podstrony` |
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | czyste |
@@ -1625,6 +1625,78 @@ nie miałoby czego wywołać.
 
 ---
 
+### 4.22 T48, przenośność reguły, strażnik cennika ze źródła (`WWW/028`)
+
+**Uwaga o dacie, zanim liczby:** nagłówek zlecenia niesie **24.08.2026**, zegar
+maszyny w chwili wykonania — **2026-08-26, 07:35 CEST**. Stemple w tym commicie
+noszą **datę faktyczną**. To **trzecie** wystąpienie klasy „stempel poprawny
+w chwili powstania, fałszywy w chwili cytowania" po stronie zlecającego (T26).
+
+**T48 — manifest wymieniał ładunek, nie wszystkie pliki wspólne.** Manifest toru 9
+podawał **pięć** plików; porównanie drzew dało **siedem** wspólnych-i-różnych.
+Trzy pominięte — `docs/STRATEGIA.md`, `docs/adr/018-…`, `scripts/backup.sh` —
+stoją w imporcie w wersji **identycznej z `69c2dab`** (sprawdzone skrótami
+blobów), czyli import ich nie zmieniał; różnica bierze się stąd, że **my
+zmieniliśmy je 2026-08-24**. **Nasze wersje są nowsze, więc przeniesienie
+byłoby cofnięciem.** Wpis **wyłącznie ewidencyjny**, zero przenoszenia
+(rozstrzygnięcie właściciela). Konsekwencja idzie do **nadawcy**: manifest ma
+wymieniać wszystkie pliki wspólne dotknięte na gałęzi. Do tego czasu **każdy
+import z tego kierunku wymaga własnego inwentarza po stronie odbiorcy**.
+
+**T47 — dopisany dowód PRZENOŚNOŚCI, licznik rośnie do dwóch.** Przy przeglądzie
+sześciu adnotacji metoda wyszukiwania była zepsuta **dwa razy w jednym
+przebiegu** (`--` przed wzorcem; potem pętla gubiąca trafienia) i **oba defekty
+zdjęła kontrola pozytywna**. Pierwszy wynik brzmiał „zero trafień na czterech
+kodach `RECZ`" i **wyglądał jak ustalenie**; po naprawie metody znalazły się
+wszystkie cztery. Reguła „zero bez kontroli pozytywnej jest zerem narzędzia"
+weszła **rano** 2026-08-24 i **tego samego dnia wieczorem uratowała pomiar
+własny** — w materiale, dla którego nie powstała. To przenośność, nie
+retrospekcja i nie uchronienie.
+
+**Strażnik cennika — liczebność ze źródła.** Lista **dziesięciu** etykiet
+wypisanych ręcznie przy **czternastu** kluczach `Cennik.tabela.*`. Odtąd zbiór
+kluczy pochodzi z `Object.keys(messages)`, więc **nowy klucz wchodzi do
+strażnika sam**. Trzy klucze wyłączone **jawnie i z powodem** — `caption`
+(etykieta dostępności), `wPlanie`, `pozaPlanem` (wartości komórek); żądanie ich
+w prozie dałoby **fałszywą czerwień na różnicy licencjonowanej** (klasa T36).
+Czwarty spoza starej listy — `zakres` — jest w prozie obecny i wszedł do
+sprawdzanych. **Pokrycie: 11 sprawdzanych + 3 wyłączone = 14 z 14.**
+
+Dwie asercje pilnują samego **podziału**, bo bez nich wyłączenie byłoby furtką:
+sprawdzane + wyłączone **równa się** liczbie kluczy, a każdy klucz wyłączony
+**nadal istnieje** w messages (wyłączenie przeterminowane udaje decyzję).
+
+**Dowód obu stron, jeden przebieg:**
+
+| | co | wynik |
+|---|---|---|
+| A | stan bieżący | **14 passed** |
+| mutacja | nowy klucz `Cennik.tabela.nowyKlucz`, nieobecny w treści — **stary** strażnik | **14 passed** ← ŚLEPY |
+| mutacja | **ta sama**, nowy strażnik | **1 failed**, komunikat nazywa klucz |
+| kontrola negatywna | `git checkout HEAD --`, suma SHA `pl.json` identyczna | **14 passed** |
+| mutacja B | usunięcie klucza **wyłączonego** (`caption`) | **1 failed** — wyłączenie przeterminowane |
+| przywrócenie | suma zgodna | **14 passed** |
+
+Czerwień pochodzi **ze zmiany strażnika**, nie z otoczenia: ta sama mutacja,
+to samo otoczenie, dwa strażniki, dwa wyniki.
+
+**Punkt 4 — pozostałe wystąpienia klasy „liczebność ręczna", NIE naprawiane:**
+`e2e/zlozenie.spec.ts:226` — `toHaveCount(6)` dla obaw (źródło: `Obawy.p*` =
+**6** dziś, zgodne) · `e2e/hero.spec.ts:59` — `toHaveCount(2)` dla potwierdzeń
+(źródło: `Hero.potwierdzenie*` = **2**, zgodne) · `e2e/zlozenie.spec.ts:170`
+i `:194` — `toHaveCount(3)`, **źródła nie ustaliłem**. Osobno, **inna
+kategoria**: `e2e/rejestr-mapy.spec.ts:69` — `toBe(8)` asertuje **decyzję**
+(F4-5), nie liczebność ze zbioru, więc literał jest tam zadeklarowanym
+niezmiennikiem, nie dryfem.
+
+⚠ **Rozjazd z torem 9, zgłaszam zamiast przyjąć:** tor 9 pisze o
+`toHaveCount(6)` **przy siedmiu parach obaw**; pomiar po tej stronie daje
+**sześć** kluczy `Obawy.p*`, czyli **zgodność**, nie rozjazd. Albo tamten
+pomiar dotyczy innego stanu, albo liczy pary inaczej. **Nie przyjmuję siódemki
+i nie naprawiam czegoś, co u mnie się zgadza.**
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -1665,7 +1737,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T45. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T48. Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest
@@ -2429,7 +2501,7 @@ liczba zamiast pomiaru:**
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T45
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T48
 - `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 292 linie;
   **trzy** tabele — dowodów wartości (**25**), **kosztów** (**8**) i sprawdzenia
   wstecznego przypisań. **Nie jest źródłem reguł** — szczebel 7, deklaruje to
@@ -2602,7 +2674,7 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
   linii pracy (T2, T10, T20–T40); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T45 — po jednej linii. To jest wskaźnik, nie zamiennik:
+  24 pozycji treści i T1–T48 — po jednej linii. To jest wskaźnik, nie zamiennik:
   sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
@@ -2664,7 +2736,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe (T1–T45)
+### 15.2 Pozycje techniczne i procesowe (T1–T48)
 
 **Legenda:** ✅ zamknięte · 🔒 zamrożone świadomie · ⏸ czeka na blok
 (design / przegląd bramek) · ⚠ otwarte, dotyczy bieżącej linii pracy.
