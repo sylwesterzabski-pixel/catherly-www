@@ -445,3 +445,314 @@ html {
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   WARSTWA RUCHU (zlecenie WWW/047). CSS-only, zero JavaScriptu.
+
+   TRZY OSŁONY, WSZYSTKIE OBOWIĄZUJĄ ŁĄCZNIE — kolejność zagnieżdżenia
+   jest tu treścią, nie stylem zapisu:
+
+   1. `prefers-reduced-motion: no-preference` — cały ruch stoi WEWNĄTRZ
+      tego zapytania. Kto prosi o mniej ruchu, dostaje stronę statyczną
+      BEZWZGLĘDNIE: nie „mniej", nie „krócej", tylko `animation` i
+      `transition` nieustawione w ogóle. Reguła nie ma osobnego
+      wyłącznika, bo wyłącznik dałoby się przeoczyć — brak reguły nie.
+   2. `@supports (animation-timeline: view())` — ruch sterowany
+      przewijaniem stoi wewnątrz. Przeglądarka bez tej własności (dziś
+      m.in. Firefox) NIE WCHODZI do bloku, więc nie dostaje `opacity: 0`
+      i widzi treść od razu. **To jest cały fallback**: treść domyślnie
+      widoczna, ukrywana wyłącznie tam, gdzie na pewno wróci.
+   3. Własności animowane: WYŁĄCZNIE `transform`, `opacity`, `clip-path`
+      i `text-decoration-color`. Zero `width`, `height`, `top`, `left`,
+      `margin` — czyli zero pracy układu w każdej klatce.
+      JEDEN WYJĄTEK, jawny i uzasadniony niżej: `grid-template-rows`
+      przy rozwijaniu FAQ.
+
+   CZEGO TU NIE MA, bo jest zakazane: paralaksy, pulsowania CTA,
+   confetti, liczników, autoodtwarzania dźwięku i wejść dłuższych niż
+   700 ms. Najdłuższe wejście w tym pliku trwa 600 ms (kadry).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ── R1: wejście elementu — jedna klatka kluczowa na wszystko ── */
+  @keyframes ruch-wejscie {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Hero — wejście NA WCZYTANIU (nie przy przewijaniu: hero jest już
+     w kadrze, więc oś przewijania nie miałaby czego mierzyć).
+     Tu 550 ms i opóźnienia 70 ms są PRAWDZIWYMI wartościami czasu. */
+  .ruch-stagger > * {
+    animation: ruch-wejscie 550ms ease-out both;
+  }
+  .ruch-stagger > *:nth-child(1) { animation-delay: 0ms; }
+  .ruch-stagger > *:nth-child(2) { animation-delay: 70ms; }
+  .ruch-stagger > *:nth-child(3) { animation-delay: 140ms; }
+  .ruch-stagger > *:nth-child(4) { animation-delay: 210ms; }
+  .ruch-stagger > *:nth-child(5) { animation-delay: 280ms; }
+
+  /* ── R2: poświata oddycha ──────────────────────────────────────
+     Dryf robi WARSTWA DODATKOWA (`::after`), a nie tło sekcji — i to
+     jest decyzja pomiarowa, nie estetyczna. Tło sekcji ZOSTAJE
+     gradientem: dzięki temu `e2e/kontrast-stanow.spec.ts` dalej widzi
+     tło jako niejednolite i schodzi na ścieżkę rastrową (ADR-033).
+     Gdyby poświata przeniosła się w całości do pseudoelementu, sonda
+     dostałaby do pomiaru płaskie espresso i wystawiła ZIELEŃ POLICZONĄ
+     Z TŁA, KTÓREGO POD PRZYCISKIEM NIE MA. Fałszywa zieleń jest gorsza
+     od czerwieni — ta sama zasada, co przy odmowie obejścia w WWW/040.
+
+     Warstwa jest pod treścią (`z-index: -1`), `pointer-events: none`,
+     nie niesie informacji i nie ma jej w drzewie dostępności. */
+  [data-ton="ciemny"]:where(section) {
+    position: relative;
+    isolation: isolate;
+  }
+
+  [data-ton="ciemny"]:where(section)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 60% 50% at 65% 40%,
+      color-mix(in srgb, var(--kolor-dekoracja-poswiata) 18%, transparent),
+      transparent
+    );
+    animation: ruch-oddech 21s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+
+  /* Amplituda celowo mała: 2% skali i 1,5% przesunięcia. Ruch ma być
+     zauważalny dopiero, gdy się na niego patrzy — nie wcześniej. */
+  @keyframes ruch-oddech {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.75;
+    }
+    to {
+      transform: translate3d(1.5%, -1.5%, 0) scale(1.02);
+      opacity: 1;
+    }
+  }
+
+  /* ── R3: mikrointerakcje ────────────────────────────────────── */
+  /* CTA — swoistość NIE przez `:where()`, i to jest naprawa defektu
+     złapanego pomiarem stylu wyliczonego (2026-08-26). `:where()` ma
+     swoistość ZERO, więc regułę `a { transition: text-decoration-color }`
+     niżej wygrywała ona, a nie ta — CTA traciło przejście `transform`
+     i nie unosiło się pod wskaźnikiem. Deklaracja wymienia teraz
+     WSZYSTKIE trzy własności razem, bo `transition` jest skrótem
+     i każde kolejne wystąpienie zastępuje poprzednie w całości. */
+  a[class*="_cta__"] {
+    transition:
+      transform 180ms ease-out,
+      background-color 180ms ease-out,
+      text-decoration-color 180ms ease-out;
+  }
+
+  a[class*="_cta__"]:hover {
+    transform: translateY(-0.0625rem);
+  }
+
+  /* Podkreślenie linku prozy: barwa przechodzi płynnie. Sam kształt
+     podkreślenia ZOSTAJE `text-decoration` — recepta z 2026-08-14 jest
+     decyzją właściciela pilnowaną przez `e2e/podkreslenia.spec.ts`
+     i podmiana jej na pseudoelement zerwałaby jedno i drugie. */
+  a {
+    transition: text-decoration-color 180ms ease-out;
+  }
+
+  /* Nawigacja — podkreślenie rysowane OD LEWEJ. Tu pseudoelement jest
+     dopuszczalny, bo dotyczy wyłącznie nagłówka i nie rusza recepty
+     prozy: `text-underline-offset` zostaje nietknięty, więc strażnik
+     jednej recepty dalej mierzy to samo. */
+  header nav a {
+    position: relative;
+  }
+
+  header nav a::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: -0.125rem;
+    block-size: 0.0625rem;
+    background: var(--kolor-rola-akcent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 180ms ease-out;
+  }
+
+  header nav a:hover::after,
+  header nav a:focus-visible::after,
+  header nav a[aria-current]::after {
+    transform: scaleX(1);
+  }
+
+  /* Kadr w ramce — powiększenie WEWNĄTRZ ramki. `overflow: clip` na
+     ramce trzyma obraz w środku, więc skala nie rusza układu. */
+  :where([class*="_obraz__"], .pas-obrazu) {
+    overflow: clip;
+  }
+
+  :where([class*="_obraz__"], .pas-obrazu) img {
+    transition: transform 350ms ease-out;
+  }
+
+  :where([class*="_obraz__"], .pas-obrazu):hover img {
+    transform: scale(1.03);
+  }
+
+  /* ── R4: linie sekcji rysują się ────────────────────────────── */
+  @keyframes ruch-linia {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+}
+
+/* ── R1/R4/R5 sterowane PRZEWIJANIEM — wyłącznie tam, gdzie
+      przeglądarka to potrafi. Poza tym blokiem treść jest widoczna
+      od razu i nic jej nie ukrywa. ─────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* Sekcje inne niż pierwsza: wejście przy wjeździe w kadr.
+       UWAGA O JEDNOSTCE CZASU — zapisana, bo zlecenie mówi „550 ms":
+       przy osi `view()` postęp animacji wiąże się z POŁOŻENIEM na
+       ekranie, nie z zegarem. Czas trwania zależy więc od szybkości
+       przewijania i nie da się go ustawić. Odpowiednikiem 550 ms jest
+       tu `animation-range` — zakres, na którym wejście się dokonuje;
+       dobrany tak, żeby przy zwykłym przewijaniu trwało podobnie. */
+    /* ⚠ WEJŚCIE PRZY PRZEWIJANIU JEST SAMYM PRZESUNIĘCIEM, BEZ ZANIKANIA
+       — i to jest naprawa wymuszona pomiarem, nie uproszczenie.
+
+       Zlecenie mówi „fade + translateY". Pierwsza wersja tak właśnie
+       robiła i dała **128 naruszeń `color-contrast` o wadze „serious"**
+       w `e2e/axe.spec.ts`, na dziewięciu trasach. Powód nie jest wadą
+       narzędzia: przy osi `view()` element, który jeszcze nie wjechał
+       w kadr, stoi na `opacity: 0` **bezterminowo** — a tekst o zerowej
+       przezroczystości jest tekstem niewidocznym, nie tekstem „przed
+       animacją". Axe czyta stan strony bez przewijania i ma rację.
+
+       `translateY` takiej własności nie ma: element jest przez cały czas
+       w pełni widoczny, tylko przesunięty o 1.25rem. Wejście dalej
+       czytelnie „wjeżdża", a treść nie znika ani na chwilę.
+
+       ZANIKANIE ZOSTAJE TAM, GDZIE JEST BEZPIECZNE: w hero, które
+       animuje się NA WCZYTANIU z prawdziwym zegarem i dochodzi do pełnej
+       widoczności w 830 ms (550 ms + 280 ms najdłuższego opóźnienia),
+       więc nie zostawia treści niewidocznej. */
+    @keyframes ruch-wsuniecie {
+      from { transform: translateY(1.25rem); }
+      to { transform: none; }
+    }
+
+    /* ⚠ CEL KOTWICY SIĘ NIE PRZESUWA — `:not([id])` jest tu
+       MECHANIZMEM, nie kosmetyką. Element z `id` bywa celem skoku
+       w kotwicę, a `scroll-padding` liczy się od pudełka UKŁADU, nie od
+       przesuniętego rysunku: przy `translateY(1.25rem)` skok lądował
+       **20 px za wysoko** i nagłówek chował się pod sticky nagłówkiem.
+       Zmierzone: górna krawędź h2 na 67,89 px przy wymaganych 80,59 —
+       czyli dokładnie o wysokość przesunięcia. Piętnaście upadków
+       strażników W4 i `odsuniecie-kotwic` na kadrze 390 px.
+       Cele kotwic wchodzą więc bez ruchu; ich rodzeństwo wjeżdża.
+
+       `:not(:has([id]))` obok `:not([id])` — bo cel kotwicy bywa
+       ZAGNIEŻDŻONY. Na podstronach funkcji kotwicą jest `h2` leżące
+       trzy poziomy niżej (`wnętrze > układ > tekst > h2`), więc
+       animowany był PRZODEK, a przesuwał się razem z nim cel. Pierwsze
+       podejście wyłączyło tylko elementy z własnym `id` i trzy kotwice
+       dalej lądowały pod nagłówkiem. Wyłączenie musi obejmować także
+       tego, kto cel NIESIE. */
+    main > section:not(:first-of-type) > div > *:not([id]):not(:has([id])) {
+      animation: ruch-wsuniecie linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 42%;
+    }
+
+    /* Stagger 70 ms zamienia się na PRZESUNIĘCIE ZAKRESU — z tego
+       samego powodu co wyżej. Kolejność: nagłówek → treść → CTA. */
+    main > section:not(:first-of-type) > div > *:nth-child(2) {
+      animation-range: entry 6% entry 48%;
+    }
+    main > section:not(:first-of-type) > div > *:nth-child(3) {
+      animation-range: entry 12% entry 54%;
+    }
+    main > section:not(:first-of-type) > div > *:nth-child(4) {
+      animation-range: entry 18% entry 60%;
+    }
+
+    /* R4 — grube linie sekcji rysują się od lewej. */
+    .ruch-linia {
+      transform: scaleX(0);
+      transform-origin: left center;
+      animation: ruch-linia linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 50%;
+    }
+
+    /* R5 — kadry odsłaniają się. 600 ms to znów zakres, nie zegar. */
+    @keyframes ruch-odsloniecie {
+      from { clip-path: inset(0 0 100% 0); }
+      to { clip-path: inset(0 0 0 0); }
+    }
+
+    :where([class*="_obraz__"], .pas-obrazu) img {
+      animation: ruch-odsloniecie linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+
+/* ── R4: LINIE SIĘ RYSUJĄ — po SWOJEJ osi, nie po zmyślonej ────────
+   Zlecenie mówi „grube linie sekcji rysują się (scale-x)". Pytanie
+   zerowe — czy ta rzecz w ogóle istnieje — dało wynik inny niż
+   zakładało zlecenie: w całym `src/` są DWIE linie grubsze od włosa
+   (`SciezkaRozpoznania` i `ModulFunkcji`, po 0.1875rem) i **obie są
+   PIONOWE** (`border-inline-start` przy akapicie „granica").
+   Poziomej grubej linii sekcji nie ma ani jednej.
+
+   Rysuję je więc po osi PIONOWEJ (`scaleY`, od góry) — bo `scaleX` na
+   linii pionowej nie rysuje jej, tylko pogrubia. Zamiana osi jest
+   wierniejsza poleceniu („linia się rysuje") niż wierność literze
+   („scale-x"), a rozjazd jest tu zapisany, żeby nie wyglądał na
+   przeoczenie.
+
+   Nośnikiem jest pseudoelement, bo obramowania nie da się skalować
+   osobno od pudełka. Prawdziwe obramowanie schodzi WYŁĄCZNIE wewnątrz
+   tego bloku — czyli tylko tam, gdzie animacja na pewno się wykona
+   i `both` zostawi ją w stanie końcowym. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    @keyframes ruch-linia-pionowa {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+
+    :where(p[class*="_granica__"]) {
+      position: relative;
+      border-inline-start-color: transparent;
+    }
+
+    :where(p[class*="_granica__"])::before {
+      content: "";
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: -0.1875rem;
+      inline-size: 0.1875rem;
+      background: var(--kolor-rola-kreska);
+      transform: scaleY(0);
+      transform-origin: top center;
+      animation: ruch-linia-pionowa linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 50%;
+    }
+  }
+}

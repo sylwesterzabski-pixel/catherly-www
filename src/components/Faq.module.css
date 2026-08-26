@@ -61,3 +61,63 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* ROZWIJANIE FAQ — animacja (R3, zlecenie WWW/047).
+
+   ⚠ `grid-template-rows` JEST WŁASNOŚCIĄ UKŁADU i jest tu JEDYNYM
+   wyjątkiem od reguły „wyłącznie transform/opacity/clip-path". Wpisuję
+   to wprost, zamiast udawać, że wyjątku nie ma. Dwa powody, dla których
+   jest dopuszczalny:
+   (1) `height: auto` nie da się animować, a `max-height` z liczbą
+       zgaduje wysokość i przy dłuższej odpowiedzi ucina tekst —
+       czyli lek gorszy od choroby;
+   (2) zmiana zachodzi WYŁĄCZNIE po kliknięciu użytkownika i tylko
+       w rozwijanym elemencie, więc nie wchodzi do CLS: metryka wyłącza
+       przesunięcia w oknie 500 ms po interakcji.
+
+   Bez ruchu (`prefers-reduced-motion: reduce`) i bez `:has()` element
+   po prostu jest rozwinięty albo zwinięty, natychmiast. */
+.lista details .odpowiedz {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lista details:not([open]) .odpowiedz {
+    grid-template-rows: 0fr;
+  }
+
+  .lista details .odpowiedz {
+    transition: grid-template-rows 240ms ease-out;
+  }
+
+  .lista details .odpowiedz > p {
+    overflow: hidden;
+  }
+
+  /* Znacznik +/− z obrotem. Natywny trójkąt schodzi, bo dwa znaczniki
+     obok siebie czytałyby się jak usterka; `list-style: none` zdejmuje
+     go w Chromium, `::-webkit-details-marker` w starszym WebKicie. */
+  .lista summary {
+    list-style: none;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .lista summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lista summary::before {
+    content: "+";
+    color: var(--kolor-rola-akcent);
+    font-weight: var(--waga-mocna);
+    transition: transform 240ms ease-out;
+    transform-origin: center;
+  }
+
+  .lista details[open] summary::before {
+    transform: rotate(90deg);
+  }
+}

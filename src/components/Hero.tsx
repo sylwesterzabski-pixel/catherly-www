@@ -25,7 +25,14 @@ export function Hero({ locale }: Props) {
     <section className={styles.hero} aria-labelledby="hero-h1" data-ton="ciemny">
       <div className={styles.wnetrze}>
         <div className={styles.kolumny}>
-          <div>
+          {/* DUCH — wielki napis dekoracyjny za treścią hero (R2).
+              `aria-hidden` i pusty dla drzewa tekstu: napis rysuje
+              `content` z CSS, więc nie wchodzi do treści, nie dubluje
+              nazwy marki dla czytnika i nie da się go wyszukać jako
+              tekstu. Nie niesie żadnej informacji, której nie ma
+              w widocznym nagłówku obok. */}
+          <span className={styles.duch} aria-hidden="true" />
+          <div className="ruch-stagger">
             <h1 id="hero-h1" className={styles.naglowek}>
               {t("naglowek")}
             </h1>

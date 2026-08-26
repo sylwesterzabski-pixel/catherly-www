@@ -123,3 +123,34 @@
     ),
     var(--kolor-rola-tlo-strony);
 }
+
+/* DUCH — dekoracja tła hero (R2, zlecenie WWW/047).
+   Leży POD treścią (`z-index: -1`) i nie łapie wskaźnika. Alfa 6% —
+   środek zakresu 5–7% z polecenia; przy tej wartości napis jest
+   fakturą tła, a nie drugim nagłówkiem.
+   `overflow: clip` na kolumnach trzyma go w kadrze: duch nie ma prawa
+   poszerzyć strony ani wywołać przewijania poziomego. */
+.kolumny {
+  position: relative;
+  overflow: clip;
+}
+
+.duch {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0;
+  z-index: -1;
+  translate: 0 -50%;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  font-size: clamp(5rem, 22vw, 16rem);
+  font-weight: var(--waga-mocna);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: color-mix(in srgb, var(--kolor-rola-tekst-na-inwersji) 6%, transparent);
+}
+
+.duch::before {
+  content: "Catherly";
+}

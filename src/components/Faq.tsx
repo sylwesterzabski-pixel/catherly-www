@@ -31,7 +31,14 @@ export function Faq({ naglowek, idNaglowka, pary }: Props) {
           {pary.map(({ pytanie, odpowiedz }, indeks) => (
             <details key={indeks}>
               <summary>{pytanie}</summary>
-              <p>{odpowiedz}</p>
+              {/* Opakowanie odpowiedzi jest NOŚNIKIEM ANIMACJI, nie
+                  ozdobą: rozwinięcie <details> animuje się przez
+                  `grid-template-rows` na tym elemencie (0fr → 1fr),
+                  bo `height: auto` nie da się animować. Bez ruchu
+                  i bez wsparcia opakowanie nie robi nic — zwykły div. */}
+              <div className={styles.odpowiedz}>
+                <p>{odpowiedz}</p>
+              </div>
             </details>
           ))}
         </div>
