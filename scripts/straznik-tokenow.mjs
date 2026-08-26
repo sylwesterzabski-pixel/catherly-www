@@ -123,11 +123,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 26;
+const LICZBA_ROL = 19;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-034 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-038 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -152,55 +152,12 @@ for (const [a, b, prog, opis] of PARY) {
   }
 }
 
-/* ─── WARSTWA INWERSJI (ADR-032) ───────────────────────────────
-   Dołożone razem z sześcioma rolami. Bez tych par nowe role byłyby
-   w zbiorze, ale POZA sprawdzaniem — czyli dokładnie furtka, przed
-   którą broni kanon („wyłączenie ze sprawdzania ma własnego strażnika
-   liczebności"). Zasięg par idzie za tym, co NAPRAWDĘ występuje
-   w kompozycji z referencji `glowna-natura.html`:
-   złoty CTA stoi wyłącznie na espresso (hero, zamknięcie), a na
-   oliwkowym brązie CTA jest grafitowe — dlatego pary
-   `interakcja-inwersji × tlo-inwersji-2` tu NIE MA. Gdyby złoty CTA
-   trafił kiedyś na oliwkę, miałby 1,46:1 i ta para musi wtedy wejść. */
-const PARY_INWERSJI = [
-  ["tekst-na-inwersji",    "tlo-inwersji",        4.5, "proza na espresso"],
-  ["tekst-2-na-inwersji",  "tlo-inwersji",        4.5, "tekst drugorzędny na espresso"],
-  ["tekst-na-inwersji",    "tlo-inwersji-2",      4.5, "proza na oliwkowym brązie"],
-  ["tekst-2-na-inwersji",  "tlo-inwersji-2",      4.5, "tekst drugorzędny na oliwkowym"],
-  ["tekst-na-inwersji",    "interakcja-inwersji", 4.5, "etykieta na złotym CTA (spoczynek)"],
-  ["tekst-na-inwersji",    "interakcja-aktywna-inwersji", 4.5, "etykieta na złotym CTA (hover/active) — para dodana po defekcie 2,07:1 z ADR-033"],
-  ["tekst-na-inwersji",    "interakcja",          4.5, "etykieta na grafitowym CTA (stopka, filary)"],
-  ["akcent-na-inwersji",   "tlo-inwersji",        3.0, "złoto jasne na espresso"],
-  ["akcent-na-inwersji",   "tlo-inwersji-2",      3.0, "złoto jasne na oliwkowym"],
-];
-for (const [a, b, prog, opis] of PARY_INWERSJI) {
-  if (!role[a] || !role[b]) { bledy.push(`BRAK ROLI: --${a} lub --${b} (${opis})`); continue; }
-  const w = kontrast(role[a], role[b]);
-  if (w < prog) {
-    bledy.push(`KONTRAST (inwersja): --${a} na --${b} = ${w.toFixed(2)}:1, wymagane ${prog}:1 — ${opis}`);
-  }
-}
-
-/* GRANICA ZŁOTEGO CTA — sprawdzana OSOBNO, bo nie jest parą kontrastu,
-   tylko warunkiem istnienia mechanizmu. Samo wypełnienie ma wobec
-   espresso 2,67:1, czyli poniżej 3:1 z WCAG 1.4.11, i doborem złota
-   nie da się tego naprawić: przy jasnej etykiecie okno luminancji nie
-   istnieje (wymagane L ≥ 0,1598 i L ≤ 0,1524). Granicę niesie więc
-   OBWÓDKA, a ten strażnik pilnuje, żeby barwa obwódki dawała 3:1
-   wobec obu stron. Gdyby ktoś zdjął obwódkę z CTA, tego ten strażnik
-   NIE wykryje — od tego jest e2e/kontrast-stanow.spec.ts; tutaj
-   pilnowana jest WYKONALNOŚĆ mechanizmu, nie jego obecność. */
-if (role["tekst-na-inwersji"] && role["interakcja-inwersji"] && role["tlo-inwersji"]) {
-  const doTla = kontrast(role["tekst-na-inwersji"], role["tlo-inwersji"]);
-  const doWypelnienia = kontrast(role["tekst-na-inwersji"], role["interakcja-inwersji"]);
-  if (doTla < 3.0 || doWypelnienia < 3.0) {
-    bledy.push(
-      `GRANICA CTA: obwódka w --tekst-na-inwersji ma ${doTla.toFixed(2)}:1 wobec espresso ` +
-        `i ${doWypelnienia.toFixed(2)}:1 wobec wypełnienia; 1.4.11 wymaga 3:1 wobec OBU — ` +
-        `bez tego złoty CTA nie ma perceptowalnej granicy`
-    );
-  }
-}
+/* ─── WARSTWA INWERSJI — PARY USUNIĘTE 2026-08-26 (ADR-038) ─────
+   Stało tu osiem par kontrastu warstwy inwersji plus sprawdzenie
+   wykonalności obwódki złotego CTA. Zniknęły razem z rolami: wzorzec
+   jest jednolicie ciemny, więc inwersji nie ma. Gdyby wróciła, wracają
+   z nią pary — rola bez pary jest w zbiorze, ale poza sprawdzaniem,
+   czyli dokładnie furtką, przed którą broni sprawdzenie 0. */
 
 /* Stany: każdy musi być czytelny na powierzchni. */
 for (const s of ["stan-sukces", "stan-ostrzezenie", "stan-blad"]) {
@@ -209,59 +166,22 @@ for (const s of ["stan-sukces", "stan-ostrzezenie", "stan-blad"]) {
   if (w < 4.5) bledy.push(`KONTRAST: --${s} na --powierzchnia = ${w.toFixed(2)}:1, wymagane 4.5:1`);
 }
 
-/* ─── ROZDZIAŁ KARTY OD TŁA — REGUŁA DWUMECHANIZMOWA (ADR-033) ──
-   „Kartę odcina PLAMA ≥ 1,30 ALBO KRESKA ≥ 1,30 — jeden z dwóch,
-   MIERZONY." Rozstrzygnięcie właściciela `WWW/041`, krok 1.
+/* ─── ROZDZIAŁ KARTY — PRZENIESIONY DO WARSTWY E2E (ADR-038) ────
+   Reguła dwumechanizmowa z ADR-033 („plama ALBO kreska ≥ 1,30") stała
+   tutaj i liczyła WARTOŚCI TOKENÓW. Od ADR-038 mechanizmów jest trzy,
+   a trzeci — KOMPOZYCJA (odstęp między kartami, promień) — jest
+   własnością UKŁADU, nie palety. Strażnik tokenów nie ma jak go
+   zmierzyć: nie widzi ani `gap`, ani geometrii siatki.
 
-   DLACZEGO DWA MECHANIZMY, A NIE POLUZOWANIE PROGU. Do 2026-08-26
-   reguła znała jeden sposób: różnicę jasności wypełnień. Wystarczał
-   w palecie „kancelaria", gdzie karta była biała na owsianym tle.
-   W palecie „natura" (ADR-032) tło to krem #f0efe8 i przy tej jasności
-   progu 1,30 NIE DA SIĘ osiągnąć żadną powierzchnią — czysta biel daje
-   1,153. Ograniczeniem jest jasność TŁA, nie dobór karty, a tło jest
-   decyzją właściciela z oglądu i pozostaje nietykalne.
+   Zostawienie tu dwóch mechanizmów z trzech dałoby czerwień na stanie
+   POPRAWNYM (wzorzec nie obrysowuje kart i rozdziela je przestrzenią),
+   a więc strażnika nadgorliwego, którego po tygodniu nikt nie czyta.
+   Zostawienie tu reguły „przymkniętej" dałoby ciszę na stanie ZŁYM.
 
-   Reguła nie została więc rozluźniona: PRÓG ZOSTAJE 1,30, zmienia się
-   to, CO wolno zmierzyć. Rozdział niosą w tej palecie dwie różne
-   rzeczy w zależności od powierzchni — i obie są sprawdzane, więc
-   zniknięcie OBU dalej daje czerwień. Osłabieniem byłoby sprawdzanie
-   tylko tej, która akurat przechodzi.
-
-   ZASIĘG PO OBU STRONACH. Karty stoją także na tonach ciemnych
-   (kremowe karty na espresso i oliwce), gdzie mechanizm jest odwrotny
-   niż na jasnym: plama robi wszystko, a kreska bywa niewidoczna.
-   Zmierzone 2026-08-26 na `e6f8134` — każda powierzchnia przechodzi
-   INNYM mechanizmem, co jest najlepszym dowodem, że jeden by nie
-   wystarczył:
-     krem   → plama 1,08 ✘ · kreska 1,31 ✔
-     espresso → plama 14,04 ✔ · kreska 1,83 ✔
-     oliwka   → plama 7,65 ✔ · kreska 1,00 ✘ (kreska = tło)
-
-   KRESKA NA TONACH CIEMNYCH to `tlo-inwersji-2` — tak przemapowuje ją
-   blok `[data-ton]` w globals.css. Strażnik czyta wartości tokenów,
-   nie kaskadę, więc to przypisanie jest tu wpisane WPROST; gdyby blok
-   tonów zmienił mapowanie, ta tabela musi pójść razem z nim. */
-const PROG_ROZDZIALU = 1.3;
-const POWIERZCHNIE_KART = [
-  { tlo: "tlo-strony",     kreska: "kreska",         opis: "karta na kremie (warstwa jasna)" },
-  { tlo: "tlo-inwersji",   kreska: "tlo-inwersji-2", opis: "karta kremowa na espresso (ton ciemny)" },
-  { tlo: "tlo-inwersji-2", kreska: "tlo-inwersji-2", opis: "karta kremowa na oliwce (ton ciemny-oliwka)" },
-];
-for (const { tlo, kreska, opis } of POWIERZCHNIE_KART) {
-  if (!role["powierzchnia"] || !role[tlo] || !role[kreska]) {
-    bledy.push(`BRAK ROLI przy rozdziale karty: --powierzchnia, --${tlo} lub --${kreska} (${opis})`);
-    continue;
-  }
-  const plama = kontrast(role["powierzchnia"], role[tlo]);
-  const linia = kontrast(role[kreska], role[tlo]);
-  const najmocniejszy = Math.max(plama, linia);
-  if (Number(najmocniejszy.toFixed(2)) < PROG_ROZDZIALU) {
-    bledy.push(
-      `ROZDZIAŁ KARTY: ${opis} — plama ${plama.toFixed(2)}:1 ORAZ kreska ${linia.toFixed(2)}:1, ` +
-        `oba poniżej ${PROG_ROZDZIALU.toFixed(2)}:1. Karta nie odcina się od tła ŻADNYM mechanizmem.`
-    );
-  }
-}
+   Dlatego cała reguła — wszystkie trzy mechanizmy — mieszka teraz
+   w `e2e/rozdzial-kart.spec.ts`, gdzie mierzy się ją na WYRENDEROWANEJ
+   stronie i widać zarówno barwy, jak i odstępy. Próg 1,30 i odstęp
+   30 px (zmierzony we wzorcu) bez zmiany. */
 
 /* Akcent jest dekoracją, ale poniżej 3:1 przestaje być widoczny jako punktor. */
 if (role["akcent"] && role["tlo-strony"]) {
@@ -299,8 +219,8 @@ const PARY_AKCENTU_NAGLOWKA = [
   ["akcent",             "tlo-strony",             "fragment nagłówka na tle strony"],
   ["akcent",             "powierzchnia",           "fragment nagłówka na karcie"],
   ["akcent",             "powierzchnia-2",         "fragment nagłówka na pasie sekcyjnym"],
-  ["akcent-na-inwersji", "tlo-inwersji",           "fragment nagłówka na espresso"],
-  ["akcent-na-inwersji", "tlo-inwersji-2",         "fragment nagłówka na oliwce"],
+  /* Pary inwersji usunięte 2026-08-26 razem z rolami (ADR-038) —
+     wzorzec jest jednolicie ciemny, więc nie ma czego odwracać. */
 ];
 const PROG_AKCENTU_NAGLOWKA = 3.0;
 for (const [a, b, opis] of PARY_AKCENTU_NAGLOWKA) {

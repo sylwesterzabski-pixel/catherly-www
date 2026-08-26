@@ -316,85 +316,25 @@ html {
 
 
 /* ═══════════════════════════════════════════════════════════════════════
-   WARSTWA INWERSJI — TONY SEKCJI (ADR-032, paleta „natura", krok 2
-   zlecenia WWW/040).
+   WARSTWA INWERSJI — USUNIĘTA 2026-08-26 (decyzja właściciela, WWW/054
+   pkt 3; ADR-038).
 
-   Mechanizm: atrybut `data-ton` na SEKCJI przełącza role przez kaskadę.
-   Jeden blok, wyłącznie przez var() — ani jednej surowej wartości.
-   Sekcja bez atrybutu wygląda dokładnie jak dotąd, więc mechanizm nie
-   dotyka niczego, czego nie oznaczono świadomie.
+   Stał tu blok `[data-ton]` przełączający role na warstwę inwersji:
+   espresso, oliwkowy brąz, grafit, złoty CTA. Zniknął razem z siedmioma
+   rolami, które przemapowywał — bo wzorzec ze zlecenia WWW/050-FINAL
+   jest **jednolicie ciemny** i inwersji nie ma czego odwracać.
 
-   TRZY WARTOŚCI, nie jedna — i to jest rozszerzenie wobec litery
-   zlecenia, oznaczone: zlecenie nazywa `data-ton="ciemny"`, ale krok 3
-   wymaga TRZECH różnych powierzchni ciemnych (espresso w hero, cytacie
-   i zamknięciu; oliwkowy brąz w filarach; grafit w stopce). Jedna
-   wartość atrybutu nie potrafi ich rozróżnić, więc doszły dwie
-   pochodne o nazwach mówiących wprost, czym są.
+   ⚠ RÓL BYŁO SIEDEM, NIE SZEŚĆ. Zlecenie mówi „sześć ról USUŃ" i wymienia
+   te z ADR-032; siódma — `interakcja-aktywna-inwersji` — doszła później,
+   z ADR-034, przy naprawie hovera. Usunięte zostały wszystkie siedem, bo
+   zostawienie jednej dałoby roli bez przedmiotu i bez pary w strażniku.
+   Rozjazd zgłoszony, nie rozstrzygnięty po cichu.
 
-   ODWZOROWANIE RÓL — wspólne dla wszystkich trzech tonów. `powierzchnia`
-   CELOWO NIE JEST przemapowana: ramki kadrów w filarach mają zostać
-   jasne na ciemnym tle (tak samo robi referencja), a przemapowanie
-   zgasiłoby je razem z tłem sekcji. */
-[data-ton="ciemny"],
-[data-ton="ciemny-oliwka"],
-[data-ton="grafit"] {
-  --kolor-rola-tekst-podstawowy: var(--kolor-rola-tekst-na-inwersji);
-  --kolor-rola-tekst-drugorzedny: var(--kolor-rola-tekst-2-na-inwersji);
-  --kolor-rola-akcent: var(--kolor-rola-akcent-na-inwersji);
-  --kolor-rola-link: var(--kolor-rola-tekst-na-inwersji);
-  --kolor-rola-link-aktywny: var(--kolor-rola-akcent-na-inwersji);
-  --kolor-rola-fokus: var(--kolor-rola-akcent-na-inwersji);
-  --kolor-rola-interakcja: var(--kolor-rola-interakcja-inwersji);
-  /* Hover CIEMNIEJE, nie jaśnieje (ADR-034). Do 2026-08-26 stało tu
-     mapowanie na --akcent-na-inwersji, czyli złoto JASNE — a etykieta
-     zostaje kremowa, więc pod palcem robiło się jasne na jasnym:
-     2,07:1 przy progu 4,5:1. Defekt istniał od wdrożenia natury i był
-     niewidoczny, dopóki sonda zgłaszała te punkty jako nieoznaczalne. */
-  --kolor-rola-interakcja-aktywna: var(--kolor-rola-interakcja-aktywna-inwersji);
-  --kolor-rola-tekst-na-interakcji: var(--kolor-rola-tekst-na-inwersji);
-  --kolor-rola-kreska: var(--kolor-rola-tlo-inwersji-2);
-  color: var(--kolor-rola-tekst-podstawowy);
-}
+   Historia jest w gicie: gdyby kiedyś weszła sekcja jasna, warstwa wraca
+   osobną decyzją, a nie przez odtworzenie z pamięci.
+   ═══════════════════════════════════════════════════════════════════════ */
 
-[data-ton="ciemny"] {
-  --kolor-rola-tlo-strony: var(--kolor-rola-tlo-inwersji);
-  background: var(--kolor-rola-tlo-strony);
-}
 
-[data-ton="ciemny-oliwka"] {
-  --kolor-rola-tlo-strony: var(--kolor-rola-tlo-inwersji-2);
-  background: var(--kolor-rola-tlo-strony);
-}
-
-/* Grafit bierze barwę z aliasu ustawionego na :root, NIE z
-   `var(--kolor-rola-interakcja)` — i to nie jest ozdoba składni.
-   Wewnątrz tego bloku `--kolor-rola-interakcja` jest już przemapowana
-   na złoto, więc odwołanie do niej dałoby ZŁOTE tło stopki. Alias
-   liczy się na :root, gdzie żadne przemapowanie nie obowiązuje, i jest
-   dziedziczony jako gotowa wartość. */
-[data-ton="grafit"] {
-  --kolor-rola-tlo-strony: var(--ton-grafit-tlo);
-  background: var(--kolor-rola-tlo-strony);
-}
-
-/* GRANICA ZŁOTEGO CTA — obwódka, nie plama.
-   Zmierzone 2026-08-26: wypełnienie --interakcja-inwersji ma wobec
-   espresso 2,67:1, czyli PONIŻEJ 3:1 z WCAG 1.4.11. Doborem złota tego
-   NIE DA SIĘ naprawić: przy jasnej etykiecie okno luminancji nie
-   istnieje — wypełnienie musiałoby mieć jednocześnie L ≥ 0,1598 (żeby
-   odciąć się od tła) i L ≤ 0,1524 (żeby utrzymać 4,5:1 pod etykietą).
-   Sprawdzone na ośmiu kandydatach w tym samym odcieniu: każdy łamie
-   jeden z dwóch progów.
-
-   Granicę niesie więc OBWÓDKA w --tekst-na-inwersji: 13,02:1 wobec
-   espresso i 4,88:1 wobec wypełnienia, czyli 1.4.11 spełnione po obu
-   stronach. To ten sam wzorzec, który w eksperymencie palety niósł
-   obwódkę CTA przy limonce — i z tego samego powodu: plama, która nie
-   odcina się od tła, nie rysuje przycisku. Zdjęcie tej obwódki wywraca
-   dostępność CTA konwersji; pilnuje tego e2e/kontrast-stanow.spec.ts. */
-[data-ton] a[class*="_cta__"] {
-  border: 0.0625rem solid var(--kolor-rola-tekst-na-inwersji);
-}
 
 /* R-AKCENT-03 — AKCENT MOŻE NIEŚĆ FRAGMENT NAGŁÓWKA (ADR-033, krok 3).
 
