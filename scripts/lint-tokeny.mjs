@@ -48,156 +48,31 @@ const WZORCE = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
-   WYJĄTEK EKSPERYMENTU PALETY — rozstrzygnięcie właściciela 2026-08-17.
-   Wąski i z datą. Warunki (wszystkie obowiązujące łącznie):
-     (a) obejmuje WYŁĄCZNIE blok między znacznikami, w jednym pliku;
-     (b) wygasa w dniu WYJATEK_WYGASA — po tej dacie linter zapala się na
-         samym ISTNIENIU bloku, nie na hexach w nim; data jest strażnikiem,
-         nie komentarzem;
-     (c) hex poza blokiem = czerwień jak dotąd;
-     (d) znacznik otwarcia w JAKIMKOLWIEK innym pliku = czerwień — inaczej
-         wyjątek dałoby się przenieść tam, gdzie jest wygodnie;
-     (e) blok niedomknięty, zdublowany albo odwrócony = czerwień — inaczej
-         samo otwarcie znacznika osłaniałoby resztę pliku.
-   Uzasadnienie, data i dowody mutacyjne: docs/faza-2/rejestr-warunkow-powrotu.md,
-   pozycja T15.
+   WYJĄTEK EKSPERYMENTU PALETY I JEGO TERMIN — USUNIĘTE 2026-08-26
+   (ADR-031, decyzja właściciela ②, zadanie 2 zlecenia WWW/038-bis).
+
+   Co tu stało do tej doby: osłona pozwalająca na surowe hexy wewnątrz
+   bloku „EKSPERYMENT PALETY" w src/app/globals.css, data 31 sierpnia 2026
+   jako strażnik istnienia trzech bloków eksperymentu, oraz kontrola
+   zgodności dat w ich nagłówkach.
+
+   DLACZEGO USUNIĘCIE NIE JEST OSŁABIENIEM BRAMKI. Mechanizm był
+   WYJĄTKIEM — jedynym miejscem w src/, gdzie surowa barwa przechodziła
+   przez lintera. Zdjęcie wyjątku razem z blokiem, który osłaniał, czyni
+   lintera SUROWSZYM: od tej zmiany w src/app/globals.css nie ma ani
+   jednego miejsca, w którym hex jest legalny. Osłabieniem byłoby
+   zostawienie osłony bez bloku — wtedy pierwszy hex wpisany między
+   znaczniki przeszedłby bez słowa.
+
+   Dowód mutacyjny (2026-08-26, ten sam przebieg, kontrola negatywna):
+   surowy hex wpisany do globals.css → CZERWIEŃ; po cofnięciu → zieleń,
+   suma SHA-256 pliku identyczna. Zapisany w rejestrze, poz. T15.
+
+   Warianty palet nie wracają (ADR-031). Ewentualny tryb ciemny będzie
+   osobną decyzją i osobnym zestawem ról, więc nie zostawiam tu
+   mechanizmu „na wszelki wypadek": martwy wyjątek czekający na powrót
+   eksperymentu jest furtką, nie zapobiegliwością.
    ───────────────────────────────────────────────────────────────────────── */
-const WYJATEK_PLIK = "src/app/globals.css";
-const WYJATEK_OTWARCIE = "/* === EKSPERYMENT PALETY — DO USUNIĘCIA === */";
-const WYJATEK_ZAMKNIECIE = "/* === KONIEC EKSPERYMENTU PALETY === */";
-const WYJATEK_WYGASA = "2026-08-31";
-
-const dzisiajLokalnie = () => {
-  const d = new Date();
-  const p = (n) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
-};
-
-/**
- * Zwraca zbiór numerów linii (0-indeksowanych) osłoniętych wyjątkiem
- * oraz listę błędów samego wyjątku. Błąd wyjątku jest naruszeniem.
- */
-function oslonaWyjatku(plik, linie) {
-  const bledy = [];
-  const otwarcia = [];
-  const zamkniecia = [];
-  linie.forEach((l, i) => {
-    const t = l.trim();
-    if (t === WYJATEK_OTWARCIE) otwarcia.push(i);
-    if (t === WYJATEK_ZAMKNIECIE) zamkniecia.push(i);
-  });
-
-  if (otwarcia.length === 0 && zamkniecia.length === 0) return { osloniete: null, bledy };
-
-  if (plik !== WYJATEK_PLIK) {
-    bledy.push(
-      `znacznik eksperymentu palety poza ${WYJATEK_PLIK} — wyjątek nie jest przenośny`
-    );
-    return { osloniete: null, bledy };
-  }
-  if (otwarcia.length !== 1 || zamkniecia.length !== 1) {
-    bledy.push(
-      `blok eksperymentu palety musi wystąpić dokładnie raz ` +
-        `(otwarć: ${otwarcia.length}, zamknięć: ${zamkniecia.length})`
-    );
-    return { osloniete: null, bledy };
-  }
-  if (zamkniecia[0] < otwarcia[0]) {
-    bledy.push("znacznik zamknięcia eksperymentu palety przed znacznikiem otwarcia");
-    return { osloniete: null, bledy };
-  }
-
-  const dzis = dzisiajLokalnie();
-  if (dzis > WYJATEK_WYGASA) {
-    bledy.push(
-      `blok eksperymentu palety wygasł ${WYJATEK_WYGASA} (dziś ${dzis}) — ` +
-        `usuń blok razem z public/fonts/eksperyment/; wyjątek nie obowiązuje\n` +
-        `  UWAGA: onest.woff2 w tym katalogu może być krojem produkcyjnym — ` +
-        `decyzja właściciela przed usunięciem.`
-    );
-    return { osloniete: null, bledy };
-  }
-
-  const osloniete = new Set();
-  for (let i = otwarcia[0]; i <= zamkniecia[0]; i++) osloniete.add(i);
-  return { osloniete, bledy };
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   DATA OBEJMUJE TRZY BLOKI, NIE JEDEN (właściciel, WWW/031, 2026-08-26).
-
-   Stan sprzed tej zmiany był odwrotnością tego, co wyglądał: blok PALETY,
-   którego wygaśnięcie JEST egzekwowane, nie miał daty w nagłówku; bloki
-   KROJU i PRZEZROCZYSTOŚCI nosiły w nagłówkach „WYGASA 2026-08-31" i nie
-   pilnowało ich NIC. Po 31.08 czerwieniałby jeden, dwa zostałyby w ciszy —
-   przy czym to właśnie te dwa OGŁASZAŁY termin. Napis zamiast mechanizmu,
-   w tym samym pliku, w którym mechanizm działa poprawnie.
-
-   Zasięg jest inny niż osłony: OSŁONA obejmuje wyłącznie blok palety (tylko
-   tam surowe wartości są legalne). Data obejmuje WSZYSTKIE TRZY, bo termin
-   dotyczy ISTNIENIA bloku eksperymentu, nie tego, co jest w środku.
-
-   Nagłówki, które niosą datę, muszą nieść TĘ SAMĄ datę co WYJATEK_WYGASA —
-   inaczej komentarz i mechanizm mówiłyby co innego, czyli wracalibyśmy do
-   wady, którą ta zmiana zamyka. Rozjazd = czerwień.
-   ───────────────────────────────────────────────────────────────────────── */
-const BLOKI_Z_TERMINEM = [
-  {
-    nazwa: "palety",
-    otwarcie: /^\/\* === EKSPERYMENT PALETY — DO USUNIĘCIA/,
-    zamkniecie: "/* === KONIEC EKSPERYMENTU PALETY === */",
-  },
-  {
-    nazwa: "kroju",
-    otwarcie: /^\/\* === EKSPERYMENT KROJU — DO USUNIĘCIA/,
-    zamkniecie: "/* === KONIEC EKSPERYMENTU KROJU === */",
-  },
-  {
-    nazwa: "przezroczystości",
-    otwarcie: /^\/\* === EKSPERYMENT PRZEZROCZYSTOŚCI — DO USUNIĘCIA/,
-    zamkniecie: "/* === KONIEC EKSPERYMENTU PRZEZROCZYSTOŚCI === */",
-  },
-];
-
-/** Termin dotyczy ISTNIENIA bloków eksperymentu. Zwraca listę błędów;
- *  po terminie wymienia z nazwy KAŻDY blok, który jeszcze stoi — bo
- *  komunikat mówiący o jednym kazałby usunąć jeden i uznać rzecz za zrobioną. */
-function terminBlokow(plik, linie) {
-  const bledy = [];
-  if (plik !== WYJATEK_PLIK) return bledy;
-
-  const dzis = dzisiajLokalnie();
-  const stojace = [];
-
-  for (const blok of BLOKI_Z_TERMINEM) {
-    const otw = linie.findIndex((l) => blok.otwarcie.test(l.trim()));
-    if (otw === -1) continue;
-    stojace.push(blok.nazwa);
-
-    // Data w nagłówku, jeśli jest, musi zgadzać się z jedynym źródłem terminu.
-    const wNaglowku = linie[otw].match(/WYGASA (\d{4}-\d{2}-\d{2})/);
-    if (wNaglowku && wNaglowku[1] !== WYJATEK_WYGASA) {
-      bledy.push(
-        `nagłówek bloku eksperymentu ${blok.nazwa} podaje termin ${wNaglowku[1]}, ` +
-          `a mechanizm pilnuje ${WYJATEK_WYGASA} — komentarz i strażnik mówią co innego`
-      );
-    }
-    if (!linie.some((l) => l.trim() === blok.zamkniecie)) {
-      bledy.push(`blok eksperymentu ${blok.nazwa} otwarty i niedomknięty`);
-    }
-  }
-
-  if (stojace.length > 0 && dzis > WYJATEK_WYGASA) {
-    bledy.push(
-      `termin ${WYJATEK_WYGASA} minął (dziś ${dzis}), a bloki eksperymentu ` +
-        `nadal stoją: ${stojace.join(", ")} — usuń WSZYSTKIE wymienione ` +
-        `razem z public/fonts/eksperyment/\n` +
-        `  UWAGA: onest.woff2 w tym katalogu może być krojem produkcyjnym — ` +
-        `decyzja właściciela przed usunięciem.`
-    );
-  }
-  return bledy;
-}
 
 function plikiDoSkanowania() {
   if (STAGED) {
@@ -233,15 +108,7 @@ for (const plik of plikiDoSkanowania()) {
   const tresc = readFileSync(join(ROOT, plik), "utf8");
   const linie = tresc.split("\n");
 
-  const { osloniete, bledy } = oslonaWyjatku(plik, linie);
-  bledy.push(...terminBlokow(plik, linie));
-  for (const blad of bledy) {
-    console.error(`✗ ${plik} — ${blad}`);
-    naruszenia++;
-  }
-
   linie.forEach((linia, i) => {
-    if (osloniete?.has(i)) return;
     for (const { re, opis } of WZORCE) {
       re.lastIndex = 0;
       if (re.test(linia)) {

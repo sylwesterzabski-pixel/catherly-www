@@ -2677,6 +2677,19 @@ Zapisane, żeby nie powtarzać.
   (`refs/pull/N/merge` vs `refs/heads/…`). Defekt wraca cicho w PR.
 - **`git cat-file -t` daje fałszywą zieleń** na skrócie z reflogu. Test
   osiągalności to `git merge-base --is-ancestor`.
+- **`git checkout -- <plik>` bierze z INDEKSU, nie z HEAD ani ze stanu
+  roboczego** — i dlatego kasuje niezacommitowaną pracę bez ostrzeżenia.
+  **Ta sesja wdepnęła w to 2026-08-26**, mimo że kanon opisuje tę pułapkę
+  wprost („komenda raportuje sukces swojej operacji, nie osiągnięcie
+  Twojego celu"). Okoliczności są pouczające: komenda była **cofnięciem
+  mutacji dowodowej**, czyli krokiem, który ma przywracać stan — więc
+  wyglądała na bezpieczną z definicji. Zniknęła cała kasacja trzech bloków
+  eksperymentu, bo w indeksie stała wersja sprzed niej. **Wniosek
+  wykonawczy: mutację cofa się KOPIĄ PLIKU zrobioną tuż przed nią**
+  (`cp` do katalogu roboczego), a tożsamość cofnięcia potwierdza suma
+  SHA-256 — nie „git nie zgłosił błędu". To jest ta sama klasa co
+  „KLASA OPISANA NIE JEST KLASĄ UNIKANĄ": opis i odruch to dwa różne
+  stany wiedzy, a pośpiech pisze odruch.
 - **CI jest surowsze od maszyny lokalnej** — płytki klon nie ma nawet obiektu.
 - **Powłoka to zsh, nie bash**: `${pipestatus[1]}`, nie `${PIPESTATUS[0]}`.
 - **Systemowy `grep` to ugrep** — brak lookbehind.

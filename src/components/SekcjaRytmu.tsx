@@ -32,15 +32,13 @@ type Props = {
 export function SekcjaRytmu({ naglowek, idNaglowka, kroki, kropka }: Props) {
   return (
     <section className={styles.sekcja} aria-labelledby={idNaglowka}>
-      {/* Duch eksperymentu przezroczystości (część B2, 2026-08-17).
-          Nośnik jest PUSTY — napis rysuje `content: attr(data-duch)`
-          z globals.css, więc nie wchodzi do drzewa tekstu i nie dubluje
-          H2 dla wyszukiwarek tekstu ani dla asercji liczących wystąpienia.
-          Łańcuch jest ten sam, co widoczny nagłówek: duch nie może
-          nieść informacji, której nie ma w normalnym tekście.
-          Bez atrybutu data-paleta na <html> reguła `.duch` gasi go
-          w całości (display: none). Znika razem z blokiem eksperymentu. */}
-      <span className="duch" aria-hidden="true" data-duch={naglowek} />
+      {/* Nośnik ducha USUNIĘTY 2026-08-26 razem z blokiem eksperymentu
+          przezroczystości (ADR-031, zadanie 2 zlecenia WWW/038-bis).
+          Zapowiedź „znika razem z blokiem eksperymentu" z komentarza
+          sprzed zmiany została wykonana dosłownie. Nowa dekoracja tła
+          nagłówków (`.tekst-duch`) to zadanie 10 checklisty — POZA
+          zakresem tego zlecenia; nie zostawiam pustego nośnika, żeby
+          nie udawał, że coś go stylizuje. */}
       <div className={styles.wnetrze}>
         <h2 id={idNaglowka}>{naglowek}</h2>
         <ul className={styles.kroki} role="list">
