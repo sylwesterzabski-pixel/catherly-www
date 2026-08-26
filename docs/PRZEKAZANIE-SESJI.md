@@ -1771,6 +1771,54 @@ złamałby warunek „wyłącznie `scripts/lint-tokeny.mjs`" przy commicie E.
 
 ---
 
+### 4.24 Trzecia zaległość z `WWW/030` zapisana — mapa klas → strażników (`WWW/032`)
+
+**Sprawdzenie przed zapisem: dwie z trzech pozycji już stały.** Obie klasy
+kanonu weszły w `a316b53` („wyłączenie ze sprawdzania ma własnego strażnika
+liczebności", „przy naprawie strażnika dowodem jest ślepota starego obok
+wzroku nowego"). Brakowało **trzeciej** — wiersza do mapy klas→strażników.
+Mapa **nie istniała jako dokument**, więc nie było gdzie tego wiersza wpisać.
+
+⚠ **Czwarte zero narzędzia w tej sesji, złapane od razu.** Sprawdzając, czy
+obie klasy są zapisane, `grep` na drugiej dał **0** — bo fraza łamie się
+w pliku na dwie linie, a `grep` czyta liniami. Powtórzone po normalizacji
+białych znaków: **jest**. Ta sama rodzina, co `data-paleta` kontra
+`dataset.paleta` — **zero z jednej postaci nie jest zerem bytu**, tym razem
+postacią jest złamanie wiersza.
+
+**Nowy dokument: `docs/faza-2/mapa-klas-straznikow.md`.** Nagłówek deklaruje
+szczebel 7 i to, że **nie jest źródłem reguł** — od pierwszego commita, bo
+dokument bez tego zdania był defektem, który otworzył T32. To **czwarty
+z siedmiu nagłówków** w warunku zamknięcia T32. Zakaz 10 nietknięty: zakazuje
+mnożenia **źródeł reguł wiążących**, a to jest mapa pokrycia i mówi to wprost.
+
+**Pierwsza klasa w mapie: liczebność ZE ZBIORU kontra Z DECYZJI**, z pytaniem
+rozstrzygającym („czy istnieje zbiór źródłowy, którego liczebność ta liczba ma
+odwzorowywać") i z powodem, dla którego to nie jest ta sama rzecz pod dwoma
+imionami: **liczba z decyzji MA PRAWO rozjechać się ze stanem świata** — wtedy
+czerwień jest jej zadaniem; **liczba ze zbioru rozjechać się nie ma prawa**
+i jej rozjazd jest defektem strażnika, nie sygnałem o świecie.
+
+**Sześć wystąpień z adresami**, w tym dwa z nieustalonym źródłem
+(`zlozenie.spec.ts:170` i `:194`) — **nie badane, zgodnie z poleceniem**.
+Rozjazd z torem 9 o „siedmiu parach obaw" zapisany jako **otwarty**: szóstka
+stoi, nic się nie zmienia do czasu pomiaru źródłowego po tamtej stronie.
+
+**Granica mapy zadeklarowana w niej samej:** nie jest wynikiem przeszukania
+repozytorium — wystąpienia zebrano przy okazji jednego zadania, heurystyką
+na literałach w `e2e/`. **Nie przeszukano** `src/`, `scripts/` ani asercji
+zapisanych inaczej niż literałem. **Brak adresu w mapie nie znaczy, że go nie
+ma** — znaczy, że nikt tam nie patrzył. Mapa pokrycia, która nie mówi, czego
+nie pokrywa, sama jest tą klasą wady, którą opisuje.
+
+**Obieg — druga zguba zwrotki.** Właściciel przyjął wzorzec ponownego
+doręczenia jako standard: **nie powtarzać pomiaru ślepo**, tylko sprawdzić
+niezmienność stanu (`HEAD`, sumy plików przedmiotu) i oznaczyć **datę
+obowiązywania**. Po jego stronie sygnałem zguby jest **zwrotka niepodjęta
+w kolejnej wklejce** — kolejność wykrywa zgubę bez osobnego mechanizmu.
+
+---
+
 ---
 
 ## 5. Pełne dane samotnego pomiaru
@@ -2576,6 +2624,10 @@ liczba zamiast pomiaru:**
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
 - `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T48
+- `docs/faza-2/mapa-klas-straznikow.md` — **NOWY 2026-08-26**; mapa pokrycia
+  klas wad strażnikami. Pierwsza klasa: **liczebność ze zbioru kontra
+  liczebność z decyzji**. **Nie jest źródłem reguł** — szczebel 7, deklaruje
+  to w nagłówku; niesie jawną granicę własnego przeszukania
 - `docs/faza-2/dowody-wartosci-regul.md` — **NOWY 2026-08-24**, 292 linie;
   **trzy** tabele — dowodów wartości (**25**), **kosztów** (**8**) i sprawdzenia
   wstecznego przypisań. **Nie jest źródłem reguł** — szczebel 7, deklaruje to
