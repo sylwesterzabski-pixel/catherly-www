@@ -48,7 +48,7 @@
 }
 
 .kropka {
-  /* Duet 1.125/600 wspólny z kropką K3 (lustro: obie kropki tym
+  /* Duet --tekst-m/600 wspólny z kropką K3 (lustro: obie kropki tym
      samym głosem — W6 handoffu K4). */
   composes: duet from "./wyroznienie.module.css";
   margin-block-start: 1.25rem;

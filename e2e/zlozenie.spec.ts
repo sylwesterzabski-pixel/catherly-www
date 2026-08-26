@@ -55,7 +55,8 @@ const KOLOR_LUSTRA = "rgb(220, 205, 172)";
 
 // LUSTRO L1 (test kluczowy): S10 na tle akcentowym; kropka S3
 // („…liczysz…") i kropka S10 („…widzisz…") obecne znak w znak
-// i mówią tym samym duetem 1.125rem/600 (18px computed).
+// i mówią tym samym duetem --tekst-m/600 (20px computed po migracji
+// skali z ADR-031; do 2026-08-26 było 1.125rem/18px).
 test("LUSTRO L1: tło akcentowe S10; kropki S3/S10 wspólnym duetem", async ({
   page,
 }) => {
@@ -63,7 +64,7 @@ test("LUSTRO L1: tło akcentowe S10; kropki S3/S10 wspólnym duetem", async ({
 
   const rytm = page.locator('section[aria-labelledby="rytm-h2"]');
   const tlo = await rytm.evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(tlo, "S10 na rola-powierzchnia-akcentowa (terakota-100)").toBe(
+  expect(tlo, "S10 na rola-powierzchnia-akcentowa (kancelaria #dccdac)").toBe(
     KOLOR_LUSTRA,
   );
 
@@ -78,7 +79,11 @@ test("LUSTRO L1: tło akcentowe S10; kropki S3/S10 wspólnym duetem", async ({
       return { waga: styl.fontWeight, rozmiar: styl.fontSize };
     });
     expect(duet.waga, `kropka ${nazwa}: font-weight duetu`).toBe("600");
-    expect(duet.rozmiar, `kropka ${nazwa}: font-size duetu`).toBe("18px");
+    // Rozmiar duetu = --tekst-m = 1.25rem = 20 px (skala ADR-031,
+    // migracja zadania 5: 1.125rem/18px -> var(--tekst-m)). Asercja
+    // pilnuje nadal DOKŁADNEGO rozmiaru i tego, że obie kropki mówią
+    // TYM SAMYM duetem — zmieniła się wartość skali, nie siła strażnika.
+    expect(duet.rozmiar, `kropka ${nazwa}: font-size duetu`).toBe("20px");
   }
 });
 

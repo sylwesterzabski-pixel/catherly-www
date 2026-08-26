@@ -190,15 +190,31 @@ a:active {
    scroll-padding na kontenerze przewijania obowiązuje KAŻDE wprowadzanie
    w kadr — skok w kotwicę, skip-link i przewinięcie wymuszone fokusem —
    więc zastępuje pięć deklaracji jedną i obejmuje przypadek, którego
-   tamte nie obejmowały. Wartość bez zmian: sticky nagłówek na 390 px
-   mierzy 4.625rem (pomiar panelu HF K12, 2026-08-12), 5rem daje zapas
-   nad dolną kreską.
+   tamte nie obejmowały.
+
+   ⚠ WARTOŚĆ PRZELICZONA 2026-08-26 (5rem → 5.5rem), bo zmieniła się
+   rzecz, z której wynika. Ta liczba nie jest wyborem estetycznym: musi
+   być WIĘKSZA od wysokości sticky nagłówka, inaczej nagłówek przykrywa
+   cel kotwicy. Poprzednia wartość 5rem (80 px) stała na pomiarze
+   4.625rem = 74 px (panel HF K12, 2026-08-12) i dawała 6 px zapasu.
+   Migracja skali (zadanie 5, ADR-031) podniosła pismo linku nawigacji
+   z 18 na 20 px, nagłówek urósł do **80,59 px** i zapas zszedł do
+   **−0,59 px** — czyli poniżej zera. Wyłapało to `e2e/odsuniecie-kotwic`
+   i `W4` w czterech plikach spec: piętnaście upadków na kadrze 390 px.
+
+   NOWA WARTOŚĆ Z ROZRZUTU, NIE Z JEDNEGO POMIARU — bo metodą „jedna
+   liczba" dobrano poprzednią i to ona właśnie pękła. Zmierzone
+   2026-08-26 na 58a14c1: siedem adresów (pl/en/de × /funkcje, /cennik,
+   /dla-kogo) × sześć kadrów poniżej progu 48rem (320, 360, 390, 430,
+   600, 767) = 42 kombinacje. Wysokość WSZĘDZIE 80,59 px — rozrzut zero.
+   5.5rem = 88 px daje 7,41 px zapasu, porównywalnie z pierwotnymi 6 px,
+   i mieści się pod pułapem 96 px, którego pilnuje `odsuniecie-kotwic`.
 
    UWAGA przy zmianie: scroll-margin celów został ZDJĘTY. Dopisanie go
    z powrotem obok tej reguły SUMUJE się z nią (zmierzone: 80,2 px →
    160,2 px pustki nad nagłówkiem) — patrz handoff-etap-d.md §10.4. */
 html {
-  scroll-padding-block-start: 5rem;
+  scroll-padding-block-start: 5.5rem;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -220,18 +236,46 @@ html {
 
 /* Pola formularza używają `kreska-mocna`, nie `kreska`: obrys kontrolki
    musi mieć 3:1 (WCAG 1.4.11), a kreska dekoracyjna ma 1,26:1 i go nie ma.
-   Zmierzone 2026-08-26 na aff7947: kreska-mocna × powierzchnia 4,67:1. */
-:where(input, select, textarea) {
+   Zmierzone 2026-08-26 na aff7947: kreska-mocna × powierzchnia 4,67:1.
+
+   ⚠ ZAKRES ZAWĘŻONY DO PÓL TEKSTOWYCH — i to jest naprawa defektu, który
+   ta sesja sama wniosła, wykryta przez `e2e/kontrast-stanow.spec.ts`.
+   02-tokeny.css paczki celuje w `:where(input, select, textarea)` bez
+   wyłączeń. Trafia przez to także w kontrolki RYSOWANE PRZEZ PRZEGLĄDARKĘ:
+   przełącznik okresu w cenniku to `input[type="radio"]`, a nadanie mu
+   białego tła zdejmuje natywny rysunek kółka i zostawia białą plamę.
+   Zmierzone: 1,15:1 na `powierzchnia-2` i 1,30:1 na tle strony, przy
+   progu 3:1 — osiemnaście upadków bramki w trzech językach i dwóch
+   kadrach, w stanach spoczynku, hover i active.
+
+   Wyłączone są typy, których wygląd rysuje przeglądarka, a nie CSS.
+   To NIE jest lista wyjątków „bo tak wygodniej": dla tych kontrolek
+   deklaracje tła i obrysu nie stylizują pola, tylko KASUJĄ widżet. */
+:where(
+    input:not(
+        [type="radio"],
+        [type="checkbox"],
+        [type="range"],
+        [type="color"],
+        [type="file"],
+        [type="submit"],
+        [type="button"],
+        [type="reset"],
+        [type="image"]
+      ),
+    select,
+    textarea
+  ) {
   background: var(--kolor-rola-powierzchnia);
   border: 0.0625rem solid var(--kolor-rola-kreska-mocna);
   color: var(--kolor-rola-tekst-podstawowy);
 }
 
-:where(input, select, textarea)[aria-invalid="true"] {
+:where(input:not([type="radio"], [type="checkbox"]), select, textarea)[aria-invalid="true"] {
   border-color: var(--kolor-rola-stan-blad);
 }
 
-:where(input, select, textarea):disabled {
+:where(input:not([type="radio"], [type="checkbox"]), select, textarea):disabled {
   background: var(--kolor-rola-powierzchnia-2);
   border-color: var(--kolor-rola-kreska);
   color: var(--kolor-rola-stan-wylaczony);

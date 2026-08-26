@@ -2148,6 +2148,46 @@ wolno uruchamiać równolegle z inną pracą (T22).
 wyłącznie poniżej foldu i dla liczb cennika, H1 na `system-ui` — zostaje
 dostępna i jest jedyną opisaną drogą pogodzenia kroju z budżetem.
 
+#### Dwa defekty WNIESIONE przez to wdrożenie i złapane przez bramki
+
+Obie rzeczy złapał **pełny zestaw e2e**, nie oględziny, i obie były
+skutkiem ubocznym poprawnie wykonanych zadań — dokładnie ten rodzaj
+szkody, którego nie widać w diffie.
+
+**1. Reguła pól formularza zgasiła przełącznik okresu w cenniku.**
+02-tokeny.css paczki celuje w `:where(input, select, textarea)` bez
+wyłączeń, więc trafia też w kontrolki **rysowane przez przeglądarkę**.
+Przełącznik okresu to `input[type="radio"]`; nadanie mu białego tła
+zdejmuje natywny rysunek kółka i zostawia białą plamę. Zmierzone:
+**1,15:1** na `powierzchnia-2` i **1,30:1** na tle strony przy progu
+**3:1** — **18 upadków** `e2e/kontrast-stanow.spec.ts` w trzech językach,
+dwóch kadrach i trzech stanach. Naprawa: reguła zawężona do pól
+tekstowych, z wyłączeniem dziewięciu typów rysowanych przez przeglądarkę.
+Wyłączenie nie jest wygodą — dla tych kontrolek deklaracje tła i obrysu
+nie stylizują pola, tylko **kasują widżet**.
+
+**2. Migracja skali zdjęła zapas pod sticky nagłówkiem.**
+`html { scroll-padding-block-start }` musi być **większe od wysokości
+sticky nagłówka**, inaczej nagłówek przykrywa cel kotwicy. Wartość 5rem
+(80 px) stała na pomiarze 4,625rem = 74 px z 2026-08-12 i dawała 6 px
+zapasu. Zadanie 5 podniosło pismo linku nawigacji z 18 na 20 px, nagłówek
+urósł do **80,59 px**, a zapas zszedł do **−0,59 px**. Piętnaście upadków
+`W4` i `odsuniecie-kotwic` na kadrze 390 px.
+
+**Nowa wartość dobrana z ROZRZUTU, nie z jednego pomiaru — bo metodą
+„jedna liczba" dobrano poprzednią i to ona pękła.** Zmierzone 2026-08-26
+na `58a14c1`: siedem adresów (pl/en/de × `/funkcje`, `/cennik`,
+`/dla-kogo`) × sześć kadrów poniżej progu 48rem = **42 kombinacje**,
+wysokość wszędzie **80,59 px**, rozrzut zero. Przyjęte **5.5rem = 88 px**
+(zapas 7,41 px, porównywalnie z pierwotnymi 6 px), z zapasem pod pułapem
+96 px, którego pilnuje `odsuniecie-kotwic`.
+
+**Wniosek do zapamiętania: liczba wyprowadzona z pomiaru czegoś innego
+starzeje się razem z tamtą rzeczą, a nic o tym nie mówi.** Komentarz
+przy `scroll-padding` uczciwie podawał, skąd wzięto 5rem — i to właśnie
+ten zapis pozwolił naprawić wartość w pięć minut zamiast szukać przyczyny.
+Gdyby stała tam goła liczba, diagnoza kosztowałaby wielokrotnie więcej.
+
 #### Stan wykonania
 
 Zadania i commity — patrz rozdz. 1 (lista przeliczana poleceniem, nie

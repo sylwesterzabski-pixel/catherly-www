@@ -1,4 +1,5 @@
-/* Wspólny duet wyróżnienia 1.125rem/600 (W6 handoffu K4):
+/* Wspólny duet wyróżnienia --tekst-m/600 (W6 handoffu K4;
+   od 2026-08-26 to 1.25rem — migracja skali, ADR-031):
    „kropka" K3 i „korzyść" K4 komponują z JEDNEGO miejsca,
    żeby style nie rozjechały się przy zmianach. */
 
