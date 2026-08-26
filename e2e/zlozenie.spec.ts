@@ -3,6 +3,7 @@ import { join } from "node:path";
 
 import { test, expect } from "@playwright/test";
 
+import { bezZnacznikow, sprawdzZnaczniki } from "./pomoc/tekst";
 import migawka from "../content/cennik-snapshot.json";
 import pl from "../src/i18n/messages/pl.json";
 import en from "../src/i18n/messages/en.json";
@@ -123,8 +124,8 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     await page.goto(adres);
     const k = komunikaty;
     await expect(page.locator("main h2")).toHaveText([
-      k.Problem.naglowek,
-      k.Definicja.naglowek,
+      bezZnacznikow(k.Problem.naglowek),
+      bezZnacznikow(k.Definicja.naglowek),
       k.Filary.filar1.naglowek,
       k.Filary.filar2.naglowek,
       k.Filary.filar3.naglowek,
@@ -150,7 +151,7 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     const problem = page.locator('section[aria-labelledby="problem-h2"]');
     await expect(
       problem.getByRole("heading", { level: 2 }),
-    ).toHaveText(k.Problem.naglowek);
+    ).toHaveText(bezZnacznikow(k.Problem.naglowek));
     await expect(problem.getByText(k.Problem.tresc, { exact: true })).toBeVisible();
     await expect(
       problem.getByText(k.Problem.kropka, { exact: true }),
@@ -160,7 +161,7 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     const definicja = page.locator('section[aria-labelledby="definicja-h2"]');
     await expect(
       definicja.getByRole("heading", { level: 2 }),
-    ).toHaveText(k.Definicja.naglowek);
+    ).toHaveText(bezZnacznikow(k.Definicja.naglowek));
     await expect(
       definicja.getByText(k.Definicja.tresc, { exact: true }),
     ).toBeVisible();
@@ -320,12 +321,19 @@ test("złożenie: messages znak w znak z content (Etap F)", () => {
         " ",
       );
 
+    /* Porównanie idzie po SŁOWACH, nie po zapisie: od ADR-033 dwa
+       nagłówki niosą w kluczu znacznik `<akcent>`, który jest nośnikiem
+       podziału, a nie treścią, i w `content/` go nie ma. `bezZnacznikow`
+       przywraca porównaniu jego przedmiot — zmiana JEDNEJ litery dalej
+       daje czerwień, bo normalizowane są wyłącznie znaczniki i białe
+       znaki. Parzystości i umiejscowienia samych znaczników pilnuje
+       osobny test niżej, żeby ta normalizacja nie stała się furtką. */
     const problem = znorm("problem.md");
     for (const [pole, tresc] of Object.entries(komunikaty.Problem)) {
       expect(
         problem,
         `content/${jezyk}/problem.md zawiera Problem.${pole}`,
-      ).toContain(tresc);
+      ).toContain(bezZnacznikow(tresc));
     }
 
     const definicja = znorm("definicja.md");
@@ -333,7 +341,7 @@ test("złożenie: messages znak w znak z content (Etap F)", () => {
       expect(
         definicja,
         `content/${jezyk}/definicja.md zawiera Definicja.${pole}`,
-      ).toContain(tresc);
+      ).toContain(bezZnacznikow(tresc));
     }
 
     // RytmDnia: krok wieczorny stoi w content JEDNYM akapitem
@@ -402,5 +410,56 @@ test("złożenie: messages znak w znak z content (Etap F)", () => {
       cennik,
       `content/${jezyk}/cennik.md zawiera ZamkniecieCennik.cta`,
     ).toContain(komunikaty.ZamkniecieCennik.cta);
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PARYTET ZNACZNIKÓW AKCENTU (R-AKCENT-03, ADR-033).
+
+   Powstał razem z normalizacją `bezZnacznikow` i to nie jest zbieg
+   okoliczności: normalizacja zdejmuje znaczniki z porównań treści, więc
+   BEZ tego testu nikt by nie zauważył, że znacznik zniknął, rozjechał
+   się między językami albo objął inny fragment. Furtka zamykana w tym
+   samym commicie, w którym powstaje.
+
+   Pilnuje trzech rzeczy naraz:
+     · zapis znaczników jest poprawny (domknięty, niezagnieżdżony, niepusty);
+     · LICZBA par jest IDENTYCZNA we wszystkich trzech językach — parytet
+       jest ważniejszy od ozdoby (warunek zlecenia WWW/041);
+     · akcent stoi WYŁĄCZNIE tam, gdzie rozstrzygnął właściciel.
+   ═══════════════════════════════════════════════════════════════════════ */
+test("R-AKCENT-03: znaczniki akcentu w parytecie ×3 i tylko w miejscach z decyzji", () => {
+  /* Miejsca z decyzji WWW/041 krok 3. Nagłówek sekcji rytmu jest tu
+     NIEOBECNY ŚWIADOMIE: granica frazowa istniała we wszystkich trzech
+     językach, ale akcent ma na powierzchni akcentowej 2,94:1 przy progu
+     3:1 — zabrakło kontrastu, nie języka (ADR-033). */
+  const Z_AKCENTEM = ["Problem", "Definicja"] as const;
+  const BEZ_AKCENTU = ["RytmDnia", "CennikSkrot", "Obawy", "DbanieOSiebie"] as const;
+
+  const pary: Record<string, number> = {};
+  for (const { jezyk, komunikaty } of PRZYPADKI) {
+    for (const klucz of Z_AKCENTEM) {
+      const wartosc = (komunikaty as Record<string, Record<string, string>>)[klucz]
+        .naglowek;
+      const w = sprawdzZnaczniki(wartosc);
+      expect(w.poprawny, `${jezyk}/${klucz}: zapis znaczników (${w.powod ?? ""})`).toBe(
+        true,
+      );
+      expect(w.pary, `${jezyk}/${klucz}: dokładnie jedna para akcentu`).toBe(1);
+      pary[`${klucz}`] = (pary[`${klucz}`] ?? 0) + w.pary;
+    }
+    for (const klucz of BEZ_AKCENTU) {
+      const grupa = (komunikaty as Record<string, Record<string, string>>)[klucz];
+      if (!grupa?.naglowek) continue;
+      expect(
+        sprawdzZnaczniki(grupa.naglowek).pary,
+        `${jezyk}/${klucz}: nagłówek BEZ akcentu (decyzja WWW/041)`,
+      ).toBe(0);
+    }
+  }
+  /* Parytet: suma par na klucz = 3 (po jednej na język). Rozjazd w jednym
+     języku daje tu czerwień, nawet gdy każdy język z osobna jest poprawny. */
+  for (const klucz of Z_AKCENTEM) {
+    expect(pary[klucz], `${klucz}: ta sama liczba par we wszystkich trzech językach`).toBe(3);
   }
 });

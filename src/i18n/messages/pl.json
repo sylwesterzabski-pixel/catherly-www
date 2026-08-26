@@ -132,12 +132,12 @@
     "tresc": "Zbierasz dowody swojej pracy na Wall of Proof. To przestrzeń, w której świętujesz, nie tylko mierzysz."
   },
   "Problem": {
-    "naglowek": "Wszystko gdzieś jest. Każde gdzie indziej.",
+    "naglowek": "<akcent>Wszystko gdzieś jest.</akcent> Każde gdzie indziej.",
     "tresc": "Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru, który gdzieś przecież zapisałaś. O tym, co w zespole, dowiadujesz się później, niż byś chciała.",
     "kropka": "Wieczorem siadasz do zeszytu i liczysz, co z tego wyszło."
   },
   "Definicja": {
-    "naglowek": "Catherly to pamięć twojej sprzedaży",
+    "naglowek": "Catherly to <akcent>pamięć twojej sprzedaży</akcent>",
     "tresc": "Catherly pamięta to, co dotąd trzymałaś w głowie i notesach: komu co obiecałaś, jakie treści wysłałaś której klientce i co się sprzedało. Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak jej idzie. Sprzedajesz po swojemu, tylko już nie z pamięci."
   },
   "RytmDnia": {

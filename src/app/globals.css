@@ -390,3 +390,32 @@ html {
 [data-ton] a[class*="_cta__"] {
   border: 0.0625rem solid var(--kolor-rola-tekst-na-inwersji);
 }
+
+/* R-AKCENT-03 — AKCENT MOŻE NIEŚĆ FRAGMENT NAGŁÓWKA (ADR-033, krok 3).
+
+   Rozgraniczenie wobec R-AKCENT-01, bo bez niego te dwie reguły
+   wyglądają na sprzeczne:
+     · R-AKCENT-01 obowiązuje BEZ ZMIAN dla tekstu AKAPITOWEGO —
+       akcent nigdy nie maluje prozy, etykiet ani komunikatów;
+     · R-AKCENT-03 dopuszcza akcent na SPÓJNYM FRAGMENCIE NAGŁÓWKA,
+       pod dwoma warunkami łącznie: rozmiar dużego tekstu wg WCAG
+       (≥ 24 px, albo ≥ 18,66 px przy wadze ≥ 700) oraz kontrast
+       fragmentu ≥ 3:1 na SWOJEJ powierzchni.
+
+   Dlaczego to nie jest wyjątek wygodowy: przy dużym tekście WCAG 1.4.3
+   stawia próg 3:1, a nie 4,5:1 — więc fragment nagłówka w akcencie
+   spełnia normę tak samo jak proza w tekście podstawowym. Zmienia się
+   próg, nie rygor.
+
+   Zmierzone 2026-08-26 na `4b9eda4`, h2 sekcji = 25 px (duży tekst):
+     akcent × tło strony            3,67:1 ✔
+     akcent × powierzchnia          3,96:1 ✔
+     akcent × powierzchnia-2        3,25:1 ✔
+     akcent × powierzchnia-akcentowa 2,94:1 ✘ ← PONIŻEJ PROGU
+   Ostatni wiersz jest powodem, dla którego nagłówek sekcji rytmu NIE
+   dostał akcentu, choć zlecenie go przewidywało: S10 stoi na
+   powierzchni akcentowej. Granica frazowa istniała we wszystkich trzech
+   językach — zabrakło kontrastu, nie języka. */
+.akcent-naglowka {
+  color: var(--kolor-rola-akcent);
+}

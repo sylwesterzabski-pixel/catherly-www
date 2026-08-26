@@ -276,6 +276,55 @@ for (const [a, b] of ROZDZIELNE) {
   }
 }
 
+/* ─── R-AKCENT-03: akcent na fragmencie nagłówka (ADR-033) ─────
+   ROZGRANICZENIE, bo bez niego R-AKCENT-01 i R-AKCENT-03 wyglądają
+   na sprzeczne: R-AKCENT-01 obowiązuje BEZ ZMIAN dla tekstu
+   AKAPITOWEGO, R-AKCENT-03 dopuszcza akcent na SPÓJNYM FRAGMENCIE
+   NAGŁÓWKA — pod dwoma warunkami łącznie: rozmiar dużego tekstu wg
+   WCAG i kontrast ≥ 3:1 na SWOJEJ powierzchni. Przy dużym tekście
+   WCAG 1.4.3 stawia próg 3:1, więc zmienia się próg, nie rygor.
+
+   Strażnik pilnuje tu WARUNKU BARWNEGO. Rozmiaru nie mierzy — nie ma
+   go w wartościach tokenów; pilnuje go `e2e/kontrast-stanow.spec.ts`
+   przez próg zależny od rozmiaru na wyrenderowanej stronie. To jest
+   granica tego sprawdzenia i dlatego stoi wypisana.
+
+   POWIERZCHNIE OBJĘTE: te, na których nagłówek FAKTYCZNIE stoi.
+   `powierzchnia-akcentowa` jest tu celowo — akcent ma na niej 2,94:1
+   i dlatego nagłówek sekcji rytmu akcentu NIE DOSTAŁ. Gdyby ktoś go
+   tam wstawił, ta pozycja ma zapalić czerwień, a nie milczeć. */
+const KLASA_AKCENTU_NAGLOWKA = "akcent-naglowka";
+const PARY_AKCENTU_NAGLOWKA = [
+  ["akcent",             "tlo-strony",             "fragment nagłówka na tle strony"],
+  ["akcent",             "powierzchnia",           "fragment nagłówka na karcie"],
+  ["akcent",             "powierzchnia-2",         "fragment nagłówka na pasie sekcyjnym"],
+  ["akcent-na-inwersji", "tlo-inwersji",           "fragment nagłówka na espresso"],
+  ["akcent-na-inwersji", "tlo-inwersji-2",         "fragment nagłówka na oliwce"],
+];
+const PROG_AKCENTU_NAGLOWKA = 3.0;
+for (const [a, b, opis] of PARY_AKCENTU_NAGLOWKA) {
+  if (!role[a] || !role[b]) { bledy.push(`BRAK ROLI: --${a} lub --${b} (${opis})`); continue; }
+  const w = kontrast(role[a], role[b]);
+  if (w < PROG_AKCENTU_NAGLOWKA) {
+    bledy.push(
+      `R-AKCENT-03: --${a} na --${b} = ${w.toFixed(2)}:1, wymagane ${PROG_AKCENTU_NAGLOWKA.toFixed(1)}:1 — ${opis}`
+    );
+  }
+}
+/* Powierzchnia akcentowa NIE jest na liście wyżej i to jest decyzja,
+   nie przeoczenie: akcent ma na niej 2,94:1, więc nagłówka w akcencie
+   tam być NIE MOŻE. Zamiast dopuszczać wyjątek, strażnik pilnuje, żeby
+   nikt nie liczył na to, że się zmieści. */
+if (role["akcent"] && role["powierzchnia-akcentowa"]) {
+  const w = kontrast(role["akcent"], role["powierzchnia-akcentowa"]);
+  if (w >= PROG_AKCENTU_NAGLOWKA) {
+    ostrzezenia.push(
+      `R-AKCENT-03: --akcent na --powierzchnia-akcentowa urósł do ${w.toFixed(2)}:1 — ` +
+        `nagłówek w akcencie na tej powierzchni PRZESTAŁ być zakazany, można wrócić do pozycji z WWW/041 krok 3`
+    );
+  }
+}
+
 /* ─── 3. akcent nie niesie tekstu + 4. powroty ──────────────── */
 const plikiCss = [];
 const zbierz = (dir) => {
@@ -311,7 +360,8 @@ for (const p of plikiCss) {
 
     const kontekst = `${selektor}\n${linia}`;
     if (new RegExp(`(^|[^-])color:\\s*var\\(${PRZEDROSTEK}akcent\\)`).test(linia)
-        && !/::marker|text-decoration/.test(kontekst)) {
+        && !/::marker|text-decoration/.test(kontekst)
+        && !new RegExp(KLASA_AKCENTU_NAGLOWKA).test(kontekst)) {
       bledy.push(`R-AKCENT-01: ${p}:${i + 1} — --akcent użyty jako kolor tekstu (selektor: ${selektor || "?"})`);
     }
     if (/#a3e635|#c7f04a|#d4f55c/i.test(linia)) {

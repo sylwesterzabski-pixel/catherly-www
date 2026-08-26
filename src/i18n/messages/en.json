@@ -132,12 +132,12 @@
     "tresc": "You collect proof of your work on the Wall of Proof. It’s a space where you celebrate, not just measure."
   },
   "Problem": {
-    "naglowek": "Everything is somewhere. Each thing somewhere else.",
+    "naglowek": "<akcent>Everything is somewhere.</akcent> Each thing somewhere else.",
     "tresc": "You write posts once the house is asleep. In the morning you hunt for a number you know you saved somewhere. You hear what’s happening in your team later than you’d like.",
     "kropka": "In the evening you sit down with a notebook and add up what came of it."
   },
   "Definicja": {
-    "naglowek": "Catherly is the memory of your selling",
+    "naglowek": "Catherly is <akcent>the memory of your selling</akcent>",
     "tresc": "Catherly remembers what you’ve been carrying in your head and your notebooks: what you promised to whom, which content went to which customer, and what sold. Your team is close at hand too — you see who you’re bringing in and how she’s doing. You still sell your way, just not from memory anymore."
   },
   "RytmDnia": {

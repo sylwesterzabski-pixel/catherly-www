@@ -6,8 +6,12 @@ type Props = {
   /** Wariant tonalny (brief K3): "neutralna" — tło strony;
    *  "akcentowa" — rola powierzchni akcentowej (ADR-025). */
   wariant?: "neutralna" | "akcentowa";
-  /** H2 pochodzi z treści (content/); jeden H1 na stronę. */
-  naglowek: string;
+  /** H2 pochodzi z treści (content/); jeden H1 na stronę.
+   *  ReactNode, nie string, od ADR-033 (R-AKCENT-03): nagłówek może
+   *  nieść fragment w akcencie, składany przez `t.rich` z klucza i18n.
+   *  Słowa pozostają dokładnie te same — znacznik `<akcent>` jest
+   *  wyłącznie nośnikiem podziału, nie treścią. */
+  naglowek: ReactNode;
   /** Identyfikator H2 — cel aria-labelledby sekcji. */
   idNaglowka: string;
   /** „Słyszalna kropka": ostatni akapit sekcji wyeksponowany

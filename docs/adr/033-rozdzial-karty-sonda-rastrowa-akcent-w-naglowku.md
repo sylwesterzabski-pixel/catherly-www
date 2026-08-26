@@ -144,3 +144,88 @@ fotograficznych o dużej wariancji. Zakłada też, że **tło pod kontrolką
 nie zmienia się razem z jej własnym stanem** — próbki pobierane są raz na
 element. Reguły postaci `X:hover Y`, które mogłyby to złamać, pilnuje
 osobno `skanerRegulStanu`; dziś nie istnieje ani jedna.
+
+---
+
+## Rozstrzygnięcie 3 — R-AKCENT-03: akcent może nieść fragment nagłówka
+
+### Rozgraniczenie wobec R-AKCENT-01
+
+Bez niego obie reguły wyglądają na sprzeczne:
+
+- **R-AKCENT-01 obowiązuje BEZ ZMIAN** dla tekstu **akapitowego** —
+  akcent nigdy nie maluje prozy, etykiet ani komunikatów.
+- **R-AKCENT-03** dopuszcza akcent na **spójnym fragmencie nagłówka**,
+  pod dwoma warunkami **łącznie**: rozmiar dużego tekstu wg WCAG
+  (≥ 24 px, albo ≥ 18,66 px przy wadze ≥ 700) **oraz** kontrast ≥ 3:1
+  na **swojej** powierzchni.
+
+To nie jest wyjątek wygodowy: przy dużym tekście WCAG 1.4.3 stawia próg
+**3:1**, a nie 4,5:1. **Zmienia się próg, nie rygor.**
+
+### Mechanizm i18n — podział mieszka w kluczu, nie w kodzie
+
+Rich-text `<akcent>…</akcent>` w wartości klucza, składany przez
+`t.rich` z next-intl. Dzięki temu **granica frazowa jest tłumaczona
+razem z tekstem** i może być inna w każdym języku, a kod nie zna
+żadnego podziału.
+
+**SŁOWA SĄ NIETKNIĘTE** — sprawdzone asercją przy zapisie: tekst po
+zdjęciu znaczników jest identyczny z tekstem sprzed zmiany, we
+wszystkich trzech językach. Znacznik jest nośnikiem podziału, nie treścią.
+
+| pozycja | pl | en | de |
+|---|---|---|---|
+| Problem | `Wszystko gdzieś jest.` | `Everything is somewhere.` | `Alles ist irgendwo.` |
+| Definicja | `pamięć twojej sprzedaży` | `the memory of your selling` | `das Gedächtnis deines Vertriebs` |
+
+Granica frazowa istnieje we wszystkich trzech językach: w Problemie to
+granica **zdania**, w Definicji — fraza rzeczownikowa po orzeczniku.
+
+### Pozycja trzecia ODPADA — i NIE z powodu języka
+
+Zlecenie przewidywało akcent na `twój dzień` w nagłówku sekcji rytmu.
+**Granica frazowa istnieje we wszystkich trzech językach**
+(`Jak wygląda ` + `twój dzień` + ` z Catherly`; `What ` + `your day` + …;
+`So sieht ` + `dein Tag` + …). Odpadła z innego powodu:
+
+> Sekcja rytmu stoi na `powierzchnia-akcentowa`, gdzie akcent ma
+> **2,94:1** przy progu **3:1** R-AKCENT-03. **Zabrakło kontrastu, nie
+> języka.**
+
+Zmierzone 2026-08-26 na `4b9eda4`, h2 sekcji = 25 px (duży tekst):
+`akcent × tło strony` **3,67 ✔** · `× powierzchnia` **3,96 ✔** ·
+`× powierzchnia-2` **3,25 ✔** · `× powierzchnia-akcentowa` **2,94 ✘**.
+
+Strażnik ma tę parę wpisaną jako **ostrzeżenie odwrotne**: gdyby akcent
+kiedyś urósł powyżej 3:1 na tej powierzchni, wypisze, że pozycja wraca
+do rozważenia. Zakaz nie jest więc wieczny z założenia — jest związany
+z liczbą.
+
+### Furtka zamknięta w tym samym commicie, w którym powstała
+
+Porównania „znak w znak" (messages ↔ `content/`, messages ↔ wyrenderowany
+H2) musiały przestać porównywać znaczniki, bo w `content/` ich nie ma.
+Normalizacja `bezZnacznikow` przywraca im przedmiot — **słowa** — ale
+sama z siebie tworzy dziurę: nikt by nie zauważył, że znacznik zniknął
+albo rozjechał się między językami.
+
+Dlatego w tym samym commicie powstał strażnik
+**„R-AKCENT-03: znaczniki akcentu w parytecie ×3 i tylko w miejscach
+z decyzji"**, który pilnuje trzech rzeczy naraz: poprawności zapisu
+(domknięcie, brak zagnieżdżeń, brak pustych), **identycznej liczby par we
+wszystkich trzech językach** oraz tego, że akcent stoi wyłącznie tam,
+gdzie rozstrzygnął właściciel.
+
+**Dowód mutacyjny:** znacznik zdjęty **tylko w DE** → czerwień
+*„de/Definicja: dokładnie jedna para akcentu"*; cofnięcie, SHA-256
+`27ba17cf…` zgodna → zieleń. Parytet jest tu ważniejszy od ozdoby —
+zgodnie z warunkiem zlecenia.
+
+### Stan bramek po trzech krokach
+
+`tokeny` (linter + strażnik z R-AKCENT-03), `kontrakt`, `liczby`,
+`parytet`, `kotwice`, `linki`, `nojs`, `lint`, `build`, `axe` —
+**zielone**. Pełny zestaw e2e: **588 passed, zero nieoznaczalnych**,
+48 upadków to **jeden defekt** opisany w rozstrzygnięciu 2, który
+**stoi świadomie** i czeka na decyzję właściciela.

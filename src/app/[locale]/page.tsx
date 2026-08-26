@@ -60,7 +60,16 @@ export default async function StronaGlowna({ params }: Props) {
 
         {/* S3 — problem (K3 neutralna, „słyszalna kropka"). */}
         <SekcjaTekstowa
-          naglowek={tProblem("naglowek")}
+          /* R-AKCENT-03 (ADR-033): fragment nagłówka w akcencie składany
+             z klucza i18n przez `t.rich`. Podział niesie SAM KLUCZ, więc
+             jest tłumaczony razem z tekstem i nie ma go w kodzie — dzięki
+             temu granica frazowa może być inna w każdym języku, a słowa
+             pozostają nietknięte. */
+          naglowek={tProblem.rich("naglowek", {
+            akcent: (tresc) => (
+              <span className="akcent-naglowka">{tresc}</span>
+            ),
+          })}
           idNaglowka="problem-h2"
           kropka={tProblem("kropka")}
         >
@@ -69,7 +78,11 @@ export default async function StronaGlowna({ params }: Props) {
 
         {/* S4 — definicja (K3 neutralna, bez kropki). */}
         <SekcjaTekstowa
-          naglowek={tDefinicja("naglowek")}
+          naglowek={tDefinicja.rich("naglowek", {
+            akcent: (tresc) => (
+              <span className="akcent-naglowka">{tresc}</span>
+            ),
+          })}
           idNaglowka="definicja-h2"
         >
           <p>{tDefinicja("tresc")}</p>

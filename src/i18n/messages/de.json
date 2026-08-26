@@ -132,12 +132,12 @@
     "tresc": "Du sammelst Belege deiner Arbeit auf der Wall of Proof. Ein Raum, in dem du feierst – nicht nur misst."
   },
   "Problem": {
-    "naglowek": "Alles ist irgendwo. Nur nichts am selben Ort.",
+    "naglowek": "<akcent>Alles ist irgendwo.</akcent> Nur nichts am selben Ort.",
     "tresc": "Deine Posts schreibst du, wenn zu Hause schon alle schlafen. Morgens suchst du die Nummer, die du doch irgendwo notiert hast. Was in deinem Team passiert, erfährst du später, als dir lieb ist.",
     "kropka": "Abends sitzt du mit dem Notizheft da und rechnest zusammen, was dabei herausgekommen ist."
   },
   "Definicja": {
-    "naglowek": "Catherly ist das Gedächtnis deines Vertriebs",
+    "naglowek": "Catherly ist <akcent>das Gedächtnis deines Vertriebs</akcent>",
     "tresc": "Catherly merkt sich, was du bisher im Kopf und in Notizbüchern hattest: wem du was versprochen hast, welche Inhalte du welcher Kundin geschickt hast und was sich verkauft hat. Auch dein Team hast du zur Hand – du siehst, wen du gerade einarbeitest und wie sie vorankommt. Du verkaufst auf deine Art, nur nicht mehr aus dem Gedächtnis."
   },
   "RytmDnia": {
