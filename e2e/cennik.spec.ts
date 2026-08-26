@@ -367,22 +367,55 @@ test("treść cennika: messages znak w znak z content/*/cennik.md", () => {
       );
     }
 
-    const etykietyTabeli = [
-      c.tabela.kontakty,
-      c.tabela.zespol,
-      c.tabela.posty,
-      c.tabela.sesje,
-      c.tabela.kalendarz,
-      c.tabela.puls,
-      c.tabela.drzewo,
-      c.tabela.ranking,
-      c.tabela.bezLimitu,
-      c.tabela.wKazdymPlanie,
-    ];
-    for (const etykieta of etykietyTabeli) {
+    // LICZEBNOŚĆ ZE ŹRÓDŁA, NIE Z RĘKI (znalezisko TOR9/025, naprawa WWW/028).
+    //
+    // Do 2026-08-26 stała tu lista DZIESIĘCIU etykiet wypisanych ręcznie, przy
+    // CZTERNASTU kluczach `Cennik.tabela.*`. Cztery klucze były poza strażnikiem
+    // i nikt tego nie widział, bo lista ręczna nie mówi „przeczytałem dziesięć
+    // z czternastu" — mówi „oto lista". Lista wypisana ręką starzeje się
+    // w miejscu jak każdy licznik: dopisanie klucza do messages nie dopisuje go
+    // tutaj, a strażnik milczy dokładnie tak samo jak przy komplecie.
+    //
+    // Odtąd zbiór kluczy pochodzi Z ODCZYTU messages, więc każdy NOWY klucz
+    // wchodzi do strażnika sam. Trzy klucze są wyłączone JAWNIE i z powodem —
+    // wyłączenie bez powodu byłoby tą samą wadą, tylko krócej zapisaną.
+    const WYLACZONE_Z_PROZY: Record<string, string> = {
+      // podpis tabeli dla czytników ekranu; komponent renderuje go w <caption>,
+      // a nie w prozie content/*/cennik.md
+      caption: "etykieta dostępności, nie proza",
+      // wartości komórek: tabela pokazuje je jako oznaczenie planu, proza mówi
+      // o zakresie inaczej i celowo — żądanie ich w treści dałoby fałszywą
+      // czerwień na różnicy licencjonowanej, nie na defekcie
+      wPlanie: "wartość komórki, nie proza",
+      pozaPlanem: "wartość komórki, nie proza",
+    };
+
+    const wszystkieKlucze = Object.keys(c.tabela);
+    const doSprawdzenia = wszystkieKlucze.filter(
+      (k) => !(k in WYLACZONE_Z_PROZY),
+    );
+
+    // Podział ma pokrywać ZBIÓR ŹRÓDŁOWY co do jednego. Bez tej asercji nowy
+    // klucz mógłby wpaść w lukę między „sprawdzane" a „wyłączone" i zniknąć.
+    expect(
+      doSprawdzenia.length + Object.keys(WYLACZONE_Z_PROZY).length,
+      `Cennik.tabela.* (${jezyk}): sprawdzane + wyłączone musi równać się liczbie kluczy`,
+    ).toBe(wszystkieKlucze.length);
+
+    // Wyłączenie przeterminowane jest gorsze niż jego brak: udaje decyzję,
+    // a opisuje klucz, którego już nie ma.
+    for (const klucz of Object.keys(WYLACZONE_Z_PROZY)) {
+      expect(
+        wszystkieKlucze,
+        `Cennik.tabela.${klucz} (${jezyk}) jest wyłączony ze strażnika, ale nie ma go już w messages — zdejmij wyłączenie`,
+      ).toContain(klucz);
+    }
+
+    for (const klucz of doSprawdzenia) {
+      const etykieta = String(c.tabela[klucz as keyof typeof c.tabela]);
       expect(
         zrodloMale,
-        `content/${jezyk}/cennik.md zawiera etykietę tabeli: „${etykieta}"`,
+        `content/${jezyk}/cennik.md zawiera etykietę tabeli Cennik.tabela.${klucz}: „${etykieta}"`,
       ).toContain(etykieta.toLowerCase());
     }
   }
