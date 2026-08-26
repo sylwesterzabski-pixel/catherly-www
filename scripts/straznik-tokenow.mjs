@@ -13,6 +13,7 @@
    Sprawdza:
      0. czy KOMPLET 19 ról w ogóle istnieje  (patrz LICZBA_ROL niżej)
      1. kontrasty par ról wobec progów WCAG 2.x
+     1b. rozdział karty od tła — plama ALBO kreska (ADR-033)
      2. rozdzielność fokus / akcent / interakcja        (R-AKCENT-02)
      3. czy akcent nie niesie tekstu w regułach CSS     (R-AKCENT-01)
      4. czy nie wróciła limonka i waga 100
@@ -207,26 +208,56 @@ for (const s of ["stan-sukces", "stan-ostrzezenie", "stan-blad"]) {
   if (w < 4.5) bledy.push(`KONTRAST: --${s} na --powierzchnia = ${w.toFixed(2)}:1, wymagane 4.5:1`);
 }
 
-/* Powierzchnia musi odcinać się od tła — inaczej karty nie istnieją
-   (zadanie 6: przy poprzedniej palecie było 1,09:1 i struktura znikała).
+/* ─── ROZDZIAŁ KARTY OD TŁA — REGUŁA DWUMECHANIZMOWA (ADR-033) ──
+   „Kartę odcina PLAMA ≥ 1,30 ALBO KRESKA ≥ 1,30 — jeden z dwóch,
+   MIERZONY." Rozstrzygnięcie właściciela `WWW/041`, krok 1.
 
-   PORÓWNANIE NA DWÓCH MIEJSCACH PO PRZECINKU, nie na pełnej precyzji —
-   i to nie jest poluzowanie progu, tylko naprawa fałszywego alarmu
-   wykrytego przy pierwszym przebiegu tego strażnika (2026-08-26).
-   Zmierzone: #FFFFFF wobec #E8E1D5 daje 1,299338856467794, co zaokrągla
-   się do 1,30 i JEST wartością, którą projekt palety deklaruje jako
-   spełnioną (06-tabela-rol.md, komentarz w 02-tokeny.css, odbiór
-   zadania 6). Warunek `< 1.3` na surowej wartości odrzucał więc paletę,
-   której ten strażnik ma bronić — czyli zapalał się na poprawnym stanie.
-   Decyzja jest zapisana z dokładnością do dwóch miejsc i na tylu
-   miejscach ma być egzekwowana. */
-const PROG_POWIERZCHNI = 1.3;
-if (role["powierzchnia"] && role["tlo-strony"]) {
-  const w = kontrast(role["powierzchnia"], role["tlo-strony"]);
-  if (Number(w.toFixed(2)) < PROG_POWIERZCHNI) {
+   DLACZEGO DWA MECHANIZMY, A NIE POLUZOWANIE PROGU. Do 2026-08-26
+   reguła znała jeden sposób: różnicę jasności wypełnień. Wystarczał
+   w palecie „kancelaria", gdzie karta była biała na owsianym tle.
+   W palecie „natura" (ADR-032) tło to krem #f0efe8 i przy tej jasności
+   progu 1,30 NIE DA SIĘ osiągnąć żadną powierzchnią — czysta biel daje
+   1,153. Ograniczeniem jest jasność TŁA, nie dobór karty, a tło jest
+   decyzją właściciela z oglądu i pozostaje nietykalne.
+
+   Reguła nie została więc rozluźniona: PRÓG ZOSTAJE 1,30, zmienia się
+   to, CO wolno zmierzyć. Rozdział niosą w tej palecie dwie różne
+   rzeczy w zależności od powierzchni — i obie są sprawdzane, więc
+   zniknięcie OBU dalej daje czerwień. Osłabieniem byłoby sprawdzanie
+   tylko tej, która akurat przechodzi.
+
+   ZASIĘG PO OBU STRONACH. Karty stoją także na tonach ciemnych
+   (kremowe karty na espresso i oliwce), gdzie mechanizm jest odwrotny
+   niż na jasnym: plama robi wszystko, a kreska bywa niewidoczna.
+   Zmierzone 2026-08-26 na `e6f8134` — każda powierzchnia przechodzi
+   INNYM mechanizmem, co jest najlepszym dowodem, że jeden by nie
+   wystarczył:
+     krem   → plama 1,08 ✘ · kreska 1,31 ✔
+     espresso → plama 14,04 ✔ · kreska 1,83 ✔
+     oliwka   → plama 7,65 ✔ · kreska 1,00 ✘ (kreska = tło)
+
+   KRESKA NA TONACH CIEMNYCH to `tlo-inwersji-2` — tak przemapowuje ją
+   blok `[data-ton]` w globals.css. Strażnik czyta wartości tokenów,
+   nie kaskadę, więc to przypisanie jest tu wpisane WPROST; gdyby blok
+   tonów zmienił mapowanie, ta tabela musi pójść razem z nim. */
+const PROG_ROZDZIALU = 1.3;
+const POWIERZCHNIE_KART = [
+  { tlo: "tlo-strony",     kreska: "kreska",         opis: "karta na kremie (warstwa jasna)" },
+  { tlo: "tlo-inwersji",   kreska: "tlo-inwersji-2", opis: "karta kremowa na espresso (ton ciemny)" },
+  { tlo: "tlo-inwersji-2", kreska: "tlo-inwersji-2", opis: "karta kremowa na oliwce (ton ciemny-oliwka)" },
+];
+for (const { tlo, kreska, opis } of POWIERZCHNIE_KART) {
+  if (!role["powierzchnia"] || !role[tlo] || !role[kreska]) {
+    bledy.push(`BRAK ROLI przy rozdziale karty: --powierzchnia, --${tlo} lub --${kreska} (${opis})`);
+    continue;
+  }
+  const plama = kontrast(role["powierzchnia"], role[tlo]);
+  const linia = kontrast(role[kreska], role[tlo]);
+  const najmocniejszy = Math.max(plama, linia);
+  if (Number(najmocniejszy.toFixed(2)) < PROG_ROZDZIALU) {
     bledy.push(
-      `POWIERZCHNIA: karta/tło = ${w.toFixed(2)}:1 (dokładnie ${w.toFixed(6)}), ` +
-        `wymagane ${PROG_POWIERZCHNI.toFixed(2)}:1 — karty znikają`
+      `ROZDZIAŁ KARTY: ${opis} — plama ${plama.toFixed(2)}:1 ORAZ kreska ${linia.toFixed(2)}:1, ` +
+        `oba poniżej ${PROG_ROZDZIALU.toFixed(2)}:1. Karta nie odcina się od tła ŻADNYM mechanizmem.`
     );
   }
 }
