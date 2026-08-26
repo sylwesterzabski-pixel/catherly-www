@@ -1,5 +1,8 @@
 import { test, expect } from "@playwright/test";
 
+import { rolaRgb } from "./pomoc/role";
+
+
 import pl from "../src/i18n/messages/pl.json";
 
 /**
@@ -18,10 +21,19 @@ const KOLEJNOSC = [
   pl.Nawigacja.logowanie,
 ] as const;
 
-// Wyliczony kolor --kolor-rola-fokus = BIEL #ffffff (ADR-038/039;
-// kolejno: śliwka-700 → #16181d kancelarii → złoto ciemne #7e6425
-// natury → tu). Zdanie o warstwie jasnej i inwersji odpadło — warstwy
-// nie ma od ADR-038.
+// BARWA CZERPANA ZE ŹRÓDŁA, NIE PRZEPISANA (WWW/056 pkt 2, ADR-043).
+// Literał `rgb(...)` przepisany z ręki starzeje się przy każdej zmianie
+// palety — a poprawiało się go wtedy PRZEPISANIEM NOWEJ LICZBY, czyli
+// odtworzeniem tej samej konstrukcji. `rolaRgb` czyta `design/tokens.json`.
+//
+// CO TA ASERCJA PILNUJE PO ZMIANIE — bo to nie jest to samo:
+//   · przedtem: „element ma barwę X",
+//   · teraz:    „element nosi rolę R zadeklarowaną w tokenach".
+// PRZEPIĘCIE elementu na inną rolę nadal daje czerwień (dowiedzione
+// mutacją). Zmiana WARTOŚCI roli — już nie, i tak ma być: tamta idzie
+// przez ADR i pilnuje jej strażnik tokenów.
+// Rodowód: śliwka-700 → #16181d kancelarii → złoto ciemne natury →
+// biel wzorca (ADR-038/039).
 //
 // Asercja I2: obrys fokusa ma DOKŁADNIE kolor roli fokusa z tokenów,
 // nie jakikolwiek niepusty obrys. Wartość oczekiwana testu, nie wizualna.
@@ -31,7 +43,7 @@ const KOLEJNOSC = [
 // `kontrast-stanow.spec.ts` — biel na limonkowym CTA ma 1,60:1 i ratuje
 // ją wyłącznie `outline-offset`. Dwa różne strażniki, dwie różne
 // własności; ani jeden nie zastępuje drugiego.
-const KOLOR_FOKUSA = "rgb(255, 255, 255)";
+const KOLOR_FOKUSA = rolaRgb("fokus");
 
 test("klawiatura: skip-link pierwszy, potem logo → menu → Logowanie; fokus widoczny", async ({
   page,
@@ -59,7 +71,9 @@ test("klawiatura: skip-link pierwszy, potem logo → menu → Logowanie; fokus w
     }
 
     // Fokus widoczny: obrys niepusty (rola-fokus, nigdy usunięty)
-    // w kolorze roli fokusa (śliwka-700) — nie dowolnym.
+    // w kolorze roli fokusa czerpanym z tokenów — nie dowolnym.
+    // (nazwa barwy z komunikatu zdjęta: „śliwka-700" to paleta sprzed
+    //  ADR-031, a komunikat asercji przeżył trzy zmiany palety.)
     const obrys = await aktywny.evaluate((el) => {
       const styl = getComputedStyle(el);
       return {

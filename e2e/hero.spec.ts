@@ -3,6 +3,9 @@ import { join } from "node:path";
 
 import { test, expect } from "@playwright/test";
 
+import { rolaRgb } from "./pomoc/role";
+
+
 import pl from "../src/i18n/messages/pl.json";
 import en from "../src/i18n/messages/en.json";
 import de from "../src/i18n/messages/de.json";
@@ -23,9 +26,20 @@ const PRZYPADKI = [
 // Wyliczone kolory ról CTA (asercja empiryczna jak I2 w klawiatura.spec
 // — dokładny kolor roli, nie „jakikolwiek inny"). Kolejno: terakota-600/700
 // (Etap A) → granat kancelarii (ADR-031) → wartości poniżej.
-// ADR-038 (paleta wzorca): CTA bierze --interakcja = limonka #a0e00d,
-// hover --interakcja-aktywna = #a5e219. Warstwa inwersji i `data-ton`
-// USUNIĘTE, więc CTA bierze rolę wprost, bez przemapowania.
+// BARWA CZERPANA ZE ŹRÓDŁA, NIE PRZEPISANA (WWW/056 pkt 2, ADR-043).
+// Literał `rgb(...)` przepisany z ręki starzeje się przy każdej zmianie
+// palety — a poprawiało się go wtedy PRZEPISANIEM NOWEJ LICZBY, czyli
+// odtworzeniem tej samej konstrukcji. `rolaRgb` czyta `design/tokens.json`.
+//
+// CO TA ASERCJA PILNUJE PO ZMIANIE — bo to nie jest to samo:
+//   · przedtem: „element ma barwę X",
+//   · teraz:    „element nosi rolę R zadeklarowaną w tokenach".
+// PRZEPIĘCIE elementu na inną rolę nadal daje czerwień (dowiedzione
+// mutacją). Zmiana WARTOŚCI roli — już nie, i tak ma być: tamta idzie
+// przez ADR i pilnuje jej strażnik tokenów.
+// CTA nosi rolę `interakcja`, hover `interakcja-aktywna`. Warstwa
+// inwersji i `data-ton` USUNIĘTE (ADR-038), więc CTA bierze rolę
+// wprost, bez przemapowania.
 //
 // ⚠ ODWRÓCENIE KIERUNKU wobec ADR-034. Tam zapisano „interakcja pod
 // palcem CIEMNIEJE", bo złoto na kremie jaśniejąc gubiło etykietę.
@@ -33,8 +47,8 @@ const PRZYPADKI = [
 // (#a0e00d → #a5e219). Kierunek nie jest więc zasadą, tylko funkcją
 // jasności tła; etykieta trzyma się w obu przypadkach, bo pozostaje
 // ciemna: 10,22:1 w spoczynku, 10,47:1 pod palcem.
-const KOLOR_CTA = "rgb(160, 224, 13)";
-const KOLOR_CTA_AKTYWNY = "rgb(165, 226, 25)";
+const KOLOR_CTA = rolaRgb("interakcja");
+const KOLOR_CTA_AKTYWNY = rolaRgb("interakcja-aktywna");
 
 for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   test(`hero (${jezyk}): treść z messages, jedyny h1, CTA → /funkcje na ${adres}`, async ({

@@ -49,6 +49,7 @@ sprzeczności wygrywa.
 | 040 | **Kroje wzorca**: Satoshi w nagłówkach (statyczny 500) + Inter w prozie (zmienny `wght`, oś `opsz` przypięta), oba self-hostowane z własnych źródeł, 57,1 kB — **uchyla ADR-031 w części o kroju**; `U+2713 ✓` w podzbiorze zdejmuje T14 z warstwy kroju | [040](040-kroje-wzorca-satoshi-i-inter.md) |
 | 041 | **Skala progami, nie `clamp()`** (70/53/34 px), tracking −3 px w `rem`, geometria wzorca w tokenach; trzy nadpisania komponentowe zdjęte, `scroll-padding` przeliczony 5.5→5.75rem | [041](041-skala-progowa-i-geometria-wzorca.md) |
 | 042 | **Szew logowania: stan przejsciowy uznany** — wymóg ΔE ≤ 5,0 zostaje, czerwień 93,92 jawna z adnotacją do przemalowania aplikacji; kotwica progu przepisana z nieistniejącej `neutralna-50` na **empiryczną z własnych werdyktów** (4,66 < 5,0 < 6,46); adnotacja dostaje strażnika przeterminowania | [042](042-szew-logowania-stan-przejsciowy-i-kotwica-progu.md) |
+| 043 | **Testy czerpią barwy ról ze źródła** (`design/tokens.json`), nie pamiętają literałów — przepięcie elementu na inną rolę nadal daje czerwień, zmiana wartości roli już nie (i tak ma być); helper dostaje własnego strażnika z kontrolą pozytywną | [043](043-testy-czerpia-barwy-rol-ze-zrodla.md) |
 
 Wpisy 023–028 dopisano 2026-08-14 — powstały wcześniej, ale nie trafiły
 do tej tabeli. Pliki są źródłem, tabela tylko mapą; przy rozjeździe

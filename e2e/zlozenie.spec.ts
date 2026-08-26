@@ -3,6 +3,9 @@ import { join } from "node:path";
 
 import { test, expect } from "@playwright/test";
 
+import { rolaRgb } from "./pomoc/role";
+
+
 import { bezZnacznikow, sprawdzZnaczniki } from "./pomoc/tekst";
 import migawka from "../content/cennik-snapshot.json";
 import pl from "../src/i18n/messages/pl.json";
@@ -49,15 +52,26 @@ function formatuj(grosze: number, jezyk: keyof typeof WALUTA): string {
 // prowadzi plany w INNEJ kolejności (Pro/Starter/Growth).
 const PLANY = ["Starter", "Growth", "Pro"] as const;
 
-// Wyliczone tło S10: rola-powierzchnia-akcentowa = #393938 (paleta
-// wzorca, ADR-038; kolejno terakota-100 → #dccdac kancelarii → #e3d6bc
-// natury → tu) — warunek lustra L1 (DECYZJA 6; handoff Etapu F).
+// BARWA CZERPANA ZE ŹRÓDŁA, NIE PRZEPISANA (WWW/056 pkt 2, ADR-043).
+// Literał `rgb(...)` przepisany z ręki starzeje się przy każdej zmianie
+// palety — a poprawiało się go wtedy PRZEPISANIEM NOWEJ LICZBY, czyli
+// odtworzeniem tej samej konstrukcji. `rolaRgb` czyta `design/tokens.json`.
+//
+// CO TA ASERCJA PILNUJE PO ZMIANIE — bo to nie jest to samo:
+//   · przedtem: „element ma barwę X",
+//   · teraz:    „element nosi rolę R zadeklarowaną w tokenach".
+// PRZEPIĘCIE elementu na inną rolę nadal daje czerwień (dowiedzione
+// mutacją). Zmiana WARTOŚCI roli — już nie, i tak ma być: tamta idzie
+// przez ADR i pilnuje jej strażnik tokenów.
+// Tło S10 nosi rolę `powierzchnia-akcentowa` — warunek lustra L1
+// (DECYZJA 6; handoff Etapu F). Rodowód: terakota-100 → kancelaria →
+// natura → wzorzec (ADR-038).
 //
 // ⚠ POZYCJA S10 POZOSTAJE OTWARTA. `WWW/050-FINAL` przewiduje ustalenie
 // przypisania powierzchni akcentowej POMIAREM odpowiadającej sekcji
 // wzorca w KROKU 2. Wartość poniżej jest dzisiejszą rolą, nie wynikiem
 // tamtego pomiaru — i ma się zmienić, jeśli pomiar pokaże inną.
-const KOLOR_LUSTRA = "rgb(57, 57, 56)";
+const KOLOR_LUSTRA = rolaRgb("powierzchnia-akcentowa");
 
 // LUSTRO L1 (test kluczowy): S10 na tle akcentowym; kropka S3
 // („…liczysz…") i kropka S10 („…widzisz…") obecne znak w znak
@@ -70,7 +84,7 @@ test("LUSTRO L1: tło akcentowe S10; kropki S3/S10 wspólnym duetem", async ({
 
   const rytm = page.locator('section[aria-labelledby="rytm-h2"]');
   const tlo = await rytm.evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(tlo, "S10 na rola-powierzchnia-akcentowa (kancelaria #dccdac)").toBe(
+  expect(tlo, "S10 nosi rolę powierzchnia-akcentowa").toBe(
     KOLOR_LUSTRA,
   );
 

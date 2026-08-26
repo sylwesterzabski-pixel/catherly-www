@@ -3,6 +3,9 @@ import { join } from "node:path";
 
 import { test, expect } from "@playwright/test";
 
+import { rolaRgb } from "./pomoc/role";
+
+
 import pl from "../src/i18n/messages/pl.json";
 import en from "../src/i18n/messages/en.json";
 import de from "../src/i18n/messages/de.json";
@@ -23,19 +26,22 @@ const PRZYPADKI = [
 
 const KLUCZE_FILAROW = ["filar1", "filar2", "filar3", "filar4"] as const;
 
-// Marker filaru = --kolor-rola-akcent, limonka #a0e00d (paleta wzorca,
-// ADR-038). Kolejno: terakota-500 (Etap A) → mosiądz #9a7b3f
-// (kancelaria, ADR-031) → złoto jasne w inwersji (natura, ADR-032) → tu.
+// BARWA CZERPANA ZE ŹRÓDŁA, NIE PRZEPISANA (WWW/056 pkt 2, ADR-043).
+// Literał `rgb(...)` przepisany z ręki starzeje się przy każdej zmianie
+// palety — a poprawiało się go wtedy PRZEPISANIEM NOWEJ LICZBY, czyli
+// odtworzeniem tej samej konstrukcji. `rolaRgb` czyta `design/tokens.json`.
 //
-// ⚠ CAŁE ZDANIE O WARSTWIE INWERSJI ODPADŁO wraz z ADR-038: warstwy nie
-// ma, `data-ton` nie ma, akcent nie jest już nigdzie przemapowywany.
-// Poprzednia wersja tego komentarza tłumaczyła, DLACZEGO oczekiwana
-// wartość różni się od wartości roli — dziś nie różni się wcale.
-//
-// Literał zostaje literałem świadomie: zmiana barwy akcentu MA BYĆ
-// DECYZJĄ (ADR), więc jego czerwień jest sygnałem, że ktoś rusza paletę,
-// a nie usterką do wyprowadzenia z pliku.
-const KOLOR_MARKERA = "rgb(160, 224, 13)";
+// CO TA ASERCJA PILNUJE PO ZMIANIE — bo to nie jest to samo:
+//   · przedtem: „element ma barwę X",
+//   · teraz:    „element nosi rolę R zadeklarowaną w tokenach".
+// PRZEPIĘCIE elementu na inną rolę nadal daje czerwień (dowiedzione
+// mutacją). Zmiana WARTOŚCI roli — już nie, i tak ma być: tamta idzie
+// przez ADR i pilnuje jej strażnik tokenów.
+// Marker filaru nosi rolę `akcent`. Rodowód wartości: terakota-500
+// (Etap A) → mosiądz kancelarii (ADR-031) → złoto jasne w inwersji
+// (natura, ADR-032) → limonka wzorca (ADR-038). Warstwy inwersji nie ma
+// od ADR-038, więc akcent nie jest już nigdzie przemapowywany.
+const KOLOR_MARKERA = rolaRgb("akcent");
 
 for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   test(`filary (${jezyk}): treść z messages i struktura nagłówków na ${adres}`, async ({
