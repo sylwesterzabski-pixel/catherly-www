@@ -129,7 +129,24 @@
    środek zakresu 5–7% z polecenia; przy tej wartości napis jest
    fakturą tła, a nie drugim nagłówkiem.
    `overflow: clip` na kolumnach trzyma go w kadrze: duch nie ma prawa
-   poszerzyć strony ani wywołać przewijania poziomego. */
+   poszerzyć strony ani wywołać przewijania poziomego.
+
+   ⚠ NAPRAWA ZWISU PO ADR-038 (2026-08-26). Do tej daty stało tu
+   `--kolor-rola-tekst-na-inwersji` — rolę usunięto razem z całą warstwą
+   inwersji, a odwołanie zostało. Nieistniejąca zmienna unieważnia całe
+   `color-mix`, więc `color` spadał na wartość dziedziczoną: duch
+   renderował się PEŁNĄ BIELĄ na 256 px zamiast 6% alfy. Zmierzone przed
+   naprawą: kolor wyliczony = biel nieprzezroczysta, zmienna pusta.
+   (Liczby zapisane słowami rozmyślnie — linter tokenów czyta także
+   komentarze i zapis funkcyjny barwy zaczerwieniłby bramkę. Ta sama
+   pomyłka popełniona w tej sesji po raz drugi.)
+
+   Czego to NIE złapało i dlatego przeżyło push: strażnik tokenów czyta
+   WARTOŚCI ról, nie ich UŻYCIA; axe widzi biel na ciemnym jako kontrast
+   wzorowy; bramka `tokeny` była zielona. Zapaliła to dopiero sonda
+   rastrowa w `kontrast-stanow` — biały piksel pod obwódką fokusu CTA
+   dawał 1:1. Wniosek na przyszłość: usunięcie roli to DWIE roboty —
+   zdjęcie definicji i przeczesanie użyć; sama definicja znika cicho. */
 .kolumny {
   position: relative;
   overflow: clip;
@@ -148,7 +165,7 @@
   font-weight: var(--waga-mocna);
   line-height: 0.8;
   letter-spacing: -0.04em;
-  color: color-mix(in srgb, var(--kolor-rola-tekst-na-inwersji) 6%, transparent);
+  color: color-mix(in srgb, var(--kolor-rola-tekst-podstawowy) 6%, transparent);
 }
 
 .duch::before {

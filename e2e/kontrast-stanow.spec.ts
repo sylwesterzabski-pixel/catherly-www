@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 
+import pl from "../src/i18n/messages/pl.json";
 import { routing } from "../src/i18n/routing";
 import {
   ISTNIEJACE_SCIEZKI,
@@ -14,6 +15,7 @@ import {
   zerujPrzejscia,
   rozstrzygnijRastrem,
   STANY,
+  kontrast,
 } from "./pomoc/sonda-stanow.mjs";
 
 /**
@@ -219,4 +221,99 @@ test("wymuszanie stanów zmienia wygląd CTA (czujnik żywy)", async ({
       "fokus musi rysować ślad na CTA",
     ).toBeTruthy();
   }
+});
+
+/* ─────────────────────────────────────────────────────────────────────
+   R-AKCENT-02(b) — STRAŻNIK MECHANIZMU `outline-offset` (ADR-039).
+
+   Ten test istnieje, bo bez niego reguła R-AKCENT-02(b) stoi na
+   ZAŁOŻENIU. Reguła mówi: „obwódka fokusu ma ≥ 3:1 wobec powierzchni,
+   NA KTÓRĄ PADA" — i wolno jej NIE sprawdzać pary fokus × interakcja
+   (biel na limonce = 1,60:1) wyłącznie dlatego, że obwódka na
+   wypełnienie CTA nie pada. Pada na tło (20,07:1), bo odsuwa ją
+   `outline-offset`.
+
+   Zdejmij `outline-offset` — a raczej ustaw ujemny — i cała zieleń
+   zostaje: strażnik tokenów nie widzi geometrii, `klawiatura.spec.ts`
+   sprawdza kolor i szerokość obrysu (oba bez zmian), a osoba nawigująca
+   klawiaturą traci CTA z pola widzenia. Dokładnie ta awaria, z której
+   strażnik tokenów w ogóle powstał.
+
+   Pytanie zerowe zadane 2026-08-26: ciąg `outline-offset` nie
+   występował w ŻADNYM teście — ani jednej asercji. Znaleziono przy
+   pisaniu komentarza, który twierdził, że strażnik istnieje.
+
+   CZEGO NIE MIERZY: nie robi zrzutu i nie próbkuje pikseli obwódki.
+   Wnioskuje z ZNAKU odsunięcia, na której powierzchni obwódka leży —
+   dodatnie odsunięcie kładzie ją poza pudełkiem elementu, ujemne na
+   jego wypełnieniu. To jest odczyt stylu, nie pomiar rastra: złapie
+   zdjęcie odsunięcia, nie złapie obwódki przesłoniętej przez sąsiada
+   o wyższym `z-index`. */
+test("R-AKCENT-02(b): obwódka fokusu pada na powierzchnię o kontraście ≥ 3:1", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const PROG = 3.0;
+
+  const cel = page
+    .locator('section[aria-labelledby="hero-h1"]')
+    .getByRole("link", { name: pl.Hero.cta, exact: true });
+  await cel.focus();
+
+  const m = await cel.evaluate((el) => {
+    const s = getComputedStyle(el);
+    /* Powierzchnia POD obwódką: przy odsunięciu ujemnym obwódka leży na
+       wypełnieniu samego elementu; przy zerowym lub dodatnim — na
+       pierwszym nieprzezroczystym tle któregoś z przodków. */
+    const nieprzezroczyste = (t: string) =>
+      t && t !== "transparent" && !/rgba\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0\s*\)/.test(t);
+    const odsuniecie = parseFloat(s.outlineOffset);
+    let podSpodem = s.backgroundColor;
+    if (odsuniecie >= 0) {
+      podSpodem = "";
+      for (let w = el.parentElement; w; w = w.parentElement) {
+        const t = getComputedStyle(w).backgroundColor;
+        if (nieprzezroczyste(t)) { podSpodem = t; break; }
+      }
+    }
+    return {
+      odsuniecie,
+      szerokosc: parseFloat(s.outlineWidth),
+      kolorObrysu: s.outlineColor,
+      wypelnienieElementu: s.backgroundColor,
+      podSpodem,
+      styl: s.outlineStyle,
+    };
+  });
+
+  expect(m.styl, "obrys fokusa w ogóle istnieje").not.toBe("none");
+  expect(m.szerokosc, "obrys fokusa ma niezerową szerokość").toBeGreaterThan(0);
+  expect(
+    m.podSpodem,
+    "znaleziono nieprzezroczystą powierzchnię pod obwódką (inaczej pomiar byłby zgadywaniem)",
+  ).not.toBe("");
+
+  /* `kontrast` z sondy przyjmuje TRÓJKI [r,g,b], nie zapis CSS — pierwsza
+     wersja tego testu podała mu ciągi i dostała NaN. Asercja poniżej
+     pilnuje samego rozbioru, bo NaN w porównaniu „≥" daje czerwień, ale
+     w porównaniu „<" dałby ZIELEŃ: strażnik z niepoprawnym wejściem
+     przestałby cokolwiek mierzyć, nie mówiąc o tym ani słowa. */
+  const naTrojke = (zapisCss: string): [number, number, number] => {
+    const l = zapisCss.match(/\d+(\.\d+)?/g);
+    return [Number(l?.[0]), Number(l?.[1]), Number(l?.[2])];
+  };
+  const obrys = naTrojke(m.kolorObrysu);
+  const spod = naTrojke(m.podSpodem);
+  expect(
+    [...obrys, ...spod].every((k) => Number.isFinite(k)),
+    `rozbiór barw powiódł się (obrys „${m.kolorObrysu}", spód „${m.podSpodem}")`,
+  ).toBe(true);
+
+  const w = kontrast(obrys, spod);
+  expect(
+    w,
+    `obwódka ${m.kolorObrysu} na powierzchni ${m.podSpodem} = ${w.toFixed(2)}:1 ` +
+      `przy odsunięciu ${m.odsuniecie} px (wypełnienie elementu: ${m.wypelnienieElementu}); ` +
+      `wymagane ${PROG}:1`,
+  ).toBeGreaterThanOrEqual(PROG);
 });

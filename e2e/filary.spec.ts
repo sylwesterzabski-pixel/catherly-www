@@ -23,16 +23,19 @@ const PRZYPADKI = [
 
 const KLUCZE_FILAROW = ["filar1", "filar2", "filar3", "filar4"] as const;
 
-// Marker filaru = --kolor-rola-akcent. UWAGA: filary stoją od ADR-032
-// w tonie `data-ton="ciemny-oliwka"`, więc obowiązuje tam WARSTWA
-// INWERSJI — akcent jest przemapowany na --akcent-na-inwersji, czyli
-// złoto jasne #c9a25e. Na warstwie jasnej akcent to #9c7434; ta asercja
-// mierzy marker WEWNĄTRZ sekcji ciemnej, więc oczekuje wartości
-// inwersji. Kolejno: terakota-500 (Etap A) → mosiądz #9a7b3f
-// (kancelaria, ADR-031) → złoto jasne (natura w inwersji, ADR-032).
-// Asercja nadal celuje w DOKŁADNY kolor roli — zmieniła się wartość
-// decyzji i warstwa, nie siła strażnika.
-const KOLOR_MARKERA = "rgb(201, 162, 94)";
+// Marker filaru = --kolor-rola-akcent, limonka #a0e00d (paleta wzorca,
+// ADR-038). Kolejno: terakota-500 (Etap A) → mosiądz #9a7b3f
+// (kancelaria, ADR-031) → złoto jasne w inwersji (natura, ADR-032) → tu.
+//
+// ⚠ CAŁE ZDANIE O WARSTWIE INWERSJI ODPADŁO wraz z ADR-038: warstwy nie
+// ma, `data-ton` nie ma, akcent nie jest już nigdzie przemapowywany.
+// Poprzednia wersja tego komentarza tłumaczyła, DLACZEGO oczekiwana
+// wartość różni się od wartości roli — dziś nie różni się wcale.
+//
+// Literał zostaje literałem świadomie: zmiana barwy akcentu MA BYĆ
+// DECYZJĄ (ADR), więc jego czerwień jest sygnałem, że ktoś rusza paletę,
+// a nie usterką do wyprowadzenia z pliku.
+const KOLOR_MARKERA = "rgb(160, 224, 13)";
 
 for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   test(`filary (${jezyk}): treść z messages i struktura nagłówków na ${adres}`, async ({

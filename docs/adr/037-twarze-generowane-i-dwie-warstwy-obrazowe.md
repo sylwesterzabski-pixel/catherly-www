@@ -89,6 +89,23 @@ warstwę (a).
 
 ## Decyzja 3 — barwa fokusu
 
+> ⚠ **SPROSTOWANE 2026-08-26 przez ADR-039 i przez właściciela
+> (`WWW/055` pkt 2). Akapit niżej zostaje w brzmieniu pierwotnym jako
+> ślad — dwie jego liczby są nieścisłe:**
+>
+> - **„10,22:1 wobec limonkowego CTA"** opisuje kontrast **etykiety** na
+>   CTA, nie obwódki fokusu. **Biel wobec limonki ma 1,60:1.**
+> - **„zachowana rozdzielność trójki"** nie była prawdą: fokus różni się
+>   od obu, ale `akcent == interakcja` (`#a0e00d`, konstrukcja wzorca).
+>
+> **Wybór bieli zostaje ważny — z innego powodu, niż tu zapisano:**
+> obwódka pada na **tło** (20,07:1), bo odsuwa ją `outline-offset`.
+> Wymóg rozdzielności trójki został usunięty; zastąpiły go dwa mierzone
+> człony R-AKCENT-02 (ADR-039).
+>
+> Klasa błędu, nazwana przez właściciela: **liczba cytowana
+> z poprzedniej zwrotki bez ponownego pomiaru.**
+
 `fokus` = **`#ffffff`** (decyzja koordynatora z mandatu). Wybór
 techniczny spełniający cel R-AKCENT-02, nie estetyczny: **20,07:1 wobec
 tła `#070806`** i **10,22:1 wobec limonkowego CTA `#a0e00d`**, przy

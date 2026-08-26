@@ -23,14 +23,18 @@ const PRZYPADKI = [
 // Wyliczone kolory ról CTA (asercja empiryczna jak I2 w klawiatura.spec
 // — dokładny kolor roli, nie „jakikolwiek inny"). Kolejno: terakota-600/700
 // (Etap A) → granat kancelarii (ADR-031) → wartości poniżej.
-// ADR-032: hero stoi w tonie `data-ton="ciemny"`, więc CTA bierze rolę
-// z warstwy inwersji — wypełnienie --interakcja-inwersji (złoto #7e6425).
-// ADR-034: hover to --interakcja-aktywna-inwersji (złoto PRZYCIEMNIONE
-// #6e5220), nie złoto jasne. Poprzednia wartość dawała kremowej etykiecie
-// 2,07:1 przy progu 4,5:1 — jasne na jasnym; teraz 6,30:1. Kierunek:
-// interakcja pod palcem CIEMNIEJE w obu warstwach.
-const KOLOR_CTA = "rgb(126, 100, 37)";
-const KOLOR_CTA_AKTYWNY = "rgb(110, 82, 32)";
+// ADR-038 (paleta wzorca): CTA bierze --interakcja = limonka #a0e00d,
+// hover --interakcja-aktywna = #a5e219. Warstwa inwersji i `data-ton`
+// USUNIĘTE, więc CTA bierze rolę wprost, bez przemapowania.
+//
+// ⚠ ODWRÓCENIE KIERUNKU wobec ADR-034. Tam zapisano „interakcja pod
+// palcem CIEMNIEJE", bo złoto na kremie jaśniejąc gubiło etykietę.
+// Wzorzec robi ODWROTNIE — na tle ciemnym limonka pod palcem JAŚNIEJE
+// (#a0e00d → #a5e219). Kierunek nie jest więc zasadą, tylko funkcją
+// jasności tła; etykieta trzyma się w obu przypadkach, bo pozostaje
+// ciemna: 10,22:1 w spoczynku, 10,47:1 pod palcem.
+const KOLOR_CTA = "rgb(160, 224, 13)";
+const KOLOR_CTA_AKTYWNY = "rgb(165, 226, 25)";
 
 for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   test(`hero (${jezyk}): treść z messages, jedyny h1, CTA → /funkcje na ${adres}`, async ({

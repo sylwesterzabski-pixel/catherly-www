@@ -49,10 +49,15 @@ function formatuj(grosze: number, jezyk: keyof typeof WALUTA): string {
 // prowadzi plany w INNEJ kolejności (Pro/Starter/Growth).
 const PLANY = ["Starter", "Growth", "Pro"] as const;
 
-// Wyliczone tło S10: rola-powierzchnia-akcentowa = #e3d6bc (paleta
-// „natura", ADR-032; kolejno terakota-100 → #dccdac kancelarii → tu) —
-// warunek lustra L1 (DECYZJA 6; handoff Etapu F).
-const KOLOR_LUSTRA = "rgb(227, 214, 188)";
+// Wyliczone tło S10: rola-powierzchnia-akcentowa = #393938 (paleta
+// wzorca, ADR-038; kolejno terakota-100 → #dccdac kancelarii → #e3d6bc
+// natury → tu) — warunek lustra L1 (DECYZJA 6; handoff Etapu F).
+//
+// ⚠ POZYCJA S10 POZOSTAJE OTWARTA. `WWW/050-FINAL` przewiduje ustalenie
+// przypisania powierzchni akcentowej POMIAREM odpowiadającej sekcji
+// wzorca w KROKU 2. Wartość poniżej jest dzisiejszą rolą, nie wynikiem
+// tamtego pomiaru — i ma się zmienić, jeśli pomiar pokaże inną.
+const KOLOR_LUSTRA = "rgb(57, 57, 56)";
 
 // LUSTRO L1 (test kluczowy): S10 na tle akcentowym; kropka S3
 // („…liczysz…") i kropka S10 („…widzisz…") obecne znak w znak

@@ -13,10 +13,15 @@
    Sprawdza:
      0. czy KOMPLET 19 ról w ogóle istnieje  (patrz LICZBA_ROL niżej)
      1. kontrasty par ról wobec progów WCAG 2.x
-     1b. rozdział karty od tła — plama ALBO kreska (ADR-033)
-     2. rozdzielność fokus / akcent / interakcja        (R-AKCENT-02)
-     3. czy akcent nie niesie tekstu w regułach CSS     (R-AKCENT-01)
+     1b. rozdział karty od tła — PRZENIESIONE do e2e (ADR-038)
+     2. akcent na każdej powierzchni ≥ 4,5:1            (R-AKCENT-01)
+     3a. etykieta na polu akcentu ≥ 4,5:1            (R-AKCENT-02a)
+     3b. obwódka fokusu wobec powierzchni ≥ 3:1      (R-AKCENT-02b)
      4. czy nie wróciła limonka i waga 100
+
+   ⚠ Punkty 2–3 mierzą KONTRAST, a do 2026-08-26 zakazywały BARWY
+   (ADR-039). Nagłówek wyżej opisuje przypadek źródłowy z JASNEJ palety;
+   zostaje, bo to nadal ten sam cel — zmienił się tylko mechanizm.
 
    Wdrożony: zlecenie WWW/038-bis, korekta K6, 2026-08-26.
    Rodowód: 05-straznik-tokenow.mjs z paczki zewnętrznej, przepisany
@@ -183,70 +188,72 @@ for (const s of ["stan-sukces", "stan-ostrzezenie", "stan-blad"]) {
    stronie i widać zarówno barwy, jak i odstępy. Próg 1,30 i odstęp
    30 px (zmierzony we wzorcu) bez zmiany. */
 
-/* Akcent jest dekoracją, ale poniżej 3:1 przestaje być widoczny jako punktor. */
-if (role["akcent"] && role["tlo-strony"]) {
-  const w = kontrast(role["akcent"], role["tlo-strony"]);
-  if (w < 3.0) ostrzezenia.push(`AKCENT: --akcent na tle = ${w.toFixed(2)}:1 — punktory będą niewidoczne`);
-}
+/* OSTRZEŻENIE „akcent poniżej 3:1 na tle" USUNIĘTE (ADR-039) — nie
+   dlatego, że przestało być prawdą, tylko dlatego, że przestało być
+   OSIĄGALNE: R-AKCENT-01 niżej daje BŁĄD już poniżej 4,5:1 na tej samej
+   parze, więc gałąź poniżej 3:1 nie wykona się nigdy. Zostawiona
+   wyglądałaby jak druga warstwa ochrony, a była martwym kodem — czyli
+   dokładnie tym, przed czym broni reguła „napis zamiast mechanizmu". */
 
-/* ─── 2. rozdzielność ról (R-AKCENT-02) ─────────────────────── */
-const ROZDZIELNE = [["fokus", "akcent"], ["fokus", "interakcja"], ["akcent", "interakcja"]];
-for (const [a, b] of ROZDZIELNE) {
-  if (role[a] && role[b] && role[a] === role[b]) {
-    bledy.push(`ROZDZIELNOŚĆ: --${a} i --${b} mają tę samą wartość ${role[a]} — R-AKCENT-02`);
-  }
-}
+/* ─── R-AKCENT-01 i R-AKCENT-02 PRZEPISANE (ADR-039) ───────────
+   Do 2026-08-26 obie reguły zakazywały BARWY. Od ADR-039 obie mierzą
+   KONTRAST — bo to kontrast był ich celem, a zakaz barwy tylko jego
+   przybliżeniem, dobranym pod jasne tło.
 
-/* ─── R-AKCENT-03: akcent na fragmencie nagłówka (ADR-033) ─────
-   ROZGRANICZENIE, bo bez niego R-AKCENT-01 i R-AKCENT-03 wyglądają
-   na sprzeczne: R-AKCENT-01 obowiązuje BEZ ZMIAN dla tekstu
-   AKAPITOWEGO, R-AKCENT-03 dopuszcza akcent na SPÓJNYM FRAGMENCIE
-   NAGŁÓWKA — pod dwoma warunkami łącznie: rozmiar dużego tekstu wg
-   WCAG i kontrast ≥ 3:1 na SWOJEJ powierzchni. Przy dużym tekście
-   WCAG 1.4.3 stawia próg 3:1, więc zmienia się próg, nie rygor.
+   R-AKCENT-01 (było: „akcent NIGDY nie niesie tekstu"):
+     akcent może nieść tekst i glify, jeśli kontrast na danej
+     powierzchni wynosi ≥ 4,5:1 (tekst normalny) albo ≥ 3:1 (duży
+     tekst i glify UI). Reguła powstała z pomiaru **2,87:1 na JASNYM
+     tle**; na tle wzorca akcent ma 12,58:1, więc przeszkody nie ma.
+     Zakaz barwy znika, POMIAR zostaje strażnikiem.
 
-   Strażnik pilnuje tu WARUNKU BARWNEGO. Rozmiaru nie mierzy — nie ma
-   go w wartościach tokenów; pilnuje go `e2e/kontrast-stanow.spec.ts`
-   przez próg zależny od rozmiaru na wyrenderowanej stronie. To jest
-   granica tego sprawdzenia i dlatego stoi wypisana.
+   R-AKCENT-03 ZNIKA jako osobna reguła — była słabszym przypadkiem
+   tej samej rzeczy (fragment nagłówka ≥ 3:1). Próg 4,5 poniżej jest
+   od niej surowszy, więc osobne sprawdzenie byłoby duplikatem, który
+   przy zmianie progu rozjechałby się po cichu.
 
-   POWIERZCHNIE OBJĘTE: te, na których nagłówek FAKTYCZNIE stoi.
-   `powierzchnia-akcentowa` jest tu celowo — akcent ma na niej 2,94:1
-   i dlatego nagłówek sekcji rytmu akcentu NIE DOSTAŁ. Gdyby ktoś go
-   tam wstawił, ta pozycja ma zapalić czerwień, a nie milczeć. */
-const KLASA_AKCENTU_NAGLOWKA = "akcent-naglowka";
-const PARY_AKCENTU_NAGLOWKA = [
-  ["akcent",             "tlo-strony",             "fragment nagłówka na tle strony"],
-  ["akcent",             "powierzchnia",           "fragment nagłówka na karcie"],
-  ["akcent",             "powierzchnia-2",         "fragment nagłówka na pasie sekcyjnym"],
-  /* Pary inwersji usunięte 2026-08-26 razem z rolami (ADR-038) —
-     wzorzec jest jednolicie ciemny, więc nie ma czego odwracać. */
-];
-const PROG_AKCENTU_NAGLOWKA = 3.0;
-for (const [a, b, opis] of PARY_AKCENTU_NAGLOWKA) {
-  if (!role[a] || !role[b]) { bledy.push(`BRAK ROLI: --${a} lub --${b} (${opis})`); continue; }
-  const w = kontrast(role[a], role[b]);
-  if (w < PROG_AKCENTU_NAGLOWKA) {
+   R-AKCENT-02 (było: „fokus ≠ akcent ≠ interakcja"):
+     wymóg rozdzielności trójki USUNIĘTY — `akcent == interakcja` to
+     konstrukcja wzorca, nie nasz błąd. Cel reguły — żeby stany dało
+     się rozróżnić — niosą teraz DWA CZŁONY, oba mierzone:
+       (a) etykieta na polu akcentu jest CIEMNA i ma ≥ 4,5:1;
+       (b) obwódka fokusu ma ≥ 3:1 wobec POWIERZCHNI, NA KTÓRĄ PADA.
+     Człon (b) zapisuje mechanizm wprost: dzięki `outline-offset`
+     obwódka pada na TŁO, nie na wypełnienie przycisku. Dlatego para
+     fokus × interakcja (1,60:1) jest tu bez znaczenia i celowo NIE
+     jest sprawdzana — sprawdzanie jej dawałoby czerwień na stanie
+     poprawnym. Gdyby ktoś zdjął `outline-offset`, złapie to
+     `e2e/kontrast-stanow.spec.ts`, nie ten strażnik. */
+const POWIERZCHNIE = ["tlo-strony", "powierzchnia", "powierzchnia-2", "powierzchnia-akcentowa"];
+const PROG_AKCENT_TEKST = 4.5;
+const PROG_FOKUS = 3.0;
+
+for (const p of POWIERZCHNIE) {
+  if (!role["akcent"] || !role[p]) { bledy.push(`BRAK ROLI: --akcent lub --${p}`); continue; }
+  const w = kontrast(role["akcent"], role[p]);
+  if (w < PROG_AKCENT_TEKST) {
     bledy.push(
-      `R-AKCENT-03: --${a} na --${b} = ${w.toFixed(2)}:1, wymagane ${PROG_AKCENTU_NAGLOWKA.toFixed(1)}:1 — ${opis}`
-    );
-  }
-}
-/* Powierzchnia akcentowa NIE jest na liście wyżej i to jest decyzja,
-   nie przeoczenie: akcent ma na niej 2,94:1, więc nagłówka w akcencie
-   tam być NIE MOŻE. Zamiast dopuszczać wyjątek, strażnik pilnuje, żeby
-   nikt nie liczył na to, że się zmieści. */
-if (role["akcent"] && role["powierzchnia-akcentowa"]) {
-  const w = kontrast(role["akcent"], role["powierzchnia-akcentowa"]);
-  if (w >= PROG_AKCENTU_NAGLOWKA) {
-    ostrzezenia.push(
-      `R-AKCENT-03: --akcent na --powierzchnia-akcentowa urósł do ${w.toFixed(2)}:1 — ` +
-        `nagłówek w akcencie na tej powierzchni PRZESTAŁ być zakazany, można wrócić do pozycji z WWW/041 krok 3`
+      `R-AKCENT-01: --akcent na --${p} = ${w.toFixed(2)}:1, wymagane ${PROG_AKCENT_TEKST}:1 — ` +
+        `akcent nie może tam nieść tekstu`
     );
   }
 }
 
-/* ─── 3. akcent nie niesie tekstu + 4. powroty ──────────────── */
+for (const [e, i] of [["tekst-na-interakcji", "interakcja"], ["tekst-na-interakcji", "interakcja-aktywna"]]) {
+  if (!role[e] || !role[i]) { bledy.push(`BRAK ROLI: --${e} lub --${i}`); continue; }
+  const w = kontrast(role[e], role[i]);
+  if (w < 4.5) bledy.push(`R-AKCENT-02(a): etykieta --${e} na --${i} = ${w.toFixed(2)}:1, wymagane 4.5:1`);
+}
+
+for (const p of POWIERZCHNIE) {
+  if (!role["fokus"] || !role[p]) { bledy.push(`BRAK ROLI: --fokus lub --${p}`); continue; }
+  const w = kontrast(role["fokus"], role[p]);
+  if (w < PROG_FOKUS) {
+    bledy.push(`R-AKCENT-02(b): obwódka --fokus na --${p} = ${w.toFixed(2)}:1, wymagane ${PROG_FOKUS}:1`);
+  }
+}
+
+/* ─── 4. powroty: barwy z usuniętych palet i waga 100 ─────────── */
 const plikiCss = [];
 const zbierz = (dir) => {
   for (const e of readdirSync(dir)) {
@@ -280,11 +287,10 @@ for (const p of plikiCss) {
     else if (/^\s*\}/.test(linia)) selektor = "";
 
     const kontekst = `${selektor}\n${linia}`;
-    if (new RegExp(`(^|[^-])color:\\s*var\\(${PRZEDROSTEK}akcent\\)`).test(linia)
-        && !/::marker|text-decoration/.test(kontekst)
-        && !new RegExp(KLASA_AKCENTU_NAGLOWKA).test(kontekst)) {
-      bledy.push(`R-AKCENT-01: ${p}:${i + 1} — --akcent użyty jako kolor tekstu (selektor: ${selektor || "?"})`);
-    }
+    /* Skan „akcent jako kolor tekstu" USUNIĘTY (ADR-039): zakaz barwy
+       ustąpił warunkowi kontrastowemu wyżej. Zostaje skan powrotów —
+       limonki z usuniętej palety i wagi 100 — bo te dwie rzeczy nie są
+       kwestią kontrastu, tylko zamkniętych decyzji. */
     if (/#a3e635|#c7f04a|#d4f55c/i.test(linia)) {
       bledy.push(`LIMONKA: ${p}:${i + 1} — kolor z usuniętej palety`);
     }
@@ -311,8 +317,12 @@ if (bledy.length) {
 }
 console.log("  wszystkie reguły spełnione");
 console.log(
-  "  CZEGO NIE SPRAWDZA, żeby zieleń nie była czytana szerzej: par ról spoza listy\n" +
-    "  (np. akcent × powierzchnia-akcentowa = 2,53:1 — granica opisana w ADR-031),\n" +
-    "  barw wyliczonych na stronie (od tego jest e2e/kontrast-stanow.spec.ts)\n" +
-    "  ani tego, czy rola jest UŻYWANA zgodnie ze swoim przeznaczeniem."
+  "  CZEGO NIE SPRAWDZA, żeby zieleń nie była czytana szerzej:\n" +
+    "  · pary fokus × interakcja (1,60:1) — CELOWO, bo obwódka pada na tło,\n" +
+    "    nie na wypełnienie; ale TEGO, ŻE outline-offset naprawdę istnieje,\n" +
+    "    ten strażnik nie widzi — sprawdza to e2e/kontrast-stanow.spec.ts\n" +
+    "    i na tym założeniu stoi cały człon R-AKCENT-02(b);\n" +
+    "  · par ról spoza listy PARY;\n" +
+    "  · barw wyliczonych na stronie (gradienty, przezroczystości, obrazy);\n" +
+    "  · tego, czy rola jest UŻYWANA zgodnie ze swoim przeznaczeniem."
 );

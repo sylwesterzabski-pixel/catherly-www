@@ -3,6 +3,18 @@
 Data: 2026-08-26. Status: **PRZYJĘTY (rozstrzygnięcia właściciela
 2026-08-26, zlecenie `WWW/041`, kroki 1–3).**
 
+> ⚠ **DWA Z TRZECH ROZSTRZYGNIĘĆ ZOSTAŁY ZASTĄPIONE. Dokument zostaje
+> w brzmieniu pierwotnym — poniżej, co dziś obowiązuje zamiast niego:**
+>
+> - **Rozstrzygnięcie 1** (rozdział karty DWOMA mechanizmami) →
+>   zastąpione przez **ADR-038**: mechanizmy są trzy, a reguła mieszka
+>   w `e2e/rozdzial-kart.spec.ts`, nie w strażniku tokenów.
+> - **Rozstrzygnięcie 3** (R-AKCENT-03: akcent w nagłówku przy ≥ 3:1) →
+>   **wchłonięte przez ADR-039**. R-AKCENT-01 wymaga dziś ≥ 4,5:1 na
+>   każdej powierzchni, czyli więcej; osobna reguła byłaby duplikatem,
+>   który przy zmianie progu rozjechałby się po cichu.
+> - **Rozstrzygnięcie 2** (sonda rastrowa) **obowiązuje bez zmian.**
+
 Trzy rozstrzygnięcia zamykające trzy pozycje zgłoszone w ADR-032 jako
 otwarte. Wspólny mianownik jest tu ważniejszy niż każde z osobna:
 **we wszystkich trzech przypadkach naprawiany jest MECHANIZM POMIARU

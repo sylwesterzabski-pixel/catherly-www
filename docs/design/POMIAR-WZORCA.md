@@ -191,6 +191,34 @@ Nagrania ruchu: **do wykonania razem z pomiarem 0.4**.
 
 ---
 
+## 0.7 MOBILE 390 px — **NIEZMIERZONE, POZYCJA OTWARTA**
+
+Dopisek do `WWW/050-FINAL` z 2026-08-26 rozszerza KROK 0 o pomiar
+mobilny i **wiąże go z odbiorem KROKU 2**: odbiór obejmuje parę nagrań
+DESKTOP **oraz** parę MOBILE.
+
+**Stan na 2026-08-26: nic z poniższych nie jest zmierzone.** Rozdział
+istnieje po to, żeby brak był widoczny jako brak — pomiar desktopowy
+wyżej jest kompletny w swojej dziedzinie i bez tego rozdziału czytałby
+się jak pomiar wzorca w ogóle. To ta sama klasa co „werdykt obowiązuje
+w swojej zadeklarowanej dziedzinie; poza nią jest milczenie".
+
+| co | zakres | status |
+| --- | --- | --- |
+| **(a) Nawigacja mobilna** | czy hamburger; postać otwarcia (pełny ekran / wysuwka); czasy animacji **z nagrania**; geometria pozycji menu | do zmierzenia |
+| **(b) Nagrania ruchu 390 px** | wejście, przewijanie, dotknięcia kart i FAQ — wzorzec **i** nasza strona | do zmierzenia |
+| **(c) Sekcje na 390 px** | kolejność składania kolumn, paddingi mobilne, zachowanie marquee, zachowanie hero-mockupu (chowa się czy skaluje) | do zmierzenia |
+
+**Odtworzenie 1:1** dotyczy punktu (a) wprost. Punkty (b) i (c) dają
+liczby do tabel wyżej — dopisywane tam, nie tutaj, żeby nie powstały
+dwa miejsca z tą samą wielkością.
+
+⚠ **Ograniczenie odziedziczone po 0.4:** ruchu wzorca nie zmierzono
+jeszcze klatka po klatce nawet na desktopie. Dopóki to nie nastąpi,
+**żadna liczba czasu trwania nie może być cytowana** — ani desktopowa,
+ani mobilna. Punkt (b) tego dopisku i otwarta część 0.4 to **jedna
+robota**, nie dwie, i tak zostaną wykonane.
+
 ## Co ten pomiar ZMIENIA w naszym stanie — cztery rzeczy, nie jedna
 
 1. **Motyw odwraca się z jasnego na ciemny.** Tło `#070806` wobec

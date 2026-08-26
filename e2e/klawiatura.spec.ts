@@ -18,13 +18,20 @@ const KOLEJNOSC = [
   pl.Nawigacja.logowanie,
 ] as const;
 
-// Wyliczony kolor --kolor-rola-fokus = złoto ciemne #7e6425 (paleta
-// „natura", ADR-032; kolejno: śliwka-700 → #16181d kancelarii → tu).
+// Wyliczony kolor --kolor-rola-fokus = BIEL #ffffff (ADR-038/039;
+// kolejno: śliwka-700 → #16181d kancelarii → złoto ciemne #7e6425
+// natury → tu). Zdanie o warstwie jasnej i inwersji odpadło — warstwy
+// nie ma od ADR-038.
+//
 // Asercja I2: obrys fokusa ma DOKŁADNIE kolor roli fokusa z tokenów,
 // nie jakikolwiek niepusty obrys. Wartość oczekiwana testu, nie wizualna.
-// Przystanki tego testu leżą w nawigacji, czyli POZA sekcjami z tonem —
-// obowiązuje więc warstwa jasna, nie inwersja.
-const KOLOR_FOKUSA = "rgb(126, 100, 37)";
+//
+// ⚠ Ten test mierzy BARWĘ obrysu. Tego, czy obrys jest WIDOCZNY na
+// powierzchni, na którą pada, pilnuje R-AKCENT-02(b) w
+// `kontrast-stanow.spec.ts` — biel na limonkowym CTA ma 1,60:1 i ratuje
+// ją wyłącznie `outline-offset`. Dwa różne strażniki, dwie różne
+// własności; ani jeden nie zastępuje drugiego.
+const KOLOR_FOKUSA = "rgb(255, 255, 255)";
 
 test("klawiatura: skip-link pierwszy, potem logo → menu → Logowanie; fokus widoczny", async ({
   page,
