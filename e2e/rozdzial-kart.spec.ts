@@ -85,6 +85,20 @@ for (const [nazwa, trasa, sel] of RODZINY) {
         promien: parseFloat(c.borderRadius) || 0,
         tloStrony,
         odstep: najmniejszyOdstep === Infinity ? null : +najmniejszyOdstep.toFixed(1),
+        /* CZWARTY MECHANIZM: WYPEŁNIENIE OBRAZEM. Ile procent pola
+           elementu zajmuje obraz potomny. Liczone z prostokątów, nie
+           z deklaracji — obraz, który się nie wczytał, ma zerowy
+           prostokąt i nie zaliczy się jako rozdział. */
+        pokrycieObrazem: (() => {
+          const pole = r.width * r.height;
+          if (pole <= 0) return 0;
+          let naj = 0;
+          for (const im of el.querySelectorAll("img")) {
+            const ri = im.getBoundingClientRect();
+            naj = Math.max(naj, (ri.width * ri.height) / pole);
+          }
+          return +naj.toFixed(3);
+        })(),
       };
     });
 
@@ -97,14 +111,31 @@ for (const [nazwa, trasa, sel] of RODZINY) {
     const kreska = obr ? kontrast(obr, tlo!) : 0;
     const kompozycja =
       pomiar.odstep !== null && pomiar.odstep >= PROG_ODSTEPU && pomiar.promien > 0;
+    /* MECHANIZM CZWARTY — OBRAZ (2.4, ADR-047).
+       Ramka, którą wypełnia zrzut od krawędzi do krawędzi, odcina się
+       od tła WŁASNYMI PIKSELAMI: widać zrzut, nie powierzchnię pod nim.
+       Reguła trzech mechanizmów mierzy barwę TŁA elementu i o obrazie
+       nie wie — więc po zdjęciu obrysu (wzorzec ramek nie obrysowuje)
+       meldowała „plama 1.09 · kreska 0.00" dla elementu, który na
+       ekranie jest wyraźnym prostokątem zrzutu.
+
+       ⚠ TO NIE JEST ZŁAGODZENIE. Próg 90% pola jest wysoki celowo:
+       obrazek ozdobny w rogu karty go nie osiągnie, a niewczytany kadr
+       ma prostokąt zerowy i też nie. Zalicza się WYŁĄCZNIE ramka, którą
+       obraz naprawdę wypełnia — czyli ta, w której powierzchnia i tak
+       jest niewidoczna. Dowiedzione mutacją: po podmianie zrzutu na
+       obraz zajmujący ćwierć pola mechanizm przestaje zaliczać. */
+    const PROG_POKRYCIA = 0.9;
+    const obrazem = pomiar.pokrycieObrazem >= PROG_POKRYCIA;
 
     const opis =
       `plama ${plama.toFixed(2)} · kreska ${kreska.toFixed(2)} · ` +
-      `odstęp ${pomiar.odstep ?? "brak"} px, promień ${pomiar.promien} px`;
+      `odstęp ${pomiar.odstep ?? "brak"} px, promień ${pomiar.promien} px · ` +
+      `pokrycie obrazem ${(pomiar.pokrycieObrazem * 100).toFixed(0)}%`;
 
     expect(
-      plama >= PROG_KONTRASTU || kreska >= PROG_KONTRASTU || kompozycja,
-      `${nazwa}: karta nie odcina się od tła ŻADNYM z trzech mechanizmów — ${opis}`,
+      plama >= PROG_KONTRASTU || kreska >= PROG_KONTRASTU || kompozycja || obrazem,
+      `${nazwa}: karta nie odcina się od tła ŻADNYM z czterech mechanizmów — ${opis}`,
     ).toBe(true);
   });
 }

@@ -8,12 +8,22 @@
    70rem: surowe wartości wspólne K1–K4 (W5 — propozycja tokenów
    przy etapie E/F). */
 
+/* 2.4 — GEOMETRIA WZORCA (WWW/059, ADR-047).
+   Zmierzone przy 1440: kolumna tekstu x=135 w=535, kolumna obrazu
+   x=770 w=535 — czyli DWIE RÓWNE kolumny z odstępem 100 px wewnątrz
+   kolumny treści 1170 px. Obraz ma promień 12 px. Przy 390: jedna
+   kolumna 350 px, obraz nad tekstem albo pod nim wg zebry.
+
+   Odstęp pionowy sekcji: 160 px góra i dół (wariant dominujący
+   z POMIARU 0.3). Kontener `max-width` ZDJĘTY — wzorzec nie ogranicza
+   szerokości, tylko WCINA treść od krawędzi, więc przy 1600 kolumna
+   ma 1330, a nie 1170. */
 .filar {
-  padding: 3rem 1rem;
+  padding-block: var(--wymiar-odstep-sekcji);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
 }
 
 .wnetrze {
-  max-width: var(--wymiar-kontener-strony);
   margin-inline: auto;
 }
 
@@ -26,7 +36,11 @@
      zmiana skali musi trafić, i osiem, które może przeoczyć.
      Margines, miara wiersza i zawijanie ZOSTAJĄ: to układ, nie skala. */
   margin: 0 0 0.75rem;
-  max-width: 26ch;
+  /* Miara `26ch` ZDJĘTA (2.4). Wzorzec pozwala nagłówkowi zająć CAŁĄ
+     kolumnę (zmierzone: h2 w=535 przy kolumnie 535), a ograniczała go
+     dotąd miara znakowa, która na każdym kroju daje inną liczbę
+     pikseli. Zawijanie `balance` zostaje — to kształt łamania,
+     nie szerokość. */
   text-wrap: balance;
 }
 
@@ -60,8 +74,11 @@
      dociąga się leniwie, a slot jest widoczny od pierwszej klatki. */
   aspect-ratio: 16 / 10;
   background: var(--kolor-rola-powierzchnia);
-  border: 0.0625rem solid var(--kolor-rola-kreska);
-  border-radius: var(--wymiar-promien);
+  /* OBRYS ZDJĘTY (2.4) — wzorzec ramki nie obrysowuje. Rozdział od tła
+     niesie PLAMA: powierzchnia wobec tła strony. To pierwszy z trzech
+     mechanizmów ADR-038, a `e2e/rozdzial-kart.spec.ts` pilnuje, żeby
+     przynajmniej jeden działał. */
+  border-radius: var(--wymiar-promien-sredni);
   /* Bez tego promień ramki nie przycina zrzutu w narożnikach. */
   overflow: hidden;
 }
@@ -86,11 +103,17 @@
   height: auto;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 48.0625rem) {
+  .filar {
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+  }
+
   .uklad {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    /* 100 px — zmierzony odstęp kolumn wzorca (tekst kończy się na
+       670, obraz zaczyna na 770). */
+    gap: 6.25rem;
     align-items: center; /* zapobiega stretch nadpisującemu aspect-ratio */
   }
 
@@ -105,5 +128,11 @@
 
   .obrazPoLewej .obraz {
     order: 1;
+  }
+}
+
+@media (min-width: 90rem) {
+  .filar {
+    padding-inline: var(--wymiar-wciecie-tresci);
   }
 }
