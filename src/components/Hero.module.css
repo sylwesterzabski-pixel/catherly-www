@@ -1,140 +1,141 @@
-/* K2 — CSS wg HF docs/faza-3/hf/k2-hero.html (po panelu 2026-08-10).
-   Kolory wyłącznie var(--…); wymiary rem/ch (wyjątek: 5vw w clamp —
-   fluid type, brak alternatywy w CSS; odnotowane w handoffie).
-   Element LCP = tekst H1; typografia system-ui (ADR-026). */
+/* 2.2 HERO — przebudowa na układ wzorca (WWW/058, ADR-046).
+   Wzorzec składa hero WYŚRODKOWANE, jednokolumnowo; nasza poprzednia
+   wersja była dwukolumnowa z pustą kolumną po prawej. Wszystkie wartości
+   z pomiaru.
+
+   ┌── ZMIERZONE (wzorzec) ────────────────────────────────────────────┐
+   │ wcięcie treści   135 px (≥1440) · 40 px (810–1280) · 20 px (≤768) │
+   │ H1               y 210,4 od góry dokumentu, na środku             │
+   │ lead             STAŁE 590 px, wyśrodkowany, 16 px / waga 400     │
+   │ CTA              pigułka, etykieta 14 px / 500, tekst ciemny      │
+   │ drobne           14 px / 500, obok siebie, 32 px pod CTA          │
+   │ mockup           pełna szerokość kolumny treści, 80 px pod drobnymi│
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ WCIĘCIE TREŚCI (135 px) RÓŻNI SIĘ OD WCIĘCIA NAGŁÓWKA (120 px).
+   Wzorzec ich nie zrównuje i my też nie — pigułka nawigacji jest
+   odsunięta MNIEJ niż kolumna treści. Zrównanie „bo tak porządniej"
+   byłoby ujednoliceniem różnicy licencjonowanej.
+
+   ⚠ ETYKIETA NAD H1 — SLOT ŚWIADOMIE PUSTY. Wzorzec ma tam plakietkę
+   („SAAS TEMPLATE", 14 px, w akcencie). U nas takiego zatwierdzonego
+   ciągu NIE MA: treść hero zamyka decyzja właściciela z 2026-08-09,
+   a napisanie nowej byłoby autorstwem treści przez implementację.
+   Rozstrzygnięcie z 2026-08-27: etykietę POMIJAMY. Dopisanie jej
+   później to jedna linia w znaczniku i jedna reguła tutaj. */
 
 .hero {
-  padding: 3rem 1rem 2rem;
+  /* 110 px odstępu od dolnej krawędzi pigułki nawigacji — wtedy H1
+     ląduje na zmierzonych 210,4 px od góry dokumentu, tak samo na
+     kadrze szerokim i wąskim (nagłówek kończy się na 100 px w obu). */
+  padding-block: 6.875rem 0;
+  padding-inline: var(--wymiar-wciecie-tresci-male);
+  text-align: center;
 }
 
 .wnetrze {
-  max-width: var(--wymiar-kontener-strony);
   margin-inline: auto;
 }
 
+.kolumny {
+  position: relative;
+  overflow: clip;
+}
+
 .naglowek {
-  /* ROZMIAR, INTERLINIA I TRACKING ZDJĘTE (ADR-041, KROK 1.3).
-     Stało tu: font-size: clamp(1.75rem, 5vw + 1rem, 3rem); · line-height: 1.15; · letter-spacing: -0.01em;
-     Skalę nagłówków niesie teraz reguła globalna w `globals.css`,
-     progami 34 / 53 / 70 px z pomiaru wzorca. Nadpisanie zostawione
-     tutaj czyniłoby z tokenów `--tekst-h1*` napis bez skutku — token,
-     którego nikt nie czyta, jest gorszy niż jego brak, bo wygląda na
-     źródło prawdy. Margines i miara wiersza ZOSTAJĄ: to własności
-     układu tego komponentu, nie skali. */
-  margin: 0 0 1rem;
-  /* Panel K2: H1 ≤ 3 linie we wszystkich językach na desktopie
-     (18ch dawało EN/DE 4 linie wobec „2–3" z wireframe'u).
-
-     22ch → 24ch (2026-08-14): zmiana NIE ZADZIAŁAŁA. Przebieg
-     31835331503 dał dokładnie ten sam wynik co poprzedni — H1 DE
-     nadal 4 linie. Powód ustalony pomiarem, nie modelem: `ch` to
-     szerokość cyfry „0", więc ta sama miara daje INNĄ liczbę
-     pikseli na każdym kroju, a `system-ui` znaczy inny krój na
-     każdym systemie. Krój runnera jest szerszy od Arialu — w
-     metryce Arialu DE mieści się w trzech liniach, a CI łamie na
-     cztery. Przy szerokim kroju 24ch to ok. 819 px, czyli więcej
-     niż kolumna hero (653 px przy 1280 px): miara jest wtedy
-     BEZCZYNNA i żadna wartość `ch` niczego nie zmienia. Ograniczała
-     kolumna, nie miara. 24ch zostaje jako wartość neutralna.
-
-     Domknięte szerokością kolumny — ADR-029 (próg 72rem, 4fr 2fr).
-     Stan po zmianie, zmierzony w przeglądarce dla pl/en/de przy
-     Verdanie jako zamienniku najgorszego kroju: ≤ 3 linie przy 768,
-     900, 1024, 1152, 1280 i 1440 px. DE przy 1280 px ma 725 px
-     kolumny i 3 linie.
-
-     Poniżej 768 px H1 DE ma 4–5 linii i to się NIE zmieniło — tam
-     hero był jednokolumnowy już wcześniej, a strażnik biegnie na
-     1280 px, więc tego nie widzi. Rejestr warunków powrotu, T4.
-
-     Podstrony zostają na 22ch (NaglowekPodstrony.module.css); ich
-     zapas policzono w metryce Arialu, więc na kroju runnera jest
-     niezweryfikowany, nie potwierdzony — T4. */
-  max-width: 24ch;
+  margin: 0;
+  /* Miary `ch` ZDJĘTE (2.2). Wzorzec nie ogranicza H1 miarą znakową —
+     ogranicza go kolumna treści, a nagłówek zajmuje ją w całości
+     (zmierzone: H1 w=1170 przy wcięciu 135, w=728 przy 20, w=350 przy
+     20 — czyli zawsze pełna szerokość kolumny). Poprzednie `24ch`
+     opisywał akapit o czterech ekranach prób, który kończył się
+     wnioskiem, że miara i tak jest BEZCZYNNA, bo ogranicza kolumna.
+     Teraz jest to jawne. */
   text-wrap: balance;
 }
 
 .podtytul {
   color: var(--kolor-rola-tekst-drugorzedny);
-  font-size: var(--tekst-m);
-  max-width: var(--wymiar-miara-akapitu);
-  margin: 0 0 1.75rem;
+  font-size: var(--tekst-s);
+  font-weight: var(--waga-tekst);
+  /* 590 px — wartość STAŁA wzorca, nie miara w `ch` ani procent.
+     Zmierzona jako 590 przy 1600, 1440, 1280, 1024 i 810; przy 768
+     i 390 zwęża ją kolumna. `margin-inline: auto` daje wyśrodkowanie. */
+  max-width: var(--wymiar-miara-leadu);
+  margin: 1rem auto 0;
 }
 
 .cta {
-  display: inline-block;
+  display: inline-grid;
+  place-content: center;
+  margin-block-start: 2.75rem;
+  padding-inline: 1.5rem;
+  min-block-size: 2.9rem;
   background: var(--kolor-rola-interakcja);
   color: var(--kolor-rola-tekst-na-interakcji);
+  border-radius: var(--wymiar-promien-naglowka);
+  font-size: var(--tekst-xs);
+  font-weight: var(--waga-etykieta);
   text-decoration: none;
-  font-weight: 600;
-  font-size: var(--tekst-s);
-  padding: 0.875rem 1.5rem;
-  border-radius: var(--wymiar-promien);
 }
 
+/* Barwa etykiety powtórzona w stanach — globalna reguła `a:hover`
+   przestawia ją na akcent, co dałoby limonkę na limonce. Człon (a)
+   reguły R-AKCENT-02: etykieta pola akcentu jest ciemna ZAWSZE. */
 .cta:hover,
+.cta:focus-visible,
 .cta:active {
-  /* Para 7,02:1 — komentarz przy roli w tokenach (panel K2). */
   background: var(--kolor-rola-interakcja-aktywna);
-  /* Kolor etykiety POWTÓRZONY, choć w spoczynku deklaruje go `.cta`.
-     Bez tego `a:hover` z globals.css (0,1,1) bije `.cta` (0,1,0) i etykieta
-     schodzi na barwę linku odwiedzanego: 1,34:1 zamiast 5,22:1 (pomiar
-     2026-08-17, 18 wystąpień). axe stanów nie wymusza, więc bramka tego nie
-     widziała — pilnuje tego dziś `e2e/kontrast-stanow.spec.ts`. */
   color: var(--kolor-rola-tekst-na-interakcji);
 }
 
 .potwierdzenia {
-  margin-block-start: 2.25rem;
+  margin-block-start: 2rem;
+  justify-content: center;
+  font-size: var(--tekst-xs);
+  font-weight: var(--waga-etykieta);
 }
 
-/* 48rem = --wymiar-prog-ukladu (ADR-028): @media nie czyta var(),
-   więc wartość jest tu literałem. */
-@media (min-width: 48rem) {
+/* MOCKUP — pełna szerokość kolumny treści, 80 px pod drobnymi.
+   Proporcja NASZA (1,600 = 2048×1280 dostawy Z6), nie wzorca (1,560).
+   To odstępstwo świadome i jednokierunkowe: dociśnięcie kadru do 1,560
+   przez `object-fit: cover` ucięłoby po 2,5% góry i dołu ZRZUTU
+   PRODUKTU. Kadry Z6 publikujemy bajt w bajt — przycięcie dowodu dla
+   zgodności proporcji byłoby zamianą rzeczy ważnej na mniej ważną. */
+.mockup {
+  margin-block-start: 5rem;
+  border-radius: var(--wymiar-promien-sredni);
+  overflow: hidden;
+}
+
+.mockup img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+@media (min-width: 48.0625rem) {
   .hero {
-    padding-block: 5rem 3rem;
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 }
 
-/* 72rem — JEDYNY wyjątek od progu układu 48rem w całym serwisie,
-   ustanowiony ADR-029. Dwie kolumny hero wchodzą dopiero tutaj, bo
-   przy 48rem kolumna tekstu spada z ~735 px do 422 px, podczas gdy
-   `clamp` trzyma już maksymalne 48 px — H1 łamał się wtedy na
-   6 linii we WSZYSTKICH trzech językach. Proporcja 3fr 2fr → 4fr 2fr
-   z tego samego powodu: przy 1280 px daje kolumnie 725 px zamiast
-   653 px, a DE potrzebuje ok. 660 px na trzy linie. Obie wartości
-   są zmierzone, nie oszacowane — tabela w ADR-029. */
-@media (min-width: 72rem) {
-  .kolumny {
-    display: grid;
-    grid-template-columns: 4fr 2fr; /* tekst ~2/3 | spokojna przestrzeń */
-    gap: 2rem;
+@media (min-width: 90rem) {
+  .hero {
+    padding-inline: var(--wymiar-wciecie-tresci);
   }
-}
-
-/* Poświata radialna (ADR-032, krok 2 zlecenia WWW/040) — dekoracja
-   tła, aria-neutralna, nie niesie treści i nie stanowi granicy.
-   Barwa idzie przez token `--kolor-dekoracja-poswiata` i color-mix
-   z alfą 35%: surowy zapis kanałowy z alfą nie przeszedłby lintera, a alfa
-   jest tu górną granicą podaną w zleceniu, nie wartością dobraną.
-   Selektor niesie `[data-ton]`, żeby swoistość (0,2,0) wygrała
-   z regułą tonu (0,1,0) niezależnie od kolejności arkuszy. */
-.hero[data-ton] {
-  background:
-    radial-gradient(
-      ellipse 80% 60% at 70% 30%,
-      color-mix(in srgb, var(--kolor-dekoracja-poswiata) 35%, transparent),
-      transparent
-    ),
-    var(--kolor-rola-tlo-strony);
 }
 
 /* DUCH — dekoracja tła hero (R2, zlecenie WWW/047).
    Leży POD treścią (`z-index: -1`) i nie łapie wskaźnika. Alfa 6% —
-   środek zakresu 5–7% z polecenia; przy tej wartości napis jest
-   fakturą tła, a nie drugim nagłówkiem.
-   `overflow: clip` na kolumnach trzyma go w kadrze: duch nie ma prawa
-   poszerzyć strony ani wywołać przewijania poziomego.
+   przy tej wartości napis jest fakturą tła, a nie drugim nagłówkiem.
+
+   ⚠ WZORZEC MA TU CO INNEGO i to jest odnotowana różnica, nie
+   przeoczenie: jego dekoracją hero jest pełnoekranowy obraz tła
+   (1440 × 1290), obecny WYŁĄCZNIE na kadrze desktopowym — przy 768
+   i 390 sekcja ma jednolite tło strony. Takiego pliku nie mamy,
+   a wytworzenie go to decyzja o materiale obrazowym, nie implementacja.
+   Duch zostaje jako nasza dekoracja tej samej roli.
 
    ⚠ NAPRAWA ZWISU PO ADR-038 (2026-08-26). Do tej daty stało tu
    `--kolor-rola-tekst-na-inwersji` — rolę usunięto razem z całą warstwą
@@ -143,20 +144,11 @@
    renderował się PEŁNĄ BIELĄ na 256 px zamiast 6% alfy. Zmierzone przed
    naprawą: kolor wyliczony = biel nieprzezroczysta, zmienna pusta.
    (Liczby zapisane słowami rozmyślnie — linter tokenów czyta także
-   komentarze i zapis funkcyjny barwy zaczerwieniłby bramkę. Ta sama
-   pomyłka popełniona w tej sesji po raz drugi.)
+   komentarze i zapis funkcyjny barwy zaczerwieniłby bramkę.)
 
    Czego to NIE złapało i dlatego przeżyło push: strażnik tokenów czyta
    WARTOŚCI ról, nie ich UŻYCIA; axe widzi biel na ciemnym jako kontrast
-   wzorowy; bramka `tokeny` była zielona. Zapaliła to dopiero sonda
-   rastrowa w `kontrast-stanow` — biały piksel pod obwódką fokusu CTA
-   dawał 1:1. Wniosek na przyszłość: usunięcie roli to DWIE roboty —
-   zdjęcie definicji i przeczesanie użyć; sama definicja znika cicho. */
-.kolumny {
-  position: relative;
-  overflow: clip;
-}
-
+   wzorowy. Zapaliła to dopiero sonda rastrowa. */
 .duch {
   position: absolute;
   inset-block-start: 50%;

@@ -58,8 +58,14 @@
      nie przyklejanie. */
   position: relative;
   z-index: 1;
-  margin: var(--wymiar-wciecie-naglowka-male);
-  margin-block-end: 0;
+  /* ⚠ ODSTĘP GÓRNY JEST STAŁY (20 px na KAŻDYM kadrze), a boczny
+     PROGOWY (20 / 40 / 120 px). Pierwsza wersja ustawiała oba jednym
+     `margin`, więc przy 1440 pigułka odsuwała się od góry o 120 px
+     i cała strona zjeżdżała: H1 lądował na 310 px zamiast zmierzonych
+     210,4. Wzorzec ma `y = 20` na wszystkich dziewięciu zmierzonych
+     szerokościach — pionu nie rusza. */
+  margin-block: var(--wymiar-wciecie-naglowka-male) 0;
+  margin-inline: var(--wymiar-wciecie-naglowka-male);
   background: var(--kolor-rola-tlo-przezroczyste);
   backdrop-filter: blur(0.625rem);
   border-radius: var(--wymiar-promien-naglowka);
@@ -219,8 +225,7 @@
 /* ── OD 48,0625rem (769 px): pigułka pozioma, hamburger znika ── */
 @media (min-width: 48.0625rem) {
   .naglowek {
-    margin: var(--wymiar-wciecie-naglowka-srednie);
-    margin-block-end: 0;
+    margin-inline: var(--wymiar-wciecie-naglowka-srednie);
     padding: 1rem 2.5rem;
   }
 
@@ -265,8 +270,7 @@
 
 @media (min-width: 90rem) {
   .naglowek {
-    margin: var(--wymiar-wciecie-naglowka);
-    margin-block-end: 0;
+    margin-inline: var(--wymiar-wciecie-naglowka);
     padding: 1rem 5rem;
   }
 }
