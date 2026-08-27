@@ -1,0 +1,92 @@
+/* 2.3 — SZEŚĆ KART FUNKCJI (WWW/059, ADR-047).
+   Geometria z pomiaru wzorca, nie z oka.
+
+   ┌── ZMIERZONE (wzorzec) ────────────────────────────────────────────┐
+   │ karta      370 × 174,4 przy 1440 · promień 9 px · padding 24 px   │
+   │            tło = rola powierzchni · BEZ obrysu · bez cienia       │
+   │ tytuł      24 px / waga 500 · biel · interlinia 1,40              │
+   │ opis       16 px / waga 400 · tekst drugorzędny · interlinia 1,60 │
+   │ kolumny    3 (≥810, aż po 1600) · 1 (≤768) — kroku dwukolumnowego │
+   │            NIE MA WCALE                                           │
+   │ odstęp     30 px (≥1440) · 24 px (810–1280) · 30 px (≤768)        │
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ ODSTĘP NIE JEST MONOTONICZNY: 30 px na kadrze szerokim, 24 px na
+   średnim i znowu 30 px na wąskim. Zmierzone na sześciu szerokościach
+   (1600, 1440, 1280, 1024, 810, 768) — to nie szum pomiaru, tylko trzy
+   osobne wartości wzorca. Wygładzenie ich do jednej „bo tak logiczniej"
+   byłoby ujednoliceniem różnicy licencjonowanej.
+
+   ⚠ LICZBĘ KOLUMN POPRAWIONO PO BŁĘDNYM ODCZYCIE. Pierwszy pomiar
+   zameldował „2 kolumny przy 810 i 1024". Obalił go rachunek, nie
+   drugi pomiar: 3 × 298,7 + 2 × 24 = 944,1, czyli DOKŁADNIE szerokość
+   kontenera przy 1024 — zbyt dokładnie, żeby trzecia karta nie istniała.
+   Wada leżała w liczniku rzędów: grupował karty pasem 5 px, a karty
+   w jednym rzędzie różnią się wysokością i mają różne `y`. Po
+   poszerzeniu pasa do 120 px wychodzi 3 × 227,3 przy 810 i 3 × 384
+   przy 1280. Ta sama klasa co poprzednie zera sondy: narzędzie
+   meldowało wynik, nie błąd. */
+
+.sekcja {
+  padding-block: var(--wymiar-odstep-sekcji) 0;
+  padding-inline: var(--wymiar-wciecie-tresci-male);
+}
+
+.wnetrze {
+  margin-inline: auto;
+}
+
+.siatka {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.875rem;
+}
+
+/* KARTA. Rozdział od tła niesie PLAMA (tło powierzchni wobec tła
+   strony) — pierwszy z trzech mechanizmów z ADR-038. Obrysu nie ma,
+   tak jak we wzorcu; pilnuje tego `e2e/rozdzial-kart.spec.ts`. */
+.karta {
+  background: var(--kolor-rola-powierzchnia);
+  border-radius: 0.5625rem;
+  padding: 1.5rem;
+}
+
+.tytul {
+  margin: 0;
+  font-size: var(--tekst-karta);
+  font-weight: var(--waga-etykieta);
+  line-height: var(--interlinia-naglowek-male);
+  color: var(--kolor-rola-tekst-podstawowy);
+}
+
+.opis {
+  margin: 0.75rem 0 0;
+  font-size: var(--tekst-s);
+  font-weight: var(--waga-tekst);
+  line-height: 1.6;
+  color: var(--kolor-rola-tekst-drugorzedny);
+}
+
+@media (min-width: 48.0625rem) {
+  .sekcja {
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+  }
+
+  .siatka {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 90rem) {
+  .sekcja {
+    padding-inline: var(--wymiar-wciecie-tresci);
+  }
+
+  .siatka {
+    gap: 1.875rem;
+  }
+}

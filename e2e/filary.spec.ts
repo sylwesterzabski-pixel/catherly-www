@@ -141,7 +141,20 @@ test("K4: marker konkretów w roli akcentu (decyzja panelu a)", async ({
   page,
 }) => {
   await page.goto("/");
+  /* LOKATOR ZAWĘŻONY DO SEKCJI FILARU (2.3, ADR-047). Stało tu
+     `page.getByRole("listitem")` — wyszukiwanie po CAŁEJ stronie. Od
+     chwili, w której blok sześciu kart funkcji zaczął cytować to samo
+     zatwierdzone zdanie, filtr trafiał w DWA elementy i Playwright
+     przerywał na trybie ścisłym.
+
+     To nie jest usterka kart ani filarów: obie listy niosą ten sam
+     ciąg, bo taka była decyzja o zerze nowej treści. Przedmiotem tej
+     asercji jest MARKER LISTY FILARU, więc lokator ma wskazywać filar.
+     Piąty przypadek klasy „strażnik zerodowany przez zmianę otoczenia"
+     w tym zleceniu — i pierwszy, w którym zderzenie robi nie nowy
+     ELEMENT, tylko powtórzony TEKST. */
   const pierwszyKonkret = page
+    .locator('section[aria-labelledby="filar-1-h2"]')
     .getByRole("listitem")
     .filter({ hasText: pl.Filary.filar1.konkret1 });
   const kolorMarkera = await pierwszyKonkret.evaluate(

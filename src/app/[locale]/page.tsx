@@ -5,6 +5,7 @@ import { DbanieOSiebie } from "@/components/DbanieOSiebie";
 import { Faq } from "@/components/Faq";
 import { Filar } from "@/components/Filar";
 import { Hero } from "@/components/Hero";
+import { KartyFunkcji } from "@/components/KartyFunkcji";
 import { Nawigacja } from "@/components/Nawigacja";
 import { SekcjaRytmu } from "@/components/SekcjaRytmu";
 import { SekcjaTekstowa } from "@/components/SekcjaTekstowa";
@@ -87,6 +88,14 @@ export default async function StronaGlowna({ params }: Props) {
         >
           <p>{tDefinicja("tresc")}</p>
         </SekcjaTekstowa>
+
+        {/* 2.3 — SZEŚĆ KART FUNKCJI (WWW/059, ADR-047). Blok stoi po
+            definicji, a przed filarami: najpierw CZYM to jest (S4),
+            potem CO w tym jest (karty), a dopiero filary rozwijają
+            każdą rzecz osobno. Zero nowej treści — tytuły i zdania są
+            cytatami z istniejących kluczy, mapa karta→klucz stoi
+            w komponencie i tam się ją podmienia. */}
+        <KartyFunkcji />
 
         {FILARY.map(({ klucz, id, obrazPoLewej }) => (
           <Filar

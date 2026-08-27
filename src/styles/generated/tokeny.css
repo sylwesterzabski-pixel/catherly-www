@@ -42,6 +42,7 @@
   --tekst-plakietka: 0.75rem; /** Plakietka górna = 12 px, waga 700, interlinia 1,20 (POMIAR 0.1). */
   --tekst-h2-srednie: 2.625rem; /** H2 = 42 px w zakresie 810–1280 px (zmierzone). */
   --tekst-h2-male: 2.375rem; /** H2 = 38 px przy ≤ 768 px (zmierzone). ⚠ NIE jest mniejsze proporcjonalnie do H1: H1 spada 70→53→34 (współczynnik 0,49), H2 tylko 60→42→38 (0,63). Nagłówki sekcji trzymają się na wąskim kadrze BLIŻEJ desktopu niż H1 — dlatego nie wolno było nadać H2 progów H1 z domysłu. */
+  --tekst-karta: 1.5rem; /** Tytuł karty funkcji = 24 px (POMIAR wzorca, 2.3). Osobny token, bo skala nie ma tego stopnia: `m` to 20 px, `l` to 25 px. Wzięcie `l` dałoby 25 zamiast 24 — jeden piksel, ale wpisany jako „prawie wzorzec" w miejscu, gdzie mamy pomiar. */
   --waga-tekst: 500; /** Proza wzorca ma wagę 500, nie 400 (POMIAR 0.1). Inter jest zmienny, więc to nic nie kosztuje. */
   --waga-etykieta: 500;
   --waga-naglowek: 500; /** Nagłówki wzorca mają wagę 500, nie 600 (POMIAR 0.1). Satoshi jest u nas statyczny dokładnie w tej wadze — inna waga zeszłaby na syntezę przeglądarki. */
