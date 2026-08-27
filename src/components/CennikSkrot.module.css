@@ -88,12 +88,11 @@
    w akcencie — nie tło i nie rozmiar, żeby karta nie krzyczała mocniej
    niż sąsiadki i żeby nie trzeba było przesuwać układu.
 
-   ⚠ PLAKIETKI „Polecany na start zespołu" NIE MA i to jest luka
-   zgłoszona, nie przeoczona: tekst istnieje wyłącznie w zleceniu i po
-   polsku, a parytet wymaga trzech języków. Napisanie wersji EN i DE
-   byłoby autorstwem treści przez implementację — tej granicy nie
-   przekraczam (ta sama, na której stanęła etykieta hero w 2.2).
-   Obwódka działa dziś sama; plakietka dołoży się jedną linią. */
+   PLAKIETKA weszła w `WWW/060` — brzmienia od koordynatora z mandatu
+   (źródło D2:A), klucz `Cennik.plakietkaPolecany`, parytet ×3.
+   Poprzedni stan, zachowany jako ślad: plakietki NIE BYŁO, bo tekst
+   istniał wyłącznie w zleceniu i po polsku, a dopisanie EN i DE byłoby
+   autorstwem treści przez implementację. */
 .polecany {
   border-color: var(--kolor-rola-akcent);
 }
@@ -112,4 +111,18 @@
   .sekcja {
     padding-inline: var(--wymiar-wciecie-tresci);
   }
+}
+
+/* PLAKIETKA — pigułka w akcencie, etykieta CIEMNA. Człon (a) reguły
+   R-AKCENT-02: tekst na polu akcentu jest ciemny ZAWSZE, tu 10,22:1.
+   Rozmiar 14 px i waga 500 jak plakietka wzorca (POMIAR 0.1). */
+.plakietka {
+  justify-self: start;
+  background: var(--kolor-rola-akcent);
+  color: var(--kolor-rola-tekst-na-interakcji);
+  border-radius: var(--wymiar-promien-naglowka);
+  padding: 0.25rem 0.75rem;
+  font-size: var(--tekst-xs);
+  font-weight: var(--waga-etykieta);
+  white-space: nowrap;
 }

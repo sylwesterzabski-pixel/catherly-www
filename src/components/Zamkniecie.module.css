@@ -3,13 +3,21 @@
    CTA 1:1 z parą interakcji K2 (Hero.module.css); promień z tokenu
    ADR-028. */
 
+/* 2.8 — FINAŁ CTA W UKŁADZIE WZORCA (WWW/060, ADR-047).
+   Zmierzone przy 1440: padding sekcji 0 góra · 135 px boki · 135 px dół;
+   nagłówek wyśrodkowany na 800 px szerokości; CTA pigułka 46,4 px
+   wysokości o promieniu 50 px, wyśrodkowana. Przy 390 boki 20 px. */
 .sekcja {
-  padding: 3rem 1rem;
+  padding-block: 0 var(--wymiar-wciecie-tresci);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
   line-height: 1.6;
   text-align: center;
 }
 
 .wnetrze {
+  /* 800 px — zmierzona szerokość nagłówka finału. To ta sama liczba,
+     co kolumna prozy z POMIARU 0.3, i nie jest to zbieg: wzorzec ma
+     jedną miarę na „tekst czytany w środku kadru". */
   max-width: var(--wymiar-miara-kolumny);
   margin-inline: auto;
 }
@@ -25,9 +33,13 @@
   background: var(--kolor-rola-interakcja);
   color: var(--kolor-rola-tekst-na-interakcji);
   text-decoration: none;
-  font-weight: 600;
-  font-size: var(--tekst-s);
-  padding: 0.875rem 1.5rem;
+  font-weight: var(--waga-etykieta);
+  font-size: var(--tekst-xs);
+  padding-inline: 1.5rem;
+  padding-block: 0;
+  min-block-size: 2.9rem;
+  display: inline-grid;
+  place-content: center;
   border-radius: var(--wymiar-promien);
 }
 
@@ -64,4 +76,16 @@
       transparent
     ),
     var(--kolor-rola-tlo-strony);
+}
+
+@media (min-width: 48.0625rem) {
+  .sekcja {
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+  }
+}
+
+@media (min-width: 90rem) {
+  .sekcja {
+    padding-inline: var(--wymiar-wciecie-tresci);
+  }
 }

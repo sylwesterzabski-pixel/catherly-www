@@ -64,6 +64,18 @@ export function CennikSkrot({ locale }: Props) {
               }
             >
               <span className={styles.nazwa}>{nazwa}</span>
+              {/* PLAKIETKA PLANU POLECANEGO (WWW/060). Stoi WEWNĄTRZ
+                  karty i jest zwykłym tekstem, nie obrazem ani
+                  pseudoelementem — czytnik ekranu ma ją przeczytać
+                  razem z nazwą planu, bo niesie informację, a nie
+                  ozdobę. Brzmienia od koordynatora z mandatu (źródło
+                  D2:A), do ewentualnej podmiany przy oglądzie
+                  właściciela. */}
+              {nazwa === PLAN_POLECANY ? (
+                <span className={styles.plakietka}>
+                  {tCennik("plakietkaPolecany")}
+                </span>
+              ) : null}
               <span className={styles.cena}>
                 {cenyPlanu(nazwa, locale).miesiecznie}{" "}
                 <span className={styles.interwal}>

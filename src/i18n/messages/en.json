@@ -119,7 +119,8 @@
     "potwierdzeniaAria": "Confirmations",
     "potwierdzenie1": "Cancel at any time",
     "potwierdzenie2": "Data export, always available: vCard and CSV",
-    "potwierdzenie3": "Data stored in the EU"
+    "potwierdzenie3": "Data stored in the EU",
+    "plakietkaPolecany": "Recommended for new teams"
   },
   "ObrazyFilarow": {
     "filar1": "The Daily Method of Operations (DMO) screen in the Catherly app: task counters for the day with targets and progress bars.",

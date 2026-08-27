@@ -153,6 +153,24 @@ export default async function StronaGlowna({ params }: Props) {
         {/* S11 — cennik w skrócie (K10; ceny z migawki). */}
         <CennikSkrot locale={locale as Locale} />
 
+        {/* 2.7 — SEKCJI OPINII ŚWIADOMIE TU NIE MA (WWW/059/060, T53).
+            Wzorzec ma w tym miejscu dwa przeciwbieżne pasy cytatów
+            klientek (∓50 px/s, zmierzone). Prawdziwych cytatów nie mamy,
+            a zmyślone są zakazem bezwzględnym.
+
+            Zlecenie dawało dwa wyjścia — zasilić sekcję „Sześcioma
+            obawami" albo ukryć za flagą. Wybrano UKRYCIE, z dwóch
+            powodów: (1) „Sześć obaw" stoi TUŻ NIŻEJ jako FAQ, więc pas
+            opinii pokazywałby te same sześć par drugi raz na jednym
+            ekranie; (2) sekcja opinii ma nieść CUDZE świadectwo —
+            wypełniona naszymi odpowiedziami wygląda jak dowód społeczny
+            i nim nie jest, czyli jest bliżej pseudo-dowodu niż pustego
+            miejsca.
+
+            Nie ma tu też komponentu zwracającego `null` za flagą: kod,
+            który nigdy się nie wykonuje, psuje się po cichu. Warunek
+            powrotu i pełne uzasadnienie — rejestr, pozycja T53. */}
+
         {/* S12 — sześć obaw (instancja K8). Naglowek sr-only „Sześć
             obaw" = część opisowa tytułu content/<jezyk>/obawy.md
             (pkt 24) — pochodna treści; WYMAGA SANKCJI właściciela

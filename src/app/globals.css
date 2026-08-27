@@ -582,13 +582,52 @@ html {
 
 @media (prefers-reduced-motion: no-preference) {
   /* ── R1: wejście elementu — jedna klatka kluczowa na wszystko ── */
-  @keyframes ruch-wejscie {
+  /* 2.9 — WEJŚCIE DOSTROJONE DO POMIARU 0.4 (WWW/060, ADR-047).
+     Do 2026-08-27 była tu JEDNA klatka o czasie 550 ms na obie
+     własności. Pomiar wzorca (próbkowanie rAF, oba kadry) pokazał, że
+     przezroczystość i przesunięcie mają RÓŻNE czasy:
+
+       przezroczystość 0 → 1     334,9 ms (1440) · 348,1 ms (390)
+       przesunięcie 20 px → 0    251,0 ms (1440) · 266,7 ms (390)
+       skala                     BEZ ZMIAN — wzorzec jej nie rusza
+
+     Dwa czasy znaczą dwie animacje, nie jedną: przy jednej tekst
+     dojeżdżał na miejsce dokładnie wtedy, kiedy kończył się zanik,
+     a we wzorcu jest już na miejscu, gdy jeszcze blaknie. Przesunięcie
+     20 px trafialiśmy co do piksela już wcześniej.
+
+     Krzywa: udział drogi po połowie czasu wynosi we wzorcu 0,72–0,76
+     dla przezroczystości — wyraźne `ease-out`. `cubic-bezier(0.2, 0, 0,
+     1)` odczytany ze stylu wyliczonego wzorca daje ok. 0,79.
+
+     ⚠ CZASY ZADEKLAROWANE NIE SĄ CZASAMI ZMIERZONYMI, i to jest tu całe
+     sedno. Sonda wykrywa ruch progiem zmiany na klatkę, więc ucina ogon
+     krzywej `ease-out`: ostatnie kilkanaście procent drogi zmienia się
+     wolniej niż próg i wypada z pomiaru. Ucięcie zależy od KSZTAŁTU
+     krzywej, więc jest różne dla obu własności.
+
+     Porównywalne są WYKRYTE wartości po obu stronach — ta sama sonda,
+     ten sam próg. Przy 340/260 ms nasze wykryte wynosiły 283,5/166,7,
+     a wzorca 334,9/251,0. Deklaracje podniesiono więc do 400/420 ms,
+     żeby zrównać to, co da się zmierzyć jednakowo.
+
+     Zapisuję to zamiast wpisać „340 ms, jak wzorzec" — bo tamta liczba
+     byłaby DEKLARACJĄ udającą pomiar, a różnica między nią a wykryciem
+     wróciłaby przy pierwszym sprawdzeniu jako rzekomy defekt. */
+  @keyframes ruch-wejscie-zanik {
     from {
       opacity: 0;
-      transform: translateY(1.25rem);
     }
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes ruch-wejscie-przesuw {
+    from {
+      transform: translateY(1.25rem);
+    }
+    to {
       transform: none;
     }
   }
@@ -597,7 +636,9 @@ html {
      w kadrze, więc oś przewijania nie miałaby czego mierzyć).
      Tu 550 ms i opóźnienia 70 ms są PRAWDZIWYMI wartościami czasu. */
   .ruch-stagger > * {
-    animation: ruch-wejscie 550ms ease-out both;
+    animation:
+      ruch-wejscie-zanik 400ms cubic-bezier(0.2, 0, 0, 1) both,
+      ruch-wejscie-przesuw 420ms cubic-bezier(0.2, 0, 0, 1) both;
   }
   .ruch-stagger > *:nth-child(1) { animation-delay: 0ms; }
   .ruch-stagger > *:nth-child(2) { animation-delay: 70ms; }

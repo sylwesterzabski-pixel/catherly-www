@@ -3,12 +3,34 @@
    z wartością sprzed ADR).
    Wartości wizualne wyłącznie var(--…) z tokenów; wymiary w rem — zero px. */
 
+/* 2.8 — STOPKA W UKŁADZIE WZORCA (WWW/060, ADR-047).
+   ⚠ TŁO ZMIENIONE Z `powierzchnia` NA `tło strony`. Zmierzone we
+   wzorcu: stopka ma dokładnie tę samą barwę co reszta strony
+   i NIE odcina się od niej plamą — rozdział niesie sama KRESKA.
+   Nasza stopka miała tło powierzchni, czyli była jaśniejszym pasem;
+   to była różnica widoczna od pierwszego spojrzenia.
+
+   Kreska ZOSTAJE i jest teraz jedynym rozdziałem, więc nie wolno jej
+   zdjąć „przy porządkowaniu" — bez niej stopka zlewa się z treścią. */
 .stopka {
-  background: var(--kolor-rola-powierzchnia);
-  /* Kreska dekoracyjna — rola kreski (ADR-025). */
+  background: var(--kolor-rola-tlo-strony);
+  /* Jedyny rozdział stopki od treści — patrz uwaga wyżej. */
   border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
-  padding: 1.5rem 1rem;
+  padding-block: var(--wymiar-odstep-sekcji) 3rem;
+  padding-inline: var(--wymiar-wciecie-tresci-male);
   font-size: var(--tekst-xs);
+}
+
+@media (min-width: 48.0625rem) {
+  .stopka {
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+  }
+}
+
+@media (min-width: 90rem) {
+  .stopka {
+    padding-inline: var(--wymiar-wciecie-tresci);
+  }
 }
 
 .stopka h2 {
