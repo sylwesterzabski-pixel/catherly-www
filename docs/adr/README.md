@@ -52,6 +52,8 @@ sprzeczności wygrywa.
 | 043 | **Testy czerpią barwy ról ze źródła** (`design/tokens.json`), nie pamiętają literałów — przepięcie elementu na inną rolę nadal daje czerwień, zmiana wartości roli już nie (i tak ma być); helper dostaje własnego strażnika z kontrolą pozytywną | [043](043-testy-czerpia-barwy-rol-ze-zrodla.md) |
 | 044 | **Sprostowanie po pomiarze wzorca** — role krojów były ODWROTNE (Inter niesie nagłówki i prozę, Satoshi dwie plakietki 12 px; preload przepięty), tracking JEST progowy (−1 / −1,6 / −3 px), H2 ma własne progi i nie idzie za H1 — **prostuje ADR-040 i ADR-041** | [044](044-sprostowanie-krojow-i-skali-po-pomiarze-wzorca.md) |
 | 045 | **2.1 NAV w stylistyce wzorca** — pigułka 80 px / promień 50 / rozmycie, hamburger bez JS (panel jako RODZEŃSTWO `details`, bo Chromium chowa treść przez anonimowe pudełko), `sticky` ZDJĘTY po rachunku (pas 200 px łamał własny pułap 96 px), 20. rola `tlo-przezroczyste`, naprawiona biała kanwa w sondzie | [045](045-nawigacja-w-stylistyce-wzorca.md) |
+| 046 | **2.2 HERO w układzie wzorca** — wyśrodkowane, mockup z prawdziwego kadru Z6 (DMO, nie „Pulpit” — takiego zrzutu w dostawie NIE MA); etykieta pominięta; axe czekał na klatkę animacji i zgłaszał 99 fałszywych naruszeń | [046](046-hero-w-ukladzie-wzorca.md) |
+| 047 | **2.3–2.9 sekcje w geometrii wzorca** — karty, filary, pas −75 px/s, cennik z plakietką, opinie za warunkiem powrotu (T53), finał i stopka, ruch rozdzielony na dwie animacje; **czwarty mechanizm rozdziału kart**; sprostowany fałszywy cytat z ADR-003 | [047](047-sekcje-strony-glownej-w-geometrii-wzorca.md) |
 
 Wpisy 023–028 dopisano 2026-08-14 — powstały wcześniej, ale nie trafiły
 do tej tabeli. Pliki są źródłem, tabela tylko mapą; przy rozjeździe
