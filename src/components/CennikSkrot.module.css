@@ -3,13 +3,17 @@
    zero px. Link celowo BEZ własnych kolorów: globals stylizuje
    a przez rolę link/link-aktywny (W1). */
 
+/* 2.6 — KARTY CENNIKA W GEOMETRII WZORCA (WWW/059, ADR-047).
+   Zmierzone: 3 kolumny × 370 px przy 1440, odstęp 30 px, promień 5 px,
+   padding 35/40 px, tło = rola powierzchni, BEZ obrysu. Przy 390 jedna
+   kolumna 350 px, odstęp 30 px. */
 .sekcja {
-  padding: 3rem 1rem;
+  padding-block: var(--wymiar-odstep-sekcji) 0;
+  padding-inline: var(--wymiar-wciecie-tresci-male);
   line-height: 1.6;
 }
 
 .wnetrze {
-  max-width: var(--wymiar-kontener-strony);
   margin-inline: auto;
 }
 
@@ -20,7 +24,8 @@
 
 .plany {
   display: grid;
-  gap: 1rem;
+  grid-template-columns: 1fr;
+  gap: 1.875rem;
   margin: 0 0 1.25rem;
   padding: 0;
   list-style: none;
@@ -28,9 +33,12 @@
 
 .plan {
   background: var(--kolor-rola-powierzchnia);
-  border: 0.0625rem solid var(--kolor-rola-kreska);
-  border-radius: var(--wymiar-promien);
-  padding: 1rem 1.25rem;
+  /* Obrys przezroczysty, nie brak obrysu — dzięki temu karta polecana
+     dostaje go bez zmiany wymiarów, a wszystkie trzy stoją równo.
+     Wzorzec kart nie obrysowuje; rozdział niesie PLAMA powierzchni. */
+  border: 0.0625rem solid transparent;
+  border-radius: 0.3125rem;
+  padding: 2.1875rem 2.5rem;
   display: flex;
   flex-wrap: wrap; /* W6: 320 px, zoom 200%, teksty DE */
   justify-content: space-between;
@@ -73,5 +81,35 @@
 @media (min-width: 48rem) {
   .plany {
     grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* PLAN POLECANY (decyzja właściciela D2:A). Wyróżnienie niesie OBWÓDKA
+   w akcencie — nie tło i nie rozmiar, żeby karta nie krzyczała mocniej
+   niż sąsiadki i żeby nie trzeba było przesuwać układu.
+
+   ⚠ PLAKIETKI „Polecany na start zespołu" NIE MA i to jest luka
+   zgłoszona, nie przeoczona: tekst istnieje wyłącznie w zleceniu i po
+   polsku, a parytet wymaga trzech języków. Napisanie wersji EN i DE
+   byłoby autorstwem treści przez implementację — tej granicy nie
+   przekraczam (ta sama, na której stanęła etykieta hero w 2.2).
+   Obwódka działa dziś sama; plakietka dołoży się jedną linią. */
+.polecany {
+  border-color: var(--kolor-rola-akcent);
+}
+
+@media (min-width: 48.0625rem) {
+  .sekcja {
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+  }
+
+  .plany {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 90rem) {
+  .sekcja {
+    padding-inline: var(--wymiar-wciecie-tresci);
   }
 }
