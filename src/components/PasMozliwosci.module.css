@@ -1,0 +1,82 @@
+/* 2.5 — PAS MOŻLIWOŚCI (WWW/059, ADR-047).
+   Geometria i prędkość z pomiaru wzorca.
+
+   ┌── ZMIERZONE (wzorzec) ────────────────────────────────────────────┐
+   │ sekcja     padding 135 px góra i boki, 0 na dole                  │
+   │ pozycje    wysokość 36 px · odstęp 48 px                          │
+   │ prędkość   −75 px/s przy R² = 1,0 — ruch IDEALNIE JEDNOSTAJNY     │
+   │            i NIEZALEŻNY OD KADRU (te same −75 przy 1440 i 390)    │
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ PRĘDKOŚĆ JEST DOKŁADNA TYLKO DLA JEDNEJ DŁUGOŚCI TREŚCI, i to jest
+   granica konstrukcji, nie przeoczenie. CSS nie zna szerokości masztu,
+   więc czas trwania musi być liczbą stałą — a przy stałym czasie
+   prędkość zależy od tego, jak długi jest maszt. Nasze osiem nazw ma
+   inną długość w każdym języku, więc px/s rozjeżdża się między pl, en
+   i de. Czas dobrany tak, żeby PL trafiał w −75 px/s; wartości dla
+   trzech języków zmierzone i zapisane w zwrotce.
+   Alternatywa — stała szerokość pozycji — dawałaby równą prędkość
+   kosztem ucinania dłuższych nazw, czyli psułaby treść dla liczby.
+
+   ⚠ RUCH NIESKOŃCZONY. Przy `prefers-reduced-motion: reduce` pas STOI
+   — nie zwalnia, tylko stoi, bo reguła ruchu jest w całości pod
+   `no-preference`. Bez tego pas byłby jedyną animacją serwisu, której
+   nie da się wyłączyć. */
+
+.pas {
+  padding-block: var(--wymiar-odstep-sekcji) 0;
+  /* Bez wcięcia bocznego: pas ma dojeżdżać do krawędzi kadru, inaczej
+     nazwy znikałyby w połowie pustego marginesu zamiast za krawędzią. */
+  overflow: hidden;
+}
+
+.maszt {
+  display: flex;
+  inline-size: max-content;
+  gap: 3rem;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 3rem;
+  inline-size: max-content;
+}
+
+.pozycja {
+  display: grid;
+  align-content: center;
+  block-size: 2.25rem;
+  white-space: nowrap;
+  font-size: var(--tekst-s);
+  font-weight: var(--waga-etykieta);
+  color: var(--kolor-rola-tekst-drugorzedny);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .maszt {
+    /* Przesunięcie o połowę masztu = dokładnie jedna kopia listy,
+       więc pętla nie ma skoku.
+
+       CZAS WYLICZONY Z DROGI, NIE DOBRANY NA OKO: maszt polski ma
+       2480,8 px, droga jednego cyklu to połowa plus odstęp kopii,
+       czyli 1264,4 px. Przy zmierzonych −75 px/s wzorca daje to
+       1264,4 / 75 = 16,86 s. Pierwsza wersja miała 24 s i wychodziło
+       −52,7 px/s — liczba wzięta z niczego. */
+    animation: pas-przesuw 16.86s linear infinite;
+  }
+}
+
+@keyframes pas-przesuw {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    /* Połowa masztu to jedna kopia listy RAZEM z odstępem między
+       kopiami — stąd korekta o gap, inaczej pętla przeskakuje o 48 px. */
+    transform: translateX(calc(-50% - 1.5rem));
+  }
+}

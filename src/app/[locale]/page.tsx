@@ -6,6 +6,7 @@ import { Faq } from "@/components/Faq";
 import { Filar } from "@/components/Filar";
 import { Hero } from "@/components/Hero";
 import { KartyFunkcji } from "@/components/KartyFunkcji";
+import { PasMozliwosci } from "@/components/PasMozliwosci";
 import { Nawigacja } from "@/components/Nawigacja";
 import { SekcjaRytmu } from "@/components/SekcjaRytmu";
 import { SekcjaTekstowa } from "@/components/SekcjaTekstowa";
@@ -96,6 +97,11 @@ export default async function StronaGlowna({ params }: Props) {
             cytatami z istniejących kluczy, mapa karta→klucz stoi
             w komponencie i tam się ją podmienia. */}
         <KartyFunkcji />
+
+        {/* 2.5 — pas możliwości (WWW/059). Odpowiednik pasa integracji
+            wzorca; u nas nazwy naszych możliwości, bo logotypy firm są
+            zakazem bezwzględnym. Osiem cytatów z kluczy `*_nazwa`. */}
+        <PasMozliwosci />
 
         {FILARY.map(({ klucz, id, obrazPoLewej }) => (
           <Filar
