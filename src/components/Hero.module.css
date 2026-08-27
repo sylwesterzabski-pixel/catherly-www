@@ -123,6 +123,59 @@
 @media (min-width: 90rem) {
   .hero {
     padding-inline: var(--wymiar-wciecie-tresci);
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* TŁO DEKORACYJNE HERO — kadr fali 2 (WWW/051, ADR-048).
+     POMIAR 0.7 pokazał, że wzorzec ma w hero DRUGI obraz i wyłącznie
+     na kadrze desktopowym (1440 × 1290, `object-position: 50% 0%`);
+     przy 768 i 390 sekcja ma jednolite tło strony. Odtwarzamy to samo
+     zachowanie: warstwa wchodzi dopiero od 90rem.
+
+     Tło w CSS, nie `<img>` — dzięki temu przeglądarka NIE POBIERA pliku
+     na kadrach, na których reguła nie obowiązuje. Element pusty
+     z `alt=""` pobierałby go zawsze.
+
+     ⚠ WARSTWA (b) ADR-037: dekoracja bez czytelnego tekstu. Werdykt 1:1
+     wpisany do manifestu fali 2 — panele mają zastępcze paski zamiast
+     napisów, wykresy nie mają liczb. Nie jest podpisana i nie sąsiaduje
+     z żadnym twierdzeniem o produkcie; dowód produktu niesie zrzut Z6
+     NIŻEJ, w tej samej sekcji, i te dwie warstwy są rozdzielone
+     jawnie: dekoracja jest TŁEM, zrzut jest TREŚCIĄ. */
+  /* ⚠ POŁOŻENIE I MOC PRZESTAWIONE PO OGLĄDZIE, nie dobrane od razu.
+     Pierwsza wersja rozciągała tło od górnej krawędzi sekcji przez
+     34rem, przy kryciu 0,5 — i po zrzucie okazało się, że robi DWIE
+     szkody naraz: panele stały ZA leadem i CTA, obniżając czytelność,
+     a jednocześnie tuż NAD prawdziwym zrzutem Z6, przez co dekoracja
+     i dowód produktu zlewały się w jedną kompozycję. To jest dokładnie
+     zacieranie rozdziału warstw (a) i (b), którego pilnuje ADR-037 —
+     a więc wada gorsza niż estetyczna.
+
+     Zlecenie mówi „za/obok mockupu Z6" i to jest teraz brane
+     dosłownie: warstwa zaczyna się DOPIERO nad zrzutem, tekstu nie
+     dotyka, a krycie zeszło z 0,5 na 0,22. Maska wygasza ją ku dołowi,
+     żeby nie tworzyła krawędzi na styku ze zrzutem. */
+  .kolumny::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 26rem;
+    inset-inline: -6rem;
+    block-size: 22rem;
+    z-index: -2;
+    pointer-events: none;
+    background-image: url("/obrazy/fala2/mockup-glowny-16x9.avif");
+    background-size: cover;
+    background-position: 50% 30%;
+    opacity: 0.22;
+    /* Maska słowami kluczowymi, nie zapisem funkcyjnym barwy: w masce
+       liczy się WYŁĄCZNIE alfa, a linter tokenów — słusznie — nie umie
+       odróżnić barwy w masce od barwy spoza palety i zapalał się na
+       zapisie funkcyjnym. `black`/`transparent` dają ten sam gradient
+       krycia bez wnoszenia barwy do arkusza.
+       (Czwarty raz w tej sesji linter złapał zapis barwy w KOMENTARZU —
+       tym razem w zdaniu tłumaczącym, czemu go unikam.) */
+    mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
   }
 }
 
@@ -130,12 +183,14 @@
    Leży POD treścią (`z-index: -1`) i nie łapie wskaźnika. Alfa 6% —
    przy tej wartości napis jest fakturą tła, a nie drugim nagłówkiem.
 
-   ⚠ WZORZEC MA TU CO INNEGO i to jest odnotowana różnica, nie
-   przeoczenie: jego dekoracją hero jest pełnoekranowy obraz tła
-   (1440 × 1290), obecny WYŁĄCZNIE na kadrze desktopowym — przy 768
-   i 390 sekcja ma jednolite tło strony. Takiego pliku nie mamy,
-   a wytworzenie go to decyzja o materiale obrazowym, nie implementacja.
-   Duch zostaje jako nasza dekoracja tej samej roli.
+   ⚠ ZDANIE O BRAKU PLIKU TŁA JEST JUŻ NIEAKTUALNE (WWW/051, 2026-08-27).
+   Stało tu: „Takiego pliku nie mamy, a wytworzenie go to decyzja
+   o materiale obrazowym". Plik przyszedł falą 2 i wszedł jako
+   `.kolumny::before` wyżej — dokładnie z zachowaniem wzorca, czyli
+   wyłącznie od 90rem. Duch ZOSTAJE obok niego: leży na innej warstwie
+   (`z-index: -1` wobec `-2`), jest napisem, nie obrazem, i przy 6% alfy
+   nie konkuruje z tłem. Na kadrach poniżej 90rem duch jest jedyną
+   dekoracją hero — tak samo jak we wzorcu, gdzie tła tam nie ma.
 
    ⚠ NAPRAWA ZWISU PO ADR-038 (2026-08-26). Do tej daty stało tu
    `--kolor-rola-tekst-na-inwersji` — rolę usunięto razem z całą warstwą
