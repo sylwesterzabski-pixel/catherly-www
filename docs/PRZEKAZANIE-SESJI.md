@@ -33,8 +33,9 @@ zero niewypchniętych.
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` (463 linie, stan 2026-08-24) — 24 pozycje treści
-   + **49** pozycji technicznych **T1–T49** + **skorowidz ogniw** (T39). **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` — 24 pozycje treści + **54** pozycji technicznych
+   **T1–T54** + **skorowidz ogniw** (T39). T54 dopisane 2026-09-01 (`WWW/064`): luka
+   `pnpm install --ignore-scripts` → hook nieaktywny. **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
