@@ -38,6 +38,11 @@ zero niewypchniętych.
    `pnpm install --ignore-scripts` → hook nieaktywny. **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
+   **WWW/065 wykonane 2026-09-01** (rola INŻYNIER PROGRAMOWANIA + INŻYNIER DESIGNU):
+   `docs/design/SPEC-STRONY-DLA-FRAMERA.md` — specyfikacja zwrotna pod prompt do Framera,
+   §1–§8 (mapa serwisu, treść verbatim ×3, obrazy, ograniczenia, SEO, [BRAK]/[LUKA],
+   wzorzec Habitline+Nexus, mapowanie). Zero zmian w kodzie. Commit czeka na push razem
+   z resztą gałęzi.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.
@@ -2674,6 +2679,11 @@ dotyczą bieżącej linii pracy:
 
 19. **Blok designu (wtorek)** — właściciel: *„Reszta czeka do bloku designu."*
     Cała robota nad podstronami jest w stanie spoczynku do briefu designu.
+20. **WWW/065 WYKONANE 2026-09-01** — `docs/design/SPEC-STRONY-DLA-FRAMERA.md` committed.
+    Specyfikacja zwrotna pod prompt do Framera: §1 mapa serwisu (11 tras ×3), §2 treść
+    verbatim per strona/sekcja, §3 komponenty wspólne, §4 ograniczenia, §5 SEO, §6 lista
+    [BRAK]/[LUKA] (17 pozycji z pytaniami do właściciela), §7 granice pomiaru, §8 wzorzec
+    Habitline+Nexus+mapowanie. Zero zmian kodu. Commit czeka na push (zakaz 1).
 
 ---
 
