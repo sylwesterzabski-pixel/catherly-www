@@ -72,6 +72,22 @@
   --wymiar-odstep-6: 1.5rem; /** Siatka odstępów = 24 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
   --wymiar-odstep-7: 2rem; /** Siatka odstępów = 32 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
   --wymiar-promien-sredni: 0.75rem; /** Promień 12 px (POMIAR 0.3, 35 wystąpień). */
+  /**
+   * Ósmy stopień skali odstępów = 40 px — WARTOŚĆ Z §8.1 (Habitline, gap kart), nie z POMIARU 0.3. Skala `odstep-1..7` kończyła się na 32 px; ten stopień ją PRZEDŁUŻA, nie zmienia.
+   * 
+   * ⚠ WCHODZI Z POWODU MECHANICZNEGO, NIE ESTETYCZNEGO — i to jest cała treść tego tokena. Trzeci mechanizm rozdziału z ADR-038 wymaga odstępu ≥ 30 px przy promieniu > 0. Slot fotograficzny filaru miał na kadrze ≤ 768 px odstęp 24 px od tekstu (`margin-block-start: 1.5rem`), czyli PONIŻEJ progu — a po zdjęciu zrzutów (ADR-048, rozstrzygnięcie 1) odpadają też trzy pozostałe mechanizmy: plama 1,09 (< 1,30), kreska 0,00 (wzorzec ramek nie obrysowuje), pokrycie obrazem 0% (obrazu nie ma). Cztery z czterech na czerwono na `mobile-390`.
+   * 
+   * ⚠ TEGO STANU NIGDY NIE ZMIERZONO. Wiersz „ramka kadru" wszedł do `e2e/rozdzial-kart.spec.ts` commitem PÓŹNIEJSZYM niż włączenie osadzenia zrzutów — strażnik nigdy nie przebiegł przeciw PUSTEJ ramce. Powrót do stanu „bez zrzutów" nie jest więc powrotem do stanu wcześniej zielonego, tylko wejściem w konfigurację niemierzoną. Naprawa idzie przez KOD (odstęp rośnie do 40 px), nie przez próg strażnika — próg 30 px zostaje nietknięty (zakaz 3).
+   * 
+   * §8.1 podawał przedział 40–50 px; wybrano DOLNY koniec (rozstrzygnięcie właściciela, WWW/072). 40 px daje 10 px zapasu nad progiem 30 — `odstep-7` (32 px) dałby 2 px, czyli margines pozorny.
+   */
+  --wymiar-odstep-8: 2.5rem;
+  /**
+   * Promień 16 px — WARTOŚĆ Z §8.1 (Habitline), nie z POMIARU 0.3. Wchodzi jako UZUPEŁNIENIE luki, nie zamiennik: między `promien-sredni` (12 px) a `promien-pigulki` (50 px) skala nie ma ani jednego stopnia, a slot fotograficzny sekcji „Dbanie o siebie" potrzebuje promienia większego niż ramka filaru i mniejszego niż pigułka.
+   * 
+   * ⚠ ŹRÓDŁO INNE NIŻ RESZTA `wymiar.*` I DLATEGO OZNACZONE. §8.1 podawał PRZEDZIAŁ 16–20 px, nie liczbę; wybrano DOLNY koniec (rozstrzygnięcie właściciela, WWW/072) — bo 16 px leży bliżej obecnej skali i mniej ją rozsuwa. §8.1 jest przy tym pomiarem SSR (`SPEC-STRONY-DLA-FRAMERA.md:563`, [LIMIT-URL]: „dolne ograniczenie, nie pełny obraz"), czyli SŁABSZYM niż `getComputedStyle` stojące za POMIAREM 0.3. Przy konflikcie wygrywa POMIAR 0.3 — patrz ADR-048.
+   */
+  --wymiar-promien-karty: 1rem;
   --wymiar-wciecie-naglowka: 7.5rem; /** Nagłówek strony jest odsunięty od krawędzi o 120 px przy ≥ 1440 (zmierzone: x=120 przy 1440 i 1600, więc to WCIĘCIE, nie szerokość maksymalna). */
   --wymiar-wciecie-naglowka-srednie: 2.5rem; /** Wcięcie nagłówka = 40 px w zakresie 810–1280 px. */
   --wymiar-wciecie-naglowka-male: 1.25rem; /** Wcięcie nagłówka = 20 px przy ≤ 768 px. */
@@ -83,5 +99,13 @@
   --wymiar-miara-leadu: 36.875rem; /** Szerokość akapitu wiodącego w hero = 590 px, STAŁA i wyśrodkowana (zmierzone: 590 px przy 1600, 1440, 1280, 1024 i 810; dopiero przy 768 i 390 zwęża ją kontener). To nie jest miara w `ch` ani procent — wzorzec trzyma tu jedną liczbę. */
   --kroj-naglowek: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój NAGŁÓWKÓW = ten sam Inter (ADR-044). ⚠ ADR-040 przypisał tu Satoshi na podstawie POMIARU 0.1, który MYLNIE opisał Satoshi jako krój nagłówkowy. Pomiar CDP na wzorcu: H1 i H2 renderują się jako `Inter Medium`, rodzina zadeklarowana to `Inter` i `Inter-Medium`. Token ZOSTAJE osobny mimo równej wartości — nagłówki i proza to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. */
   --kroj-plakietka: "Satoshi", "Satoshi zapasowy", system-ui, sans-serif; /** Krój PLAKIETKI (ADR-044). Satoshi Medium 2.000, public/fonts/satoshi-medium.woff2, 17,3 kB, źródło fontshare.com. POMIAR: wzorzec używa Satoshi na DOKŁADNIE DWÓCH elementach — „Get 3 Free month" i „on Pro plan", oba 12 px, waga 700, barwa #070806. To jest ta sama plakietka, którą POMIAR 0.1 opisał w skali (12 px / 700 / interlinia 1,20). Kontrola pozytywna zera: 2 elementy w Satoshi wobec 257 w Interze — dwójka jest wynikiem, nie zerem narzędzia. */
+  /**
+   * Cień warstwowy karty — trzy warstwy z §8.1 (`SPEC-STRONY-DLA-FRAMERA.md:634`), przeliczone z px na rem (0,6/1,5/1,5 → 2,3/5,9/3 → 10/26/4,5 px). PIERWSZA GRUPA `cien` W TYM PLIKU: do 2026-09-02 repozytorium nie znało cieni w ogóle — zero `box-shadow` w całym `src/`, zero klucza cienia tutaj.
+   * 
+   * ⚠ UŻYCIE OGRANICZONE DO STANU POD WSKAŹNIKIEM I POD FOKUSEM — i to ograniczenie jest CAŁĄ treścią tego tokena, nie jego szczegółem. Pomiar wzorca WWW/050-FINAL zapisany w `KartyFunkcji.module.css:6` brzmi „tło = rola powierzchni · BEZ obrysu · bez cienia", a `globals.css:402` — „Cień NIE JEST w systemie". Gdyby cień wszedł w SPOCZYNKU, unieważniłby oba te zdania i trzeci mechanizm rozdziału z ADR-038 (karty rozdziela KOMPOZYCJA, nie cień). W stanie spoczynku nic się nie zmienia; cień jest wyłącznie odpowiedzią na wskaźnik. Rozstrzygnięcie właściciela, WWW/072 — patrz ADR-048.
+   * 
+   * ⚠ BARWA SUROWA `rgba(0, 0, 0, …)` STOI TU CELOWO i nie jest złamaniem zakazu 9: `design/tokens.json` JEST źródłem prawdy o wartościach wizualnych, więc surowa barwa należy właśnie tutaj — tak samo jak `rgba(7, 8, 6, 0.6)` przy `kolor.rola.tlo-przezroczyste`. Cień to czerń z alfą, nie rola palety, i wpisanie go do `kolor.rola` ruszyłoby literał `LICZBA_ROL = 20` w `scripts/straznik-tokenow.mjs`, czyli DECYZJĘ o liczbie ról — a to inna decyzja niż ta.
+   */
+  --cien-karta: 0 0.0375rem 0.09375rem -0.09375rem rgba(0, 0, 0, 0.17), 0 0.14375rem 0.36875rem -0.1875rem rgba(0, 0, 0, 0.14), 0 0.625rem 1.625rem -0.28125rem rgba(0, 0, 0, 0.02);
   --kolor-rola-tlo-strony: var(--kolor-tlo); /** Tło strony — wartość wzorca ze zlecenia WWW/050-FINAL, zmierzona 2026-08-26 (`getComputedStyle`, nie z oka). Motyw ODWRÓCONY z jasnego na ciemny: to jest zmiana warstwy podstawowej, nie odcienia. */
 }

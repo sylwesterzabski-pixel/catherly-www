@@ -17,13 +17,26 @@ Ten plik jest **punktem wejścia**. Wskazuje na niego `CLAUDE.md`, żeby nie da�
 się go minąć — reguła kanonu „raport, którego nikt nie czyta, przestaje być
 raportem" dotyczy także tego dokumentu.
 
-⏸ **STAN NA 2026-09-01: WWW W SPOCZYNKU — CZEKA NA NOWY WZORZEC Z FRAMERA.**
-Decyzja właściciela (26.08.2026): obecna kompozycja strony głównej jest
-**unieważniona**. Nowy wzorzec = publikacja właściciela z Framera; następne
-zlecenie po jej nadejściu. **WWW/063 nie istnieje** (numer unieważniony, nigdy
-nie wysłany). Sesja otwarta na nowo: **przeczytaj stan, zamelduj i czekaj —
-nie zaczynaj pracy z własnej ręki.** Drzewo czyste, zdalny zsynchronizowany,
-zero niewypchniętych.
+▶ **STAN NA 2026-09-02: SPOCZYNEK ZNIESIONY — TRWA PRZEBUDOWA STRONY GŁÓWNEJ
+(`WWW/072`).** Zlecenie z 02.09.2026 niesie pięć wiążących decyzji właściciela
+o wyglądzie strony głównej i **zdejmuje stan spoczynku z 26.08**. Czytanie:
+nota o spoczynku (niżej, zachowana jako ślad) opisywała stan **starszy**;
+przy rozjeździe obowiązuje decyzja nowsza.
+
+⏸ **ŚLAD — STAN NA 2026-09-01, JUŻ NIEOBOWIĄZUJĄCY:** *„WWW W SPOCZYNKU —
+CZEKA NA NOWY WZORZEC Z FRAMERA. Decyzja właściciela (26.08.2026): obecna
+kompozycja strony głównej jest unieważniona. Nowy wzorzec = publikacja
+właściciela z Framera; następne zlecenie po jej nadejściu. Sesja otwarta na
+nowo: przeczytaj stan, zamelduj i czekaj — nie zaczynaj pracy z własnej
+ręki."* **WWW/063 nadal nie istnieje** (numer unieważniony, nigdy nie
+wysłany) — ta część noty zostaje w mocy.
+
+⚠ **CZEGO ZNIESIENIE SPOCZYNKU NIE ZNACZY.** Wzorcem `WWW/072` jest
+**§8.1 specyfikacji** (Habitline, zmierzony w `WWW/065`), a **nie** publikacja
+właściciela z Framera, na którą czekała nota z 26.08. Ta publikacja nadal nie
+nadeszła. Geometria §8.1 weszła więc **wyłącznie jako uzupełnienie luk** —
+obowiązująca skala to dalej pomiar `WWW/050-FINAL` (ADR-048,
+rozstrzygnięcie 5).
 
 **Kolejność czytania (30 minut, nie skracaj):**
 
