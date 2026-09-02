@@ -34,10 +34,20 @@ type Props = {
  * dostawy. Usunięcie ich „bo nieużywane" zapaliłoby go w trzech
  * językach.
  *
- * Element LCP: mockup ląduje był w kadrze startowym i przejmował rolę
- * LCP. Po jego zdjęciu kandydatem wraca tekst — zmierzone po zmianie,
- * liczba w zwrotce WWW/072, nie tutaj (liczba w komentarzu zestarzeje
- * się przy pierwszej zmianie hero).
+ * ⚠ ELEMENT LCP — TU STAŁ MÓJ DOMYSŁ, KTÓRY POMIAR OBALIŁ, i zostawiam
+ * oba, bo pomyłka jest pouczająca. Napisałem: „mockup przejmował rolę
+ * LCP, po jego zdjęciu kandydatem wraca tekst". NIEPRAWDA w obie strony.
+ *
+ * Zmierzone 2026-09-02, Lighthouse, 5 przebiegów na stan, oba stany
+ * w jednej sesji (stan wzorcowy z `git worktree` na `bf66f27`):
+ * elementem LCP jest `span.Hero_duch__…` — dekoracja `aria-hidden`
+ * o kryciu 6% — i jest nim w OBU stanach, ze zrzutem i bez.
+ * Mediana „/": 1854 ms ze zrzutami, 1850 ms bez. Zysk 4 ms, w rozrzucie.
+ *
+ * Wniosek, który stąd płynie i który należy do rejestru, nie do tego
+ * pliku: zrzuty nie były elementem LCP od czasu, gdy powstał duch
+ * (2026-08-26), więc ich zdjęcie nie miało czego przyspieszyć.
+ * Pełny zapis i warunki zamknięcia — pozycja T55.
  */
 export function Hero({ locale }: Props) {
   const t = useTranslations("Hero");

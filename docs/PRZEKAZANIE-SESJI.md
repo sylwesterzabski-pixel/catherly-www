@@ -46,9 +46,13 @@ rozstrzygnięcie 5).
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` — 24 pozycje treści + **54** pozycji technicznych
-   **T1–T54** + **skorowidz ogniw** (T39). T54 dopisane 2026-09-01 (`WWW/064`): luka
-   `pnpm install --ignore-scripts` → hook nieaktywny. **Skorowidz wszystkich w rozdziale 15**,
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` — 24 pozycje treści + **55** pozycji technicznych
+   **T1–T55** + **skorowidz ogniw** (T39). T54 dopisane 2026-09-01 (`WWW/064`): luka
+   `pnpm install --ignore-scripts` → hook nieaktywny. **T55 dopisane 2026-09-02**
+   (`WWW/072`): model kosztu LCP w `pipeline-obrazow.json` nieaktualny — elementem
+   LCP „/" jest dekoracja `aria-hidden` o kryciu 6%, a nie zrzuty; zdjęcie czterech
+   zrzutów dało **4 ms zamiast obiecanych 150 ms** (zmierzone oba stany w jednej
+   sesji). **Skorowidz wszystkich w rozdziale 15**,
    szczegóły bieżącej linii w rozdziale 6 — ale **skorowidz to nie jest
    lektura rejestru**.
    **WWW/065 wykonane 2026-09-01** (rola INŻYNIER PROGRAMOWANIA + INŻYNIER DESIGNU):
