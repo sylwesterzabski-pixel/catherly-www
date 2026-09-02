@@ -56,6 +56,16 @@ rozstrzygnięcie 5).
    §1–§8 (mapa serwisu, treść verbatim ×3, obrazy, ograniczenia, SEO, [BRAK]/[LUKA],
    wzorzec Habitline+Nexus, mapowanie). Zero zmian w kodzie. Commit czeka na push razem
    z resztą gałęzi.
+   **WWW/072 wykonane 2026-09-02** — przebudowa wyglądu strony głównej,
+   **ADR-048**. Zrzuty aplikacji i mockupy ZESZŁY z „/" (hero + 4 filary +
+   dekoracja fali 2); w ich miejsce **sześć slotów fotograficznych** z rezerwą
+   `aspect-ratio`, gradientem z ról palety i `aria-hidden`, czekających na kadry
+   z toru Higgsfield (akcept właściciela per kadr). Cień warstwowy §8.1 wszedł
+   **wyłącznie pod wskaźnikiem** — spoczynek „bez cienia" i ADR-038 nietknięte.
+   Z §8.1 przeniesiono **3 wartości z 17**, jako uzupełnienie luk; obowiązującą
+   skalą pozostaje POMIAR 0.3 z `WWW/050-FINAL`. Pliki `public/obrazy/**`
+   NIETKNIĘTE (archiwum dowodowe), klucze `ObrazyFilarow.*` zostają w i18n —
+   **nie sprzątać ich**, pilnuje ich strażnik gotowości dostawy.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.
@@ -2766,6 +2776,20 @@ to strona ma zimny start i właściwą odpowiedzią jest reguła pesymistyczna, 
 
 Zapisane, żeby nie powtarzać.
 
+- **STRAŻNIK, KTÓRY NIGDY NIE PRZEBIEGŁ PRZECIW STANOWI, DO KTÓREGO WŁAŚNIE
+  WRACASZ** (2026-09-02, `WWW/072`). Wyłączenie osadzenia zrzutów wyglądało na
+  **powrót do stanu sprzed dostawy Z6** — czyli do czegoś, co kiedyś było
+  zielone. Nie było. Wiersz `["ramka kadru", …]` i czwarty mechanizm rozdziału
+  weszły do `e2e/rozdzial-kart.spec.ts` commitem **późniejszym** niż włączenie
+  osadzenia (sprawdzone `git merge-base --is-ancestor`), więc ten strażnik
+  **nie zmierzył pustej ramki ani razu**. Zmierzone po zmianie: cztery
+  mechanizmy z czterech na czerwono na `mobile-390` — plama 1,09 · kreska 0,00
+  · pokrycie obrazem 0% · odstęp 24 px przy progu 30.
+  **Reguła: „kiedyś było zielone" wymaga sprawdzenia, czy strażnik w ogóle
+  istniał w tamtej chwili.** Data wejścia strażnika kontra data stanu — jedno
+  polecenie, a bez niego wchodzi się w konfigurację niemierzoną, myśląc, że
+  się wraca do znanej. Rodzina: „brak dowodu = brak zabezpieczenia", widziana
+  od strony osi czasu.
 - **`github.ref` w kluczu `concurrency`** dzieli jedną gałąź na dwie grupy
   (`refs/pull/N/merge` vs `refs/heads/…`). Defekt wraca cicho w PR.
 - **`git cat-file -t` daje fałszywą zieleń** na skrócie z reflogu. Test

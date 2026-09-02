@@ -18,6 +18,14 @@ export function DbanieOSiebie() {
           {t("naglowek")}
         </h2>
         <p>{t("tresc")}</p>
+        {/* SLOT-FOTO-DBANIE — szósty i ostatni slot fotograficzny strony
+            głównej (ADR-048, rozstrzygnięcie 2). Sekcja mówi o świętowaniu
+            własnej pracy, więc kadr ma pokazywać człowieka, nie interfejs.
+
+            Podmiana: <picture>/<img> wchodzi TUTAJ, `aspect-ratio` jest
+            zarezerwowane w arkuszu, `aria-hidden` znika razem z pustym
+            slotem (obraz informacyjny musi być widoczny dla czytnika). */}
+        <div className={styles.kadr} aria-hidden="true" />
       </div>
     </section>
   );

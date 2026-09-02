@@ -758,6 +758,47 @@ html {
     transform: scale(1.03);
   }
 
+  /* ── R6: KARTY ODPOWIADAJĄ NA WSKAŹNIK (ADR-048) ──────────────
+     Cień warstwowy z §8.1 — i WYŁĄCZNIE w tym stanie. Powierzchnia
+     w spoczynku nie zmienia się o piksel, więc trzy zapisy zostają
+     prawdziwe: pomiar wzorca „BEZ obrysu · bez cienia"
+     (KartyFunkcji.module.css:6), zdanie „Cień NIE JEST w systemie"
+     przy `.karta` w tym pliku, i trzeci mechanizm rozdziału z ADR-038
+     (karty rozdziela KOMPOZYCJA). Gdyby cień wszedł w spoczynku,
+     unieważniłby wszystkie trzy naraz — a zlecenie prosiło o energię,
+     nie o zmianę reguły rozdziału.
+
+     Dlaczego akurat karty: `KartyFunkcji` i `CennikSkrot` były
+     JEDYNYMI dużymi powierzchniami strony głównej bez ŻADNEJ reakcji
+     na wskaźnik (zero `:hover`, zero `transition` w ich modułach).
+     Energia trafia więc tam, gdzie jej brakowało, a nie na siłę
+     w miejsce, które już ma swój mechanizm.
+
+     ⚠ SELEKTOR BEZ `:where()` — ŚWIADOMIE. `:where()` ma swoistość
+     ZERO i przegrywa z regułą `a { transition: text-decoration-color }`
+     niżej; ta pułapka zabrała już raz CTA własność `transform`
+     (patrz komentarz przy `a[class*="_cta__"]` wyżej). Karty są dziś
+     elementami `li`, więc kolizji nie ma — ale swoistość (0,1,0)
+     kosztuje tyle samo i nie zależy od tego, czy ktoś kiedyś opakuje
+     kartę kotwicą.
+
+     ⚠ `transition` JEST SKRÓTEM i zastępuje poprzednie wystąpienie
+     w całości. Te dwie rodziny nie mają dziś własnego przejścia
+     (sprawdzone: zero `transition` w KartyFunkcji.module.css,
+     CennikSkrot.module.css i SekcjaPlanow.module.css), więc nic nie
+     kasuje. Dopisując tu kolejną rodzinę — sprawdź to samo. */
+  [class*="_karta__"],
+  [class*="_plan__"] {
+    transition: box-shadow 180ms ease-out;
+  }
+
+  [class*="_karta__"]:hover,
+  [class*="_plan__"]:hover,
+  [class*="_karta__"]:focus-within,
+  [class*="_plan__"]:focus-within {
+    box-shadow: var(--cien-karta);
+  }
+
   /* ── R4: linie sekcji rysują się ────────────────────────────── */
   @keyframes ruch-linia {
     from { transform: scaleX(0); }

@@ -64,16 +64,41 @@
   color: var(--kolor-rola-akcent);
 }
 
+/* SLOT-FOTO-FILAR — miejsce na kadr fotograficzny (ADR-048).
+   Od 2026-09-02 ta ramka nie czeka na zrzut aplikacji, tylko na
+   fotografię (decyzja właściciela WWW/072 pkt 1–2). Gałąź ze zrzutem
+   zostaje w `Filar.tsx` kompletna i sterowana flagą rejestru — patrz
+   nagłówek komponentu. */
 .obraz {
-  margin-block-start: 1.5rem; /* 390 px: tekst NAD obrazem */
-  /* Rezerwa CLS na czas dociągania obrazu. Od dostawy Z6 miejsce
-     trzymają PRZEDE WSZYSTKIM atrybuty width/height realnych plików
-     (2048×1280 = dokładnie 16/10), więc te dwie deklaracje się nie
-     kłócą — aspect-ratio zostaje jako rezerwa ramki (W3) na wypadek,
-     gdyby obraz się nie wczytał. Tło pełni rolę poczekalni: kadr
-     dociąga się leniwie, a slot jest widoczny od pierwszej klatki. */
+  /* ⚠ 40 px, NIE 24 px — I TO JEST MECHANIZM, NIE ODSTĘP „NA OKO".
+     Trzeci mechanizm rozdziału z ADR-038 zalicza kompozycję dopiero
+     przy odstępie ≥ 30 px i promieniu > 0. Przy pustym slocie pozostałe
+     trzy mechanizmy PADAJĄ: plama 1,09 (próg 1,30), kreska 0,00 (wzorzec
+     ramek nie obrysowuje), pokrycie obrazem 0% (obrazu nie ma). Na
+     desktopie ratuje `gap: 6.25rem` siatki, ale siatka wchodzi dopiero
+     od 48.0625rem — poniżej tego progu odstęp bierze się STĄD i przy
+     24 px był o 6 px za mały. Zmierzone na `mobile-390`: cztery
+     mechanizmy z czterech na czerwono.
+     Wartość z §8.1 (gap kart, dolny koniec przedziału 40–50 — WWW/072).
+     Zapas nad progiem: 10 px. `odstep-7` (32 px) dałby 2 px, czyli
+     margines pozorny. Próg 30 px w strażniku NIETKNIĘTY. */
+  margin-block-start: var(--wymiar-odstep-8); /* 390 px: tekst NAD obrazem */
+  /* Rezerwa CLS. Od dostawy Z6 miejsce trzymały PRZEDE WSZYSTKIM
+     atrybuty width/height realnych plików (2048×1280 = dokładnie 16/10);
+     przy pustym slocie rezerwę niesie WYŁĄCZNIE `aspect-ratio` i dlatego
+     zostaje 16/10 bez zmiany — inna proporcja byłaby dokładnie tym
+     skokiem układu, przed którym ta rezerwa broni (WWW/072 pkt 2). */
   aspect-ratio: 16 / 10;
-  background: var(--kolor-rola-powierzchnia);
+  /* Wypełnienie tymczasowe do czasu dostawy kadru — gradient WYŁĄCZNIE
+     z ról palety. Barwa jednolita zostaje w `background-color`, bo to
+     JĄ mierzy `e2e/rozdzial-kart.spec.ts` jako „plamę"; gradient rysuje
+     `background-image` i pomiaru nie zaciemnia. */
+  background-color: var(--kolor-rola-powierzchnia);
+  background-image: linear-gradient(
+    155deg,
+    var(--kolor-rola-powierzchnia) 0%,
+    var(--kolor-rola-tlo-strony) 100%
+  );
   /* OBRYS ZDJĘTY (2.4) — wzorzec ramki nie obrysowuje. Rozdział od tła
      niesie PLAMA: powierzchnia wobec tła strony. To pierwszy z trzech
      mechanizmów ADR-038, a `e2e/rozdzial-kart.spec.ts` pilnuje, żeby

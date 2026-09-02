@@ -1,14 +1,6 @@
 import { useTranslations } from "next-intl";
 
 import { adresWJezyku, type Locale } from "@/i18n/sciezki";
-import {
-  FORMATY_ZRODEL,
-  SZEROKOSC_ZRODLA,
-  WYSOKOSC_ZRODLA,
-  srcSet,
-  srcZapasowy,
-  zrzutFilaru,
-} from "@/obrazy/zrzuty";
 
 import { PasekPotwierdzen } from "./PasekPotwierdzen";
 import styles from "./Hero.module.css";
@@ -29,28 +21,26 @@ type Props = {
  * miejsce, a treść hero zamyka decyzja właściciela z 2026-08-09.
  * Implementacja treści nie pisze.
  *
- * ⚠ MOCKUP TO KADR „RYTM DNIA" (DMO), NIE „PULPIT". Zlecenie prosiło
- * o „zrzut Pulpitu (Z6)"; dostawa Z6 zawiera cztery kadry zwolnione
- * imiennie przez właściciela 2026-08-14 i Pulpitu wśród nich NIE MA
- * (sprawdzone w `design/obrazy-robocze/z6/`). Rozstrzygnięcie
- * z 2026-08-27: wchodzi kadr DMO — znaczeniowo najbliższy dziennemu
- * przeglądowi pracy — a podpis i tekst alternatywny opisują go
- * PRAWDZIWIE jako Dzienny Plan Działania. Nazwanie go „Pulpitem"
- * byłoby twierdzeniem o aplikacji, którego nie da się pokryć.
+ * ⚠ MOCKUP ZDJĘTY 2026-09-02 (ADR-048, decyzja właściciela WWW/072
+ * pkt 1: „ZERO zrzutów aplikacji i mockupów urządzeń na stronie
+ * głównej"). Stał tu `<picture>` z kadrem DMO z dostawy Z6, a niżej,
+ * od 90rem, dekoracyjne tło fali 2. Oba schodzą; miejsce zajmuje
+ * SLOT-FOTO-HERO czekający na kadr fotograficzny.
  *
- * ⚠ TEN SAM KADR STOI TEŻ PRZY FILARZE 1. Cena rozstrzygnięcia,
- * odnotowana świadomie: strona główna pokazuje go dwa razy. Zamiana
- * to jedno odwołanie, gdy pojawi się kadr Pulpitu.
+ * Czego to NIE robi: pliki `public/obrazy/**` zostają NIETKNIĘTE
+ * (archiwum dowodowe z sumami SHA-256), a klucze `ObrazyFilarow.*`
+ * zostają w i18n — pilnuje ich `e2e/zrzuty-filarow.spec.ts`, który
+ * przy wyłączonym osadzeniu przechodzi na sprawdzanie GOTOWOŚCI
+ * dostawy. Usunięcie ich „bo nieużywane" zapaliłoby go w trzech
+ * językach.
  *
- * Element LCP: do 2.2 był nim tekst H1. Mockup ląduje w kadrze
- * startowym przy 900 px wysokości, więc może przejąć rolę LCP —
- * mierzone po wdrożeniu, liczby w zwrotce (zlecenie: „czerwień jawna,
- * nie blokuje STOP-u").
+ * Element LCP: mockup ląduje był w kadrze startowym i przejmował rolę
+ * LCP. Po jego zdjęciu kandydatem wraca tekst — zmierzone po zmianie,
+ * liczba w zwrotce WWW/072, nie tutaj (liczba w komentarzu zestarzeje
+ * się przy pierwszej zmianie hero).
  */
 export function Hero({ locale }: Props) {
   const t = useTranslations("Hero");
-  const tObrazy = useTranslations("ObrazyFilarow");
-  const kadr = zrzutFilaru("filar1");
 
   return (
     <section className={styles.hero} aria-labelledby="hero-h1">
@@ -74,36 +64,23 @@ export function Hero({ locale }: Props) {
               pozycje={[t("potwierdzenieUE"), t("potwierdzenieRezygnacja")]}
               klasa={styles.potwierdzenia}
             />
-            <div className={styles.mockup}>
-              <picture>
-                {FORMATY_ZRODEL.map((format) => (
-                  <source
-                    key={format}
-                    type={`image/${format}`}
-                    srcSet={srcSet(kadr.baza, format)}
-                    sizes="(min-width: 90rem) calc(100vw - 16.875rem), (min-width: 48.0625rem) calc(100vw - 5rem), calc(100vw - 2.5rem)"
-                  />
-                ))}
-                {/* Surowy <img> zamiast next/image — świadomie:
-                    optymalizator Nexta PRZEKODOWUJE plik na żądanie, więc
-                    na produkcji lądowałby obraz o innej sumie niż ten,
-                    który przeszedł weryfikację SHA-256 z dostawy Z6.
-                    Tu publikujemy dokładnie te bajty, które sprawdziliśmy.
+            {/* SLOT-FOTO-HERO — miejsce na duży kadr fotograficzny
+                (ADR-048, rozstrzygnięcia 2 i 3). Podmiana polega na
+                wstawieniu TUTAJ <picture>/<img>; `aspect-ratio` jest już
+                zarezerwowane w arkuszu, więc układ nie skoczy.
 
-                    `loading="eager"`, nie `lazy` — obraz leży w kadrze
-                    startowym. Leniwe ładowanie elementu WIDOCZNEGO od
-                    razu opóźnia go bez żadnego zysku i jest znanym
-                    antywzorcem; filary poniżej foldu zostają leniwe. */}
-                <img
-                  src={srcZapasowy(kadr.baza)}
-                  alt={tObrazy("filar1")}
-                  width={SZEROKOSC_ZRODLA}
-                  height={WYSOKOSC_ZRODLA}
-                  loading="eager"
-                  decoding="async"
-                />
-              </picture>
-            </div>
+                `aria-hidden` — slot nie niesie dziś żadnej treści, więc
+                nie ma go w drzewie dostępności. Wraz z kadrem wchodzi
+                `alt` i to oznaczenie ZNIKA: obraz informacyjny musi być
+                widoczny dla czytnika.
+
+                Slot hero jest JEDYNYM bez ramki, promienia i cienia —
+                wtapia się w tło maską, tak jak wzorzec (decyzja
+                właściciela, WWW/072 pkt 3). Dlatego nie nazywa się
+                `obraz`: klasa `[class*="_obraz__"]` jest lokatorem
+                strażnika rozdziału kart, a ten slot kartą nie jest
+                i celowo nie spełnia żadnego z mechanizmów rozdziału. */}
+            <div className={styles.kadr} aria-hidden="true" />
           </div>
         </div>
       </div>

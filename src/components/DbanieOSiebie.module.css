@@ -18,6 +18,36 @@
   max-width: var(--wymiar-miara-akapitu);
 }
 
+/* SLOT-FOTO-DBANIE — kadr fotograficzny sekcji (ADR-048).
+   Promień 16 px (`promien-karty`, wartość z §8.1 — dolny koniec
+   przedziału 16–20, rozstrzygnięcie właściciela WWW/072): większy niż
+   ramka filaru (12 px), bo ten kadr stoi w węższej kolumnie i bez
+   sąsiada, więc znosi mocniejsze zaokrąglenie; mniejszy niż pigułka
+   (50 px), bo nie jest kontrolką.
+
+   Odstęp 40 px od akapitu — ta sama wartość co przy filarach, żeby
+   sloty na jednej stronie nie oddychały różnie. */
+.kadr {
+  margin-block-start: var(--wymiar-odstep-8);
+  aspect-ratio: 16 / 9;
+  background-color: var(--kolor-rola-powierzchnia);
+  background-image: linear-gradient(
+    155deg,
+    var(--kolor-rola-powierzchnia) 0%,
+    var(--kolor-rola-tlo-strony) 100%
+  );
+  border-radius: var(--wymiar-promien-karty);
+  /* Bez tego promień nie przytnie kadru w narożnikach po podmianie. */
+  overflow: hidden;
+}
+
+.kadr img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
 /* H2 visually-hidden (DECYZJA 10): sr-only przez clip-path,
    NIGDY display:none — czytniki ekranu muszą go widzieć. */
 .srOnly {

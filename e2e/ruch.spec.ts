@@ -44,6 +44,12 @@ const CELE: Array<[string, string, string]> = [
   ["linia granicy", "/funkcje/zespol", 'p[class*="_granica__"]'],
   ["FAQ — odpowiedź", "/", 'main details [class*="odpowiedz"]'],
   ["FAQ — znacznik", "/", "main details summary"],
+  /* R6 — cień karty pod wskaźnikiem (ADR-048). Dopisane razem
+     z rodziną ruchu, nie po niej: kinetyka bez celu w tej tablicy jest
+     kinetyką NIEPILNOWANĄ, a wtedy osłona `reduce` trzyma się wyłącznie
+     na tym, że ktoś pamiętał o zagnieżdżeniu reguły w odpowiednim
+     zapytaniu medialnym. Ten wiersz zamienia pamięć na pomiar. */
+  ["karta — cień pod wskaźnikiem", "/", '[class*="_karta__"]'],
 ];
 
 /** Własności układu — animowanie ich kosztuje przeliczenie w każdej klatce. */

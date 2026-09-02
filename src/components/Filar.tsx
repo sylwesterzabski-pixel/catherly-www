@@ -46,12 +46,21 @@ type Props = {
  *    pozostaje h1 hero. Rezerwacja miejsca z width/height realnych
  *    plików (W3), więc układ nie skacze po dociągnięciu (CLS).
  *
- * 2. Bez propu `obraz` — pusta ramka z aria-hidden, jak przed
- *    dostawą. To NIE jest stan „zapomnieliśmy obrazu": strona główna
- *    jest w nim ŚWIADOMIE, bo cztery kadry kosztują +150 ms LCP przy
- *    zapasie 96 ms do budżetu 1800 ms (pomiar 2026-08-16, decyzja
- *    właściciela — wariant 4: najpierw odzyskać zapas na „/", potem
- *    włączyć). Włącza się to JEDNĄ flagą w rejestrze
+ * 2. Bez propu `obraz` — SLOT-FOTO-FILAR: ramka z aria-hidden,
+ *    czekająca na kadr FOTOGRAFICZNY. To NIE jest stan „zapomnieliśmy
+ *    obrazu" i od 2026-09-02 nie jest też stanem „oszczędzamy LCP".
+ *
+ *    ⚠ POWÓD TEGO STANU SIĘ ZMIENIŁ — stary zapis zostawiam jako ślad,
+ *    bo sam był prawdziwy i mógłby zmylić: do 2026-09-02 stało tu, że
+ *    strona jest bez kadrów ŚWIADOMIE, bo cztery zrzuty kosztują
+ *    +150 ms LCP przy zapasie 96 ms (pomiar 2026-08-16, wariant 4:
+ *    „najpierw odzyskać zapas na «/», potem włączyć"). Dziś powodem
+ *    jest DECYZJA O MATERIALE: właściciel, WWW/072 pkt 1 — „ZERO
+ *    zrzutów aplikacji i mockupów urządzeń na stronie głównej"
+ *    (ADR-048). Odzyskanie zapasu LCP samo w sobie NIE wystarczy już
+ *    do włączenia zrzutów z powrotem.
+ *
+ *    Przełącza to JEDNA flaga w rejestrze
  *    (design/pipeline-obrazow.json → osadzenieNaGlownej.wlaczone),
  *    którą czyta zarówno ta ścieżka, jak i strażnik
  *    e2e/zrzuty-filarow.spec.ts — nie da się włączyć markupu bez
