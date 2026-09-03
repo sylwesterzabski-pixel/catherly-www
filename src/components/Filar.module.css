@@ -18,8 +18,14 @@
    z POMIARU 0.3). Kontener `max-width` ZDJĘTY — wzorzec nie ogranicza
    szerokości, tylko WCINA treść od krawędzi, więc przy 1600 kolumna
    ma 1330, a nie 1170. */
+/* ⚠ ODSTĘP SEKCJI PROGOWANY OD ADR-049 — mobile-first, jak wcięcia
+   niżej. Do 2026-09-03 stało tu `var(--wymiar-odstep-sekcji)` (160 px)
+   BEZ progu, więc kadr 390 px oddychał tak samo jak 1440 — i to jest
+   jedna z przyczyn, dla których strona główna miała 13 ekranów
+   wysokości (zmierzone, WWW/073 krok 3). Pomiar Proactiva: 160 px od
+   progu, 80 px poniżej. */
 .filar {
-  padding-block: var(--wymiar-odstep-sekcji);
+  padding-block: var(--wymiar-odstep-sekcji-male);
   padding-inline: var(--wymiar-wciecie-tresci-male);
 }
 
@@ -62,6 +68,16 @@
 
 .konkrety li::marker {
   color: var(--kolor-rola-akcent);
+}
+
+/* R2 — droga z filaru na jego podstronę (ADR-049). Zwykły link prozy:
+   recepta podkreślenia z `globals.css` obowiązuje go bez wyjątku, więc
+   nie ma tu deklaracji barwy ani `text-decoration` — jedna recepta na
+   cały serwis pilnowana przez `e2e/podkreslenia.spec.ts`. Tutaj tylko
+   układ: własny wiersz i odstęp od listy konkretów. */
+.dalej {
+  display: inline-block;
+  margin-block-start: var(--wymiar-odstep-6);
 }
 
 /* SLOT-FOTO-FILAR — miejsce na kadr fotograficzny (ADR-048).
@@ -130,6 +146,7 @@
 
 @media (min-width: 48.0625rem) {
   .filar {
+    padding-block: var(--wymiar-odstep-sekcji);
     padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 

@@ -19,11 +19,15 @@
 }
 
 /* SLOT-FOTO-DBANIE — kadr fotograficzny sekcji (ADR-048).
-   Promień 16 px (`promien-karty`, wartość z §8.1 — dolny koniec
-   przedziału 16–20, rozstrzygnięcie właściciela WWW/072): większy niż
-   ramka filaru (12 px), bo ten kadr stoi w węższej kolumnie i bez
-   sąsiada, więc znosi mocniejsze zaokrąglenie; mniejszy niż pigułka
-   (50 px), bo nie jest kontrolką.
+
+   ⚠ PROMIEŃ PRZEMAPOWANY 16 px → 12 px (ADR-049, korekta d).
+   Stało tu `--wymiar-promien-karty` (16 px), wzięte z §8.1 jako dolny
+   koniec przedziału 16–20. Pomiar Proactiva (WWW/073, punkt 1h)
+   pokazał, że dominantą promieni kart jest **12 px (37 wystąpień)**,
+   a 16 px stoi dopiero trzecie (14 wystąpień, po 8 px z 23). 12 px
+   MAMY od dawna jako `promien-sredni` — czyli nowy token trafił obok
+   dominanty i dublował rolę, którą skala już pełniła. Token wycofany,
+   ta ramka wraca na `promien-sredni` i zrównuje się z ramką filaru.
 
    Odstęp 40 px od akapitu — ta sama wartość co przy filarach, żeby
    sloty na jednej stronie nie oddychały różnie. */
@@ -36,7 +40,7 @@
     var(--kolor-rola-powierzchnia) 0%,
     var(--kolor-rola-tlo-strony) 100%
   );
-  border-radius: var(--wymiar-promien-karty);
+  border-radius: var(--wymiar-promien-sredni);
   /* Bez tego promień nie przytnie kadru w narożnikach po podmianie. */
   overflow: hidden;
 }

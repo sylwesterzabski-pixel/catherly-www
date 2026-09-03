@@ -27,8 +27,9 @@
    przy 1280. Ta sama klasa co poprzednie zera sondy: narzędzie
    meldowało wynik, nie błąd. */
 
+/* Odstęp sekcji progowany od ADR-049 — patrz komentarz w Filar.module.css. */
 .sekcja {
-  padding-block: var(--wymiar-odstep-sekcji) 0;
+  padding-block: var(--wymiar-odstep-sekcji-male) 0;
   padding-inline: var(--wymiar-wciecie-tresci-male);
 }
 
@@ -72,6 +73,7 @@
 
 @media (min-width: 48.0625rem) {
   .sekcja {
+    padding-block: var(--wymiar-odstep-sekcji) 0;
     padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 

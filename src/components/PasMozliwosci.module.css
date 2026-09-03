@@ -23,11 +23,20 @@
    `no-preference`. Bez tego pas byłby jedyną animacją serwisu, której
    nie da się wyłączyć. */
 
+/* Odstęp sekcji progowany od ADR-049 — patrz komentarz w Filar.module.css.
+   Ten moduł nie miał dotąd ŻADNEGO zapytania medialnego; próg wchodzi
+   razem z tokenem, żeby pas oddychał tak samo jak sąsiednie sekcje. */
 .pas {
-  padding-block: var(--wymiar-odstep-sekcji) 0;
+  padding-block: var(--wymiar-odstep-sekcji-male) 0;
   /* Bez wcięcia bocznego: pas ma dojeżdżać do krawędzi kadru, inaczej
      nazwy znikałyby w połowie pustego marginesu zamiast za krawędzią. */
   overflow: hidden;
+}
+
+@media (min-width: 48.0625rem) {
+  .pas {
+    padding-block: var(--wymiar-odstep-sekcji) 0;
+  }
 }
 
 .maszt {

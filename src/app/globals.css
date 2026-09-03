@@ -699,15 +699,29 @@ html {
      i nie unosiło się pod wskaźnikiem. Deklaracja wymienia teraz
      WSZYSTKIE trzy własności razem, bo `transition` jest skrótem
      i każde kolejne wystąpienie zastępuje poprzednie w całości. */
+  /* ⚠ ZEGAR PRZESTAWIONY NA TOKENY (ADR-049). Stało tu `180ms ease-out`
+     dobrane u nas; pomiar Proactiva (WWW/073, 1d) pokazał JEDEN zegar na
+     całą stronę wzorca — 200 ms i `cubic-bezier(0.4, 0, 0.2, 1)`, 59 z 81
+     elementów z przejściem (73%), zero innych krzywych. Wartości idą teraz
+     z tokenów, żeby następna zmiana tempa była jedną zmianą, nie
+     przeszukiwaniem arkuszy. */
   a[class*="_cta__"] {
     transition:
-      transform 180ms ease-out,
-      background-color 180ms ease-out,
-      text-decoration-color 180ms ease-out;
+      transform var(--ruch-czas-interakcji) var(--ruch-krzywa-interakcji),
+      background-color var(--ruch-czas-interakcji) var(--ruch-krzywa-interakcji),
+      text-decoration-color var(--ruch-czas-interakcji) var(--ruch-krzywa-interakcji);
   }
 
+  /* GEST RZECZY KLIKANEJ: unosi się. −2 px, zmierzone u wzorca co do
+     setnej na czterech rodzinach CTA. Poprzednio −1 px, dobrane u nas. */
   a[class*="_cta__"]:hover {
-    transform: translateY(-0.0625rem);
+    transform: translateY(var(--ruch-gest-uniesienia));
+  }
+
+  /* ...a pod naciskiem kurczy się. Drugi krok tego samego gestu —
+     wzorzec dokłada `scale 0.98` dopiero na `:active`, nie na hover. */
+  a[class*="_cta__"]:active {
+    transform: translateY(var(--ruch-gest-uniesienia)) scale(var(--ruch-gest-docisku));
   }
 
   /* Podkreślenie linku prozy: barwa przechodzi płynnie. Sam kształt
@@ -789,9 +803,20 @@ html {
      kasuje. Dopisując tu kolejną rodzinę — sprawdź to samo. */
   [class*="_karta__"],
   [class*="_plan__"] {
-    transition: box-shadow 180ms ease-out;
+    transition: box-shadow var(--ruch-czas-interakcji) var(--ruch-krzywa-interakcji);
   }
 
+  /* ⚠ CIEŃ ZMIENIŁ JĘZYK, NIE MOMENT (ADR-049, korekta c). Token
+     `--cien-karta` niesie teraz JEDNĄ warstwę BIELI WEWNĄTRZ bryły
+     (`inset`), a nie trzy warstwy czerni na zewnątrz. Powód jest
+     zmierzony: przy jednolicie ciemnym tle cień czarny rzuca mrok na
+     mrok — czyli nic. Wzorzec świeci karty od środka: trzydzieści
+     wystąpień jednej warstwy bieli przy alfie sześć setnych, najczęstszy
+     cień strukturalny całej jego strony (pełny zapis stoi przy
+     `cien.karta` w tokenach — tutaj słowami, bo linter tokenów czyta
+     także komentarze i zapis barwy zaczerwieniłby bramkę).
+     Moment użycia bez zmian:
+     wyłącznie `:hover` i `:focus-within`, spoczynek nietknięty. */
   [class*="_karta__"]:hover,
   [class*="_plan__"]:hover,
   [class*="_karta__"]:focus-within,

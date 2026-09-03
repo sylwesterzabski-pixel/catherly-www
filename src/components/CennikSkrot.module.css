@@ -8,7 +8,8 @@
    padding 35/40 px, tło = rola powierzchni, BEZ obrysu. Przy 390 jedna
    kolumna 350 px, odstęp 30 px. */
 .sekcja {
-  padding-block: var(--wymiar-odstep-sekcji) 0;
+  /* Odstęp sekcji progowany od ADR-049 — patrz Filar.module.css. */
+  padding-block: var(--wymiar-odstep-sekcji-male) 0;
   padding-inline: var(--wymiar-wciecie-tresci-male);
   line-height: 1.6;
 }
@@ -99,6 +100,7 @@
 
 @media (min-width: 48.0625rem) {
   .sekcja {
+    padding-block: var(--wymiar-odstep-sekcji) 0;
     padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 

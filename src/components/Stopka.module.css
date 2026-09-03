@@ -16,13 +16,15 @@
   background: var(--kolor-rola-tlo-strony);
   /* Jedyny rozdział stopki od treści — patrz uwaga wyżej. */
   border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
-  padding-block: var(--wymiar-odstep-sekcji) 3rem;
+  /* Odstęp sekcji progowany od ADR-049 — patrz Filar.module.css. */
+  padding-block: var(--wymiar-odstep-sekcji-male) 3rem;
   padding-inline: var(--wymiar-wciecie-tresci-male);
   font-size: var(--tekst-xs);
 }
 
 @media (min-width: 48.0625rem) {
   .stopka {
+    padding-block: var(--wymiar-odstep-sekcji) 3rem;
     padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 }

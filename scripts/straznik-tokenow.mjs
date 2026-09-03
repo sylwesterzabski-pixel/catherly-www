@@ -148,11 +148,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 20;
+const LICZBA_ROL = 24;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-038 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-049 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -167,7 +167,73 @@ const PARY = [
   ["interakcja",          "tlo-strony",   3.0, "plama przycisku CTA na tle"],
   ["kreska-mocna",        "powierzchnia", 3.0, "obrys pola formularza"],
   ["fokus",               "tlo-strony",   3.0, "obwódka fokusu na tle strony"],
+  /* KORPUS JASNY (ADR-049). Role weszły bez użycia — decyzja
+     właściciela WWW/074 pkt 1g — ale pary wchodzą OD RAZU. Rola bez
+     pary jest w zbiorze i poza sprawdzaniem, czyli dokładnie furtką,
+     przed którą broni sprawdzenie 0. */
+  ["tekst-na-jasnym",     "powierzchnia-jasna", 4.5, "tekst czytany na korpusie jasnym"],
+  ["tekst-2-na-jasnym",   "powierzchnia-jasna", 4.5, "tekst drugorzędny na korpusie jasnym"],
 ];
+
+/* ─── WYŁĄCZENIA Z PAR — Z WŁASNYM LICZNIKIEM ──────────────────
+   Kanon: „wyłączenie ze sprawdzania ma własnego strażnika liczebności".
+   Bez tego licznika nowa rola może wpaść w lukę między „sprawdzana"
+   a „wyłączona" i zniknąć — a wyłączenie może przeżyć rolę, której
+   dotyczyło. Dwa wymogi: sprawdzane + wyłączone = komplet ról, oraz
+   każda wyłączona rola nadal w komplecie istnieje.
+
+   Do 2026-09-03 wyłączona była JEDNA rola i licznika nie było, bo
+   przy jednej pozycji luka jest widoczna gołym okiem. Od ADR-049 są
+   DWIE — i to jest moment, w którym napis przestaje wystarczać. */
+const ROLE_BEZ_PARY = {
+  "tlo-przezroczyste":
+    "alfa — kontrast liczy się na barwie wynikowej, mierzy go sonda rastrowa w e2e (ADR-045)",
+  "powierzchnia-szklo":
+    "alfa — j.w.; płyta szkła leży na różnych powierzchniach (ADR-049)",
+  "powierzchnia-2":
+    "powierzchnia pomocnicza — pary niosą jej sąsiadki, nie ma własnej roli tekstowej",
+  "powierzchnia-akcentowa":
+    "j.w. — separator i pole wyróżnione, nie nosi prozy",
+  "kreska":
+    "dekoracja — próg 1,30 z ADR-038 mierzy e2e/rozdzial-kart, nie ten strażnik",
+  "link":
+    "równa tekst-podstawowy; recepta podkreślenia pilnowana przez e2e/podkreslenia",
+  "akcent":
+    "pokryty przez R-AKCENT-01 — osobna pętla po WSZYSTKICH powierzchniach, surowsza niż jedna para",
+  "link-aktywny":
+    "równa akcent — pokryte przez R-AKCENT-01 na wszystkich powierzchniach",
+  "interakcja-aktywna":
+    "pokryta przez R-AKCENT-02(a) razem z etykietą",
+  "stan-sukces": "pokryty osobną pętlą stanów niżej",
+  "stan-ostrzezenie": "j.w.",
+  "stan-blad": "j.w.",
+  "stan-wylaczony":
+    "stan nieaktywny — z definicji stłumiony, próg 4,5 go nie dotyczy (WCAG 1.4.3)",
+  "powierzchnia-jasna":
+    "występuje jako TŁO w parach korpusu jasnego, nie jako barwa mierzona",
+  "tlo-strony":
+    "występuje jako TŁO w parach, nie jako barwa mierzona",
+  "powierzchnia":
+    "j.w. — tło par tekstowych i stanów",
+};
+
+const wPARACH = new Set(PARY.flatMap(([a, b]) => [a, b]));
+const wyłączone = Object.keys(ROLE_BEZ_PARY);
+const pokryte = new Set([...wPARACH, ...wyłączone]);
+const nieObjete = nazwyRol.filter((r) => !pokryte.has(r));
+if (nieObjete.length) {
+  bledy.push(
+    `LUKA W POKRYCIU: role ani w PARY, ani w ROLE_BEZ_PARY: ${nieObjete.sort().join(", ")}. ` +
+      `Każda rola musi być albo sprawdzana, albo JAWNIE wyłączona z powodem.`
+  );
+}
+const wyłączoneWidma = wyłączone.filter((r) => !role[r]);
+if (wyłączoneWidma.length) {
+  bledy.push(
+    `WYŁĄCZENIE PRZETERMINOWANE: ${wyłączoneWidma.sort().join(", ")} — ` +
+      `wyłączenie opisuje rolę, której już nie ma. Usuń je razem z rolą.`
+  );
+}
 
 for (const [a, b, prog, opis] of PARY) {
   if (!role[a] || !role[b]) { bledy.push(`BRAK ROLI: --${a} lub --${b} (${opis})`); continue; }
@@ -244,6 +310,30 @@ for (const s of ["stan-sukces", "stan-ostrzezenie", "stan-blad"]) {
      jest sprawdzana — sprawdzanie jej dawałoby czerwień na stanie
      poprawnym. Gdyby ktoś zdjął `outline-offset`, złapie to
      `e2e/kontrast-stanow.spec.ts`, nie ten strażnik. */
+/* ⛔ `powierzchnia-jasna` CELOWO POZA TĄ LISTĄ — I TO NIE JEST PRZEOCZENIE,
+   tylko zapis nierozstrzygniętej sprzeczności (ADR-049).
+
+   Ta lista jest LITERALNA, nie czerpana ze zbioru ról. Zlecenie WWW/074
+   zakładało, że „R-AKCENT-01 pilnuje z automatu" — NIEPRAWDA: nowa
+   powierzchnia nie wchodzi tu sama i bez tego komentarza wypadłaby
+   z obu reguł po cichu.
+
+   Dopisanie jej TERAZ dałoby czerwień na stanie, w którym nic jeszcze
+   nie jest zepsute — korpusu jasnego nie ma w żadnej sekcji. Ale
+   liczby są znane już dziś i obie są blokujące (zmierzone 2026-09-03):
+
+     --akcent na --powierzchnia-jasna = 1,43:1   (R-AKCENT-01 wymaga 4,5:1)
+     --fokus  na --powierzchnia-jasna = 1,12:1   (R-AKCENT-02(b) wymaga 3:1)
+
+   Limonka na jasnym jest niewidoczna także jako WYPEŁNIENIE CTA (próg
+   3:1 z WCAG 1.4.11 — te same 1,43:1), wbrew założeniu zlecenia; a biała
+   obwódka fokusu znika, bo mechanizm `outline-offset`, który ratuje ją
+   na ciemnym (biel na tle 20,07:1), tutaj nie pomaga — tło też jest jasne.
+
+   WARUNEK DOPISANIA DO LISTY: rozstrzygnięcie właściciela o akcencie
+   i fokusie na jasnym (obwódka CTA? inny akcent? ciemniejsza
+   powierzchnia jasna?). Dopiero wtedy ta lista rośnie o jedną pozycję
+   — i wtedy ma być zielona, a nie wyciszona. */
 const POWIERZCHNIE = ["tlo-strony", "powierzchnia", "powierzchnia-2", "powierzchnia-akcentowa"];
 const PROG_AKCENT_TEKST = 4.5;
 const PROG_FOKUS = 3.0;

@@ -23,6 +23,34 @@
   --kolor-rola-stan-blad: #e24634; /** WARTOŚĆ NASZA, FUNKCJONALNA, SPOZA WZORCA. Odcień zachowany (H=6°). Zmierzone: ×powierzchnia 4,54:1 · ×tło 4,93:1. Poprzednio #a32617 — 2,51:1, najgorszy z czterech. */
   --kolor-rola-stan-wylaczony: #8b857b; /** BEZ ZMIANY — jako jedyny stan przechodził na ciemnym już wcześniej: ×powierzchnia 5,05:1 · ×tło 5,48:1. ⚠ Automatyczne szukanie „najbliższego odcienia spełniającego próg" zwróciło tu #847e74 (4,59:1) — wartość GORSZĄ od obecnej, bo algorytm szedł od ciemnych. Odrzucone: reguła mówi „spełniający próg", a nie „ledwo spełniający". */
   /**
+   * SZKŁO MALOWANE, NIE ROZMYWANE (ADR-049, pomiar Proactiva z WWW/073). Płyta karty szklanej: nasza `powierzchnia-akcentowa` (#393938) przy alfie 0,30.
+   * 
+   * ⚠ WARTOŚĆ WYPROWADZONA Z RELACJI, NIE PRZEPISANA. Wzorzec ma `rgba(40, 40, 40, 0.30)` na tle `rgb(8,9,10)` i składa się to na `rgb(18,18,19)` — o 2,26× jaśniej od jego tła. Przepisanie tamtej liczby wprost dałoby u nas inny stopień, bo nasze tło jest inne (#070806). Wzięliśmy więc ROLĘ, nie liczbę: `powierzchnia-akcentowa` jest u nas tym, czym `rgb(40,40,40)` u wzorca — najjaśniejszą powierzchnią palety. Złożone na naszym tle daje #161715, kontrast do tła **1,12:1** — czyli dokładnie ten sam stopień relacji co u wzorca.
+   * 
+   * ⚠ ZERO `backdrop-filter` — I TO JEST CAŁA TREŚĆ TEGO TOKENA. Pomiar wzorca: `backdrop-filter` ma tam DOKŁADNIE JEDEN element na 1721 (przycisk odtwarzania). Efekt szkła na 21 kartach robią TRZY WARSTWY BEZ ROZMYCIA: ta płyta + obrys 1 px bieli przy `alfa.obrys` + cień WEWNĘTRZNY bieli przy `alfa.cien-wewnetrzny`. To jest język „materiału podświetlonego od wewnątrz", nie „szyby, przez którą widać tło". Rozmycie tła kosztuje kompozycję na każdą klatkę i nie jest tu do niczego potrzebne.
+   * 
+   * ⚠ TA ROLA NIE WCHODZI DO PAR KONTRASTOWYCH — tak samo jak `tlo-przezroczyste` i z tego samego powodu: kontrast liczy się na barwie WYNIKOWEJ, a ta zależy od tego, co leży pod płytą. Mierzy to sonda rastrowa w e2e, nie strażnik tokenów. Patrz licznik wyłączeń w `scripts/straznik-tokenow.mjs`.
+   */
+  --kolor-rola-powierzchnia-szklo: rgba(57, 57, 56, 0.30);
+  /**
+   * KORPUS JASNY — rola klimatu mieszanego (ADR-049, decyzja właściciela WWW/074 pkt 1g). Wartość z §8.2 specyfikacji (Nexus, `SPEC-STRONY-DLA-FRAMERA.md:675`), bo Proactiv korpusu jasnego NIE MA — jest jednolicie ciemny (zmierzone: sześć przejść między sekcjami, delta luminancji 0,00000 sześć razy).
+   * 
+   * ⚠ ROLA WCHODZI BEZ UŻYCIA — świadomie i na wyraźne polecenie („same ROLE, rozlanie na sekcje w następnych batchach"). Odnotowuję odstępstwo od zasady, którą sam zapisałem w ADR-048 („ani jednego tokena, którego kod nie używa"), żeby nie wyglądało na niekonsekwencję: tam zasada broniła przed udawaniem, że §8.1 przeniesiono szerzej niż przeniesiono; tu rola jest zapowiedzią batcha, a nie deklaracją stanu. Warunek, żeby to nie zgniło: jeśli korpus jasny nie wejdzie do żadnej sekcji, rola ma zniknąć razem z decyzją.
+   * 
+   * ⛔ NIE UŻYWAJ TEJ ROLI, DOPÓKI NIE ZAPADNĄ DWA ROZSTRZYGNIĘCIA — obie liczby zmierzone 2026-09-03 i obie są blokujące:
+   *   · **akcent na jasnym = 1,43:1** (próg 4,5:1 dla tekstu, 3:1 dla plamy WCAG 1.4.11). Limonka na tej powierzchni jest niewidoczna — także jako WYPEŁNIENIE CTA, wbrew założeniu zlecenia. Etykieta na limonce jest w porządku (10,22:1), ale kształt przycisku nie odcina się od tła.
+   *   · **fokus (biel) na jasnym = 1,12:1** (próg 3:1). Obwódka fokusu znika. Mechanizm `outline-offset`, który ratuje ją na ciemnym (biel na tle 20,07:1), tutaj nie pomaga — bo TŁO też jest jasne.
+   * Dopóki te dwie pozycje nie mają rozstrzygnięcia (obwódka CTA? inny akcent na jasnym? ciemniejsza powierzchnia jasna?), sekcja jasna nie może powstać.
+   */
+  --kolor-rola-powierzchnia-jasna: #f2f2f2;
+  --kolor-rola-tekst-na-jasnym: #151515; /** Tekst mocny na korpusie jasnym (ADR-049). Wartość z §8.2 (Nexus, `SPEC:670`). Zmierzone: ×`powierzchnia-jasna` **16,31:1** — para wchodzi do PARY w strażniku tokenów, więc nie jest rolą bez sprawdzenia. */
+  /**
+   * Tekst drugorzędny na korpusie jasnym (ADR-049). WARTOŚĆ NASZA, NIE PRZENIESIONA — §8.2 podaje dla tej roli `#8b8b8b`, ale tamta liczba opisuje tekst drugorzędny na tle CIEMNYM. Sprawdzone: `#8b8b8b` na `#f2f2f2` daje **3,04:1**, czyli poniżej progu 4,5:1 dla prozy. Przeniesienie jej wprost byłoby wzięciem wartości z innej roli tylko dlatego, że nazwa się zgadza.
+   * 
+   * Wybrane `#565656` daje **6,56:1** — z zapasem, nie „ledwo spełniające" (ta sama zasada, którą ADR-038 zastosował do `stan-wylaczony`). Para wchodzi do PARY w strażniku.
+   */
+  --kolor-rola-tekst-2-na-jasnym: #565656;
+  /**
    * Tło pigułki nagłówka (ADR-045, 2.1). ZMIERZONE we wzorcu: rgba(7, 8, 6, 0.6) — te same składowe co `kolor.tlo`, alfa 0,6. DWUDZIESTA ROLA; zmiana LICZBA_ROL z 19 na 20 jest DECYZJĄ, nie dryfem, i dlatego niesie ADR — tak każe zlecenie WWW/050-FINAL pkt 1.1.
    * 
    * ⚠ TA ROLA NIE WCHODZI DO PAR KONTRASTOWYCH i to jest świadome: kontrast liczy się na barwie WYNIKOWEJ, a ta zależy od tego, co akurat leży pod pigułką. Mierzy to sonda rastrowa w `kontrast-stanow.spec.ts`, która próbkuje wyrenderowany piksel — strażnik tokenów widzi tylko wartości ról i o barwie po złożeniu warstw nie wie nic. Wpisanie tu pary dałoby liczbę wyglądającą na pomiar, a będącą fikcją.
@@ -63,7 +91,18 @@
   --wymiar-promien-pigulki: 3.125rem; /** Pigułki = 50 px (POMIAR 0.3, 11 wystąpień). Poprzednio 2rem = 32 px. */
   --wymiar-prog-ukladu: 48rem; /** Próg przełączenia układów mobile→desktop (ADR-028). WYŁĄCZNIE DOKUMENTACYJNY: @media nie czyta var() — wartość powielona literalnie w media queries modułów; zmiana wymaga ADR i sync wszystkich @media. */
   --wymiar-kontener-waski: 80rem; /** Kontener węższy = 1280 px (POMIAR 0.3, 3 wystąpienia). */
-  --wymiar-odstep-sekcji: 10rem; /** Padding sekcji = 160 px (POMIAR 0.3, wariant dominujący). Warianty wzorca: 135/0, 130/160, 80/80 — nie wchodzą jako tokeny, dopóki KROK 2 nie pokaże, które sekcje ich używają. */
+  /**
+   * Padding sekcji = 160 px (POMIAR 0.3, wariant dominujący). Potwierdzony niezależnie na Proactivie (WWW/073, punkt 1g): 160 px jest tam rytmem sekcji NAJWYŻSZEGO poziomu, 5 wystąpień. Dwa źródła, jedna liczba.
+   * 
+   * ⚠ OD ADR-049 MA PRÓG — patrz `odstep-sekcji-male`. Do 2026-09-03 ta wartość obowiązywała na KAŻDEJ szerokości; pomiar Proactiva pokazał progowanie 160 → 80.
+   */
+  --wymiar-odstep-sekcji: 10rem;
+  /**
+   * Padding sekcji = 80 px na kadrze wąskim (ADR-049, pomiar Proactiva WWW/073 punkt 1g: `py-20 sm:py-40`, czyli 160 px od progu i 80 px poniżej; zmierzone na obu kadrach).
+   * 
+   * ⚠ NASZA SKALA NIE ZNAŁA PROGOWANIA ODSTĘPU SEKCJI — i to była luka, nie decyzja. Progowane były dotąd wyłącznie wcięcia (`wciecie-naglowka-*`, `wciecie-tresci-*`), więc wzorzec do naśladowania istniał, tylko nie został użyty dla odstępu pionowego. Skutek na kadrze 390 px: sekcje oddychały tak samo jak przy 1440, przez co strona miała 13 ekranów wysokości (zmierzone, WWW/073 krok 3).
+   */
+  --wymiar-odstep-sekcji-male: 5rem;
   --wymiar-odstep-1: 0.25rem; /** Siatka odstępów = 4 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
   --wymiar-odstep-2: 0.5rem; /** Siatka odstępów = 8 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
   --wymiar-odstep-3: 0.625rem; /** Siatka odstępów = 10 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
@@ -82,12 +121,6 @@
    * §8.1 podawał przedział 40–50 px; wybrano DOLNY koniec (rozstrzygnięcie właściciela, WWW/072). 40 px daje 10 px zapasu nad progiem 30 — `odstep-7` (32 px) dałby 2 px, czyli margines pozorny.
    */
   --wymiar-odstep-8: 2.5rem;
-  /**
-   * Promień 16 px — WARTOŚĆ Z §8.1 (Habitline), nie z POMIARU 0.3. Wchodzi jako UZUPEŁNIENIE luki, nie zamiennik: między `promien-sredni` (12 px) a `promien-pigulki` (50 px) skala nie ma ani jednego stopnia, a slot fotograficzny sekcji „Dbanie o siebie" potrzebuje promienia większego niż ramka filaru i mniejszego niż pigułka.
-   * 
-   * ⚠ ŹRÓDŁO INNE NIŻ RESZTA `wymiar.*` I DLATEGO OZNACZONE. §8.1 podawał PRZEDZIAŁ 16–20 px, nie liczbę; wybrano DOLNY koniec (rozstrzygnięcie właściciela, WWW/072) — bo 16 px leży bliżej obecnej skali i mniej ją rozsuwa. §8.1 jest przy tym pomiarem SSR (`SPEC-STRONY-DLA-FRAMERA.md:563`, [LIMIT-URL]: „dolne ograniczenie, nie pełny obraz"), czyli SŁABSZYM niż `getComputedStyle` stojące za POMIAREM 0.3. Przy konflikcie wygrywa POMIAR 0.3 — patrz ADR-048.
-   */
-  --wymiar-promien-karty: 1rem;
   --wymiar-wciecie-naglowka: 7.5rem; /** Nagłówek strony jest odsunięty od krawędzi o 120 px przy ≥ 1440 (zmierzone: x=120 przy 1440 i 1600, więc to WCIĘCIE, nie szerokość maksymalna). */
   --wymiar-wciecie-naglowka-srednie: 2.5rem; /** Wcięcie nagłówka = 40 px w zakresie 810–1280 px. */
   --wymiar-wciecie-naglowka-male: 1.25rem; /** Wcięcie nagłówka = 20 px przy ≤ 768 px. */
@@ -100,12 +133,29 @@
   --kroj-naglowek: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój NAGŁÓWKÓW = ten sam Inter (ADR-044). ⚠ ADR-040 przypisał tu Satoshi na podstawie POMIARU 0.1, który MYLNIE opisał Satoshi jako krój nagłówkowy. Pomiar CDP na wzorcu: H1 i H2 renderują się jako `Inter Medium`, rodzina zadeklarowana to `Inter` i `Inter-Medium`. Token ZOSTAJE osobny mimo równej wartości — nagłówki i proza to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. */
   --kroj-plakietka: "Satoshi", "Satoshi zapasowy", system-ui, sans-serif; /** Krój PLAKIETKI (ADR-044). Satoshi Medium 2.000, public/fonts/satoshi-medium.woff2, 17,3 kB, źródło fontshare.com. POMIAR: wzorzec używa Satoshi na DOKŁADNIE DWÓCH elementach — „Get 3 Free month" i „on Pro plan", oba 12 px, waga 700, barwa #070806. To jest ta sama plakietka, którą POMIAR 0.1 opisał w skali (12 px / 700 / interlinia 1,20). Kontrola pozytywna zera: 2 elementy w Satoshi wobec 257 w Interze — dwójka jest wynikiem, nie zerem narzędzia. */
   /**
-   * Cień warstwowy karty — trzy warstwy z §8.1 (`SPEC-STRONY-DLA-FRAMERA.md:634`), przeliczone z px na rem (0,6/1,5/1,5 → 2,3/5,9/3 → 10/26/4,5 px). PIERWSZA GRUPA `cien` W TYM PLIKU: do 2026-09-02 repozytorium nie znało cieni w ogóle — zero `box-shadow` w całym `src/`, zero klucza cienia tutaj.
+   * Cień karty — JEDNA WARSTWA, BIEL, WEWNĘTRZNY. Wartość z pomiaru Proactiva (WWW/073, punkt 1h): `rgba(248, 248, 248, 0.06) 2px 4px 16px 0px inset`, 30 wystąpień, najczęstszy cień strukturalny całej strony wzorca.
    * 
-   * ⚠ UŻYCIE OGRANICZONE DO STANU POD WSKAŹNIKIEM I POD FOKUSEM — i to ograniczenie jest CAŁĄ treścią tego tokena, nie jego szczegółem. Pomiar wzorca WWW/050-FINAL zapisany w `KartyFunkcji.module.css:6` brzmi „tło = rola powierzchni · BEZ obrysu · bez cienia", a `globals.css:402` — „Cień NIE JEST w systemie". Gdyby cień wszedł w SPOCZYNKU, unieważniłby oba te zdania i trzeci mechanizm rozdziału z ADR-038 (karty rozdziela KOMPOZYCJA, nie cień). W stanie spoczynku nic się nie zmienia; cień jest wyłącznie odpowiedzią na wskaźnik. Rozstrzygnięcie właściciela, WWW/072 — patrz ADR-048.
+   * ⚠ TO JEST KOREKTA JĘZYKA, NIE LICZBY — i dlatego niesie ADR-049. Do 2026-09-03 stała tu wartość z §8.1 (Habitline): TRZY warstwy, CZARNE, ZEWNĘTRZNE — `0 0.0375rem 0.09375rem -0.09375rem rgba(0,0,0,0.17), 0 0.14375rem 0.36875rem -0.1875rem rgba(0,0,0,0.14), 0 0.625rem 1.625rem -0.28125rem rgba(0,0,0,0.02)`. Pomiar Proactiva pokazał, że te dwa wzorce mówią OD-WROT-NIE: cień czarny zewnętrzny każe bryle **opadać** i rzucać mrok na tło; cień biały wewnętrzny każe jej **świecić od środka**. Przy jednolicie ciemnym tle drugie jest spójne z resztą języka (obrysy też są bielą przy alfie 0,10, nigdy barwą), a pierwsze produkuje mrok na mroku — czyli nic widocznego. Brzmienie sprzed korekty zostaje wyżej jako ślad; obie wartości widoczne, korekta bez zamazania.
    * 
-   * ⚠ BARWA SUROWA `rgba(0, 0, 0, …)` STOI TU CELOWO i nie jest złamaniem zakazu 9: `design/tokens.json` JEST źródłem prawdy o wartościach wizualnych, więc surowa barwa należy właśnie tutaj — tak samo jak `rgba(7, 8, 6, 0.6)` przy `kolor.rola.tlo-przezroczyste`. Cień to czerń z alfą, nie rola palety, i wpisanie go do `kolor.rola` ruszyłoby literał `LICZBA_ROL = 20` w `scripts/straznik-tokenow.mjs`, czyli DECYZJĘ o liczbie ról — a to inna decyzja niż ta.
+   * ⚠ UŻYCIE NADAL OGRANICZONE DO `:hover` I `:focus-within` — ADR-048, rozstrzygnięcie 4, zostaje w mocy bez zmian. Spoczynek karty nie zmienia się o piksel, więc pomiar „tło = rola powierzchni · BEZ obrysu · bez cienia" (`KartyFunkcji.module.css:6`), zdanie „Cień NIE JEST w systemie" (`globals.css:402`) i trzeci mechanizm rozdziału z ADR-038 zostają prawdziwe. Korekta zmienia CO się pojawia pod wskaźnikiem, nie KIEDY.
+   * 
+   * ⚠ BARWA SUROWA STOI TU CELOWO: `design/tokens.json` jest źródłem prawdy o wartościach wizualnych, więc surowa barwa należy właśnie tutaj — tak samo jak przy `kolor.rola.tlo-przezroczyste`. Wpisanie cienia do `kolor.rola` ruszyłoby licznik ról, czyli osobną decyzję.
    */
-  --cien-karta: 0 0.0375rem 0.09375rem -0.09375rem rgba(0, 0, 0, 0.17), 0 0.14375rem 0.36875rem -0.1875rem rgba(0, 0, 0, 0.14), 0 0.625rem 1.625rem -0.28125rem rgba(0, 0, 0, 0.02);
+  --cien-karta: rgba(248, 248, 248, 0.06) 0.125rem 0.25rem 1rem 0 inset;
+  --alfa-plyta: 0.30; /** Płyta karty szklanej — najwyższy próg. Wzorzec: 21 kart, `rgba(40,40,40,0.30)`. */
+  --alfa-obrys-mocny: 0.20; /** Obrys kafla i kropki statusu. Wzorzec: 14 kafli `2px solid rgba(255,255,255,0.20)` + 9 kropek `1px`. */
+  --alfa-obrys: 0.10; /** Obrys karty szklanej — DOMINANTA obrysów wzorca: 21 wystąpień `1px solid rgba(255,255,255,0.10)`. Krawędzie robi u wzorca BIEL przy niskiej alfie, nigdy barwa. */
+  --alfa-cien-wewnetrzny: 0.06; /** Cień wewnętrzny karty — patrz `cien.karta`. Wzorzec: 30 wystąpień. */
+  --alfa-kropka: 0.02; /** Tło kropki statusu. Wzorzec: 9 wystąpień `rgba(248,248,248,0.02)`. */
+  --alfa-chip: 0.01; /** Tło chipa prawie-przezroczystego — najniższy próg drabiny. Wzorzec: 10 wystąpień `rgba(248,248,248,0.01)`. Trzydzieści razy słabszy od `plyta`; przy dobieraniu na oko ta różnica jest nie do utrzymania. */
+  --ruch-czas-interakcji: 200ms; /** Jeden czas na hover, focus i active. Wzorzec: 59 z 81 elementów. */
+  --ruch-krzywa-interakcji: cubic-bezier(0.4, 0, 0.2, 1); /** Jedyna krzywa wzorca — nie znaleziono ani jednej innej na 81 elementach z przejściem. */
+  --ruch-gest-uniesienia: -0.125rem; /** −2 px. Gest rzeczy, które się KLIKA (przyciski, CTA). Wzorzec: zmierzone `dy = −2,00 px` na czterech rodzinach CTA, co do setnej. */
+  /**
+   * Gest rzeczy, które są POWIERZCHNIĄ (kafle) — i drugi krok przycisku przy wciśnięciu.
+   * 
+   * ⚠ DWA GESTY SĄ ROZDZIELONE PO ROLI ELEMENTU i to jest najmocniejsze ustalenie pomiaru 1d. Rzecz klikana UNOSI SIĘ (−2 px), a dopiero pod naciskiem kurczy do 0,98. Rzecz będąca powierzchnią robi ODWROTNIE: od razu kurczy się do 0,98, bez uniesienia — docisk zamiast wyjścia ku patrzącemu. Pomylenie ich odwraca komunikat: powierzchnia, która się unosi, udaje przycisk.
+   */
+  --ruch-gest-docisku: 0.98;
   --kolor-rola-tlo-strony: var(--kolor-tlo); /** Tło strony — wartość wzorca ze zlecenia WWW/050-FINAL, zmierzona 2026-08-26 (`getComputedStyle`, nie z oka). Motyw ODWRÓCONY z jasnego na ciemny: to jest zmiana warstwy podstawowej, nie odcienia. */
 }
