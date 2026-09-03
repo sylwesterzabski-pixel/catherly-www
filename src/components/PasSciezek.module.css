@@ -1,0 +1,89 @@
+/* R1 — ROZJAZD POD HERO (ADR-049).
+   Geometria z tokenów; barwy wyłącznie przez role. Mobile-first:
+   pion na wąskim kadrze, trzy kolumny od progu układu. */
+
+.pas {
+  padding-block: var(--wymiar-odstep-sekcji-male) 0;
+  padding-inline: var(--wymiar-wciecie-tresci-male);
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  /* 16 px — gap kart wzorca na kadrze desktopowym (pomiar Proactiva
+     WWW/073, 1g: 16 px w obu siatkach kart od progu 1024). Poniżej
+     progu wzorzec rozsuwa je do 40 px i tak samo robi ten pas niżej. */
+  gap: var(--wymiar-odstep-8);
+}
+
+/* KARTA ŚCIEŻKI. Rozdział od tła niesie PLAMA (powierzchnia wobec tła
+   strony) — pierwszy z trzech mechanizmów ADR-038, ten sam co przy
+   kartach funkcji. Obrysu nie ma, bo wzorzec kart nie obrysowuje. */
+.sciezka {
+  display: block;
+  background: var(--kolor-rola-powierzchnia);
+  /* ⚠ OBRYS JEST WYMOGIEM, NIE OZDOBĄ — i to jest drugi trop tej samej
+     naprawy. Karta ścieżki jest ELEMENTEM INTERAKTYWNYM (całość to
+     link), a takiemu WCAG 1.4.11 każe mieć granicę ≥ 3:1 wobec
+     otoczenia. Sama plama nie wystarcza: `powierzchnia` na tle strony
+     daje 1,09:1 — tę samą liczbę, którą ADR-038 zna przy kartach
+     biernych i puszcza, bo tamte rozdziela KOMPOZYCJA. Kompozycja nie
+     jest afordancją: mówi „to osobny blok", nie „to się klika".
+     `kreska-mocna` jest w tym systemie rolą dokładnie do tego —
+     „obrys pola formularza, próg 3:1 z WCAG 1.4.11" — i daje tu
+     11,71:1 wobec tła. Pierwsza próba naprawy (przywrócenie
+     podkreślenia) NIE WYSTARCZYŁA: strażnik dalej meldował 1,09:1,
+     bo mierzy granicę pudełka, nie ślad pod tekstem. */
+  border: 0.0625rem solid var(--kolor-rola-kreska-mocna);
+  /* 12 px — dominanta promieni kart wzorca (37 wystąpień, pomiar 1h).
+     Ta sama wartość co ramka filaru i kadr sekcji „Dbanie o siebie". */
+  border-radius: var(--wymiar-promien-sredni);
+  padding: var(--wymiar-odstep-7);
+  color: var(--kolor-rola-tekst-podstawowy);
+  font-size: var(--tekst-s);
+  font-weight: var(--waga-tekst);
+  line-height: var(--interlinia-naglowek-male);
+  /* ⚠ `text-decoration: none` ZDJĘTE — i to jest naprawa mojego własnego
+     błędu, złapana przez `e2e/kontrast-stanow.spec.ts`. Zdjąłem tu
+     podkreślenie z uzasadnieniem „to karta-cel, nie link w zdaniu",
+     a razem z nim zabrałem elementowi JEDYNĄ granicę ≥ 3:1: karta ma
+     plamę 1,09:1 wobec tła (powierzchnia na tle strony), obrysu nie ma
+     bo wzorzec kart nie obrysowuje, więc bez podkreślenia nie zostawało
+     NIC, co odcina interaktywny element od otoczenia. Recepta
+     podkreślenia z `globals.css` obowiązuje tu tak samo jak wszędzie —
+     „jedna recepta na cały serwis" nie miała wyjątków i nie potrzebuje
+     mojego. Zmierzone przed naprawą: 1,09:1 przy progu 3:1, sześć
+     upadków (spoczynek + hover, trzy języki, dwa kadry). */
+}
+
+/* Strzałka jako ZNAK KIERUNKU, nie ozdoba: karta prowadzi dalej i ma
+   to widać bez najeżdżania. `aria-hidden` przez konstrukcję — rysuje
+   ją `content`, więc nie wchodzi do drzewa tekstu i czytnik przeczyta
+   samą etykietę. */
+.sciezka::after {
+  content: " →";
+  color: var(--kolor-rola-akcent);
+  white-space: nowrap;
+}
+
+@media (min-width: 48.0625rem) {
+  .pas {
+    padding-block: var(--wymiar-odstep-sekcji) 0;
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+  }
+
+  .lista {
+    grid-template-columns: repeat(3, 1fr);
+    /* 16 px od progu — patrz komentarz wyżej. */
+    gap: var(--wymiar-odstep-5);
+  }
+}
+
+@media (min-width: 90rem) {
+  .pas {
+    padding-inline: var(--wymiar-wciecie-tresci);
+  }
+}

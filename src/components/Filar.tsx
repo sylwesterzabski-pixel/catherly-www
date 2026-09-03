@@ -21,6 +21,14 @@ type Props = {
   /** Zebra desktopu (handoff: filary 2 i 4 mają obraz po lewej);
    *  na 390 px zawsze tekst nad obrazem (order tylko ≥48rem). */
   obrazPoLewej?: boolean;
+  /** R2 (ADR-049) — droga z filaru na jego podstronę. Etykieta i adres
+   *  składane przez stronę z ISTNIEJĄCYCH kluczy `FunkcjeIndeks.blokNLink`
+   *  („Zobacz wszystko o pozyskiwaniu" itd.), więc filar nie pisze
+   *  treści ani nie zna ścieżek. Pominięty = filar bez drogi dalej. */
+  link?: {
+    etykieta: string;
+    adres: string;
+  };
   /** Zrzut Z6 przypisany filarowi: prefiks plików z rejestru
    *  (design/pipeline-obrazow.json) + alt z messages ×3 języki.
    *  Pominięty = filar pokazuje pustą ramkę (patrz nagłówek). */
@@ -78,6 +86,7 @@ export function Filar({
   konkrety,
   obrazPoLewej = false,
   obraz,
+  link,
 }: Props) {
   const klasyUkladu = obrazPoLewej
     ? `${styles.uklad} ${styles.obrazPoLewej}`
@@ -96,6 +105,16 @@ export function Filar({
                 <li key={indeks}>{konkret}</li>
               ))}
             </ul>
+            {/* R2 — DROGA DALEJ (ADR-049). Do 2026-09-03 filary nie
+                miały ANI JEDNEGO linku wychodzącego: audyt podróży
+                (WWW/073) zmierzył dziewięć i pół ekranu bez wyjścia
+                dokładnie w tym pasie strony. Etykieta jest cytatem
+                z istniejącego klucza, nie nowym zdaniem. */}
+            {link ? (
+              <a className={styles.dalej} href={link.adres}>
+                {link.etykieta}
+              </a>
+            ) : null}
           </div>
           {obraz === undefined ? (
             <div className={styles.obraz} aria-hidden="true" />

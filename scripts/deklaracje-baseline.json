@@ -1,18 +1,14 @@
 {
-    "naruszen": 10,
-    "zmierzone": "2026-08-24",
-    "commit": "e906013",
+    "naruszen": 3,
+    "zmierzone": "2026-09-03",
+    "commit": "f201790",
+    "_commit": "PRZODEK, nie commit niosący ten plik — commit nie może zawierać własnego skrótu, więc stempel wskazuje stan, WOBEC KTÓREGO liczono. Naprawa siedzi w commicie WWW/074 następującym po f201790.",
     "polecenie": "node scripts/lint-deklaracje.mjs",
     "zasada": "Liczba schodzi w DÓŁ razem z naprawą, w tym samym commicie. Nigdy w górę.",
+    "_zejscie": "10 → 3 (WWW/074). Siedem pozycji zamkniętych. Powód nie jest sprzątaniem: krok 3 tego zlecenia zmienił brzmienie sześciu kluczy strony głównej (skala głosu W2), a bramka wymaga, żeby korekta licznika objęła CAŁY PLIK, nie samą zmienioną linię. Poprawione zostały więc wszystkie deklaracje w trzech plikach, które zlecenie i tak otwierało: filary.md (8 pozycji), problem.md (1), rytm-dnia.md (1). Ósma pozycja — definicja.md — zamknęła się sama: nowe brzmienie trafiło w zadeklarowaną długość.",
+    "_czego_nie_ruszono": "Trzy pozostałe pozycje leżą w plikach POZA zakresem WWW/074 (en/cennik.md, pl/naglowek.md, pl/obawy.md). Zakaz 8: defekt spoza zlecenia nie wchodzi do kodu przy okazji. Wracają z zleceniem, które te pliki otworzy.",
     "pozycje": [
         "content/en/cennik.md — Cennik.plany.starter.pozycja2 (deklaracja 65, faktycznie 57)",
-        "content/pl/definicja.md — Definicja.tresc (deklaracja 275, faktycznie 256)",
-        "content/pl/filary.md — Filary.filar1.konkret1 (deklaracja 71, faktycznie 68)",
-        "content/pl/filary.md — Filary.filar1.konkret2 (deklaracja 74, faktycznie 73)",
-        "content/pl/filary.md — Filary.filar1.konkret3 (deklaracja 67, faktycznie 66)",
-        "content/pl/filary.md — Filary.filar2.konkret2 (deklaracja 65, faktycznie 66)",
-        "content/pl/filary.md — Filary.filar3.konkret1 (deklaracja 75, faktycznie 72)",
-        "content/pl/filary.md — Filary.filar3.konkret3 (deklaracja 60, faktycznie 63)",
         "content/pl/naglowek.md — Hero.naglowek (deklaracja 62, faktycznie 58)",
         "content/pl/obawy.md — Obawy.p1 (deklaracja 41, faktycznie 42)"
     ]

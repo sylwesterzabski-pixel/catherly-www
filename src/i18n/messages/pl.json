@@ -32,7 +32,7 @@
       "naglowek": "Rano widzisz, do kogo się odezwać.",
       "korzysc": "Masz plan działania i bazę, która rośnie, gdy ty prowadzisz rozmowy.",
       "konkret1": "DMO układa kolejność rozmów — zaczynasz dzień bez zastanawiania się.",
-      "konkret2": "Przypomnienie chwilę przed spotkaniem, żebyś była gotowa, nie zaskoczona.",
+      "konkret2": "Przypomnienie chwilę przed spotkaniem, żeby nic cię nie zaskoczyło.",
       "konkret3": "Każda polecona osoba przychodzi ze śladem — wiesz, kto ją polecił."
     },
     "filar2": {
@@ -52,8 +52,8 @@
     "filar4": {
       "naglowek": "Widzisz wzrost nawet po trudnym dniu",
       "korzysc": "Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje.",
-      "konkret1": "Twój Wrapped składa podsumowanie okresu — widzisz, co naprawdę zrobiłaś.",
-      "konkret2": "Cel z kamieniami milowymi mówi, jak daleko zaszłaś i co jest następne.",
+      "konkret1": "Twój Wrapped składa podsumowanie okresu — widzisz, co naprawdę masz za sobą.",
+      "konkret2": "Cel z kamieniami milowymi mówi, jak daleko jesteś i co jest następne.",
       "konkret3": "Świadectwo z cyfrowym odciskiem zostaje — ktoś może zweryfikować twoje wyniki."
     }
   },
@@ -134,19 +134,19 @@
   },
   "Problem": {
     "naglowek": "<akcent>Wszystko gdzieś jest.</akcent> Każde gdzie indziej.",
-    "tresc": "Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru, który gdzieś przecież zapisałaś. O tym, co w zespole, dowiadujesz się później, niż byś chciała.",
+    "tresc": "Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru, który gdzieś przecież masz zapisany. O tym, co w zespole, dowiadujesz się później, niż chcesz.",
     "kropka": "Wieczorem siadasz do zeszytu i liczysz, co z tego wyszło."
   },
   "Definicja": {
     "naglowek": "Catherly to <akcent>pamięć twojej sprzedaży</akcent>",
-    "tresc": "Catherly pamięta to, co dotąd trzymałaś w głowie i notesach: komu co obiecałaś, jakie treści wysłałaś której klientce i co się sprzedało. Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak jej idzie. Sprzedajesz po swojemu, tylko już nie z pamięci."
+    "tresc": "Catherly pamięta to, co dotąd trzymasz w głowie i notesach: komu co masz obiecane, jakie treści wysyłasz której klientce i co się sprzedało. Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak sobie radzi. Sprzedajesz po swojemu, tylko już nie z pamięci."
   },
   "RytmDnia": {
     "naglowek": "Jak wygląda twój dzień z Catherly",
     "krok1Nazwa": "Rano",
     "krok1Tresc": "Otwierasz Dzienny Plan Działania i zaczynasz rozmowy w ułożonej kolejności. Kalendarz przypomina o reszcie.",
     "krok2Nazwa": "W ciągu dnia",
-    "krok2Tresc": "Zaglądasz do bazy kontaktów i wiesz, komu co obiecałaś. Post składasz z szablonu w Studiu.",
+    "krok2Tresc": "Zaglądasz do bazy kontaktów i wiesz, komu co masz obiecane. Post składasz z szablonu w Studiu.",
     "krok3Nazwa": "Wieczorem",
     "krok3Tresc": "Na Pulpicie masz swój dzień i dzień zespołu obok siebie.",
     "kropka": "Wieczorem widzisz, co z tego wyszło."

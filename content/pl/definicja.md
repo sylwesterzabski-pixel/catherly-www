@@ -16,12 +16,12 @@ Catherly to pamięć twojej sprzedaży
 
 ## Treść
 
-Catherly pamięta to, co dotąd trzymałaś w głowie i notesach: komu co
-obiecałaś, jakie treści wysłałaś której klientce i co się sprzedało.
-Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak jej idzie.
+Catherly pamięta to, co dotąd trzymasz w głowie i notesach: komu co masz
+obiecane, jakie treści wysyłasz której klientce i co się sprzedało.
+Zespół też masz pod ręką — widzisz, kogo wprowadzasz i jak sobie radzi.
 Sprzedajesz po swojemu, tylko już nie z pamięci.
 
-**275 znaków, 3 zdania.**
+**261 znaków, 3 zdania.**
 
 ---
 
@@ -29,16 +29,16 @@ Sprzedajesz po swojemu, tylko już nie z pamięci.
 
 | Fraza | Funkcja | Status |
 |---|---|---|
-| „komu co obiecałaś" | Odczyt planów rozmów i debriefów | DZIAŁA |
-| „jakie treści wysłałaś której klientce" | Tablica postów + CRM | DZIAŁA |
+| „komu co masz obiecane" | Odczyt planów rozmów i debriefów | DZIAŁA |
+| „jakie treści wysyłasz której klientce" | Tablica postów + CRM | DZIAŁA |
 | „co się sprzedało" | Pulpit + Magic Wrapped + Świadectwo | DZIAŁA |
 | „kogo wprowadzasz" | Kreator wdrożeniowy 6 kroków | DZIAŁA |
-| „jak jej idzie" | Pulpit — aktywność per osoba | DZIAŁA |
+| „jak sobie radzi" | Pulpit — aktywność per osoba | DZIAŁA |
 
 ## Wariant bezpieczniejszy (S2) — do użycia gdy właściciel odrzuci metaforę „pamięci"
 
 H2: „Co dokładnie robi Catherly" (26 zn)
 Treść (265 zn): „Prowadzi twoje kontakty: kto jest twoją klientką,
-o czym rozmawiałyście, komu co obiecałaś. Trzyma treści, które wysyłasz,
+o czym rozmawiałyście, komu co masz obiecane. Trzyma treści, które wysyłasz,
 i porządkuje zespół, który budujesz. Zbiera wyniki — co się sprzedało.
 Rozmowy zostają po twojej stronie."

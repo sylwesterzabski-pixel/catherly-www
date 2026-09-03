@@ -21,8 +21,8 @@ Otwierasz Dzienny Plan Działania i zaczynasz rozmowy w ułożonej
 kolejności. Kalendarz przypomina o reszcie. *(107 zn)*
 
 **W ciągu dnia** *(12 zn)*
-Zaglądasz do bazy kontaktów i wiesz, komu co obiecałaś. Post składasz
-z szablonu w Studiu. *(90 zn)*
+Zaglądasz do bazy kontaktów i wiesz, komu co masz obiecane. Post składasz
+z szablonu w Studiu. *(94 zn)*
 
 **Wieczorem** *(9 zn)*
 Na Pulpicie masz swój dzień i dzień zespołu obok siebie. Wieczorem

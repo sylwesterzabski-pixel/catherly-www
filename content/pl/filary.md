@@ -22,9 +22,9 @@ Masz plan działania i bazę, która rośnie, gdy ty prowadzisz rozmowy.
 **68 znaków.**
 
 ### Konkrety
-1. DMO układa kolejność rozmów — zaczynasz dzień bez zastanawiania się. *(71 zn)*
-2. Przypomnienie chwilę przed spotkaniem, żebyś była gotowa, nie zaskoczona. *(74 zn)*
-3. Każda polecona osoba przychodzi ze śladem — wiesz, kto ją polecił. *(67 zn)*
+1. DMO układa kolejność rozmów — zaczynasz dzień bez zastanawiania się. *(68 zn)*
+2. Przypomnienie chwilę przed spotkaniem, żeby nic cię nie zaskoczyło. *(67 zn)*
+3. Każda polecona osoba przychodzi ze śladem — wiesz, kto ją polecił. *(66 zn)*
 
 ---
 
@@ -42,7 +42,7 @@ Studio uczy się twojego głosu i pilnuje, żeby żadna treść nie złamała tw
 
 ### Konkrety
 1. Studio daje gotowe formaty i szablony — nie zaczynasz od pustej kartki. *(71 zn)*
-2. Tarcza zaznacza ryzykowne sformułowania, zanim klikniesz „wyślij”. *(65 zn)*
+2. Tarcza zaznacza ryzykowne sformułowania, zanim klikniesz „wyślij”. *(66 zn)*
 3. Pieczęć Etyczna daje wynik i certyfikat — masz dowód, nie tylko odczucie. *(73 zn)*
 
 ---
@@ -60,9 +60,9 @@ Zamiast tłumaczyć od nowa każdemu — kreator wdrożeniowy robi to za ciebie.
 **74 znaki.**
 
 ### Konkrety
-1. Kreator wdrożeniowy prowadzi nową osobę przez etapy — bez twojej pomocy. *(75 zn)*
+1. Kreator wdrożeniowy prowadzi nową osobę przez etapy — bez twojej pomocy. *(72 zn)*
 2. Pierwsze 90 Dni z czterema fazami i misjami — nowa osoba widzi drogę przed sobą. *(80 zn)*
-3. Osiągnięcia i odznaki utrzymują zaangażowanie długo po starcie. *(60 zn)*
+3. Osiągnięcia i odznaki utrzymują zaangażowanie długo po starcie. *(63 zn)*
 
 Uwaga: „Pierwsze 90 Dni" i „czterema fazami" — nazwa programu i jego
 cecha z tabeli obietnic, nie liczby marketingowe (poza zakresem lintera).
@@ -82,8 +82,8 @@ Pulpit pokazuje dzisiejszy stan, a twoje wyniki mają dowód, który zostaje.
 **74 znaki.**
 
 ### Konkrety
-1. Twój Wrapped składa podsumowanie okresu — widzisz, co naprawdę zrobiłaś. *(72 zn — nazwa wg aplikacji, Z3)*
-2. Cel z kamieniami milowymi mówi, jak daleko zaszłaś i co jest następne. *(70 zn)*
+1. Twój Wrapped składa podsumowanie okresu — widzisz, co naprawdę masz za sobą. *(76 zn — nazwa wg aplikacji, Z3)*
+2. Cel z kamieniami milowymi mówi, jak daleko jesteś i co jest następne. *(69 zn)*
 3. Świadectwo z cyfrowym odciskiem zostaje — ktoś może zweryfikować twoje wyniki. *(78 zn)*
 
 ---

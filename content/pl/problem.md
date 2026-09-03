@@ -16,10 +16,10 @@ jako jedyna możliwa odpowiedź.
 ## Treść
 
 Posty robisz wtedy, kiedy dom już śpi. Rano szukasz numeru, który
-gdzieś przecież zapisałaś. O tym, co w zespole, dowiadujesz się później,
-niż byś chciała. Wieczorem siadasz do zeszytu i liczysz, co z tego wyszło.
+gdzieś przecież masz zapisany. O tym, co w zespole, dowiadujesz się później,
+niż chcesz. Wieczorem siadasz do zeszytu i liczysz, co z tego wyszło.
 
-**213 znaków, 4 zdania — komplet czterech scen kanonicznych STRATEGIA pkt 18.**
+**212 znaków, 4 zdania — komplet czterech scen kanonicznych STRATEGIA pkt 18.**
 
 ---
 

@@ -7,6 +7,7 @@ import { Filar } from "@/components/Filar";
 import { Hero } from "@/components/Hero";
 import { KartyFunkcji } from "@/components/KartyFunkcji";
 import { PasMozliwosci } from "@/components/PasMozliwosci";
+import { PasSciezek } from "@/components/PasSciezek";
 import { Nawigacja } from "@/components/Nawigacja";
 import { SekcjaRytmu } from "@/components/SekcjaRytmu";
 import { SekcjaTekstowa } from "@/components/SekcjaTekstowa";
@@ -28,11 +29,16 @@ import { OSADZENIE_NA_GLOWNEJ, zrzutFilaru } from "@/obrazy/zrzuty";
  * renderowana przez stronę z jej ścieżką ("/") — aria-current
  * serwerowo, bez JS. Nieznane ścieżki obsługuje segment [...sciezka].
  */
+/* R2 (ADR-049): każdy filar dostaje drogę na SWOJĄ podstronę.
+   `blok` wskazuje klucz etykiety w `FunkcjeIndeks` — te same cztery
+   zdania, które niesie indeks funkcji, więc zero nowej treści i jedno
+   miejsce do podmiany. `sciezka` to adres podstrony; kolejność filarów
+   i kolejność bloków indeksu są tą samą kolejnością rytmu dnia. */
 const FILARY = [
-  { klucz: "filar1", id: "filar-1-h2", obrazPoLewej: false },
-  { klucz: "filar2", id: "filar-2-h2", obrazPoLewej: true },
-  { klucz: "filar3", id: "filar-3-h2", obrazPoLewej: false },
-  { klucz: "filar4", id: "filar-4-h2", obrazPoLewej: true },
+  { klucz: "filar1", id: "filar-1-h2", obrazPoLewej: false, blok: "blok1Link", sciezka: "/funkcje/pozyskiwanie" },
+  { klucz: "filar2", id: "filar-2-h2", obrazPoLewej: true,  blok: "blok2Link", sciezka: "/funkcje/tresci" },
+  { klucz: "filar3", id: "filar-3-h2", obrazPoLewej: false, blok: "blok3Link", sciezka: "/funkcje/zespol" },
+  { klucz: "filar4", id: "filar-4-h2", obrazPoLewej: true,  blok: "blok4Link", sciezka: "/funkcje/wyniki" },
 ] as const;
 
 export function generateStaticParams() {
@@ -53,12 +59,20 @@ export default async function StronaGlowna({ params }: Props) {
   const tRytm = await getTranslations("RytmDnia");
   const tObawy = await getTranslations("Obawy");
   const tZamkniecie = await getTranslations("ZamkniecieGlowna");
+  const tIndeks = await getTranslations("FunkcjeIndeks");
 
   return (
     <>
       <Nawigacja locale={locale as Locale} biezacaSciezka="/" />
       <main id="tresc">
         <Hero locale={locale as Locale} />
+
+        {/* R1 — ROZJAZD POD HERO (ADR-049). Pierwsze drzwi w korytarzu:
+            do 2026-09-03 od CTA hero do linku cennika było dziewięć
+            i pół ekranu bez żadnego wyjścia (pomiar WWW/073 krok 3).
+            Tu wchodzi też jedyne na głównej zdanie podróży STRUKTURA
+            (R4) — cytat z `DlaKogo.s3_h2`, nie nowy tekst. */}
+        <PasSciezek locale={locale as Locale} />
 
         {/* S3 — problem (K3 neutralna, „słyszalna kropka"). */}
         <SekcjaTekstowa
@@ -103,7 +117,7 @@ export default async function StronaGlowna({ params }: Props) {
             zakazem bezwzględnym. Osiem cytatów z kluczy `*_nazwa`. */}
         <PasMozliwosci />
 
-        {FILARY.map(({ klucz, id, obrazPoLewej }) => (
+        {FILARY.map(({ klucz, id, obrazPoLewej, blok, sciezka }) => (
           <Filar
             key={klucz}
             idNaglowka={id}
@@ -115,6 +129,10 @@ export default async function StronaGlowna({ params }: Props) {
               t(`${klucz}.konkret3`),
             ]}
             obrazPoLewej={obrazPoLewej}
+            link={{
+              etykieta: tIndeks(blok),
+              adres: adresWJezyku(locale as Locale, sciezka),
+            }}
             /* Zrzuty Z6 — jeden przełącznik w rejestrze
                (design/pipeline-obrazow.json → osadzenieNaGlownej)
                czyta i ten markup, i strażnik e2e, więc markup nie

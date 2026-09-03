@@ -70,6 +70,22 @@ rozstrzygnięcie 5).
    skalą pozostaje POMIAR 0.3 z `WWW/050-FINAL`. Pliki `public/obrazy/**`
    NIETKNIĘTE (archiwum dowodowe), klucze `ObrazyFilarow.*` zostają w i18n —
    **nie sprzątać ich**, pilnuje ich strażnik gotowości dostawy.
+   **WWW/073 wykonane 2026-09-03** — push `b4730c8` (CI `33788481484`, zero
+   nowych czerwieni wobec runu na `bf66f27`), pomiar wzorca **Proactiv**
+   (klimat + anatomia), skala głosu W2 (**31 pl · 0 en · 39 de**, przy czym
+   w de rodzaj siedzi w RZECZOWNIKU, nie w końcówce) i audyt trzech podróży.
+   **WWW/074 wykonane 2026-09-03** — **ADR-049**. Tokeny systemu Proactiva
+   (drabina alfy, szkło malowane, zegar ruchu, próg odstępu sekcji) +
+   **korekta ADR-048**: cień kart odwraca język na biel `inset`, promień
+   kart 16→12 px, token `promien-karty` wycofany. `LICZBA_ROL` 20→24.
+   Drzwi w korytarzu: pas trzech ścieżek pod hero + linki z filarów —
+   największa luka bez wyjścia spadła **9,92 → 3,14 ekranu**, kotwice
+   dostały pierwsze drogi. Pilot głosu W2 na sześciu kluczach pl strony
+   głównej (`content/` zmieniony razem z i18n — strażnik porównuje je znak
+   w znak). Zapadka deklaracji **10 → 3**.
+   ⛔ **KORPUS JASNY JEST ZABLOKOWANY, NIE GOTOWY**: role weszły, ale
+   `akcent` na jasnym ma **1,43:1** (próg 4,5 / 3), a `fokus` **1,12:1**
+   (próg 3). Sekcja jasna nie może powstać bez rozstrzygnięcia właściciela.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.
