@@ -148,11 +148,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 24;
+const LICZBA_ROL = 28;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-049 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-050 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -173,6 +173,10 @@ const PARY = [
      przed którą broni sprawdzenie 0. */
   ["tekst-na-jasnym",     "powierzchnia-jasna", 4.5, "tekst czytany na korpusie jasnym"],
   ["tekst-2-na-jasnym",   "powierzchnia-jasna", 4.5, "tekst drugorzędny na korpusie jasnym"],
+  ["tekst-na-jasnym",     "powierzchnia-karty-na-jasnym", 4.5, "tekst na karcie korpusu jasnego"],
+  ["tekst-2-na-jasnym",   "powierzchnia-karty-na-jasnym", 4.5, "tekst drugorzędny na karcie korpusu jasnego"],
+  ["akcent-na-jasnym",    "powierzchnia-jasna", 4.5, "fragment nagłówka w akcencie na korpusie jasnym"],
+  ["akcent-na-jasnym",    "powierzchnia-karty-na-jasnym", 4.5, "akcent niosący tekst na karcie korpusu jasnego"],
 ];
 
 /* ─── WYŁĄCZENIA Z PAR — Z WŁASNYM LICZNIKIEM ──────────────────
@@ -198,6 +202,10 @@ const ROLE_BEZ_PARY = {
     "dekoracja — próg 1,30 z ADR-038 mierzy e2e/rozdzial-kart, nie ten strażnik",
   "link":
     "równa tekst-podstawowy; recepta podkreślenia pilnowana przez e2e/podkreslenia",
+  "obrys-cta-na-jasnym":
+    "pokryty przez R-AKCENT-01b — obrys sprawdzany wobec powierzchni ORAZ wobec akcentu, który otacza",
+  "fokus-na-jasnym":
+    "pokryty przez R-AKCENT-02(b) — obwódka fokusu na powierzchni jasnej",
   "akcent":
     "pokryty przez R-AKCENT-01 — osobna pętla po WSZYSTKICH powierzchniach, surowsza niż jedna para",
   "link-aktywny":
@@ -211,6 +219,8 @@ const ROLE_BEZ_PARY = {
     "stan nieaktywny — z definicji stłumiony, próg 4,5 go nie dotyczy (WCAG 1.4.3)",
   "powierzchnia-jasna":
     "występuje jako TŁO w parach korpusu jasnego, nie jako barwa mierzona",
+  "powierzchnia-karty-na-jasnym":
+    "j.w. — tło par kartowych korpusu jasnego; własnej plamy pilnuje e2e/rozdzial-kart (kompozycja)",
   "tlo-strony":
     "występuje jako TŁO w parach, nie jako barwa mierzona",
   "powierzchnia":
@@ -310,41 +320,95 @@ for (const s of ["stan-sukces", "stan-ostrzezenie", "stan-blad"]) {
      jest sprawdzana — sprawdzanie jej dawałoby czerwień na stanie
      poprawnym. Gdyby ktoś zdjął `outline-offset`, złapie to
      `e2e/kontrast-stanow.spec.ts`, nie ten strażnik. */
-/* ⛔ `powierzchnia-jasna` CELOWO POZA TĄ LISTĄ — I TO NIE JEST PRZEOCZENIE,
-   tylko zapis nierozstrzygniętej sprzeczności (ADR-049).
+/* ✅ `powierzchnia-jasna` WESZŁA DO LISTY (ADR-050) — blokada z ADR-049
+   zdjęta, ale NIE przez złagodzenie progu, tylko przez dodanie ról,
+   których brakowało.
 
-   Ta lista jest LITERALNA, nie czerpana ze zbioru ról. Zlecenie WWW/074
-   zakładało, że „R-AKCENT-01 pilnuje z automatu" — NIEPRAWDA: nowa
-   powierzchnia nie wchodzi tu sama i bez tego komentarza wypadłaby
-   z obu reguł po cichu.
+   Historia w dwóch krokach, zostawiona w całości, bo sam ten komentarz
+   jest przykładem tego, co zapisuje się przy nierozstrzygniętej
+   sprzeczności:
+   (1) ADR-049: rola weszła do palety, ale POZA tę listę, bo dopisanie
+       jej dałoby czerwień na stanie, w którym nic jeszcze nie było
+       zepsute — korpusu jasnego nie było w żadnej sekcji. Liczby były
+       już wtedy znane: akcent 1,43:1, fokus 1,12:1.
+   (2) ADR-050: doszły dwie role — `obrys-cta-na-jasnym` (14,56:1)
+       i `fokus-na-jasnym` (16,31:1) — i dopiero one czynią tę
+       powierzchnię sprawdzalną. Lista rośnie o jedną pozycję i JEST
+       ZIELONA, a nie wyciszona.
 
-   Dopisanie jej TERAZ dałoby czerwień na stanie, w którym nic jeszcze
-   nie jest zepsute — korpusu jasnego nie ma w żadnej sekcji. Ale
-   liczby są znane już dziś i obie są blokujące (zmierzone 2026-09-03):
-
-     --akcent na --powierzchnia-jasna = 1,43:1   (R-AKCENT-01 wymaga 4,5:1)
-     --fokus  na --powierzchnia-jasna = 1,12:1   (R-AKCENT-02(b) wymaga 3:1)
-
-   Limonka na jasnym jest niewidoczna także jako WYPEŁNIENIE CTA (próg
-   3:1 z WCAG 1.4.11 — te same 1,43:1), wbrew założeniu zlecenia; a biała
-   obwódka fokusu znika, bo mechanizm `outline-offset`, który ratuje ją
-   na ciemnym (biel na tle 20,07:1), tutaj nie pomaga — tło też jest jasne.
-
-   WARUNEK DOPISANIA DO LISTY: rozstrzygnięcie właściciela o akcencie
-   i fokusie na jasnym (obwódka CTA? inny akcent? ciemniejsza
-   powierzchnia jasna?). Dopiero wtedy ta lista rośnie o jedną pozycję
-   — i wtedy ma być zielona, a nie wyciszona. */
-const POWIERZCHNIE = ["tlo-strony", "powierzchnia", "powierzchnia-2", "powierzchnia-akcentowa"];
+   ⚠ LISTA JEST LITERALNA, NIE CZERPANA ZE ZBIORU RÓL — i to zostaje.
+   Zlecenie WWW/074 zakładało, że nowa powierzchnia wejdzie tu „z
+   automatu"; nie wchodzi. Literał jest tu MECHANIZMEM: dodanie
+   powierzchni do systemu ma wymagać ruszenia tej linii, bo każda nowa
+   powierzchnia niesie pytanie „co na niej wolno akcentowi", a na to
+   nie ma odpowiedzi wyprowadzalnej z samej wartości barwy. */
+const POWIERZCHNIE = [
+  "tlo-strony",
+  "powierzchnia",
+  "powierzchnia-2",
+  "powierzchnia-akcentowa",
+  "powierzchnia-jasna",
+];
 const PROG_AKCENT_TEKST = 4.5;
 const PROG_FOKUS = 3.0;
+
+/* ─── AKCENT: DWA REGULAMINY, ZALEŻNE OD POWIERZCHNI (ADR-050) ──
+   Na powierzchniach ciemnych akcent MOŻE nieść tekst — ma tam 12,58:1.
+   Na jasnej NIE MOŻE (1,43:1) i wolno mu tam być wyłącznie
+   WYPEŁNIENIEM CTA Z OBRYSEM. Zamiast progu tekstowego sprawdzany jest
+   więc OBRYS, bo to on niesie kształt kontrolki.
+
+   Mapa wiąże powierzchnię z rolą obrysu. Powierzchnia bez wpisu podlega
+   regule domyślnej (akcent musi umieć nieść tekst). */
+const AKCENT_TYLKO_PLAMA = {
+  "powierzchnia-jasna": "obrys-cta-na-jasnym",
+};
 
 for (const p of POWIERZCHNIE) {
   if (!role["akcent"] || !role[p]) { bledy.push(`BRAK ROLI: --akcent lub --${p}`); continue; }
   const w = kontrast(role["akcent"], role[p]);
-  if (w < PROG_AKCENT_TEKST) {
+  const rolaObrysu = AKCENT_TYLKO_PLAMA[p];
+
+  if (!rolaObrysu) {
+    if (w < PROG_AKCENT_TEKST) {
+      bledy.push(
+        `R-AKCENT-01: --akcent na --${p} = ${w.toFixed(2)}:1, wymagane ${PROG_AKCENT_TEKST}:1 — ` +
+          `akcent nie może tam nieść tekstu`
+      );
+    }
+    continue;
+  }
+
+  /* R-AKCENT-01b — powierzchnia z akcentem tylko jako plama.
+     Sprawdzamy DWIE rzeczy, bo jedna bez drugiej jest furtką. */
+  if (!role[rolaObrysu]) {
+    bledy.push(`BRAK ROLI: --${rolaObrysu} (obrys CTA wymagany na --${p})`);
+    continue;
+  }
+  const wObrys = kontrast(role[rolaObrysu], role[p]);
+  if (wObrys < PROG_FOKUS) {
     bledy.push(
-      `R-AKCENT-01: --akcent na --${p} = ${w.toFixed(2)}:1, wymagane ${PROG_AKCENT_TEKST}:1 — ` +
-        `akcent nie może tam nieść tekstu`
+      `R-AKCENT-01b: obrys CTA --${rolaObrysu} na --${p} = ${wObrys.toFixed(2)}:1, ` +
+        `wymagane ${PROG_FOKUS}:1 — bez tego wypełniony przycisk nie ma widocznej granicy`
+    );
+  }
+  const wObrysDoAkcentu = kontrast(role[rolaObrysu], role["akcent"]);
+  if (wObrysDoAkcentu < PROG_FOKUS) {
+    bledy.push(
+      `R-AKCENT-01b: obrys CTA --${rolaObrysu} wobec --akcent = ${wObrysDoAkcentu.toFixed(2)}:1, ` +
+        `wymagane ${PROG_FOKUS}:1 — obrys musi odcinać się także od wypełnienia, które otacza`
+    );
+  }
+
+  /* WYJĄTEK MA MIEĆ TERMIN WAŻNOŚCI. Gdyby akcent kiedyś przeszedł na
+     tej powierzchni próg tekstowy (zmiana barwy akcentu albo
+     powierzchni), wyjątek opisywałby problem, którego już nie ma —
+     a wyjątek przeterminowany wygląda jak decyzja i chroni przed
+     niczym. Ta sama klasa co „wyłączenie przeterminowane" wyżej. */
+  if (w >= PROG_AKCENT_TEKST) {
+    bledy.push(
+      `WYJĄTEK ZBĘDNY: --akcent na --${p} = ${w.toFixed(2)}:1 ≥ ${PROG_AKCENT_TEKST}:1, ` +
+        `więc akcent UMIE tam nieść tekst — zdejmij wpis z AKCENT_TYLKO_PLAMA razem z powodem`
     );
   }
 }
@@ -355,11 +419,26 @@ for (const [e, i] of [["tekst-na-interakcji", "interakcja"], ["tekst-na-interakc
   if (w < 4.5) bledy.push(`R-AKCENT-02(a): etykieta --${e} na --${i} = ${w.toFixed(2)}:1, wymagane 4.5:1`);
 }
 
+/* ─── FOKUS: JEDNA BARWA NIE WYSTARCZA NA DWA KLIMATY (ADR-050) ──
+   Do 2026-09-03 fokus był jedną rolą (biel) i to działało, bo wszystkie
+   powierzchnie były ciemne. Korpus jasny łamie to założenie: biel na
+   `powierzchnia-jasna` daje 1,12:1. Mapa wiąże powierzchnię z rolą
+   obwódki; powierzchnia bez wpisu używa roli domyślnej `fokus`. */
+const FOKUS_NA_POWIERZCHNI = {
+  "powierzchnia-jasna": "fokus-na-jasnym",
+};
+
 for (const p of POWIERZCHNIE) {
-  if (!role["fokus"] || !role[p]) { bledy.push(`BRAK ROLI: --fokus lub --${p}`); continue; }
-  const w = kontrast(role["fokus"], role[p]);
+  const rolaFokusu = FOKUS_NA_POWIERZCHNI[p] ?? "fokus";
+  if (!role[rolaFokusu] || !role[p]) {
+    bledy.push(`BRAK ROLI: --${rolaFokusu} lub --${p}`);
+    continue;
+  }
+  const w = kontrast(role[rolaFokusu], role[p]);
   if (w < PROG_FOKUS) {
-    bledy.push(`R-AKCENT-02(b): obwódka --fokus na --${p} = ${w.toFixed(2)}:1, wymagane ${PROG_FOKUS}:1`);
+    bledy.push(
+      `R-AKCENT-02(b): obwódka --${rolaFokusu} na --${p} = ${w.toFixed(2)}:1, wymagane ${PROG_FOKUS}:1`
+    );
   }
 }
 
