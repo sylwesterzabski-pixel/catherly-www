@@ -14,7 +14,7 @@ między językami: pracujesz-sama, budujesz-zespol, prowadzisz-strukture.
 
 ### H1 (S2)
 
-Pracujesz sama, budujesz zespół albo prowadzisz strukturę.
+Pracujesz w pojedynkę, budujesz zespół albo prowadzisz strukturę.
 
 ### Zdanie pod H1
 
@@ -44,7 +44,7 @@ Wszystko trzymasz jeszcze w głowie i w wiadomościach.
 
 Rano decydujesz od nowa, od czego zacząć: notatki są w telefonie,
 ustalenia w wiadomościach, terminy w kilku miejscach naraz. Wieczorem
-nie masz pewności, czy o kimś ważnym nie zapomniałaś.
+nie masz pewności, czy o kimś ważnym nie zapominasz.
 
 ### CO CATHERLY Z TYM ROBI — akapit 1
 
@@ -86,7 +86,7 @@ Wszystko powyżej działa od planu Starter.
 ### CZEGO TA ŚCIEŻKA NIE ZAŁATWIA
 
 Catherly nie znajdzie za ciebie kontaktów ani nie poprowadzi rozmów —
-ludzi do formularza kierujesz sama, porządek dnia dostajesz.
+ludzi do formularza kierujesz samodzielnie, porządek dnia dostajesz.
 
 ---
 
@@ -100,7 +100,7 @@ Masz zespół. Pytanie, komu dziś pomóc, a komu nie przeszkadzać.
 
 Każda osoba w twoim zespole jest w innym miejscu: jedna dopiero się
 wdraża, inna wyhamowała po dobrym starcie. Nie masz tego w jednym
-widoku, więc dowiadujesz się w rozmowie — zwykle później, niż chciałaś.
+widoku, więc dowiadujesz się w rozmowie — zwykle później, niż chcesz.
 
 ### CO CATHERLY Z TYM ROBI — akapit 1
 

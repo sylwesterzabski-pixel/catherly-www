@@ -84,17 +84,17 @@ Zestawy hashtagów układasz raz i masz je pod ręką przy każdym poście — d
 
 ### CZEGO NIE ROBI
 
-Catherly nie podpowie ci hashtagów — co jest w zestawie i do którego posta trafi, decydujesz sama.
+Catherly nie podpowie ci hashtagów — co jest w zestawie i do którego posta trafi, decydujesz samodzielnie.
 
 ## Moduł 4 — Kalendarz publikacji
 
 ### PO CO TO
 
-Każdy pomysł na post od razu dostaje swoje miejsce i datę w kalendarzu. Widzisz, co zaplanowałaś i na kiedy, a gdy plan się zmienia, przesuwasz post na inny dzień — bez układania wszystkiego od nowa.
+Każdy pomysł na post od razu dostaje swoje miejsce i datę w kalendarzu. Widzisz, co masz zaplanowane i na kiedy, a gdy plan się zmienia, przesuwasz post na inny dzień — bez układania wszystkiego od nowa.
 
 ### CZEGO NIE ROBI
 
-Catherly nie opublikuje posta za ciebie — kalendarz pokazuje plan, a publikujesz sama.
+Catherly nie opublikuje posta za ciebie — kalendarz pokazuje plan, a publikujesz samodzielnie.
 
 ## Moduł 5 — zatwierdzanie u liderki
 
@@ -114,7 +114,7 @@ Ryzykowne sformułowanie wyłapujesz przed publikacją, nie po niej. Reguły Tar
 
 ### CZEGO NIE ROBI
 
-Tarcza nie poprawi tekstu za ciebie — wskazuje ryzykowne sformułowania, a co z nimi zrobisz, decydujesz sama.
+Tarcza nie poprawi tekstu za ciebie — wskazuje ryzykowne sformułowania, a co z nimi zrobisz, decydujesz samodzielnie.
 
 ## Moduł 7 — Pieczęć Etyczna
 
@@ -124,7 +124,7 @@ Kończysz projekt, a on dostaje Pieczęć Etyczną — wynik etyczny z publiczny
 
 ### CZEGO NIE ROBI
 
-Catherly nie wyśle certyfikatu twojej klientce — komu i kiedy go pokazać, decydujesz sama.
+Catherly nie wyśle certyfikatu twojej klientce — komu i kiedy go pokazać, decydujesz samodzielnie.
 
 ## Moduł 8 — uczenie profilu głosu
 
@@ -134,17 +134,17 @@ Piszesz posty tak, jak mówisz do swoich klientek — po swojemu. Catherly uczy 
 
 ### CZEGO NIE ROBI
 
-Catherly nie napisze postów za ciebie — profil głosu zapamiętuje twój styl, a piszesz ty sama, własnymi słowami.
+Catherly nie napisze postów za ciebie — profil głosu zapamiętuje twój styl, a piszesz ty, własnymi słowami.
 
 ## Moduł 9 — tablica postów z filtrami
 
 ### PO CO TO
 
-Wracasz do swoich postów po paru dniach i nie musisz zgadywać, na czym stanęłaś. Filtrujesz tablicę i od razu widzisz, co czeka na zatwierdzenie, a co już zaplanowałaś.
+Wracasz do swoich postów po paru dniach i nie musisz zgadywać, na czym się skończyło. Filtrujesz tablicę i od razu widzisz, co czeka na zatwierdzenie, a co masz już zaplanowane.
 
 ### CZEGO NIE ROBI
 
-Zasięgów ani polubień tablica nie pokaże — widzisz statusy swoich postów, a ich wyniki sprawdzasz tam, gdzie je opublikowałaś.
+Zasięgów ani polubień tablica nie pokaże — widzisz statusy swoich postów, a ich wyniki sprawdzasz tam, gdzie je publikujesz.
 
 ---
 

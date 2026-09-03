@@ -406,6 +406,54 @@ html {
   border: 0.0625rem solid var(--kolor-rola-kreska);
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   STREFA TONALNA JASNA (ADR-050) — klimat mieszany.
+
+   ⚠ TO JEST POWRÓT WARSTWY, KTÓRĄ ADR-038 USUNĄŁ — i wraca dokładnie
+   tak, jak tamten ADR nakazał: „gdyby weszła sekcja jasna, warstwa
+   wraca OSOBNĄ DECYZJĄ, a nie odtwarzana z pamięci". Osobną decyzją
+   jest ADR-050. Nie jest to przywrócenie starego bloku `[data-ton]`
+   z ADR-032: tamten przełączał sześć ról inwersji pod paletę „natura",
+   ten przestawia PIĘĆ ról pod korpus jasny wzorca.
+
+   MECHANIZM: przestawiamy ROLE, nie komponenty. Dzięki temu żaden
+   komponent nie wie o strefie i nie musi wiedzieć — używa tych samych
+   nazw ról co zawsze, a strefa podmienia im wartości. Alternatywa
+   („każdy komponent dostaje wariant jasny") rozsypałaby decyzję na
+   kilkanaście plików i pierwszy nowy komponent by o niej zapomniał.
+
+   ⚠ CZEGO TA STREFA NIE ROBI: nie ma tu gradientów-mostów między
+   strefami. Zlecenie WWW/075 wyłącza je z tego kroku wprost — wejdą
+   przy batchach sekcji. Przejście jest więc CZYSTĄ ZMIANĄ POWIERZCHNI,
+   krawędź w krawędź.
+   ═══════════════════════════════════════════════════════════════════ */
+[data-ton="jasny"] {
+  --kolor-rola-tlo-strony: var(--kolor-rola-powierzchnia-jasna);
+  --kolor-rola-powierzchnia: var(--kolor-rola-powierzchnia-karty-na-jasnym);
+  --kolor-rola-tekst-podstawowy: var(--kolor-rola-tekst-na-jasnym);
+  --kolor-rola-tekst-drugorzedny: var(--kolor-rola-tekst-2-na-jasnym);
+  --kolor-rola-fokus: var(--kolor-rola-fokus-na-jasnym);
+  /* AKCENT NIOSĄCY TEKST — ciemniejszy wariant o tym samym odcieniu.
+     Bez tego `.akcent-naglowka` w sekcjach „problem" i „definicja"
+     miałby 1,43:1. Akcent jako PLAMA (wypełnienie CTA) zostaje
+     limonką — jego widoczność niesie obrys niżej, nie barwa. */
+  --kolor-rola-akcent: var(--kolor-rola-akcent-na-jasnym);
+  --kolor-rola-link: var(--kolor-rola-tekst-na-jasnym);
+  --kolor-rola-link-aktywny: var(--kolor-rola-akcent-na-jasnym);
+  background: var(--kolor-rola-powierzchnia-jasna);
+  color: var(--kolor-rola-tekst-na-jasnym);
+}
+
+/* CTA na jasnym MUSI mieć obrys — wypełnienie limonką ma tam 1,43:1
+   i bez krawędzi przycisk daje się przeczytać, ale nie daje się
+   zobaczyć jako przycisk (WCAG 1.4.11). Regułę wymusza strażnik
+   tokenów przez R-AKCENT-01b; ta deklaracja jest jej wykonaniem.
+   Wypełnienie zostaje LIMONKĄ — `interakcja` nie jest przestawiana
+   wyżej właśnie po to, żeby przycisk nie zgasł razem z tekstem. */
+[data-ton="jasny"] a[class*="_cta__"] {
+  border: 0.0625rem solid var(--kolor-rola-obrys-cta-na-jasnym);
+}
+
 /* Pola formularza używają `kreska-mocna`, nie `kreska`: obrys kontrolki
    musi mieć 3:1 (WCAG 1.4.11), a kreska dekoracyjna ma 1,26:1 i go nie ma.
    Zmierzone 2026-08-26 na aff7947: kreska-mocna × powierzchnia 4,67:1.

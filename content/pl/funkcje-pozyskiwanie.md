@@ -88,7 +88,7 @@ Przypomnienia nie przychodzą e-mailem ani SMS-em.
 
 Zaglądasz do kalendarza w telefonie i widzisz rozmowy zaplanowane
 w Catherly obok reszty swoich spraw. Niczego nie przepisujesz —
-co zaplanowałaś, po prostu tam jest.
+co masz zaplanowane, po prostu tam jest.
 
 ### CZEGO NIE ROBI
 
@@ -120,7 +120,7 @@ i dodajesz do materiałów i wizytówek przy eksporcie.
 
 Catherly nie publikuje ani nie rozsyła materiałów z kodem za
 ciebie — dostajesz gotowy eksport, a o tym, gdzie trafi grafika
-albo wydruk, decydujesz sama.
+albo wydruk, decydujesz samodzielnie.
 
 ## Moduł 6 — program poleceń ze śledzeniem
 
@@ -133,7 +133,7 @@ dopytywać, czy coś z tego wyszło.
 ### CZEGO NIE ROBI
 
 Catherly niczego nie wysyła do twoich znajomych — zaproszenie
-przekazujesz sama, a program tylko pokazuje, kto z niego
+przekazujesz samodzielnie, a program tylko pokazuje, kto z niego
 skorzystał.
 
 ## Moduł 7 — DMO — Dzienny Plan Działania
@@ -147,7 +147,7 @@ piszesz, rozmawiasz. Przez dzień prowadzi cię twój plan.
 ### CZEGO NIE ROBI
 
 Dzienny Plan Działania niczego nie wysyła za ciebie — do osób
-z planu dzwonisz i piszesz sama.
+z planu dzwonisz i piszesz samodzielnie.
 
 ## Moduł 8 — Zadania
 
@@ -155,7 +155,7 @@ z planu dzwonisz i piszesz sama.
 
 Po rozmowie zapisujesz zadanie przy osobie, której dotyczy:
 oddzwonić po weekendzie, dosłać katalog, zapytać o decyzję.
-Wracasz do kontaktu i to, co ustaliłaś, jest przy nim.
+Wracasz do kontaktu i to, co masz ustalone, jest przy nim.
 
 ### CZEGO NIE ROBI
 
@@ -174,7 +174,7 @@ kategorii.
 ### CZEGO NIE ROBI
 
 Sala Treningowa nie rozmawia z twoją klientką i niczego do niej
-nie wysyła — ćwiczysz tu sama, a prawdziwą rozmowę prowadzisz ty.
+nie wysyła — ćwiczysz tu samodzielnie, a prawdziwą rozmowę prowadzisz ty.
 
 ## Moduł 10 — plany rozmów i debriefy
 
@@ -187,7 +187,7 @@ szczegóły trafiają do notatki, zanim wypchnie je reszta dnia.
 ### CZEGO NIE ROBI
 
 Catherly nie napisze planu ani debriefu za ciebie — piszesz je
-sama, własnymi słowami.
+samodzielnie, własnymi słowami.
 
 ---
 

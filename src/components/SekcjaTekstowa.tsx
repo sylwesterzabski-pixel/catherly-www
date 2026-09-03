@@ -38,7 +38,7 @@ export function SekcjaTekstowa({
       ? `${styles.sekcja} ${styles.akcentowa}`
       : styles.sekcja;
   return (
-    <section className={klasy} aria-labelledby={idNaglowka}>
+    <section className={klasy} aria-labelledby={idNaglowka} data-ton="jasny">
       <div className={styles.wnetrze}>
         <h2 id={idNaglowka}>{naglowek}</h2>
         {children}

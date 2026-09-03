@@ -84,7 +84,7 @@ To, co wolno napisać na jednym rynku, na innym bywa niedozwolone — i nie musi
 
 ### CZEGO NIE ROBI
 
-Paszport zgodności nie daje prawnej gwarancji ani porady — skaner sprawdza komunikat według reguł, a o tym, co wyślesz, decydujesz sama.
+Paszport zgodności nie daje prawnej gwarancji ani porady — skaner sprawdza komunikat według reguł, a o tym, co wyślesz, decydujesz samodzielnie.
 
 ## Moduł 6 — Akademia
 

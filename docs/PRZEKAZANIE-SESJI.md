@@ -83,9 +83,22 @@ rozstrzygnięcie 5).
    dostały pierwsze drogi. Pilot głosu W2 na sześciu kluczach pl strony
    głównej (`content/` zmieniony razem z i18n — strażnik porównuje je znak
    w znak). Zapadka deklaracji **10 → 3**.
-   ⛔ **KORPUS JASNY JEST ZABLOKOWANY, NIE GOTOWY**: role weszły, ale
-   `akcent` na jasnym ma **1,43:1** (próg 4,5 / 3), a `fokus` **1,12:1**
-   (próg 3). Sekcja jasna nie może powstać bez rozstrzygnięcia właściciela.
+   **WWW/075 wykonane 2026-09-03** — push `748022e` (CI `33794852789`, zero
+   nowych czerwieni) + **ADR-050**. ⛔ Blokada korpusu jasnego z ADR-049
+   **ZDJĘTA** — nie złagodzeniem progu, tylko dodaniem ról:
+   `obrys-cta-na-jasnym` (14,56:1), `fokus-na-jasnym` (16,31:1) i **trzecia,
+   której nikt nie przewidział** — `akcent-na-jasnym` #4f6f06, bo nagłówki
+   problemu i definicji niosą limonkowy fragment, a te sekcje poszły na jasne.
+   `LICZBA_ROL` 24 → **28**. Warstwa `[data-ton]` WRÓCIŁA (warunek powrotu
+   z ADR-038 spełniony): siedem ról przestawianych per strefa, karta na jasnym
+   jest **bielą** na panelu `#f2f2f2` (układ §8.2 — panel jaśniejszy od kart).
+   Głos W2 **na całość pl**: zero form rodzaju odbiorcy, pozostałe pięć to
+   różnice licencjonowane (osoba trzecia / nie-osoba).
+   ⚠ **TRZY SEKCJE BEZ PRZYPISANIA STREFY** (pas ścieżek, rytm dnia, obawy) —
+   zlecenie ich nie wymieniło, zostawione ciemne, czekają na decyzję.
+   ⚠ **`de` niesie nadal 30 kluczy z rodzajem przez RZECZOWNIK** (`Partnerin`)
+   — inny mechanizm niż pl, osobna decyzja. Do jej podjęcia trzy języki mówią
+   o odbiorcy różnymi rzeczami.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.

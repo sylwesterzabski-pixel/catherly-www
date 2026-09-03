@@ -50,7 +50,7 @@ Pulpit nie pokazuje danych spoza Catherly — widzisz to, co ty i twój zespół
 
 ### PO CO TO
 
-Otwierasz Twój Wrapped i czytasz podsumowanie swojego okresu: co zrobiłaś, co sprzedałaś, co działo się w zespole. Widzisz, co naprawdę się wydarzyło — nie tylko to, co zapamiętałaś.
+Otwierasz Twój Wrapped i czytasz podsumowanie swojego okresu: co masz za sobą, co się sprzedało, co działo się w zespole. Widzisz, co naprawdę się wydarzyło — nie tylko to, co pamiętasz.
 
 ### CZEGO NIE ROBI
 
@@ -60,7 +60,7 @@ Catherly nie zrobi z twojego podsumowania raportu PDF — Twój Wrapped oglądas
 
 ### PO CO TO
 
-Wyznaczasz cel i śledzisz postęp kamieniami milowymi. Zamiast jednej odległej mety widzisz, jak daleko zaszłaś i co jest następne.
+Wyznaczasz cel i śledzisz postęp kamieniami milowymi. Zamiast jednej odległej mety widzisz, jak daleko jesteś i co jest następne.
 
 ### CZEGO NIE ROBI
 
@@ -74,7 +74,7 @@ Pierwsza sprzedaż nowej osoby, twój domknięty kamień milowy — takie chwile
 
 ### CZEGO NIE ROBI
 
-Catherly nie zapisze sukcesu za ciebie — co trafia na Ścianę sukcesów, rejestrujesz sama.
+Catherly nie zapisze sukcesu za ciebie — co trafia na Ścianę sukcesów, rejestrujesz samodzielnie.
 
 ## Moduł 5 — Świadectwo
 
@@ -84,7 +84,7 @@ Chcesz pokazać swoje wyniki komuś, kto nie widział twojej codziennej pracy. E
 
 ### CZEGO NIE ROBI
 
-Świadectwo niczego nigdzie nie wysyła — rejestr widzisz ty, a CSV trafia tylko do tych, którym sama go przekażesz.
+Świadectwo niczego nigdzie nie wysyła — rejestr widzisz ty, a CSV trafia tylko do tych, którym go przekażesz.
 
 ## Moduł 6 — Wall of Proof
 

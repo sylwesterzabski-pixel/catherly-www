@@ -115,7 +115,7 @@ Siadasz do postów i nie zaczynasz od pustej kartki.
 ### Wprowadzenie
 
 Post układasz z gotowego szablonu, planujesz go w kalendarzu i wysyłasz
-do zatwierdzenia u liderki — publikujesz sama. Ryzykowne sformułowanie
+do zatwierdzenia u liderki — publikujesz samodzielnie. Ryzykowne sformułowanie
 wyłapujesz przed publikacją, nie po niej.
 
 ### Pozycje (etykiety reużyte z FunkcjeTresci)

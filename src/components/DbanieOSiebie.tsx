@@ -12,7 +12,7 @@ import styles from "./DbanieOSiebie.module.css";
 export function DbanieOSiebie() {
   const t = useTranslations("DbanieOSiebie");
   return (
-    <section className={styles.dbanie} aria-labelledby="dbanie-h2" data-ton="ciemny">
+    <section className={styles.dbanie} aria-labelledby="dbanie-h2" data-ton="jasny">
       <div className={styles.wnetrze}>
         <h2 id="dbanie-h2" className={styles.srOnly}>
           {t("naglowek")}

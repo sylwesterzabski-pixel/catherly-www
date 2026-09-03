@@ -3,7 +3,6 @@ import { join } from "node:path";
 
 import { test, expect } from "@playwright/test";
 
-import { rolaRgb } from "./pomoc/role";
 
 
 import pl from "../src/i18n/messages/pl.json";
@@ -41,7 +40,6 @@ const KLUCZE_FILAROW = ["filar1", "filar2", "filar3", "filar4"] as const;
 // (Etap A) → mosiądz kancelarii (ADR-031) → złoto jasne w inwersji
 // (natura, ADR-032) → limonka wzorca (ADR-038). Warstwy inwersji nie ma
 // od ADR-038, więc akcent nie jest już nigdzie przemapowywany.
-const KOLOR_MARKERA = rolaRgb("akcent");
 
 for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   test(`filary (${jezyk}): treść z messages i struktura nagłówków na ${adres}`, async ({
@@ -157,10 +155,47 @@ test("K4: marker konkretów w roli akcentu (decyzja panelu a)", async ({
     .locator('section[aria-labelledby="filar-1-h2"]')
     .getByRole("listitem")
     .filter({ hasText: pl.Filary.filar1.konkret1 });
-  const kolorMarkera = await pierwszyKonkret.evaluate(
-    (el) => getComputedStyle(el, "::marker").color,
+  const { kolorMarkera, rolaWSekcji } = await pierwszyKonkret.evaluate((el) => ({
+    kolorMarkera: getComputedStyle(el, "::marker").color,
+    /* ⚠ ROLA CZYTANA Z TEJ SEKCJI, NIE Z PLIKU TOKENÓW (ADR-050).
+       Do 2026-09-03 asercja porównywała marker z GLOBALNĄ wartością
+       `--kolor-rola-akcent`, bo wszystkie sekcje były ciemne i globalna
+       była jedyną. Od wprowadzenia stref tonalnych filar leży w strefie
+       jasnej, gdzie ta sama rola rozwiązuje się na `akcent-na-jasnym`
+       (limonka ma na jasnym 1,43:1 i nie może nieść tekstu).
+
+       To NIE JEST złagodzenie: przedmiot asercji zostaje ten sam —
+       „marker jest w roli akcentu" — a zmienia się miejsce odczytu roli
+       ze ŹRÓDŁA GLOBALNEGO na ŹRÓDŁO OBOWIĄZUJĄCE W TYM MIEJSCU.
+       Po zmianie asercja jest MOCNIEJSZA: łapie też sytuację, w której
+       strefa przestawi rolę, a marker zostanie przy dawnej barwie —
+       czego wersja z globalną wartością nie widziała. */
+    rolaWSekcji: getComputedStyle(
+      el.closest("[data-ton]") ?? document.documentElement,
+    )
+      .getPropertyValue("--kolor-rola-akcent")
+      .trim(),
+  }));
+
+  /* Kontrola, że rola w sekcji w ogóle się rozwiązała — pusty ciąg
+     przepuściłby wszystko. */
+  expect(rolaWSekcji, "rola akcentu rozwiązana w sekcji filaru").not.toBe("");
+  expect(kolorMarkera, "::marker w --kolor-rola-akcent (rola z tej sekcji)").toBe(
+    await pierwszyKonkret.evaluate(
+      (el, wartosc) => {
+        /* Zamiana zapisu roli na `rgb(...)` tym samym silnikiem, który
+           liczy `::marker` — inaczej porównywalibyśmy „#4f6f06" z
+           „rgb(79, 111, 6)" i test padałby na ZAPISIE, nie na barwie. */
+        const sonda = document.createElement("span");
+        sonda.style.color = wartosc;
+        document.body.appendChild(sonda);
+        const rgb = getComputedStyle(sonda).color;
+        sonda.remove();
+        return rgb;
+      },
+      rolaWSekcji,
+    ),
   );
-  expect(kolorMarkera, "::marker w --kolor-rola-akcent").toBe(KOLOR_MARKERA);
 });
 
 for (const { adres, jezyk, komunikaty } of PRZYPADKI) {

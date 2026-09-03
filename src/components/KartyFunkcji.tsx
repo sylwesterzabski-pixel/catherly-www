@@ -60,7 +60,7 @@ export function KartyFunkcji() {
   const t = useTranslations();
 
   return (
-    <div className={styles.sekcja}>
+    <div className={styles.sekcja} data-ton="jasny">
       <div className={styles.wnetrze}>
         {/* role="list" JAWNIE — CSS zdejmuje punktory, a Safari
             z VoiceOver odbiera wtedy liście semantykę (ten sam powód
