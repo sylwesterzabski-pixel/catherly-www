@@ -94,8 +94,22 @@ rozstrzygnięcie 5).
    jest **bielą** na panelu `#f2f2f2` (układ §8.2 — panel jaśniejszy od kart).
    Głos W2 **na całość pl**: zero form rodzaju odbiorcy, pozostałe pięć to
    różnice licencjonowane (osoba trzecia / nie-osoba).
-   ⚠ **TRZY SEKCJE BEZ PRZYPISANIA STREFY** (pas ścieżek, rytm dnia, obawy) —
-   zlecenie ich nie wymieniło, zostawione ciemne, czekają na decyzję.
+   **WWW/076 wykonane 2026-09-03** — push `4c3b5e2` (CI `33797875044`, zero
+   nowych czerwieni) + **ADR-051**. Mapa stref DOMKNIĘTA: wszystkie 14 sekcji
+   przypisane (rytm dnia → **jasny**, pas ścieżek i obawy potwierdzone ciemne).
+   ⚠ **LUSTRO L1 STRACIŁO WYRAZ**: pas rytmu odcinał się na ciemnym 5,90:1,
+   na jasnym ma **1,12:1** — rola ta sama, wyraz pięciokrotnie słabszy. To
+   ZAPISANY ubytek (ADR-051), nie równoważna zamiana; odzyskanie wymaga
+   osobnej roli „powierzchnia ciemniejsza od jasnej" i osobnej decyzji.
+   ⚠ **PREMISA O 30 KLUCZACH `de` NIE ZACHODZI**: z 40 kluczy z rzeczownikiem
+   rodzajowym **39 to OSOBY TRZECIE** (świat produktu, do zostawienia), a rodzaj
+   ODBIORCY niesie **jeden** — `Cennik.plany.pro.pozycja1` („andere Nutzerinnen").
+   ⚠ **TEN SAM KLUCZ BYŁ PRZEOCZONY W `pl` W WWW/075** — moje „zero rodzaju
+   w całym pl" było nieprawdziwe. Ostrzeżenie padło w WWW/073 („użytkowniczek,
+   temat łamie się jako użytkownicz-ek") i nie zostało przeniesione do
+   wyrażenia. **Nauka: kontrola pozytywna dobrana do własnej metody potwierdza
+   METODĘ, nie POKRYCIE** — przy twierdzeniu „zero X" ma szukać INNEJ postaci X
+   niż ta, którą ściga główne wyrażenie.
    ⚠ **`de` niesie nadal 30 kluczy z rodzajem przez RZECZOWNIK** (`Partnerin`)
    — inny mechanizm niż pl, osobna decyzja. Do jej podjęcia trzy języki mówią
    o odbiorcy różnymi rzeczami.

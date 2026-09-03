@@ -228,7 +228,7 @@ Mechanizm: assertPlanAtLeast, src/lib/api/plan-limits.ts:226.
 |---|---|---|
 | Puls zespołu | GROWTH | Kierunek: „W planie Growth widzisz sygnały ryzyka odejścia…" (na karcie Growth kwalifikator z kontekstu) |
 | Drzewo struktury | GROWTH | Kierunek: „W planie Growth masz widok całego drzewa struktury." |
-| Ranking | PRO | „Ranking — widzisz swoje miejsce na tle innych użytkowniczek" |
+| Ranking | PRO | „Ranking — widzisz swoje miejsce na tle pozostałych osób" |
 | Klucze API + webhooki | PRO | „Klucze API i webhooki — łączysz Catherly z własnymi narzędziami" |
 | Czysty eksport (bez sygnatury polecającej) | PRO (perk) | „Czysty eksport — twoje materiały bez sygnatury polecającej" |
 

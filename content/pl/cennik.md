@@ -54,7 +54,7 @@ Dla kogo: Dla ciebie, jeśli prowadzisz dużą strukturę i część pracy
 chcesz przekazać innym. *(81 zn)*
 
 Wszystko z Growth, a do tego:
-- Ranking — widzisz swoje miejsce na tle innych użytkowniczek *(59 zn)*
+- Ranking — widzisz swoje miejsce na tle pozostałych osób *(55 zn)*
 - Klucze API i webhooki — łączysz Catherly z własnymi narzędziami *(63 zn)*
 - Zniesione limity kontaktów, zespołu, postów i sesji treningowych *(64 zn)*
 - Czysty eksport — twoje materiały bez sygnatury polecającej *(58 zn)*

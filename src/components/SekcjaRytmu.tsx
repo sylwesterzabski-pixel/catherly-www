@@ -31,7 +31,7 @@ type Props = {
  */
 export function SekcjaRytmu({ naglowek, idNaglowka, kroki, kropka }: Props) {
   return (
-    <section className={styles.sekcja} aria-labelledby={idNaglowka}>
+    <section className={styles.sekcja} aria-labelledby={idNaglowka} data-ton="jasny">
       {/* Nośnik ducha USUNIĘTY 2026-08-26 razem z blokiem eksperymentu
           przezroczystości (ADR-031, zadanie 2 zlecenia WWW/038-bis).
           Zapowiedź „znika razem z blokiem eksperymentu" z komentarza

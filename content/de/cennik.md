@@ -50,7 +50,7 @@ Für wen: Für dich, wenn du eine große Struktur führst und einen Teil
 der Arbeit an andere abgeben willst. *(96 zn)*
 
 Alles aus Growth, dazu:
-- Rangliste – du siehst, wo du im Vergleich zu anderen Nutzerinnen stehst *(71 zn)*
+- Rangliste – du siehst, wo du im Vergleich zu anderen stehst *(59 zn)*
 - API-Schlüssel und Webhooks – du verbindest Catherly mit deinen eigenen Werkzeugen *(81 zn)*
 - Keine Limits bei Kontakten, Team, Posts und Trainingseinheiten *(62 zn)*
 - Sauberer Export – deine Materialien ohne Empfehlungssignatur *(60 zn)*

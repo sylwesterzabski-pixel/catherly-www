@@ -3,7 +3,6 @@ import { join } from "node:path";
 
 import { test, expect } from "@playwright/test";
 
-import { rolaRgb } from "./pomoc/role";
 
 
 import { bezZnacznikow, sprawdzZnaczniki } from "./pomoc/tekst";
@@ -71,7 +70,6 @@ const PLANY = ["Starter", "Growth", "Pro"] as const;
 // przypisania powierzchni akcentowej POMIAREM odpowiadającej sekcji
 // wzorca w KROKU 2. Wartość poniżej jest dzisiejszą rolą, nie wynikiem
 // tamtego pomiaru — i ma się zmienić, jeśli pomiar pokaże inną.
-const KOLOR_LUSTRA = rolaRgb("powierzchnia-akcentowa");
 
 // LUSTRO L1 (test kluczowy): S10 na tle akcentowym; kropka S3
 // („…liczysz…") i kropka S10 („…widzisz…") obecne znak w znak
@@ -83,9 +81,41 @@ test("LUSTRO L1: tło akcentowe S10; kropki S3/S10 wspólnym duetem", async ({
   await page.goto("/");
 
   const rytm = page.locator('section[aria-labelledby="rytm-h2"]');
-  const tlo = await rytm.evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(tlo, "S10 nosi rolę powierzchnia-akcentowa").toBe(
-    KOLOR_LUSTRA,
+  /* ⚠ ROLA CZYTANA Z TEJ SEKCJI, NIE Z PLIKU TOKENÓW (ADR-051).
+     Do 2026-09-03 asercja porównywała tło S10 z GLOBALNĄ wartością
+     `--kolor-rola-powierzchnia-akcentowa`, bo wszystkie sekcje były
+     ciemne i globalna była jedyną. Od domknięcia stref rytm dnia leży
+     w strefie jasnej, gdzie ta sama rola rozwiązuje się na powierzchnię
+     karty (biel) — asercja upadała na ZAPISIE, nie na wadzie.
+
+     PRZEDMIOT ZOSTAJE TEN SAM: „S10 nosi rolę powierzchni akcentowej",
+     czyli lustro L1 dalej stoi na WYRÓŻNIONEJ powierzchni, a nie na
+     tle sekcji. Zmienia się miejsce odczytu roli — ze źródła globalnego
+     na źródło OBOWIĄZUJĄCE W TYM MIEJSCU. Po zmianie strażnik jest
+     MOCNIEJSZY: łapie też przepięcie S10 na zwykłe tło strony, czego
+     wersja z wartością globalną nie widziała w strefie jasnej.
+
+     ⚠ CZEGO TA ASERCJA NIE MIERZY, żeby zieleń nie była czytana szerzej:
+     SIŁY wyróżnienia. Na ciemnym pas miał wobec tła 5,9:1, na jasnym ma
+     1,12:1 — rola ta sama, wyraz słabszy. To jest zapisany UBYTEK
+     (ADR-051), nie równoważna zamiana, i żaden strażnik go nie pilnuje. */
+  const { tlo, rolaWSekcji } = await rytm.evaluate((el) => ({
+    tlo: getComputedStyle(el).backgroundColor,
+    rolaWSekcji: getComputedStyle(el)
+      .getPropertyValue("--kolor-rola-powierzchnia-akcentowa")
+      .trim(),
+  }));
+  expect(rolaWSekcji, "rola powierzchni akcentowej rozwiązana w S10").not.toBe("");
+  const rolaRgbWSekcji = await rytm.evaluate((el, wartosc) => {
+    const sonda = document.createElement("span");
+    sonda.style.color = wartosc;
+    el.appendChild(sonda);
+    const rgb = getComputedStyle(sonda).color;
+    sonda.remove();
+    return rgb;
+  }, rolaWSekcji);
+  expect(tlo, "S10 nosi rolę powierzchnia-akcentowa (rola z tej sekcji)").toBe(
+    rolaRgbWSekcji,
   );
 
   for (const [nazwa, tekst] of [

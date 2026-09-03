@@ -430,6 +430,18 @@ html {
 [data-ton="jasny"] {
   --kolor-rola-tlo-strony: var(--kolor-rola-powierzchnia-jasna);
   --kolor-rola-powierzchnia: var(--kolor-rola-powierzchnia-karty-na-jasnym);
+  /* PAS WYRÓŻNIONY (rytm dnia) — na ciemnym był NAJJAŚNIEJSZĄ powierzchnią
+     palety i tym się odcinał. Na jasnym ta sama sztuczka nie działa: nie ma
+     nic jaśniejszego od bieli. Pas dostaje więc powierzchnię KARTY, czyli
+     tę samą relację, którą mają karty na tym korpusie: biel na jasnej
+     powierzchni panelu (zapis słowami, bo linter tokenów czyta także
+     komentarze — piąty raz w historii tego pliku).
+     ⚠ PLAMA WYNOSI 1,12:1, czyli pas odcina się SŁABIEJ niż odcinał się
+     na ciemnym. Rozdziela go kompozycja (pełna szerokość + własny odstęp
+     pionowy), tak jak karty — ale zapisuję to jako UBYTEK WYRAZU, nie jako
+     równoważną zamianę. Gdyby pas miał zostać równie wyrazisty, potrzebna
+     jest osobna rola „powierzchnia ciemniejsza od jasnej" i osobna decyzja. */
+  --kolor-rola-powierzchnia-akcentowa: var(--kolor-rola-powierzchnia-karty-na-jasnym);
   --kolor-rola-tekst-podstawowy: var(--kolor-rola-tekst-na-jasnym);
   --kolor-rola-tekst-drugorzedny: var(--kolor-rola-tekst-2-na-jasnym);
   --kolor-rola-fokus: var(--kolor-rola-fokus-na-jasnym);
