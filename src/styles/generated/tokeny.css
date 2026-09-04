@@ -117,12 +117,23 @@
    * ⚠ TO JEST ZAWĘŻENIE REGUŁY Z ADR-049, NIE JEJ ZŁAMANIE. ADR-049 mówi: przy konflikcie geometrii wygrywa POMIAR 0.3 (wzorzec WWW/050-FINAL). Reguła zostaje w mocy dla całej strony; batch A1 (nawigacja, hero, stopka) jest z niej WYJĘTY imiennie decyzją koordynatora (WWW/077), bo to właśnie te trzy elementy mają nieść anatomię Proactiva. Poprzednia wartość zostaje w tym komentarzu jako ślad: 4.375rem = 70 px.
    */
   --tekst-h1: 6rem;
-  --tekst-h2: 3.75rem; /** H2 = 60 px przy ≥ 1440 (POMIAR 0.4/0.7). ⚠ ADR-041 zostawił H2 bez progów, bo miał pomiar TYLKO przy 1440. Teraz zmierzone na dziewięciu szerokościach — progi są, patrz `h2-srednie` i `h2-male`. */
+  /**
+   * H2 = 48 px na KAŻDYM kadrze od 768 px w górę. Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
+   * 
+   * ⚠ KROK SKALI ZMIERZONY, NIE ZGADNIĘTY: H1 96 → H2 48 to dokładnie 2,00×. Poprzednia wartość 60 px dawała 1,60× wobec H1 podniesionego w ADR-052 — czyli relację, której u wzorca nie ma na żadnej szerokości.
+   * 
+   * ⚠ STOPIEŃ ŚRODKOWY ZNIKA, BO WZORZEC GO NIE MA. Do 04.09 skala miała trzy szczeble (60 / 42 / 38). Bisekcja co 1 px pokazała JEDEN próg i JEDNĄ zmianę: 767 px → 30 px, 768 px → 48 px, i ta sama liczba 48 utrzymuje się przez 800, 1023, 1024, 1025, 1100 i 1440. Token `h2-srednie` został usunięty razem z nadpisaniem przy 90rem — trzymanie dwóch tokenów o równej wartości jest zaproszeniem do cichego rozjazdu, a nie zapasem.
+   */
+  --tekst-h2: 3rem;
   --tekst-h1-srednie: 5rem; /** H1 = 80 px w zakresie 810–1280 (pomiar Proactiva 1j). Poprzednio 3.3125rem = 53 px (POMIAR 0.5). */
   --tekst-h1-male: 3rem; /** H1 = 48 px przy ≤ 768 (pomiar Proactiva 1j). Poprzednio 2.125rem = 34 px (POMIAR 0.5). */
   --tekst-plakietka: 0.75rem; /** Plakietka górna = 12 px, waga 700, interlinia 1,20 (POMIAR 0.1). */
-  --tekst-h2-srednie: 2.625rem; /** H2 = 42 px w zakresie 810–1280 px (zmierzone). */
-  --tekst-h2-male: 2.375rem; /** H2 = 38 px przy ≤ 768 px (zmierzone). ⚠ NIE jest mniejsze proporcjonalnie do H1: H1 spada 70→53→34 (współczynnik 0,49), H2 tylko 60→42→38 (0,63). Nagłówki sekcji trzymają się na wąskim kadrze BLIŻEJ desktopu niż H1 — dlatego nie wolno było nadać H2 progów H1 z domysłu. */
+  /**
+   * H2 = 30 px poniżej 768 px (zmierzone). Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
+   * 
+   * ⚠ POPRZEDNIE BRZMIENIE TEGO KOMENTARZA BYŁO PRAWDZIWE DLA INNEGO WZORCA i zostaje jako ślad: „NIE jest mniejsze proporcjonalnie do H1: H1 spada 70→53→34 (0,49), H2 tylko 60→42→38 (0,63)”. Tamten pomiar (POMIAR 0.4/0.7) opisywał wzorzec WWW/050-FINAL. Proactiv zachowuje się ODWROTNIE: to H2 spada łagodniej dopiero PO progu 768, a między 810 a 1440 nie rusza się wcale.
+   */
+  --tekst-h2-male: 1.875rem;
   --tekst-karta: 1.5rem; /** Tytuł karty funkcji = 24 px (POMIAR wzorca, 2.3). Osobny token, bo skala nie ma tego stopnia: `m` to 20 px, `l` to 25 px. Wzięcie `l` dałoby 25 zamiast 24 — jeden piksel, ale wpisany jako „prawie wzorzec" w miejscu, gdzie mamy pomiar. */
   --waga-tekst: 500; /** Proza wzorca ma wagę 500, nie 400 (POMIAR 0.1). Inter jest zmienny, więc to nic nie kosztuje. */
   --waga-etykieta: 500;
@@ -131,11 +142,28 @@
   --interlinia-tekst: 1.8; /** Interlinia prozy = 1,80 (POMIAR 0.1: 28,8/16). Poprzednio 1.6 — różnica widoczna w każdym akapicie. */
   --interlinia-naglowek: 1.2; /** Interlinia nagłówków = 1,20 (H1 na wszystkich progach: 40,8/34 · 63,6/53 · 84/70; H2 przy ≥ 810: 50,4/42 · 72/60). */
   --interlinia-naglowek-male: 1.4; /** ⚠ H2 na kadrze ≤ 768 ma interlinię 1,40 (53,2/38), nie 1,20. Jedyne odstępstwo w całej skali nagłówków; zmierzone, nie wyprowadzone. */
+  /**
+   * Interlinia H2 od 768 px w górę = 1,25 (zmierzone 60 px przy piśmie 48 px, 5 nagłówków sekcji, wszystkie identyczne). Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
+   * 
+   * ⚠ TO JEST OSOBNY TOKEN, A NIE `naglowek` (1,20), BO POMIAR DAJE INNĄ LICZBĘ. Poniżej progu H2 wraca do 1,20 (36 px przy piśmie 30 px) i tam używa `interlinia.naglowek` — czyli nagłówek sekcji ma interlinię PROGOWĄ w drugą stronę niż dotąd: luźniejszą na szerokim kadrze, nie na wąskim.
+   */
+  --interlinia-naglowek-sekcji: 1.25;
   --tracking-naglowek: -0.1875rem; /** Tracking H1 = −3 px przy ≥ 1440 (POMIAR 0.4/0.7). ⚠ ADR-041 zakładał, że −3 px obowiązuje na WSZYSTKICH progach, i zapisał to jako pozycję otwartą. Pomiar zamyka ją: tracking JEST progowy, patrz `naglowek-srednie` i `naglowek-male`. Nie jest też stały w `em`: −3/70 = −0,043em, −1,6/53 = −0,030em, −1/34 = −0,029em. */
   --tracking-wersalik: 0.04em; /** WYMAGANE przy text-transform: uppercase — bez tego kapitaliki zlewają się w blok. Zastosowanie w komponentach to zadanie 11 checklisty, poza zakresem WWW/038-bis; token wchodzi teraz, bo należy do skali. */
   --tracking-naglowek-srednie: -0.1rem; /** Tracking H1 = −1,6 px w zakresie 810–1280 px (zmierzone). */
   --tracking-naglowek-male: -0.0625rem; /** Tracking H1 = −1 px przy ≤ 768 px (zmierzone). */
-  --tracking-naglowek-sekcji-male: -0.0375rem; /** Tracking H2 = −0,6 px przy ≤ 768 px (zmierzone). ⚠ TRZECIE miejsce, w którym H2 rozchodzi się z H1 na wąskim kadrze — po rozmiarze (38 wobec 34) i interlinii (1,40 wobec 1,20) teraz tracking: H1 ma −1 px, H2 −0,6 px. Powyżej 810 px oba dzielą tę samą wartość. Wniosek, który wart jest zapisania: na wąskim kadrze nagłówek sekcji jest we wzorcu OSOBNĄ decyzją typograficzną, nie pomniejszonym H1 — i za każdym razem, gdy założyłem inaczej, pomiar to obalił. */
+  /**
+   * Tracking H2 poniżej 768 px = −0,75 px przy piśmie 30 px, czyli także −0,025em. Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
+   * 
+   * ⚠ POPRZEDNIA WARTOŚĆ −0,6 px POCHODZIŁA Z INNEGO WZORCA (POMIAR 0.4/0.7, H2 = 38 px). Zapis, który wtedy powstał, mówił: „na wąskim kadrze nagłówek sekcji jest OSOBNĄ decyzją typograficzną, nie pomniejszonym H1”. Proactiv mówi coś prostszego i mocniejszego: tracking jest u niego STAŁY W `em` (−0,025em przy 96, przy 48 i przy 30 px), więc osobną decyzją jest tam rozmiar, a nie tracking.
+   */
+  --tracking-naglowek-sekcji-male: -0.046875rem;
+  /**
+   * Tracking H2 od 768 px w górę = −1,2 px przy piśmie 48 px, czyli −0,025em. Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
+   * 
+   * ⚠ BEZ TEGO TOKENA ZMIANA ROZMIARU H2 BYŁABY WADĄ, NIE POPRAWKĄ. Do 04.09 H2 na szerokim kadrze brało `tracking.naglowek` = −3 px — wartość zmierzoną dla H1 o rozmiarze 70 px w POMIARZE 0.4/0.7. Na nagłówku 48 px te same −3 px dają −0,0625em, czyli ponad dwa i pół raza ciaśniej niż u wzorca. Rozmiar i tracking są tu JEDNĄ decyzją i wchodzą razem.
+   */
+  --tracking-naglowek-sekcji: -0.075rem;
   --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). UWAGA: 03-typografia.css paczki niesie --szerokosc-tekstu: 68ch dla tego samego zastosowania — rozjazd zgłoszony, nierozstrzygnięty; wchodzi dopiero z zadaniem 12, które jest poza zakresem WWW/038-bis. */
   --wymiar-miara-kolumny: 50rem; /** Kolumna prozy = 800 px (POMIAR 0.3, 8 wystąpień). Poprzednio 38rem = 608 px. */
   --wymiar-kontener-strony: 90rem; /** Kontener treści = 1440 px (POMIAR 0.3, 16 wystąpień). Poprzednio 70rem = 1120 px. */
@@ -193,6 +221,20 @@
    * ⚠ 84, NIE 78: pasek nie ma równych 62 px, bo jego wysokość wyznacza CTA (46,4 px) plus padding. Przy 78 px kotwica lądowała 0,81 px za wysoko i zapalała 27 asercji W4. Pułap strażnika `odsuniecie-kotwic` to 96 px — zostaje 12 px zapasu.
    */
   --wymiar-pas-naglowka: 5.25rem;
+  /**
+   * Miara nagłówka sekcji = 1024 px (zmierzone: `max-width` 1024 na 5 z 5 nagłówków sekcyjnych wzorca; szczebel drabiny 1f). Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
+   * 
+   * ⚠ SPRAWDZIAN GEOMETRII, KTÓRY TĘ WARTOŚĆ POTWIERDZA NIEZALEŻNIE OD DEKLARACJI: u wzorca lewa krawędź nagłówka sekcji stoi przy 1440 px na x = 208, a (1440 − 1024) / 2 = 208. Liczba wychodzi z POŁOŻENIA, nie tylko z odczytu arkusza — to dwa niezależne odczyty tej samej wielkości.
+   */
+  --wymiar-miara-naglowka-wzorca: 64rem;
+  /**
+   * Miara akapitu sekcji = 896 px (zmierzone: `max-width` 896 na 4 z 5 akapitów pod nagłówkiem sekcji; szczebel drabiny 1f). Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
+   * 
+   * ⚠ TO NIE JEST TA SAMA WARTOŚĆ, KTÓRĄ ZWROTKA WWW/073 PODAŁA JAKO „miarę akapitu” (384 px, 45 wystąpień). Tamta liczba jest prawdziwa i opisuje AKAPIT W KARCIE — pomiar celowany, zrobiony teraz pod nagłówkami sekcji, rozdziela dwie miary, które ten sam szczebel drabiny mieszał: karta 384, sekcja 896. Obie leżą na drabinie 1f, więc żadna nie jest „z oka”.
+   * 
+   * ⚠ Sprawdzian położenia jak wyżej: lewa krawędź akapitu przy 1440 px stoi na x = 272, a (1440 − 896) / 2 = 272.
+   */
+  --wymiar-miara-akapitu-wzorca: 56rem;
   --kroj-naglowek: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój NAGŁÓWKÓW = ten sam Inter (ADR-044). ⚠ ADR-040 przypisał tu Satoshi na podstawie POMIARU 0.1, który MYLNIE opisał Satoshi jako krój nagłówkowy. Pomiar CDP na wzorcu: H1 i H2 renderują się jako `Inter Medium`, rodzina zadeklarowana to `Inter` i `Inter-Medium`. Token ZOSTAJE osobny mimo równej wartości — nagłówki i proza to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. */
   --kroj-plakietka: "Satoshi", "Satoshi zapasowy", system-ui, sans-serif; /** Krój PLAKIETKI (ADR-044). Satoshi Medium 2.000, public/fonts/satoshi-medium.woff2, 17,3 kB, źródło fontshare.com. POMIAR: wzorzec używa Satoshi na DOKŁADNIE DWÓCH elementach — „Get 3 Free month" i „on Pro plan", oba 12 px, waga 700, barwa #070806. To jest ta sama plakietka, którą POMIAR 0.1 opisał w skali (12 px / 700 / interlinia 1,20). Kontrola pozytywna zera: 2 elementy w Satoshi wobec 257 w Interze — dwójka jest wynikiem, nie zerem narzędzia. */
   /**

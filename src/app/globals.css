@@ -182,9 +182,28 @@
   letter-spacing: var(--tracking-naglowek-male);
 }
 
+/* SKALA H2 PRZEBUDOWANA NA POMIAR WZORCA (ADR-053, batch A2).
+   Trzy szczeble (38 / 42 / 60 px) zastąpione DWOMA (30 / 48 px), bo tyle ma
+   wzorzec. Próg znaleziony bisekcją co 1 px, nie założony: 767 px daje 30,
+   768 px daje 48, a ta sama liczba 48 utrzymuje się przez 800, 1023, 1024,
+   1025, 1100 i 1440 — czyli nadpisania przy 90rem nie ma czego nadpisywać
+   i zostało USUNIĘTE razem z tokenem `--tekst-h2-srednie`.
+
+   ⚠ NASZ PRÓG TO 48,0625rem (769 px), WZORCA — 768 px. Różnica jednego
+   piksela zostaje świadomie: przesunięcie globalnego progu układu ruszyłoby
+   każdy `@media` w serwisie, a zysk jest szerokości jednego piksela.
+   Zapisane, żeby następny czytający nie wziął tego za przeoczenie.
+
+   ⚠ ROZMIAR, INTERLINIA I TRACKING WCHODZĄ JAKO JEDNA DECYZJA. H2 brało dotąd
+   na szerokim kadrze `--tracking-naglowek` = −3 px, zmierzone dla H1 o 70 px.
+   Na nagłówku 48 px daje to −0,0625em wobec −0,025em u wzorca — czyli sam
+   nowy rozmiar, bez nowego trackingu, byłby zmianą na gorsze. */
 :is(h2) {
   font-size: var(--tekst-h2-male);
-  line-height: var(--interlinia-naglowek-male);
+  /* 1,20 — zmierzone 36 px interlinii przy piśmie 30 px. Poprzednio 1,40
+     (`--interlinia-naglowek-male`); tamta liczba opisywała H2 = 38 px
+     w POMIARZE 0.4/0.7 i nie przenosi się na inny wzorzec. */
+  line-height: var(--interlinia-naglowek);
   letter-spacing: var(--tracking-naglowek-sekcji-male);
 }
 
@@ -195,20 +214,16 @@
   }
 
   :is(h2) {
-    font-size: var(--tekst-h2-srednie);
-    line-height: var(--interlinia-naglowek);
-    letter-spacing: var(--tracking-naglowek-srednie);
+    font-size: var(--tekst-h2);
+    /* 1,25 — zmierzone 60 px przy piśmie 48 px, 5 z 5 nagłówków sekcji. */
+    line-height: var(--interlinia-naglowek-sekcji);
+    letter-spacing: var(--tracking-naglowek-sekcji);
   }
 }
 
 @media (min-width: 90rem) {
   :is(h1) {
     font-size: var(--tekst-h1);
-    letter-spacing: var(--tracking-naglowek);
-  }
-
-  :is(h2) {
-    font-size: var(--tekst-h2);
     letter-spacing: var(--tracking-naglowek);
   }
 }

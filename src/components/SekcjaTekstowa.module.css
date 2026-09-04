@@ -3,8 +3,21 @@
    (HF pozostaje zapisem historycznym z wartościami sprzed ADR).
    Kolory wyłącznie var(--…); wymiary rem/ch — zero px. */
 
+/* ── BATCH A2 (ADR-053): ANATOMIA SEKCJI TEKSTOWEJ Z POMIARU WZORCA ──
+   Trzy wielkości wchodzą tu razem, bo we wzorcu są jedną kompozycją:
+   rytm pionowy 160/80, miara nagłówka 1024 i miara akapitu 896. */
+
 .sekcja {
-  padding: 3rem 1rem;
+  /* RYTM SEKCJI PROGOWANY — 80 px na wąskim kadrze, 160 px od progu.
+     Do 04.09 stało tu 48 px na KAŻDEJ szerokości, czyli ani jedna, ani
+     druga wartość drabiny 1g. Wzorzec ma 160 px jako rytm sekcji
+     najwyższego poziomu (5 wystąpień) i schodzi do 80 px poniżej progu. */
+  padding-block: var(--wymiar-odstep-sekcji-male);
+  /* Wcięcie boczne działa wyłącznie na kadrach węższych niż suma miary
+     i wcięć — powyżej pochłania je wyśrodkowanie `.wnetrze`. Wzorzec ma
+     przy 390 px szesnaście pikseli luzu z każdej strony; nasze dwadzieścia
+     to ta sama szyna, co pigułka nawigacji i pas ścieżek. */
+  padding-inline: var(--wymiar-wciecie-tresci-male);
   line-height: 1.6;
 }
 
@@ -16,8 +29,16 @@
 }
 
 .wnetrze {
-  /* Miara kolumny — token wymiaru (ADR-025). */
-  max-width: var(--wymiar-miara-kolumny);
+  /* MIARA NAGŁÓWKA SEKCJI — 1024 px z pomiaru wzorca (5 z 5 nagłówków
+     sekcyjnych). Poprzednio `--wymiar-miara-kolumny` = 800 px, wartość
+     z POMIARU 0.3, czyli z innego wzorca.
+
+     Sprawdzian, który tę liczbę potwierdza NIEZALEŻNIE od deklaracji
+     w cudzym arkuszu: u wzorca lewa krawędź nagłówka sekcji stoi przy
+     kadrze 1440 px na x = 208, a (1440 − 1024) / 2 = 208. Nasza sekcja
+     przy tym samym kadrze i wcięciu 20 px daje 20 + (1400 − 1024) / 2,
+     czyli te same 208 — geometria wychodzi na to samo miejsce. */
+  max-inline-size: var(--wymiar-miara-naglowka-wzorca);
   margin-inline: auto;
 }
 
@@ -25,17 +46,46 @@
   /* ROZMIAR I INTERLINIA ZDJĘTE (ADR-044, KROK 2).
      Stało tu: font-size: var(--tekst-l) · line-height: 1.25
      Skalę nagłówków sekcji niesie reguła globalna w `globals.css`,
-     progami 38 / 42 / 60 px z pomiaru wzorca. Osiem modułów powtarzało
-     tę samą parę wartości — czyli osiem miejsc, w których następna
-     zmiana skali musi trafić, i osiem, które może przeoczyć.
+     od ADR-053 dwoma progami 30 / 48 px (do 04.09.2026 trzema:
+     38 / 42 / 60 px — tamte pochodziły z POMIARU 0.4/0.7, czyli
+     z innego wzorca). Osiem modułów powtarzało kiedyś tę samą parę
+     wartości — czyli osiem miejsc, w których następna zmiana skali
+     musi trafić, i osiem, które może przeoczyć. TO WŁAŚNIE DLATEGO
+     przejście z trzech progów na dwa było jedną zmianą w jednym pliku.
      Margines, miara wiersza i zawijanie ZOSTAJĄ: to układ, nie skala. */
-  margin: 0 0 1rem;
+  /* 16 px — odstęp nagłówka od akapitu zmierzony u wzorca na 5 z 5 par
+     nagłówek/akapit, identyczny na wszystkich trzech kadrach. Wartość
+     została ta sama co dotąd; token wchodzi na miejsce literału, żeby
+     następna zmiana drabiny 1g trafiła i tutaj. */
+  margin: 0 0 var(--wymiar-odstep-5);
 }
 
 .sekcja p {
-  margin: 0 0 1rem;
-  /* Miara akapitu — token wymiaru (ADR-025). */
-  max-width: var(--wymiar-miara-akapitu);
+  margin: 0 0 var(--wymiar-odstep-5);
+  /* MIARA AKAPITU SEKCJI — 896 px z pomiaru wzorca (4 z 5 akapitów pod
+     nagłówkiem sekcji). Poprzednio `--wymiar-miara-akapitu` = 65ch, czyli
+     miara liczona krojem, nie szczeblem drabiny 1f.
+
+     ⚠ TO NIE JEST TA SAMA LICZBA, KTÓRĄ ZWROTKA WWW/073 PODAŁA JAKO „miarę
+     akapitu" (384 px). Tamta jest prawdziwa i opisuje AKAPIT W KARCIE —
+     jeden szczebel drabiny obsługiwał dwie różne miary, a pomiar celowany
+     pod nagłówki sekcji je rozdzielił: karta 384, sekcja 896.
+
+     ⚠ RÓŻNICA LICENCJONOWANA WOBEC WZORCA: wzorzec CENTRUJE ten akapit
+     w miarze nagłówka (jego lewa krawędź stoi na x = 272 przy 1440 px,
+     bo 896 wyśrodkowane w 1024). U nas proza jest RÓWNANA DO LEWEJ i taka
+     zostaje — przy równaniu do lewej wcięcie akapitu o 64 px wobec własnego
+     nagłówka łamie pionową krawędź, która jest całym sensem tego równania.
+     Szerokość bierzemy ze wzorca, położenie zostaje nasze. */
+  max-inline-size: var(--wymiar-miara-akapitu-wzorca);
+}
+
+@media (min-width: 48.0625rem) {
+  .sekcja {
+    /* 160 px — rytm sekcji najwyższego poziomu wzorca. Próg ten sam co
+       reszta serwisu (48,0625rem); wzorzec przełącza się o piksel niżej. */
+    padding-block: var(--wymiar-odstep-sekcji);
+  }
 }
 
 .kropka {

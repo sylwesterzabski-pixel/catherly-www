@@ -4,15 +4,30 @@
    (kontrasty pary na tokenie: ×tekst-podstawowy 11,15:1 — DECYZJA 6).
    Kolory wyłącznie var(--…); wymiary rem/ch — zero px. */
 
+/* ── BATCH A2 (ADR-053): TA SAMA ANATOMIA CO K3, BO LUSTRO ──
+   ⚠ KAŻDA LICZBA W TYM PLIKU MUSI ZOSTAĆ RÓWNA ODPOWIEDNIKOWI W K3.
+   Lustro L1 nie jest tu ozdobnym słowem: strażnik `zlozenie.spec.ts`
+   mierzy, czy kropki S3 i S10 stoją na desktopie w TEJ SAMEJ kolumnie
+   (Δx ≤ 1 px). Zmiana miary po jednej stronie bez drugiej zapala go —
+   i to jest jedyny mechanizm, który tę parę trzyma razem.
+
+   ⚠ CZEGO TEN BATCH NIE RUSZA: WYRAZU. ADR-051 zapisał, że pas S10 na
+   korpusie jasnym mówi pięć razy ciszej niż mówił na ciemnym (1,12:1
+   wobec 5,90:1) i że odzyskanie wyrazu wymaga osobnej roli i osobnej
+   decyzji. Zlecenie WWW/078 mówi wprost: sama anatomia, bez naprawy
+   wyrazu. Anatomia tu weszła; pozycja z ADR-051 stoi otwarta. */
+
 .sekcja {
-  padding: 3rem 1rem;
+  /* Rytm 80 / 160 — identycznie jak K3, patrz uzasadnienie tam. */
+  padding-block: var(--wymiar-odstep-sekcji-male);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
   line-height: 1.6;
   background: var(--kolor-rola-powierzchnia-akcentowa);
 }
 
 .wnetrze {
-  /* Mobile: ta sama miara kolumny co K3 (lustro w pionie). */
-  max-width: var(--wymiar-miara-kolumny);
+  /* Mobile: ta sama miara nagłówka co K3 (lustro w pionie). */
+  max-inline-size: var(--wymiar-miara-naglowka-wzorca);
   margin-inline: auto;
 }
 
@@ -20,23 +35,31 @@
   /* ROZMIAR I INTERLINIA ZDJĘTE (ADR-044, KROK 2).
      Stało tu: font-size: var(--tekst-l) · line-height: 1.25
      Skalę nagłówków sekcji niesie reguła globalna w `globals.css`,
-     progami 38 / 42 / 60 px z pomiaru wzorca. Osiem modułów powtarzało
-     tę samą parę wartości — czyli osiem miejsc, w których następna
-     zmiana skali musi trafić, i osiem, które może przeoczyć.
+     od ADR-053 dwoma progami 30 / 48 px (do 04.09.2026 trzema:
+     38 / 42 / 60 px — z POMIARU 0.4/0.7, czyli z innego wzorca).
      Margines, miara wiersza i zawijanie ZOSTAJĄ: to układ, nie skala. */
-  margin: 0 0 1rem;
+  margin: 0 0 var(--wymiar-odstep-5);
 }
 
 .sekcja p {
-  margin: 0 0 1rem;
-  max-width: var(--wymiar-miara-akapitu);
+  margin: 0 0 var(--wymiar-odstep-5);
+  max-inline-size: var(--wymiar-miara-akapitu-wzorca);
 }
 
 .kroki {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  margin: 0 0 1rem;
+  /* SIATKA, NIE KOLUMNA FLEKSA — i to jest zmiana wg pomiaru, nie
+     upodobania: 100% siatek wzorca używa symetrycznego `gap`, a trzy
+     kroki rytmu są siatką trzech równych pól, nie rzędem elastycznym.
+     Deklaracja siatki od razu na wąskim kadrze (jedna kolumna) daje
+     jedną regułę mniej przy progu. */
+  display: grid;
+  grid-template-columns: 1fr;
+  /* 40 px — gap siatek wzorca PONIŻEJ progu układu (mierzone: siatka
+     wielokolumnowa z gapem 16 px znika poniżej progu, a zostają gapy 40).
+     Poprzednio 20 px, czyli wartość spoza drabiny 1g (8 · 16 · 32 · 40 ·
+     80 · 160 · 240). Ta sama para 40 → 16 co w pasie ścieżek. */
+  gap: var(--wymiar-odstep-8);
+  margin: 0 0 var(--wymiar-odstep-5);
   padding: 0;
   list-style: none;
 }
@@ -45,7 +68,9 @@
   /* Fraza sekwencji (NIE h3 — decyzja panelu Etapu F, kandydat 1). */
   display: block;
   font-weight: 600;
-  margin-block-end: 0.25rem;
+  /* 8 px — najgęstszy szczebel drabiny 1g (72 wystąpienia u wzorca).
+     Poprzednio 4 px, czyli połowa najmniejszego szczebla. */
+  margin-block-end: var(--wymiar-odstep-2);
 }
 
 .kroki p {
@@ -59,29 +84,36 @@
   margin-block-start: 1.25rem;
 }
 
-/* 48rem = --wymiar-prog-ukladu (ADR-028): @media nie czyta var(),
-   wartość powielona literalnie — zmiana wymaga ADR i sync @media. */
-@media (min-width: 48rem) {
-  /* W2: kontener-strony WYŁĄCZNIE dla osi kroków; H2 i kropka
-     w ograniczniku miara-kolumny wyśrodkowanym (width: 100%!) —
-     kropki luster S3/S10 stoją w tej samej kolumnie co do piksela. */
+/* 48,0625rem — ten sam próg, którego używa cały serwis (ADR-028 mówi
+   o 48rem; reguły globalne stoją na 48,0625rem, żeby 768 px trafiało
+   jeszcze do kadru wąskiego). @media nie czyta var(), więc wartość jest
+   powielona literalnie — zmiana wymaga ADR i synchronizacji wszystkich
+   @media. */
+@media (min-width: 48.0625rem) {
+  .sekcja {
+    padding-block: var(--wymiar-odstep-sekcji);
+  }
+
+  /* KONTENER TREŚCI WZORCA — 1280 px — WYŁĄCZNIE dla osi kroków.
+     Poprzednio `--wymiar-kontener-strony` = 1440 px, czyli cały kadr;
+     wzorzec trzyma siatki kart w 1280. Nagłówek i kropka zostają
+     w mierze nagłówka wyśrodkowanej (width: 100%!), więc kropki luster
+     S3/S10 dalej stoją w tej samej kolumnie co do piksela: przy 1440 px
+     obie lądują na x = 208. */
   .wnetrze {
-    max-width: var(--wymiar-kontener-strony);
+    max-inline-size: var(--wymiar-kontener-waski);
   }
 
   .wnetrze > h2,
   .wnetrze > .kropka {
-    max-width: var(--wymiar-miara-kolumny);
+    max-inline-size: var(--wymiar-miara-naglowka-wzorca);
     margin-inline: auto;
     width: 100%;
   }
 
   .kroki {
-    flex-direction: row;
-    gap: 2rem;
-  }
-
-  .kroki li {
-    flex: 1;
+    grid-template-columns: repeat(3, 1fr);
+    /* 16 px — gap siatek wzorca OD progu układu. */
+    gap: var(--wymiar-odstep-5);
   }
 }

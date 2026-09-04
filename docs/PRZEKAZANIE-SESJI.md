@@ -123,6 +123,43 @@ rozstrzygnięcie 5).
    ⚠ **`de` niesie nadal 30 kluczy z rodzajem przez RZECZOWNIK** (`Partnerin`)
    — inny mechanizm niż pl, osobna decyzja. Do jej podjęcia trzy języki mówią
    o odbiorcy różnymi rzeczami.
+   **WWW/078 wykonane 2026-09-04** — push `35284c0` (CI `33895604959`, zero
+   nowych czerwieni) + **ADR-053**. Batch A2: cztery sekcje korpusu tekstowego
+   w anatomii wzorca. Skala H2 z **trzech stopni na DWA** (30 / 48 px), krok
+   wobec H1 dokładnie **2,00×**, próg znaleziony **bisekcją co 1 px** (767 → 30,
+   768 → 48). Miary tekstu **1024 / 896 px**, rytm sekcji **160 / 80**, pas
+   ścieżek dostaje **szkło malowane w trzech warstwach** i gest uniesienia.
+   ⚠ **ZASIĘG SKALI H2 WYCHODZI POZA CZTERY SEKCJE ZLECENIA — policzony:**
+   **51 z 94 nagłówków H2** na dziesięciu trasach `pl` niesie nową skalę, z czego
+   TRZY należą do batcha. Skala jest globalna od ADR-044; lokalne nadpisanie
+   w czterech modułach odtworzyłoby defekt, który tamten ADR rozmontował.
+   Zgłoszone jako wejście poza literę zlecenia, nie schowane.
+   ⚠ **SPROSTOWANIE WŁASNEJ ZWROTKI `WWW/073`:** szczebel „384 px (45 wystąpień)"
+   podany tam jako miara akapitu opisuje **akapit w KARCIE**. Miara akapitu
+   SEKCJI to **896 px**. Dominanta zbioru mieszanego jest dominantą zbioru,
+   nie roli — pomiar po całym drzewie odpowiada na pytanie „jakie wartości
+   występują", nie „jaka wartość pełni tę rolę".
+   ⚠ **SKAŻENIE WŁASNEGO NARZĘDZIA, złapane przed wnioskiem:** `browser.newPage()`
+   w Playwrighcie przyjmuje `viewport`, nie `viewportSize`; **nieznany klucz jest
+   ignorowany MILCZĄCO**, więc dwa pierwsze przebiegi zmierzyły domyślne
+   1280 × 720 i podały to jako trzy różne kadry. Wykryła to **kontrola
+   tożsamości**, nie czujność: wysokość strony wyszła identyczna na 1440 i 390,
+   co dla strony responsywnej jest niemożliwe. **Pomiar drukuje odtąd ZMIERZONY
+   kadr obok wyniku.** Ta sama rodzina co „reuse serwera" z ADR-052.
+   ⚠ **PODRÓŻE ZMIERZONE KONTROLĄ NEGATYWNĄ W JEDNYM PRZEBIEGU** (`git stash`
+   + przebudowa, ta sama maszyna i ten sam kod pomiarowy): strona **skróciła
+   się o 222 px** (12,88 → 12,61 ekranu), największa luka bez wyjścia
+   **3,31 → 3,28 ekranu**. Anatomia dróg NIE rozciągnęła, mimo potrojenia
+   odstępu sekcji — zysk z niższego H2 na 51 nagłówkach przeważył.
+   ⚠ **WYJŚCIE POZA LITERĘ ADR-048 R4** („cień wyłącznie :hover"): karta ścieżki
+   dostaje cień szkła w SPOCZYNKU. Litera złamana, **uzasadnienie nie** — trzy
+   zdania, których R4 broniło, dotyczą kart rozdzielanych KOMPOZYCJĄ, a kartę
+   ścieżki rozdziela OBRYS (ADR-049). Do potwierdzenia przez koordynatora.
+   ⚠ **T56 — DEKLARACJA, KTÓRA NIGDY SIĘ NIE STOSUJE:** `.kropka` deklaruje
+   `margin-block-start: 1.25rem`, a zmierzony `margin-top` wynosi **0 px** w obu
+   lustrach i na wszystkich kadrach — przykrywa ją `.sekcja p` o wyższej
+   swoistości. Nie naprawiane (zakaz 8): widoczny odstęp to 16 px i leży na
+   drabinie wzorca.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.
@@ -2352,7 +2389,10 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje T1–T49. Te, które
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje **T1–T56** (zakres
+przeliczony 2026-09-04 przy dopisaniu T56 — poprzedni zapis „T1–T49” był
+nieaktualny od T50 i starzał się W MIEJSCU, bez upływu czasu i bez tranzytu).
+Te, które
 dotyczą bieżącej linii pracy:
 
 - **T2** — audyt nieodwracalnych, bramka **planowo czerwona**, faza 6. Nie jest

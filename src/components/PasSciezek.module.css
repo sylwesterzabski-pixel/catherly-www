@@ -9,7 +9,15 @@
 
 .lista {
   list-style: none;
-  margin: 0;
+  /* KONTENER TREŚCI WZORCA — 1280 px, wyśrodkowany (batch A2, ADR-053).
+     Ta sama szyna, na której stoi pigułka nawigacji od batcha A1, więc
+     pas ścieżek i pasek trzymają jedną krawędź. Do 04.09 pas oddawał
+     szerokość wcięciu progowemu (20 / 40 / 135 px), co przy 1440 px
+     dawało 1170 px — o 110 px mniej niż kontener wzorca i o tyle samo
+     mniej niż pasek nad nim. */
+  max-inline-size: var(--wymiar-kontener-waski);
+  margin-block: 0;
+  margin-inline: auto;
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
@@ -24,7 +32,19 @@
    kartach funkcji. Obrysu nie ma, bo wzorzec kart nie obrysowuje. */
 .sciezka {
   display: block;
-  background: var(--kolor-rola-powierzchnia);
+  /* SZKŁO MALOWANE — PŁYTA (batch A2, ADR-053). Rola `powierzchnia-szklo`
+     weszła w ADR-049 z pomiaru wzorca i do 04.09 NIE MIAŁA ANI JEDNEGO
+     UŻYCIA; ADR-049 zapisał wprost, że ma zniknąć, jeśli nie znajdzie
+     zastosowania. Znalazła je tutaj.
+
+     ⚠ SZKŁO WZORCA TO TRZY WARSTWY BEZ ROZMYCIA, nie `backdrop-filter`:
+     płyta przy alfie płyty, obrys jednopikselowy i cień WEWNĘTRZNY. Dwie
+     z nich są tu wprost, trzecia niżej. Rozmycia nie ma i być nie może —
+     wzorzec ma je na jednym elemencie na tysiąc siedemset dwadzieścia
+     jeden, a kosztuje kompozycję w każdej klatce.
+
+     Poprzednio: `--kolor-rola-powierzchnia`, płyta nieprzezroczysta. */
+  background: var(--kolor-rola-powierzchnia-szklo);
   /* ⚠ OBRYS JEST WYMOGIEM, NIE OZDOBĄ — i to jest drugi trop tej samej
      naprawy. Karta ścieżki jest ELEMENTEM INTERAKTYWNYM (całość to
      link), a takiemu WCAG 1.4.11 każe mieć granicę ≥ 3:1 wobec
@@ -36,8 +56,32 @@
      „obrys pola formularza, próg 3:1 z WCAG 1.4.11" — i daje tu
      11,71:1 wobec tła. Pierwsza próba naprawy (przywrócenie
      podkreślenia) NIE WYSTARCZYŁA: strażnik dalej meldował 1,09:1,
-     bo mierzy granicę pudełka, nie ślad pod tekstem. */
+     bo mierzy granicę pudełka, nie ślad pod tekstem.
+
+     ⚠ RÓŻNICA LICENCJONOWANA WOBEC WZORCA, ŻEBY NIKT JEJ NIE „UJEDNOLICIŁ".
+     Obrys szkła u wzorca jest bielą przy alfie obrysu, czyli ledwie
+     widoczną kreską. Tutaj obrys niesie `kreska-mocna`, bo ta karta jest
+     linkiem i podlega progowi 3:1. Gdyby ktoś kiedyś „doprowadził szkło
+     do zgodności z pomiarem", zdjąłby elementowi jedyną granicę spełniającą
+     WCAG 1.4.11. Szkło daje tu MATERIAŁ, dostępność daje KRAWĘDŹ. */
   border: 0.0625rem solid var(--kolor-rola-kreska-mocna);
+  /* SZKŁO MALOWANE — WARSTWA TRZECIA: cień WEWNĘTRZNY, jedna warstwa,
+     najczęstszy cień strukturalny wzorca (30 wystąpień).
+
+     ⚠ TO JEST WYJŚCIE POZA LITERĘ ADR-048, ROZSTRZYGNIĘCIE 4 („cień
+     wyłącznie :hover / :focus-within") — i dlatego stoi tu na piśmie,
+     a nie po cichu. Litera tamtej reguły mówi „nigdy w spoczynku"; jej
+     UZASADNIENIE wymienia trzy zdania, których miała bronić, i wszystkie
+     trzy dotyczą kart rozdzielanych KOMPOZYCJĄ: pomiaru „bez obrysu, bez
+     cienia" przy `KartyFunkcji`, zdania „cień nie jest w systemie" przy
+     `.karta` w globals i trzeciego mechanizmu ADR-038. Karta ścieżki nie
+     należy do żadnego z tych trzech: rozdziela ją OBRYS, nadany jej
+     w ADR-049 właśnie dlatego, że kompozycja nie jest afordancją.
+     Wszystkie trzy chronione zdania zostają więc prawdziwe co do słowa,
+     a szkło wzorca dostaje trzecią warstwę, bez której jest płytą
+     z obrysem, nie szkłem. Rozstrzygnięcie do potwierdzenia przez
+     koordynatora — zgłoszone w zwrotce, nie schowane w commicie. */
+  box-shadow: var(--cien-karta);
   /* 12 px — dominanta promieni kart wzorca (37 wystąpień, pomiar 1h).
      Ta sama wartość co ramka filaru i kadr sekcji „Dbanie o siebie". */
   border-radius: var(--wymiar-promien-sredni);
@@ -69,10 +113,36 @@
   white-space: nowrap;
 }
 
+/* GEST UNIESIENIA — rzecz klikana unosi się o 2 px (batch A2, ADR-053).
+   ⚠ ROZDZIAŁ GESTÓW JEST POMIAREM, NIE UPODOBANIEM (ADR-049,
+   rozstrzygnięcie 3): u wzorca rzecz KLIKANA unosi się o −2 px, a rzecz
+   będąca POWIERZCHNIĄ robi odwrotnie — od razu docisk, bez uniesienia.
+   Pomylenie ich odwraca komunikat: powierzchnia, która się unosi, udaje
+   przycisk. Karta ścieżki jest w całości linkiem, więc bierze uniesienie.
+
+   ⚠ `translate`, NIE `transform` I NIE `margin`. Strażnik `ruch.spec.ts`
+   zabrania animowania własności ruszających układ (`margin`, `top`,
+   `inset`, `block-size`…); `translate` przesuwa warstwę kompozycji
+   i układu nie dotyka. Osobna własność, a nie skrót `transform`, żeby
+   ewentualna przyszła skala nie skasowała przesunięcia.
+
+   ⚠ CAŁOŚĆ W `no-preference` — kanon („ruch tylko celowy, zawsze
+   z prefers-reduced-motion"). Przy `reduce` nie ma tu ani przejścia,
+   ani przesunięcia; strażnik ruchu mierzy to na wyrenderowanej stronie. */
+@media (prefers-reduced-motion: no-preference) {
+  .sciezka {
+    transition: translate var(--ruch-czas-interakcji) var(--ruch-krzywa-interakcji);
+  }
+
+  .sciezka:hover,
+  .sciezka:focus-visible {
+    translate: 0 var(--ruch-gest-uniesienia);
+  }
+}
+
 @media (min-width: 48.0625rem) {
   .pas {
     padding-block: var(--wymiar-odstep-sekcji) 0;
-    padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 
   .lista {
@@ -82,8 +152,13 @@
   }
 }
 
-@media (min-width: 90rem) {
-  .pas {
-    padding-inline: var(--wymiar-wciecie-tresci);
-  }
-}
+/* ⚠ DRABINA WCIĘCIA BOCZNEJ (20 / 40 / 135 px) ZDJĘTA — i to nie jest
+   uproszczenie, tylko warunek działania kontenera. Przy 1440 px wcięcie
+   135 px z każdej strony zostawiało 1170 px, więc `max-inline-size: 1280`
+   nie miało czego ograniczać i pas nigdy nie osiągnąłby szerokości wzorca.
+   Wcięcie zostaje jednym, płaskim 20 px i pracuje wyłącznie na kadrach
+   węższych od kontenera — dokładnie jak przy pigułce nawigacji.
+
+   Stało tu:
+     @media (min-width: 48,0625rem) — padding-inline: wciecie-tresci-srednie
+     @media (min-width: 90rem)      — padding-inline: wciecie-tresci */
