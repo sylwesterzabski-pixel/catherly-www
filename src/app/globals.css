@@ -265,6 +265,31 @@
   font-family: var(--kroj-naglowek);
 }
 
+/* ⚠ PAS NAD PIGUŁKĄ — SZCZELINA NIE POKAZUJE TREŚCI (ADR-060).
+   Pigułka nawigacji stoi 16 px od górnej krawędzi kadru i przez ten pas
+   przewijała się treść. Prześwit przez samą pigułkę zamknęła alfa 0,92
+   (ADR-059), ale nad nią zostawał szczelinowy podgląd, którego żadna
+   alfa nie dotyczy.
+
+   ⚠ REGUŁA MIESZKA NA `body`, NIE NA PASKU — pierwsza wersja stała przy
+   pigułce i nie działała, bo `backdrop-filter` czyni element BLOKIEM
+   ZAWIERAJĄCYM dla potomków `position: fixed`; pseudoelement lądował
+   wewnątrz paska zamiast nad nim. `body` żadnego filtra nie ma.
+
+   `z-index: 9` — nad treścią (która swojego nie deklaruje), pod pigułką
+   (`z-index: 10`), więc pasek zostaje na wierzchu, a pas tylko domyka
+   krawędź barwą, którą strona się zaczyna. */
+body::before {
+  content: "";
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: var(--wymiar-odsuniecie-naglowka-wzorca);
+  background: var(--kolor-rola-tlo-strony);
+  pointer-events: none;
+  z-index: 9;
+}
+
 body {
   margin: 0;
   background: var(--kolor-rola-tlo-strony);

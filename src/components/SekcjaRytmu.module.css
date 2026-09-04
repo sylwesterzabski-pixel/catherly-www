@@ -94,22 +94,19 @@
     padding-block: var(--wymiar-odstep-sekcji);
   }
 
-  /* KONTENER TREŚCI WZORCA — 1280 px — WYŁĄCZNIE dla osi kroków.
-     Poprzednio `--wymiar-kontener-strony` = 1440 px, czyli cały kadr;
-     wzorzec trzyma siatki kart w 1280. Nagłówek i kropka zostają
-     w mierze nagłówka wyśrodkowanej (width: 100%!), więc kropki luster
-     S3/S10 dalej stoją w tej samej kolumnie co do piksela: przy 1440 px
-     obie lądują na x = 208. */
-  .wnetrze {
-    max-inline-size: var(--wymiar-kontener-waski);
-  }
+  /* ⚠ KOLUMNY I ZDANIE ZAMYKAJĄCE NA TEJ SAMEJ KRAWĘDZI (ADR-060).
+     Stało tu: wnętrze 1280 px WYŁĄCZNIE dla osi kroków, a nagłówek
+     i kropka w mierze nagłówka wyśrodkowanej. Dawało to lustro S3/S10
+     co do piksela, ale kropka stała o kilkadziesiąt pikseli W PRAWO
+     od kolumn własnej sekcji: zmierzone przy 1190 — kropka x = 83,
+     pierwszy krok x = 20, czyli Δx = 63.
 
-  .wnetrze > h2,
-  .wnetrze > .kropka {
-    max-inline-size: var(--wymiar-miara-naglowka-wzorca);
-    margin-inline: auto;
-    width: 100%;
-  }
+     Naprawa idzie w drugą stronę, niż podpowiada odruch: zamiast
+     rozsuwać kropkę do szerokości kroków, ZWĘŻAMY KROKI do miary
+     nagłówka. Dzięki temu wszystkie trzy rzeczy — nagłówek, kolumny
+     i kropka — stoją na jednej krawędzi, a lustro S3/S10 zostaje
+     nietknięte, bo obie sekcje mają odtąd tę samą miarę wnętrza.
+     Rozsunięcie kropki złamałoby lustro; zwężenie kroków nie łamie nic. */
 
   .kroki {
     grid-template-columns: repeat(3, 1fr);

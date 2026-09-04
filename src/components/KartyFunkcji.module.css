@@ -172,3 +172,13 @@
    Stało tu:
      @media (min-width: 48,0625rem) — padding-inline: wciecie-tresci-srednie
      @media (min-width: 90rem)      — padding-inline: wciecie-tresci */
+
+/* ⚠ SLOT IKONY ZWIJA SIĘ, GDY PUSTY — ta sama reguła co przy slotach
+   foto (ADR-059), rozciągnięta na ikony (ADR-060, WWW/085 pkt 2b).
+   Pudełko 64 × 64 z odstępem 16 px trzymało w każdej karcie 80 px
+   pustego miejsca; przy sześciu kartach w jednej kolumnie to 480 px
+   samej rezerwy. MECHANIKA ZOSTAJE: wymiar, promień i tło czekają
+   nietknięte, a slot wróci sam w dniu, w którym ikona wejdzie. */
+.slotIkony:empty {
+  display: none;
+}

@@ -319,3 +319,19 @@
 .kadr:empty {
   display: none;
 }
+
+/* ⚠ MINIMUM WYSOKOŚCI OBOWIĄZUJE TYLKO ZE SLOTEM NIOSĄCYM OBRAZ
+   (ADR-060, zlecenie WWW/085 pkt 1a). Proporcje 1,78× i 1,33× viewportu
+   pochodzą z pomiaru wzorca (ADR-052) i opisują hero, W KTÓRYM COŚ JEST:
+   tam dolną połowę zajmuje kadr. U nas kadru nie ma, więc minimum
+   trzymało PUSTKĘ — zmierzone przy 1190: sekcja 1600 px przy treści
+   394 px, czyli 1206 px próżni; przy 390 — 549 px.
+
+   Warunek pyta o ten sam fakt co `:empty` przy samym slocie, więc oba
+   wchodzą i schodzą razem. W dniu, w którym kadr wejdzie, minimum wraca
+   samo i proporcja wzorca znowu obowiązuje. */
+@supports selector(:has(*)) {
+  .hero:has(.kadr:empty) {
+    min-block-size: auto;
+  }
+}

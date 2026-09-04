@@ -327,3 +327,15 @@
     padding: var(--wymiar-odstep-2) 5rem;
   }
 }
+
+/* ⚠ PAS NAD PIGUŁKĄ NIE MOŻE MIESZKAĆ TUTAJ — I TO JEST POMIAR, NIE
+   PRZECZUCIE. Pierwsza wersja dała pigułce `::before` z `position: fixed`
+   i pasem 16 px przy górnej krawędzi kadru. Nie zadziałało, bo pigułka
+   ma `backdrop-filter`, a ten — tak jak `filter` i `transform` — czyni
+   element BLOKIEM ZAWIERAJĄCYM dla potomków `position: fixed`.
+   Pseudoelement wylądował więc WEWNĄTRZ paska, nie nad nim.
+
+   Dowód: zrzuty pasa 0–16 px nad sekcją ciemną i nad jasną różniły się
+   (190 wobec 395 bajtów), czyli coś przez pas przechodziło. Reguła
+   mieszka odtąd w `globals.css` na `body::before` — `body` żadnego
+   filtra nie ma, więc blokiem zawierającym jest kadr. */

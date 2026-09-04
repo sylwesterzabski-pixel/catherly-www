@@ -17,7 +17,7 @@ export function DbanieOSiebie() {
         <h2 id="dbanie-h2" className={styles.srOnly}>
           {t("naglowek")}
         </h2>
-        <p>{t("tresc")}</p>
+        <p className={styles.zdanie}>{t("tresc")}</p>
         {/* SLOT-FOTO-DBANIE — szósty i ostatni slot fotograficzny strony
             głównej (ADR-048, rozstrzygnięcie 2). Sekcja mówi o świętowaniu
             własnej pracy, więc kadr ma pokazywać człowieka, nie interfejs.

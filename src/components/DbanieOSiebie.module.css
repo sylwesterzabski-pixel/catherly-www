@@ -24,6 +24,25 @@
   color: var(--kolor-rola-tekst-drugorzedny);
 }
 
+/* ⚠ ZWARTY SKŁAD ZAMIAST DRYFUJĄCEGO AKAPITU (ADR-060, WWW/085 pkt 2a).
+   Sekcja niesie JEDNO zdanie; po zwinięciu kadru zostawało ono samotną
+   linią prozy w sekcji o wysokości 349 px przy 50 px treści. Zdanie
+   dostaje głos WYRÓŻNIENIA — ten sam duet, którym mówią „kropki" luster
+   i zdanie prowadzące filaru — więc czyta się jak domknięcie rytmu,
+   a nie jak zabłąkany akapit.
+
+   ⚠ ZERO NOWEJ TREŚCI: zmienia się wyłącznie kompozycja i głos.
+   Ta sekcja z założenia jest „oddechem, nie piątym filarem" (DECYZJA 10),
+   więc krótkość jest tu cechą, a nie brakiem — chodziło o to, żeby
+   krótkość wyglądała na zamierzoną. */
+/* ⚠ `composes` NIE DZIAŁA NA SELEKTORZE POTOMKA — CSS Modules przyjmuje
+   je wyłącznie na pojedynczej klasie lokalnej. Stąd osobna klasa
+   `.zdanie` na akapicie, a nie `.wnetrze p`: jedno źródło duetu zostaje
+   zachowane, a reguła jest tam, gdzie composes wolno postawić. */
+.zdanie {
+  composes: duet from "./wyroznienie.module.css";
+}
+
 .wnetrze p {
   margin: 0;
   /* Miara akapitu SEKCJI — 896 px (ADR-053), nie miara akapitu KARTY. */

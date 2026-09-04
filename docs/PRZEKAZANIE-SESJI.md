@@ -490,6 +490,57 @@ rozstrzygnięcie 5).
    axe **120** · bramki statyczne zielone · ESLint bez nowych ostrzeżeń ·
    LCP przy 1190 mediana **28 ms** · poza kadrem 0, nakładki 0, panorama
    brak na wszystkich czterech kadrach.
+   **WWW/085 wykonane 2026-09-04** — push `ad1ecba` + **ADR-060**.
+   Pas pustki: sekcje oddychają treścią, nie próżnią.
+   **MINIMUM HERO OBOWIĄZUJE TYLKO ZE SLOTEM NIOSĄCYM OBRAZ.** Proporcje
+   1,78×/1,33× viewportu opisują hero, W KTÓRYM COŚ JEST — u nas kadru
+   nie ma, więc minimum trzymało PRÓŻNIĘ: przy 1190 sekcja 1600 px przy
+   394 px treści, czyli 1206 px pustki. Po zmianie hero 1600 → 578
+   (1190), 1600 → 751 (1440), 1120 → 675 (390). Warunek pyta o ten sam
+   fakt co `:empty` przy slocie, więc minimum WRÓCI SAMO z kadrem.
+   **SLOT IKONY ZWIJA SIĘ JAK SLOT FOTO** — pudełko 64 × 64 z odstępem
+   trzymało 80 px w każdej karcie. Karta 222 → 142, sekcja kart na wąskim
+   1652 → 1172.
+   ⚠ **KOLUMNY RYTMU DNIA I ZDANIE ZAMYKAJĄCE NA JEDNEJ KRAWĘDZI —
+   NAPRAWA IDZIE W DRUGĄ STRONĘ, NIŻ PODPOWIADA ODRUCH.** Kropka stała
+   x = 83, pierwszy krok x = 20 (Δx 63 przy 1190; 128 przy 1440). Zamiast
+   rozsuwać kropkę do szerokości kroków, ZWĘŻONO KROKI do miary nagłówka:
+   rozsunięcie kropki złamałoby lustro L1 (S3 i S10 muszą stać w tej samej
+   kolumnie), zwężenie kroków nie łamie nic. Δx 63 → 0 i 128 → 0, lustro Δ 0.
+   ⚠ **SZCZELINA NAD PIGUŁKĄ: DWA POMIARY, DWA USTALENIA.**
+   (1) Pierwsza próba postawiła pas jako `::before` PIGUŁKI i nie
+   zadziałała, bo `backdrop-filter` — tak jak `filter` i `transform` —
+   czyni element BLOKIEM ZAWIERAJĄCYM dla potomków `position: fixed`;
+   pseudoelement wylądował WEWNĄTRZ paska. Reguła mieszka teraz na
+   `body::before`.
+   (2) `elementFromPoint` NIGDY nie zwraca pseudoelementów, a przy
+   `pointer-events: none` przechodzi przez nie w całości — sonda
+   hit-testowa meldowała treść pod szczeliną NIEZALEŻNIE od tego, czy pas
+   jest zamalowany. Dowód poszedł PIKSELAMI: zrzut pasa 0–16 px nad sekcją
+   ciemną i nad jasną — przed naprawą **190 vs 395 bajtów**, po naprawie
+   **190 vs 190, identyczne co do bajtu**.
+   **DBANIE O SIEBIE: zwarty skład, zero nowej treści** — zdanie dostaje
+   głos duetu (ten sam co kropki luster). ⚠ `composes` nie działa na
+   selektorze potomka, stąd osobna klasa na akapicie.
+   **RAMA KOŃCOWA ZMIERZONA I ZGODNA:** zamknięcie 160/160, stopka 160/80,
+   pas 160/0 — wszystkie `min-height: 0`, żadnych wymuszonych minimów.
+   Pustka 320 px przy zamknięciu to SUMA DWÓCH RYTMÓW, nie minimum.
+   ⚠ **SPROSTOWANIE POMIARU PODRÓŻY Z POPRZEDNICH ZWROTEK.** Sonda podróży
+   miała wpisany **port 3000**, a cała reszta pomiarów szła od WWW/082 na
+   **3100** — liczby podróży w zwrotkach WWW/082–084 pochodzą więc
+   z SERWERA DEWELOPERSKIEGO, nie z budowania produkcyjnego. Wykryte, gdy
+   sonda zwróciła „strona 844 px, wszystkie bóle None": 3000 oddawał
+   wtedy 500, bo `rm -rf .next` zabrał budowanie, z którego korzysta
+   także `next dev`. **Zero bez sensu okazało się sygnałem o adresie.**
+   ⚠ To samo `rm -rf .next` POŁOŻYŁO SERWER DEWELOPERSKI właściciela —
+   zidentyfikowany, zatrzymany i postawiony na nowo, odpowiada 200.
+   **PODRÓŻE — pierwszy batch, w którym poprawiły się NARAZ wszystkie
+   cztery liczby:** strona 9111 → 7892 px (1190), ekranów 11,97 → 10,95,
+   ból SAMA 1,98 → 1,45 · LIDERKA 6,53 → 5,43 · STRUKTURA 1,33 → 0,80,
+   największa luka 3,91 → 3,34.
+   Pomiary: e2e 1376 passed / 12 skipped / 0 failed (4 projekty) · axe 120
+   · bramki statyczne zielone · ESLint bez nowych · LCP @1190 32 ms
+   we wszystkich pięciu przebiegach.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.
