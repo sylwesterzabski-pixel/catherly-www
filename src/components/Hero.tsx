@@ -51,6 +51,7 @@ type Props = {
  */
 export function Hero({ locale }: Props) {
   const t = useTranslations("Hero");
+  const tObrazy = useTranslations("ObrazyTymczasowe");
 
   return (
     <section className={styles.hero} aria-labelledby="hero-h1">
@@ -90,7 +91,25 @@ export function Hero({ locale }: Props) {
                 `obraz`: klasa `[class*="_obraz__"]` jest lokatorem
                 strażnika rozdziału kart, a ten slot kartą nie jest
                 i celowo nie spełnia żadnego z mechanizmów rozdziału. */}
-            <div className={styles.kadr} aria-hidden="true" />
+            <div className={styles.kadr}>
+                {/* TYMCZASOWE-DO-PODMIANY (ADR-061, zlecenie WWW/086).
+                    Kadr wypełnia slot na czas, w którym docelowej
+                    fotografii jeszcze nie ma; podmiana polega na
+                    WYMIANIE PLIKU pod tą samą ścieżką, bez zmiany kodu.
+                    Surowy <img>, nie next/image — ta sama przyczyna co
+                    przy dostawie Z6: optymalizator przekodowuje plik na
+                    żądanie, więc na produkcji szłyby inne bajty niż te,
+                    których sumę zapisano w ADR-ze. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/obrazy/tymczasowe/hero.avif"
+                alt={tObrazy("hero")}
+                width={1536}
+                height={2048}
+                fetchPriority="high"
+                decoding="async"
+              />
+            </div>
           </div>
         </div>
       </div>

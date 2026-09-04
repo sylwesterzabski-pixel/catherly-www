@@ -35,6 +35,16 @@ type Props = {
     baza: string;
     alt: string;
   };
+  /** TYMCZASOWE-DO-PODMIANY (ADR-061): pojedynczy plik pod stałą
+   *  ścieżką, bez rejestru srcset. Kształt ten sam, którym `ModulFunkcji`
+   *  niósł kadry fali 1 — nie wymyślam drugiego. Podmiana docelowa =
+   *  wymiana pliku, bez zmiany kodu. */
+  kadr?: {
+    zrodlo: string;
+    alt: string;
+    szerokosc: number;
+    wysokosc: number;
+  };
 };
 
 /**
@@ -84,6 +94,7 @@ export function Filar({
   korzysc,
   konkrety,
   obraz,
+  kadr,
   link,
 }: Props) {
   return (
@@ -118,7 +129,22 @@ export function Filar({
               </a>
             ) : null}
           </div>
-          {obraz === undefined ? (
+          {kadr !== undefined ? (
+            <div className={styles.obraz}>
+              {/* TYMCZASOWE-DO-PODMIANY (ADR-061, zlecenie WWW/086).
+                  Surowy <img> z tego samego powodu co przy Z6: bajty mają
+                  odpowiadać sumie zapisanej w ADR-ze. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={kadr.zrodlo}
+                alt={kadr.alt}
+                width={kadr.szerokosc}
+                height={kadr.wysokosc}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ) : obraz === undefined ? (
             <div className={styles.obraz} aria-hidden="true" />
           ) : (
             <div className={styles.obraz}>

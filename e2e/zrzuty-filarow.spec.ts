@@ -180,19 +180,44 @@ test("dostawa Z6: alt dla każdego filaru w trzech językach, każdy inny", () =
 
 if (!OSADZONE) {
   for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
-    test(`osadzenie wyłączone (${jezyk}): filar ma pustą ramkę, bez <img>`, async ({
+    test(`osadzenie wyłączone (${jezyk}): filar bez ZRZUTU aplikacji`, async ({
       page,
     }) => {
       await page.goto(adres);
       for (const klucz of KLUCZE_FILAROW) {
         const sekcja = sekcjaFilaru(page, komunikaty.Filary[klucz].naglowek);
-        await expect(
-          sekcja.locator("img"),
-          `${klucz}: zrzut ma być wyłączony`,
-        ).toHaveCount(0);
-        // Ramka zostaje (rezerwa układu i zebra), ale pusty prostokąt
-        // nie ma czego ogłaszać czytnikowi ekranu.
-        await expect(sekcja.locator("[aria-hidden='true']")).toHaveCount(1);
+
+        /* ⚠ PRZEDMIOTEM JEST ZRZUT APLIKACJI, NIE KAŻDY <img> — asercja
+           przepisana w ADR-061. Stało tu `sekcja.locator("img")` z progiem
+           zero, co było równoważne, dopóki jedynym obrazem, jaki mógł tu
+           trafić, był zrzut Z6. Od WWW/086 slot filaru niesie KADR
+           FOTOGRAFICZNY (tymczasowy), więc „zero obrazów" przestało znaczyć
+           „zero zrzutów" i strażnik zapalał się na stanie zamierzonym.
+
+           Rozróżnienie idzie po ŹRÓDLE, nie po liczbie: zrzuty leżą pod
+           ścieżką z rejestru pipeline'u, fotografie pod `/obrazy/tymczasowe/`.
+           Asercja jest przez to MOCNIEJSZA — łapie zrzut nawet wtedy, gdy
+           obok niego stoi inny obraz, czego wersja licząca do zera nie
+           umiała. Zakaz „zero zrzutów aplikacji" (WWW/072, rozszerzony
+           w WWW/083) zostaje egzekwowany co do joty. */
+        const zrodla = await sekcja.locator("img").evaluateAll((el) =>
+          el.map((e) => (e as HTMLImageElement).getAttribute("src") ?? ""),
+        );
+        const zrzuty = zrodla.filter((s) => s.includes("/obrazy/filary/"));
+        expect(
+          zrzuty,
+          `${klucz}: zrzut aplikacji ma być wyłączony (znalezione: ${zrzuty.join(", ")})`,
+        ).toEqual([]);
+
+        /* Ramka slotu: albo pusta i `aria-hidden`, albo niosąca kadr
+           z altem. Trzeciego stanu nie ma — a pusta ramka z altem albo
+           kadr bez altu byłyby wadą dostępności. */
+        const puste = await sekcja.locator("[aria-hidden='true']").count();
+        const zKadrem = zrodla.filter((s) => s.includes("/obrazy/tymczasowe/")).length;
+        expect(
+          puste + zKadrem,
+          `${klucz}: dokładnie jeden slot (pusty ${puste} + z kadrem ${zKadrem})`,
+        ).toBe(1);
       }
     });
   }

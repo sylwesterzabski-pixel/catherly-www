@@ -541,6 +541,60 @@ rozstrzygnięcie 5).
    Pomiary: e2e 1376 passed / 12 skipped / 0 failed (4 projekty) · axe 120
    · bramki statyczne zielone · ESLint bez nowych · LCP @1190 32 ms
    we wszystkich pięciu przebiegach.
+   **WWW/086 wykonane 2026-09-04** — push `9bfb023` + **ADR-061**.
+   Sześć slotów fotograficznych dostaje WYPEŁNIENIE TYMCZASOWE (akcept
+   właściciela 6/6). Podmiana docelowa = wymiana pliku pod tą samą
+   ścieżką, bez zmiany kodu.
+   Sumy SHA-256 źródeł w ADR-061; **PNG-i NIE wchodzą do repozytorium**
+   (22,8 MB → **336 kB** AVIF, redukcja 98,5%), bo trwały koszt w historii
+   gita za rzecz przejściową; adresy i sumy pozwalają odtworzyć każdy kadr.
+   ⚠ **CO MOGĘ STWIERDZIĆ, A CZEGO NIE:** kanon dopuszcza twarze WYŁĄCZNIE
+   generowane. Zatwierdzenie jest (6/6, imiennie z nazw plików), ale
+   **generowanego pochodzenia NIE DA SIĘ orzec z bajtów** — podstawą jest
+   rodowód adresów (prefiks `hf_`, ta sama rodzina CDN co fala 1) i akcept
+   właściciela. Zapisane jako GRANICA POMIARU, nie potwierdzenie.
+   Wpięcie kształtem ISTNIEJĄCYM w repo (`{ zrodlo, alt, szerokosc,
+   wysokosc }` — tym samym, którym `ModulFunkcji` niósł falę 1); surowy
+   `<img>`, nie `next/image`, bo optymalizator przekodowuje plik i na
+   produkcji szłyby inne bajty niż te, których sumę zapisano.
+   ⚠ **Kluczy `ObrazyFilarow` NIE użyto — to decyzja, nie przeoczenie:**
+   tamte alty opisują ZRZUTY APLIKACJI, więc przy fotografii człowieka
+   KŁAMAŁYBY o obrazie, a fałszywy alt jest gorszy od żadnego. Nowa
+   przestrzeń `ObrazyTymczasowe`, 6 kluczy ×3 języki.
+   ⚠ Linter liczb złapał liczebnik w opisie sceny („dwie kobiety") —
+   zamiast dopisywać pozycję do `liczby-w-tresci.json` za rzecz tymczasową,
+   liczebnik wypadł; opis został prawdziwy.
+   ⚠ **KONTRAST TEKSTU NA HERO: PYTANIE NIE ZACHODZI.** Zmierzone ZERO
+   nachodzeń na czterech kadrach — hero jest jednokolumnowe (tekst → slot
+   pod spodem), więc żaden element tekstowy nie przecina prostokąta kadru.
+   Warstwy przyciemniającej NIE dokładam: byłaby lekarstwem na chorobę,
+   której pomiar nie znajduje.
+   ⚠ **MINIMUM HERO WRÓCIŁO SAMO** — warunek `:has(.kadr:empty)` z ADR-060
+   przestał być spełniony, bo slot niesie obraz. Zmierzone `min-height`
+   1600 px przy 1190. Mechanizm zadziałał dokładnie tak, jak go opisano.
+   ⚠ **LCP: OBRAZ NIE PRZEJĄŁ.** Mediana z pięciu: `/` **36 ms**, element
+   wciąż `span.Hero_duch` (256 px, pozycja T55); `/funkcje/pozyskiwanie`
+   **24 ms**, element `h1`. Kadr hero dostał `fetchPriority="high"`, reszta
+   `loading="lazy"`; **preloadu nie dokładam — nie ma czego przyspieszać.**
+   **STRAŻNIK Z6 PRZEPISANY, NIE OSŁABIONY:** sprawdzał „zero `<img>`", co
+   było równoważne, dopóki jedynym obrazem mógł być zrzut. Teraz rozróżnia
+   po ŹRÓDLE (zrzuty pod ścieżką rejestru, fotografie pod
+   `/obrazy/tymczasowe/`) — łapie zrzut nawet obok innego obrazu, czego
+   wersja licząca do zera nie umiała.
+   **PODRÓŻE: strona +1616 px (10,95 → 12,86 ekranu), ale NAJWIĘKSZA LUKA
+   BEZ ZMIAN (3,34)** — kadry weszły w sekcje leżące między wyjściami, więc
+   wydłużyły drogę, nie korytarz bez drzwi.
+   ⚠ **KADR HERO ODSTAJE REJESTREM OD POZOSTAŁYCH PIĘCIU.** Pięć pokazuje
+   pracę i oddech (notatnik przy stole, laptop przy oknie, rozmowa przy
+   kawie, pisanie przy lampie, kubek przy oknie); hero to półmrok, łóżko,
+   gołe ramiona, twarz oświetlona ekranem telefonu. Hero jest pierwszym
+   i największym obrazem strony sprzedającej NARZĘDZIE PRACY, a rejestr
+   intymny czyta się tam inaczej niż w pozostałych pięciu miejscach —
+   i inaczej, niż mówi tekst obok. Zgłoszone; decyzja właściciela, wymiana
+   to podmiana jednego pliku.
+   Pomiary: e2e **1376 passed / 12 skipped / 0 failed** (4 projekty) ·
+   axe **120** · bramki statyczne zielone · ESLint bez nowych · 6 obrazów
+   w `main`, wszystkie z altem.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.

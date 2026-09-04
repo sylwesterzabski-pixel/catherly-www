@@ -11,6 +11,7 @@ import styles from "./DbanieOSiebie.module.css";
  */
 export function DbanieOSiebie() {
   const t = useTranslations("DbanieOSiebie");
+  const tObrazy = useTranslations("ObrazyTymczasowe");
   return (
     <section className={styles.dbanie} aria-labelledby="dbanie-h2" data-ton="jasny">
       <div className={styles.wnetrze}>
@@ -25,7 +26,25 @@ export function DbanieOSiebie() {
             Podmiana: <picture>/<img> wchodzi TUTAJ, `aspect-ratio` jest
             zarezerwowane w arkuszu, `aria-hidden` znika razem z pustym
             slotem (obraz informacyjny musi być widoczny dla czytnika). */}
-        <div className={styles.kadr} aria-hidden="true" />
+        <div className={styles.kadr}>
+          {/* TYMCZASOWE-DO-PODMIANY (ADR-061, zlecenie WWW/086).
+              Kadr wypełnia slot na czas, w którym docelowej
+              fotografii jeszcze nie ma; podmiana polega na
+              WYMIANIE PLIKU pod tą samą ścieżką, bez zmiany kodu.
+              Surowy <img>, nie next/image — ta sama przyczyna co
+              przy dostawie Z6: optymalizator przekodowuje plik na
+              żądanie, więc na produkcji szłyby inne bajty niż te,
+              których sumę zapisano w ADR-ze. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/obrazy/tymczasowe/dbanie-o-siebie.avif"
+            alt={tObrazy("dbanie")}
+            width={1600}
+            height={1067}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
       </div>
     </section>
   );

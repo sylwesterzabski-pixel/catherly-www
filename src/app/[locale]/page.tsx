@@ -35,10 +35,10 @@ import { OSADZENIE_NA_GLOWNEJ, zrzutFilaru } from "@/obrazy/zrzuty";
    miejsce do podmiany. `sciezka` to adres podstrony; kolejność filarów
    i kolejność bloków indeksu są tą samą kolejnością rytmu dnia. */
 const FILARY = [
-  { klucz: "filar1", id: "filar-1-h2", blok: "blok1Link", sciezka: "/funkcje/pozyskiwanie" },
-  { klucz: "filar2", id: "filar-2-h2", blok: "blok2Link", sciezka: "/funkcje/tresci" },
-  { klucz: "filar3", id: "filar-3-h2", blok: "blok3Link", sciezka: "/funkcje/zespol" },
-  { klucz: "filar4", id: "filar-4-h2", blok: "blok4Link", sciezka: "/funkcje/wyniki" },
+  { klucz: "filar1", id: "filar-1-h2", kadr: "filar-1-pozyskiwanie", blok: "blok1Link", sciezka: "/funkcje/pozyskiwanie" },
+  { klucz: "filar2", id: "filar-2-h2", kadr: "filar-2-tresci", blok: "blok2Link", sciezka: "/funkcje/tresci" },
+  { klucz: "filar3", id: "filar-3-h2", kadr: "filar-3-zespol", blok: "blok3Link", sciezka: "/funkcje/zespol" },
+  { klucz: "filar4", id: "filar-4-h2", kadr: "filar-4-wyniki", blok: "blok4Link", sciezka: "/funkcje/wyniki" },
 ] as const;
 
 export function generateStaticParams() {
@@ -54,6 +54,7 @@ export default async function StronaGlowna({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("Filary");
   const tObrazy = await getTranslations("ObrazyFilarow");
+  const tObrazyTymczasowe = await getTranslations("ObrazyTymczasowe");
   const tProblem = await getTranslations("Problem");
   const tDefinicja = await getTranslations("Definicja");
   const tRytm = await getTranslations("RytmDnia");
@@ -117,7 +118,7 @@ export default async function StronaGlowna({ params }: Props) {
             zakazem bezwzględnym. Osiem cytatów z kluczy `*_nazwa`. */}
         <PasMozliwosci />
 
-        {FILARY.map(({ klucz, id, blok, sciezka }) => (
+        {FILARY.map(({ klucz, id, kadr, blok, sciezka }) => (
           <Filar
             key={klucz}
             idNaglowka={id}
@@ -146,6 +147,16 @@ export default async function StronaGlowna({ params }: Props) {
                lokalnie, „/" będzie ponad progiem — to czerwień
                termometru, nie strony, i nie naprawia się jej cięciem
                strony (docs/faza-4/bramka-na-preview.md). */
+            /* TYMCZASOWE-DO-PODMIANY (ADR-061, zlecenie WWW/086):
+               kadr fotograficzny wypełnia slot filaru na czas, w którym
+               docelowej fotografii jeszcze nie ma. Podmiana = wymiana
+               pliku pod tą samą ścieżką, bez zmiany kodu. */
+            kadr={{
+              zrodlo: `/obrazy/tymczasowe/${kadr}.avif`,
+              alt: tObrazyTymczasowe(`filar${klucz.slice(-1)}`),
+              szerokosc: 1600,
+              wysokosc: 1067,
+            }}
             obraz={
               OSADZENIE_NA_GLOWNEJ
                 ? { baza: zrzutFilaru(klucz).baza, alt: tObrazy(klucz) }
