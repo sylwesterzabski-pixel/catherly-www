@@ -4,12 +4,23 @@
    Kolory wyłącznie var(--…); kolor linku dziedziczony z globals (rola
    link/link-aktywny). Wymiary rem — zero px; tokeny wymiarów ADR-028. */
 
+/* ⚠ SPISU TREŚCI WZORZEC NIE MA — zero sprawdzone kontrolą pozytywną
+   (ADR-058). Na `/features` są trzy linki z kotwicą i wszystkie trzy
+   stoją w stopce („Privacy Policy", „Terms of Service", „Refund
+   Policy"); nawigacji wewnętrznej po sekcjach nie ma ani jednej, przy
+   17 linkach i 36 nagłówkach widzianych przez sondę na tej samej
+   stronie. Zlecenie WWW/083 pkt c przewiduje ten przypadek wprost:
+   brak odpowiednika → nasze kotwice zostają, odstępy na drabinie 1g. */
 .spis {
-  padding: 0 1rem 1.5rem;
+  /* 0 / 32 / 20 — poprzednio 0 / 24 / 16; 24 i 14 nie leżą na drabinie
+     wzorca (8 · 16 · 32 · 40 · 80 · 160 · 240). */
+  padding-block: 0 var(--wymiar-odstep-7);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
 }
 
 .wnetrze {
-  max-width: var(--wymiar-kontener-strony);
+  /* Miara nagłówka sekcji — 1024 px, jak nagłówek podstrony nad nim. */
+  max-inline-size: var(--wymiar-miara-naglowka-wzorca);
   margin-inline: auto;
 }
 
@@ -23,7 +34,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  padding-inline-start: 0.875rem;
+  padding-inline-start: var(--wymiar-odstep-5);
   border-inline-start: 0.0625rem solid var(--kolor-rola-kreska);
   display: grid;
   gap: 0.5rem;

@@ -14,7 +14,6 @@ type Props = {
   /** Zebra desktopu jak K4 (rozstrzygnięcie 3 panelu: moduły
    *  parzyste obraz po lewej); na 390 px zawsze tekst nad obrazem
    *  (order tylko ≥48rem). */
-  obrazPoLewej?: boolean;
   /** Kadr dekoracyjny fali 1 (ADR-011: warstwa dekoracyjna, NIGDY
    *  pseudo-zrzut). Bez propu ramka zostaje pusta i aria-hidden —
    *  dokładnie jak przed dostawą. */
@@ -43,16 +42,24 @@ export function ModulFunkcji({
   idNaglowka,
   poCo,
   granica,
-  obrazPoLewej = false,
   obraz,
 }: Props) {
-  const klasyUkladu = obrazPoLewej
-    ? `${styles.uklad} ${styles.obrazPoLewej}`
-    : styles.uklad;
   return (
-    <section className={styles.modul} aria-labelledby={idNaglowka}>
+    <section
+      className={styles.modul}
+      aria-labelledby={idNaglowka}
+      /* STREFA JASNA (ADR-058, aneks mapy ADR-050). Moduły podstron są
+         rozwinięciem filarów z głównej, a filary leżą w strefie jasnej —
+         korpus modułów idzie za nimi. Hero podstrony zostaje ciemne, tak
+         jak hero głównej: rama decyzyjna ciemna, korpus jasny. */
+      data-ton="jasny"
+    >
       <div className={styles.wnetrze}>
-        <div className={klasyUkladu}>
+        {/* ⚠ NAPRZEMIENNOŚCI NIE MA — pomiar, nie przyzwyczajenie
+            (ADR-055 dla filarów, ADR-058 dla modułów): cztery bloki
+            feature wzorca mają tekst po lewej na każdym kadrze. Prop
+            `obrazPoLewej` zniknął razem z regułami CSS. */}
+        <div className={styles.uklad}>
           <div className={styles.tekst}>
             <h2 id={idNaglowka} className={styles.naglowek}>
               {naglowek}

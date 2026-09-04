@@ -4,12 +4,36 @@
    foldem. Próg 48rem: surowa wartość wspólna K1–K4 (W5 — token
    --wymiar-prog-ukladu jest wyłącznie dokumentacyjny). */
 
+/* ┌── ANATOMIA BLOKU FEATURE (pomiar ADR-055, potwierdzony na /features)┐
+   │ kontener 1200 zamknięty · wcięcie 40 · proporcja 1 : 2 od progu    │
+   │ odstęp kolumn 32 (od progu) · 16 (poniżej) · tekst po LEWEJ 4/4    │
+   │ nagłówek bloku 36/700/lh40 (1440) · 24/700/lh32 (390)              │
+   │ nagłówek modułu 18/600/lh28 (h3, 21 wystąpień)                     │
+   └────────────────────────────────────────────────────────────────────┘
+
+   ⚠ POMIAR NA `/features` DAŁ TE SAME LICZBY CO NA GŁÓWNEJ — cztery bloki
+   1200 × 559, odstęp 32, kolumny 378,656 / 378,672 / 378,672, tekst 379
+   i media 789. To jest kontrola tożsamości anatomii MIĘDZY STRONAMI: blok
+   feature jest u wzorca jednym wzorcem, nie dwoma podobnymi.
+
+   ⚠ ZEBRA USUNIĘTA. ADR-055 zdjął ją na głównej i zapisał, że moduły
+   podstron to „inny batch" — to jest ten batch. Wszystkie cztery bloki
+   wzorca mają tekst po lewej na każdym kadrze; prop i reguły znikają
+   razem, żeby nie zostawić martwej deklaracji (klasa T56). */
+
 .modul {
-  padding: 2.5rem 1rem;
+  /* 40 px góra i dół — daje 80 px MIĘDZY modułami, czyli odstęp
+     zmierzony u wzorca poniżej progu; od progu 160 (→ 320 między).
+     Poprzednio 40 px na każdym kadrze, bez progu. */
+  padding-block: var(--wymiar-odstep-8);
+  /* 40 px na każdym kadrze — wcięcie bloku feature. Poprzednio 16. */
+  padding-inline: var(--wymiar-wciecie-tresci-srednie);
 }
 
 .wnetrze {
-  max-width: var(--wymiar-kontener-strony);
+  /* Kontener bloku feature — 1200 px, zamknięty (ADR-055).
+     Poprzednio `--wymiar-kontener-strony` = 1440 px. */
+  max-inline-size: var(--wymiar-kontener-filaru);
   margin-inline: auto;
 }
 
@@ -21,7 +45,8 @@
      tę samą parę wartości — czyli osiem miejsc, w których następna
      zmiana skali musi trafić, i osiem, które może przeoczyć.
      Margines, miara wiersza i zawijanie ZOSTAJĄ: to układ, nie skala. */
-  margin: 0 0 0.75rem;
+  /* 8 px — odstęp nagłówka od zdania „po co", zmierzony u wzorca. */
+  margin: 0 0 var(--wymiar-odstep-2);
   max-width: 30ch;
   text-wrap: balance;
   /* W4: kotwica pod sticky nav. Odsunięcie niesie odtąd
@@ -30,7 +55,7 @@
 }
 
 .poCo {
-  margin: 0 0 1rem;
+  margin: var(--wymiar-odstep-2) 0 var(--wymiar-odstep-5);
   max-width: var(--wymiar-miara-akapitu);
 }
 
@@ -46,7 +71,10 @@
 }
 
 .obraz {
-  margin-block-start: 1.5rem; /* 390 px: tekst NAD obrazem */
+  /* ⚠ 40 px, NIE 24 — ten sam rachunek co przy ramce filaru (ADR-055):
+     kompozycja z ADR-038 zalicza dopiero od 30 px, a poniżej progu
+     układu odstęp bierze się STĄD. */
+  margin-block-start: var(--wymiar-odstep-8); /* 390 px: tekst NAD obrazem */
   /* Placeholder ramki do dostawy Z9+ (brief K12: docelowy zrzut
      INFORMACYJNY z alt; 16/10 jako rezerwa CLS). */
   aspect-ratio: 16 / 10;
@@ -55,26 +83,47 @@
   border-radius: var(--wymiar-promien);
 }
 
-@media (min-width: 48rem) {
+/* KOLUMNA TEKSTU — reguła musi istnieć, żeby CSS Modules eksportowało
+   nazwę klasy (ADR-055 rozstrz. 6: po usunięciu zebry `.tekst` znikało
+   z arkusza, `styles.tekst` dawało `undefined`, a React pomija wtedy
+   atrybut — bez śladu w znaczniku). */
+.tekst {
+  display: block;
+}
+
+@media (min-width: 48.0625rem) {
+  .modul {
+    padding-block: var(--wymiar-odstep-sekcji);
+  }
+
   .uklad {
     display: grid;
+    /* Kolumny równe poniżej progu górnego — jak u wzorca poniżej 1024. */
     grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    /* 16 px — odstęp kolumn wzorca poniżej progu. Poprzednio 48. */
+    gap: var(--wymiar-odstep-5);
     align-items: center; /* zapobiega stretch nadpisującemu aspect-ratio */
   }
 
   .obraz {
     margin-block-start: 0;
   }
+}
 
-  /* Zebra L-P-L-P (rozstrzygnięcie 3 panelu — jak K4): instancje
-     z obrazem po LEWEJ (moduły parzyste). */
-  .obrazPoLewej .tekst {
-    order: 2;
+@media (min-width: 90rem) {
+  .uklad {
+    /* Proporcja 1 : 2 przez siatkę TRZYKOLUMNOWĄ — `1fr 2fr` chybia
+       o dziesięć pikseli (rachunek w Filar.module.css). */
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--wymiar-odstep-7);
   }
 
-  .obrazPoLewej .obraz {
-    order: 1;
+  .tekst {
+    grid-column: span 1;
+  }
+
+  .obraz {
+    grid-column: span 2;
   }
 }
 

@@ -2,12 +2,33 @@
    (po panelu 2026-08-12). Kolory wyłącznie var(--…); wymiary rem/ch;
    tokeny wymiarów ADR-028. */
 
+/* ┌── ZMIERZONE CELOWANO 04.09.2026 (Proactiv, ADR-058) ─────────────┐
+   │ `/pricing`  H1 podstrony 48/500/lh60/ls −1,2 · 30/500/lh36 (390) │
+   │ `/features` H1 W OGÓLE NIE MA — najwyższy nagłówek to `h2` 48/500 │
+   │ lead        16/400/lh24, miara 896, odstęp 16 od nagłówka         │
+   │ miara H1    1024 px                                               │
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ ROLI H1 PODSTRONY NIE DA SIĘ POTWIERDZIĆ Z `/features` — I TO JEST
+   WYNIK, NIE BRAK POMIARU. Zlecenie WWW/083 prosiło o potwierdzenie
+   „pomiarem, nie analogią". Pomiar mówi: `/features` **nie ma żadnego
+   `h1`** (kontrola pozytywna: 36 nagłówków i 1507 elementów widzianych
+   przez sondę na tej samej stronie). Rola potwierdza się więc z
+   `/pricing`, a `/features` dokłada do niej tyle, że jego NAJWYŻSZY
+   nagłówek ma tę samą wielkość 48/500 — czyli ten sam stopień skali,
+   innym znacznikiem.
+
+   ⚠ Brak `h1` na stronie jest po tamtej stronie WADĄ dostępności i nie
+   przenosimy go razem z rozmiarem. Bierzemy skalę, zostawiamy strukturę. */
 .sekcja {
-  padding: 2.5rem 1rem;
+  /* Rytm sekcji progowany — 80 / 160. Poprzednio 40 px na każdym kadrze. */
+  padding-block: var(--wymiar-odstep-sekcji-male);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
 }
 
 .wnetrze {
-  max-width: var(--wymiar-kontener-strony);
+  /* Miara nagłówka sekcji — 1024 px. Poprzednio cały kadr (1440). */
+  max-inline-size: var(--wymiar-miara-naglowka-wzorca);
   margin-inline: auto;
 }
 
@@ -20,14 +41,45 @@
      którego nikt nie czyta, jest gorszy niż jego brak, bo wygląda na
      źródło prawdy. Margines i miara wiersza ZOSTAJĄ: to własności
      układu tego komponentu, nie skali. */
-  margin: 0 0 0.75rem;
-  max-width: 22ch;
+  /* SKALA NAGŁÓWKA SEKCJI, nie hero — tytuł podstrony ma u wzorca
+     48 px przy 1440 i 30 px przy 390, czyli dokładnie tokeny H2.
+     Nadpisanie stoi tu, a nie w regule globalnej, bo dotyczy ROLI
+     (tytuł podstrony), nie poziomu znacznika. */
+  font-size: var(--tekst-h2-male);
+  line-height: var(--interlinia-naglowek);
+  letter-spacing: var(--tracking-naglowek-sekcji-male);
+  /* 16 px — odstęp leadu od nagłówka zmierzony u wzorca. Poprzednio 12. */
+  margin: 0 0 var(--wymiar-odstep-5);
+  /* Miara `22ch` ZDJĘTA — wzorzec daje tytułowi podstrony całą miarę
+     nagłówka (1024 px), a ogranicznik znakowy zależy od kroju. */
   text-wrap: balance;
 }
 
 .zdanie {
   margin: 0;
-  max-width: var(--wymiar-miara-akapitu);
+  /* Miara akapitu SEKCJI — 896 px, zgodna z pomiarem leadu podstrony. */
+  max-inline-size: var(--wymiar-miara-akapitu-wzorca);
   color: var(--kolor-rola-tekst-drugorzedny);
-  font-size: var(--tekst-m);
+  /* 16 px — lead podstrony u wzorca. Poprzednio 20 px. */
+  font-size: var(--tekst-s);
+}
+
+/* ⚠ TEN BLOK MUSI STAĆ NA KOŃCU PLIKU — i to jest defekt, który sam
+   wniosłem i złapałem pomiarem. Pierwsza wersja umieściła go zaraz po
+   `.wnetrze`, czyli PRZED regułą `.naglowek`. Zapytanie medialne nie
+   podnosi swoistości: `.naglowek` w `@media` i `.naglowek` niżej mają
+   tę samą (0,1,0), więc wygrywa PÓŹNIEJSZA W ŹRÓDLE — czyli reguła
+   bazowa, nawet gdy zapytanie pasuje. Zmierzone: H1 podstrony miał
+   30 px przy 1440 zamiast 48. Sama lektura CSS by tego nie pokazała;
+   pokazała liczba z żywej strony. */
+@media (min-width: 48.0625rem) {
+  .sekcja {
+    padding-block: var(--wymiar-odstep-sekcji);
+  }
+
+  .naglowek {
+    font-size: var(--tekst-h2);
+    line-height: var(--interlinia-naglowek-sekcji);
+    letter-spacing: var(--tracking-naglowek-sekcji);
+  }
 }

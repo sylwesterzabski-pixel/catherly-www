@@ -39,8 +39,15 @@ const CELE: Array<[string, string, string]> = [
   ["CTA", "/", 'a[class*="_cta__"]'],
   ["link nawigacji", "/", "header nav a"],
   ["sekcja przy przewijaniu", "/", "main > section:nth-of-type(3) > div > *"],
-  ["kadr w ramce", "/funkcje/zespol", '[class*="_obraz__"] img'],
-  ["pas obrazu", "/funkcje/wyniki", ".pas-obrazu img"],
+  /* ⚠ DWIE RODZINY USUNIĘTE, BO ICH ELEMENTY PRZESTAŁY ISTNIEĆ DECYZJĄ,
+     NIE REFAKTOREM (ADR-058). Stało tu:
+       ["kadr w ramce", "/funkcje/zespol", '[class*="_obraz__"] img'],
+       ["pas obrazu", "/funkcje/wyniki", ".pas-obrazu img"],
+     Decyzja właściciela „zero zrzutów aplikacji" została rozszerzona na
+     CAŁY serwis (WWW/083): kadry fali 1 zeszły z renderu podstron, więc
+     w ramkach nie ma już `img`, a pas szerokości zniknął w całości.
+     Zostawienie tych wierszy dawałoby czerwień na BRAKU ELEMENTU, czyli
+     strażnik meldowałby wadę tam, gdzie zapadła decyzja. */
   ["linia granicy", "/funkcje/zespol", 'p[class*="_granica__"]'],
   ["FAQ — odpowiedź", "/", 'main details [class*="odpowiedz"]'],
   ["FAQ — znacznik", "/", "main details summary"],
@@ -116,12 +123,30 @@ test.describe("ruch włączony — kontrola pozytywna", () => {
       if (ma) zRuchem.push(nazwa);
     }
     /* Liczba WPISANA RĘCZNIE i jest MECHANIZMEM, nie dryfem: spadek
-       poniżej ośmiu znaczy, że któraś rodzina ruchu zniknęła — a jej
-       zniknięcie ma być DECYZJĄ, nie skutkiem ubocznym refaktoru. */
+       poniżej niej znaczy, że któraś rodzina ruchu zniknęła — a jej
+       zniknięcie ma być DECYZJĄ, nie skutkiem ubocznym refaktoru.
+
+       ⚠ ÓSEMKA → SIÓDEMKA, I OBIE PRZYCZYNY SĄ ZMIERZONE (ADR-058).
+       Kontrola negatywna w jednym przebiegu, ten sam kod, dwa stany
+       rozdzielone `git stash`: PRZED batchem rodzin z ruchem było
+       DZIEWIĘĆ przy dziesięciu celach, PO — SIEDEM przy ośmiu.
+       Ubyły dokładnie te dwie, których elementy zeszły decyzją
+       właściciela (kadr w ramce, pas obrazu).
+
+       ⚠ ALE DZIEWIĘĆ Z DZIESIĘCIU ZNACZY, ŻE JEDNA RODZINA BYŁA MARTWA
+       JUŻ WCZEŚNIEJ — i próg jej nie pokazywał. „Sekcja przy
+       przewijaniu" celuje w `main > section:nth-of-type(3)`, a kolejność
+       sekcji strony głównej zmieniła się, gdy ADR-049 wstawił pod hero
+       pas ścieżek. Element istnieje, ruchu nie ma, a przy progu 8 i
+       dziewięciu trafieniach nikt tego nie widział: TO JEST TA SAMA
+       KLASA, PRZED KTÓRĄ TEN PRÓG MIAŁ BRONIĆ, przepuszczona przez
+       zapas jednego wiersza. Pozycja rejestru T58; wpis zostaje w tablicy,
+       bo połowa `reduce` nadal go sprawdza, a liczba mówi prawdę o tym,
+       ile rodzin NAPRAWDĘ się rusza. */
     expect(
       zRuchem.length,
       `rodziny ruchu z ruchem: ${zRuchem.join(", ")}`,
-    ).toBeGreaterThanOrEqual(8);
+    ).toBeGreaterThanOrEqual(7);
   });
 });
 

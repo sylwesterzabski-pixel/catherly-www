@@ -47,7 +47,6 @@ export default async function StronaFunkcjeZespol({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("FunkcjeZespol");
-  const tObrazy = await getTranslations("ObrazyFala1");
   const tNawigacja = await getTranslations("Nawigacja");
 
   return (
@@ -72,26 +71,24 @@ export default async function StronaFunkcjeZespol({ params }: Props) {
             kotwica,
           }))}
         />
-        {/* F3–F7 — 6 modułów DZIAŁA; zebra jak K4 (moduły nieparzyste
-            obraz po prawej, parzyste po lewej). */}
-        {MODULY.map(({ klucz, kotwica }, indeks) => (
+        {/* F3–F7 — 6 modułów DZIAŁA. Zebra ZDJĘTA (ADR-058): wszystkie
+            cztery bloki feature wzorca mają tekst po lewej na każdym
+            kadrze — pomiar, nie przyzwyczajenie. */}
+        {MODULY.map(({ klucz, kotwica }) => (
           <ModulFunkcji
             key={kotwica}
             naglowek={t(`${klucz}_nazwa`)}
             idNaglowka={kotwica}
             poCo={t(`${klucz}_poco`)}
             granica={t(`${klucz}_nie`)}
-            obrazPoLewej={indeks % 2 === 1}
-            /* Para kadrów fali 1: moduł 1 i moduł 4. Rozstawione, żeby
-               nie stały obok siebie; pierwszy ładuje się zachłannie
-               (zlecenie WWW/045), reszta leniwie. */
-            obraz={
-              indeks === 0
-                ? { zrodlo: "/obrazy/fala1/zespol-A-4x5.avif", alt: tObrazy("zespolA"), szerokosc: 1600, wysokosc: 2133, pierwszy: true }
-                : indeks === 3
-                  ? { zrodlo: "/obrazy/fala1/zespol-B-4x5.avif", alt: tObrazy("zespolB"), szerokosc: 1600, wysokosc: 2133 }
-                  : undefined
-            }
+            /* ⚠ KADRY FALI 1 ZDJĘTE Z RENDERU — decyzja właściciela
+               rozszerzona delegacją (WWW/083): „zero zrzutów aplikacji"
+               obejmuje CAŁY serwis, nie samą główną. Pliki ZOSTAJĄ
+               w `public/obrazy/fala1/` nietknięte, klucze alt ZOSTAJĄ
+               w i18n — schodzi wyłącznie osadzenie. W miejsce kadru
+               wchodzi SLOT-FOTO mechaniką z ADR-052: ramka trzyma
+               rezerwę CLS przez `aspect-ratio`, jest `aria-hidden`
+               i czeka na fotografię, nie na zrzut. */
           />
         ))}
         {/* F8 wieloczęściowy — rejestr poz. 11 (brief, Uzupełnienie C):

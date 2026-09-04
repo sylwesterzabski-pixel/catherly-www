@@ -52,7 +52,6 @@ export default async function StronaFunkcjeTresci({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("FunkcjeTresci");
-  const tObrazy = await getTranslations("ObrazyFala1");
   const tNawigacja = await getTranslations("Nawigacja");
 
   return (
@@ -94,24 +93,21 @@ export default async function StronaFunkcjeTresci({ params }: Props) {
         />
         {/* F3–F7 — moduły 2–9 DZIAŁA; zebra jak K4 liczona po modułach
             z obrazem (nieparzyste obraz po prawej). */}
-        {MODULY.slice(1).map(({ klucz, kotwica }, indeks) => (
+        {MODULY.slice(1).map(({ klucz, kotwica }) => (
           <ModulFunkcji
             key={kotwica}
             naglowek={t(`${klucz}_nazwa`)}
             idNaglowka={kotwica}
             poCo={t(`${klucz}_poco`)}
             granica={t(`${klucz}_nie`)}
-            obrazPoLewej={indeks % 2 === 1}
-            /* Para kadrów fali 1: moduł 1 i moduł 4. Rozstawione, żeby
-               nie stały obok siebie; pierwszy ładuje się zachłannie
-               (zlecenie WWW/045), reszta leniwie. */
-            obraz={
-              indeks === 0
-                ? { zrodlo: "/obrazy/fala1/tresci-A-4x5.avif", alt: tObrazy("tresciA"), szerokosc: 1600, wysokosc: 2133, pierwszy: true }
-                : indeks === 3
-                  ? { zrodlo: "/obrazy/fala1/tresci-B-4x5.avif", alt: tObrazy("tresciB"), szerokosc: 1600, wysokosc: 2133 }
-                  : undefined
-            }
+            /* ⚠ KADRY FALI 1 ZDJĘTE Z RENDERU — decyzja właściciela
+               rozszerzona delegacją (WWW/083): „zero zrzutów aplikacji"
+               obejmuje CAŁY serwis, nie samą główną. Pliki ZOSTAJĄ
+               w `public/obrazy/fala1/` nietknięte, klucze alt ZOSTAJĄ
+               w i18n — schodzi wyłącznie osadzenie. W miejsce kadru
+               wchodzi SLOT-FOTO mechaniką z ADR-052: ramka trzyma
+               rezerwę CLS przez `aspect-ratio`, jest `aria-hidden`
+               i czeka na fotografię, nie na zrzut. */
           />
         ))}
         {/* Sekcja kierunku AI — po ostatnim module, przed F8; H2

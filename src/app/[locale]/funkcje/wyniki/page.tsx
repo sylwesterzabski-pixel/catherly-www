@@ -47,7 +47,6 @@ export default async function StronaFunkcjeWyniki({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("FunkcjeWyniki");
-  const tObrazy = await getTranslations("ObrazyFala1");
   const tNawigacja = await getTranslations("Nawigacja");
 
   return (
@@ -74,41 +73,34 @@ export default async function StronaFunkcjeWyniki({ params }: Props) {
         />
         {/* F3–F7 — 6 modułów DZIAŁA; zebra jak K4 (moduły nieparzyste
             obraz po prawej, parzyste po lewej). */}
-        {MODULY.map(({ klucz, kotwica }, indeks) => (
+        {MODULY.map(({ klucz, kotwica }) => (
           <ModulFunkcji
             key={kotwica}
             naglowek={t(`${klucz}_nazwa`)}
             idNaglowka={kotwica}
             poCo={t(`${klucz}_poco`)}
             granica={t(`${klucz}_nie`)}
-            obrazPoLewej={indeks % 2 === 1}
             /* Kadr A w module 1; kadr B tej podstrony idzie PASEM
                szerokości niżej, nie w ramce modułu (WWW/045). */
-            obraz={
-              indeks === 0
-                ? { zrodlo: "/obrazy/fala1/wyniki-A-4x5.avif", alt: tObrazy("wynikiA"), szerokosc: 1600, wysokosc: 2133, pierwszy: true }
-                : undefined
-            }
+            /* ⚠ KADRY FALI 1 ZDJĘTE Z RENDERU — decyzja właściciela
+               rozszerzona delegacją (WWW/083): „zero zrzutów aplikacji"
+               obejmuje CAŁY serwis, nie samą główną. Pliki ZOSTAJĄ
+               w `public/obrazy/fala1/` nietknięte, klucze alt ZOSTAJĄ
+               w i18n — schodzi wyłącznie osadzenie. W miejsce kadru
+               wchodzi SLOT-FOTO mechaniką z ADR-052: ramka trzyma
+               rezerwę CLS przez `aspect-ratio`, jest `aria-hidden`
+               i czeka na fotografię, nie na zrzut. */
           />
         ))}
-        {/* PAS SZEROKOŚCI — kadr B tej podstrony (WWW/045).
-            <figure> bez <figcaption>: kadr jest DEKORACJĄ (ADR-011),
-            więc nie podpisuje treści i nie niesie informacji, której nie
-            ma w tekście. `alt` opisuje scenę, bo obraz jest widoczny
-            i czytnik ma prawo wiedzieć, co pokazuje — to nie to samo, co
-            aria-hidden na pustej ramce. */}
-        <figure className="pas-obrazu">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/obrazy/fala1/wyniki-B-21x9.avif"
-            alt={tObrazy("wynikiB")}
-            width={1920}
-            height={1080}
-            loading="lazy"
-            decoding="async"
-            fetchPriority="low"
-          />
-        </figure>
+        {/* ⚠ PAS SZEROKOŚCI ZDJĘTY — ta sama decyzja co przy kadrach
+            w modułach (WWW/083): „zero zrzutów aplikacji" obejmuje cały
+            serwis. Kadr `wyniki-B-21x9.avif` ZOSTAJE w repozytorium,
+            klucz `wynikiB` ZOSTAJE w i18n — schodzi wyłącznie osadzenie.
+            Slotu w to miejsce NIE wstawiam: pas był dekoracją pełnej
+            szerokości, a nie ramką z rezerwą, więc pusta ramka udawałaby
+            miejsce na coś, o czym nikt nie zdecydował.
+            Stało tu: <figure className="pas-obrazu"> z <img> 1920×1080,
+            loading lazy, fetchPriority low, alt z klucza `wynikiB`. */}
         {/* F8 dwuzdaniowe — rejestr poz. 11 (brief, Uzupełnienie C):
             zdanie Growth VERBATIM, celowo BEZ nazwy „Puls zespołu". */}
         <PlanJednymWierszem

@@ -371,6 +371,60 @@ rozstrzygnięcie 5).
    u wzorca (domyślna przeglądarki, dotyczy CAŁEGO serwisu), interlinia
    leadu 1,8 wobec 1,5, oraz trzy kolumny planów przy 810 (karta 246 px
    szerokości; wzorzec schodzi do jednej poniżej 1024).
+   **WWW/083 wykonane 2026-09-04** — push `92fa1fe` + **ADR-058**.
+   `/funkcje` i cztery podstrony filarowe w anatomii wzorca.
+   ⚠ **ROLI H1 PODSTRONY NIE DA SIĘ POTWIERDZIĆ Z `/features` — BO TA
+   STRONA NIE MA ŻADNEGO `h1`.** Kontrola pozytywna: 1507 elementów,
+   17 linków, 36 nagłówków widzianych przez sondę. Najwyższy nagłówek to
+   `h2` 48/500 — ten sam stopień skali, inny znacznik. Rola potwierdza
+   się z `/pricing`; brak `h1` jest po tamtej stronie WADĄ dostępności
+   i go nie przenosimy. **Bierzemy skalę, zostawiamy strukturę.**
+   ⚠ **DEFEKT WŁASNY ZŁAPANY POMIAREM, NIE LEKTURĄ: blok `@media`
+   postawiony PRZED regułą bazową nie działa.** Zapytanie medialne NIE
+   podnosi swoistości — `.naglowek` w `@media` i `.naglowek` niżej mają
+   tę samą (0,1,0), więc wygrywa PÓŹNIEJSZA W ŹRÓDLE. Zmierzone: H1
+   podstrony 30 px przy 1440 zamiast 48. Blok stoi teraz na końcu pliku.
+   **BLOK MODUŁU = BLOK FEATURE, potwierdzony MIĘDZY STRONAMI:** pomiar
+   `/features` dał te same liczby co główna (1200 × 559, gap 32, kolumny
+   378,656/378,672/378,672, tekst 379 / media 789). Zmierzone u nas:
+   wnętrze 1200 @ x120, tekst 379 | slot 789, tekst po lewej.
+   Zebra zdjęta (ADR-055 zapisał, że moduły to „inny batch" — to ten).
+   **KADRY FALI 1 ZESZŁY Z RENDERU CAŁEGO SERWISU** (decyzja właściciela
+   rozszerzona delegacją): pliki w `public/obrazy/fala1/` i klucze alt
+   w i18n NIETKNIĘTE, `<img>` w `main` na czterech podstronach = **0**.
+   Pas szerokości na `/funkcje/wyniki` zdjęty W CAŁOŚCI i BEZ slotu
+   w zamian — był dekoracją pełnej szerokości, nie ramką z rezerwą, więc
+   pusty slot udawałby miejsce na coś, o czym nikt nie zdecydował.
+   **KORPUS MODUŁÓW W STREFIE JASNEJ** (aneks mapy ADR-050): rama
+   decyzyjna ciemna, korpus jasny, jak na głównej. Kontrasty: granica
+   „Czego NIE robi" 6,56:1 · obrys slotu × wypełnienie 1,59 · × tło 1,42
+   · plama 1,12 (rozdziela kreska) · H1 × tło 20,07.
+   ⚠ **STRAŻNIK RUCHU UPADŁ ZASADNIE — I ODSŁONIŁ STARSZĄ WADĘ.** Zdjęcie
+   kadrów zabrało dwie rodziny ruchu i próg „co najmniej osiem" zapalił
+   się; to jest strażnik robiący to, po co powstał. Kontrola negatywna
+   w jednym przebiegu (`git stash`, ten sam kod sondy): PRZED **9 z 10**
+   rodzin, PO **7 z 8**. **Dziewięć z dziesięciu znaczy, że jedna rodzina
+   była martwa JUŻ WCZEŚNIEJ:** „sekcja przy przewijaniu" celuje
+   w `main > section:nth-of-type(3)`, a kolejność sekcji zmieniła się,
+   gdy ADR-049 wstawił pod hero pas ścieżek. Element ISTNIEJE, więc
+   połowa `reduce` działa; nie działa kontrola pozytywna, bo martwy
+   wiersz **mieścił się w zapasie progu**. **KLASA: ta sama, przed którą
+   ten próg miał bronić, przepuszczona przez jego własny margines.
+   Wniosek: ZAPAS W PROGU LICZBOWYM POTRAFI UKRYĆ UBYTEK, KTÓREGO TEN
+   PRÓG PILNUJE.** Pozycja **T58**, trzy drogi; próg zszedł 8 → 7 z pełnym
+   wyjaśnieniem w kodzie.
+   ⚠ **WEJŚCIA Z GŁÓWNEJ: SZEŚĆ NA SZEŚĆ ląduje sensownie** — a H1 każdej
+   podstrony filarowej to DOKŁADNIE zdanie stojące przy filarze na
+   głównej. Ciągłość drogi R2 potwierdzona pomiarem, nie założeniem.
+   **SZEŚĆ NOWYCH ASERCJI W TRZECH PROJEKTACH.** Asercja „zero zrzutów"
+   niesie obok siebie dowód, że treść się wyrenderowała (bez tego zero
+   spełniłaby też strona pusta); asercja granic liczy TYLE GRANIC, ILE
+   MODUŁÓW — „co najmniej jedna" przepuściłaby zgubienie dziewięciu
+   z dziesięciu.
+   Pomiary: e2e **1033 passed / 8 skipped / 0 failed** (3 projekty) ·
+   axe 90 · LCP `/funkcje` mediana 36 ms, `/funkcje/pozyskiwanie` 28 ms,
+   element `h1` na obu · ESLint bez nowych ostrzeżeń (sprzątnięte
+   `tObrazy` i `indeks` po zdjęciu kadrów).
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.
@@ -2600,7 +2654,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje **T1–T57** (zakres
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje **T1–T58** (zakres
 przeliczony 2026-09-04 przy dopisaniu T56 — poprzedni zapis „T1–T49” był
 nieaktualny od T50 i starzał się W MIEJSCU, bez upływu czasu i bez tranzytu).
 Te, które
