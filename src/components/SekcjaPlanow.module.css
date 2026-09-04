@@ -6,12 +6,43 @@
    zero martwej kontrolki). ŚWIADOMY BRAK aria-live (handoff).
    Kontrasty par powierzchni — komentarze w tokenach (W4). */
 
+/* ┌── ZMIERZONE CELOWANO 04.09.2026 (Proactiv /pricing, ADR-057) ─────┐
+   │ kolumny    3 od progu · 1 poniżej · slot 300 px, odstęp 16 px     │
+   │ nazwa planu  16 px / 400 · cena 18 px / 500 / lh 28               │
+   │ opis planu   14 px / 400 / lh 20 · wiersz listy 16 px / 400       │
+   │ CHROM KARTY  BRAK — zero tła, zero obrysu, zero promienia,        │
+   │              zero wypełnienia. Trzy gołe kolumny tekstu.          │
+   │ przełącznik okresu  NIE ISTNIEJE                                  │
+   │ tabela porównawcza  NIE ISTNIEJE (0 `table`, 0 komórek ARIA)      │
+   │ FAQ na /pricing     NIE ISTNIEJE (0 pytań; na głównej ma 10)      │
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ SPROSTOWANIE WŁASNEGO ADR-056 — CHROM KARTY PLANU POCHODZI Z INNEJ
+   RODZINY. Batch A5 nadał kartom planu wypełnienie 32 px, promień 12
+   i obrys, biorąc te liczby z próbki „21 kart o promieniu 12 i
+   wypełnieniu 32". Pomiar celowany `/pricing` pokazuje, że karty CENNIKA
+   do tamtej próbki NIE NALEŻĄ: mają zerowe tło, zerowy obrys, zerowy
+   promień i zerowe wypełnienie. Próbka z A5 obejmowała karty funkcji
+   i opinii — czyli znowu „dominanta zbioru, nie roli", ta sama klasa,
+   którą ADR-053 rozdzielił przy mierze akapitu.
+
+   ⚠ CHROM MIMO TO ZOSTAJE — I JEST TO DECYZJA, NIE POMIAR. Zlecenie
+   WWW/082 pkt b mówi wprost: karty planów na podstronie to REUŻYCIE
+   anatomii z ADR-056, zero dywergencji ze skrótem. Rozjazd zgłaszam
+   liczbami zamiast rozstrzygać po cichu: gdyby chrom miał zniknąć, musi
+   zniknąć w OBU miejscach naraz, bo inaczej skrót i podstrona przestaną
+   pokazywać tę samą rzecz. Z pomiaru bierzemy natomiast TYPOGRAFIĘ
+   i ODSTĘPY, które do rodziny cennika należą. */
 .sekcja {
-  padding: 2.5rem 1rem;
+  /* Rytm sekcji progowany — 80 / 160. Poprzednio 40 px na każdym kadrze. */
+  padding-block: var(--wymiar-odstep-sekcji-male);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
 }
 
 .wnetrze {
-  max-width: var(--wymiar-kontener-strony);
+  /* Kontener treści wzorca — 1280 px, jak siatki kart na głównej.
+     Poprzednio `--wymiar-kontener-strony` = 1440 px, czyli cały kadr. */
+  max-inline-size: var(--wymiar-kontener-waski);
   margin-inline: auto;
 }
 
@@ -21,7 +52,17 @@
 
 @supports selector(:has(*)) {
   .przelacznik {
-    border: 0.0625rem solid var(--kolor-rola-kreska);
+    /* ⚠ OBRYS PODNIESIONY Z `kreska` NA `kreska-mocna` — WCAG 1.4.11.
+       Przełącznik okresu jest KONTROLKĄ, więc jego granica podlega
+       progowi 3:1. Zmierzone przed zmianą: `kreska` na tle strony daje
+       1,74:1, czyli poniżej progu — a `kontrast-stanow` tego nie widział,
+       bo mierzy stany interaktywne tekstu, nie granice kontenerów.
+       `kreska-mocna` jest w tym systemie rolą dokładnie do tego („obrys
+       pola formularza, próg 3:1") i daje tu 11,71:1.
+       ⚠ Wzorzec przełącznika NIE MA (0 kontrolek okresu na `/pricing`
+       przy 7 znalezionych kontrolkach razem), więc nie ma stamtąd czego
+       przenieść — to naprawa z normy, nie z pomiaru wzorca. */
+    border: 0.0625rem solid var(--kolor-rola-kreska-mocna);
     /* 2rem = literał zgłoszony do ADR skali promieni (handoff E) */
     border-radius: var(--wymiar-promien-pigulki);
     padding: 0.25rem;
@@ -74,13 +115,16 @@
 
 .karty {
   display: grid;
-  gap: 1.5rem;
-  margin-block-start: 1.5rem;
+  /* 40 px poniżej progu, 16 od progu — ta sama para co w skrócie cennika
+     i w siatce kart funkcji. Poprzednio 24 px na każdym kadrze. */
+  gap: var(--wymiar-odstep-8);
+  margin-block-start: var(--wymiar-odstep-7);
 }
 
 @media (min-width: 48rem) {
   .karty {
     grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--wymiar-odstep-5);
   }
 }
 
@@ -88,21 +132,33 @@
 .karta {
   background: var(--kolor-rola-powierzchnia);
   border: 0.0625rem solid var(--kolor-rola-kreska);
-  border-radius: var(--wymiar-promien);
-  padding: 1.5rem;
+  /* 12 px i 32 px — reużycie anatomii ze skrótu cennika (ADR-056),
+     zero dywergencji. Poprzednio 8 px i 24 px. */
+  border-radius: var(--wymiar-promien-sredni);
+  padding: var(--wymiar-odstep-7);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--wymiar-odstep-5);
 }
 
 .karta h2 {
-  font-size: var(--tekst-m);
+  /* 16 px / 600 — nazwa planu jak w skrócie cennika. Poprzednio 20 px
+     przy wadze dziedziczonej z reguły globalnej nagłówków.
+     ⚠ Rozmiar MUSI stać tutaj: bez niego `h2` bierze skalę nagłówka
+     sekcji (48 px od progu), co w karcie planu jest bez sensu. */
+  font-size: var(--tekst-s);
+  font-weight: var(--waga-wyrozniona);
+  line-height: var(--interlinia-naglowek-male);
+  letter-spacing: normal;
   margin: 0;
 }
 
 .cena {
-  font-size: var(--tekst-l);
-  font-weight: 700;
+  /* 18 px / 500 / lh 28 — cena u wzorca, ta sama liczba co w skrócie
+     cennika (ADR-056). Poprzednio 25 px / 700. */
+  font-size: var(--tekst-lead);
+  font-weight: var(--waga-etykieta);
+  line-height: var(--interlinia-lead);
   margin: 0;
 }
 

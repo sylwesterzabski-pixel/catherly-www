@@ -314,6 +314,63 @@ rozstrzygnięcie 5).
    ADR-051 (S10/S11/S12 zamiast S11/S12/S13) — nazwy jednoznaczne, więc
    wykonanie niezagrożone; odnotowane, żeby nie liczyć od przesuniętej
    podstawy w następnym zleceniu.
+   **WWW/082 wykonane 2026-09-04** — push `e1596c6` + **ADR-057**.
+   Podstrona `/cennik` w anatomii wzorca; pomiar celowany na `/pricing`
+   (Proactiv jest wielostronicowy: `/`, `/features`, `/pricing`, `/blog`,
+   `/contact`, `/register`).
+   ⚠ **H1 PODSTRONY MA ROZMIAR NAGŁÓWKA SEKCJI, NIE HERO** — 48/500 przy
+   1440 i 30/500 przy 390, czyli dokładnie skala H2 z ADR-053. Wzorzec
+   rozdziela DWIE role `h1`: hero strony i tytuł podstrony. U nas obie
+   brały skalę globalną (96/80/48), więc tytuł `/cennik` był na 1440
+   DWUKROTNIE większy niż u wzorca. Nadpisanie weszło w module podstrony,
+   nie w regule globalnej — dotyczy roli, nie poziomu znacznika.
+   ⚠ **SPROSTOWANIE ADR-056: CHROM KARTY PLANU POCHODZI Z INNEJ RODZINY.**
+   Karty cennika wzorca to TRZY GOŁE KOLUMNY tekstu — zero tła, zero
+   obrysu, zero promienia, zero wypełnienia. Próbka „21 kart o promieniu
+   12 i wypełnieniu 32", z której A5 wziął chrom, obejmowała karty FUNKCJI
+   i OPINII. Znowu „dominanta zbioru, nie roli" — ta sama klasa, którą
+   ADR-053 rozdzielił przy mierze akapitu. **Chrom ZOSTAJE decyzją**
+   (zlecenie: „zero dywergencji ze skrótem"); gdyby miał zniknąć, musi
+   zniknąć w OBU miejscach naraz.
+   ⚠ **PRZEŁĄCZNIK OKRESU MIAŁ GRANICĘ 1,74:1 PRZY PROGU 3:1** (WCAG
+   1.4.11). `kontrast-stanow` tego nie widział, bo mierzy stany
+   interaktywne TEKSTU, nie granice kontenerów — defekt nie przeszedł
+   strażnikowi, tylko **NIE MIAŁ STRAŻNIKA**. Naprawiony na 11,71:1
+   (`kreska-mocna`) i opatrzony testem z dowodem mutacyjnym.
+   Klawiatura zmierzona naciśnięciami: `Tab` dochodzi do radia w 7
+   krokach, `→` przełącza zaznaczenie 0 → 1, fokus zostaje, obwódka
+   3 px biała, cena roczna się odsłania.
+   ⚠ **TABELI PORÓWNAWCZEJ I FAQ WZORZEC NA `/pricing` NIE MA** — 0
+   `table`, 0 komórek ARIA, 0 pytań, przy 1599 elementach i 10 pytaniach
+   znalezionych tą samą sondą na jego GŁÓWNEJ (kontrola pozytywna między
+   stronami). Nasze mechaniki zostają.
+   ⚠ **WERDYKT DLA KADRU WĄSKIEGO WYDANY POMIAREM, NIE OKIEM:** strona
+   NIE panoramuje ani przy 390, ani przy 320 (`scrollWidth` = `innerWidth`);
+   tabela przewija się wewnątrz regionu z `tabindex="0"` i `role="region"`,
+   pierwsza kolumna `position: sticky`, `caption` obecny, najmniejsze
+   pismo 14 px.
+   ⚠ Premisa zlecenia „tabela 12 wierszy" NIE ZACHODZI — zmierzone
+   **8 wierszy × 4 kolumny**.
+   **TRZY NOWE ASERCJE OD RAZU W TRZECH PROJEKTACH** (nauka z T57): skala
+   H1 podstrony · zero dywergencji karty planu ze skrótem · granica
+   przełącznika ≥3:1. „Zero dywergencji" dowiedzione **asercją MIĘDZY
+   TRASAMI** — obie karty mierzone tym samym kodem w tym samym przebiegu,
+   bo porównanie z liczbą z ADR-a sprawdzałoby pamięć, nie zgodność.
+   Mutacje: promień `/cennik` → 8 px zapala czerwień w trzech projektach;
+   obrys przełącznika → `kreska` daje „1.74:1 przy progu 3:1".
+   ⚠ **WEJŚCIA Z GŁÓWNEJ ZMIERZONE PRZEJŚCIEM:** `/cennik` z nawigacji
+   i ze skrótu (ekran 11,17) lądują na górze przy H1; kotwica podróży
+   STRUKTURA (`/dla-kogo#prowadzisz-strukture`) trafia w cel stojący
+   **84 px od góry**, czyli dokładnie na wartości tokena `pas-naglowka` —
+   `scroll-padding` działa co do piksela. Kotwic na `/cennik` nie ma i nie
+   są potrzebne.
+   ⚠ **CAŁY BATCH MIERZONY I TESTOWANY NA PORCIE 3100**, bo na 3000 stoi
+   serwer deweloperski właściciela (zakaz 7). Posłużyła zmienna `WWW_BAZA`
+   z konfiguracji Playwrighta — pierwszy raz, kiedy się przydała.
+   ⚠ Różnice ZASTANE, zgłoszone bez zmiany: waga nagłówków 700 wobec 500
+   u wzorca (domyślna przeglądarki, dotyczy CAŁEGO serwisu), interlinia
+   leadu 1,8 wobec 1,5, oraz trzy kolumny planów przy 810 (karta 246 px
+   szerokości; wzorzec schodzi do jednej poniżej 1024).
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.

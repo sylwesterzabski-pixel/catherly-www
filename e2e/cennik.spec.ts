@@ -430,3 +430,112 @@ test("treść cennika: messages znak w znak z content/*/cennik.md", () => {
     }
   }
 });
+
+/**
+ * ANATOMIA /cennik (ADR-057, zlecenie `WWW/082`).
+ *
+ * ⚠ TE ASERCJE WCHODZĄ OD RAZU W TRZECH PROJEKTACH — mobile-390,
+ * desktop (1280) i desktop-wide (1440). Pozycja T57 pokazała, po co:
+ * do 04.09 reguły progu 90rem nie były pilnowane przez ŻADEN przebieg,
+ * a mutacja w tym bloku milczała. Nowe asercje nie powtarzają tamtego
+ * błędu — piszę je z myślą o trzech kadrach od pierwszego dnia.
+ */
+test("anatomia /cennik: H1 podstrony bierze skalę NAGŁÓWKA SEKCJI, nie hero", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/cennik");
+  const h1 = page.locator("h1").first();
+  await expect(h1, "H1 podstrony istnieje").toBeVisible();
+  const zmierzone = await h1.evaluate((el) => {
+    const s = getComputedStyle(el);
+    const korzen = getComputedStyle(document.documentElement);
+    return {
+      rozmiar: Math.round(parseFloat(s.fontSize)),
+      h2: Math.round(parseFloat(korzen.getPropertyValue("--tekst-h2")) * 16),
+      h2Male: Math.round(parseFloat(korzen.getPropertyValue("--tekst-h2-male")) * 16),
+      h1Hero: Math.round(parseFloat(korzen.getPropertyValue("--tekst-h1")) * 16),
+    };
+  });
+  /* ⚠ PORÓWNANIE Z TOKENEM, NIE Z LICZBĄ WPISANĄ TUTAJ. Gdyby stała tu
+     liczba, zmiana skali w tokenach przechodziłaby bokiem albo zapalała
+     test bez powodu. Przedmiotem asercji jest RELACJA: tytuł podstrony
+     ma rozmiar nagłówka sekcji, a NIE rozmiar hero — to jest ustalenie
+     z pomiaru wzorca (`/pricing`: 48 px przy hero 96 px). */
+  const oczekiwany =
+    testInfo.project.name === "mobile-390" ? zmierzone.h2Male : zmierzone.h2;
+  expect(
+    zmierzone.rozmiar,
+    `${testInfo.project.name}: H1 podstrony = skala H2 (${oczekiwany} px), nie hero (${zmierzone.h1Hero} px)`,
+  ).toBe(oczekiwany);
+  expect(
+    zmierzone.rozmiar,
+    `${testInfo.project.name}: H1 podstrony NIE bierze skali hero`,
+  ).not.toBe(zmierzone.h1Hero);
+});
+
+test("anatomia /cennik: karta planu ZERO DYWERGENCJI z kartą skrótu na głównej", async ({
+  page,
+}, testInfo) => {
+  /* ⚠ ASERCJA MIĘDZY DWIEMA TRASAMI W JEDNYM PRZEBIEGU. Zlecenie żąda
+     „zero dywergencji ze skrótem"; zdanie takie jest sprawdzalne tylko
+     wtedy, gdy obie karty mierzy się TYM SAMYM kodem, na tym samym
+     kadrze, w tej samej chwili. Porównanie z liczbą przepisaną z ADR-a
+     sprawdzałoby pamięć, nie zgodność. */
+  const anatomia = (sel: string) =>
+    page.locator(sel).first().evaluate((el) => {
+      const s = getComputedStyle(el);
+      return {
+        wypelnienie: s.paddingTop,
+        promien: s.borderTopLeftRadius,
+        obrys: `${s.borderTopWidth} ${s.borderTopColor}`,
+      };
+    });
+
+  await page.goto("/cennik");
+  const podstrona = await anatomia('[class*="SekcjaPlanow_karta__"]');
+  await page.goto("/");
+  const skrot = await anatomia('[class*="CennikSkrot_plan__"]');
+
+  expect(
+    podstrona,
+    `${testInfo.project.name}: anatomia karty planu identyczna na /cennik i na głównej`,
+  ).toEqual(skrot);
+});
+
+test("anatomia /cennik: granica przełącznika okresu ≥ 3:1 (WCAG 1.4.11)", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/cennik");
+  const przelacznik = page.locator('[class*="SekcjaPlanow_przelacznik__"]').first();
+  await expect(przelacznik, "przełącznik istnieje").toBeAttached();
+
+  const pomiar = await przelacznik.evaluate((el) => {
+    const s = getComputedStyle(el);
+    /* tło liczone od najbliższego malowanego przodka — ta sama poprawka,
+       którą ADR-054 wprowadził w strażniku rozdziału kart. */
+    let p: HTMLElement | null = el.parentElement;
+    let tlo = getComputedStyle(document.body).backgroundColor;
+    while (p) {
+      const t = getComputedStyle(p).backgroundColor;
+      if (t && t !== "rgba(0, 0, 0, 0)" && t !== "transparent") { tlo = t; break; }
+      p = p.parentElement;
+    }
+    return { obrys: s.borderTopColor, tlo, szerokoscObrysu: parseFloat(s.borderTopWidth) };
+  });
+
+  const kanal = (v: number) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+  const lum = (s: string) => {
+    const n = (s.match(/[\d.]+/g) ?? []).slice(0, 3).map(Number);
+    const [R, G, B] = n.map((x) => kanal(x / 255));
+    return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+  };
+  const a = lum(pomiar.obrys), b = lum(pomiar.tlo);
+  const kontrast = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+
+  expect(pomiar.szerokoscObrysu, "przełącznik MA granicę").toBeGreaterThan(0);
+  expect(
+    +kontrast.toFixed(2),
+    `${testInfo.project.name}: granica przełącznika ${kontrast.toFixed(2)}:1 przy progu 3:1 — ` +
+      `kontrolka podlega WCAG 1.4.11 (obrys ${pomiar.obrys} na ${pomiar.tlo})`,
+  ).toBeGreaterThanOrEqual(3);
+});
