@@ -20,7 +20,6 @@ type Props = {
   konkrety: readonly [string, string, string];
   /** Zebra desktopu (handoff: filary 2 i 4 mają obraz po lewej);
    *  na 390 px zawsze tekst nad obrazem (order tylko ≥48rem). */
-  obrazPoLewej?: boolean;
   /** R2 (ADR-049) — droga z filaru na jego podstronę. Etykieta i adres
    *  składane przez stronę z ISTNIEJĄCYCH kluczy `FunkcjeIndeks.blokNLink`
    *  („Zobacz wszystko o pozyskiwaniu" itd.), więc filar nie pisze
@@ -84,17 +83,20 @@ export function Filar({
   idNaglowka,
   korzysc,
   konkrety,
-  obrazPoLewej = false,
   obraz,
   link,
 }: Props) {
-  const klasyUkladu = obrazPoLewej
-    ? `${styles.uklad} ${styles.obrazPoLewej}`
-    : styles.uklad;
   return (
     <section className={styles.filar} aria-labelledby={idNaglowka} data-ton="jasny">
       <div className={styles.wnetrze}>
-        <div className={klasyUkladu}>
+        {/* ⚠ NAPRZEMIENNOŚCI NIE MA — POMIAR, NIE PRZYZWYCZAJENIE
+            (ADR-055). Do 04.09 filary szły zebrą L-P-L-P i prop
+            `obrazPoLewej` przestawiał kolejność kolumn. Pomiar celowany
+            wzorca pokazał, że WSZYSTKIE cztery jego bloki mają tekst po
+            lewej, na wszystkich kadrach. Prop zniknął razem z regułami
+            CSS: zostawiony, nie robiłby nic i byłby dokładnie tą martwą
+            deklaracją, którą rejestr opisuje jako T56. */}
+        <div className={styles.uklad}>
           <div className={styles.tekst}>
             <h2 id={idNaglowka} className={styles.naglowek}>
               {naglowek}

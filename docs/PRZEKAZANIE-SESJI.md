@@ -208,6 +208,56 @@ rozstrzygnięcie 5).
    przebiegów daje **medianę 36 ms** (36 · 44 · 36 · 52 · 36), element
    bez zmian. Reguła „jedna wartość z rozrzutem nie ustala niczego"
    zadziałała tu pierwszy raz na liczbę, która wyglądała na złą wiadomość.
+   **WWW/080 wykonane 2026-09-04** — push `20bbc20` (CI: patrz zwrotka) +
+   **ADR-055**. Siatka kart **2 × 3** (decyzja koordynatora: pełne rzędy
+   ważniejsze niż liczba kolumn; karta 416 px z rachunku, rzędy [3, 3])
+   oraz batch A4: filary w anatomii wzorca. Kontener **1200 zamknięty**,
+   wcięcie 40, proporcja **1 : 2**, odstęp kolumn 32/16, odstęp między
+   filarami 320/80. Zmierzone po zmianie **identyczne co do cyfry**
+   z wzorcem (tekst 379 @ x120, media 789 @ x531).
+   ⚠ **NAPRZEMIENNOŚCI WZORZEC NIE STOSUJE** — 4 z 4 bloków mają tekst po
+   lewej na każdym kadrze. Zebra L-P-L-P była naszym przyzwyczajeniem
+   z `WWW/050-FINAL`; usunięta razem z propem i flagami. Zakres: TYLKO
+   `Filar` (główna); `ModulFunkcji` na podstronach zostaje nietknięty.
+   ⚠ **STRAŻNIK ZEBRY PRZEPISANY, NIE USUNIĘTY — I WYSZEDŁ MOCNIEJSZY.**
+   Stara asercja czytała `order` obrazu; nowa czyta POŁOŻENIE. Dowód:
+   kolumny odwrócono `direction: rtl`, czyli mechanizmem, którego stara
+   asercja NIE WIDZIAŁA W OGÓLE — nowa zapaliła się natychmiast.
+   ⚠ **`1fr 2fr` CHYBIA O DZIESIĘĆ PIKSELI.** Wzorzec ma siatkę
+   TRZYKOLUMNOWĄ z odstępem 32, w której media zajmują dwie kolumny RAZEM
+   Z ODSTĘPEM: (1200 − 64)/3 = 378,67, media 789,33. Zapis `1fr 2fr` daje
+   389,33 i 778,67. Pierwsza wersja miała `1fr 2fr` — obalił ją pomiar po
+   zmianie, nie lektura.
+   ⚠ **DUET K3/K4 ZERWANY — koszt, nie skutek uboczny.** Lead filaru idzie
+   na 18/700/28 z pomiaru; kropka zostaje 20 px (literał-mechanizm
+   w `zlozenie.spec.ts`). Dwie rzeczy, które miały mówić jednym głosem,
+   mówią odtąd dwoma. Przywrócenie duetu to jedna linijka `composes`.
+   ⚠ **RAMKA FILARU STRACIŁA MECHANIZM ROZDZIAŁU** — odstęp kolumn zszedł
+   ze 100 na 32/16, a kompozycja zalicza od 30 px; plama w strefie jasnej
+   ma 1,12:1. Strażnik złapał to natychmiast — i **wyłącznie dlatego, że
+   w ADR-054 zaczął liczyć tło od sekcji, a nie od `body`**: przy starym
+   pomiarze plama wychodziła 20,07 i rodzina przeszłaby na fałszywej
+   zieleni. Naprawa z poprzedniego batcha zapracowała na siebie w następnym.
+   ⚠ **DEFEKT WŁASNY: usunięcie zebry zabrało klasę `.tekst`.** CSS Modules
+   eksportuje tylko klasy OBECNE W ARKUSZU; po skasowaniu `.obrazPoLewej
+   .tekst` nazwa zniknęła, `styles.tekst` dało `undefined`, a React POMIJA
+   wtedy atrybut — **`class="undefined"` się nie pojawia, więc w znaczniku
+   nie ma śladu**. Wykryte kontrolą pozytywną na zbudowanym HTML:
+   `Filar_obraz__` jest, `Filar_tekst__` nie ma.
+   ⚠ **T57 — PEŁNY ZESTAW e2e NIE MA KADRU SZEROKIEGO. WYKRYTE MUTACJĄ,
+   KTÓRA NIE ZADZIAŁAŁA.** Wstawiłem `order: 2` do bloku
+   `@media (min-width: 90rem)` spodziewając się czerwieni — suita dała
+   18 passed. Ta sama mutacja w bloku 48,0625rem zapaliła strażnika
+   natychmiast. Odczyt konfiguracji: `desktop` bierze `devices["Desktop
+   Chrome"]`, czyli **1280 × 720**, a nasz górny próg to **1440** — żaden
+   przebieg nigdy nie wchodzi w blok 90rem. **Milcząca mutacja jest
+   sygnałem o ZASIĘGU POMIARU, nie o strażniku.** Bez dowodu bramkowego
+   zostają: trzykolumnowa siatka kart, proporcja 1 : 2 filaru i każda
+   przyszła reguła tego progu. Nie naprawiam (zakaz 8) — trzeci projekt to
+   decyzja o koszcie bramki; trzy drogi opisane w T57.
+   ⚠ **PODRÓŻE: strona SKRÓCIŁA się o 251 px** (13,26 → 12,97 ekranu),
+   czyli batch odzyskał blisko połowę przyrostu z A3. Największa luka
+   3,85 → 3,89 — praktycznie bez zmian.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.
@@ -2437,7 +2487,7 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje **T1–T56** (zakres
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje **T1–T57** (zakres
 przeliczony 2026-09-04 przy dopisaniu T56 — poprzedni zapis „T1–T49” był
 nieaktualny od T50 i starzał się W MIEJSCU, bez upływu czasu i bez tranzytu).
 Te, które

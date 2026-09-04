@@ -35,10 +35,10 @@ import { OSADZENIE_NA_GLOWNEJ, zrzutFilaru } from "@/obrazy/zrzuty";
    miejsce do podmiany. `sciezka` to adres podstrony; kolejność filarów
    i kolejność bloków indeksu są tą samą kolejnością rytmu dnia. */
 const FILARY = [
-  { klucz: "filar1", id: "filar-1-h2", obrazPoLewej: false, blok: "blok1Link", sciezka: "/funkcje/pozyskiwanie" },
-  { klucz: "filar2", id: "filar-2-h2", obrazPoLewej: true,  blok: "blok2Link", sciezka: "/funkcje/tresci" },
-  { klucz: "filar3", id: "filar-3-h2", obrazPoLewej: false, blok: "blok3Link", sciezka: "/funkcje/zespol" },
-  { klucz: "filar4", id: "filar-4-h2", obrazPoLewej: true,  blok: "blok4Link", sciezka: "/funkcje/wyniki" },
+  { klucz: "filar1", id: "filar-1-h2", blok: "blok1Link", sciezka: "/funkcje/pozyskiwanie" },
+  { klucz: "filar2", id: "filar-2-h2", blok: "blok2Link", sciezka: "/funkcje/tresci" },
+  { klucz: "filar3", id: "filar-3-h2", blok: "blok3Link", sciezka: "/funkcje/zespol" },
+  { klucz: "filar4", id: "filar-4-h2", blok: "blok4Link", sciezka: "/funkcje/wyniki" },
 ] as const;
 
 export function generateStaticParams() {
@@ -117,7 +117,7 @@ export default async function StronaGlowna({ params }: Props) {
             zakazem bezwzględnym. Osiem cytatów z kluczy `*_nazwa`. */}
         <PasMozliwosci />
 
-        {FILARY.map(({ klucz, id, obrazPoLewej, blok, sciezka }) => (
+        {FILARY.map(({ klucz, id, blok, sciezka }) => (
           <Filar
             key={klucz}
             idNaglowka={id}
@@ -128,7 +128,6 @@ export default async function StronaGlowna({ params }: Props) {
               t(`${klucz}.konkret2`),
               t(`${klucz}.konkret3`),
             ]}
-            obrazPoLewej={obrazPoLewej}
             link={{
               etykieta: tIndeks(blok),
               adres: adresWJezyku(locale as Locale, sciezka),

@@ -88,49 +88,60 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   });
 }
 
-test("K4: zebra L-P-L-P przez order na WSZYSTKICH filarach; DOM zawsze tekst przed obrazem", async ({
+test("K4: tekst po LEWEJ na wszystkich filarach; DOM zawsze tekst przed obrazem", async ({
   page,
 }, testInfo) => {
   await page.goto("/");
-  // Pełny wzór zebry (adwersarz Etapu D, ustalenie 1 — pilnowanie
-  // samego filaru 2 przepuszczało mutację L-L-P-L): desktop
-  // filary 1/3 obraz po prawej (order 0), 2/4 po lewej (order 1);
-  // 390 px — order nieaktywny wszędzie, bez siatki.
-  const WZOR_ZEBRY = [
-    { klucz: "filar1", orderObrazu: "0" },
-    { klucz: "filar2", orderObrazu: "1" },
-    { klucz: "filar3", orderObrazu: "0" },
-    { klucz: "filar4", orderObrazu: "1" },
-  ] as const;
+  /* ⚠ TEN STRAŻNIK PILNOWAŁ ZEBRY L-P-L-P I PILNUJE TERAZ JEJ BRAKU —
+     przedmiot się zmienił, bo zmienił się POMIAR, nie dlatego, że test
+     przeszkadzał. Pomiar celowany wzorca (ADR-055) pokazał, że wszystkie
+     CZTERY jego bloki feature mają tekst po lewej, na każdym kadrze;
+     zebra była naszym przyzwyczajeniem z wzorca `WWW/050-FINAL`.
 
-  for (const { klucz, orderObrazu } of WZOR_ZEBRY) {
+     Poprzednia asercja czytała `order` obrazu i wymagała wzoru 0-1-0-1.
+     Nowa NIE czyta `order` — czyta POŁOŻENIE, czyli rzecz, o którą
+     naprawdę chodzi. Jest przez to MOCNIEJSZA: łapie każdy sposób
+     odwrócenia kolumn (order, direction, kolejność w znaczniku,
+     `grid-column`), a nie jeden wybrany mechanizm.
+
+     ⚠ CO ZOSTAJE BEZ ZMIAN: kolejność w DOM. Tekst ma stać przed obrazem
+     w toku dokumentu — to jest własność czytana przez czytniki ekranu
+     i przez kadr wąski, niezależna od tego, którą stroną leży kolumna. */
+  const KLUCZE = ["filar1", "filar2", "filar3", "filar4"] as const;
+
+  for (const klucz of KLUCZE) {
     const sekcja = page.locator("section", {
       has: page.getByRole("heading", {
         name: pl.Filary[klucz].naglowek,
         exact: true,
       }),
     });
-    // Obraz (ramka aria-hidden) to ostatnie dziecko układu — w DOM
-    // ZAWSZE po tekście (czytniki i 390 px czytają tekst najpierw).
     const uklad = sekcja.locator("div > div").first();
+    const tekst = uklad.locator("> div").first();
     const obraz = uklad.locator("> div").last();
-    const zmierzonyOrder = await obraz.evaluate(
-      (el) => getComputedStyle(el).order,
-    );
-    const displayUkladu = await uklad.evaluate(
-      (el) => getComputedStyle(el).display,
-    );
+
+    const displayUkladu = await uklad.evaluate((el) => getComputedStyle(el).display);
+    const rt = await tekst.boundingBox();
+    const ro = await obraz.boundingBox();
+    expect(rt, `${klucz}: kolumna tekstu ma ramkę`).not.toBeNull();
+    expect(ro, `${klucz}: kolumna obrazu ma ramkę`).not.toBeNull();
+
+    /* DOM: tekst przed obrazem — na obu kadrach, bez wyjątku. */
+    const tekstPierwszyWDom = await uklad.evaluate((el) => {
+      const dz = [...el.children];
+      return dz.length >= 2 && dz[0].textContent!.trim().length > dz[dz.length - 1].textContent!.trim().length;
+    });
+    expect(tekstPierwszyWDom, `${klucz}: w DOM tekst przed obrazem`).toBe(true);
 
     if (testInfo.project.name === "mobile-390") {
       expect(displayUkladu, `390 px (${klucz}): bez siatki`).toBe("block");
-      expect(zmierzonyOrder, `390 px (${klucz}): order nieaktywny`).toBe("0");
+      /* Na wąskim kadrze kolumny stoją JEDNA POD DRUGĄ, tekst wyżej. */
+      expect(rt!.y, `390 px (${klucz}): tekst nad obrazem`).toBeLessThan(ro!.y);
     } else {
-      expect(displayUkladu, `desktop (${klucz}): siatka dwukolumnowa`).toBe(
-        "grid",
-      );
-      expect(zmierzonyOrder, `desktop (${klucz}): zebra L-P-L-P`).toBe(
-        orderObrazu,
-      );
+      expect(displayUkladu, `desktop (${klucz}): siatka`).toBe("grid");
+      /* ⚠ POŁOŻENIE, NIE `order`: lewa krawędź tekstu musi leżeć na lewo
+         od lewej krawędzi obrazu — na KAŻDYM z czterech filarów. */
+      expect(rt!.x, `desktop (${klucz}): tekst po LEWEJ`).toBeLessThan(ro!.x);
     }
   }
 });

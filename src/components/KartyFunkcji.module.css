@@ -23,13 +23,19 @@
    go byłoby ujednoliceniem różnicy licencjonowanej" — dotyczyło TAMTEGO
    wzorca i wraz z nim traci przedmiot: Proactiv ma odstęp monotoniczny.
 
-   ⚠ RÓŻNICA, KTÓREJ NIE DA SIĘ PRZENIEŚĆ, I NIE UDAJĘ, ŻE DA. Wzorzec
-   pokazuje w siatce czterokolumnowej SZESNAŚCIE kart, czyli cztery pełne
-   rzędy — ani razu rzędu niepełnego. Naszych kart jest sześć, więc przy
-   czterech kolumnach ostatni rząd ma dwie. Kształt „4 + 2" jest u wzorca
-   NIEOBECNY; liczba kolumn pochodzi z pomiaru, ten rząd nie. Zgłoszone
-   koordynatorowi razem z alternatywami (trzy kolumny albo osiem kart) —
-   rozstrzygnięcie należy do niego, nie do arkusza.
+   ⚠ TRZY KOLUMNY, NIE CZTERY — ROZSTRZYGNIĘCIE KOORDYNATORA 04.09,
+   PO ZGŁOSZENIU Z ADR-054. Pomiar wzorca daje na szerokim kadrze CZTERY
+   kolumny i tak było w pierwszej wersji tej siatki. Zgłosiłem wtedy, że
+   przy sześciu kartach ostatni rząd ma dwie, a kształt „4 + 2" jest
+   u wzorca NIEOBECNY: jego siatka czterokolumnowa niesie SZESNAŚCIE kart,
+   czyli cztery pełne rzędy, i rzędu niepełnego nie ma ani razu.
+
+   Rozstrzygnięcie brzmi: **pełne rzędy ważniejsze niż liczba kolumn**,
+   czyli 3 na szerokim, 2 na średnim, 1 na wąskim → 2 × 3 i 3 × 2.
+   ⚠ LICZBA KOLUMN JEST TU DECYZJĄ, NIE POMIAREM, i tak ma być czytana.
+   Reszta anatomii karty (wypełnienie, promień, obrys, typografia, miara,
+   pudełko ikony) pochodzi z pomiaru bez zmian — rozstrzygnięcie dotyczy
+   WYŁĄCZNIE liczby kolumn.
 
    ⚠ PROGI KOLUMN ZNALEZIONE BISEKCJĄ, nie założone: 767 px → 1 kolumna,
    768 px → 2, 1023 px → 2, 1024 px → 4, i 4 utrzymuje się przez 1280,
@@ -142,7 +148,11 @@
 
 @media (min-width: 90rem) {
   .siatka {
-    grid-template-columns: repeat(4, 1fr);
+    /* TRZY kolumny — decyzja koordynatora, nie pomiar (patrz nagłówek).
+       Szerokość karty wychodzi z rachunku: (1280 − 2 × 16) / 3 = 416 px.
+       Poprzednio cztery kolumny po 308 px, zgodne z pomiarem wzorca
+       i dające rząd niepełny. */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

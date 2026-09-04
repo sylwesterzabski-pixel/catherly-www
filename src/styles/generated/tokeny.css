@@ -148,6 +148,12 @@
    * ⚠ POPRZEDNIA WARTOŚĆ 24 px POCHODZIŁA Z INNEGO WZORCA (POMIAR 0.4/0.7, zapis w nagłówku `KartyFunkcji.module.css`: „tytuł 24 px / waga 500”). Pomiar celowany na kartach Proactiva daje 18 px przy wadze 600 — czyli kartę CICHSZĄ i GRUBSZĄ zarazem. Zmiana idzie w obie strony i dlatego nie wolno jej było zrobić w połowie: sam mniejszy rozmiar przy wadze 500 dałby tytuł słabszy od opisu, którego wzorzec nie ma nigdzie.
    */
   --tekst-karta: 1.125rem;
+  /**
+   * Zdanie prowadzące bloku feature = 18 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 768 / 1023 / 1024 / 1025 / 1280 / 1440 / 1600; przedmiot: cztery bloki dwukolumnowe tekst : media).
+   * 
+   * ⚠ RÓWNA WARTOŚCIĄ `tekst.karta` I ZOSTAJE OSOBNYM TOKENEM — ta sama obrona, którą niesie `kroj-naglowek` równy `kroj`: zdanie prowadzące i tytuł karty to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. Równość wartości jest dziś stanem wzorca, nie brakiem rozróżnienia.
+   */
+  --tekst-lead: 1.125rem;
   --waga-tekst: 500; /** Proza wzorca ma wagę 500, nie 400 (POMIAR 0.1). Inter jest zmienny, więc to nic nie kosztuje. */
   --waga-etykieta: 500;
   --waga-naglowek: 500; /** Nagłówki wzorca mają wagę 500, nie 600 (POMIAR 0.1). Satoshi jest u nas statyczny dokładnie w tej wadze — inna waga zeszłaby na syntezę przeglądarki. */
@@ -174,6 +180,7 @@
    * ⚠ NIE JEST TO `interlinia.naglowek-male` (1,40), choć różnica wynosi niecałe trzy setne. Zaokrąglenie do wartości, która „już jest”, to wygładzenie różnicy licencjonowanej — dokładnie to, przed czym broni zapis o niemonotonicznym odstępie kart w tym samym module.
    */
   --interlinia-karta-opis: 1.4286;
+  --interlinia-lead: 1.5556; /** Interlinia zdania prowadzącego = 28 px przy piśmie 18 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 768 / 1023 / 1024 / 1025 / 1280 / 1440 / 1600; przedmiot: cztery bloki dwukolumnowe tekst : media). */
   --tracking-naglowek: -0.1875rem; /** Tracking H1 = −3 px przy ≥ 1440 (POMIAR 0.4/0.7). ⚠ ADR-041 zakładał, że −3 px obowiązuje na WSZYSTKICH progach, i zapisał to jako pozycję otwartą. Pomiar zamyka ją: tracking JEST progowy, patrz `naglowek-srednie` i `naglowek-male`. Nie jest też stały w `em`: −3/70 = −0,043em, −1,6/53 = −0,030em, −1/34 = −0,029em. */
   --tracking-wersalik: 0.04em; /** WYMAGANE przy text-transform: uppercase — bez tego kapitaliki zlewają się w blok. Zastosowanie w komponentach to zadanie 11 checklisty, poza zakresem WWW/038-bis; token wchodzi teraz, bo należy do skali. */
   --tracking-naglowek-srednie: -0.1rem; /** Tracking H1 = −1,6 px w zakresie 810–1280 px (zmierzone). */
@@ -274,6 +281,12 @@
    */
   --wymiar-pudelko-ikony: 4rem;
   --wymiar-wysokosc-pozycji-pasa: 3.5rem; /** Wysokość pozycji pasa przesuwnego = 56 px (zmierzone u wzorca: okno pasa i maszt mają tę samą wysokość 56 px na wszystkich trzech kadrach). Poprzednio 36 px — wartość z POMIARU 0.4/0.7, czyli z innego wzorca. */
+  /**
+   * Kontener bloku dwukolumnowego = 1200 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 768 / 1023 / 1024 / 1025 / 1280 / 1440 / 1600; przedmiot: cztery bloki dwukolumnowe tekst : media).
+   * 
+   * ⚠ TO TRZECI KONTENER WZORCA, NIE POMYŁKA W ODCZYCIE. Strona wzorca ma ich kilka i każdy pełni inną rolę: 1280 px trzyma pasek i siatki kart, 1024 / 896 px miary tekstu sekcyjnego, a 1200 px — bloki feature. Sprawdzone bisekcją: przy 1280, 1440 i 1600 blok ma niezmiennie 1200 px, czyli kontener jest ZAMKNIĘTY, a nie liczony od kadru. Wcięcie boczne 40 px poniżej progu odtwarza wtedy zmierzone szerokości co do piksela: 390 − 80 = 310, 810 − 80 = 730, 768 − 80 = 688.
+   */
+  --wymiar-kontener-filaru: 75rem;
   --kroj-naglowek: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój NAGŁÓWKÓW = ten sam Inter (ADR-044). ⚠ ADR-040 przypisał tu Satoshi na podstawie POMIARU 0.1, który MYLNIE opisał Satoshi jako krój nagłówkowy. Pomiar CDP na wzorcu: H1 i H2 renderują się jako `Inter Medium`, rodzina zadeklarowana to `Inter` i `Inter-Medium`. Token ZOSTAJE osobny mimo równej wartości — nagłówki i proza to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. */
   --kroj-plakietka: "Satoshi", "Satoshi zapasowy", system-ui, sans-serif; /** Krój PLAKIETKI (ADR-044). Satoshi Medium 2.000, public/fonts/satoshi-medium.woff2, 17,3 kB, źródło fontshare.com. POMIAR: wzorzec używa Satoshi na DOKŁADNIE DWÓCH elementach — „Get 3 Free month" i „on Pro plan", oba 12 px, waga 700, barwa #070806. To jest ta sama plakietka, którą POMIAR 0.1 opisał w skali (12 px / 700 / interlinia 1,20). Kontrola pozytywna zera: 2 elementy w Satoshi wobec 257 w Interze — dwójka jest wynikiem, nie zerem narzędzia. */
   /**

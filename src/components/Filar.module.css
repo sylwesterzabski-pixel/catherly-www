@@ -8,28 +8,85 @@
    70rem: surowe wartości wspólne K1–K4 (W5 — propozycja tokenów
    przy etapie E/F). */
 
-/* 2.4 — GEOMETRIA WZORCA (WWW/059, ADR-047).
+/* 2.4 — GEOMETRIA WZORCA (WWW/059, ADR-047) — ZAPIS HISTORYCZNY.
    Zmierzone przy 1440: kolumna tekstu x=135 w=535, kolumna obrazu
    x=770 w=535 — czyli DWIE RÓWNE kolumny z odstępem 100 px wewnątrz
    kolumny treści 1170 px. Obraz ma promień 12 px. Przy 390: jedna
    kolumna 350 px, obraz nad tekstem albo pod nim wg zebry.
+   Kontener `max-width` ZDJĘTY — tamten wzorzec nie ograniczał szerokości,
+   tylko WCINAŁ treść od krawędzi, więc przy 1600 kolumna miała 1330.
+   Wszystkie te liczby pochodzą z POMIARU 0.4/0.7 na wzorcu
+   `WWW/050-FINAL` i zostają jako ślad — były prawdziwe w swojej chwili.
 
-   Odstęp pionowy sekcji: 160 px góra i dół (wariant dominujący
-   z POMIARU 0.3). Kontener `max-width` ZDJĘTY — wzorzec nie ogranicza
-   szerokości, tylko WCINA treść od krawędzi, więc przy 1600 kolumna
-   ma 1330, a nie 1170. */
-/* ⚠ ODSTĘP SEKCJI PROGOWANY OD ADR-049 — mobile-first, jak wcięcia
-   niżej. Do 2026-09-03 stało tu `var(--wymiar-odstep-sekcji)` (160 px)
-   BEZ progu, więc kadr 390 px oddychał tak samo jak 1440 — i to jest
-   jedna z przyczyn, dla których strona główna miała 13 ekranów
-   wysokości (zmierzone, WWW/073 krok 3). Pomiar Proactiva: 160 px od
-   progu, 80 px poniżej. */
+   ┌── ZMIERZONE CELOWANO 04.09.2026 (Proactiv, batch A4, ADR-055) ─────┐
+   │ próbka     cztery bloki dwukolumnowe, rozpoznane po treści         │
+   │ kontener   1200 px, ZAMKNIĘTY (1280 · 1440 · 1600 → wciąż 1200)    │
+   │ wcięcie    40 px poniżej progu (390 → 310, 810 → 730, 768 → 688)   │
+   │ proporcja  1 : 2 od 1024 (293:619 · 379:789) · 1 : 1 poniżej       │
+   │ odstęp kol. 32 px od 1024 · 16 px poniżej                          │
+   │ kolejność  tekst po LEWEJ we WSZYSTKICH czterech blokach           │
+   │ kadr wąski tekst NAD mediami, tekst pierwszy w toku                │
+   │ odstęp między blokami  320 px (≥1024) · 80 px (poniżej)            │
+   │ nagłówek bloku  36 px / 700 / lh 40                                │
+   │ zdanie prowadzące  18 px / 700 / lh 28, odstęp od nagłówka 8 px    │
+   │ lista konkretów    NIE ISTNIEJE — patrz niżej                      │
+   └────────────────────────────────────────────────────────────────────┘
+
+   ⚠ NAPRZEMIENNOŚCI (ZEBRY) WZORZEC NIE STOSUJE — sprawdzone, nie
+   założone. Wszystkie CZTERY bloki mają tekst po lewej, na wszystkich
+   trzech kadrach, a w toku dokumentu tekst stoi PIERWSZY. Zebra L-P-L-P
+   była naszym przyzwyczajeniem z poprzedniego wzorca; zlecenie WWW/080
+   pkt c kazało ją potwierdzić pomiarem i zastosować wynik, nie nawyk.
+   Reguły `.obrazPoLewej` usunięte razem z propem komponentu — martwa
+   deklaracja jest gorsza od jej braku (klasa T56).
+
+   ⚠ NAGŁÓWEK BLOKU U WZORCA MA 36 px / 700, a jego nagłówek SEKCJI
+   48 px / 500 — to dwie różne role i wzorzec je rozdziela. U nas
+   nagłówek filaru jest `h2` i bierze skalę globalną (48 / 500)
+   z rozstrzygnięcia koordynatora („H2 już globalne"). Zapisuję różnicę,
+   żeby nie wyglądała na przeoczenie pomiaru.
+
+   ⚠ TRZECH KONKRETÓW NIE MA CZEGO PRZENIEŚĆ: na całej stronie wzorca
+   jest ZERO elementów `ul li` / `ol li` (policzone, nie oszacowane).
+   Blok feature niesie tam wyłącznie nagłówek i jedno zdanie. Nasza lista
+   zostaje bez zmian — nie z przyzwyczajenia, tylko dlatego, że pomiar
+   nie ma dla niej odpowiednika.
+
+   ⚠ `align-items: center` ZOSTAJE mimo `normal` u wzorca — RÓŻNICA
+   LICENCJONOWANA, nie przeoczenie. U wzorca kolumna mediów ma stałą
+   wysokość, więc rozciąganie jest nieszkodliwe. U nas slot trzyma
+   rezerwę CLS przez `aspect-ratio`, a `stretch` tę rezerwę nadpisuje —
+   przeniesienie wartości zepsułoby gwarancję, której wzorzec nie ma. */
+/* ⚠ ODSTĘP PROGOWANY OD ADR-049, PRZELICZONY W ADR-055 — mobile-first,
+   jak wcięcia. Do 2026-09-03 stało tu `var(--wymiar-odstep-sekcji)`
+   (160 px) BEZ progu, więc kadr 390 px oddychał tak samo jak 1440 — jedna
+   z przyczyn, dla których strona główna miała 13 ekranów (WWW/073 krok 3).
+   ADR-049 dał próg 160 / 80, ale liczył go jak DLA SEKCJI. Pomiar celowany
+   z ADR-055 mierzy rzecz właściwą — odstęp MIĘDZY BLOKAMI: 320 px od progu
+   wzorca i 80 px poniżej. Ponieważ u nas odstęp między filarami składa się
+   z dwóch przylegających `padding-block`, wartości są POŁOWĄ zmierzonych:
+   160 na kadrze szerokim (→ 320) i 40 na wąskim (→ 80). */
 .filar {
-  padding-block: var(--wymiar-odstep-sekcji-male);
-  padding-inline: var(--wymiar-wciecie-tresci-male);
+  /* 40 px góra i dół na kadrze wąskim — daje 80 px MIĘDZY filarami,
+     czyli dokładnie odstęp zmierzony u wzorca. Poprzednio 80 px, czyli
+     160 px między filarami: dwa razy tyle, co wzorzec. Na kadrze szerokim
+     zostaje 160 px, bo tam wzorzec ma między blokami 320 px i nasze
+     dwa razy 160 trafia w tę liczbę co do piksela. */
+  padding-block: var(--wymiar-odstep-8);
+  /* 40 px na KAŻDYM kadrze — drabina 20/40/135 zdjęta. Wcięcie stałe
+     odtwarza zmierzone szerokości bloku co do piksela (390 → 310,
+     810 → 730), a powyżej progu i tak pochłania je wyśrodkowanie
+     kontenera 1200. */
+  padding-inline: var(--wymiar-wciecie-tresci-srednie);
 }
 
 .wnetrze {
+  /* KONTENER BLOKU FEATURE — 1200 px, zamknięty (patrz nagłówek).
+     Rachunek zgodności przy 1440: wcięcie 40 zostawia 1360, kontener
+     bierze z tego 1200 i wyśrodkowuje się, więc lewa krawędź stoi na
+     40 + (1360 − 1200) / 2 = 120 — dokładnie tam, gdzie zmierzono
+     lewą krawędź bloku wzorca. */
+  max-inline-size: var(--wymiar-kontener-filaru);
   margin-inline: auto;
 }
 
@@ -41,7 +98,10 @@
      tę samą parę wartości — czyli osiem miejsc, w których następna
      zmiana skali musi trafić, i osiem, które może przeoczyć.
      Margines, miara wiersza i zawijanie ZOSTAJĄ: to układ, nie skala. */
-  margin: 0 0 0.75rem;
+  /* 8 px — odstęp nagłówka od zdania prowadzącego, zmierzony u wzorca
+     (nagłówek `margin-bottom` 0 + zdanie `margin-top` 8). Poprzednio
+     12 px, czyli wartość spoza drabiny odstępów wzorca. */
+  margin: 0 0 var(--wymiar-odstep-2);
   /* Miara `26ch` ZDJĘTA (2.4). Wzorzec pozwala nagłówkowi zająć CAŁĄ
      kolumnę (zmierzone: h2 w=535 przy kolumnie 535), a ograniczała go
      dotąd miara znakowa, która na każdym kroju daje inną liczbę
@@ -50,11 +110,44 @@
   text-wrap: balance;
 }
 
+/* KOLUMNA TEKSTU.
+   ⚠ TA REGUŁA MUSI ISTNIEĆ, CHOĆ NIC NIE ROBI POZA PROGIEM — i to nie
+   jest ozdoba. CSS Modules eksportuje wyłącznie nazwy klas, które
+   W ARKUSZU WYSTĘPUJĄ. Do 04.09 `.tekst` pojawiała się jedynie w regule
+   `.obrazPoLewej .tekst`; po usunięciu zebry nazwa zniknęła z arkusza,
+   a `styles.tekst` zaczęło zwracać `undefined` — React pomija wtedy
+   atrybut, więc w znaczniku NIE MA ŚLADU po błędzie.
+   Zmierzone kontrolą pozytywną: `Filar_obraz__` jest w zbudowanym HTML,
+   `Filar_tekst__` NIE MA. Klasa T56 („deklaracja, która nigdy się nie
+   stosuje") widziana od drugiej strony: tu znika nie skutek, tylko sam
+   uchwyt. `display: block` jest wartością domyślną `div`, więc reguła
+   niczego nie zmienia — jej zadaniem jest utrzymać nazwę w eksporcie. */
+.tekst {
+  display: block;
+}
+
+/* ZDANIE PROWADZĄCE.
+   ⚠ DUET Z KROPKĄ K3 ZERWANY — i to jest koszt, nie skutek uboczny.
+   Do 04.09 ten akapit komponował `duet` (20 px / 600) wspólnie z „kropką"
+   sekcji problemu i rytmu dnia; zapis z handoffu K4 mówił wprost, że obie
+   rzeczy mają mówić JEDNYM głosem z jednego miejsca. Pomiar celowany daje
+   dla zdania prowadzącego bloku feature 18 px / 700 / interlinia 28, więc
+   zlecenie WWW/080 pkt b („z pomiaru celowanego") i tamten zapis nie mogą
+   obowiązywać naraz.
+
+   Wybrano pomiar, bo tego żąda zlecenie — ale KROPKA ZOSTAJE NIETKNIĘTA
+   (20 px, pilnowane literałem w `e2e/zlozenie.spec.ts`, który jest
+   mechanizmem, nie dryfem). Skutek: dwie rzeczy, które miały mówić jednym
+   głosem, mówią odtąd dwoma. Zgłoszone koordynatorowi; przywrócenie duetu
+   to przywrócenie jednej linijki `composes`. */
 .korzysc {
-  /* Duet 1.125/600 wspólny z kropką K3 (W6 handoffu K4). */
-  composes: duet from "./wyroznienie.module.css";
-  margin: 0 0 1rem;
-  max-width: var(--wymiar-miara-akapitu);
+  font-size: var(--tekst-lead);
+  font-weight: var(--waga-mocna);
+  line-height: var(--interlinia-lead);
+  /* 8 px od nagłówka — zmierzone; 16 px do listy konkretów, bo listy
+     wzorzec w tym bloku nie ma i odstęp zostaje nasz, z drabiny. */
+  margin: var(--wymiar-odstep-2) 0 var(--wymiar-odstep-5);
+  max-inline-size: var(--wymiar-miara-akapitu);
 }
 
 .konkrety {
@@ -115,10 +208,24 @@
     var(--kolor-rola-powierzchnia) 0%,
     var(--kolor-rola-tlo-strony) 100%
   );
-  /* OBRYS ZDJĘTY (2.4) — wzorzec ramki nie obrysowuje. Rozdział od tła
-     niesie PLAMA: powierzchnia wobec tła strony. To pierwszy z trzech
-     mechanizmów ADR-038, a `e2e/rozdzial-kart.spec.ts` pilnuje, żeby
-     przynajmniej jeden działał. */
+  /* ⚠ OBRYS WRACA — POMIAR ODWRÓCIŁ WŁASNY ZAPIS SPRZED DOBY.
+     Stało tu: „OBRYS ZDJĘTY (2.4) — wzorzec ramki nie obrysowuje.
+     Rozdział od tła niesie PLAMA: powierzchnia wobec tła strony."
+     Tamto zdanie opisywało wzorzec `WWW/050-FINAL`. Pomiar celowany
+     Proactiva (ADR-055) pokazał co innego: panel mediów bloku feature
+     ma obrys JEDNOPIKSELOWY o barwie jaśniejszej od własnego wypełnienia,
+     do tego promień i cień zewnętrzny.
+
+     ⚠ I BEZ TEGO OBRYSU RAMKA ZOSTAŁABY BEZ ŻADNEGO MECHANIZMU — nie
+     jest to więc wybór estetyczny. Odstęp kolumn zszedł ze 100 px na
+     16 px (poniżej progu górnego) i 32 px (powyżej), a kompozycja
+     z ADR-038 zalicza dopiero od 30 px. Plama w strefie jasnej wynosi
+     1,12:1 przy progu 1,30, kreski nie było, obrazu w pustym slocie też
+     nie. Strażnik `e2e/rozdzial-kart.spec.ts` ZŁAPAŁ to natychmiast po
+     zmianie siatki — i złapał WYŁĄCZNIE dlatego, że w ADR-054 zaczął
+     liczyć tło od sekcji, a nie od `body`; przy starym pomiarze plama
+     wychodziła 20,07 i rodzina przeszłaby na fałszywej zieleni. */
+  border: 0.0625rem solid var(--kolor-rola-kreska);
   border-radius: var(--wymiar-promien-sredni);
   /* Bez tego promień ramki nie przycina zrzutu w narożnikach. */
   overflow: hidden;
@@ -147,34 +254,50 @@
 @media (min-width: 48.0625rem) {
   .filar {
     padding-block: var(--wymiar-odstep-sekcji);
-    padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 
   .uklad {
     display: grid;
+    /* KOLUMNY RÓWNE poniżej progu górnego — tak jak u wzorca poniżej
+       jego progu 1024 (zmierzone: 336:336 przy 768, 464:464 przy 1023).
+       Poprzednio też równe, ale z odstępem 100 px z innego wzorca. */
     grid-template-columns: 1fr 1fr;
-    /* 100 px — zmierzony odstęp kolumn wzorca (tekst kończy się na
-       670, obraz zaczyna na 770). */
-    gap: 6.25rem;
-    align-items: center; /* zapobiega stretch nadpisującemu aspect-ratio */
+    /* 16 px — odstęp kolumn wzorca poniżej progu. */
+    gap: var(--wymiar-odstep-5);
+    align-items: center; /* patrz nagłówek: różnica licencjonowana */
   }
 
   .obraz {
     margin-block-start: 0;
   }
-
-  /* Zebra L-P-L-P: instancje z obrazem po LEWEJ (filary 2 i 4). */
-  .obrazPoLewej .tekst {
-    order: 2;
-  }
-
-  .obrazPoLewej .obraz {
-    order: 1;
-  }
 }
 
 @media (min-width: 90rem) {
-  .filar {
-    padding-inline: var(--wymiar-wciecie-tresci);
+  .uklad {
+    /* PROPORCJA 1 : 2 — zmierzone 293:619 przy 1024 i 379:789 przy 1440,
+       czyli tekst zajmuje jedną trzecią, media dwie trzecie.
+       ⚠ WZORZEC PRZEŁĄCZA SIĘ NA 1024, MY NA 1440 — w paśmie 1024–1439
+       mamy więc kolumny równe tam, gdzie wzorzec ma już 1 : 2. To ta sama
+       znana różnica progów układu co przy siatce kart (ADR-049: „nasze
+       zostają 48rem/90rem"), zapisana, nie zasypana.
+
+       ⚠ TRZY KOLUMNY, NIE `1fr 2fr` — I TA RÓŻNICA JEST WIDOCZNA W LICZBACH.
+       Wzorzec ma siatkę TRZYKOLUMNOWĄ z odstępem 32 px, w której tekst
+       zajmuje jedną kolumnę, a media dwie RAZEM Z ODSTĘPEM MIĘDZY NIMI:
+       (1200 − 2 × 32) / 3 = 378,67 na kolumnę, więc media mają
+       2 × 378,67 + 32 = 789,33. Zapis `1fr 2fr` z jednym odstępem daje
+       389,33 i 778,67 — dziesięć pikseli obok. Pierwsza wersja tego bloku
+       miała właśnie `1fr 2fr` i zmierzone 389 : 779 obaliło ją od razu. */
+    grid-template-columns: repeat(3, 1fr);
+    /* 32 px — odstęp kolumn wzorca od progu. */
+    gap: var(--wymiar-odstep-7);
+  }
+
+  .tekst {
+    grid-column: span 1;
+  }
+
+  .obraz {
+    grid-column: span 2;
   }
 }
