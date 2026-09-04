@@ -277,6 +277,18 @@
   .obraz {
     margin-block-start: 0;
   }
+
+  /* ⚠ TEKST NA PEŁNEJ MIERZE PRZY ZWINIĘTYM SLOCIE — TAKŻE W TYM PAŚMIE.
+     Pierwsza wersja postawiła tę regułę wyłącznie w bloku 90rem i przez to
+     działała dopiero od 1440. Strażnik złapał to na kadrach 1190 i 1280:
+     tekst zostawał na 547 z 1110 i 592 z 1200, czyli pusty prostokąt
+     znikał, a jego miejsce zostawało. Reguła musi stać tam, gdzie siatka
+     w ogóle powstaje. */
+  @supports selector(:has(*)) {
+    .uklad:has(.obraz:empty) .tekst {
+      grid-column: 1 / -1;
+    }
+  }
 }
 
 @media (min-width: 90rem) {
@@ -307,4 +319,29 @@
   .obraz {
     grid-column: span 2;
   }
+
+  /* ⚠ TEKST NA PEŁNEJ MIERZE, GDY SLOT ZWINIĘTY. Bez tego kolumna tekstu
+     zostaje przy jednej trzeciej siatki, a dwie trzecie stoją puste —
+     czyli pusty prostokąt znika, a jego miejsce zostaje. Warunek pyta
+     o TEN SAM fakt co `:empty` wyżej, więc oba wchodzą i schodzą razem. */
+  @supports selector(:has(*)) {
+    .uklad:has(.obraz:empty) .tekst {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+/* ⚠ SLOT ZWIJA SIĘ, GDY NIE MA CZYM GO WYPEŁNIĆ (ADR-059).
+   Decyzja właściciela: „życie bez zdjęć" — dopóki fotografii nie ma,
+   strona ma się domykać na treści, a nie pokazywać pustych prostokątów.
+   MECHANIKA SLOTU ZOSTAJE W CAŁOŚCI: proporcja, gradient, promień,
+   obrys i rezerwa CLS czekają nietknięte; znika wyłącznie STAN PUSTY.
+
+   `:empty` jest tu narzędziem właściwym, bo pyta o to, co naprawdę
+   rozstrzyga — czy w ramce cokolwiek jest. Warunek na propie w JS
+   trzeba by powtórzyć w czterech komponentach i w każdym można go
+   zapomnieć; selektor pyta DOM, więc w dniu, w którym kadr wejdzie,
+   ramka wróci sama, bez ani jednej zmiany w kodzie. */
+.obraz:empty {
+  display: none;
 }

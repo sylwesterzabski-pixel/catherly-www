@@ -70,6 +70,21 @@ export default defineConfig({
       name: "desktop-wide",
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
     },
+    {
+      /* KADR WŁAŚCICIELA — 1190 × 900 (ADR-059).
+         ⚠ TEN PROJEKT ISTNIEJE, BO NA TEJ SZEROKOŚCI PRACUJE WŁAŚCICIEL,
+         a żaden z trzech pozostałych jej nie obejmuje: 1190 leży POMIĘDZY
+         progami 48,0625rem i 90rem, czyli w paśmie, którego ani `desktop`
+         (1280), ani `desktop-wide` (1440) nie reprezentuje — pierwszy jest
+         po drugiej stronie progu typografii (80rem), drugi po drugiej
+         stronie progu układu.
+
+         To jest ta sama nauka co przy T57, tylko od strony pasma zamiast
+         progu: kadr, na którym się PATRZY, ma być kadrem, na którym się
+         MIERZY. Zrzuty odbioru robimy odtąd także przy 1190. */
+      name: "wlasciciel-1190",
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1190, height: 900 } },
+    },
   ],
   webServer: {
     command: "npm run start",

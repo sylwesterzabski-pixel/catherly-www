@@ -99,11 +99,13 @@
    */
   --kolor-rola-fokus-na-jasnym: #151515;
   /**
-   * Tło pigułki nagłówka (ADR-045, 2.1). ZMIERZONE we wzorcu: rgba(7, 8, 6, 0.6) — te same składowe co `kolor.tlo`, alfa 0,6. DWUDZIESTA ROLA; zmiana LICZBA_ROL z 19 na 20 jest DECYZJĄ, nie dryfem, i dlatego niesie ADR — tak każe zlecenie WWW/050-FINAL pkt 1.1.
+   * Tło pigułki nawigacji. ⚠ ALFA PODNIESIONA 0,60 → 0,92 (ADR-059) — i to jest naprawa z DEFEKTU, nie z pomiaru wzorca, bo wzorzec tego problemu nie ma i mieć nie może.
    * 
-   * ⚠ TA ROLA NIE WCHODZI DO PAR KONTRASTOWYCH i to jest świadome: kontrast liczy się na barwie WYNIKOWEJ, a ta zależy od tego, co akurat leży pod pigułką. Mierzy to sonda rastrowa w `kontrast-stanow.spec.ts`, która próbkuje wyrenderowany piksel — strażnik tokenów widzi tylko wartości ról i o barwie po złożeniu warstw nie wie nic. Wpisanie tu pary dałoby liczbę wyglądającą na pomiar, a będącą fikcją.
+   * Jego pasek jest CAŁKOWICIE PRZEZROCZYSTY (zmierzone: tło rgba zerowe, `backdrop-filter: none`) i to mu wystarcza, bo cała jego strona jest ciemna — treść wjeżdżająca pod pasek ma tam tę samą jasność co tło. U NAS połowa sekcji leży w STREFIE JASNEJ od ADR-050, więc pod ciemną, półprzezroczystą pigułkę wjeżdża jasna treść i prześwituje. Audyt na żywo (WWW/084) naliczył kolizji treści z paskiem na czterech kadrach i czterech trasach.
+   * 
+   * ⚠ PRZENIESIENIE WARTOŚCI WZORCA POGŁĘBIŁOBY WADĘ, nie naprawiło — to przypadek, w którym wierność pomiarowi jest błędem, bo warunek brzegowy jest inny. Zostaje rozmycie i zostaje ślad przezroczystości; znika prześwit.
    */
-  --kolor-rola-tlo-przezroczyste: rgba(7, 8, 6, 0.6);
+  --kolor-rola-tlo-przezroczyste: rgba(7, 8, 6, 0.92);
   /**
    * Kreska dekoracyjna korpusu jasnego — obrys karty, granica próg 1,30 z ADR-038.
    * 
@@ -112,7 +114,14 @@
    * ⚠ DLACZEGO ROLA W OGÓLE POWSTAŁA: karty funkcji przeszły w ADR-050 do strefy jasnej, gdzie ich plama wobec tła sekcji wynosi 1,12:1 — poniżej progu 1,30. Rozdzielała je wtedy KOMPOZYCJA, a batch A3 sprowadza odstęp siatki do 16 px z pomiaru wzorca, czyli poniżej progu 30 px, na którym kompozycja stoi. Bez obrysu karta zostałaby BEZ ŻADNEGO z czterech mechanizmów. Obrys jest przy tym zgodny z pomiarem: karty wzorca MAJĄ obrys jednopikselowy — zapis „bez obrysu” w `KartyFunkcji.module.css` pochodził z innego wzorca.
    */
   --kolor-rola-kreska-na-jasnym: #cdcdcd;
-  --kolor-dekoracja-poswiata: #905f47; /** Poświata radialna hero i zamknięcia (ADR-032, zlecenie WWW/040 krok 2). CELOWO POZA `kolor.rola` — to nie jest rola systemu, tylko jedna barwa dekoracyjna, i trzymanie jej poza rolami utrzymuje liczbę ról na 25, czyli zgodną z decyzją i ze strażnikiem. Używana wyłącznie przez color-mix z alfą ≤35% na tle inwersji; aria-neutralna, nie niesie treści, nie stanowi granicy ani wskaźnika stanu. */
+  /**
+   * Poświata dekoracyjna. ⚠ BARWA ZMIENIONA Z BRĄZOWEJ NA NEUTRALNĄ (ADR-059).
+   * 
+   * Poprzednia wartość dawała przy CTA smugę o wyraźnie ciepłym, brązowym odcieniu — zmierzone w tle sekcji zamknięcia jako `color(srgb 0,565 0,373 0,278 / 0,35)`. Paleta serwisu po ADR-038 jest neutralna i limonkowa; brąz nie należy do żadnej z tych dwóch rodzin i czytał się jako zabrudzenie, a nie jako głębia.
+   * 
+   * Wartość jest tą samą neutralną bielą, którą niesie rdzeń poświaty hero (`glow.barwa-rdzen`), więc obie dekoracje mówią teraz jednym językiem: CZYSTA GŁĘBIA, bez barwy własnej. Alfa mieszania schodzi przy okazji z 35% na 8% — tyle, ile ma poświata hero z pomiaru wzorca.
+   */
+  --kolor-dekoracja-poswiata: #d9d9d9;
   --kroj: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój GŁÓWNY — proza I NAGŁÓWKI (ADR-044 prostuje ADR-040). Inter 4.001, zmienny wght 100–900, oś opsz przypięta do 16, public/fonts/inter-var.woff2, 39,8 kB, źródło google/fonts, OFL. POMIAR: wzorzec niesie Interem 257 elementów tekstu — wszystkie nagłówki, prozę, nawigację i przyciski. */
   --tekst-xs: 0.875rem; /** 14 px — metadane, przypisy, etykiety pól. */
   --tekst-s: 1rem; /** 16 px — tekst czytany, domyślny. */
@@ -133,7 +142,13 @@
    * ⚠ STOPIEŃ ŚRODKOWY ZNIKA, BO WZORZEC GO NIE MA. Do 04.09 skala miała trzy szczeble (60 / 42 / 38). Bisekcja co 1 px pokazała JEDEN próg i JEDNĄ zmianę: 767 px → 30 px, 768 px → 48 px, i ta sama liczba 48 utrzymuje się przez 800, 1023, 1024, 1025, 1100 i 1440. Token `h2-srednie` został usunięty razem z nadpisaniem przy 90rem — trzymanie dwóch tokenów o równej wartości jest zaproszeniem do cichego rozjazdu, a nie zapasem.
    */
   --tekst-h2: 3rem;
-  --tekst-h1-srednie: 5rem; /** H1 = 80 px w zakresie 810–1280 (pomiar Proactiva 1j). Poprzednio 3.3125rem = 53 px (POMIAR 0.5). */
+  /**
+   * H1 = 72 px w paśmie 768–1279 px (ADR-059). Poprzednio 80 px.
+   * 
+   * ⚠ RACHUNEK, NIE DOBÓR NA OKO. Wzorzec ma dwa stopnie H1 (96 przy kadrze szerokim, 36 poniżej swojego progu) i stopnia pośredniego NIE MA — bo jego próg leży przy 1024, a nasz układ trzyma pełną skalę dopiero od 1280. Pasmo 768–1279 jest więc NASZE i musi mieć własną liczbę.
+   * Wzięta jako TRZY CZWARTE skali pełnej: 96 × 0,75 = 72, a H2 48 × 0,75 = 36. Dzięki temu RELACJA H1 : H2 pozostaje dokładnie 2,00 — czyli krok skali zmierzony u wzorca obowiązuje także w paśmie, którego wzorzec nie pokazuje. Alternatywa (64) łamałaby relację albo wymuszała H2 32, poza żądanym zakresem 36–40.
+   */
+  --tekst-h1-srednie: 4.5rem;
   --tekst-h1-male: 3rem; /** H1 = 48 px przy ≤ 768 (pomiar Proactiva 1j). Poprzednio 2.125rem = 34 px (POMIAR 0.5). */
   --tekst-plakietka: 0.75rem; /** Plakietka górna = 12 px, waga 700, interlinia 1,20 (POMIAR 0.1). */
   /**
@@ -154,6 +169,7 @@
    * ⚠ RÓWNA WARTOŚCIĄ `tekst.karta` I ZOSTAJE OSOBNYM TOKENEM — ta sama obrona, którą niesie `kroj-naglowek` równy `kroj`: zdanie prowadzące i tytuł karty to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. Równość wartości jest dziś stanem wzorca, nie brakiem rozróżnienia.
    */
   --tekst-lead: 1.125rem;
+  --tekst-h2-srednie: 2.25rem; /** H2 = 36 px w paśmie 768–1279 px (ADR-059). ⚠ TOKEN WRACA POD INNYM ZNACZENIEM: ADR-053 usunął `h2-srednie`, bo wzorzec ma tylko dwa stopnie H2 i trzeci byłby duplikatem. Tu nie jest duplikatem — niesie 36 px, wartość, której nie ma żaden inny token, i opisuje pasmo, którego wzorzec nie pokazuje. Trzy czwarte skali pełnej, relacja do H1 dokładnie 2,00. */
   --waga-tekst: 500; /** Proza wzorca ma wagę 500, nie 400 (POMIAR 0.1). Inter jest zmienny, więc to nic nie kosztuje. */
   --waga-etykieta: 500;
   --waga-naglowek: 500; /** Nagłówki wzorca mają wagę 500, nie 600 (POMIAR 0.1). Satoshi jest u nas statyczny dokładnie w tej wadze — inna waga zeszłaby na syntezę przeglądarki. */
@@ -183,7 +199,7 @@
   --interlinia-lead: 1.5556; /** Interlinia zdania prowadzącego = 28 px przy piśmie 18 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 768 / 1023 / 1024 / 1025 / 1280 / 1440 / 1600; przedmiot: cztery bloki dwukolumnowe tekst : media). */
   --tracking-naglowek: -0.1875rem; /** Tracking H1 = −3 px przy ≥ 1440 (POMIAR 0.4/0.7). ⚠ ADR-041 zakładał, że −3 px obowiązuje na WSZYSTKICH progach, i zapisał to jako pozycję otwartą. Pomiar zamyka ją: tracking JEST progowy, patrz `naglowek-srednie` i `naglowek-male`. Nie jest też stały w `em`: −3/70 = −0,043em, −1,6/53 = −0,030em, −1/34 = −0,029em. */
   --tracking-wersalik: 0.04em; /** WYMAGANE przy text-transform: uppercase — bez tego kapitaliki zlewają się w blok. Zastosowanie w komponentach to zadanie 11 checklisty, poza zakresem WWW/038-bis; token wchodzi teraz, bo należy do skali. */
-  --tracking-naglowek-srednie: -0.1rem; /** Tracking H1 = −1,6 px w zakresie 810–1280 px (zmierzone). */
+  --tracking-naglowek-srednie: -0.1125rem; /** Tracking H1 = −1,8 px przy piśmie 72 px, czyli −0,025em (ADR-059). Poprzednio −1,6 px przy 80 px. Wzorzec trzyma tracking STAŁY W `em` na całej skali; pasmo pośrednie idzie za tą regułą. */
   --tracking-naglowek-male: -0.0625rem; /** Tracking H1 = −1 px przy ≤ 768 px (zmierzone). */
   /**
    * Tracking H2 poniżej 768 px = −0,75 px przy piśmie 30 px, czyli także −0,025em. Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
@@ -197,6 +213,7 @@
    * ⚠ BEZ TEGO TOKENA ZMIANA ROZMIARU H2 BYŁABY WADĄ, NIE POPRAWKĄ. Do 04.09 H2 na szerokim kadrze brało `tracking.naglowek` = −3 px — wartość zmierzoną dla H1 o rozmiarze 70 px w POMIARZE 0.4/0.7. Na nagłówku 48 px te same −3 px dają −0,0625em, czyli ponad dwa i pół raza ciaśniej niż u wzorca. Rozmiar i tracking są tu JEDNĄ decyzją i wchodzą razem.
    */
   --tracking-naglowek-sekcji: -0.075rem;
+  --tracking-naglowek-sekcji-srednie: -0.05625rem; /** Tracking H2 = −0,9 px przy piśmie 36 px, czyli −0,025em (ADR-059). Ta sama reguła co wyżej. */
   --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). UWAGA: 03-typografia.css paczki niesie --szerokosc-tekstu: 68ch dla tego samego zastosowania — rozjazd zgłoszony, nierozstrzygnięty; wchodzi dopiero z zadaniem 12, które jest poza zakresem WWW/038-bis. */
   --wymiar-miara-kolumny: 50rem; /** Kolumna prozy = 800 px (POMIAR 0.3, 8 wystąpień). Poprzednio 38rem = 608 px. */
   --wymiar-kontener-strony: 90rem; /** Kontener treści = 1440 px (POMIAR 0.3, 16 wystąpień). Poprzednio 70rem = 1120 px. */
@@ -287,6 +304,14 @@
    * ⚠ TO TRZECI KONTENER WZORCA, NIE POMYŁKA W ODCZYCIE. Strona wzorca ma ich kilka i każdy pełni inną rolę: 1280 px trzyma pasek i siatki kart, 1024 / 896 px miary tekstu sekcyjnego, a 1200 px — bloki feature. Sprawdzone bisekcją: przy 1280, 1440 i 1600 blok ma niezmiennie 1200 px, czyli kontener jest ZAMKNIĘTY, a nie liczony od kadru. Wcięcie boczne 40 px poniżej progu odtwarza wtedy zmierzone szerokości co do piksela: 390 − 80 = 310, 810 − 80 = 730, 768 − 80 = 688.
    */
   --wymiar-kontener-filaru: 75rem;
+  /**
+   * Odstęp kart w siatkach na kadrze szerokim = 32 px. ⚠ TO JEST DECYZJA WŁAŚCICIELA, NIE POMIAR — i dlatego stoi w osobnym tokenie, a nie w `odstep-5`.
+   * 
+   * Pomiar wzorca daje 16 px i tyle miały wszystkie nasze siatki po ADR-054 i ADR-056. Audyt na żywo (WWW/084) pokazał, że przy tej wartości karty na jasnym czytają się jak jeden blok z liniami w środku; zlecenie żąda co najmniej 24 px i wskazuje drabinę. Z drabiny 1g (8 · 16 · 32 · 40 · 80 · 160 · 240) najbliższą wartością spełniającą próg jest 32 — 24 px na tej drabinie NIE WYSTĘPUJE, więc wybór 32 jest jedyny, jeśli obie reguły mają obowiązywać.
+   * 
+   * ⚠ SKUTEK UBOCZNY, KTÓRY JEST ZYSKIEM: 32 px przekracza próg 30 px, na którym stoi TRZECI mechanizm rozdziału z ADR-038 — karty odzyskują rozdział KOMPOZYCJĄ, którego nie miały przy 16 px (patrz ADR-054, gdzie brak kompozycji wymusił obrys).
+   */
+  --wymiar-odstep-siatki-kart: 2rem;
   --kroj-naglowek: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój NAGŁÓWKÓW = ten sam Inter (ADR-044). ⚠ ADR-040 przypisał tu Satoshi na podstawie POMIARU 0.1, który MYLNIE opisał Satoshi jako krój nagłówkowy. Pomiar CDP na wzorcu: H1 i H2 renderują się jako `Inter Medium`, rodzina zadeklarowana to `Inter` i `Inter-Medium`. Token ZOSTAJE osobny mimo równej wartości — nagłówki i proza to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. */
   --kroj-plakietka: "Satoshi", "Satoshi zapasowy", system-ui, sans-serif; /** Krój PLAKIETKI (ADR-044). Satoshi Medium 2.000, public/fonts/satoshi-medium.woff2, 17,3 kB, źródło fontshare.com. POMIAR: wzorzec używa Satoshi na DOKŁADNIE DWÓCH elementach — „Get 3 Free month" i „on Pro plan", oba 12 px, waga 700, barwa #070806. To jest ta sama plakietka, którą POMIAR 0.1 opisał w skali (12 px / 700 / interlinia 1,20). Kontrola pozytywna zera: 2 elementy w Satoshi wobec 257 w Interze — dwójka jest wynikiem, nie zerem narzędzia. */
   /**

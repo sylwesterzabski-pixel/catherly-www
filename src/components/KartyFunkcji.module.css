@@ -141,8 +141,15 @@
 
   .siatka {
     grid-template-columns: repeat(2, 1fr);
-    /* 16 px — odstęp siatek wzorca od progu układu. */
-    gap: var(--wymiar-odstep-5);
+    /* ⚠ 32 px, NIE 16 — DECYZJA WŁAŚCICIELA, NIE POMIAR (ADR-059).
+       Pomiar wzorca daje 16 px i tyle tu stało. Audyt na żywo (WWW/084)
+       pokazał, że przy tej wartości karty czytają się jak jeden blok
+       z liniami w środku; zlecenie żąda co najmniej 24 px z drabiny 1g,
+       a 24 na tej drabinie nie występuje — 32 jest jedyną wartością
+       spełniającą oba warunki. Zysk uboczny: 32 przekracza próg 30 px
+       trzeciego mechanizmu ADR-038, więc karty odzyskują rozdział
+       KOMPOZYCJĄ. Liczba stoi w JEDNYM tokenie dla wszystkich siatek. */
+    gap: var(--wymiar-odstep-siatki-kart);
   }
 }
 

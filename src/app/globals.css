@@ -207,6 +207,17 @@
   letter-spacing: var(--tracking-naglowek-sekcji-male);
 }
 
+/* ⚠ STOPIEŃ POŚREDNI DLA PASMA 768–1279 (ADR-059) — i to jest pasmo,
+   którego wzorzec NIE POKAZUJE. Jego próg leży przy 1024 i od niego trzyma
+   pełne 96/48; nasz układ dochodzi do pełnej skali dopiero przy 1280, więc
+   między 768 a 1279 mieliśmy dotąd 80/48 — H1 o krok niżej, a H2 już
+   w pełni. Na kadrze 1190, którym pracuje właściciel, dawało to nagłówki
+   sekcji równe niemal połowie H1 zamiast zmierzonej połowy dokładnej.
+
+   Pasmo dostaje TRZY CZWARTE skali pełnej: 96 × 0,75 = 72 i 48 × 0,75 = 36.
+   Relacja H1 : H2 wynosi wtedy dokładnie 2,00 — czyli krok skali zmierzony
+   u wzorca obowiązuje także tam, gdzie wzorca nie ma. Tracking idzie za
+   regułą wzorca (stały −0,025em): −1,8 px przy 72 i −0,9 px przy 36. */
 @media (min-width: 48.0625rem) {
   :is(h1) {
     font-size: var(--tekst-h1-srednie);
@@ -214,17 +225,28 @@
   }
 
   :is(h2) {
-    font-size: var(--tekst-h2);
+    font-size: var(--tekst-h2-srednie);
     /* 1,25 — zmierzone 60 px przy piśmie 48 px, 5 z 5 nagłówków sekcji. */
     line-height: var(--interlinia-naglowek-sekcji);
-    letter-spacing: var(--tracking-naglowek-sekcji);
+    letter-spacing: var(--tracking-naglowek-sekcji-srednie);
   }
 }
 
-@media (min-width: 90rem) {
+/* ⚠ PRÓG PEŁNEJ SKALI ZSZEDŁ Z 90rem NA 80rem (1440 → 1280) — świadomie
+   i tylko dla TYPOGRAFII. Progi UKŁADU (siatki, kontenery) zostają przy
+   90rem; rozdzielenie jest celowe, bo pełna skala pisma mieści się już
+   przy 1280, a przestawienie progów układu ruszyłoby każdą siatkę
+   w serwisie. Dwa progi, dwie decyzje — zapisane, żeby nikt ich potem
+   nie „ujednolicił". */
+@media (min-width: 80rem) {
   :is(h1) {
     font-size: var(--tekst-h1);
     letter-spacing: var(--tracking-naglowek);
+  }
+
+  :is(h2) {
+    font-size: var(--tekst-h2);
+    letter-spacing: var(--tracking-naglowek-sekcji);
   }
 }
 

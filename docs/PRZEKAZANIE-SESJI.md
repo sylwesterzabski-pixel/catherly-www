@@ -425,6 +425,71 @@ rozstrzygnięcie 5).
    axe 90 · LCP `/funkcje` mediana 36 ms, `/funkcje/pozyskiwanie` 28 ms,
    element `h1` na obu · ESLint bez nowych ostrzeżeń (sprzątnięte
    `tObrazy` i `indeks` po zdjęciu kadrów).
+   **WWW/084 wykonane 2026-09-04** — push `ed5b421` + **ADR-059**.
+   Pas piksela: kadr właściciela 1190, stopień pośredni typografii,
+   życie bez zdjęć.
+   **CZWARTY PROJEKT e2e `wlasciciel-1190` (1190 × 900).** 1190 leży
+   w paśmie, którego ŻADEN z trzech nie reprezentuje: `desktop` (1280)
+   jest po drugiej stronie progu typografii, `desktop-wide` (1440) po
+   drugiej stronie progu układu. Dowód mutacyjny **UNIKALNY**: mutacja
+   tokena pasma 768–1279 czerwieni WYŁĄCZNIE ten projekt, trzy pozostałe
+   zielone. Koszt: 3 projekty 73,6 s → 4 projekty ~102 s (1376
+   przypadków), czyli przyrost o jedną trzecią, nie dwukrotność.
+   ⚠ **TA SAMA MUTACJA W PIERWSZYM PODEJŚCIU MILCZAŁA — i tak wyszła
+   luka.** H1 podstron omijał stopień pośredni: `NaglowekPodstrony`
+   i `/cennik` brały od progu 48,0625rem od razu pełne 48 px, więc na
+   1190 tytuł podstrony miał 48, gdy nagłówki sekcji miały 36. **Drugi
+   raz w tej serii milcząca mutacja okazała się sygnałem o ZASIĘGU, nie
+   o strażniku** (pierwszy: T57).
+   **STOPIEŃ POŚREDNI 768–1279: H1 72 / H2 36** — trzy czwarte skali
+   pełnej, relacja H1 : H2 dokładnie **2,00** (krok zmierzony u wzorca
+   obowiązuje też tam, gdzie wzorca nie ma). Tracking stały −0,025em.
+   Próg pełnej skali 90rem → **80rem, TYLKO dla typografii**; progi
+   układu zostają przy 90rem — rozdzielenie celowe i zapisane.
+   Zmierzone: 390 → 48/30 · 810 → 72/36 · **1190 → 72/36** · 1440 → 96/48.
+   ⚠ **PASEK: WZORZEC MA GO CAŁKOWICIE PRZEZROCZYSTY** (rgba zerowe,
+   `backdrop-filter: none`) — i **przeniesienie tej wartości POGŁĘBIŁOBY
+   wadę**, bo jego strona jest cała ciemna, a u nas pod półprzezroczystą
+   pigułkę wjeżdża JASNA treść. To przypadek, w którym wierność pomiarowi
+   jest błędem, bo warunek brzegowy jest inny. Alfa 0,60 → 0,92;
+   prześwit (rachunek na barwach zmierzonych) **3,37:1 → 1,15:1**.
+   ⚠ Miara „ile elementów przecina pasek" NIE MOŻE dojść do zera przy
+   pasku pływającym — mierzalnym przedmiotem jest PRZEŚWIT.
+   **ODSTĘP SIATEK 16 → 32 jednym tokenem** (decyzja właściciela, nie
+   pomiar): 24 px na drabinie 1g NIE WYSTĘPUJE, więc 32 jest jedyną
+   wartością spełniającą oba warunki. Zysk uboczny: 32 przekracza próg
+   30 px trzeciego mechanizmu ADR-038 — karty odzyskują rozdział
+   KOMPOZYCJĄ, którego nie miały przy 16.
+   **SLOTY ZWIJAJĄ SIĘ (`:empty`), MECHANIKA ZOSTAJE.** Proporcja,
+   gradient, promień, obrys i rezerwa CLS czekają nietknięte; znika
+   wyłącznie stan pusty. W dniu, w którym kadr wejdzie, ramka wróci sama.
+   Tekst przechodzi na PEŁNĄ miarę przez `:has(.obraz:empty)`.
+   ⚠ Pierwsza wersja postawiła tę regułę tylko w bloku 90rem i strażnik
+   złapał to na 1190 i 1280: tekst zostawał na **547 z 1110** i **592
+   z 1200**.
+   Skutek: strona główna **10 631 → 8 930 px** (1440), podstrona filarowa
+   **10 464 → 7 696**; podróże **13,32 → 11,97 ekranu**, ból LIDERKI
+   7,08 → **6,53**.
+   ⚠ **AUDYT MAPY STREF CZYSTY — zlecenie spodziewało się defektu, pomiar
+   go nie potwierdza.** Żadna sekcja ciemna nie pokazuje oliwki; oliwka
+   występuje wyłącznie tam, gdzie strefa jasna ją przestawia, i MUSI tam
+   być (limonka na jasnym ma 1,43:1). Ciemne działa przez DZIEDZICZENIE,
+   nie deklarację — dopisanie `data-ton="ciemny"` pięciu sekcjom
+   dołożyłoby im poświatę dekoracyjną, której nie mają mieć.
+   **SMUGA BRĄZOWA → NEUTRALNA BIEL przy 8%** (zmierzona przed zmianą
+   jako ciepły brąz przy 35%); duch hero zmierzony i **bez zmian** —
+   biel przy 6%, czyli już czysta głębia. Stopka: dolne 48 px (spoza
+   drabiny) → 80.
+   **TRZY STRAŻNIKI PRZEPISANE, ŻADEN NIE OSŁABIONY:** asercja `@supports`
+   kroiła arkusz na PIERWSZYM bloku w pakiecie (klasa „pierwszy taki
+   w dokumencie", ta sama co przy hamburgerze) · asercje slotów dostały
+   gałąź dla stanu zwiniętego · test roli H1 porównuje odtąd z ŻYWYM `h2`
+   (największym widocznym — pierwszy na `/cennik` to nagłówek karty
+   planu, 16 px), a nie z tokenem, bo powtarzał model skali.
+   Pomiary: e2e **1376 passed / 12 skipped / 0 failed** (4 projekty) ·
+   axe **120** · bramki statyczne zielone · ESLint bez nowych ostrzeżeń ·
+   LCP przy 1190 mediana **28 ms** · poza kadrem 0, nakładki 0, panorama
+   brak na wszystkich czterech kadrach.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.

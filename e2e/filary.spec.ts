@@ -130,7 +130,28 @@ test("K4: tekst po LEWEJ na wszystkich filarach; DOM zawsze tekst przed obrazem"
     const rt = await tekst.boundingBox();
     const ro = await obraz.boundingBox();
     expect(rt, `${klucz}: kolumna tekstu ma ramkę`).not.toBeNull();
-    expect(ro, `${klucz}: kolumna obrazu ma ramkę`).not.toBeNull();
+
+    /* ⚠ SLOT MOŻE BYĆ ZWINIĘTY — i to jest STAN ZAMIERZONY (ADR-059).
+       Dopóki nie ma fotografii, pusta ramka schodzi z układu (`:empty`),
+       więc nie ma prostokąta do zmierzenia. Test nie może wtedy pytać
+       o jej położenie; pyta o rzecz, która ma wtedy obowiązywać:
+       czy kolumna tekstu zajmuje PEŁNĄ miarę wnętrza. Zwinięcie slotu,
+       które zostawia tekst na jednej trzeciej, jest defektem — i tę
+       właśnie różnicę ta gałąź mierzy. */
+    if (ro === null) {
+      const pelnaMiara = await uklad.evaluate((el) => {
+        const dz = [...el.children].find((c) => (c as HTMLElement).offsetParent !== null);
+        if (!dz) return null;
+        return { tekst: Math.round(dz.getBoundingClientRect().width),
+          uklad: Math.round(el.getBoundingClientRect().width) };
+      });
+      expect(pelnaMiara, `${klucz}: przy zwiniętym slocie widać kolumnę tekstu`).not.toBeNull();
+      expect(
+        pelnaMiara!.tekst,
+        `${klucz}: slot zwinięty → tekst na PEŁNEJ mierze (${pelnaMiara!.tekst} z ${pelnaMiara!.uklad})`,
+      ).toBeGreaterThanOrEqual(pelnaMiara!.uklad - 1);
+      continue;
+    }
 
     /* DOM: tekst przed obrazem — na obu kadrach, bez wyjątku. */
     const tekstPierwszyWDom = await uklad.evaluate((el) => {

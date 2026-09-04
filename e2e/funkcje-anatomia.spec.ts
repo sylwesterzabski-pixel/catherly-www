@@ -19,23 +19,51 @@ test("anatomia /funkcje: H1 w roli PODSTRONY (skala nagłówka sekcji)", async (
   page,
 }, testInfo) => {
   await page.goto("/funkcje");
-  const zmierzone = await page.locator("h1").first().evaluate((el) => {
-    const s = getComputedStyle(el);
-    const k = getComputedStyle(document.documentElement);
-    const px = (n: string) => Math.round(parseFloat(k.getPropertyValue(n)) * 16);
+  /* ⚠ PORÓWNANIE Z ŻYWYM `h2` NA TEJ SAMEJ STRONIE, NIE Z TOKENEM.
+     Pierwsza wersja brała oczekiwany rozmiar z `--tekst-h2` albo
+     `--tekst-h2-male` — czyli z DWÓCH szczebli. Gdy ADR-059 dołożył
+     stopień pośredni dla pasma 768–1279, model skali wpisany w test
+     przestał odpowiadać rzeczywistości i test zaczął upadać na kadrze
+     1190 przy poprawnej stronie. To jest ta sama klasa co „asercja
+     porównująca z wartością GLOBALNĄ": test powtarzał skalę zamiast
+     mierzyć RELACJĘ.
+
+     Przedmiotem jest zdanie „tytuł podstrony ma rozmiar nagłówka
+     SEKCJI, a nie hero" — więc obie strony porównania czytamy
+     z wyrenderowanej strony: H1 i pierwszy widoczny `h2`. Taki test
+     przeżyje każdą zmianę skali i upadnie dokładnie wtedy, gdy relacja
+     się złamie. */
+  const zmierzone = await page.evaluate(() => {
+    const h1 = document.querySelector("h1");
+    /* ⚠ NAJWIĘKSZY widoczny `h2`, nie pierwszy. Pierwszy `h2` na
+       `/cennik` to nagłówek KARTY PLANU (16 px), a nie nagłówek sekcji —
+       porównanie z nim dawało „H1 = 16 px" i upadało przy poprawnej
+       stronie. Rolę nagłówka sekcji niesie największy stopień skali, więc
+       to jego szukamy; ta sama metoda, którą mierzony był wzorzec. */
+    const h2 = [...document.querySelectorAll("h2")]
+      .filter((e) => e.getBoundingClientRect().height > 0)
+      .sort(
+        (a, b) =>
+          parseFloat(getComputedStyle(b).fontSize) -
+          parseFloat(getComputedStyle(a).fontSize),
+      )[0];
+    const korzen = getComputedStyle(document.documentElement);
     return {
-      rozmiar: Math.round(parseFloat(s.fontSize)),
-      h2: px("--tekst-h2"),
-      h2Male: px("--tekst-h2-male"),
-      h1Hero: px("--tekst-h1"),
+      h1: h1 ? Math.round(parseFloat(getComputedStyle(h1).fontSize)) : null,
+      h2: h2 ? Math.round(parseFloat(getComputedStyle(h2).fontSize)) : null,
+      h1Hero: Math.round(parseFloat(korzen.getPropertyValue("--tekst-h1")) * 16),
     };
   });
-  const oczekiwany =
-    testInfo.project.name === "mobile-390" ? zmierzone.h2Male : zmierzone.h2;
+  expect(zmierzone.h1, "H1 istnieje").not.toBeNull();
+  expect(zmierzone.h2, "nagłówek sekcji istnieje (inaczej nie ma z czym porównać)").not.toBeNull();
   expect(
-    zmierzone.rozmiar,
-    `${testInfo.project.name}: H1 indeksu = skala H2 (${oczekiwany} px), nie hero (${zmierzone.h1Hero} px)`,
-  ).toBe(oczekiwany);
+    zmierzone.h1,
+    `${testInfo.project.name}: H1 podstrony = rozmiar nagłówka sekcji (${zmierzone.h2} px)`,
+  ).toBe(zmierzone.h2);
+  expect(
+    zmierzone.h1,
+    `${testInfo.project.name}: H1 podstrony NIE bierze skali hero (${zmierzone.h1Hero} px)`,
+  ).not.toBe(zmierzone.h1Hero);
 });
 
 for (const trasa of PODSTRONY) {
@@ -89,7 +117,23 @@ test("anatomia modułów: tekst po LEWEJ na wszystkich, zebra zdjęta", async ({
     const rt = await tekst.boundingBox();
     const rs = await slot.boundingBox();
     expect(rt, `moduł ${i}: kolumna tekstu ma ramkę`).not.toBeNull();
-    expect(rs, `moduł ${i}: slot ma ramkę`).not.toBeNull();
+
+    /* ⚠ SLOT ZWINIĘTY = STAN ZAMIERZONY (ADR-059) — patrz ta sama gałąź
+       w `filary.spec.ts`. Gdy nie ma fotografii, pusta ramka schodzi
+       z układu, a asercją staje się PEŁNA MIARA kolumny tekstu. */
+    if (rs === null) {
+      const m = await u.evaluate((el) => {
+        const dz = [...el.children].find((c) => (c as HTMLElement).offsetParent !== null);
+        return dz ? { tekst: Math.round(dz.getBoundingClientRect().width),
+          uklad: Math.round(el.getBoundingClientRect().width) } : null;
+      });
+      expect(m, `moduł ${i}: przy zwiniętym slocie widać kolumnę tekstu`).not.toBeNull();
+      expect(
+        m!.tekst,
+        `moduł ${i}: slot zwinięty → tekst na PEŁNEJ mierze (${m!.tekst} z ${m!.uklad})`,
+      ).toBeGreaterThanOrEqual(m!.uklad - 1);
+      continue;
+    }
     if (testInfo.project.name === "mobile-390") {
       /* Kadr wąski: kolumny jedna pod drugą, tekst wyżej. */
       expect(rt!.y, `${testInfo.project.name} moduł ${i}: tekst NAD slotem`).toBeLessThan(rs!.y);

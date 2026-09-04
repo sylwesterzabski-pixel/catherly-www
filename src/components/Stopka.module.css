@@ -17,14 +17,21 @@
   /* Jedyny rozdział stopki od treści — patrz uwaga wyżej. */
   border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
   /* Odstęp sekcji progowany od ADR-049 — patrz Filar.module.css. */
-  padding-block: var(--wymiar-odstep-sekcji-male) 3rem;
+  /* ⚠ DOLNE 48 px ZDJĘTE — wartość spoza drabiny 1g (ADR-059, KROK 4d).
+     Rama końcowa strony miała odstępy 160/48 na kadrze szerokim i 80/48
+     na wąskim; 48 nie występuje na drabinie wzorca (8 · 16 · 32 · 40 ·
+     80 · 160 · 240), więc dół stopki oddychał inaczej niż wszystko nad
+     nim. Wchodzi 80 px — ten sam szczebel, który niesie rytm sekcji na
+     kadrze wąskim, czyli dół strony domyka się tą samą miarą, którą
+     strona się otwiera. */
+  padding-block: var(--wymiar-odstep-sekcji-male);
   padding-inline: var(--wymiar-wciecie-tresci-male);
   font-size: var(--tekst-xs);
 }
 
 @media (min-width: 48.0625rem) {
   .stopka {
-    padding-block: var(--wymiar-odstep-sekcji) 3rem;
+    padding-block: var(--wymiar-odstep-sekcji) var(--wymiar-odstep-sekcji-male);
     padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 }

@@ -89,8 +89,14 @@
 
 /* Poświata radialna (ADR-032, krok 2 zlecenia WWW/040) — dekoracja
    tła, aria-neutralna, nie niesie treści i nie stanowi granicy.
-   Barwa idzie przez token `--kolor-dekoracja-poswiata` i color-mix
-   z alfą 35%: surowy zapis kanałowy z alfą nie przeszedłby lintera, a alfa
+   ⚠ BARWA I ALFA ZMIENIONE (ADR-059): token poświaty zszedł z brązu na
+   neutralną biel, a mieszanie z 35% na 8%. Zmierzone przed zmianą: smuga
+   w tle tej sekcji miała `color(srgb 0,565 0,373 0,278 / 0,35)`, czyli
+   wyraźnie ciepły, brązowy odcień — poza paletą, która po ADR-038 jest
+   neutralna i limonkowa, więc czytała się jako zabrudzenie, nie głębia.
+   Osiem procent to ta sama alfa, którą ma rdzeń poświaty hero z pomiaru
+   wzorca; obie dekoracje mówią odtąd jednym językiem.
+   Barwa idzie przez token `--kolor-dekoracja-poswiata` i color-mix: surowy zapis kanałowy z alfą nie przeszedłby lintera, a alfa
    jest tu górną granicą podaną w zleceniu, nie wartością dobraną.
    Selektor niesie `[data-ton]`, żeby swoistość (0,2,0) wygrała
    z regułą tonu (0,1,0) niezależnie od kolejności arkuszy. */
@@ -98,7 +104,7 @@
   background:
     radial-gradient(
       ellipse 70% 80% at 30% 70%,
-      color-mix(in srgb, var(--kolor-dekoracja-poswiata) 35%, transparent),
+      color-mix(in srgb, var(--kolor-dekoracja-poswiata) 8%, transparent),
       transparent
     ),
     var(--kolor-rola-tlo-strony);

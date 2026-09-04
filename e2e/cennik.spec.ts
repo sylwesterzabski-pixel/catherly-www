@@ -320,12 +320,32 @@ test("W1: @supports selector(:has(*)) w zbudowanym CSS", async ({
   expect(css, "bramkowanie :has() obecne").toContain(
     "@supports selector(:has(*))",
   );
-  // Baza: .przelacznik { display: none } POZA blokiem @supports.
-  const przedSupports = css.slice(0, css.indexOf("@supports selector"));
+  /* Baza: .przelacznik { display: none } POZA swoim blokiem @supports.
+
+     ⚠ ASERCJA PRZEPISANA (ADR-059) — stała tu wersja krojąca arkusz na
+     PIERWSZYM `@supports selector` w całym pakiecie. Działało to dopóty,
+     dopóki blok przełącznika był jedyny; gdy ADR-059 dołożył `:has()`
+     przy zwijaniu slotów w filarach i modułach, „pierwszy" przestał
+     znaczyć „ten". To jest ta sama klasa, którą `ruch.spec.ts` zapisał
+     przy hamburgerze: DODANIE DRUGIEGO ELEMENTU TEGO SAMEGO TYPU
+     unieważnia każdą asercję celującą w „pierwszy taki w dokumencie" —
+     i robi to CICHO, bo asercja nadal ma na czym pracować.
+
+     Naprawa celuje w RELACJĘ, nie w pozycję: baza przełącznika ma stać
+     przed blokiem `@supports`, KTÓRY DOTYCZY PRZEŁĄCZNIKA. */
+  const bazaPrzelacznika = css.search(/przelacznik__[\w-]+\{display:none\}/);
+  expect(bazaPrzelacznika, "baza przełącznika display:none istnieje").toBeGreaterThan(-1);
+
+  let blokPrzelacznika = -1;
+  for (let i = css.indexOf("@supports selector"); i !== -1; i = css.indexOf("@supports selector", i + 1)) {
+    const okno = css.slice(i, i + 4000);
+    if (/przelacznik__|okresRocznie|okresMiesiecznie/.test(okno)) { blokPrzelacznika = i; break; }
+  }
+  expect(blokPrzelacznika, "blok @supports przełącznika znaleziony").toBeGreaterThan(-1);
   expect(
-    przedSupports,
-    "baza przełącznika display:none przed @supports",
-  ).toMatch(/przelacznik__[\w-]+\{display:none\}/);
+    bazaPrzelacznika,
+    "baza przełącznika display:none PRZED jego własnym blokiem @supports",
+  ).toBeLessThan(blokPrzelacznika);
 });
 
 // Strażnik „znak w znak": messages ↔ content/<jezyk>/cennik.md
@@ -444,32 +464,50 @@ test("anatomia /cennik: H1 podstrony bierze skalę NAGŁÓWKA SEKCJI, nie hero",
   page,
 }, testInfo) => {
   await page.goto("/cennik");
-  const h1 = page.locator("h1").first();
-  await expect(h1, "H1 podstrony istnieje").toBeVisible();
-  const zmierzone = await h1.evaluate((el) => {
-    const s = getComputedStyle(el);
+  /* ⚠ PORÓWNANIE Z ŻYWYM `h2` NA TEJ SAMEJ STRONIE, NIE Z TOKENEM.
+     Pierwsza wersja brała oczekiwany rozmiar z `--tekst-h2` albo
+     `--tekst-h2-male` — czyli z DWÓCH szczebli. Gdy ADR-059 dołożył
+     stopień pośredni dla pasma 768–1279, model skali wpisany w test
+     przestał odpowiadać rzeczywistości i test zaczął upadać na kadrze
+     1190 przy poprawnej stronie. To jest ta sama klasa co „asercja
+     porównująca z wartością GLOBALNĄ": test powtarzał skalę zamiast
+     mierzyć RELACJĘ.
+
+     Przedmiotem jest zdanie „tytuł podstrony ma rozmiar nagłówka
+     SEKCJI, a nie hero" — więc obie strony porównania czytamy
+     z wyrenderowanej strony: H1 i pierwszy widoczny `h2`. Taki test
+     przeżyje każdą zmianę skali i upadnie dokładnie wtedy, gdy relacja
+     się złamie. */
+  const zmierzone = await page.evaluate(() => {
+    const h1 = document.querySelector("h1");
+    /* ⚠ NAJWIĘKSZY widoczny `h2`, nie pierwszy. Pierwszy `h2` na
+       `/cennik` to nagłówek KARTY PLANU (16 px), a nie nagłówek sekcji —
+       porównanie z nim dawało „H1 = 16 px" i upadało przy poprawnej
+       stronie. Rolę nagłówka sekcji niesie największy stopień skali, więc
+       to jego szukamy; ta sama metoda, którą mierzony był wzorzec. */
+    const h2 = [...document.querySelectorAll("h2")]
+      .filter((e) => e.getBoundingClientRect().height > 0)
+      .sort(
+        (a, b) =>
+          parseFloat(getComputedStyle(b).fontSize) -
+          parseFloat(getComputedStyle(a).fontSize),
+      )[0];
     const korzen = getComputedStyle(document.documentElement);
     return {
-      rozmiar: Math.round(parseFloat(s.fontSize)),
-      h2: Math.round(parseFloat(korzen.getPropertyValue("--tekst-h2")) * 16),
-      h2Male: Math.round(parseFloat(korzen.getPropertyValue("--tekst-h2-male")) * 16),
+      h1: h1 ? Math.round(parseFloat(getComputedStyle(h1).fontSize)) : null,
+      h2: h2 ? Math.round(parseFloat(getComputedStyle(h2).fontSize)) : null,
       h1Hero: Math.round(parseFloat(korzen.getPropertyValue("--tekst-h1")) * 16),
     };
   });
-  /* ⚠ PORÓWNANIE Z TOKENEM, NIE Z LICZBĄ WPISANĄ TUTAJ. Gdyby stała tu
-     liczba, zmiana skali w tokenach przechodziłaby bokiem albo zapalała
-     test bez powodu. Przedmiotem asercji jest RELACJA: tytuł podstrony
-     ma rozmiar nagłówka sekcji, a NIE rozmiar hero — to jest ustalenie
-     z pomiaru wzorca (`/pricing`: 48 px przy hero 96 px). */
-  const oczekiwany =
-    testInfo.project.name === "mobile-390" ? zmierzone.h2Male : zmierzone.h2;
+  expect(zmierzone.h1, "H1 istnieje").not.toBeNull();
+  expect(zmierzone.h2, "nagłówek sekcji istnieje (inaczej nie ma z czym porównać)").not.toBeNull();
   expect(
-    zmierzone.rozmiar,
-    `${testInfo.project.name}: H1 podstrony = skala H2 (${oczekiwany} px), nie hero (${zmierzone.h1Hero} px)`,
-  ).toBe(oczekiwany);
+    zmierzone.h1,
+    `${testInfo.project.name}: H1 podstrony = rozmiar nagłówka sekcji (${zmierzone.h2} px)`,
+  ).toBe(zmierzone.h2);
   expect(
-    zmierzone.rozmiar,
-    `${testInfo.project.name}: H1 podstrony NIE bierze skali hero`,
+    zmierzone.h1,
+    `${testInfo.project.name}: H1 podstrony NIE bierze skali hero (${zmierzone.h1Hero} px)`,
   ).not.toBe(zmierzone.h1Hero);
 });
 

@@ -83,3 +83,18 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* ⚠ SLOT ZWIJA SIĘ, GDY NIE MA CZYM GO WYPEŁNIĆ (ADR-059).
+   Decyzja właściciela: „życie bez zdjęć" — dopóki fotografii nie ma,
+   strona ma się domykać na treści, a nie pokazywać pustych prostokątów.
+   MECHANIKA SLOTU ZOSTAJE W CAŁOŚCI: proporcja, gradient, promień,
+   obrys i rezerwa CLS czekają nietknięte; znika wyłącznie STAN PUSTY.
+
+   `:empty` jest tu narzędziem właściwym, bo pyta o to, co naprawdę
+   rozstrzyga — czy w ramce cokolwiek jest. Warunek na propie w JS
+   trzeba by powtórzyć w czterech komponentach i w każdym można go
+   zapomnieć; selektor pyta DOM, więc w dniu, w którym kadr wejdzie,
+   ramka wróci sama, bez ani jednej zmiany w kodzie. */
+.kadr:empty {
+  display: none;
+}

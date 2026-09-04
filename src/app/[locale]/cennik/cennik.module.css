@@ -82,12 +82,26 @@
   }
 
   .naglowek h1 {
-    font-size: var(--tekst-h2);
+    font-size: var(--tekst-h2-srednie);
     line-height: var(--interlinia-naglowek-sekcji);
-    letter-spacing: var(--tracking-naglowek-sekcji);
+    letter-spacing: var(--tracking-naglowek-sekcji-srednie);
   }
 
   .potwierdzenia {
     padding-block: var(--wymiar-odstep-sekcji);
+  }
+}
+
+/* ⚠ STOPIEŃ POŚREDNI TAKŻE TUTAJ (ADR-059) — i to jest luka złapana przez
+   MUTACJĘ, KTÓRA SIĘ NIE ZAPALIŁA. Blok niżej ustawiał od progu 48,0625rem
+   od razu `--tekst-h2` (48 px), więc tytuł podstrony przeskakiwał stopień
+   pośredni: na kadrze 1190 miał 48 px, podczas gdy nagłówki sekcji miały
+   tam 36. Wykryte przy próbie dowiedzenia projektu 1190: mutacja tokena
+   pasma pośredniego nie ruszyła tej strony, bo strona tego tokena nie
+   czytała. Milcząca mutacja znowu okazała się sygnałem o zasięgu. */
+@media (min-width: 80rem) {
+  .naglowek h1 {
+    font-size: var(--tekst-h2);
+    letter-spacing: var(--tracking-naglowek-sekcji);
   }
 }
