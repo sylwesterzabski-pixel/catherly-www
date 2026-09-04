@@ -258,6 +258,62 @@ rozstrzygnięcie 5).
    ⚠ **PODRÓŻE: strona SKRÓCIŁA się o 251 px** (13,26 → 12,97 ekranu),
    czyli batch odzyskał blisko połowę przyrostu z A3. Największa luka
    3,85 → 3,89 — praktycznie bez zmian.
+   **WWW/081 wykonane 2026-09-04** — push `92d8d23` + **ADR-056**.
+   **T57 ZAMKNIĘTE**: pełny zestaw e2e dostał trzeci projekt
+   **`desktop-wide` 1440 × 900**. Dowód OBUSTRONNY w jednym przebiegu: ta
+   sama mutacja `order: 2` w bloku `@media (min-width: 90rem)`, która
+   wcześniej MILCZAŁA, daje teraz **czerwień w `desktop-wide` przy
+   ZIELONYCH `mobile-390` i `desktop`**; cofnięcie → 27 passed.
+   ⚠ **KOSZT BRAMKI ZMIERZONY, NIE OSZACOWANY:** 49,24 s i 50,46 s przed,
+   **83,20 s i 110,06 s** po (672 → **1000 przypadków**). Rozrzut po
+   zmianie jest szerszy (1,32× wobec 1,02×), więc uczciwą postacią kosztu
+   jest **„około dwukrotność", nie jedna liczba**. Drogę (c) — przestawienie
+   kadru istniejącego projektu na 1440 — ODRZUCONO: byłaby darmowa
+   czasowo, ale przesunęłaby CAŁY dzisiejszy dowód, bo wszystkie asercje
+   desktopowe stoją na 1280.
+   ⚠ Przy pierwszym przebiegu w nowym projekcie wyszło, że komunikaty
+   strażnika filarów niosły wpisane na sztywno słowo „desktop" — przy
+   upadku na 1440 kierowałyby szukającego NA ZŁY KADR. Etykiety biorą
+   teraz nazwę projektu z `testInfo`.
+   **DUET K3 WRÓCIŁ** (rozstrzygnięcie koordynatora: głos ważniejszy niż
+   liczba). Zmierzone na obu kadrach: kropka S3 i zdanie prowadzące filaru
+   po **20 px / 600**. Tokeny `tekst.lead` i `interlinia.lead` ZOSTAJĄ
+   i dostały użycie w tym samym batchu (cena karty planu), więc zasada
+   „ani jednego tokena bez użycia" jest spełniona bez wyjątku.
+   **BATCH A5** — cennik-skrót, obawy, zamknięcie:
+   karty planów wypełnienie 32 · promień 12 · **obrys przestaje być
+   przezroczysty** (pomiar odwrócił własny zapis „wzorzec kart nie
+   obrysowuje" — obrys jest na 21 z 21 kart) · cena 18/500/28 · gap 16/40.
+   ⚠ **PLAKIETKI WZORZEC NIE MA — ZERO SPRAWDZONE KONTROLĄ POZYTYWNĄ.**
+   Sonda zebrała **28** małych elementów z własnym tłem i promieniem;
+   wszystkie okazały się przyciskami, chipami panelu demo albo podpowiedzią
+   klawisza. Nasza plakietka „polecany" zostaje — nie ma czego przenieść.
+   ⚠ **AKORDEONU WZORZEC TEŻ NIE MA**: 0 `details`, 0 `aria-expanded`,
+   `cursor: auto` na czterech poziomach przodków pytania. Odpowiedzi są
+   tam schowane czymś, co NIE JEST ani `details`, ani ARIA — czyli
+   przeniesienie stamtąd mechaniki byłoby ZAMIANĄ DOSTĘPNOŚCI NA WYGLĄD.
+   Nasza mechanika zostaje; ze wzorca wzięte tylko odstępy z drabiny 1g
+   (wypełnienie 12 → 16, `summary` 4 → 8, promień 8 → 12, rytm 40 → 80/160).
+   ⚠ **ARIA I KLAWIATURA POTWIERDZONE POMIAREM, NIE DEKLARACJĄ:** 6 pozycji,
+   0 otwartych na starcie, `Tab` dochodzi do `summary` w **16 krokach**,
+   `Enter` otwiera (odpowiedź WIDOCZNA, fokus zostaje na `summary`),
+   drugi `Enter` zamyka. `aria-expanded` i `role` są `null` — **i tak ma
+   być**: natywny `details` niesie stan sam, a dokładanie ARIA do elementu
+   z semantyką wbudowaną częściej ją psuje, niż pomaga.
+   **BLOK ZAMKNIĘCIA**: rytm 80/160 (odstęp GÓRNY wchodzi z zera — u wzorca
+   to osobny blok, nie ogon sekcji nad nim), odstęp zdania od nagłówka 32.
+   ⚠ **PRZYCISKA NIE RUSZAM**: wzorzec ma etykietę 18 px, my 14 — ale nasze
+   CTA jest parą 1:1 z hero i pigułką nawigacji, a **wysokość 46,4 px, którą
+   ADR-052 wpisał do tokena wysokości paska, wychodzi WŁAŚNIE z tego
+   przycisku**. Zmiana w jednym z trzech miejsc rozspaja parę i przelicza
+   pasek — osobna decyzja, zgłoszona z liczbami.
+   ⚠ **PODRÓŻE +302 px** (12,97 → 13,32 ekranu), ale bóle i luka
+   praktycznie bez zmian (LIDERKA +0,06, luka +0,02): urósł ODDECH, nie
+   droga. Przyczyna w całości rytmiczna — obawy 40 → 80, zamknięcie 0 → 80.
+   ⚠ Numeracja sekcji w zleceniu `WWW/081` przesunięta o jeden wobec mapy
+   ADR-051 (S10/S11/S12 zamiast S11/S12/S13) — nazwy jednoznaczne, więc
+   wykonanie niezagrożone; odnotowane, żeby nie liczyć od przesuniętej
+   podstawy w następnym zleceniu.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.

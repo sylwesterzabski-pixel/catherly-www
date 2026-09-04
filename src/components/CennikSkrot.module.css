@@ -3,10 +3,28 @@
    zero px. Link celowo BEZ własnych kolorów: globals stylizuje
    a przez rolę link/link-aktywny (W1). */
 
-/* 2.6 — KARTY CENNIKA W GEOMETRII WZORCA (WWW/059, ADR-047).
-   Zmierzone: 3 kolumny × 370 px przy 1440, odstęp 30 px, promień 5 px,
+/* 2.6 — KARTY CENNIKA W GEOMETRII WZORCA (WWW/059, ADR-047) — ZAPIS
+   HISTORYCZNY: 3 kolumny × 370 px przy 1440, odstęp 30 px, promień 5 px,
    padding 35/40 px, tło = rola powierzchni, BEZ obrysu. Przy 390 jedna
-   kolumna 350 px, odstęp 30 px. */
+   kolumna 350 px, odstęp 30 px. Liczby z POMIARU 0.4/0.7 (`WWW/050-FINAL`).
+
+   ┌── ZMIERZONE CELOWANO 04.09.2026 (Proactiv, batch A5, ADR-056) ─────┐
+   │ karta      wypełnienie 32 px · promień 12 px · obrys 1 px          │
+   │ cena       18 px / 500 / interlinia 28, odstęp od góry 16 px       │
+   │ opis planu 14 px / 400 / interlinia 20, odstęp od ceny 16 px       │
+   │ wiersz listy 14 px / 400 / interlinia 20, odstęp wierszy 16 px     │
+   │ PLAKIETKA  NIE ISTNIEJE — patrz niżej                              │
+   └────────────────────────────────────────────────────────────────────┘
+
+   ⚠ PLAKIETKI WZORZEC NIE MA — I TO JEST ZERO SPRAWDZONE, NIE ZERO
+   NARZĘDZIA. Sonda zbierała KAŻDY mały element z własnym tłem, promieniem
+   i krótkim tekstem; znalazła ich 28 i wszystkie okazały się czym innym:
+   przyciski („Book a demo", „Get Started"), chipy w panelu demonstracyjnym
+   („Twitter post", „Email Campaign") i podpowiedź klawisza („esc").
+   Ani jednej plakietki przy karcie cennika. Nasza plakietka „polecany"
+   zostaje więc BEZ ZMIAN — nie ma czego z niej przenieść ani do czego
+   dostroić. Geometria plakietki, o którą pytało zlecenie, nie istnieje
+   po tamtej stronie. */
 .sekcja {
   /* Odstęp sekcji progowany od ADR-049 — patrz Filar.module.css. */
   padding-block: var(--wymiar-odstep-sekcji-male) 0;
@@ -26,20 +44,32 @@
 .plany {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.875rem;
-  margin: 0 0 1.25rem;
+  /* 40 px poniżej progu układu, 16 px od progu — ta sama para co
+     w siatce kart funkcji i w pasie ścieżek. Poprzednio 30 px na każdym
+     kadrze, wartość z POMIARU 0.4/0.7. */
+  gap: var(--wymiar-odstep-8);
+  margin: 0 0 var(--wymiar-odstep-5);
   padding: 0;
   list-style: none;
 }
 
 .plan {
   background: var(--kolor-rola-powierzchnia);
-  /* Obrys przezroczysty, nie brak obrysu — dzięki temu karta polecana
-     dostaje go bez zmiany wymiarów, a wszystkie trzy stoją równo.
-     Wzorzec kart nie obrysowuje; rozdział niesie PLAMA powierzchni. */
-  border: 0.0625rem solid transparent;
-  border-radius: 0.3125rem;
-  padding: 2.1875rem 2.5rem;
+  /* ⚠ OBRYS PRZESTAJE BYĆ PRZEZROCZYSTY — pomiar odwrócił własny zapis.
+     Stało tu: „Wzorzec kart nie obrysowuje; rozdział niesie PLAMA
+     powierzchni", a obrys był przezroczysty wyłącznie po to, żeby karta
+     polecana mogła go dostać bez zmiany wymiarów. Pomiar celowany
+     Proactiva pokazał obrys jednopikselowy na 21 z 21 kart — również
+     cennikowych. Mechanizm równych wymiarów zostaje bez zmian: karta
+     polecana nadal tylko PODMIENIA barwę obrysu, więc trzy karty stoją
+     równo jak dotąd.
+     Strefa jest CIEMNA (mapa ADR-051), więc `kreska` daje tu 1,60:1
+     wobec powierzchni karty — powyżej progu 1,30 z ADR-038. */
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  /* 12 px — dominanta promieni kart wzorca. Poprzednio 5 px. */
+  border-radius: var(--wymiar-promien-sredni);
+  /* 32 px — wypełnienie karty wzorca, 21 wystąpień. Poprzednio 35/40. */
+  padding: var(--wymiar-odstep-7);
   display: flex;
   flex-wrap: wrap; /* W6: 320 px, zoom 200%, teksty DE */
   justify-content: space-between;
@@ -48,11 +78,17 @@
 }
 
 .nazwa {
-  font-weight: 600;
+  font-weight: var(--waga-wyrozniona);
 }
 
 .cena {
   font-variant-numeric: tabular-nums;
+  /* 18 px / 500 / interlinia 28 — cena u wzorca. Poprzednio cena
+     dziedziczyła rozmiar prozy (16 px) i nie odróżniała się od nazwy
+     planu niczym poza układem. */
+  font-size: var(--tekst-lead);
+  font-weight: var(--waga-etykieta);
+  line-height: var(--interlinia-lead);
 }
 
 .interwal {
@@ -106,6 +142,7 @@
 
   .plany {
     grid-template-columns: repeat(3, 1fr);
+    gap: var(--wymiar-odstep-5);
   }
 }
 

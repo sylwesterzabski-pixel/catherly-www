@@ -3,12 +3,34 @@
    CTA 1:1 z parą interakcji K2 (Hero.module.css); promień z tokenu
    ADR-028. */
 
-/* 2.8 — FINAŁ CTA W UKŁADZIE WZORCA (WWW/060, ADR-047).
-   Zmierzone przy 1440: padding sekcji 0 góra · 135 px boki · 135 px dół;
-   nagłówek wyśrodkowany na 800 px szerokości; CTA pigułka 46,4 px
-   wysokości o promieniu 50 px, wyśrodkowana. Przy 390 boki 20 px. */
+/* 2.8 — FINAŁ CTA W UKŁADZIE WZORCA (WWW/060, ADR-047) — ZAPIS
+   HISTORYCZNY: padding sekcji 0 góra · 135 px boki · 135 px dół;
+   nagłówek wyśrodkowany na 800 px; CTA pigułka 46,4 px o promieniu 50 px.
+   Liczby z POMIARU 0.4/0.7 (`WWW/050-FINAL`).
+
+   ┌── ZMIERZONE CELOWANO 04.09.2026 (Proactiv, batch A5, ADR-056) ────┐
+   │ blok       1280 × 344 px, wcięcie boczne 32 px                    │
+   │ nagłówek   30 px / 700 / interlinia 36                            │
+   │ zdanie     16 px / 400 / interlinia 24, odstęp od nagłówka 32 px  │
+   │ podpis     14 px / 400 / interlinia 20                            │
+   │ przycisk   166 × 46 px · wypełnienie 8/16 · promień 6 · 18 / 500  │
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ PRZYCISKA NIE RUSZAM I MÓWIĘ DLACZEGO. Wzorzec ma etykietę 18 px,
+   my mamy 14 px, promień 6 wobec naszych 8. Nasze CTA jest jednak parą
+   1:1 z CTA hero (K2) i z pigułką nawigacji — wysokość 46,4 px, którą
+   ADR-052 wpisał do tokena wysokości paska, wychodzi WŁAŚNIE z tego
+   przycisku. Zmiana rozmiaru etykiety w jednym z trzech miejsc rozspaja
+   parę i przelicza pasek nawigacji, czyli jest osobną decyzją, nie
+   szczegółem batcha. Zgłoszone koordynatorowi z liczbami.
+   ⚠ Wysokość 46 px wzorca i nasze 46,4 px są w praktyce tą samą liczbą —
+   różnica bierze się z zaokrąglenia `min-block-size` w rem. */
 .sekcja {
-  padding-block: 0 var(--wymiar-wciecie-tresci);
+  /* Rytm sekcji progowany — 80 px na wąskim kadrze, 160 px od progu.
+     Poprzednio 0 góra i 135 px dół, czyli wartość spoza rytmu i spoza
+     drabiny 1g. Odstęp GÓRNY wchodzi, bo blok zamknięcia jest u wzorca
+     osobnym blokiem z własnym oddechem, a nie ogonem sekcji nad nim. */
+  padding-block: var(--wymiar-odstep-sekcji-male);
   padding-inline: var(--wymiar-wciecie-tresci-male);
   line-height: 1.6;
   text-align: center;
@@ -23,7 +45,9 @@
 }
 
 .zdanieProwadzace {
-  margin: 0 0 1.25rem;
+  /* 32 px — odstęp zdania od nagłówka zmierzony u wzorca (`margin-top`
+     zdania wynosi tam 32). Poprzednio 20 px, wartość spoza drabiny 1g. */
+  margin: 0 0 var(--wymiar-odstep-7);
   max-width: var(--wymiar-miara-akapitu);
   margin-inline: auto;
 }
@@ -56,7 +80,9 @@
 }
 
 .zdanie {
-  margin: 1rem 0 0;
+  /* 16 px — odstęp podpisu od przycisku. Wartość ta sama co dotąd,
+     token wchodzi na miejsce literału. */
+  margin: var(--wymiar-odstep-5) 0 0;
   color: var(--kolor-rola-tekst-drugorzedny);
   font-size: var(--tekst-xs);
 }
@@ -80,6 +106,7 @@
 
 @media (min-width: 48.0625rem) {
   .sekcja {
+    padding-block: var(--wymiar-odstep-sekcji);
     padding-inline: var(--wymiar-wciecie-tresci-srednie);
   }
 }

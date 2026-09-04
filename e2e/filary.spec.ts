@@ -104,6 +104,12 @@ test("K4: tekst po LEWEJ na wszystkich filarach; DOM zawsze tekst przed obrazem"
      odwrócenia kolumn (order, direction, kolejność w znaczniku,
      `grid-column`), a nie jeden wybrany mechanizm.
 
+     ⚠ KOMUNIKAT NIESIE NAZWĘ PROJEKTU, NIE SŁOWO „desktop". Od dołożenia
+     kadru szerokiego (ADR-056) projekty desktopowe są DWA, a etykieta
+     wpisana na sztywno meldowałaby „desktop" przy upadku na 1440 —
+     czyli kierowałaby szukającego na zły kadr. Zauważone przy pierwszym
+     przebiegu mutacyjnym w nowym projekcie.
+
      ⚠ CO ZOSTAJE BEZ ZMIAN: kolejność w DOM. Tekst ma stać przed obrazem
      w toku dokumentu — to jest własność czytana przez czytniki ekranu
      i przez kadr wąski, niezależna od tego, którą stroną leży kolumna. */
@@ -134,14 +140,14 @@ test("K4: tekst po LEWEJ na wszystkich filarach; DOM zawsze tekst przed obrazem"
     expect(tekstPierwszyWDom, `${klucz}: w DOM tekst przed obrazem`).toBe(true);
 
     if (testInfo.project.name === "mobile-390") {
-      expect(displayUkladu, `390 px (${klucz}): bez siatki`).toBe("block");
+      expect(displayUkladu, `${testInfo.project.name} (${klucz}): bez siatki`).toBe("block");
       /* Na wąskim kadrze kolumny stoją JEDNA POD DRUGĄ, tekst wyżej. */
-      expect(rt!.y, `390 px (${klucz}): tekst nad obrazem`).toBeLessThan(ro!.y);
+      expect(rt!.y, `${testInfo.project.name} (${klucz}): tekst nad obrazem`).toBeLessThan(ro!.y);
     } else {
-      expect(displayUkladu, `desktop (${klucz}): siatka`).toBe("grid");
+      expect(displayUkladu, `${testInfo.project.name} (${klucz}): siatka`).toBe("grid");
       /* ⚠ POŁOŻENIE, NIE `order`: lewa krawędź tekstu musi leżeć na lewo
          od lewej krawędzi obrazu — na KAŻDYM z czterech filarów. */
-      expect(rt!.x, `desktop (${klucz}): tekst po LEWEJ`).toBeLessThan(ro!.x);
+      expect(rt!.x, `${testInfo.project.name} (${klucz}): tekst po LEWEJ`).toBeLessThan(ro!.x);
     }
   }
 });

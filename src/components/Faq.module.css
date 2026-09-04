@@ -3,8 +3,34 @@
    natywny w currentColor (świadomie bez tokenu — zero nowych
    wartości; handoff E). */
 
+/* ┌── ZMIERZONE CELOWANO 04.09.2026 (Proactiv, batch A5, ADR-056) ────┐
+   │ akordeon   NIE ISTNIEJE — zero `details`, zero `aria-expanded`    │
+   │            na kontrolce, `cursor: auto` na wszystkich czterech    │
+   │            poziomach przodków pytania                             │
+   │ pytania    16 px / 700, wysokość wiersza 56 px                    │
+   │ rytm       kolejne pytania co 96 px → odstęp 40 px                │
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ ZERO SPRAWDZONE KONTROLĄ POZYTYWNĄ: ta sama sonda znalazła na tej
+   stronie 10 pytań, 8 przycisków i 28 małych elementów z tłem, więc umie
+   znajdować. Akordeonu tam po prostu nie ma — pytania stoją jako zwykłe
+   wiersze, a odpowiedzi nie są widoczne w toku (kontener 704 × 1000 na
+   dziesięć pytań, czyli ~100 px na pozycję).
+
+   ⚠ NASZA MECHANIKA ZOSTAJE — I JEST LEPSZA OD WZORCOWEJ, nie gorsza.
+   Zlecenie WWW/081 pkt b mówi wprost: brak odpowiednika → nasza mechanika
+   zostaje. Natywne `details`/`summary` dają rozwijanie bez JS, obsługę
+   klawiaturą i stan czytany przez czytniki; wzorzec chowa odpowiedzi bez
+   `details` i bez `aria-expanded`, czyli bez żadnego z tych trzech.
+   Przenoszenie stamtąd mechaniki byłoby zamianą dostępności na wygląd.
+   Ze wzorca bierzemy WYŁĄCZNIE odstępy — i tylko te, które leżą na
+   drabinie 1g. */
 .sekcja {
-  padding: 2.5rem 1rem;
+  /* Rytm sekcji progowany — 80 px na wąskim kadrze, 160 px od progu.
+     Poprzednio 40 px na każdej szerokości, czyli wartość spoza rytmu
+     sekcji, choć na drabinie 1g. */
+  padding-block: var(--wymiar-odstep-sekcji-male);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
 }
 
 .wnetrze {
@@ -30,22 +56,26 @@
 .lista details {
   background: var(--kolor-rola-powierzchnia);
   border: 0.0625rem solid var(--kolor-rola-kreska);
-  border-radius: var(--wymiar-promien);
-  padding: 0.75rem 1rem;
+  /* 12 px — dominanta promieni kart wzorca (ADR-054). Poprzednio 8 px. */
+  border-radius: var(--wymiar-promien-sredni);
+  /* 16 px — szczebel drabiny 1g. Poprzednio 12/16, a 12 px na drabinie
+     wzorca (8 · 16 · 32 · 40 · 80 · 160 · 240) nie występuje. */
+  padding: var(--wymiar-odstep-5);
 }
 
 .lista details + details {
-  margin-block-start: 0.5rem;
+  margin-block-start: var(--wymiar-odstep-2);
 }
 
 .lista summary {
   cursor: pointer;
-  font-weight: 600;
-  padding: 0.25rem 0;
+  font-weight: var(--waga-wyrozniona);
+  /* 8 px zamiast 4 — najgęstszy szczebel drabiny; 4 px to jej połowa. */
+  padding: var(--wymiar-odstep-2) 0;
 }
 
 .lista details p {
-  margin: 0.5rem 0 0.25rem;
+  margin: var(--wymiar-odstep-2) 0 0;
   max-width: var(--wymiar-miara-akapitu);
   color: var(--kolor-rola-tekst-drugorzedny);
 }

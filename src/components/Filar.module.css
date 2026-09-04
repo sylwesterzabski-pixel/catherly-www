@@ -29,6 +29,7 @@
    │ odstęp między blokami  320 px (≥1024) · 80 px (poniżej)            │
    │ nagłówek bloku  36 px / 700 / lh 40                                │
    │ zdanie prowadzące  18 px / 700 / lh 28, odstęp od nagłówka 8 px    │
+   │   (u nas 20 / 600 — duet K3 wraca decyzją, patrz przy .korzysc)   │
    │ lista konkretów    NIE ISTNIEJE — patrz niżej                      │
    └────────────────────────────────────────────────────────────────────┘
 
@@ -127,23 +128,29 @@
 }
 
 /* ZDANIE PROWADZĄCE.
-   ⚠ DUET Z KROPKĄ K3 ZERWANY — i to jest koszt, nie skutek uboczny.
-   Do 04.09 ten akapit komponował `duet` (20 px / 600) wspólnie z „kropką"
-   sekcji problemu i rytmu dnia; zapis z handoffu K4 mówił wprost, że obie
-   rzeczy mają mówić JEDNYM głosem z jednego miejsca. Pomiar celowany daje
-   dla zdania prowadzącego bloku feature 18 px / 700 / interlinia 28, więc
-   zlecenie WWW/080 pkt b („z pomiaru celowanego") i tamten zapis nie mogą
-   obowiązywać naraz.
+   ⚠ DUET Z KROPKĄ K3 PRZYWRÓCONY — rozstrzygnięcie koordynatora 04.09,
+   po zgłoszeniu z ADR-055. Historia jest krótka i warta zapisania w
+   całości, bo pokazuje, czym się różni pomiar od decyzji.
 
-   Wybrano pomiar, bo tego żąda zlecenie — ale KROPKA ZOSTAJE NIETKNIĘTA
-   (20 px, pilnowane literałem w `e2e/zlozenie.spec.ts`, który jest
-   mechanizmem, nie dryfem). Skutek: dwie rzeczy, które miały mówić jednym
-   głosem, mówią odtąd dwoma. Zgłoszone koordynatorowi; przywrócenie duetu
-   to przywrócenie jednej linijki `composes`. */
+   ADR-055 zerwał duet: pomiar celowany dał dla zdania prowadzącego bloku
+   feature 18 px / 700 / interlinia 28, a duet niesie 20 px / 600. Wybrano
+   wtedy pomiar, bo tego żądało zlecenie WWW/080 pkt b — i zgłoszono koszt:
+   lead i „kropka" sekcji problemu oraz rytmu dnia miały wedle handoffu K4
+   mówić JEDNYM głosem z jednego miejsca, a zaczęły mówić dwoma.
+
+   Koordynator rozstrzygnął, że głos ważniejszy niż liczba. Duet wraca,
+   więc lead ma znowu 20 px / 600 — tak jak kropka.
+
+   ⚠ CZEGO PRZYWRÓCENIE NIE COFA: odstępów. `margin-top: 8 px` pochodzi
+   z pomiaru wzorca (nagłówek `margin-bottom` 0 + zdanie `margin-top` 8)
+   i z duetem nie ma nic wspólnego — duet niesie WYŁĄCZNIE rozmiar i wagę.
+   Tokeny `tekst.lead` i `interlinia.lead` zostają w skali: opisują
+   zmierzony szczebel wzorca i będą potrzebne, gdy ktoś zechce ten głos
+   rozstrzygnąć na nowo. Roli bez użycia pilnuje osobna zasada — te dwa
+   tokeny są jej świadomym wyjątkiem, odnotowanym w ADR-056. */
 .korzysc {
-  font-size: var(--tekst-lead);
-  font-weight: var(--waga-mocna);
-  line-height: var(--interlinia-lead);
+  /* Duet 1.25/600 wspólny z kropką K3 (W6 handoffu K4). */
+  composes: duet from "./wyroznienie.module.css";
   /* 8 px od nagłówka — zmierzone; 16 px do listy konkretów, bo listy
      wzorzec w tym bloku nie ma i odstęp zostaje nasz, z drabiny. */
   margin: var(--wymiar-odstep-2) 0 var(--wymiar-odstep-5);

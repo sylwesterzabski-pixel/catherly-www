@@ -50,6 +50,26 @@ export default defineConfig({
       name: "desktop",
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      /* KADR SZEROKI — zamknięcie pozycji T57 (ADR-056).
+         ⚠ TEN PROJEKT ISTNIEJE, BO MUTACJA MILCZAŁA. Przy dowodzeniu
+         strażnika układu filarów (WWW/080) wstawiono `order: 2` do bloku
+         `@media (min-width: 90rem)` i spodziewano się czerwieni — suita
+         dała 18 passed. Ta sama mutacja w bloku 48,0625rem zapaliła
+         strażnika natychmiast. Powód: `devices["Desktop Chrome"]` to
+         kadr 1280 × 720, a nasz górny próg układu to 90rem = 1440 px,
+         więc ŻADEN przebieg nigdy nie wchodził w reguły tego progu.
+
+         Milcząca mutacja jest sygnałem o ZASIĘGU POMIARU, nie o
+         strażniku — i dopóki tego kadru nie było, każde zdanie „strażnik
+         udowodniony" dotyczyło innej szerokości niż ta, o której mowa.
+
+         1440 × 900, nie więcej: to kadr, na którym mierzony jest wzorzec
+         i na którym robione są zrzuty odbioru, więc bramka pilnuje tego
+         samego stanu, który się ogląda. */
+      name: "desktop-wide",
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
+    },
   ],
   webServer: {
     command: "npm run start",
