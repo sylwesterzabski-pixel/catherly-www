@@ -160,6 +160,54 @@ rozstrzygnięcie 5).
    lustrach i na wszystkich kadrach — przykrywa ją `.sekcja p` o wyższej
    swoistości. Nie naprawiane (zakaz 8): widoczny odstęp to 16 px i leży na
    drabinie wzorca.
+   **WWW/079 wykonane 2026-09-04** — push `9fb8370` (CI `33899889192`, zero
+   nowych czerwieni) + **ADR-054**. Batch A3: karty funkcji, pas możliwości,
+   dbanie o siebie. Karta wzorca zmierzona CELOWANO na 21 kartach:
+   wypełnienie 32 · promień 12 · obrys 1 px · tytuł 18/600/28 · opis
+   14/400/20 przy mierze 384 · pudełko ikony 64 × 64, **wchodzi PUSTE**.
+   Siatka **4 / 2 / 1**, progi 768 i 1024 znalezione bisekcją.
+   ⚠ **MECHANIZM ROZDZIAŁU KARTY ZMIENIŁ SIĘ Z KOMPOZYCJI NA OBRYS.**
+   Odstęp siatki schodzi z 30 na 16 px, a plama karty w strefie jasnej ma
+   1,12:1 — czyli po samej zmianie odstępu karta zostawałaby BEZ ŻADNEGO
+   z czterech mechanizmów ADR-038. Nowa rola `kreska-na-jasnym`
+   (LICZBA_ROL 29 → 30), wartość odtwarza relację z korpusu ciemnego.
+   Mutacja: bez obrysu **desktop UPADA, mobile-390 PRZECHODZI** — tam
+   odstęp wynosi 40 px, więc kompozycja nadal działa. Mutacja pokazała
+   nie tylko, że strażnik widzi defekt, ale i **dokąd defekt sięga**.
+   ⚠ **STRAŻNIK ROZDZIAŁU LICZYŁ TŁO OD `document.body` — CZWARTE
+   WYSTĄPIENIE KLASY „wartość globalna zamiast lokalnej"** (marker
+   konkretów ADR-050, lustro L1 ADR-051, te dwa). Od ADR-050 połowa
+   sekcji maluje własne tło, a `body` zostaje ciemne: ta sama ramka
+   kadru daje **20,07 wobec `body` i 1,12 wobec sekcji, w której leży**.
+   Żadna z pięciu rodzin nie zmieniła werdyktu — zmieniło się to, CZYM
+   zieleń jest uzasadniona. Bez naprawy nowa rodzina przechodziłaby na
+   fałszywej zieleni.
+   ⚠ **DEFEKT TEGO BATCHA ZŁAPANY WŁASNYM POMIAREM BARW.** Slot ikony
+   wziął `powierzchnia-2` i wyszedł ciemnym blokiem na białej karcie:
+   **16,17:1** tam, gdzie wzorzec ma **1,22:1**. Geometria slotu była
+   poprawna od pierwszego przebiegu (64 × 64, promień 8), więc sam pomiar
+   geometrii by go przepuścił. **Pomiar geometrii i pomiar barwy to dwa
+   różne pomiary tej samej zmiany.**
+   ⚠ **PAS: odpowiednik wzorca ISTNIEJE**, tempo **50,0 px/s** (nie 75 —
+   tamta liczba pochodzi z `WWW/050-FINAL`), wysokość pozycji 56 px,
+   **maski krawędzi BRAK** — z kontrolą pozytywną: sonda znalazła maskę
+   przy innym elemencie tej samej strony, więc zero jest zerem bytu.
+   Reduced-motion zmierzone: animacja `none`, transform `none`, a pas
+   **widoczny 1440 × 216 px przy kryciu 1** — zatrzymany, nie ukryty.
+   ⚠ **PODRÓŻE ROZCIĄGNIĘTE — zgłoszone bez korekty** (zlecenie: „podaj
+   liczby, nie koryguj sam"). Kontrola negatywna w jednym przebiegu:
+   strona **10 647 → 11 195 px** (+548), największa luka **3,28 → 3,85**
+   ekranu, ból LIDERKI 6,59 → 7,17. Cały przyrost pochodzi ze slotu
+   ikony i wypełnienia karty — gdyby ikony nie miały wejść, 576 px wraca.
+   ⚠ **RZĄD „4 + 2" JEST U WZORCA NIEOBECNY.** Wzorzec pokazuje w siatce
+   czterokolumnowej szesnaście kart, czyli cztery pełne rzędy; naszych
+   jest sześć. Liczba kolumn pochodzi z pomiaru, ten rząd nie — decyzja
+   koordynatora (zostaje 4+2 · trzy kolumny · osiem kart).
+   ⚠ **LCP: JEDEN PRZEBIEG DAŁ 128 ms I BYŁ ODSTAJĄCY.** Sam w zwrotce
+   mówiłby o czterokrotnym regresie wobec 32 ms z ADR-052. Pięć
+   przebiegów daje **medianę 36 ms** (36 · 44 · 36 · 52 · 36), element
+   bez zmian. Reguła „jedna wartość z rozrzutem nie ustala niczego"
+   zadziałała tu pierwszy raz na liczbę, która wyglądała na złą wiadomość.
 4. `docs/adr/` — skorowidz trzydziestu tytułów w rozdziale 16, treść tylko tego
    ADR-a, którego dotyczy Twoje zadanie.
 5. Rozdział 17 — mapa CI, siedmiu tras i poleceń `npm`, jeśli masz tknąć bramki.

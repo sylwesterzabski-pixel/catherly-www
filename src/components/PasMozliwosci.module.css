@@ -21,7 +21,24 @@
    ⚠ RUCH NIESKOŃCZONY. Przy `prefers-reduced-motion: reduce` pas STOI
    — nie zwalnia, tylko stoi, bo reguła ruchu jest w całości pod
    `no-preference`. Bez tego pas byłby jedyną animacją serwisu, której
-   nie da się wyłączyć. */
+   nie da się wyłączyć.
+
+   ┌── ZMIERZONE CELOWANO 04.09.2026 (Proactiv, batch A3, ADR-053) ─────┐
+   │ odpowiednik  ISTNIEJE — maszt z animacją `scroll`, liniową,        │
+   │              nieskończoną, przesuwającą o −100% własnej szerokości │
+   │ tempo        1312 px w 26,24 s = 50,0 px/s (nie 75)                │
+   │ wysokość     56 px — okno pasa i maszt mają tę samą               │
+   │ maski        BRAK — sprawdzone na PIĘCIU poziomach przodków,       │
+   │              na wszystkich trzech kadrach                          │
+   └────────────────────────────────────────────────────────────────────┘
+
+   ⚠ BRAK MASEK JEST WYNIKIEM POMIARU, NIE JEGO LUKĄ. Zlecenie WWW/079
+   przewidywało maski krawędzi jako klasę wartości do stokenizowania.
+   Sonda szukała `mask-image` ORAZ `-webkit-mask-image` na maszcie i na
+   czterech poziomach jego przodków — i znalazła maskę gdzie indziej
+   (radialną, przy innym elemencie strony), czyli UMIE JE ZNALEŹĆ. Zero
+   przy pasie jest więc zerem bytu, nie zerem narzędzia. Masek nie
+   dokładamy: byłyby naszym wymysłem podanym jako anatomia wzorca. */
 
 /* Odstęp sekcji progowany od ADR-049 — patrz komentarz w Filar.module.css.
    Ten moduł nie miał dotąd ŻADNEGO zapytania medialnego; próg wchodzi
@@ -57,7 +74,9 @@
 .pozycja {
   display: grid;
   align-content: center;
-  block-size: 2.25rem;
+  /* 56 px — wysokość pozycji pasa u wzorca (okno i maszt równe).
+     Poprzednio 36 px, wartość z POMIARU 0.4/0.7 — innego wzorca. */
+  block-size: var(--wymiar-wysokosc-pozycji-pasa);
   white-space: nowrap;
   font-size: var(--tekst-s);
   font-weight: var(--waga-etykieta);
@@ -69,12 +88,20 @@
     /* Przesunięcie o połowę masztu = dokładnie jedna kopia listy,
        więc pętla nie ma skoku.
 
-       CZAS WYLICZONY Z DROGI, NIE DOBRANY NA OKO: maszt polski ma
-       2480,8 px, droga jednego cyklu to połowa plus odstęp kopii,
-       czyli 1264,4 px. Przy zmierzonych −75 px/s wzorca daje to
-       1264,4 / 75 = 16,86 s. Pierwsza wersja miała 24 s i wychodziło
-       −52,7 px/s — liczba wzięta z niczego. */
-    animation: pas-przesuw 16.86s linear infinite;
+       CZAS WYLICZONY Z DROGI I TEMPA, NIE DOBRANY NA OKO: maszt polski
+       ma 2480,8 px (przemierzone 04.09.2026 — ta sama liczba co przy
+       poprzednim wyliczeniu, więc treść pasa się nie zmieniła), droga
+       jednego cyklu to połowa plus odstęp kopii, czyli 1264,4 px.
+       Przy zmierzonych 50,0 px/s wzorca daje to 1264,4 / 50 = 25,29 s.
+
+       ⚠ TEMPO ZMIENIŁO SIĘ Z 75 NA 50 px/s, BO ZMIENIŁ SIĘ WZORZEC, NIE
+       ZDANIE. Poprzednie −75 px/s pochodziło z POMIARU 0.4/0.7
+       (`WWW/050-FINAL`); maszt Proactiva ma 1312 px i przesuwa się
+       o −100% własnej szerokości w 26,24 s, czyli dokładnie 50,0 px/s.
+       Pierwsza wersja w ogóle miała 24 s i wychodziło −52,7 px/s —
+       liczba wzięta z niczego; obie poprzedniczki zostają zapisane,
+       żeby widać było, która skąd. */
+    animation: pas-przesuw var(--ruch-czas-pasa) linear infinite;
   }
 }
 

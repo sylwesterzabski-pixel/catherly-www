@@ -3,19 +3,37 @@
    (token miary), cichszy rejestr (tekst-drugorzedny 6,33:1 — AA
    z zapasem, zatwierdzone przez panel). */
 
+/* ── BATCH A3 (ADR-053): ANATOMIA SEKCJI JASNEJ, TA SAMA CO W A2 ──
+   Sekcja jest sąsiadką filarów i sekcji tekstowych, więc bierze te same
+   trzy wielkości: rytm 160 / 80, miarę nagłówka 1024 i miarę akapitu 896.
+   Gdyby wzięła własne, oddychałaby inaczej niż wszystko wokół — a to
+   jedyna rzecz, której „oddech, nie piąty filar" nie znosi. */
+
 .dbanie {
-  padding: 3rem 1rem;
+  /* Rytm sekcji progowany — 80 px na wąskim kadrze, 160 px od progu.
+     Do 04.09 stało tu 48 px na każdej szerokości. */
+  padding-block: var(--wymiar-odstep-sekcji-male);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
 }
 
 .wnetrze {
-  max-width: var(--wymiar-miara-kolumny);
+  /* Miara nagłówka sekcji — 1024 px (ADR-053). Poprzednio
+     `--wymiar-miara-kolumny` = 800 px, wartość z POMIARU 0.3. */
+  max-inline-size: var(--wymiar-miara-naglowka-wzorca);
   margin-inline: auto;
   color: var(--kolor-rola-tekst-drugorzedny);
 }
 
 .wnetrze p {
   margin: 0;
-  max-width: var(--wymiar-miara-akapitu);
+  /* Miara akapitu SEKCJI — 896 px (ADR-053), nie miara akapitu KARTY. */
+  max-inline-size: var(--wymiar-miara-akapitu-wzorca);
+}
+
+@media (min-width: 48.0625rem) {
+  .dbanie {
+    padding-block: var(--wymiar-odstep-sekcji);
+  }
 }
 
 /* SLOT-FOTO-DBANIE — kadr fotograficzny sekcji (ADR-048).

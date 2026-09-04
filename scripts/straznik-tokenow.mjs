@@ -148,11 +148,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 29;
+const LICZBA_ROL = 30;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-052 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-053 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -179,6 +179,20 @@ const PARY = [
   ["akcent-na-jasnym",    "powierzchnia-karty-na-jasnym", 4.5, "akcent niosący tekst na karcie korpusu jasnego"],
   ["kreska-mocna-na-jasnym", "powierzchnia-jasna", 3.0, "obrys pola formularza na korpusie jasnym"],
   ["kreska-mocna-na-jasnym", "powierzchnia-karty-na-jasnym", 3.0, "obrys pola formularza na karcie korpusu jasnego"],
+  /* KRESKA KORPUSU JASNEGO (ADR-053, batch A3) — próg 1,30 z ADR-038,
+     nie z WCAG, i dlatego liczba wygląda inaczej niż reszta tabeli.
+
+     ⚠ DLACZEGO TA KRESKA JEST SPRAWDZANA TUTAJ, A JEJ CIEMNA SIOSTRA NIE.
+     `kreska` stoi w wyłączeniach z uzasadnieniem „próg 1,30 mierzy
+     e2e/rozdzial-kart, nie ten strażnik". Dla korpusu jasnego to
+     uzasadnienie NIE PRZENOSI SIĘ, i sprawdziłem to, zamiast założyć:
+     rodzina kart, która tego obrysu używa, weszła do tablicy RODZINY
+     tamtego strażnika dopiero w tym samym zleceniu. Gdyby wyłączenie
+     przepisać z ciemnej siostry bez sprawdzenia, rola trafiłaby poza
+     sprawdzanie z powodem, który jej nie dotyczy — czyli wyłączenie
+     wyglądałoby na decyzję, a byłoby przeoczeniem. */
+  ["kreska-na-jasnym", "powierzchnia-jasna", 1.3, "obrys karty na tle sekcji jasnej (próg ADR-038)"],
+  ["kreska-na-jasnym", "powierzchnia-karty-na-jasnym", 1.3, "obrys karty wobec jej własnego wypełnienia (próg ADR-038)"],
 ];
 
 /* ─── WYŁĄCZENIA Z PAR — Z WŁASNYM LICZNIKIEM ──────────────────

@@ -55,6 +55,13 @@ const RODZINY: Array<[string, string, string]> = [
   ["karta FAQ", "/cennik", "main details"],
   ["blok funkcji", "/funkcje", '[class*="BlokZadaniaDnia_blok__wnetrze"]'],
   ["ramka kadru", "/", '[class*="Filar_obraz__"]'],
+  /* PIĄTA RODZINA — karty funkcji (ADR-053, batch A3). Weszła razem ze
+     zmianą, która przestawiła ich mechanizm rozdziału z KOMPOZYCJI na
+     OBRYS: odstęp siatki zszedł z 24–30 px na 16 px z pomiaru wzorca,
+     czyli poniżej progu, na którym kompozycja stoi. Rodzina bez
+     strażnika to dokładnie „brak dowodu = brak zabezpieczenia", a tu
+     dowód jest potrzebny właśnie dlatego, że mechanizm się zmienił. */
+  ["karta funkcji", "/", '[class*="KartyFunkcji_karta__"]'],
 ];
 
 for (const [nazwa, trasa, sel] of RODZINY) {
@@ -65,7 +72,35 @@ for (const [nazwa, trasa, sel] of RODZINY) {
 
     const pomiar = await karta.evaluate((el) => {
       const c = getComputedStyle(el);
-      const tloStrony = getComputedStyle(document.body).backgroundColor;
+      /* ⚠ TŁO LICZONE OD NAJBLIŻSZEGO MALOWANEGO PRZODKA, NIE OD `body`.
+         Do 04.09.2026 stało tu `getComputedStyle(document.body)` i było
+         to prawdą dokładnie tak długo, jak długo cała strona miała jedno
+         tło. Od ADR-050 połowa sekcji leży w STREFIE JASNEJ, która maluje
+         własne tło — a `body` zostaje ciemne. Zmierzone w jednym
+         przebiegu, obie liczby dla tej samej ramki kadru: wobec `body`
+         plama 20,07, wobec sekcji, w której ta ramka naprawdę leży —
+         1,12. Pierwsza liczba jest osiemnastokrotnie zawyżona i opisuje
+         tło, którego pod elementem NIE MA.
+
+         To czwarte wystąpienie tej samej klasy w tym repozytorium
+         („asercja porównująca z GLOBALNĄ wartością przestaje mierzyć swój
+         przedmiot, gdy rola staje się zależna od kontekstu" — marker
+         konkretów w ADR-050, lustro L1 w ADR-051, i te dwa). Naprawa jak
+         poprzednio: przenieść odczyt do miejsca użycia.
+
+         ⚠ ŻADNA RODZINA NIE ZMIENIŁA WERDYKTU PRZY TEJ NAPRAWIE —
+         sprawdzone sondą przed zmianą, wszystkie pięć liczone OBOMA
+         sposobami w jednym przebiegu. Zmieniło się to, CZYM zieleń jest
+         uzasadniona, nie to, czy jest. */
+      const tloStrony = (() => {
+        let p = el.parentElement;
+        while (p) {
+          const t = getComputedStyle(p).backgroundColor;
+          if (t && t !== "rgba(0, 0, 0, 0)" && t !== "transparent") return t;
+          p = p.parentElement;
+        }
+        return getComputedStyle(document.body).backgroundColor;
+      })();
       const rodzenstwo = el.parentElement
         ? [...el.parentElement.children].filter((x) => x !== el)
         : [];

@@ -104,6 +104,14 @@
    * ⚠ TA ROLA NIE WCHODZI DO PAR KONTRASTOWYCH i to jest świadome: kontrast liczy się na barwie WYNIKOWEJ, a ta zależy od tego, co akurat leży pod pigułką. Mierzy to sonda rastrowa w `kontrast-stanow.spec.ts`, która próbkuje wyrenderowany piksel — strażnik tokenów widzi tylko wartości ról i o barwie po złożeniu warstw nie wie nic. Wpisanie tu pary dałoby liczbę wyglądającą na pomiar, a będącą fikcją.
    */
   --kolor-rola-tlo-przezroczyste: rgba(7, 8, 6, 0.6);
+  /**
+   * Kreska dekoracyjna korpusu jasnego — obrys karty, granica próg 1,30 z ADR-038.
+   * 
+   * ⚠ WARTOŚĆ ODTWARZA RELACJĘ Z KORPUSU CIEMNEGO, NIE JEST DOBRANA OD NOWA — ta sama metoda, którą ADR-052 wyprowadził obrys pola formularza. Na korpusie ciemnym kreska wobec powierzchni karty daje 1,60:1; ta wartość daje 1,59:1 wobec karty białej i 1,42:1 wobec powierzchni jasnej. Oba progi ADR-038 spełnione z zapasem, a relacja jest ta sama, co po ciemnej stronie.
+   * 
+   * ⚠ DLACZEGO ROLA W OGÓLE POWSTAŁA: karty funkcji przeszły w ADR-050 do strefy jasnej, gdzie ich plama wobec tła sekcji wynosi 1,12:1 — poniżej progu 1,30. Rozdzielała je wtedy KOMPOZYCJA, a batch A3 sprowadza odstęp siatki do 16 px z pomiaru wzorca, czyli poniżej progu 30 px, na którym kompozycja stoi. Bez obrysu karta zostałaby BEZ ŻADNEGO z czterech mechanizmów. Obrys jest przy tym zgodny z pomiarem: karty wzorca MAJĄ obrys jednopikselowy — zapis „bez obrysu” w `KartyFunkcji.module.css` pochodził z innego wzorca.
+   */
+  --kolor-rola-kreska-na-jasnym: #cdcdcd;
   --kolor-dekoracja-poswiata: #905f47; /** Poświata radialna hero i zamknięcia (ADR-032, zlecenie WWW/040 krok 2). CELOWO POZA `kolor.rola` — to nie jest rola systemu, tylko jedna barwa dekoracyjna, i trzymanie jej poza rolami utrzymuje liczbę ról na 25, czyli zgodną z decyzją i ze strażnikiem. Używana wyłącznie przez color-mix z alfą ≤35% na tle inwersji; aria-neutralna, nie niesie treści, nie stanowi granicy ani wskaźnika stanu. */
   --kroj: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój GŁÓWNY — proza I NAGŁÓWKI (ADR-044 prostuje ADR-040). Inter 4.001, zmienny wght 100–900, oś opsz przypięta do 16, public/fonts/inter-var.woff2, 39,8 kB, źródło google/fonts, OFL. POMIAR: wzorzec niesie Interem 257 elementów tekstu — wszystkie nagłówki, prozę, nawigację i przyciski. */
   --tekst-xs: 0.875rem; /** 14 px — metadane, przypisy, etykiety pól. */
@@ -134,11 +142,22 @@
    * ⚠ POPRZEDNIE BRZMIENIE TEGO KOMENTARZA BYŁO PRAWDZIWE DLA INNEGO WZORCA i zostaje jako ślad: „NIE jest mniejsze proporcjonalnie do H1: H1 spada 70→53→34 (0,49), H2 tylko 60→42→38 (0,63)”. Tamten pomiar (POMIAR 0.4/0.7) opisywał wzorzec WWW/050-FINAL. Proactiv zachowuje się ODWROTNIE: to H2 spada łagodniej dopiero PO progu 768, a między 810 a 1440 nie rusza się wcale.
    */
   --tekst-h2-male: 1.875rem;
-  --tekst-karta: 1.5rem; /** Tytuł karty funkcji = 24 px (POMIAR wzorca, 2.3). Osobny token, bo skala nie ma tego stopnia: `m` to 20 px, `l` to 25 px. Wzięcie `l` dałoby 25 zamiast 24 — jeden piksel, ale wpisany jako „prawie wzorzec" w miejscu, gdzie mamy pomiar. */
+  /**
+   * Tytuł karty = 18 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 1440/810/390; próbka: 21 kart o promieniu 12 px, wypełnieniu 32 px i obrysie jednopikselowym).
+   * 
+   * ⚠ POPRZEDNIA WARTOŚĆ 24 px POCHODZIŁA Z INNEGO WZORCA (POMIAR 0.4/0.7, zapis w nagłówku `KartyFunkcji.module.css`: „tytuł 24 px / waga 500”). Pomiar celowany na kartach Proactiva daje 18 px przy wadze 600 — czyli kartę CICHSZĄ i GRUBSZĄ zarazem. Zmiana idzie w obie strony i dlatego nie wolno jej było zrobić w połowie: sam mniejszy rozmiar przy wadze 500 dałby tytuł słabszy od opisu, którego wzorzec nie ma nigdzie.
+   */
+  --tekst-karta: 1.125rem;
   --waga-tekst: 500; /** Proza wzorca ma wagę 500, nie 400 (POMIAR 0.1). Inter jest zmienny, więc to nic nie kosztuje. */
   --waga-etykieta: 500;
   --waga-naglowek: 500; /** Nagłówki wzorca mają wagę 500, nie 600 (POMIAR 0.1). Satoshi jest u nas statyczny dokładnie w tej wadze — inna waga zeszłaby na syntezę przeglądarki. */
   --waga-mocna: 700; /** Waga 100 USUNIĘTA ze skali całkowicie (ADR-031): na kroju systemowym była syntezą i wyglądała inaczej na każdym urządzeniu, zawsze zbyt cienko. */
+  /**
+   * Waga 600 — tytuł karty u wzorca (16 z 21 kart przy 600, pozostałe pięć też). Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 1440/810/390; próbka: 21 kart o promieniu 12 px, wypełnieniu 32 px i obrysie jednopikselowym).
+   * 
+   * ⚠ TA WAGA ISTNIAŁA W ARKUSZACH JAKO LITERAŁ, ZANIM DOSTAŁA TOKEN: duet wyróżnienia i nazwa kroku rytmu dnia niosą 600 wpisane wprost. Token wchodzi z pierwszym użyciem, które pochodzi z pomiaru; migracja tamtych dwóch to osobna robota i celowo nie wchodzi tutaj — zmiana pliku, którego zlecenie nie otwiera, jest naprawą przy okazji.
+   */
+  --waga-wyrozniona: 600;
   --interlinia-tekst: 1.8; /** Interlinia prozy = 1,80 (POMIAR 0.1: 28,8/16). Poprzednio 1.6 — różnica widoczna w każdym akapicie. */
   --interlinia-naglowek: 1.2; /** Interlinia nagłówków = 1,20 (H1 na wszystkich progach: 40,8/34 · 63,6/53 · 84/70; H2 przy ≥ 810: 50,4/42 · 72/60). */
   --interlinia-naglowek-male: 1.4; /** ⚠ H2 na kadrze ≤ 768 ma interlinię 1,40 (53,2/38), nie 1,20. Jedyne odstępstwo w całej skali nagłówków; zmierzone, nie wyprowadzone. */
@@ -148,6 +167,13 @@
    * ⚠ TO JEST OSOBNY TOKEN, A NIE `naglowek` (1,20), BO POMIAR DAJE INNĄ LICZBĘ. Poniżej progu H2 wraca do 1,20 (36 px przy piśmie 30 px) i tam używa `interlinia.naglowek` — czyli nagłówek sekcji ma interlinię PROGOWĄ w drugą stronę niż dotąd: luźniejszą na szerokim kadrze, nie na wąskim.
    */
   --interlinia-naglowek-sekcji: 1.25;
+  --interlinia-karta-tytul: 1.5556; /** Interlinia tytułu karty = 28 px przy piśmie 18 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 1440/810/390; próbka: 21 kart o promieniu 12 px, wypełnieniu 32 px i obrysie jednopikselowym). */
+  /**
+   * Interlinia opisu karty = 20 px przy piśmie 14 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 1440/810/390; próbka: 21 kart o promieniu 12 px, wypełnieniu 32 px i obrysie jednopikselowym).
+   * 
+   * ⚠ NIE JEST TO `interlinia.naglowek-male` (1,40), choć różnica wynosi niecałe trzy setne. Zaokrąglenie do wartości, która „już jest”, to wygładzenie różnicy licencjonowanej — dokładnie to, przed czym broni zapis o niemonotonicznym odstępie kart w tym samym module.
+   */
+  --interlinia-karta-opis: 1.4286;
   --tracking-naglowek: -0.1875rem; /** Tracking H1 = −3 px przy ≥ 1440 (POMIAR 0.4/0.7). ⚠ ADR-041 zakładał, że −3 px obowiązuje na WSZYSTKICH progach, i zapisał to jako pozycję otwartą. Pomiar zamyka ją: tracking JEST progowy, patrz `naglowek-srednie` i `naglowek-male`. Nie jest też stały w `em`: −3/70 = −0,043em, −1,6/53 = −0,030em, −1/34 = −0,029em. */
   --tracking-wersalik: 0.04em; /** WYMAGANE przy text-transform: uppercase — bez tego kapitaliki zlewają się w blok. Zastosowanie w komponentach to zadanie 11 checklisty, poza zakresem WWW/038-bis; token wchodzi teraz, bo należy do skali. */
   --tracking-naglowek-srednie: -0.1rem; /** Tracking H1 = −1,6 px w zakresie 810–1280 px (zmierzone). */
@@ -235,6 +261,19 @@
    * ⚠ Sprawdzian położenia jak wyżej: lewa krawędź akapitu przy 1440 px stoi na x = 272, a (1440 − 896) / 2 = 272.
    */
   --wymiar-miara-akapitu-wzorca: 56rem;
+  /**
+   * Miara akapitu W KARCIE = 384 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 1440/810/390; próbka: 21 kart o promieniu 12 px, wypełnieniu 32 px i obrysie jednopikselowym).
+   * 
+   * ⚠ TO JEST DRUGA POŁOWA ROZDZIELENIA Z ADR-053. Punkt 1f pomiaru `WWW/073` podał szczebel 384 px jako „miarę akapitu” — liczba prawdziwa, ale opisująca KARTĘ. Miara akapitu SEKCJI to 896 px (`miara-akapitu-wzorca`). Jeden szczebel drabiny obsługiwał dwie role; oba tokeny stoją teraz obok siebie, żeby następny czytający nie musiał zgadywać, która to która.
+   */
+  --wymiar-miara-akapitu-karty: 24rem;
+  /**
+   * Pudełko ikony w karcie = 64 × 64 px, promień 8 px (`wymiar.promien`). Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 1440/810/390; próbka: 21 kart o promieniu 12 px, wypełnieniu 32 px i obrysie jednopikselowym).
+   * 
+   * ⚠ PUDEŁKO WCHODZI PUSTE — decyzja o samych ikonach należy do właściciela (zlecenie `WWW/079` pkt a: „puste do decyzji właściciela — bez wstawiania zastępczych ikon”). Rezerwacja miejsca jest tu CAŁĄ treścią: układ karty policzony bez slotu przesunąłby się w dniu, w którym ikony wejdą, i wtedy trzeba by mierzyć drugi raz.
+   */
+  --wymiar-pudelko-ikony: 4rem;
+  --wymiar-wysokosc-pozycji-pasa: 3.5rem; /** Wysokość pozycji pasa przesuwnego = 56 px (zmierzone u wzorca: okno pasa i maszt mają tę samą wysokość 56 px na wszystkich trzech kadrach). Poprzednio 36 px — wartość z POMIARU 0.4/0.7, czyli z innego wzorca. */
   --kroj-naglowek: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój NAGŁÓWKÓW = ten sam Inter (ADR-044). ⚠ ADR-040 przypisał tu Satoshi na podstawie POMIARU 0.1, który MYLNIE opisał Satoshi jako krój nagłówkowy. Pomiar CDP na wzorcu: H1 i H2 renderują się jako `Inter Medium`, rodzina zadeklarowana to `Inter` i `Inter-Medium`. Token ZOSTAJE osobny mimo równej wartości — nagłówki i proza to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. */
   --kroj-plakietka: "Satoshi", "Satoshi zapasowy", system-ui, sans-serif; /** Krój PLAKIETKI (ADR-044). Satoshi Medium 2.000, public/fonts/satoshi-medium.woff2, 17,3 kB, źródło fontshare.com. POMIAR: wzorzec używa Satoshi na DOKŁADNIE DWÓCH elementach — „Get 3 Free month" i „on Pro plan", oba 12 px, waga 700, barwa #070806. To jest ta sama plakietka, którą POMIAR 0.1 opisał w skali (12 px / 700 / interlinia 1,20). Kontrola pozytywna zera: 2 elementy w Satoshi wobec 257 w Interze — dwójka jest wynikiem, nie zerem narzędzia. */
   /**
@@ -262,6 +301,14 @@
    * ⚠ DWA GESTY SĄ ROZDZIELONE PO ROLI ELEMENTU i to jest najmocniejsze ustalenie pomiaru 1d. Rzecz klikana UNOSI SIĘ (−2 px), a dopiero pod naciskiem kurczy do 0,98. Rzecz będąca powierzchnią robi ODWROTNIE: od razu kurczy się do 0,98, bez uniesienia — docisk zamiast wyjścia ku patrzącemu. Pomylenie ich odwraca komunikat: powierzchnia, która się unosi, udaje przycisk.
    */
   --ruch-gest-docisku: 0.98;
+  /**
+   * Czas pełnego cyklu pasa przesuwnego. WYLICZONY Z DROGI I TEMPA, nie dobrany: maszt polski ma 2480,8 px (zmierzone 04.09.2026 na żywej stronie), droga jednego cyklu to połowa masztu plus odstęp kopii = 1264,4 px, a tempo wzorca to 50,0 px/s — czyli 1264,4 / 50 = 25,29 s.
+   * 
+   * ⚠ TEMPO WZORCA ZMIERZONE, NIE PRZEPISANE: jego maszt ma 1312 px i przesuwa się o −100% własnej szerokości w 26,24 s, czyli dokładnie 50,0 px/s. Poprzednie 16,86 s stało na tempie 75 px/s z POMIARU 0.4/0.7 — innego wzorca.
+   * 
+   * ⚠ GRANICA KONSTRUKCJI BEZ ZMIAN: CSS nie zna szerokości masztu, więc czas jest stały, a tempo zależy od długości treści. Przy tym czasie zmierzone maszty dają 50,0 px/s dla pl, 45,2 dla en i 47,4 dla de. Wyrównanie tempa wymagałoby stałej szerokości pozycji, czyli ucinania dłuższych nazw — psucia treści dla liczby.
+   */
+  --ruch-czas-pasa: 25.29s;
   --glow-barwa-rdzen: rgba(217, 217, 217, 0.08); /** Środek elipsy — najjaśniejszy punkt klastra. Wzorzec: 3 wystąpienia, element 1372×1372. */
   --glow-barwa-posrednia: rgba(140, 140, 140, 0.02); /** Przystanek na 50% promienia. Spadek alfy 0,08 → 0,02 na połowie drogi — poświata gaśnie szybko. */
   --glow-barwa-skraj: rgba(115, 115, 115, 0); /** Wygaszenie na 80% promienia. Ostatnie 20% jest już całkiem przezroczyste, więc klaster nie ma krawędzi. */

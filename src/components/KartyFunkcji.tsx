@@ -68,6 +68,14 @@ export function KartyFunkcji() {
         <ul className={styles.siatka} role="list">
           {KARTY.map((k) => (
             <li key={k.id} className={styles.karta}>
+              {/* SLOT-IKONY-<karta> — pudełko 64 × 64 px zarezerwowane
+                  z pomiaru wzorca (ADR-053, batch A3), ŚWIADOMIE PUSTE.
+                  Zlecenie WWW/079 pkt a: „puste do decyzji właściciela —
+                  bez wstawiania zastępczych ikon". `aria-hidden` jawnie,
+                  bo pudełko nie niesie treści: bez tego czytnik napotyka
+                  element bez nazwy w środku listy. Wypełnienie slotu to
+                  osobna decyzja i osobne zlecenie. */}
+              <div className={styles.slotIkony} aria-hidden="true" />
               <p className={styles.tytul}>{t(k.tytul)}</p>
               <p className={styles.opis}>{t(k.opis)}</p>
             </li>

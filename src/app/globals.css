@@ -505,6 +505,26 @@ main {
      `src/` nie ma dziś ani jednego pola tekstowego, więc strażnik
      nie miał przedmiotu. */
   --kolor-rola-kreska-mocna: var(--kolor-rola-kreska-mocna-na-jasnym);
+  /* ⚠ KRESKA DEKORACYJNA — DOŁOŻONA W ADR-053, BO STREFA JEJ NIE PRZESTAWIAŁA.
+     Trzecia rola granicy, którą korpus jasny pominął: po `kreska-mocna`
+     (ADR-052) zostawała jeszcze kreska zwykła, ciemna, czyli na białej
+     karcie gruba czarna nitka zamiast włosa. Powód, dla którego wchodzi
+     dopiero teraz, jest mechaniczny: do batcha A3 żadna karta w strefie
+     jasnej obrysu nie miała, więc rola nie miała gdzie się objawić.
+     Wartość odtwarza relację z korpusu ciemnego (1,60:1 kreska wobec
+     powierzchni karty); zmierzone tu 1,59:1 wobec karty i 1,42:1 wobec
+     tła sekcji, oba powyżej progu 1,30 z ADR-038. */
+  --kolor-rola-kreska: var(--kolor-rola-kreska-na-jasnym);
+  /* ⚠ POWIERZCHNIA POMOCNICZA — DOŁOŻONA W ADR-053 PO POMIARZE, KTÓRY
+     ZŁAPAŁ WŁASNY DEFEKT TEGO BATCHA. Slot ikony w karcie funkcji wziął
+     tę rolę i wyszedł CIEMNYM blokiem na białej karcie: zmierzone
+     16,17:1 tam, gdzie u wzorca ta sama relacja wynosi 1,22:1. Wzorzec
+     robi pudełko ikony ODROBINĘ JAŚNIEJSZE od płyty karty; na korpusie
+     jasnym odpowiednikiem jest odrobinę CIEMNIEJSZE, czyli powierzchnia
+     sekcji na karcie białej — zmierzone 1,12:1, ten sam szept.
+     Defekt nie miał strażnika i wyszedł wyłącznie z pomiaru barw po
+     zmianie; gdyby pomiar objął tylko geometrię, pojechałby dalej. */
+  --kolor-rola-powierzchnia-2: var(--kolor-rola-powierzchnia-jasna);
   /* AKCENT NIOSĄCY TEKST — ciemniejszy wariant o tym samym odcieniu.
      Bez tego `.akcent-naglowka` w sekcjach „problem" i „definicja"
      miałby 1,43:1. Akcent jako PLAMA (wypełnienie CTA) zostaje
