@@ -46,8 +46,27 @@
   border-radius: var(--wymiar-promien-maly);
 }
 
+/* ⚠ POD PASEK, NIE W PASEK (ADR-052). Stało tu `0.5rem`, co przy pasku
+   stojącym w toku odsłaniało link nad nagłówkiem. Od chwili, w której
+   pasek jest PRZYKLEJONY, ten sam `0.5rem` kładzie link WEWNĄTRZ jego
+   pudełka: zmierzone y=8…53 przy pasie paska 16…78,39. Malował się nad
+   nim (z-index), ale geometrycznie leżał pod — i tak właśnie widzi to
+   strażnik 2.4.11, który porównuje prostokąty, a nie kolejność
+   malowania. Cztery przystanki na trzech trasach.
+
+   Teraz link wychodzi POD pasek — na token `pas-naglowka`, ten sam,
+   który niosą `scroll-padding` i odstęp `main`. Nie jest to obejście
+   strażnika: element naprawdę leżał w pasie, który zasłania, i naprawdę
+   z niego wyszedł.
+
+   ⚠ PIERWSZA PRÓBA CHYBIŁA O 8,4 px i warto zapisać dlaczego. Liczyłem
+   odsunięcie jako „wysokość paska + oddech", zakładając, że link jest
+   pozycjonowany wewnątrz nagłówka. NIE JEST — w znaczniku stoi jako
+   RODZEŃSTWO `header`, dzieckiem `body`, więc jego `inset` liczy się od
+   kadru, nie od paska. Zmierzone: link na y=70 przy pasie 16…78,4.
+   Token pasa (84 px) liczy od tego samego punktu co przeglądarka. */
 .skipLink:focus {
-  inset-block-start: 0.5rem;
+  inset-block-start: var(--wymiar-pas-naglowka);
 }
 
 /* PIGUŁKA. Tło półprzezroczyste + `backdrop-filter` to konstrukcja wzorca: treść
@@ -56,23 +75,49 @@
 .naglowek {
   /* `relative` — kotwica dla bezwzględnie pozycjonowanego `summary`,
      nie przyklejanie. */
-  position: relative;
-  z-index: 1;
+  /* ⚠ PRZYKLEJONY OD ADR-052 — i to jest ODWRÓCENIE decyzji ADR-045,
+     wykonane rachunkiem, nie zmianą zdania.
+
+     ADR-045 zdjął `sticky` tak: pigułka miała 80 px wysokości przy
+     wcięciu 120 px, więc przyklejona zajmowała pas 20…200 px, a nasz
+     strażnik `odsuniecie-kotwic` trzyma pułap 96 px. Pas łamał go
+     dwukrotnie.
+
+     Geometria wzorca daje inny rachunek: odsunięcie 16 px + wysokość
+     62 px = pas 78 px, czyli 18 px POD pułapem. Ta sama reguła, ta
+     sama liczba graniczna — zmieniła się wyłącznie wysokość paska.
+     `scroll-padding` podniesiony w globals.css do tej samej wartości.
+
+     `relative` było tu kotwicą dla bezwzględnie pozycjonowanego
+     `summary`; `fixed` też nią jest, więc hamburger nie traci punktu
+     odniesienia. */
+  position: fixed;
+  inset-block-start: var(--wymiar-odsuniecie-naglowka-wzorca);
+  inset-inline: 0;
+  z-index: 10;
   /* ⚠ ODSTĘP GÓRNY JEST STAŁY (20 px na KAŻDYM kadrze), a boczny
      PROGOWY (20 / 40 / 120 px). Pierwsza wersja ustawiała oba jednym
      `margin`, więc przy 1440 pigułka odsuwała się od góry o 120 px
      i cała strona zjeżdżała: H1 lądował na 310 px zamiast zmierzonych
      210,4. Wzorzec ma `y = 20` na wszystkich dziewięciu zmierzonych
      szerokościach — pionu nie rusza. */
-  margin-block: var(--wymiar-wciecie-naglowka-male) 0;
+  /* KONTENER TREŚCI WZORCA — 1280 px, wyśrodkowany (pomiar 1f: 8 z 9
+     kontenerów strony wzorca ma tę szerokość; margines boczny 80 px
+     wychodzi z niej sam przy 1440). Poniżej progu kontener oddaje
+     szerokość oknu i zostaje wcięcie boczne. */
+  margin-block: 0;
   margin-inline: var(--wymiar-wciecie-naglowka-male);
+  max-inline-size: var(--wymiar-kontener-waski);
   background: var(--kolor-rola-tlo-przezroczyste);
   backdrop-filter: blur(0.625rem);
   border-radius: var(--wymiar-promien-naglowka);
-  /* Padding 1rem + `min-height` paska 3rem daje ZMIERZONE 80 px
-     wysokości pigułki — tę samą na wszystkich kadrach (wzorzec:
-     80 px na dziewięciu szerokościach, rozrzut zero). */
-  padding: 1rem 1.25rem;
+  /* ⚠ WYSOKOŚĆ 62 px, NIE 80 — i to jest cała przyczyna, dla której
+     pasek może być przyklejony (patrz rachunek wyżej). Poprzednio:
+     padding 1rem + min-height 3rem = 80 px, wartość ze wzorca
+     WWW/050-FINAL zmierzona na dziewięciu szerokościach. Teraz
+     wysokość niesie token, a padding pionowy ustępuje mu miejsca. */
+  min-block-size: var(--wymiar-wysokosc-naglowka-wzorca);
+  padding: var(--wymiar-odstep-2) 1.25rem;
 }
 
 /* UKŁAD, KTÓRY NIE ZALEŻY OD `display: contents` NA `details`.
@@ -91,7 +136,12 @@
 .nawCaly {
   display: grid;
   align-items: center;
-  min-height: 3rem;
+  /* ⚠ ZRÓWNANE Z WYSOKOŚCIĄ CTA (ADR-052). Stało tu 3rem (48 px), co
+     razem z dawnym paddingiem dawało pigułkę 80 px. Przy pasku 62 px
+     to `min-height` było WYŻSZE niż potrzeba i podnosiło pigułkę na
+     kadrze wąskim do 68 px. Teraz najwyższym dzieckiem jest CTA
+     (2.9rem = 46,4 px) i to ono wyznacza wysokość paska. */
+  min-height: 2.9rem;
 }
 
 .logo {
@@ -225,8 +275,8 @@
 /* ── OD 48,0625rem (769 px): pigułka pozioma, hamburger znika ── */
 @media (min-width: 48.0625rem) {
   .naglowek {
-    margin-inline: var(--wymiar-wciecie-naglowka-srednie);
-    padding: 1rem 2.5rem;
+    margin-inline: auto;
+    padding: var(--wymiar-odstep-2) 2.5rem;
   }
 
   /* `display: contents` wypuszcza panel z `details` do siatki paska,
@@ -270,7 +320,10 @@
 
 @media (min-width: 90rem) {
   .naglowek {
-    margin-inline: var(--wymiar-wciecie-naglowka);
-    padding: 1rem 5rem;
+    /* `auto`, nie wcięcie — od ADR-052 pigułka jest KONTENEREM 1280 px
+       wyśrodkowanym (pomiar 1f), a nie paskiem wciętym od krawędzi.
+       Przy 1440 daje to margines boczny 80 px sam z siebie. */
+    margin-inline: auto;
+    padding: var(--wymiar-odstep-2) 5rem;
   }
 }

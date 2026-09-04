@@ -69,6 +69,16 @@
    */
   --kolor-rola-powierzchnia-karty-na-jasnym: #ffffff;
   /**
+   * Obrys pola formularza na korpusie jasnym (ADR-052) — CZWARTY bloker korpusu jasnego, przeoczony w ADR-050 i wykryty POMIAREM NA ŻYWEJ STRONIE, nie odczytem.
+   * 
+   * ⚠ STREFA JASNA PRZESTAWIAŁA SIEDEM RÓL I NIE PRZESTAWIAŁA TEJ JEDNEJ — a to właśnie ta, której CAŁY SENS jest progiem 3:1 z WCAG 1.4.11 dla granicy kontrolki. Zmierzone przed naprawą: obrys ciemny (kreska-mocna) na powierzchni jasnej daje 1,53:1, na karcie białej 1,71:1. Pole formularza w sekcji jasnej byłoby złamane od pierwszego dnia — w trzech stanach naraz (spoczynek, hover, active).
+   * 
+   * ⚠ DLACZEGO ŻADNA BRAMKA TEGO NIE ZŁAPAŁA: w całym src/ NIE MA ANI JEDNEGO pola tekstowego. Jedyne input to przełącznik okresu w cenniku, typu radio, a ten jest jawnie wyłączony z reguły obrysu w globals.css. Strażnik nie milczał z powodu wady — milczał, bo NIE MIAŁ PRZEDMIOTU. To ta sama klasa co strażnik, który nigdy nie przebiegł przeciw stanowi, do którego się wraca (przekazanie, rozdz. 9), tylko widziana od strony elementu PRZYSZŁEGO zamiast przeszłego.
+   * 
+   * WARTOŚĆ ODTWARZA RELACJĘ Z KORPUSU CIEMNEGO, nie jest dobrana od nowa: tam kreska-mocna jest RÓWNA roli tekst-drugorzedny, więc tutaj jest równa roli tekst-2-na-jasnym. Zmierzone: ×powierzchnia-jasna 6,56:1 · ×powierzchnia-karty-na-jasnym 7,34:1 — dwukrotny zapas nad progiem. Odrzucono wariant dający dokładnie 3,00:1: reguła z ADR-038 mówi „spełniający próg”, nie „ledwo spełniający”, a przy granicy kontrolki margines zerowy jest pozorny.
+   */
+  --kolor-rola-kreska-mocna-na-jasnym: #565656;
+  /**
    * Obrys wypełnionego CTA na korpusie jasnym (ADR-050) — ODBLOKOWUJE pierwszy z dwóch blokerów zapisanych w ADR-049.
    * 
    * ⚠ TEN OBRYS JEST NOŚNIKIEM KSZTAŁTU, NIE OZDOBĄ. Limonka na jasnym ma **1,43:1** — poniżej progu 3:1 z WCAG 1.4.11, więc sama plama przycisku NIE ODCINA SIĘ od tła i kontrolka nie ma widocznej granicy. Etykieta jest przy tym czytelna (10,22:1), czyli przycisk daje się PRZECZYTAĆ, ale nie daje się ZOBACZYĆ jako przycisk. Obrys tę granicę przywraca: zmierzone **14,56:1** wobec `powierzchnia-jasna` i **10,22:1** wobec samego akcentu, więc odcina się i od tła, i od wypełnienia.
@@ -101,10 +111,15 @@
   --tekst-m: 1.25rem; /** 20 px — lead akapitu, nagłówek karty. */
   --tekst-l: 1.5625rem; /** 25 px — h3. */
   --tekst-xl: 1.9375rem; /** 31 px — h2 sekcyjne. */
-  --tekst-h1: 4.375rem; /** H1 = 70 px (POMIAR 0.1, wzorzec przy 1440 px). Skala SKOKOWA, nie clamp — patrz `tekst.h1-srednie` i `h1-male`. Poprzednio clamp(2.5rem, 5vw, 4rem). */
+  /**
+   * H1 = 96 px przy ≥ 1440 — WARTOŚĆ Z POMIARU PROACTIVA (WWW/073, 1j), zastępuje 70 px z POMIARU 0.1.
+   * 
+   * ⚠ TO JEST ZAWĘŻENIE REGUŁY Z ADR-049, NIE JEJ ZŁAMANIE. ADR-049 mówi: przy konflikcie geometrii wygrywa POMIAR 0.3 (wzorzec WWW/050-FINAL). Reguła zostaje w mocy dla całej strony; batch A1 (nawigacja, hero, stopka) jest z niej WYJĘTY imiennie decyzją koordynatora (WWW/077), bo to właśnie te trzy elementy mają nieść anatomię Proactiva. Poprzednia wartość zostaje w tym komentarzu jako ślad: 4.375rem = 70 px.
+   */
+  --tekst-h1: 6rem;
   --tekst-h2: 3.75rem; /** H2 = 60 px przy ≥ 1440 (POMIAR 0.4/0.7). ⚠ ADR-041 zostawił H2 bez progów, bo miał pomiar TYLKO przy 1440. Teraz zmierzone na dziewięciu szerokościach — progi są, patrz `h2-srednie` i `h2-male`. */
-  --tekst-h1-srednie: 3.3125rem; /** H1 = 53 px w zakresie 810–1280 px (POMIAR 0.5, zmierzone zwężaniem okna). */
-  --tekst-h1-male: 2.125rem; /** H1 = 34 px przy ≤ 768 px (POMIAR 0.5). */
+  --tekst-h1-srednie: 5rem; /** H1 = 80 px w zakresie 810–1280 (pomiar Proactiva 1j). Poprzednio 3.3125rem = 53 px (POMIAR 0.5). */
+  --tekst-h1-male: 3rem; /** H1 = 48 px przy ≤ 768 (pomiar Proactiva 1j). Poprzednio 2.125rem = 34 px (POMIAR 0.5). */
   --tekst-plakietka: 0.75rem; /** Plakietka górna = 12 px, waga 700, interlinia 1,20 (POMIAR 0.1). */
   --tekst-h2-srednie: 2.625rem; /** H2 = 42 px w zakresie 810–1280 px (zmierzone). */
   --tekst-h2-male: 2.375rem; /** H2 = 38 px przy ≤ 768 px (zmierzone). ⚠ NIE jest mniejsze proporcjonalnie do H1: H1 spada 70→53→34 (współczynnik 0,49), H2 tylko 60→42→38 (0,63). Nagłówki sekcji trzymają się na wąskim kadrze BLIŻEJ desktopu niż H1 — dlatego nie wolno było nadać H2 progów H1 z domysłu. */
@@ -168,6 +183,16 @@
   --wymiar-wciecie-tresci-srednie: 2.5rem; /** Wcięcie treści = 40 px w zakresie 810–1280 px (zmierzone na czterech szerokościach). Tu akurat RÓWNE wcięciu nagłówka. */
   --wymiar-wciecie-tresci-male: 1.25rem; /** Wcięcie treści = 20 px przy ≤ 768 px. */
   --wymiar-miara-leadu: 36.875rem; /** Szerokość akapitu wiodącego w hero = 590 px, STAŁA i wyśrodkowana (zmierzone: 590 px przy 1600, 1440, 1280, 1024 i 810; dopiero przy 768 i 390 zwęża ją kontener). To nie jest miara w `ch` ani procent — wzorzec trzyma tu jedną liczbę. */
+  --wymiar-wysokosc-naglowka-wzorca: 3.875rem; /** 62 px — wysokość paska nawigacji wzorca (pomiar 1e: y=16, h=62, w=1280). ⚠ NIŻSZA NIŻ NASZE 80 px (`wysokosc-naglowka`) I TO JEST POWÓD, DLA KTÓREGO PASEK MOŻE BYĆ PRZYKLEJONY. ADR-045 zdjął `sticky` rachunkiem: pigułka 80 px przy wcięciu 120 px zajmowała pas 20…200 px, a strażnik `odsuniecie-kotwic` trzyma pułap 96 px. Geometria wzorca daje 16 + 62 = 78 px — mieści się pod pułapem z zapasem 18 px. Zmiana jest możliwa nie dlatego, że zmieniliśmy zdanie, tylko dlatego, że wzorzec ma niższy pasek. */
+  --wymiar-odsuniecie-naglowka-wzorca: 1rem; /** 16 px — odsunięcie przyklejonego paska od górnej krawędzi (pomiar 1e). Razem z wysokością daje pas 78 px. */
+  --wymiar-hero-male: 70rem; /** 1120 px — wysokość minimalna hero na kadrze wąskim (pomiar 1j: hero 390×1120, czyli 1,33× wysokości okna). Wzorzec trzyma proporcję przez `min-height`, nie przez treść. */
+  --wymiar-hero-duze: 100rem; /** 1600 px — wysokość minimalna hero na kadrze szerokim (pomiar 1j: `min-height` wyliczone 1600, hero renderuje 1646 = 1,83× wysokości okna). */
+  /**
+   * 84 px — PAS, KTÓRY ZASŁANIA przyklejony pasek nawigacji (ADR-052). Odsunięcie 16 px + wysokość 62,39 px = 78,39; token trzyma 84, czyli 5,6 px zapasu, i tę samą liczbę niesie `scroll-padding-block-start` w globals.css. JEDNA wartość na trzy zastosowania: odstęp `main`, odsunięcie kotwic i ujemny margines hero. Rozdzielenie ich dałoby trzy liczby, które rozjeżdżają się po cichu przy pierwszej zmianie wysokości paska.
+   * 
+   * ⚠ 84, NIE 78: pasek nie ma równych 62 px, bo jego wysokość wyznacza CTA (46,4 px) plus padding. Przy 78 px kotwica lądowała 0,81 px za wysoko i zapalała 27 asercji W4. Pułap strażnika `odsuniecie-kotwic` to 96 px — zostaje 12 px zapasu.
+   */
+  --wymiar-pas-naglowka: 5.25rem;
   --kroj-naglowek: "Inter", "Inter zapasowy", system-ui, sans-serif; /** Krój NAGŁÓWKÓW = ten sam Inter (ADR-044). ⚠ ADR-040 przypisał tu Satoshi na podstawie POMIARU 0.1, który MYLNIE opisał Satoshi jako krój nagłówkowy. Pomiar CDP na wzorcu: H1 i H2 renderują się jako `Inter Medium`, rodzina zadeklarowana to `Inter` i `Inter-Medium`. Token ZOSTAJE osobny mimo równej wartości — nagłówki i proza to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. */
   --kroj-plakietka: "Satoshi", "Satoshi zapasowy", system-ui, sans-serif; /** Krój PLAKIETKI (ADR-044). Satoshi Medium 2.000, public/fonts/satoshi-medium.woff2, 17,3 kB, źródło fontshare.com. POMIAR: wzorzec używa Satoshi na DOKŁADNIE DWÓCH elementach — „Get 3 Free month" i „on Pro plan", oba 12 px, waga 700, barwa #070806. To jest ta sama plakietka, którą POMIAR 0.1 opisał w skali (12 px / 700 / interlinia 1,20). Kontrola pozytywna zera: 2 elementy w Satoshi wobec 257 w Interze — dwójka jest wynikiem, nie zerem narzędzia. */
   /**
@@ -195,5 +220,11 @@
    * ⚠ DWA GESTY SĄ ROZDZIELONE PO ROLI ELEMENTU i to jest najmocniejsze ustalenie pomiaru 1d. Rzecz klikana UNOSI SIĘ (−2 px), a dopiero pod naciskiem kurczy do 0,98. Rzecz będąca powierzchnią robi ODWROTNIE: od razu kurczy się do 0,98, bez uniesienia — docisk zamiast wyjścia ku patrzącemu. Pomylenie ich odwraca komunikat: powierzchnia, która się unosi, udaje przycisk.
    */
   --ruch-gest-docisku: 0.98;
+  --glow-barwa-rdzen: rgba(217, 217, 217, 0.08); /** Środek elipsy — najjaśniejszy punkt klastra. Wzorzec: 3 wystąpienia, element 1372×1372. */
+  --glow-barwa-posrednia: rgba(140, 140, 140, 0.02); /** Przystanek na 50% promienia. Spadek alfy 0,08 → 0,02 na połowie drogi — poświata gaśnie szybko. */
+  --glow-barwa-skraj: rgba(115, 115, 115, 0); /** Wygaszenie na 80% promienia. Ostatnie 20% jest już całkiem przezroczyste, więc klaster nie ma krawędzi. */
+  --glow-obrot: -45deg; /** Wszystkie trzy elipsy obrócone o −45° (zmierzona macierz 0.707107,-0.707107,0.707107,0.707107). Obrót jest tym, co zamienia trzy okręgi w smugę biegnącą ukośnie. */
+  --glow-rozmiar-duzy: 85.75rem; /** 1372 px — największa elipsa klastra. */
+  --glow-rozmiar-maly: 71.625rem; /** 1146 px — dwie mniejsze elipsy klastra. */
   --kolor-rola-tlo-strony: var(--kolor-tlo); /** Tło strony — wartość wzorca ze zlecenia WWW/050-FINAL, zmierzona 2026-08-26 (`getComputedStyle`, nie z oka). Motyw ODWRÓCONY z jasnego na ciemny: to jest zmiana warstwy podstawowej, nie odcienia. */
 }

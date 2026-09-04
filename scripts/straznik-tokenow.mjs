@@ -148,11 +148,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 28;
+const LICZBA_ROL = 29;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-050 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-052 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -177,6 +177,8 @@ const PARY = [
   ["tekst-2-na-jasnym",   "powierzchnia-karty-na-jasnym", 4.5, "tekst drugorzędny na karcie korpusu jasnego"],
   ["akcent-na-jasnym",    "powierzchnia-jasna", 4.5, "fragment nagłówka w akcencie na korpusie jasnym"],
   ["akcent-na-jasnym",    "powierzchnia-karty-na-jasnym", 4.5, "akcent niosący tekst na karcie korpusu jasnego"],
+  ["kreska-mocna-na-jasnym", "powierzchnia-jasna", 3.0, "obrys pola formularza na korpusie jasnym"],
+  ["kreska-mocna-na-jasnym", "powierzchnia-karty-na-jasnym", 3.0, "obrys pola formularza na karcie korpusu jasnego"],
 ];
 
 /* ─── WYŁĄCZENIA Z PAR — Z WŁASNYM LICZNIKIEM ──────────────────

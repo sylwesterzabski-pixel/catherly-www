@@ -386,7 +386,19 @@ html {
      a 92 px pustki nad każdym celem kotwicy było odtąd kosztem bez
      świadczenia. Zostaje 32 px oddechu, żeby cel nie dotykał krawędzi.
      Pułapu 96 px z `odsuniecie-kotwic` ta wartość nie zbliża. */
-  scroll-padding-block-start: 2rem;
+  /* ⚠ PODNIESIONE Z 2rem DO 4.875rem (ADR-052), bo pasek nawigacji
+     jest od tego commita PRZYKLEJONY. Wartość = odsunięcie 16 px +
+     wysokość 62 px = 78 px, czyli pas, który pasek zasłania.
+
+     ⚠ WARTOŚĆ 84 px, NIE 78 — i te 6 px zapasu jest KONIECZNE, nie
+     ostrożnościowe. Pasek nie ma równych 62 px: jego wysokość wyznacza
+     CTA (2.9rem = 46,4 px) plus padding, co daje 62,39 px i dolną
+     krawędź na 78,39. Przy scroll-padding równym 78 px kotwica lądowała
+     0,81 px ZA WYSOKO i zapalała 27 asercji W4 („górna krawędź h2
+     poniżej dolnej krawędzi sticky nagłówka") na siedmiu trasach.
+     Zmierzone: oczekiwano ≥ 78,390625, otrzymano 77,578125.
+     Pułap strażnika `odsuniecie-kotwic` to 96 px — zostaje 12 px zapasu. */
+  scroll-padding-block-start: var(--wymiar-pas-naglowka);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -398,6 +410,30 @@ html {
    w pierwszym tygodniu. To są recepty systemu, nie styl komponentu —
    ta sama klasa co jedna recepta podkreślenia linku wyżej.
    ═══════════════════════════════════════════════════════════════════════ */
+
+/* ═══ ODSTĘP POD PRZYKLEJONY PASEK (ADR-052) ═══
+   Pasek nawigacji wyszedł z toku, więc treść zaczyna się na y=0 i wjeżdża
+   pod niego. Zmierzone przed naprawą: H1 podstron na **y=40**, czyli
+   w środku pasa 16…78 — a razem z nim cel skip-linku `#tresc` na y=0
+   i cztery przystanki klawiatury zakryte (2.4.11).
+
+   `main` dostaje odstęp równy pasowi paska. HERO Z NIEGO REZYGNUJE
+   jawnie (ujemny margines w Hero.module.css), bo tam pasek ma NAD hero
+   płynąć — to konstrukcja wzorca, nie przeoczenie: półprzezroczysta
+   pigułka na ciemnym hero jest częścią kompozycji. Reszta stron takiego
+   tła nie ma i pasek by je przykrył. */
+main {
+  /* ⚠ MARGINES, NIE PADDING — i `flow-root` obok niego. Padding
+     przesuwa TREŚĆ, ale zostawia PUDEŁKO `main` na y=0, a `main` jest
+     celem skip-linku (`id="tresc"`). Strażnik `odsuniecie-kotwic`
+     mierzy pozycję CELU, nie treści, więc przy paddingu meldował
+     „cel #tresc na y=0" mimo przesuniętej treści.
+     `flow-root` powstrzymuje sklejenie tego marginesu z marginesem
+     pierwszego dziecka — bez niego ujemny margines hero zniósłby go
+     do zera i wróciłby ten sam defekt. */
+  margin-block-start: var(--wymiar-pas-naglowka);
+  display: flow-root;
+}
 
 /* Karta = powierzchnia + kreska. Cień NIE JEST w systemie — nie dokładam
    go, bo nie ma dla niego roli w tokenach. */
@@ -445,6 +481,15 @@ html {
   --kolor-rola-tekst-podstawowy: var(--kolor-rola-tekst-na-jasnym);
   --kolor-rola-tekst-drugorzedny: var(--kolor-rola-tekst-2-na-jasnym);
   --kolor-rola-fokus: var(--kolor-rola-fokus-na-jasnym);
+  /* ⚠ OBRYS POLA FORMULARZA — DOŁOŻONY W ADR-052, BO ADR-050 GO
+     POMINĄŁ. Strefa przestawiała siedem ról i nie przestawiała tej
+     jednej, której cały sens jest progiem 3:1 z WCAG 1.4.11.
+     Zmierzone przed naprawą: obrys ciemny na jasnej powierzchni
+     1,53:1, na karcie białej 1,71:1 — pole byłoby złamane w trzech
+     stanach naraz. Żadna bramka nie milczała z powodu wady: w całym
+     `src/` nie ma dziś ani jednego pola tekstowego, więc strażnik
+     nie miał przedmiotu. */
+  --kolor-rola-kreska-mocna: var(--kolor-rola-kreska-mocna-na-jasnym);
   /* AKCENT NIOSĄCY TEKST — ciemniejszy wariant o tym samym odcieniu.
      Bez tego `.akcent-naglowka` w sekcjach „problem" i „definicja"
      miałby 1,43:1. Akcent jako PLAMA (wypełnienie CTA) zostaje

@@ -104,6 +104,16 @@ rozstrzygnięcie 5).
    ⚠ **PREMISA O 30 KLUCZACH `de` NIE ZACHODZI**: z 40 kluczy z rzeczownikiem
    rodzajowym **39 to OSOBY TRZECIE** (świat produktu, do zostawienia), a rodzaj
    ODBIORCY niesie **jeden** — `Cennik.plany.pro.pozycja1` („andere Nutzerinnen").
+   **WWW/077 wykonane 2026-09-04** — push `8fa4719` (CI `33892527696`, zero
+   nowych czerwieni) + **ADR-052**. Czwarty bloker korpusu jasnego zamknięty
+   (`kreska-mocna-na-jasnym`; przed naprawą 1,53:1 przy progu 3). Batch A1:
+   pasek **PRZYKLEJONY** 62 px w kontenerze 1280, H1 **96/80/48 px**, hero
+   **min 1600/1120 px**, poświata wzorca (jednostronna, −45°).
+   ⚠ **PRZED KAŻDYM PRZEBIEGIEM e2e PORT 3000 MA BYĆ WOLNY.**
+   `playwright.config.ts` ma `reuseExistingServer: !CI`, więc serwer
+   postawiony do pomiaru ręcznego zostaje UŻYTY przez bramkę i mierzy stan
+   sprzed ostatniego builda. Kosztowało to jeden przebieg z **104 upadkami**,
+   z których po zabiciu procesu zostało **12**.
    ⚠ **TEN SAM KLUCZ BYŁ PRZEOCZONY W `pl` W WWW/075** — moje „zero rodzaju
    w całym pl" było nieprawdziwe. Ostrzeżenie padło w WWW/073 („użytkowniczek,
    temat łamie się jako użytkownicz-ek") i nie zostało przeniesione do

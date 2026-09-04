@@ -3,13 +3,22 @@
    wersja była dwukolumnowa z pustą kolumną po prawej. Wszystkie wartości
    z pomiaru.
 
-   ┌── ZMIERZONE (wzorzec) ────────────────────────────────────────────┐
+   ⚠ TABELA PONIŻEJ OPISUJE WZORZEC WWW/050-FINAL i część jej wartości
+   ZOSTAŁA ZASTĄPIONA przez pomiar Proactiva (ADR-052, batch A1).
+   Zostaje w całości jako ślad — obie liczby widoczne, korekta bez
+   zamazania:
+
+   ┌── WWW/050-FINAL ──────────────┬── PROACTIV (obowiązuje w A1) ─────┐
+   │ H1  y 210,4 · 70/53/34 px     │ H1  y 184 (1440) / 104 (390)      │
+   │                               │     96 / 80 / 48 px               │
+   │ pasek  80 px, w toku          │ pasek  62 px, PRZYKLEJONY         │
+   │ hero   wysokość z treści      │ hero   min 1600 / 1120 px         │
+   ├───────────────────────────────┴───────────────────────────────────┤
+   │ BEZ ZMIAN w obu:                                                  │
    │ wcięcie treści   135 px (≥1440) · 40 px (810–1280) · 20 px (≤768) │
-   │ H1               y 210,4 od góry dokumentu, na środku             │
    │ lead             STAŁE 590 px, wyśrodkowany, 16 px / waga 400     │
    │ CTA              pigułka, etykieta 14 px / 500, tekst ciemny      │
    │ drobne           14 px / 500, obok siebie, 32 px pod CTA          │
-   │ mockup           pełna szerokość kolumny treści, 80 px pod drobnymi│
    └───────────────────────────────────────────────────────────────────┘
 
    ⚠ WCIĘCIE TREŚCI (135 px) RÓŻNI SIĘ OD WCIĘCIA NAGŁÓWKA (120 px).
@@ -24,13 +33,32 @@
    Rozstrzygnięcie z 2026-08-27: etykietę POMIJAMY. Dopisanie jej
    później to jedna linia w znaczniku i jedna reguła tutaj. */
 
+/* ⚠ ODSTĘP GÓRNY PRZELICZONY OD ADR-052, bo pasek nawigacji jest teraz
+   PRZYKLEJONY i nie zajmuje już miejsca w toku. Stało tu 6.875rem
+   (110 px) z uzasadnieniem „wtedy H1 ląduje na zmierzonych 210,4 px" —
+   to była nasza liczba wobec paska stojącego w toku.
+
+   Teraz odstęp idzie za wzorcem (pomiar 1g): 160 px na desktopie,
+   80 px poniżej progu. Razem z marginesem H1 (24 px, niżej) daje to
+   H1 na y=184 przy 1440 i y=104 przy 390 — czyli dokładnie pozycje
+   zmierzone u wzorca (1j). */
 .hero {
-  /* 110 px odstępu od dolnej krawędzi pigułki nawigacji — wtedy H1
-     ląduje na zmierzonych 210,4 px od góry dokumentu, tak samo na
-     kadrze szerokim i wąskim (nagłówek kończy się na 100 px w obu). */
-  padding-block: 6.875rem 0;
+  /* ⚠ HERO JAWNIE REZYGNUJE Z ODSTĘPU POD PASEK, który `main` daje
+     wszystkim (globals.css). U wzorca pasek PŁYNIE NAD hero —
+     półprzezroczysta pigułka na ciemnym tle jest częścią kompozycji,
+     nie kolizją. Ujemny margines cofa hero pod pasek, a jego własny
+     odstęp (160/80 px) i tak kładzie H1 daleko niżej: y=184 przy 1440
+     i y=104 przy 390 — zmierzone pozycje wzorca. */
+  margin-block-start: calc(-1 * var(--wymiar-pas-naglowka));
+  padding-block: var(--wymiar-odstep-sekcji-male) 0;
   padding-inline: var(--wymiar-wciecie-tresci-male);
   text-align: center;
+  /* PROPORCJA HERO WOBEC KADRU (pomiar 1j): wzorzec trzyma 1,33×
+     wysokości okna na wąskim kadrze i 1,83× na szerokim, przez
+     `min-height` — nie przez treść. Bez tego hero kurczy się do
+     wysokości swoich dzieci i traci oddech, który u wzorca jest
+     głównym środkiem wyrazu. */
+  min-block-size: var(--wymiar-hero-male);
 }
 
 .wnetrze {
@@ -52,6 +80,9 @@
      wnioskiem, że miara i tak jest BEZCZYNNA, bo ogranicza kolumna.
      Teraz jest to jawne. */
   text-wrap: balance;
+  /* 24 px nad H1 (pomiar 1j) — razem z odstępem sekcji daje zmierzone
+     pozycje y=184 (1440) i y=104 (390). */
+  margin-block-start: var(--wymiar-odstep-6);
 }
 
 .podtytul {
@@ -145,9 +176,57 @@
   object-fit: cover;
 }
 
+/* ═══ POŚWIATA HERO — KLASTER WZORCA (ADR-052, pomiar 1b) ═══
+   Wzorzec kładzie TRZY nakładające się elipsy, wszystkie obrócone
+   o −45°, wyłącznie przy LEWEJ krawędzi. Tutaj te trzy elipsy są
+   ZŁOŻONE W JEDNYM elemencie jako trzy warstwy `background-image` —
+   wynik ten sam, o dwa węzły mniej w drzewie. Odnotowane, żeby nikt
+   nie szukał trzeciego pseudoelementu.
+
+   ⚠ JEDNOSTRONNOŚĆ JEST POMIAREM, NIE OSZCZĘDNOŚCIĄ. Skan całej
+   strony wzorca pokazał podniesione tło wyłącznie w pasie x 0–440;
+   prawy margines nie drgnął ani razu. Symetryczna poświata wyglądałaby
+   „porządniej" i byłaby niezgodna z tym, co zmierzono.
+
+   ⚠ AMPLITUDA MA BYĆ NIEPOZORNA: u wzorca tło rośnie najwyżej o 15
+   stopni sRGB (kontrast 1,12:1). Podbicie alfy „żeby było widać"
+   zniszczyłoby własność, dla której ten klaster istnieje. */
+.kolumny::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: var(--glow-rozmiar-duzy);
+  block-size: var(--glow-rozmiar-duzy);
+  z-index: -2;
+  pointer-events: none;
+  translate: -30% -34%;
+  rotate: var(--glow-obrot);
+  background-image:
+    radial-gradient(
+      68.54% 68.72% at 55.02% 31.46%,
+      var(--glow-barwa-rdzen) 0%,
+      var(--glow-barwa-posrednia) 50%,
+      var(--glow-barwa-skraj) 80%
+    ),
+    radial-gradient(
+      50% 50% at 38% 46%,
+      var(--glow-barwa-rdzen) 0%,
+      var(--glow-barwa-posrednia) 50%,
+      var(--glow-barwa-skraj) 80%
+    ),
+    radial-gradient(
+      50% 50% at 62% 26%,
+      var(--glow-barwa-posrednia) 0%,
+      var(--glow-barwa-skraj) 80%
+    );
+}
+
 @media (min-width: 48.0625rem) {
   .hero {
+    padding-block: var(--wymiar-odstep-sekcji) 0;
     padding-inline: var(--wymiar-wciecie-tresci-srednie);
+    min-block-size: var(--wymiar-hero-duze);
   }
 }
 
