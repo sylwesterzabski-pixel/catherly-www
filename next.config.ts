@@ -26,7 +26,38 @@ import createNextIntlPlugin from "next-intl/plugin";
 const WYDANIE =
   process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || "lokalne";
 
+/**
+ * L-OPS-04 — KATALOG BUDOWANIA ZE ZMIENNEJ, ŻEBY POMIAR NIE ZABIJAŁ CUDZEJ
+ * PRACY (zlecenie WWW/089 krok 0b).
+ *
+ * ⚠ POTRZEBA ZMIERZONA DWA RAZY, NIE PRZYPUSZCZONA. `next dev` i `next build`
+ * dzielą domyślnie ten sam katalog `.next`, więc każde budowanie pomiarowe
+ * kładzie serwer deweloperski właściciela — cicho, bo proces dalej działa
+ * i dalej słucha, tylko oddaje 500. Dwa udokumentowane wystąpienia:
+ *   · WWW/085 — `rm -rf .next` zabrało budowanie, z którego korzystał dev;
+ *     serwer zidentyfikowany, zatrzymany i postawiony na nowo (ADR-060);
+ *   · WWW/088 — `npm run build` nadpisało `.next` budowaniem produkcyjnym,
+ *     dev z 4 września został przy 500 przez całą sesję.
+ * W obu wypadkach objaw był ten sam i mylący: proces żyje, port odpowiada,
+ * treści nie ma. Klasa „komenda raportuje sukces swojej operacji, nie
+ * osiągnięcie twojego celu" — build kończy się zerem i mówi prawdę o sobie.
+ *
+ * Domyślna wartość to `.next`, więc CI, Vercel i zwykłe `npm run dev`
+ * zachowują się DOKŁADNIE jak dotąd — zmienna jest wyjściem awaryjnym dla
+ * pomiaru, nie nową konwencją. Pomiar uruchamia się przez
+ * `WWW_DIST=.next-pomiar npm run build`, a serwuje przez
+ * `WWW_DIST=.next-pomiar npx next start -p 3100`.
+ *
+ * ⚠ ZMIENNA MUSI BYĆ PODANA PRZY OBU POLECENIACH. `next start` czyta
+ * `distDir` z tej samej konfiguracji co `next build`; podana tylko przy
+ * budowaniu daje serwer szukający katalogu, którego nie zapisał, i kończy
+ * się błędem „Could not find a production build" — co jest wyraźne, więc
+ * ta pomyłka nie ma jak przejść po cichu.
+ */
+const KATALOG_BUDOWANIA = process.env.WWW_DIST || ".next";
+
 const nextConfig: NextConfig = {
+  distDir: KATALOG_BUDOWANIA,
   // Generowanie statyczne per strona (ADR-007). Świadomie BEZ `output: "export"`:
   // Faza 5 wymaga rewrites tras logowania/rejestracji do aplikacji (ADR-005),
   // a rewrites nie działają przy pełnym eksporcie statycznym.

@@ -4151,6 +4151,41 @@ nadrzędny wobec wszystkiego innego.
 
 ## 17. Mapa CI, tras i poleceń
 
+### 17.0 `WWW_DIST` — katalog budowania ze zmiennej (L-OPS-04, `WWW/089` krok 0b)
+
+**`next dev` i `next build` dzielą domyślnie ten sam katalog `.next`**, więc
+każde budowanie pomiarowe kładzie cudzy serwer deweloperski — **cicho**, bo
+proces dalej żyje i dalej słucha, tylko oddaje 500. **Potrzeba zmierzona dwa
+razy, nie przypuszczona:** `WWW/085` (`rm -rf .next` zabrało budowanie, z
+którego korzystał dev) i `WWW/088` (`npm run build` nadpisało `.next`, dev
+z 4 września został przy 500 przez całą sesję).
+
+```bash
+WWW_DIST=.next-pomiar npm run build          # buduje OBOK, nie NA dev
+WWW_DIST=.next-pomiar npx next start -p 3100 # serwuje to samo budowanie
+WWW_BAZA=http://localhost:3100 npx playwright test
+```
+
+⚠ **ZMIENNA MUSI STAĆ PRZY OBU POLECENIACH.** `next start` czyta `distDir`
+z tej samej konfiguracji co `next build`; podana tylko przy budowaniu daje
+`Could not find a production build in the '.next' directory` — komunikat
+wyraźny, więc ta pomyłka nie ma jak przejść po cichu. **Sprawdzone kontrolą
+pozytywną**, nie założone: start bez zmiennej **upadł** dokładnie tym
+komunikatem, start z nią oddał 200.
+
+**Domyślnie `.next`**, więc CI, Vercel i zwykłe `npm run dev` zachowują się
+dokładnie jak dotąd — to jest wyjście awaryjne dla pomiaru, nie nowa
+konwencja. `.gitignore` ignoruje wzorzec `.next-*/`, nie tylko ten jeden
+katalog.
+
+**Dowód izolacji z `WWW/089`** (nie sam kod odpowiedzi — także katalogi):
+
+| | przed budowaniem pomiarowym | po |
+| --- | --- | --- |
+| dev na 3000 | **200** | **200** |
+| `.next` mtime | 20:26:03 | **20:26:03 (bez zmiany)** |
+| `.next-pomiar/BUILD_ID` | brak katalogu | `urV7x5QEeEKHha192G1cW` |
+
 ### 17.1 Piętnaście zadań w `.github/workflows/bramki.yml`
 
 `build` · `bramka-kontrakt-tokenow` · `bramka-tokeny-linter` · `bramka-lint` ·

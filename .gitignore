@@ -6,6 +6,11 @@
 # Zależności i artefakty budowania
 node_modules/
 .next/
+# L-OPS-04 (WWW/089): katalog budowania pochodzi ze zmiennej WWW_DIST,
+# domyślnie `.next`. Pomiar buduje do `.next-pomiar`, żeby nie kłaść
+# serwera deweloperskiego właściciela — wzorzec `.next-*` obejmuje
+# każdy przyszły katalog pomiarowy, nie tylko ten jeden.
+.next-*/
 out/
 coverage/
 playwright-report/
