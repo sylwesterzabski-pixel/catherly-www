@@ -11,7 +11,16 @@ import { join } from "node:path";
 
 const ROOT = process.cwd();
 
-if (!existsSync(join(ROOT, ".next"))) {
+/* L-OPS-04 (WWW/089 krok 0b): katalog budowania pochodzi ze zmiennej
+   WWW_DIST, domyślnie `.next` — ta sama, którą czyta `next.config.ts`.
+   Bez tego wiersza bramka czytałaby `.next` także po budowaniu
+   pomiarowym i czerwieniałaby z powodu, który NIE MA NIC WSPÓLNEGO
+   z kodem — czyli byłaby czerwienią mylącą, gorszą od żadnej.
+   Wykryte pomiarem: po pierwszym budowaniu do `.next-pomiar` bramki
+   „Linki" i „No-JS" zapaliły się, choć zmiana ich nie dotyczyła. */
+const KATALOG_BUDOWANIA = process.env.WWW_DIST || ".next";
+
+if (!existsSync(join(ROOT, KATALOG_BUDOWANIA))) {
   console.error(
     "✗ axe (pre-commit): brak builda. Zmieniasz src/ — uruchom najpierw:\n" +
       "    npm run build\n" +

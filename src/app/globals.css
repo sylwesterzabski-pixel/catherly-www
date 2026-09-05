@@ -812,7 +812,22 @@ main {
 
   @keyframes ruch-wejscie-przesuw {
     from {
-      transform: translateY(1.25rem);
+      transform: translateY(var(--ruch-przesuniecie-wejscia-tekstu));
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  /* ⚠ DRUGA RODZINA PRZESUNIĘCIA — KARTY JADĄ DWA RAZY DALEJ NIŻ TEKST
+     (ADR-063, zlecenie WWW/089 krok 3). Rozróżnienie jest POMIAREM,
+     nie upodobaniem: React Bits daje kartom `translateY` 40 → 0,
+     blokom tekstu 20 → 0, a nagłówkom sekcji i wierszom listy nie daje
+     przesunięcia wcale — samo krycie. Trzy rodziny, trzy zachowania,
+     zmierzone w kroku 1b na trzech niezależnych grupach elementów. */
+  @keyframes ruch-wejscie-przesuw-karty {
+    from {
+      transform: translateY(var(--ruch-przesuniecie-wejscia));
     }
     to {
       transform: none;
@@ -822,16 +837,39 @@ main {
   /* Hero — wejście NA WCZYTANIU (nie przy przewijaniu: hero jest już
      w kadrze, więc oś przewijania nie miałaby czego mierzyć).
      Tu 550 ms i opóźnienia 70 ms są PRAWDZIWYMI wartościami czasu. */
+  /* ⚠ CZASY, KRZYWA I ODSTĘP PRZESTROJONE NA POMIAR REACT BITS
+     (ADR-063, zlecenie WWW/089 krok 3). Poprzednio 400/420 ms przy
+     `cubic-bezier(0.2, 0, 0, 1)` i odstępie 70 ms — wartości dostrojone
+     do PROACTIVA (ADR-047), czyli do innego wzorca.
+
+     Co się zmienia i skąd:
+     · oba czasy schodzą do JEDNEJ wartości 400 ms — R nie rozdziela
+       czasu krycia od czasu przesunięcia, rozdzielał je Proactiv;
+     · krzywa `cubic-bezier(0.215, 0.61, 0.355, 1)` DOPASOWANA
+       LICZBOWO, nie rozpoznana na oko: 14 próbek postępu co ~16,7 ms
+       porównane z jedenastoma kandydatkami, błąd RMS 0,0083 wobec
+       0,0332 dla poprzedniej rodziny krzywych;
+     · odstęp 100 ms zamiast 70 — dwie niezależne grupy elementów R
+       (trzy karty i cztery wiersze) dały tę samą wartość.
+
+     ⚠ ZAPIS O „CZASACH ZADEKLAROWANYCH KONTRA ZMIERZONYCH" WYŻEJ
+     DOTYCZYŁ INNEJ METODY I NIE PRZENOSI SIĘ TUTAJ. Tamta sonda
+     wykrywała ruch progiem zmiany na klatkę i ucinała ogon krzywej,
+     więc deklaracje trzeba było podnosić ponad pomiar. Ta mierzy
+     inaczej: przewija PŁYNNIE i szuka chwili, w której wartość dobiega
+     do końcowej — a dopasowanie krzywej przy założeniu T = 400 ms daje
+     błąd 0,008, co samo w sobie potwierdza, że 400 ms jest czasem
+     ZADEKLAROWANYM po tamtej stronie, nie wykrytym z ucięciem. */
   .ruch-stagger > * {
     animation:
-      ruch-wejscie-zanik 400ms cubic-bezier(0.2, 0, 0, 1) both,
-      ruch-wejscie-przesuw 420ms cubic-bezier(0.2, 0, 0, 1) both;
+      ruch-wejscie-zanik var(--ruch-czas-wejscia) var(--ruch-krzywa-wejscia) both,
+      ruch-wejscie-przesuw var(--ruch-czas-wejscia) var(--ruch-krzywa-wejscia) both;
   }
   .ruch-stagger > *:nth-child(1) { animation-delay: 0ms; }
-  .ruch-stagger > *:nth-child(2) { animation-delay: 70ms; }
-  .ruch-stagger > *:nth-child(3) { animation-delay: 140ms; }
-  .ruch-stagger > *:nth-child(4) { animation-delay: 210ms; }
-  .ruch-stagger > *:nth-child(5) { animation-delay: 280ms; }
+  .ruch-stagger > *:nth-child(2) { animation-delay: var(--ruch-opoznienie-wejscia); }
+  .ruch-stagger > *:nth-child(3) { animation-delay: calc(2 * var(--ruch-opoznienie-wejscia)); }
+  .ruch-stagger > *:nth-child(4) { animation-delay: calc(3 * var(--ruch-opoznienie-wejscia)); }
+  .ruch-stagger > *:nth-child(5) { animation-delay: calc(4 * var(--ruch-opoznienie-wejscia)); }
 
   /* ── R2: poświata oddycha ──────────────────────────────────────
      Dryf robi WARSTWA DODATKOWA (`::after`), a nie tło sekcji — i to
@@ -1050,8 +1088,38 @@ main {
        widoczności w 830 ms (550 ms + 280 ms najdłuższego opóźnienia),
        więc nie zostawia treści niewidocznej. */
     @keyframes ruch-wsuniecie {
-      from { transform: translateY(1.25rem); }
+      from { transform: translateY(var(--ruch-przesuniecie-wejscia-tekstu)); }
       to { transform: none; }
+    }
+
+    /* ⚠ ZANIKANIA REACT BITS NIE DA SIĘ TU PRZENIEŚĆ — I NIE JEST TO
+       NIEDBAŁOŚĆ, TYLKO RÓŻNICA WARUNKU BRZEGOWEGO (ADR-063, krok 3).
+       Pomiar R daje kartom `opacity` 0 → 1 RAZEM z przesunięciem. R
+       robi to JavaScriptem: obserwator przecięcia ustawia krycie na 1
+       przy pierwszym wejściu w kadr i zostawia je tam na stałe.
+
+       Oś `view()` takiej pamięci nie ma. Element, do którego nikt nie
+       przewinie, stoi na `opacity: 0` BEZTERMINOWO — a tekst o zerowym
+       kryciu jest tekstem niewidocznym, nie tekstem przed animacją.
+       Zmierzone przy pierwszym podejściu (ADR-047): **128 naruszeń
+       `color-contrast` o wadze serious na dziewięciu trasach**.
+
+       Przeniesienie zanikania wymagałoby więc JavaScriptu, którego to
+       zlecenie zakazuje wprost („CSS-only, opcja 1"), albo złamania
+       bramki dostępności. Zostaje samo przesunięcie — wierność
+       pomiarowi ustępuje tu warunkowi, którego wzorzec nie ma. */
+    @keyframes ruch-wsuniecie-karty {
+      from { transform: translateY(var(--ruch-przesuniecie-wejscia)); }
+      to { transform: none; }
+    }
+
+    /* KARTY — rodzina o przesunięciu 40 px z pomiaru R. Selektor celuje
+       w karty przez nazwę klasy modułu, tak samo jak strażnik rozdziału
+       kart i reguła odsłaniania kadrów niżej. */
+    :where([class*="_karta__"], [class*="_plan__"]):not([id]):not(:has([id])) {
+      animation: ruch-wsuniecie-karty linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 42%;
     }
 
     /* ⚠ CEL KOTWICY SIĘ NIE PRZESUWA — `:not([id])` jest tu
@@ -1077,16 +1145,20 @@ main {
       animation-range: entry 0% entry 42%;
     }
 
-    /* Stagger 70 ms zamienia się na PRZESUNIĘCIE ZAKRESU — z tego
-       samego powodu co wyżej. Kolejność: nagłówek → treść → CTA. */
+    /* Stagger zamienia się na PRZESUNIĘCIE ZAKRESU — z tego samego
+       powodu co wyżej: przy osi `view()` nie ma zegara, jest położenie.
+       ⚠ ODSTĘPY PRZESKALOWANE Z 70 NA 100 ms (ADR-063, krok 3). Pomiar
+       R daje 100 ms, poprzednie 70 pochodziło z Proactiva; stosunek
+       100/70 przeniesiony na zakresy daje 6 → 9, 12 → 17, 18 → 26 %.
+       Kolejność bez zmian: nagłówek → treść → CTA. */
     main > section:not(:first-of-type) > div > *:nth-child(2) {
-      animation-range: entry 6% entry 48%;
+      animation-range: entry 9% entry 51%;
     }
     main > section:not(:first-of-type) > div > *:nth-child(3) {
-      animation-range: entry 12% entry 54%;
+      animation-range: entry 17% entry 59%;
     }
     main > section:not(:first-of-type) > div > *:nth-child(4) {
-      animation-range: entry 18% entry 60%;
+      animation-range: entry 26% entry 68%;
     }
 
     /* R4 — grube linie sekcji rysują się od lewej. */

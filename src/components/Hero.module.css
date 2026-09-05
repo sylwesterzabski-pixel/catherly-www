@@ -157,16 +157,28 @@
     var(--kolor-rola-powierzchnia) 0%,
     var(--kolor-rola-tlo-strony) 100%
   );
-  /* Wtopienie NIERÓWNOMIERNE: elipsa przesunięta ku górze wygasza
-     dolne narożniki mocniej niż górne, więc krawędź nie tworzy się
-     nigdzie. Maska słowami kluczowymi, nie zapisem funkcyjnym barwy —
-     w masce liczy się wyłącznie alfa, a linter tokenów (słusznie) nie
-     odróżnia barwy w masce od barwy spoza palety. */
-  mask-image: radial-gradient(
-    ellipse 78% 88% at 50% 42%,
-    black 45%,
-    transparent 100%
-  );
+  /* ⚠ RAMA WCHODZI, MASKA SCHODZI — I JEST TO ODWRÓCENIE WCZEŚNIEJSZEJ
+     DECYZJI, WIĘC ZOSTAWIAM PO NIEJ ŚLAD (ADR-063, zlecenie WWW/089
+     krok 2). Stało tu wtopienie maską eliptyczną, a komentarz przy
+     slocie w `Hero.tsx` mówił, że kadr hero jest JEDYNYM bez ramki,
+     promienia i cienia, bo „wtapia się w tło, tak jak wzorzec"
+     (decyzja właściciela, WWW/072 pkt 3).
+
+     Nowe zlecenie żąda kadru W ZAOKRĄGLONEJ RAMIE i to je zastępuje.
+     Maska schodzi, bo rama i wtopienie wykluczają się mechanicznie:
+     `mask-image` wygasza także obrys, więc rama byłaby narysowana
+     i zaraz zjedzona przy narożnikach — dokładnie ten rodzaj wady,
+     który wygląda na błąd renderowania, a jest sprzecznością reguł.
+
+     Promień 32 px z czwartego szczebla drabiny R (ADR-062 wyliczył go
+     i świadomie pominął, bo nie miał wtedy konsumenta; ten kadr nim
+     jest). ⚠ R DAJE SWOJEJ RAMIE HERO 16 px — patrz komentarz przy
+     `wymiar.promien-duzy`; 32 px to decyzja zlecenia, nie pomiar
+     tamtej ramy. Kreska bierze rolę STREFY, więc rama jest poprawna
+     w obu tonach bez osobnej wartości. */
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: var(--wymiar-promien-duzy);
+  overflow: hidden;
 }
 
 .kadr img {
@@ -174,6 +186,56 @@
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
+}
+
+/* ═══ PARALLAX KADRU HERO — CSS-ONLY, BEZ JEDNEJ LINII JS ═══
+   (ADR-063, zlecenie WWW/089 krok 2)
+
+   ⚠ TEN RUCH JEST NASZ, NIE PRZESZCZEPIONY. Karta szablonu React Bits
+   reklamuje „Parallax hero with CTA"; pomiar w kroku 1a pokazał, że
+   TAKIEGO RUCHU TAM NIE MA — ani w `transform` (597 elementów, pięć
+   pozycji przewijania), ani w offsecie obrazu wewnątrz ramy (cztery
+   pozycje), ani w `background-position`. Kontrola pozytywna zapaliła
+   w każdej z trzech sond, więc zero jest własnością wzorca. Zakres
+   ruchu pochodzi z tokena, którego komentarz mówi wprost, że jest
+   wyborem wykonawcy — nie wolno go cytować jako miary wzorca.
+
+   TRZY WARSTWY ZABEZPIECZENIA, KAŻDA Z INNEGO POWODU:
+   · `@supports` — bez obsługi osi czasu przewijania nie ma animacji
+     ANI powiększenia obrazu, więc stan zastany zostaje bajt w bajt.
+     Brak ruchu jest tu FALLBACKIEM, nie defektem (kanon).
+   · `prefers-reduced-motion` — przy `reduce` blok się nie stosuje,
+     czyli zero transformacji, nie transformacja spowolniona.
+   · powiększenie obrazu żyje WEWNĄTRZ tych samych warunków. Gdyby
+     stało na zewnątrz, przeglądarka bez obsługi osi czasu pokazałaby
+     obraz przesunięty w górę i nieruchomy — czyli kadrowanie zepsute
+     po cichu u tego, kto ruchu i tak nie zobaczy. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .kadr img {
+      /* Obraz wyższy od ramy o podwojony zakres ruchu i cofnięty o
+         połowę nadmiaru — dzięki temu przy skrajnych położeniach
+         animacji krawędź obrazu nigdy nie wjeżdża w kadr. */
+      block-size: calc(100% + 2 * var(--ruch-zasieg-parallaxu-hero));
+      position: relative;
+      inset-block-start: calc(-1 * var(--ruch-zasieg-parallaxu-hero));
+      animation: kadrHeroParallax linear both;
+      animation-timeline: scroll(root block);
+      /* Zakres liczony od początku dokumentu do miejsca, w którym hero
+         schodzi z ekranu — dalej ruch nie ma widza. */
+      animation-range: 0 100vh;
+    }
+  }
+}
+
+@keyframes kadrHeroParallax {
+  from {
+    transform: translateY(calc(-1 * var(--ruch-zasieg-parallaxu-hero)));
+  }
+
+  to {
+    transform: translateY(var(--ruch-zasieg-parallaxu-hero));
+  }
 }
 
 /* ═══ POŚWIATA HERO — KLASTER WZORCA (ADR-052, pomiar 1b) ═══

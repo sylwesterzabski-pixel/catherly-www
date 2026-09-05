@@ -20,11 +20,19 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
 const ROOT = process.cwd();
-const HTML_DIR = join(ROOT, ".next", "server", "app");
+/* L-OPS-04 (WWW/089 krok 0b): katalog budowania pochodzi ze zmiennej
+   WWW_DIST, domyślnie `.next` — ta sama, którą czyta `next.config.ts`.
+   Bez tego wiersza bramka czytałaby `.next` także po budowaniu
+   pomiarowym i czerwieniałaby z powodu, który NIE MA NIC WSPÓLNEGO
+   z kodem — czyli byłaby czerwienią mylącą, gorszą od żadnej.
+   Wykryte pomiarem: po pierwszym budowaniu do `.next-pomiar` bramki
+   „Linki" i „No-JS" zapaliły się, choć zmiana ich nie dotyczyła. */
+const KATALOG_BUDOWANIA = process.env.WWW_DIST || ".next";
+const HTML_DIR = join(ROOT, KATALOG_BUDOWANIA, "server", "app");
 
 if (!existsSync(HTML_DIR)) {
   console.error(
-    "✗ Brak zbudowanej strony (.next/server/app) — uruchom `npm run build`.\n" +
+    "✗ Brak zbudowanej strony (${KATALOG_BUDOWANIA}/server/app) — uruchom `npm run build`.\n" +
       "  Bramka kotwic bez builda jest CZERWONA."
   );
   process.exit(1);
