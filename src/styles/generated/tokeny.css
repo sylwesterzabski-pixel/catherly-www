@@ -33,7 +33,13 @@
    */
   --kolor-rola-powierzchnia-szklo: rgba(57, 57, 56, 0.30);
   /**
-   * KORPUS JASNY — rola klimatu mieszanego (ADR-049, decyzja właściciela WWW/074 pkt 1g). Wartość z §8.2 specyfikacji (Nexus, `SPEC-STRONY-DLA-FRAMERA.md:675`), bo Proactiv korpusu jasnego NIE MA — jest jednolicie ciemny (zmierzone: sześć przejść między sekcjami, delta luminancji 0,00000 sześć razy).
+   * ⚠ WARTOŚĆ PRZESZCZEPIONA Z R (ADR-062, zlecenie WWW/088 krok 2). Poprzednio `#f2f2f2` z §8.2 specyfikacji. React Bits SaaS jest wzorcem NATYWNIE JASNYM — jego tło strony to `#f5f5f5` (`--background` w trybie jasnym), zmierzone dwiema niezależnymi metodami w WWW/087-R: `getComputedStyle` na żywej stronie dał `rgb(245,245,245)`, a odczyt arkusza Tailwinda v4 dał `--color-neutral-100 = #f5f5f5`. Dwie metody, ta sama liczba.
+   * 
+   * Dlaczego akurat ta rola przechodzi, a dwie sąsiednie nie: przeniesienie POPRAWIA wszystkie kontrasty, których dotyka. Zmierzone po zmianie (skrypt `scripts/kontrast.mjs`, ten sam przebieg): tekst drugorzędny 6,56 → 6,73:1, kreska dekoracyjna 1,42 → 1,46:1, akcent na jasnym 5,20 → 5,34:1, obwódka fokusu 16,31 → 16,75:1, obrys pola formularza 6,56 → 6,73:1.
+   * 
+   * ⚠ JEDNA RELACJA SIĘ POGARSZA I ZAPISUJĘ JĄ, ZAMIAST PRZEMILCZEĆ: karta biała wobec tła sekcji schodzi z 1,12:1 na 1,09:1, a pudełko ikony w karcie (`powierzchnia-2` na korpusie jasnym) razem z nią. Obie liczby były poniżej progu 1,30 z ADR-038 JUŻ PRZED zmianą, więc karty i tak rozdziela obrys (1,59:1, bez zmiany) i kompozycja (odstęp 32 px); żaden mechanizm nie znika. To jest ubytek wyrazu o 0,03, nie utrata rozdziału.
+   * 
+   * Poprzednie brzmienie, zachowane jako ślad: wartość z §8.2 specyfikacji (Nexus, `SPEC-STRONY-DLA-FRAMERA.md:675`), bo Proactiv korpusu jasnego NIE MA — jest jednolicie ciemny (zmierzone: sześć przejść między sekcjami, delta luminancji 0,00000 sześć razy).
    * 
    * ⚠ ROLA WCHODZI BEZ UŻYCIA — świadomie i na wyraźne polecenie („same ROLE, rozlanie na sekcje w następnych batchach"). Odnotowuję odstępstwo od zasady, którą sam zapisałem w ADR-048 („ani jednego tokena, którego kod nie używa"), żeby nie wyglądało na niekonsekwencję: tam zasada broniła przed udawaniem, że §8.1 przeniesiono szerzej niż przeniesiono; tu rola jest zapowiedzią batcha, a nie deklaracją stanu. Warunek, żeby to nie zgniło: jeśli korpus jasny nie wejdzie do żadnej sekcji, rola ma zniknąć razem z decyzją.
    * 
@@ -42,12 +48,21 @@
    *   · **fokus (biel) na jasnym = 1,12:1** (próg 3:1). Obwódka fokusu znika. Mechanizm `outline-offset`, który ratuje ją na ciemnym (biel na tle 20,07:1), tutaj nie pomaga — bo TŁO też jest jasne.
    * Dopóki te dwie pozycje nie mają rozstrzygnięcia (obwódka CTA? inny akcent na jasnym? ciemniejsza powierzchnia jasna?), sekcja jasna nie może powstać.
    */
-  --kolor-rola-powierzchnia-jasna: #f2f2f2;
-  --kolor-rola-tekst-na-jasnym: #151515; /** Tekst mocny na korpusie jasnym (ADR-049). Wartość z §8.2 (Nexus, `SPEC:670`). Zmierzone: ×`powierzchnia-jasna` **16,31:1** — para wchodzi do PARY w strażniku tokenów, więc nie jest rolą bez sprawdzenia. */
+  --kolor-rola-powierzchnia-jasna: #f5f5f5;
+  /**
+   * ⚠ WARTOŚĆ PRZESZCZEPIONA Z R (ADR-062, zlecenie WWW/088 krok 2). Poprzednio `#151515` z §8.2. Wzorzec R niesie `--foreground: #0a0a0a` w trybie jasnym; `getComputedStyle` na żywej stronie dał `rgb(10,10,10)` — te same dwie niezależne metody co przy `powierzchnia-jasna`.
+   * 
+   * Zmierzone po zmianie: ×`powierzchnia-jasna` **18,16:1** (było 16,31:1), ×`powierzchnia-karty-na-jasnym` **19,80:1** (było 18,26:1). Para wchodzi do PARY w strażniku tokenów, więc nie jest rolą bez sprawdzenia.
+   */
+  --kolor-rola-tekst-na-jasnym: #0a0a0a;
   /**
    * Tekst drugorzędny na korpusie jasnym (ADR-049). WARTOŚĆ NASZA, NIE PRZENIESIONA — §8.2 podaje dla tej roli `#8b8b8b`, ale tamta liczba opisuje tekst drugorzędny na tle CIEMNYM. Sprawdzone: `#8b8b8b` na `#f2f2f2` daje **3,04:1**, czyli poniżej progu 4,5:1 dla prozy. Przeniesienie jej wprost byłoby wzięciem wartości z innej roli tylko dlatego, że nazwa się zgadza.
    * 
    * Wybrane `#565656` daje **6,56:1** — z zapasem, nie „ledwo spełniające" (ta sama zasada, którą ADR-038 zastosował do `stan-wylaczony`). Para wchodzi do PARY w strażniku.
+   * 
+   * ⚠ PRZESZCZEP Z R ODRZUCONY — I ODRZUCA GO WŁASNE KRYTERIUM ZLECENIA (ADR-062, WWW/088 krok 2). Zlecenie każe przyjąć wartości R tam, gdzie różnica jest niezerowa, i w tym samym akapicie stawia próg „przygaszony/tło ≥ 4,5:1". Te dwa zdania są dla tej jednej roli sprzeczne: R niesie `#737373`, co na tle `#f5f5f5` daje **4,35:1** — poniżej progu, o który zlecenie prosi. Wartość nasza daje na tym samym nowym tle **6,73:1**.
+   * 
+   * To nie jest podejrzenie, tylko zmierzona własność wzorca: axe na R znalazł **30 węzłów `color-contrast` o wadze serious** (WWW/087-R, oba kadry). Przeniesienie tej liczby zamieniłoby cudzą wadę na naszą czerwień w bramce dostępności — a zakaz 3 kanonu nie zna wyjątku dla czerwieni uzasadnionej.
    */
   --kolor-rola-tekst-2-na-jasnym: #565656;
   /**
@@ -107,6 +122,12 @@
    */
   --kolor-rola-tlo-przezroczyste: rgba(7, 8, 6, 0.92);
   /**
+   * ⚠ PRZESZCZEP Z R ODRZUCONY — PONIŻEJ PROGU ADR-038 (ADR-062, WWW/088 krok 2). R niesie `--border: #e5e5e5`; na białej karcie daje to **1,26:1**, a wobec tła sekcji **1,16:1** — obie poniżej progu 1,30, na którym stoi mechanizm KRESKI z ADR-038. Nasza wartość daje 1,59:1 wobec karty i 1,46:1 wobec nowego tła sekcji.
+   * 
+   * Skutek przyjęcia byłby dokładnie klasą „strażnik eroduje przez zmianę otoczenia": kreska zostałaby narysowana, wyglądałaby na obrys i przestałaby być rozdziałem w rozumieniu ADR-038 — a rola `kreska` pada w wielu miejscach, nie tylko na kartach, więc ubytek nie byłby widoczny tam, gdzie by powstał.
+   * 
+   * Poprzednie brzmienie tego komentarza zostaje niżej w całości, bo opisuje, skąd wartość pochodzi.
+   * 
    * Kreska dekoracyjna korpusu jasnego — obrys karty, granica próg 1,30 z ADR-038.
    * 
    * ⚠ WARTOŚĆ ODTWARZA RELACJĘ Z KORPUSU CIEMNEGO, NIE JEST DOBRANA OD NOWA — ta sama metoda, którą ADR-052 wyprowadził obrys pola formularza. Na korpusie ciemnym kreska wobec powierzchni karty daje 1,60:1; ta wartość daje 1,59:1 wobec karty białej i 1,42:1 wobec powierzchni jasnej. Oba progi ADR-038 spełnione z zapasem, a relacja jest ta sama, co po ciemnej stronie.
@@ -180,7 +201,16 @@
    * ⚠ TA WAGA ISTNIAŁA W ARKUSZACH JAKO LITERAŁ, ZANIM DOSTAŁA TOKEN: duet wyróżnienia i nazwa kroku rytmu dnia niosą 600 wpisane wprost. Token wchodzi z pierwszym użyciem, które pochodzi z pomiaru; migracja tamtych dwóch to osobna robota i celowo nie wchodzi tutaj — zmiana pliku, którego zlecenie nie otwiera, jest naprawą przy okazji.
    */
   --waga-wyrozniona: 600;
-  --interlinia-tekst: 1.8; /** Interlinia prozy = 1,80 (POMIAR 0.1: 28,8/16). Poprzednio 1.6 — różnica widoczna w każdym akapicie. */
+  /**
+   * ⚠ INTERLINIA PROZY PRZESZCZEPIONA Z R (ADR-062, zlecenie WWW/088 krok 4). 1,625 = **26 px przy piśmie 16 px**. Poprzednio 1.8 (POMIAR 0.1: 28,8/16, Proactiv).
+   * 
+   * Źródło, dwie niezależne metody: pomiar żywej strony R dał prozę `16 / 400 / 26` (WWW/087-R krok 2), a odczyt arkusza Tailwinda v4 dał `--leading-relaxed: 1.625`, czyli dokładnie 26 px na tym piśmie (WWW/087-R krok 0.5).
+   * 
+   * ⚠ ZLECENIE OPISAŁO NASZ STAN JAKO „16/24" — NIE BYŁ TAKI. Pomiar przed zmianą (Playwright, `getComputedStyle`, cztery kadry) znalazł w prozie DWIE wartości naraz: 28,8 px z tego tokena oraz 25,6 px z literału `line-height: 1.6` w czterech modułach. Rozjazd zgłoszony w zwrotce. Literały schodzą razem z tą zmianą na ten token — inaczej krok 4 byłby prawdziwy w części sekcji, a w czterech innych proza zostałaby na 25,6 px.
+   * 
+   * ⚠ CZEGO TA ZMIANA NIE DOTYKA: `interlinia.lead` zostaje 1,5556, bo przy piśmie 18 px daje **28 px** — czyli dokładnie wartość, o którą prosi zlecenie („lead 18/28"). Różnica wynosi zero, więc nie ma czego przenosić.
+   */
+  --interlinia-tekst: 1.625;
   --interlinia-naglowek: 1.2; /** Interlinia nagłówków = 1,20 (H1 na wszystkich progach: 40,8/34 · 63,6/53 · 84/70; H2 przy ≥ 810: 50,4/42 · 72/60). */
   --interlinia-naglowek-male: 1.4; /** ⚠ H2 na kadrze ≤ 768 ma interlinię 1,40 (53,2/38), nie 1,20. Jedyne odstępstwo w całej skali nagłówków; zmierzone, nie wyprowadzone. */
   /**
@@ -217,9 +247,46 @@
   --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). UWAGA: 03-typografia.css paczki niesie --szerokosc-tekstu: 68ch dla tego samego zastosowania — rozjazd zgłoszony, nierozstrzygnięty; wchodzi dopiero z zadaniem 12, które jest poza zakresem WWW/038-bis. */
   --wymiar-miara-kolumny: 50rem; /** Kolumna prozy = 800 px (POMIAR 0.3, 8 wystąpień). Poprzednio 38rem = 608 px. */
   --wymiar-kontener-strony: 90rem; /** Kontener treści = 1440 px (POMIAR 0.3, 16 wystąpień). Poprzednio 70rem = 1120 px. */
-  --wymiar-promien-maly: 0.25rem; /** Promień detali (skip-link K1; ADR-028). */
-  --wymiar-promien: 0.5rem; /** Promień dominujący = 8 px (POMIAR 0.3, 88 wystąpień). Wartość BEZ ZMIANY — nasza skala trafiła w niego niezależnie. */
-  --wymiar-promien-pigulki: 3.125rem; /** Pigułki = 50 px (POMIAR 0.3, 11 wystąpień). Poprzednio 2rem = 32 px. */
+  /**
+   * ⚠ DRABINA PROMIENI PRZESZCZEPIONA Z R (ADR-062, zlecenie WWW/088 krok 3). Szczebel MAŁY = 12 px. Poprzednio 0.25rem = 4 px.
+   * 
+   * Źródło: arkusz R niesie `--radius-xl: .75rem`, a pomiar `getComputedStyle` na żywej stronie dał rozkład 12 · 16 · 24 · 32 px — dwie niezależne metody, ta sama drabina (WWW/087-R kroki 2 i 0.5).
+   * 
+   * ⚠ ZLECENIE OPISAŁO NASZĄ DRABINĘ JAKO 6 · 8 · 12 · 16 — TO JEST DRABINA PROACTIVA, NIE NASZA. Nasza przed zmianą: 4 · 8 · 12 · 50. Rozjazd zgłoszony w zwrotce WWW/088; mapowanie wykonane po ROLACH, jak każe zlecenie, a nie po nieistniejących szczeblach.
+   * 
+   * Konsumenci tego szczebla: `.skipLink` i `.kreska` paska nawigacji. Przy kresce 2 px wysokości przeglądarka i tak przycina promień do połowy krótszego boku, więc zmiana jest tam bez skutku wizualnego — odnotowane, żeby nie wyglądało na przeoczenie.
+   */
+  --wymiar-promien-maly: 0.75rem;
+  /**
+   * ⚠ DRABINA PROMIENI PRZESZCZEPIONA Z R (ADR-062, WWW/088 krok 3). Szczebel KARTY = 16 px. Poprzednio 0.5rem = 8 px (POMIAR 0.3, 88 wystąpień u Proactiva).
+   * 
+   * Źródło: `--radius-2xl: 1rem` w arkuszu R; ta sama liczba wyszła z pomiaru chromu kart cennika R (promień 16 px, WWW/087-R krok 2).
+   * 
+   * Konsumenci: pudełko ikony w karcie funkcji, obraz modułu funkcji, karta sekcji kierunku, wnętrze bloku zadania dnia, dwa przyciski CTA.
+   */
+  --wymiar-promien: 1rem;
+  /**
+   * ⚠ RODZINA „KARTA-CENNIK" — OSOBNA OD KART FUNKCJI (ADR-062, zlecenie WWW/088 krok 1). Promień 16 px, zmierzony wprost na kartach cennika R: `320 × 458 px, tło białe, kreska 1 px, promień 16 px, wypełnienie 32 px, cień none` (WWW/087-R krok 2).
+   * 
+   * ⚠ TOKEN ZOSTAJE OSOBNY MIMO WARTOŚCI RÓWNEJ `promien` — i to jest cały powód jego istnienia, nie ozdoba. Karty cennika brały dotąd `promien-sredni`, wspólny z kartami funkcji; ten sam krok 3 przesuwa tamten szczebel na 24 px. Bez własnego tokena karty cennika pojechałyby na 24 px za rodziną, do której — jak pokazał pomiar celowany `/pricing` — nigdy nie należały (ADR-056 wziął ich chrom z próbki kart funkcji i opinii; sprostowanie stoi w `SekcjaPlanow.module.css`).
+   * 
+   * Czego ten token świadomie NIE duplikuje: tła, kreski, wypełnienia i cienia. Tło i kreska dziedziczą z ról STREFY (`powierzchnia`, `kreska`), więc karta jest poprawna w obu tonach bez osobnych wartości — dokładnie tak, jak żąda zlecenie („tło karty strefy: jasny biel, ciemny nasz"). Wypełnienie to `odstep-7` = 32 px, już zgodne z pomiarem R. Cień: `none`, też już zgodny.
+   */
+  --wymiar-promien-karta-cennik: 1rem;
+  /**
+   * ⚠ RODZINA „KARTA-CENNIK" (ADR-062, WWW/088 krok 1). Szerokość karty planu = 320 px — zmierzona na kartach cennika R (`320 × 458`, trzy karty, oba kadry; WWW/087-R krok 2).
+   * 
+   * Wchodzi jako GÓRNA GRANICA kolumny (`minmax(0, …)`), nie jako sztywna szerokość, i tylko od progu układu. Powód jest arytmetyczny i sprawdzony przed zapisem: trzy kolumny po 320 px plus dwa odstępy po 32 px to 1024 px, a kadr 810 daje po wcięciach 730 px wnętrza — sztywne 320 przelałoby siatkę poza kadr. Poniżej progu układu kolumna jest jedna i bierze pełną szerokość, jak każe zlecenie.
+   */
+  --wymiar-szerokosc-karty-cennik: 20rem;
+  /**
+   * Pigułki = 50 px (POMIAR 0.3, 11 wystąpień). Poprzednio 2rem = 32 px.
+   * 
+   * ⚠ MAPOWANIE „PIGUŁKA → 24 px" ZE ZLECENIA WWW/088 NIE ZOSTAŁO WYKONANE — I POWSTRZYMUJE JE SAM PRZESZCZEPIANY POMIAR. Rozkład promieni R ma NAJCZĘSTSZĄ wartością `33554400 px`, czyli przycięte `9999px`: R trzyma pigułkę pigułką i ma ją obok drabiny 12 · 16 · 24 · 32, a nie zamiast niej (WWW/087-R krok 2; ten sam kształt u Proactiva). Sprowadzenie naszej pigułki do 24 px byłoby więc odejściem od wzorca w imię wierności wzorcowi.
+   * 
+   * Rozjazd zgłoszony w zwrotce; zmiana czeka na rozstrzygnięcie właściciela, bo dotyczy kształtu paska nawigacji, przycisku hero, przycisku logowania i przełącznika okresu naraz.
+   */
+  --wymiar-promien-pigulki: 3.125rem;
   --wymiar-prog-ukladu: 48rem; /** Próg przełączenia układów mobile→desktop (ADR-028). WYŁĄCZNIE DOKUMENTACYJNY: @media nie czyta var() — wartość powielona literalnie w media queries modułów; zmiana wymaga ADR i sync wszystkich @media. */
   --wymiar-kontener-waski: 80rem; /** Kontener węższy = 1280 px (POMIAR 0.3, 3 wystąpienia). */
   /**
@@ -241,7 +308,16 @@
   --wymiar-odstep-5: 1rem; /** Siatka odstępów = 16 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
   --wymiar-odstep-6: 1.5rem; /** Siatka odstępów = 24 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
   --wymiar-odstep-7: 2rem; /** Siatka odstępów = 32 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
-  --wymiar-promien-sredni: 0.75rem; /** Promień 12 px (POMIAR 0.3, 35 wystąpień). */
+  /**
+   * ⚠ DRABINA PROMIENI PRZESZCZEPIONA Z R (ADR-062, WWW/088 krok 3). Szczebel SEKCJI = 24 px. Poprzednio 0.75rem = 12 px (POMIAR 0.3, 35 wystąpień u Proactiva).
+   * 
+   * Źródło: `--radius-3xl: 1.5rem` w arkuszu R; w pomiarze żywej strony 24 px jest jednym z czterech szczebli rozkładu.
+   * 
+   * Konsumenci: karta funkcji, obraz filaru, kadr sekcji „dbanie o siebie", pozycja pasa ścieżek, rozwijane pytanie FAQ. ⚠ KARTY CENNIKA JUŻ TU NIE NALEŻĄ — od kroku 1 mają własny token `promien-karta-cennik` (16 px), bo pomiar celowany pokazał, że do tej rodziny nigdy nie należały.
+   * 
+   * ⚠ CZWARTY SZCZEBEL DRABINY R — 32 px (`--radius-4xl: 2rem`) — ŚWIADOMIE NIE WSZEDŁ. Nie ma dziś w `src/` ani jednego elementu, któremu przypadałby szczebel „duży": przejrzane wszystkie 21 wystąpień `border-radius` i każde ma już swoją rolę na trzech szczeblach niższych. Token bez konsumenta byłby dokładnie tym, przed czym broni ADR-048 („ani jednego tokena, którego kod nie używa"). Wchodzi razem z pierwszym elementem, który go potrzebuje.
+   */
+  --wymiar-promien-sredni: 1.5rem;
   /**
    * Ósmy stopień skali odstępów = 40 px — WARTOŚĆ Z §8.1 (Habitline, gap kart), nie z POMIARU 0.3. Skala `odstep-1..7` kończyła się na 32 px; ten stopień ją PRZEDŁUŻA, nie zmienia.
    * 

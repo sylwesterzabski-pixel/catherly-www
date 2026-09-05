@@ -21,7 +21,12 @@
   /* Rytm 80 / 160 — identycznie jak K3, patrz uzasadnienie tam. */
   padding-block: var(--wymiar-odstep-sekcji-male);
   padding-inline: var(--wymiar-wciecie-tresci-male);
-  line-height: 1.6;
+  /* ⚠ LITERAŁ ZASTĄPIONY TOKENEM (ADR-062, WWW/088 krok 4). Stało tu
+     `1.6`, czyli 25,6 px — jeden z czterech modułów, w których proza
+     omijała token i szła własną wartością. Krok 4 przenosi interlinię
+     prozy na 26 px z pomiaru R; gdyby literały zostały, zmiana byłaby
+     prawdziwa w części sekcji, a w tych czterech nie. */
+  line-height: var(--interlinia-tekst);
   background: var(--kolor-rola-powierzchnia-akcentowa);
 }
 

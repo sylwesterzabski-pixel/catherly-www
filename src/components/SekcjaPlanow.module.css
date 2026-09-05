@@ -123,7 +123,14 @@
 
 @media (min-width: 48rem) {
   .karty {
-    grid-template-columns: 1fr 1fr 1fr;
+    /* ⚠ SZEROKOŚĆ KARTY 320 px Z POMIARU R (ADR-062, WWW/088 krok 1).
+       Poprzednio `1fr 1fr 1fr`. `minmax(0, …)` zamiast sztywnej wartości —
+       trzy kolumny po 320 z dwoma odstępami po 32 to 1024 px, a kadr 810
+       daje po wcięciach 730 px wnętrza. Uzasadnienie pełne w bliźniaczym
+       komentarzu w `CennikSkrot.module.css`; obie siatki biorą ten sam
+       token, żeby skrót i podstrona nie rozjechały się szerokością. */
+    grid-template-columns: repeat(3, minmax(0, var(--wymiar-szerokosc-karty-cennik)));
+    justify-content: center;
     /* ⚠ 32 px, NIE 16 — DECYZJA WŁAŚCICIELA, NIE POMIAR (ADR-059).
        Pomiar wzorca daje 16 px i tyle tu stało. Audyt na żywo (WWW/084)
        pokazał, że przy tej wartości karty czytają się jak jeden blok
@@ -140,9 +147,13 @@
 .karta {
   background: var(--kolor-rola-powierzchnia);
   border: 0.0625rem solid var(--kolor-rola-kreska);
-  /* 12 px i 32 px — reużycie anatomii ze skrótu cennika (ADR-056),
-     zero dywergencji. Poprzednio 8 px i 24 px. */
-  border-radius: var(--wymiar-promien-sredni);
+  /* ⚠ 16 px Z RODZINY „KARTA-CENNIK" (ADR-062, WWW/088 krok 1). Poprzednio
+     12 px z `promien-sredni`. Reużycie anatomii ze skrótu cennika ZOSTAJE
+     bez zmian — oba miejsca biorą ten sam nowy token, więc skrót i podstrona
+     nadal pokazują tę samą rzecz. Warunek „zero dywergencji" z WWW/082 jest
+     spełniony po zmianie tak samo jak przed nią; przesuwa się wartość, nie
+     relacja. Wypełnienie 32 px zostaje — pomiar R daje dokładnie tyle. */
+  border-radius: var(--wymiar-promien-karta-cennik);
   padding: var(--wymiar-odstep-7);
   display: flex;
   flex-direction: column;

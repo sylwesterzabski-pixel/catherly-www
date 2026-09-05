@@ -29,7 +29,12 @@
   /* Odstęp sekcji progowany od ADR-049 — patrz Filar.module.css. */
   padding-block: var(--wymiar-odstep-sekcji-male) 0;
   padding-inline: var(--wymiar-wciecie-tresci-male);
-  line-height: 1.6;
+  /* ⚠ LITERAŁ ZASTĄPIONY TOKENEM (ADR-062, WWW/088 krok 4). Stało tu
+     `1.6`, czyli 25,6 px — czwarty z czterech modułów, w których proza
+     omijała token i szła własną wartością. Krok 4 przenosi interlinię
+     prozy na 26 px z pomiaru R; gdyby literały zostały, zmiana byłaby
+     prawdziwa w części sekcji, a w tych czterech nie. */
+  line-height: var(--interlinia-tekst);
 }
 
 .wnetrze {
@@ -66,9 +71,15 @@
      Strefa jest CIEMNA (mapa ADR-051), więc `kreska` daje tu 1,60:1
      wobec powierzchni karty — powyżej progu 1,30 z ADR-038. */
   border: 0.0625rem solid var(--kolor-rola-kreska);
-  /* 12 px — dominanta promieni kart wzorca. Poprzednio 5 px. */
-  border-radius: var(--wymiar-promien-sredni);
-  /* 32 px — wypełnienie karty wzorca, 21 wystąpień. Poprzednio 35/40. */
+  /* ⚠ RODZINA „KARTA-CENNIK", NIE „KARTA FUNKCJI" (ADR-062, WWW/088 krok 1).
+     16 px, zmierzone wprost na kartach cennika React Bits SaaS: 320 × 458,
+     kreska 1 px, promień 16, wypełnienie 32, cień none. Poprzednio 12 px
+     z `promien-sredni`, wspólnego z kartami funkcji — a ten sam batch
+     przesuwa tamten szczebel na 24 px. Bez własnego tokena karta cennika
+     pojechałaby za rodziną, do której pomiar celowany `/pricing` nigdy jej
+     nie zaliczył (sprostowanie ADR-056 stoi w `SekcjaPlanow.module.css`). */
+  border-radius: var(--wymiar-promien-karta-cennik);
+  /* 32 px — wypełnienie karty wzorca, zgodne także z pomiarem R. */
   padding: var(--wymiar-odstep-7);
   display: flex;
   flex-wrap: wrap; /* W6: 320 px, zoom 200%, teksty DE */
@@ -117,7 +128,15 @@
    wartość powielona literalnie — zmiana wymaga ADR i sync @media. */
 @media (min-width: 48rem) {
   .plany {
-    grid-template-columns: 1fr 1fr 1fr;
+    /* ⚠ SZEROKOŚĆ KARTY 320 px Z POMIARU R (ADR-062, WWW/088 krok 1).
+       Poprzednio `1fr 1fr 1fr`, czyli karta rozciągana do kadru — przy 1440
+       dawało to 405 px, przy 1190 362 px, przy 810 235 px: trzy różne karty
+       zamiast jednej. `minmax(0, …)` zamiast sztywnych 320, bo trzy kolumny
+       po 320 z dwoma odstępami po 32 to 1024 px, a kadr 810 daje po wcięciach
+       730 px wnętrza — sztywna wartość przelałaby siatkę poza kadr.
+       Poniżej tego progu kolumna jest jedna i bierze pełną szerokość. */
+    grid-template-columns: repeat(3, minmax(0, var(--wymiar-szerokosc-karty-cennik)));
+    justify-content: center;
   }
 }
 
@@ -141,7 +160,8 @@
   }
 
   .plany {
-    grid-template-columns: repeat(3, 1fr);
+    /* Ta sama granica 320 px co od progu układu — patrz komentarz wyżej. */
+    grid-template-columns: repeat(3, minmax(0, var(--wymiar-szerokosc-karty-cennik)));
     /* ⚠ 32 px, NIE 16 — DECYZJA WŁAŚCICIELA, NIE POMIAR (ADR-059).
        Pomiar wzorca daje 16 px i tyle tu stało. Audyt na żywo (WWW/084)
        pokazał, że przy tej wartości karty czytają się jak jeden blok
