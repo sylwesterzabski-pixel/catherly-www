@@ -164,7 +164,7 @@
    * 
    * ⚠ TO JEST ZAWĘŻENIE REGUŁY Z ADR-049, NIE JEJ ZŁAMANIE. ADR-049 mówi: przy konflikcie geometrii wygrywa POMIAR 0.3 (wzorzec WWW/050-FINAL). Reguła zostaje w mocy dla całej strony; batch A1 (nawigacja, hero, stopka) jest z niej WYJĘTY imiennie decyzją koordynatora (WWW/077), bo to właśnie te trzy elementy mają nieść anatomię Proactiva. Poprzednia wartość zostaje w tym komentarzu jako ślad: 4.375rem = 70 px.
    */
-  --tekst-h1: 6rem;
+  --tekst-h1: 3.25rem;
   /**
    * H2 = 48 px na KAŻDYM kadrze od 768 px w górę. Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
    * 
@@ -172,22 +172,22 @@
    * 
    * ⚠ STOPIEŃ ŚRODKOWY ZNIKA, BO WZORZEC GO NIE MA. Do 04.09 skala miała trzy szczeble (60 / 42 / 38). Bisekcja co 1 px pokazała JEDEN próg i JEDNĄ zmianę: 767 px → 30 px, 768 px → 48 px, i ta sama liczba 48 utrzymuje się przez 800, 1023, 1024, 1025, 1100 i 1440. Token `h2-srednie` został usunięty razem z nadpisaniem przy 90rem — trzymanie dwóch tokenów o równej wartości jest zaproszeniem do cichego rozjazdu, a nie zapasem.
    */
-  --tekst-h2: 3rem;
+  --tekst-h2: 2.5rem;
   /**
    * H1 = 72 px w paśmie 768–1279 px (ADR-059). Poprzednio 80 px.
    * 
    * ⚠ RACHUNEK, NIE DOBÓR NA OKO. Wzorzec ma dwa stopnie H1 (96 przy kadrze szerokim, 36 poniżej swojego progu) i stopnia pośredniego NIE MA — bo jego próg leży przy 1024, a nasz układ trzyma pełną skalę dopiero od 1280. Pasmo 768–1279 jest więc NASZE i musi mieć własną liczbę.
    * Wzięta jako TRZY CZWARTE skali pełnej: 96 × 0,75 = 72, a H2 48 × 0,75 = 36. Dzięki temu RELACJA H1 : H2 pozostaje dokładnie 2,00 — czyli krok skali zmierzony u wzorca obowiązuje także w paśmie, którego wzorzec nie pokazuje. Alternatywa (64) łamałaby relację albo wymuszała H2 32, poza żądanym zakresem 36–40.
    */
-  --tekst-h1-srednie: 4.5rem;
-  --tekst-h1-male: 3rem; /** H1 = 48 px przy ≤ 768 (pomiar Proactiva 1j). Poprzednio 2.125rem = 34 px (POMIAR 0.5). */
+  --tekst-h1-srednie: 2.75rem;
+  --tekst-h1-male: 2.25rem; /** H1 = 48 px przy ≤ 768 (pomiar Proactiva 1j). Poprzednio 2.125rem = 34 px (POMIAR 0.5). */
   --tekst-plakietka: 0.75rem; /** Plakietka górna = 12 px, waga 700, interlinia 1,20 (POMIAR 0.1). */
   /**
    * H2 = 30 px poniżej 768 px (zmierzone). Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
    * 
    * ⚠ POPRZEDNIE BRZMIENIE TEGO KOMENTARZA BYŁO PRAWDZIWE DLA INNEGO WZORCA i zostaje jako ślad: „NIE jest mniejsze proporcjonalnie do H1: H1 spada 70→53→34 (0,49), H2 tylko 60→42→38 (0,63)”. Tamten pomiar (POMIAR 0.4/0.7) opisywał wzorzec WWW/050-FINAL. Proactiv zachowuje się ODWROTNIE: to H2 spada łagodniej dopiero PO progu 768, a między 810 a 1440 nie rusza się wcale.
    */
-  --tekst-h2-male: 1.875rem;
+  --tekst-h2-male: 1.75rem;
   /**
    * Tytuł karty = 18 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 1440/810/390; próbka: 21 kart o promieniu 12 px, wypełnieniu 32 px i obrysie jednopikselowym).
    * 
@@ -200,7 +200,7 @@
    * ⚠ RÓWNA WARTOŚCIĄ `tekst.karta` I ZOSTAJE OSOBNYM TOKENEM — ta sama obrona, którą niesie `kroj-naglowek` równy `kroj`: zdanie prowadzące i tytuł karty to dwie różne decyzje typograficzne i mają móc się rozejść bez przeszukiwania arkuszy. Równość wartości jest dziś stanem wzorca, nie brakiem rozróżnienia.
    */
   --tekst-lead: 1.125rem;
-  --tekst-h2-srednie: 2.25rem; /** H2 = 36 px w paśmie 768–1279 px (ADR-059). ⚠ TOKEN WRACA POD INNYM ZNACZENIEM: ADR-053 usunął `h2-srednie`, bo wzorzec ma tylko dwa stopnie H2 i trzeci byłby duplikatem. Tu nie jest duplikatem — niesie 36 px, wartość, której nie ma żaden inny token, i opisuje pasmo, którego wzorzec nie pokazuje. Trzy czwarte skali pełnej, relacja do H1 dokładnie 2,00. */
+  --tekst-h2-srednie: 2.125rem; /** H2 = 36 px w paśmie 768–1279 px (ADR-059). ⚠ TOKEN WRACA POD INNYM ZNACZENIEM: ADR-053 usunął `h2-srednie`, bo wzorzec ma tylko dwa stopnie H2 i trzeci byłby duplikatem. Tu nie jest duplikatem — niesie 36 px, wartość, której nie ma żaden inny token, i opisuje pasmo, którego wzorzec nie pokazuje. Trzy czwarte skali pełnej, relacja do H1 dokładnie 2,00. */
   --waga-tekst: 500; /** Proza wzorca ma wagę 500, nie 400 (POMIAR 0.1). Inter jest zmienny, więc to nic nie kosztuje. */
   --waga-etykieta: 500;
   --waga-naglowek: 500; /** Nagłówki wzorca mają wagę 500, nie 600 (POMIAR 0.1). Satoshi jest u nas statyczny dokładnie w tej wadze — inna waga zeszłaby na syntezę przeglądarki. */
@@ -237,23 +237,23 @@
    */
   --interlinia-karta-opis: 1.4286;
   --interlinia-lead: 1.5556; /** Interlinia zdania prowadzącego = 28 px przy piśmie 18 px. Pomiar CELOWANY wzorca 04.09.2026 (Playwright, kadry 768 / 1023 / 1024 / 1025 / 1280 / 1440 / 1600; przedmiot: cztery bloki dwukolumnowe tekst : media). */
-  --tracking-naglowek: -0.1875rem; /** Tracking H1 = −3 px przy ≥ 1440 (POMIAR 0.4/0.7). ⚠ ADR-041 zakładał, że −3 px obowiązuje na WSZYSTKICH progach, i zapisał to jako pozycję otwartą. Pomiar zamyka ją: tracking JEST progowy, patrz `naglowek-srednie` i `naglowek-male`. Nie jest też stały w `em`: −3/70 = −0,043em, −1,6/53 = −0,030em, −1/34 = −0,029em. */
+  --tracking-naglowek: -0.1015625rem; /** Tracking H1 = −3 px przy ≥ 1440 (POMIAR 0.4/0.7). ⚠ ADR-041 zakładał, że −3 px obowiązuje na WSZYSTKICH progach, i zapisał to jako pozycję otwartą. Pomiar zamyka ją: tracking JEST progowy, patrz `naglowek-srednie` i `naglowek-male`. Nie jest też stały w `em`: −3/70 = −0,043em, −1,6/53 = −0,030em, −1/34 = −0,029em. */
   --tracking-wersalik: 0.04em; /** WYMAGANE przy text-transform: uppercase — bez tego kapitaliki zlewają się w blok. Zastosowanie w komponentach to zadanie 11 checklisty, poza zakresem WWW/038-bis; token wchodzi teraz, bo należy do skali. */
-  --tracking-naglowek-srednie: -0.1125rem; /** Tracking H1 = −1,8 px przy piśmie 72 px, czyli −0,025em (ADR-059). Poprzednio −1,6 px przy 80 px. Wzorzec trzyma tracking STAŁY W `em` na całej skali; pasmo pośrednie idzie za tą regułą. */
-  --tracking-naglowek-male: -0.0625rem; /** Tracking H1 = −1 px przy ≤ 768 px (zmierzone). */
+  --tracking-naglowek-srednie: -0.06875rem; /** Tracking H1 = −1,8 px przy piśmie 72 px, czyli −0,025em (ADR-059). Poprzednio −1,6 px przy 80 px. Wzorzec trzyma tracking STAŁY W `em` na całej skali; pasmo pośrednie idzie za tą regułą. */
+  --tracking-naglowek-male: -0.046875rem; /** Tracking H1 = −1 px przy ≤ 768 px (zmierzone). */
   /**
    * Tracking H2 poniżej 768 px = −0,75 px przy piśmie 30 px, czyli także −0,025em. Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
    * 
    * ⚠ POPRZEDNIA WARTOŚĆ −0,6 px POCHODZIŁA Z INNEGO WZORCA (POMIAR 0.4/0.7, H2 = 38 px). Zapis, który wtedy powstał, mówił: „na wąskim kadrze nagłówek sekcji jest OSOBNĄ decyzją typograficzną, nie pomniejszonym H1”. Proactiv mówi coś prostszego i mocniejszego: tracking jest u niego STAŁY W `em` (−0,025em przy 96, przy 48 i przy 30 px), więc osobną decyzją jest tam rozmiar, a nie tracking.
    */
-  --tracking-naglowek-sekcji-male: -0.046875rem;
+  --tracking-naglowek-sekcji-male: -0.04375rem;
   /**
    * Tracking H2 od 768 px w górę = −1,2 px przy piśmie 48 px, czyli −0,025em. Pomiar wzorca 04.09.2026 (Playwright, getComputedStyle, kadry 1440/810/390, wysokość strony 12 467 px — ta sama co w WWW/073, więc wzorzec się nie zmienił).
    * 
    * ⚠ BEZ TEGO TOKENA ZMIANA ROZMIARU H2 BYŁABY WADĄ, NIE POPRAWKĄ. Do 04.09 H2 na szerokim kadrze brało `tracking.naglowek` = −3 px — wartość zmierzoną dla H1 o rozmiarze 70 px w POMIARZE 0.4/0.7. Na nagłówku 48 px te same −3 px dają −0,0625em, czyli ponad dwa i pół raza ciaśniej niż u wzorca. Rozmiar i tracking są tu JEDNĄ decyzją i wchodzą razem.
    */
-  --tracking-naglowek-sekcji: -0.075rem;
-  --tracking-naglowek-sekcji-srednie: -0.05625rem; /** Tracking H2 = −0,9 px przy piśmie 36 px, czyli −0,025em (ADR-059). Ta sama reguła co wyżej. */
+  --tracking-naglowek-sekcji: -0.0625rem;
+  --tracking-naglowek-sekcji-srednie: -0.053125rem; /** Tracking H2 = −0,9 px przy piśmie 36 px, czyli −0,025em (ADR-059). Ta sama reguła co wyżej. */
   --wymiar-miara-akapitu: 65ch; /** Maksymalna miara wiersza prozy (ADR-025). UWAGA: 03-typografia.css paczki niesie --szerokosc-tekstu: 68ch dla tego samego zastosowania — rozjazd zgłoszony, nierozstrzygnięty; wchodzi dopiero z zadaniem 12, które jest poza zakresem WWW/038-bis. */
   --wymiar-miara-kolumny: 50rem; /** Kolumna prozy = 800 px (POMIAR 0.3, 8 wystąpień). Poprzednio 38rem = 608 px. */
   --wymiar-kontener-strony: 90rem; /** Kontener treści = 1440 px (POMIAR 0.3, 16 wystąpień). Poprzednio 70rem = 1120 px. */

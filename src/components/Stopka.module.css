@@ -13,8 +13,21 @@
    Kreska ZOSTAJE i jest teraz jedynym rozdziałem, więc nie wolno jej
    zdjąć „przy porządkowaniu" — bez niej stopka zlewa się z treścią. */
 .stopka {
-  background: var(--kolor-rola-tlo-strony);
-  /* Jedyny rozdział stopki od treści — patrz uwaga wyżej. */
+  /* ⚠ STOPKA WCHODZI DO KLAMRY GRAFITOWEJ (ADR-064, WWW/090 3c).
+     Stało tu `tlo-strony`, czyli barwa tła — stopka nie miała własnej
+     powierzchni i rozdzielała ją wyłącznie kreska. Wzorzec finalny daje
+     jej tę samą barwę co paskowi u góry, zmierzoną w prostokącie
+     `x 769–1536, y 2680–2752`, promień 1 px (narożniki proste).
+
+     ⚠ KRESKA ZOSTAJE MIMO WŁASNEJ POWIERZCHNI — i jest to świadome.
+     Komentarz wyżej mówi, że kreska jest JEDYNYM rozdziałem stopki od
+     treści; po tej zmianie rozdziela ją także plama (grafit wobec tła
+     jasnego to 13,40:1, wobec ciemnego 1,50:1). Na korpusie CIEMNYM
+     plama więc nie wystarcza i kreska nadal niesie rozdział — zdjęcie
+     jej „bo teraz jest tło" złamałoby ADR-038 dokładnie tam, gdzie
+     dotąd działało. */
+  background: var(--kolor-rola-grafit-klamr);
+  /* Rozdział stopki od treści — plama NA JASNYM, kreska NA CIEMNYM. */
   border-block-start: 0.0625rem solid var(--kolor-rola-kreska);
   /* Odstęp sekcji progowany od ADR-049 — patrz Filar.module.css. */
   /* ⚠ DOLNE 48 px ZDJĘTE — wartość spoza drabiny 1g (ADR-059, KROK 4d).

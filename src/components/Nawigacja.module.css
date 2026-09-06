@@ -92,7 +92,13 @@
      `summary`; `fixed` też nią jest, więc hamburger nie traci punktu
      odniesienia. */
   position: fixed;
-  inset-block-start: var(--wymiar-odsuniecie-naglowka-wzorca);
+  /* ⚠ PAS PRZY SAMEJ KRAWĘDZI (ADR-064). Stało tu odsunięcie 16 px —
+     pigułka pływała pod górną krawędzią, a szczelinę nad nią zamalowywał
+     `body::before` (ADR-060). Wzorzec zaczyna pas na y = 0, więc
+     szczeliny nie ma i nie ma czego zamalowywać; tamta reguła zostaje,
+     bo maluje pas o wysokości 0 i nie szkodzi — ale przestaje mieć
+     przedmiot i to jest zapisane, żeby nikt jej nie szukał jako żywej. */
+  inset-block-start: 0;
   inset-inline: 0;
   z-index: 10;
   /* ⚠ ODSTĘP GÓRNY JEST STAŁY (20 px na KAŻDYM kadrze), a boczny
@@ -105,19 +111,64 @@
      kontenerów strony wzorca ma tę szerokość; margines boczny 80 px
      wychodzi z niej sam przy 1440). Poniżej progu kontener oddaje
      szerokość oknu i zostaje wcięcie boczne. */
+  /* ⚠ PASEK NA CAŁĄ SZEROKOŚĆ (ADR-064, WWW/090 3c) — i wchodzi RAZEM
+     z barwą, nie po niej. Stało tu wcięcie boczne i kontener 1280, czyli
+     pigułka pływająca w kadrze.
+
+     ⚠ TĘ ZMIANĘ WYMUSIŁ POMIAR NAKŁADKI, NIE ZAMIAR. Sama zamiana
+     powierzchni na grafit POGORSZYŁA zgodność pasa nawigacji z wzorcem:
+     27,7 % → 32,4 % średniej różnicy kanału. Przyczyna jest prosta
+     i pouczająca: wzorzec ma pas JEDNOLICIE grafitowy na całą szerokość,
+     a u nas grafitowa stała się wyspa pływająca w ciemnym tle — kontrast
+     WEWNĄTRZ naszego pasa urósł, a wzorzec go nie ma. Połowa zmiany
+     okazała się gorsza od żadnej; to ta sama klasa co „mechanizm
+     zbudowany do połowy" z ADR-063, tylko widziana w pikselach.
+
+     ⚠ WYSOKOŚĆ ZOSTAJE NASZA (62 px + wypełnienie), NIE WZORCOWA
+     (117/1536 ≈ 110 px przy 1440) — i to jest granica, nie przeoczenie.
+     Pas 110 px złamałby pułap strażnika `odsuniecie-kotwic`, który
+     wynosi 96 px; podniesienie pułapu jest osłabieniem bramki, a nie
+     dostrojeniem do wzorca. Przy obecnej wysokości pas ma 84 px, czyli
+     12 px zapasu. */
   margin-block: 0;
-  margin-inline: var(--wymiar-wciecie-naglowka-male);
-  max-inline-size: var(--wymiar-kontener-waski);
-  background: var(--kolor-rola-tlo-przezroczyste);
+  margin-inline: 0;
+  max-inline-size: none;
+  /* ⚠ POWIERZCHNIA PASKA = KLAMRA GRAFITOWA WZORCA (ADR-064, WWW/090 3c).
+     Stało tu `tlo-przezroczyste` — tło strony przy alfie 0,92, dołożonej
+     w ADR-059 po to, żeby jasna treść nie prześwitywała spod pigułki.
+     Wzorzec finalny daje paskowi barwę WŁASNĄ, nie przezroczystą:
+     zmierzone w sześciu niezależnych miejscach (pasek ×2, karta
+     filaru, blok wzrostu, stopka ×2). Barwa krycia zdejmuje przy okazji
+     całą klasę prześwitu, przed którą broniła alfa.
+
+     ⚠ ROZMYCIE ZOSTAJE, choć przy kryciu pełnym niczego nie rozmywa —
+     i to jest DECYZJA, nie przeoczenie: `backdrop-filter` czyni element
+     blokiem zawierającym dla potomków `position: fixed` (ADR-060), a na
+     tym stoi mechanizm pasa `body::before`. Zdjęcie filtra zmieniłoby
+     zachowanie tamtego pasa bez związku z barwą; jeśli ma zejść, to
+     razem z przeliczeniem tamtego mechanizmu.
+
+     ⚠ CZEGO TU NIE MA, a wzorzec ma: PASEK NA CAŁĄ SZEROKOŚĆ, wysokości
+     117/1536 kontenera (≈ 110 px przy 1440), z narożnikami prostymi.
+     Nie wchodzi w tym batchu, bo koliduje z pułapem strażnika
+     `odsuniecie-kotwic` (96 px) — a podniesienie pułapu jest osłabieniem
+     bramki, nie dostrojeniem. Zgłoszone w zwrotce WWW/090 3c. */
+  background: var(--kolor-rola-grafit-klamr);
   backdrop-filter: blur(0.625rem);
-  border-radius: var(--wymiar-promien-naglowka);
+  /* Narożniki proste — pas dotyka trzech krawędzi kadru, więc promień
+     nie ma na czym się objawić poza dołem, a wzorzec ma tam kant
+     (zmierzony promień stopki: 1 px). */
+  border-radius: 0;
   /* ⚠ WYSOKOŚĆ 62 px, NIE 80 — i to jest cała przyczyna, dla której
      pasek może być przyklejony (patrz rachunek wyżej). Poprzednio:
      padding 1rem + min-height 3rem = 80 px, wartość ze wzorca
      WWW/050-FINAL zmierzona na dziewięciu szerokościach. Teraz
      wysokość niesie token, a padding pionowy ustępuje mu miejsca. */
   min-block-size: var(--wymiar-wysokosc-naglowka-wzorca);
-  padding: var(--wymiar-odstep-2) 1.25rem;
+  /* Wcięcie boczne treści paska = to samo wcięcie, którym oddycha
+     reszta strony; pas jest pełnej szerokości, więc odsunięcie od
+     krawędzi musi nieść wypełnienie, nie margines. */
+  padding: var(--wymiar-odstep-2) var(--wymiar-wciecie-tresci-male);
 }
 
 /* UKŁAD, KTÓRY NIE ZALEŻY OD `display: contents` NA `details`.
@@ -275,8 +326,9 @@
 /* ── OD 48,0625rem (769 px): pigułka pozioma, hamburger znika ── */
 @media (min-width: 48.0625rem) {
   .naglowek {
-    margin-inline: auto;
-    padding: var(--wymiar-odstep-2) 2.5rem;
+    /* Pas jest pełnej szerokości od ADR-064 — `margin-inline` nie ma tu
+       już czego robić, wcięcie niesie wypełnienie. */
+    padding: var(--wymiar-odstep-2) var(--wymiar-wciecie-naglowka-srednie);
   }
 
   /* `display: contents` wypuszcza panel z `details` do siatki paska,
@@ -320,11 +372,11 @@
 
 @media (min-width: 90rem) {
   .naglowek {
-    /* `auto`, nie wcięcie — od ADR-052 pigułka jest KONTENEREM 1280 px
-       wyśrodkowanym (pomiar 1f), a nie paskiem wciętym od krawędzi.
-       Przy 1440 daje to margines boczny 80 px sam z siebie. */
-    margin-inline: auto;
-    padding: var(--wymiar-odstep-2) 5rem;
+    /* ⚠ `margin-inline: auto` ZDJĘTE (ADR-064). Od ADR-052 pigułka była
+       KONTENEREM 1280 px wyśrodkowanym; od wzorca finalnego pas jest
+       pełnej szerokości, więc centrowanie nie ma czego centrować, a
+       wcięcie niesie wypełnienie. Wartość z drabiny wcięć paska. */
+    padding: var(--wymiar-odstep-2) var(--wymiar-wciecie-naglowka);
   }
 }
 
