@@ -219,6 +219,8 @@ export default async function StronaGlowna({ params }: Props) {
         {/* S13 — zamknięcie (K11): CTA → /funkcje (ADR-023), bez
             zdania prowadzącego — werdykt panelu pkt 25. */}
         <Zamkniecie
+          naglowek={tZamkniecie("naglowek")}
+          idNaglowka="zamkniecie-h2"
           ctaEtykieta={tZamkniecie("cta")}
           ctaHref={adresWJezyku(locale as Locale, "/funkcje")}
           zdaniePo={tZamkniecie("zdanie")}

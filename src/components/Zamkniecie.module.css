@@ -127,3 +127,33 @@
     padding-inline: var(--wymiar-wciecie-tresci);
   }
 }
+
+/* NAGŁÓWEK SEKCJI ZAMYKAJĄCEJ (ADR-067, WWW/093 krok 3).
+   Skala nagłówka sekcji z ADR-064 — ta sama, którą niosą pozostałe H2
+   strony; wyśrodkowany, bo cała sekcja jest wyśrodkowana. Miara wzorca
+   dla nagłówka (1024 px) trzyma go w dwóch wierszach przy 1440, tak jak
+   we wzorcu finalnym. */
+.naglowek {
+  font-size: var(--tekst-h2-male);
+  line-height: var(--interlinia-naglowek-male);
+  letter-spacing: var(--tracking-naglowek-sekcji-male);
+  font-weight: var(--waga-naglowek);
+  max-inline-size: var(--wymiar-miara-naglowka-wzorca);
+  margin: 0 auto var(--wymiar-odstep-7);
+  text-wrap: balance;
+}
+
+@media (min-width: 48.0625rem) {
+  .naglowek {
+    font-size: var(--tekst-h2-srednie);
+    letter-spacing: var(--tracking-naglowek-sekcji-srednie);
+  }
+}
+
+@media (min-width: 80rem) {
+  .naglowek {
+    font-size: var(--tekst-h2);
+    line-height: var(--interlinia-naglowek-sekcji);
+    letter-spacing: var(--tracking-naglowek-sekcji);
+  }
+}

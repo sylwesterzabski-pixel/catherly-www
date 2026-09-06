@@ -149,7 +149,10 @@
     "krok2Tresc": "Zaglądasz do bazy kontaktów i wiesz, komu co masz obiecane. Post składasz z szablonu w Studiu.",
     "krok3Nazwa": "Wieczorem",
     "krok3Tresc": "Na Pulpicie masz swój dzień i dzień zespołu obok siebie.",
-    "kropka": "Wieczorem widzisz, co z tego wyszło."
+    "kropka": "Wieczorem widzisz, co z tego wyszło.",
+    "krok1Chip": "Plan dnia gotowy · 8:30",
+    "krok2Chip": "Spotkanie · 14:00",
+    "krok3Chip": "Podsumowanie · 20:00"
   },
   "CennikSkrot": {
     "naglowek": "Cennik w skrócie",
@@ -173,7 +176,8 @@
   },
   "ZamkniecieGlowna": {
     "cta": "Sprawdź, jak działa",
-    "zdanie": "Rezygnujesz w każdej chwili."
+    "zdanie": "Rezygnujesz w każdej chwili.",
+    "naglowek": "Zacznij prowadzić kontakty i wyniki w Catherly"
   },
   "ZamkniecieCennik": {
     "zdanie": "Wybierz plan i sprawdź, jak działa Catherly w twojej codziennej pracy. Niczym się nie wiążesz — rezygnujesz kiedy chcesz.",

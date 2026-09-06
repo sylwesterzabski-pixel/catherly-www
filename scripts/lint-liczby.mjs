@@ -159,6 +159,24 @@ const KATEGORIE = {
   identyfikator: "liczba jest częścią identyfikatora technicznego (np. SHA-256)",
   samoopis: "liczba opisuje elementy obecne na tej samej stronie",
   idiom: "słowo z listy liczebników użyte niezliczbowo (np. „beides” = „jedno i drugie”)",
+  /* ⚠ DOŁOŻONA 2026-09-06 (WWW/093, ADR-067). Godzina w chipie sekcji
+     „Jak wygląda twój dzień z Catherly" — element SCENARIUSZA obok nazwy
+     pory dnia, nie twierdzenie ilościowe o produkcie ani wartość
+     pomiarowa.
+
+     ⚠ KATEGORIA STOI TUTAJ, A NIE TYLKO W PLIKU DANYCH — i to jest
+     mechanizm, nie porządek. Lista dozwolonych kategorii jest DECYZJĄ:
+     gdyby strażnik czerpał ją z `content/liczby-w-tresci.json`, nowa
+     kategoria wchodziłaby razem z wpisem, który ma nią uzasadnić — czyli
+     rozstrzygnięcie usprawiedliwiałoby samo siebie. Rozszerzenie tej
+     listy ma kosztować zmianę kodu.
+
+     ⚠ WARUNEK ZAWĘŻAJĄCY, bez którego kategoria staje się furtką:
+     godzinie wolno stać WYŁĄCZNIE w chipie przy nazwie pory dnia.
+     Godzina w prozie albo przy liczbie efektu ma wypaść z tekstu,
+     nie dostać wpisu. */
+  "godzina-scenariusza":
+    "godzina w chipie sekcji rytmu dnia — element scenariusza, nie twierdzenie o produkcie",
 };
 
 /** Liczby znalezione w ciągu: cyfry + liczebniki słowne danego języka. */

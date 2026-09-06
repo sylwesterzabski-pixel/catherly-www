@@ -35,3 +35,19 @@ widzisz, co z tego wyszło. *(93 zn)*
 DMO, kalendarz z przypomnieniami, baza kontaktów, Studio z szablonami,
 Pulpit (w tym aktywność zespołu) — wszystkie DZIAŁA (tabela obietnic).
 Jedyne echo problemu robi kotwica (zasada lustra z wireframe'u).
+
+---
+
+## Chipy na kadrach — dopisane 2026-09-06 (WWW/093, ADR-067)
+
+Trzy etykiety przypięte do kadrów pór dnia, ze wzorca finalnego:
+
+- **Rano:** Plan dnia gotowy · 8:30
+- **W ciągu dnia:** Spotkanie · 14:00
+- **Wieczorem:** Podsumowanie · 20:00
+
+⚠ Godziny są elementem SCENARIUSZA, nie obietnicą — rozstrzygnięte
+wpisami kategorii `godzina-scenariusza` w `content/liczby-w-tresci.json`.
+Nie wynika z nich, że plan powstaje o 8:30 ani że spotkania są o 14:00.
+Brzmienia z mandatu koordynatora; pokrycie: chipy wzorca niosą te same
+godziny.

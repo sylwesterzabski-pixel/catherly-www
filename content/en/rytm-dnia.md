@@ -24,3 +24,15 @@ You build your post from a template in Studio. *(110 zn)*
 **Evening** *(7 zn)*
 On the Dashboard, your day and your team’s day sit side by side.
 In the evening you see what came of it. *(104 zn)*
+
+---
+
+## Chips on the frames — added 2026-09-06 (WWW/093, ADR-067)
+
+- **Morning:** Daily plan ready · 8:30
+- **During the day:** Meeting · 14:00
+- **Evening:** Summary · 20:00
+
+⚠ The times are part of the SCENARIO, not a promise — resolved by
+`godzina-scenariusza` entries in `content/liczby-w-tresci.json`.
+EN wording is an implementation translation awaiting the judges' pass.

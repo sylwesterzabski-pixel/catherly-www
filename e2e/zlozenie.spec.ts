@@ -183,6 +183,11 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
       k.RytmDnia.naglowek,
       k.CennikSkrot.naglowek,
       k.Obawy.naglowek,
+      /* ⚠ DOPISANE (ADR-067, WWW/093): sekcja zamykająca dostała nagłówek
+         ze wzorca finalnego. `toHaveText(tablica)` pilnuje LICZBY I PORZĄDKU
+         naraz, więc ten wiersz jest jednocześnie asercją, że nagłówek stoi
+         NA KOŃCU — gdyby ktoś wstawił sekcję za nim, test zapali. */
+      k.ZamkniecieGlowna.naglowek,
     ]);
   });
 }

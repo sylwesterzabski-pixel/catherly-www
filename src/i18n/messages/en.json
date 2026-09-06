@@ -149,7 +149,10 @@
     "krok2Tresc": "You check your contact base and know what you promised to whom. You build your post from a template in Studio.",
     "krok3Nazwa": "Evening",
     "krok3Tresc": "On the Dashboard, your day and your team’s day sit side by side.",
-    "kropka": "In the evening you see what came of it."
+    "kropka": "In the evening you see what came of it.",
+    "krok1Chip": "Daily plan ready · 8:30",
+    "krok2Chip": "Meeting · 14:00",
+    "krok3Chip": "Summary · 20:00"
   },
   "CennikSkrot": {
     "naglowek": "Pricing at a glance",
@@ -173,7 +176,8 @@
   },
   "ZamkniecieGlowna": {
     "cta": "See how it works",
-    "zdanie": "You can cancel at any time."
+    "zdanie": "You can cancel at any time.",
+    "naglowek": "Start running your contacts and results in Catherly"
   },
   "ZamkniecieCennik": {
     "zdanie": "Choose a plan and see how Catherly works in your day-to-day. Nothing ties you in — you can cancel whenever you like.",

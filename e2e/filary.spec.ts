@@ -47,12 +47,21 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   }) => {
     await page.goto(adres);
 
-    // Struktura nagłówków treści po złożeniu Etapu F: 1×h1 (hero)
-    // + 10×h2 w main (S3 problem + S4 definicja + 4 filary + S9
-    // sr-only + S10 rytm + S11 sr-only + S12 sr-only; S13 zamknięcie
-    // bez h2 — decyzja panelu); nagłówki sekcji stopki poza main.
+    // Struktura nagłówków treści: 1×h1 (hero) + 11×h2 w main
+    // (S3 problem + S4 definicja + 4 filary + S9 sr-only + S10 rytm
+    // + S11 sr-only + S12 sr-only + S13 zamknięcie); nagłówki sekcji
+    // stopki poza main.
+    //
+    // ⚠ 10 → 11 (ADR-067, WWW/093). Sekcja zamykająca DOSTAŁA nagłówek,
+    // którego wzorzec finalny wymaga w tym miejscu — dawny werdykt panelu
+    // („S13 bez h2") dotyczył zdania prowadzącego NAD przyciskiem i nadal
+    // obowiązuje; nagłówek sekcji to inna rzecz.
+    //
+    // ⚠ TA LICZBA JEST MECHANIZMEM, NIE DRYFEM: koduje SKŁAD strony, więc
+    // jej zmiana ma być decyzją i ma zapalać czerwień, gdy ktoś doda albo
+    // zdejmie sekcję bez rozstrzygnięcia. Nie wyprowadzać jej ze zbioru.
     await expect(page.locator("h1")).toHaveCount(1);
-    await expect(page.locator("main h2")).toHaveCount(10);
+    await expect(page.locator("main h2")).toHaveCount(11);
 
     for (const klucz of KLUCZE_FILAROW) {
       const filar = komunikaty.Filary[klucz];

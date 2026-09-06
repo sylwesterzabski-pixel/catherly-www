@@ -52,3 +52,19 @@ Na `/pomoc` frazy **NIE propagować** (Etap E, decyzja właściciela
 2026-08-15). **Bezprzedmiotowe od 2026-08-15 (III):** `/pomoc` wypadła
 z zakresu startu (ADR-014; rejestr warunków powrotu T8). Zakaz zostaje
 zapisany, bo `/pomoc` wraca po premierze — a wtedy odżywa razem z nią.
+
+---
+
+## Nagłówek sekcji — dopisany 2026-09-06 (WWW/093, ADR-067)
+
+**Nagłówek:** Zacznij prowadzić kontakty i wyniki w Catherly
+
+Brzmienie **z mandatu koordynatora** (delegacja właściciela zapisana
+w `WWW/091`), przeniesione ze wzorca finalnego z 06.09.2026. Ta sama
+droga, którą weszła plakietka „polecany" w `WWW/060` — implementacja
+brzmienia nie autoryzuje, tylko je przenosi.
+
+⚠ Werdykt panelu z pkt 25 mówił „bez zdania prowadzącego" i **nadal
+obowiązuje**: to nie jest zdanie prowadzące nad przyciskiem, tylko
+NAGŁÓWEK sekcji, którego wzorzec finalny wymaga w tym miejscu. Zdanie
+prowadzące pozostaje nieobecne.

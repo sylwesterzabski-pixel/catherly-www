@@ -149,7 +149,10 @@
     "krok2Tresc": "Du schaust in die Kontaktbasis und weißt, wem du was versprochen hast. Den Post baust du aus einer Vorlage im Studio.",
     "krok3Nazwa": "Abends",
     "krok3Tresc": "Auf dem Dashboard liegen dein Tag und der Tag deines Teams nebeneinander.",
-    "kropka": "Abends siehst du, was dabei herausgekommen ist."
+    "kropka": "Abends siehst du, was dabei herausgekommen ist.",
+    "krok1Chip": "Tagesplan fertig · 8:30",
+    "krok2Chip": "Termin · 14:00",
+    "krok3Chip": "Zusammenfassung · 20:00"
   },
   "CennikSkrot": {
     "naglowek": "Preise im Überblick",
@@ -173,7 +176,8 @@
   },
   "ZamkniecieGlowna": {
     "cta": "Sieh dir an, wie es funktioniert",
-    "zdanie": "Du kannst jederzeit kündigen."
+    "zdanie": "Du kannst jederzeit kündigen.",
+    "naglowek": "Führe deine Kontakte und Ergebnisse mit Catherly"
   },
   "ZamkniecieCennik": {
     "zdanie": "Wähl einen Plan und sieh, wie Catherly in deinem Arbeitsalltag funktioniert. Du bindest dich an nichts – kündigen kannst du, wann du willst.",
