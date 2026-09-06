@@ -35,7 +35,11 @@ export function Nawigacja({ locale, biezacaSciezka }: Props) {
       <a className={styles.skipLink} href="#tresc">
         {t("przejdzDoTresci")}
       </a>
-      <header className={styles.naglowek}>
+      {/* ⚠ KLAMRA GRAFITOWA (ADR-066). Po odwróceniu palety korpus jest
+          jasny, a pasek jest jednym z czterech miejsc ciemnych — więc
+          niesie `data-ton="ciemny"`, który przemapowuje role tekstu,
+          kreski, akcentu i fokusu na odpowiedniki `*-na-klamrze`. */}
+      <header className={styles.naglowek} data-ton="ciemny">
         <div className={styles.nawCaly}>
           <a className={styles.logo} href={adresWJezyku(locale, "/")}>
             Catherly

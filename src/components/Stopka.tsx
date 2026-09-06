@@ -56,8 +56,12 @@ export function Stopka({ locale }: Props) {
   const tPelne = useTranslations();
   const etykieta = (wpis: { przestrzen: string; klucz: string }) =>
     tPelne(`${wpis.przestrzen}.${wpis.klucz}`);
+  /* ⚠ `ciemny`, NIE `grafit` (ADR-066). Atrybut `grafit` nie miał ŻADNEJ
+     reguły w arkuszu — była tylko nieużywana zmienna `--ton-grafit-tlo`;
+     ton stopki nie działał i nikt tego nie widział, bo stopka i tak brała
+     tło strony. Teraz niesie ton klamry, który jest zaimplementowany. */
   return (
-    <footer className={styles.stopka} data-ton="grafit">
+    <footer className={styles.stopka} data-ton="ciemny">
       <div className={styles.kolumny}>
         <section>
           <h2>{t("mapaStrony")}</h2>

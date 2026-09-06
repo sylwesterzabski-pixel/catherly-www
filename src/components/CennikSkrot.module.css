@@ -185,7 +185,13 @@
    Rozmiar 14 px i waga 500 jak plakietka wzorca (POMIAR 0.1). */
 .plakietka {
   justify-self: start;
-  background: var(--kolor-rola-akcent);
+  /* ⚠ PLAMA BIERZE `interakcja`, NIE `akcent` (ADR-066). Po odwróceniu
+     palety te dwie role rozeszły się: `akcent` to ciemna oliwka niosąca
+     TEKST na jasnym, `interakcja` to limonka będąca WYPEŁNIENIEM.
+     Plakietka jest plamą z ciemną etykietą, więc należy do drugiej
+     rodziny. Zmierzone przed poprawką przez axe: etykieta na akcencie
+     dawała **2,80:1** przy progu 4,5; na wypełnieniu daje **11,41:1**. */
+  background: var(--kolor-rola-interakcja);
   color: var(--kolor-rola-tekst-na-interakcji);
   border-radius: var(--wymiar-promien-naglowka);
   padding: 0.25rem 0.75rem;

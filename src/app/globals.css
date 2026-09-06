@@ -525,57 +525,38 @@ main {
    przy batchach sekcji. Przejście jest więc CZYSTĄ ZMIANĄ POWIERZCHNI,
    krawędź w krawędź.
    ═══════════════════════════════════════════════════════════════════ */
+/* ═══ TON: SENS ODWRÓCONY (ADR-066, zlecenie WWW/091 krok 1) ═══════════
+
+   ⚠ DO 2026-09-06 KORPUS BYŁ CIEMNY, A JASNY BYŁ WYJĄTKIEM. Blok
+   `[data-ton="jasny"]` przestawiał wtedy dziewięć ról na wartości jasne
+   w sześciu sekcjach. Pomiar wzorca finalnego (T68) pokazał, że wzorzec
+   jest odwrotnością: **70,9 % jego powierzchni to piksele jasne**, przy
+   naszych 47,4 %. Odwrócenie nie jest więc zmianą upodobania, tylko
+   zrównaniem mechanizmu z wzorcem.
+
+   Od tej zmiany:
+   · **role bazowe niosą wartości JASNE** — korpus jest jasny sam z siebie,
+     bez żadnego atrybutu;
+   · **wyjątkiem jest KLAMRA GRAFITOWA** i oznacza ją `data-ton="ciemny"`.
+
+   ⚠ BLOK `[data-ton="jasny"]` ZOSTAJE I JEST DZIŚ TOŻSAMOŚCIĄ — nie
+   usuwam go, bo atrybut siedzi w sześciu komponentach, a usunięcie
+   jednego bez drugiego dałoby stan pośredni, w którym sekcja deklaruje
+   ton, którego nikt nie obsługuje. Wszystkie przypisania w nim wskazują
+   dziś na te same wartości co role bazowe, więc blok nic nie zmienia.
+   Jego zniknięcie razem z atrybutami to osobne, mechaniczne zadanie.  */
+
 [data-ton="jasny"] {
+  /* TOŻSAMOŚĆ — patrz komentarz wyżej. Wartości równe bazowym. */
   --kolor-rola-tlo-strony: var(--kolor-rola-powierzchnia-jasna);
   --kolor-rola-powierzchnia: var(--kolor-rola-powierzchnia-karty-na-jasnym);
-  /* PAS WYRÓŻNIONY (rytm dnia) — na ciemnym był NAJJAŚNIEJSZĄ powierzchnią
-     palety i tym się odcinał. Na jasnym ta sama sztuczka nie działa: nie ma
-     nic jaśniejszego od bieli. Pas dostaje więc powierzchnię KARTY, czyli
-     tę samą relację, którą mają karty na tym korpusie: biel na jasnej
-     powierzchni panelu (zapis słowami, bo linter tokenów czyta także
-     komentarze — piąty raz w historii tego pliku).
-     ⚠ PLAMA WYNOSI 1,12:1, czyli pas odcina się SŁABIEJ niż odcinał się
-     na ciemnym. Rozdziela go kompozycja (pełna szerokość + własny odstęp
-     pionowy), tak jak karty — ale zapisuję to jako UBYTEK WYRAZU, nie jako
-     równoważną zamianę. Gdyby pas miał zostać równie wyrazisty, potrzebna
-     jest osobna rola „powierzchnia ciemniejsza od jasnej" i osobna decyzja. */
   --kolor-rola-powierzchnia-akcentowa: var(--kolor-rola-powierzchnia-karty-na-jasnym);
   --kolor-rola-tekst-podstawowy: var(--kolor-rola-tekst-na-jasnym);
   --kolor-rola-tekst-drugorzedny: var(--kolor-rola-tekst-2-na-jasnym);
   --kolor-rola-fokus: var(--kolor-rola-fokus-na-jasnym);
-  /* ⚠ OBRYS POLA FORMULARZA — DOŁOŻONY W ADR-052, BO ADR-050 GO
-     POMINĄŁ. Strefa przestawiała siedem ról i nie przestawiała tej
-     jednej, której cały sens jest progiem 3:1 z WCAG 1.4.11.
-     Zmierzone przed naprawą: obrys ciemny na jasnej powierzchni
-     1,53:1, na karcie białej 1,71:1 — pole byłoby złamane w trzech
-     stanach naraz. Żadna bramka nie milczała z powodu wady: w całym
-     `src/` nie ma dziś ani jednego pola tekstowego, więc strażnik
-     nie miał przedmiotu. */
   --kolor-rola-kreska-mocna: var(--kolor-rola-kreska-mocna-na-jasnym);
-  /* ⚠ KRESKA DEKORACYJNA — DOŁOŻONA W ADR-053, BO STREFA JEJ NIE PRZESTAWIAŁA.
-     Trzecia rola granicy, którą korpus jasny pominął: po `kreska-mocna`
-     (ADR-052) zostawała jeszcze kreska zwykła, ciemna, czyli na białej
-     karcie gruba czarna nitka zamiast włosa. Powód, dla którego wchodzi
-     dopiero teraz, jest mechaniczny: do batcha A3 żadna karta w strefie
-     jasnej obrysu nie miała, więc rola nie miała gdzie się objawić.
-     Wartość odtwarza relację z korpusu ciemnego (1,60:1 kreska wobec
-     powierzchni karty); zmierzone tu 1,59:1 wobec karty i 1,42:1 wobec
-     tła sekcji, oba powyżej progu 1,30 z ADR-038. */
   --kolor-rola-kreska: var(--kolor-rola-kreska-na-jasnym);
-  /* ⚠ POWIERZCHNIA POMOCNICZA — DOŁOŻONA W ADR-053 PO POMIARZE, KTÓRY
-     ZŁAPAŁ WŁASNY DEFEKT TEGO BATCHA. Slot ikony w karcie funkcji wziął
-     tę rolę i wyszedł CIEMNYM blokiem na białej karcie: zmierzone
-     16,17:1 tam, gdzie u wzorca ta sama relacja wynosi 1,22:1. Wzorzec
-     robi pudełko ikony ODROBINĘ JAŚNIEJSZE od płyty karty; na korpusie
-     jasnym odpowiednikiem jest odrobinę CIEMNIEJSZE, czyli powierzchnia
-     sekcji na karcie białej — zmierzone 1,12:1, ten sam szept.
-     Defekt nie miał strażnika i wyszedł wyłącznie z pomiaru barw po
-     zmianie; gdyby pomiar objął tylko geometrię, pojechałby dalej. */
   --kolor-rola-powierzchnia-2: var(--kolor-rola-powierzchnia-jasna);
-  /* AKCENT NIOSĄCY TEKST — ciemniejszy wariant o tym samym odcieniu.
-     Bez tego `.akcent-naglowka` w sekcjach „problem" i „definicja"
-     miałby 1,43:1. Akcent jako PLAMA (wypełnienie CTA) zostaje
-     limonką — jego widoczność niesie obrys niżej, nie barwa. */
   --kolor-rola-akcent: var(--kolor-rola-akcent-na-jasnym);
   --kolor-rola-link: var(--kolor-rola-tekst-na-jasnym);
   --kolor-rola-link-aktywny: var(--kolor-rola-akcent-na-jasnym);
@@ -583,14 +564,44 @@ main {
   color: var(--kolor-rola-tekst-na-jasnym);
 }
 
-/* CTA na jasnym MUSI mieć obrys — wypełnienie limonką ma tam 1,43:1
-   i bez krawędzi przycisk daje się przeczytać, ale nie daje się
-   zobaczyć jako przycisk (WCAG 1.4.11). Regułę wymusza strażnik
-   tokenów przez R-AKCENT-01b; ta deklaracja jest jej wykonaniem.
-   Wypełnienie zostaje LIMONKĄ — `interakcja` nie jest przestawiana
-   wyżej właśnie po to, żeby przycisk nie zgasł razem z tekstem. */
-[data-ton="jasny"] a[class*="_cta__"] {
+/* ═══ KLAMRA GRAFITOWA — JEDYNY WYJĄTEK OD KORPUSU JASNEGO ═══════════
+   Pasek nawigacji, stopka, karty filarów i blok „wzrost". Każda rola
+   niosąca tekst albo granicę ma tu swój odpowiednik `*-na-klamrze`,
+   sprawdzany osobną parą w strażniku tokenów — bo klamra jest
+   powierzchnią, na której NIE renderują się role bazowe. */
+[data-ton="ciemny"] {
+  --kolor-rola-tlo-strony: var(--kolor-rola-grafit-klamr);
+  --kolor-rola-powierzchnia: var(--kolor-rola-grafit-klamr);
+  --kolor-rola-powierzchnia-2: var(--kolor-rola-grafit-klamr);
+  --kolor-rola-powierzchnia-akcentowa: var(--kolor-rola-grafit-klamr);
+  --kolor-rola-tekst-podstawowy: var(--kolor-rola-tekst-na-klamrze);
+  --kolor-rola-tekst-drugorzedny: var(--kolor-rola-tekst-2-na-klamrze);
+  --kolor-rola-kreska: var(--kolor-rola-kreska-na-klamrze);
+  --kolor-rola-kreska-mocna: var(--kolor-rola-tekst-2-na-klamrze);
+  --kolor-rola-akcent: var(--kolor-rola-akcent-na-klamrze);
+  --kolor-rola-link: var(--kolor-rola-tekst-na-klamrze);
+  --kolor-rola-link-aktywny: var(--kolor-rola-akcent-na-klamrze);
+  --kolor-rola-fokus: var(--kolor-rola-fokus-na-klamrze);
+  color: var(--kolor-rola-tekst-na-klamrze);
+}
+
+/* ⚠ OBRYS CTA OBOWIĄZUJE NA CAŁEJ STRONIE, NIE W STREFIE (ADR-066).
+   Stało tu `[data-ton="jasny"] a[class*="_cta__"]` — wymóg dotyczył
+   sekcji jasnych. Po odwróceniu palety JASNA JEST CAŁA STRONA, więc
+   selektor traci przedrostek: wypełnienie limonką ma na tle jasnym
+   **1,31:1** i bez krawędzi przycisk daje się przeczytać, ale nie daje
+   się zobaczyć jako przycisk (WCAG 1.4.11). Obrys daje 14,97:1 wobec
+   tła i 11,41:1 wobec wypełnienia. Wymusza to reguła R-CTA-OBRYS
+   w strażniku tokenów; ta deklaracja jest jej wykonaniem.
+
+   ⚠ NA KLAMRZE OBRYS JEST ZBĘDNY I DLATEGO GO TAM NIE MA: limonka na
+   graficie daje 9,38:1, czyli plama sama niesie kształt kontrolki. */
+a[class*="_cta__"] {
   border: 0.0625rem solid var(--kolor-rola-obrys-cta-na-jasnym);
+}
+
+[data-ton="ciemny"] a[class*="_cta__"] {
+  border-color: transparent;
 }
 
 /* Pola formularza używają `kreska-mocna`, nie `kreska`: obrys kontrolki
@@ -971,6 +982,13 @@ main {
     inset-inline: 0;
     inset-block-end: -0.125rem;
     block-size: 0.0625rem;
+    /* ⚠ ZOSTAJE `akcent`, NIE `interakcja` — i to jest cofnięcie mojej
+       własnej pomyłki z ADR-066, zapisane, bo łatwo ją powtórzyć.
+       Podmieniłem tu rolę razem z plakietką cennika, biorąc obie za
+       plamy. To NIE jest plama: `block-size` wynosi 1 px, więc jest to
+       KRESKA podkreślenia. Limonka na bieli daje 1,31:1 i kreska by
+       zniknęła; ciemna oliwka daje 5,82:1. Rozstrzyga funkcja
+       elementu, nie nazwa własności `background`. */
     background: var(--kolor-rola-akcent);
     transform: scaleX(0);
     transform-origin: left center;

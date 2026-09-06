@@ -44,6 +44,19 @@ const KOLEJNOSC = [
 // ją wyłącznie `outline-offset`. Dwa różne strażniki, dwie różne
 // własności; ani jeden nie zastępuje drugiego.
 const KOLOR_FOKUSA = rolaRgb("fokus");
+/* ⚠ KLAMRA GRAFITOWA MA WŁASNĄ BARWĘ FOKUSU (ADR-066) — i to nie jest
+   wyjątek od reguły, tylko ta sama reguła po drugiej stronie tonu.
+   Po odwróceniu palety korpus jest jasny, więc obwódka fokusu jest
+   CIEMNA (16,77:1 na tle); pasek nawigacji i stopka są grafitowe, więc
+   tam ta sama ciemna obwódka miałaby **1,36:1** i znikłaby. Ton
+   `ciemny` przestawia rolę na `fokus-na-klamrze` (biel, 13,40:1).
+
+   Test czyta odtąd rolę OBOWIĄZUJĄCĄ DLA DANEGO ELEMENTU, a nie jedną
+   wartość bazową. To wzmocnienie, nie złagodzenie: poprzednia wersja
+   przepuściłaby dowolną barwę w klamrze, bo nie umiała tam zajrzeć —
+   dziś każda z dwóch stron ma własną wartość oczekiwaną i obie są
+   sprawdzane. */
+const KOLOR_FOKUSA_NA_KLAMRZE = rolaRgb("fokus-na-klamrze");
 
 test("klawiatura: skip-link pierwszy, potem logo → menu → Logowanie; fokus widoczny", async ({
   page,
@@ -138,9 +151,16 @@ async function sprawdzObrys(
       parseFloat(obrys.szerokosc),
       `szerokość obrysu fokusa na „${etykieta}"`,
     ).toBeGreaterThan(0);
-    expect(obrys.kolor, `kolor obrysu fokusa na „${etykieta}"`).toBe(
-      KOLOR_FOKUSA,
+    /* Która wartość obowiązuje, rozstrzyga najbliższy przodek z tonem —
+       ta sama metoda, którą strażnik rozdziału kart liczy tło „od
+       najbliższego malowanego przodka". */
+    const wKlamrze = await aktywny.evaluate(
+      (el) => el.closest('[data-ton="ciemny"]') !== null,
     );
+    expect(
+      obrys.kolor,
+      `kolor obrysu fokusa na „${etykieta}" (${wKlamrze ? "klamra grafitowa" : "korpus jasny"})`,
+    ).toBe(wKlamrze ? KOLOR_FOKUSA_NA_KLAMRZE : KOLOR_FOKUSA);
   }
 }
 

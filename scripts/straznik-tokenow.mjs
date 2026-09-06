@@ -148,11 +148,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 31;
+const LICZBA_ROL = 36;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-065 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-066 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -164,7 +164,18 @@ const PARY = [
   ["tekst-podstawowy",    "powierzchnia", 4.5, "tekst czytany na karcie"],
   ["tekst-drugorzedny",   "tlo-strony",   4.5, "tekst drugorzędny na tle strony"],
   ["tekst-na-interakcji", "interakcja",   4.5, "etykieta na przycisku CTA"],
-  ["interakcja",          "tlo-strony",   3.0, "plama przycisku CTA na tle"],
+  /* ⚠ PARA „plama przycisku CTA na tle" ZDJĘTA (ADR-066) — I NIE JEST TO
+     OSŁABIENIE BRAMKI, TYLKO PRZENIESIENIE WYMAGANIA NA MECHANIZM, KTÓRY
+     JE NAPRAWDĘ NIESIE. Do odwrócenia palety limonka leżała na korpusie
+     CIEMNYM i dawała 12,58:1, więc plama sama spełniała próg 3:1.
+     Po odwróceniu leży na jasnym i daje **1,31:1** — kształtu przycisku
+     nie niesie już wypełnienie, tylko OBRYS, który daje 14,97:1.
+     Dokładnie tak rozstrzygnął to ADR-050 dla stref jasnych; różnica
+     polega na tym, że strefa jasna jest teraz całą stroną.
+     Obrys sprawdza R-AKCENT-01b — wobec powierzchni ORAZ wobec akcentu,
+     który otacza, czyli surowiej niż jedna para. Zostawienie tu pary
+     3:1 na wypełnieniu dawałoby czerwień na wymaganiu, którego ta
+     warstwa już nie realizuje. */
   ["kreska-mocna",        "powierzchnia", 3.0, "obrys pola formularza"],
   ["fokus",               "tlo-strony",   3.0, "obwódka fokusu na tle strony"],
   /* KORPUS JASNY (ADR-049). Role weszły bez użycia — decyzja
@@ -198,8 +209,15 @@ const PARY = [
      RAZEM ze swoimi parami, nie przed nimi: rola bez pary jest w zbiorze
      i poza sprawdzaniem, czyli dokładnie furtką, przed którą broni
      sprawdzenie 0. */
-  ["tekst-podstawowy", "grafit-klamr", 4.5, "biały tekst na klamrze grafitowej"],
   ["interakcja",       "grafit-klamr", 3.0, "plama limonki na klamrze grafitowej"],
+  /* KLAMRA GRAFITOWA PO ODWRÓCENIU PALETY (ADR-066). Pięć ról wchodzi
+     RAZEM ze swoimi parami — rola bez pary jest w zbiorze i poza
+     sprawdzaniem, czyli furtką, przed którą broni sprawdzenie 0. */
+  ["tekst-na-klamrze",   "grafit-klamr", 4.5, "tekst mocny na klamrze grafitowej"],
+  ["tekst-2-na-klamrze", "grafit-klamr", 4.5, "tekst drugorzędny na klamrze"],
+  ["akcent-na-klamrze",  "grafit-klamr", 4.5, "akcent niosący tekst na klamrze"],
+  ["kreska-na-klamrze",  "grafit-klamr", 1.3, "kreska dekoracyjna na klamrze (próg ADR-038)"],
+  ["fokus-na-klamrze",   "grafit-klamr", 3.0, "obwódka fokusu na klamrze (WCAG 1.4.11)"],
 ];
 
 /* ─── WYŁĄCZENIA Z PAR — Z WŁASNYM LICZNIKIEM ──────────────────
@@ -371,9 +389,20 @@ const POWIERZCHNIE = [
   "powierzchnia-2",
   "powierzchnia-akcentowa",
   "powierzchnia-jasna",
-  /* ADR-065 — klamra grafitowa NIESIE TEKST, więc jest powierzchnią
-     w rozumieniu R-AKCENT-01 i R-AKCENT-02(b), nie tylko tłem ozdobnym. */
-  "grafit-klamr",
+  /* ⚠ KLAMRA GRAFITOWA WYSZŁA Z TEJ LISTY PRZY ODWRÓCENIU PALETY
+     (ADR-066) — i jest to zawężenie ZAKRESU, nie progu.
+
+     ADR-065 wpisał ją tu słusznie: korpus był ciemny, role bazowe były
+     jasne, więc renderowały się na klamrze wprost. Po odwróceniu klamra
+     PRZEMAPOWUJE każdą rolę przez `[data-ton="ciemny"]` — na graficie
+     nie pojawia się ani `akcent`, ani `fokus`, ani `tekst-podstawowy`
+     w wartości bazowej, tylko ich odpowiedniki `*-na-klamrze`.
+
+     Trzymanie jej tutaj dawało czerwień na parach, KTÓRE NIGDY SIĘ NIE
+     RENDERUJĄ: `akcent` (ciemna oliwka) na graficie 2,30:1 i `fokus`
+     1,36:1 — obie prawdziwe arytmetycznie i obie o nieistniejącym
+     przedmiocie. Zamiast nich klamrę pilnuje PIĘĆ WŁASNYCH PAR wyżej,
+     po jednej na każdą przemapowaną rolę. */
 ];
 const PROG_AKCENT_TEKST = 4.5;
 const PROG_FOKUS = 3.0;
@@ -386,9 +415,18 @@ const PROG_FOKUS = 3.0;
 
    Mapa wiąże powierzchnię z rolą obrysu. Powierzchnia bez wpisu podlega
    regule domyślnej (akcent musi umieć nieść tekst). */
-const AKCENT_TYLKO_PLAMA = {
-  "powierzchnia-jasna": "obrys-cta-na-jasnym",
-};
+/* ⚠ MAPA PUSTA PO ODWRÓCENIU PALETY (ADR-066) — i pustka jest tu
+   WYNIKIEM, nie brakiem. Do odwrócenia `akcent` był limonką i na
+   powierzchni jasnej miał 1,43:1, więc mógł tam być wyłącznie plamą
+   z obrysem. Po odwróceniu `akcent` to ciemna oliwka i na każdej
+   powierzchni jasnej niesie tekst z zapasem (5,34:1 na tle strony,
+   5,82:1 na karcie) — wyjątek stracił przedmiot, a strażnik sam to
+   zgłosił komunikatem „WYJĄTEK ZBĘDNY".
+
+   ⚠ WYMÓG OBRYSU CTA NIE ZNIKNĄŁ RAZEM Z NIM — przeniósł się niżej,
+   do bloku R-CTA-OBRYS, i jest tam SUROWSZY: dotyczy całej strony,
+   a nie tylko stref jasnych, bo cała strona jest teraz jasna. */
+const AKCENT_TYLKO_PLAMA = {};
 
 for (const p of POWIERZCHNIE) {
   if (!role["akcent"] || !role[p]) { bledy.push(`BRAK ROLI: --akcent lub --${p}`); continue; }
@@ -435,6 +473,60 @@ for (const p of POWIERZCHNIE) {
     bledy.push(
       `WYJĄTEK ZBĘDNY: --akcent na --${p} = ${w.toFixed(2)}:1 ≥ ${PROG_AKCENT_TEKST}:1, ` +
         `więc akcent UMIE tam nieść tekst — zdejmij wpis z AKCENT_TYLKO_PLAMA razem z powodem`
+    );
+  }
+}
+
+/* ─── R-CTA-OBRYS — WYPEŁNIONY PRZYCISK MUSI MIEĆ WIDOCZNĄ GRANICĘ ──
+   (ADR-066, odwrócenie palety)
+
+   Powstał z rozbioru R-AKCENT-01b, który pytał o obrys wobec `akcent`.
+   Do odwrócenia palety `akcent` i `interakcja` miały tę SAMĄ wartość
+   (limonkę), więc pytanie o jedno było pytaniem o drugie. Po odwróceniu
+   rozeszły się: `akcent` to ciemna oliwka niosąca tekst, `interakcja` to
+   limonka będąca WYPEŁNIENIEM przycisku. Obrys otacza wypełnienie, nie
+   akcent — więc mierzy się go wobec wypełnienia.
+
+   ⚠ TO NIE JEST ZŁAGODZENIE. Stara para „plama CTA na tle ≥ 3:1"
+   przestała mieć sens, bo limonka na jasnym daje 1,31:1 i kształtu
+   przycisku nie niesie już plama. Nowy blok pyta o dwie rzeczy naraz
+   i obie są surowsze niż tamta jedna: obrys musi odcinać się OD TŁA
+   (żeby przycisk było widać) ORAZ OD WYPEŁNIENIA (żeby granica była
+   granicą, a nie plamą w plamie). Zakres też urósł: dawniej wymóg
+   dotyczył stref jasnych, teraz całej strony — bo cała strona jest
+   jasna. */
+const ROLA_OBRYSU_CTA = "obrys-cta-na-jasnym";
+const ROLA_WYPELNIENIA_CTA = "interakcja";
+if (!role[ROLA_OBRYSU_CTA] || !role[ROLA_WYPELNIENIA_CTA]) {
+  bledy.push(`BRAK ROLI: --${ROLA_OBRYSU_CTA} albo --${ROLA_WYPELNIENIA_CTA} (R-CTA-OBRYS)`);
+} else {
+  const wDoWypelnienia = kontrast(role[ROLA_OBRYSU_CTA], role[ROLA_WYPELNIENIA_CTA]);
+  if (wDoWypelnienia < PROG_FOKUS) {
+    bledy.push(
+      `R-CTA-OBRYS: obrys --${ROLA_OBRYSU_CTA} wobec wypełnienia --${ROLA_WYPELNIENIA_CTA} = ` +
+        `${wDoWypelnienia.toFixed(2)}:1, wymagane ${PROG_FOKUS}:1 — granica musi odcinać się od tego, co otacza`
+    );
+  }
+  for (const p of POWIERZCHNIE) {
+    if (!role[p]) continue;
+    const wDoTla = kontrast(role[ROLA_OBRYSU_CTA], role[p]);
+    if (wDoTla < PROG_FOKUS) {
+      bledy.push(
+        `R-CTA-OBRYS: obrys --${ROLA_OBRYSU_CTA} na --${p} = ${wDoTla.toFixed(2)}:1, ` +
+          `wymagane ${PROG_FOKUS}:1 — bez tego wypełniony przycisk nie ma widocznej granicy`
+      );
+    }
+  }
+  /* Kontrola przeterminowania w drugą stronę: gdyby wypełnienie kiedyś
+     samo przeszło próg plamy na każdej powierzchni, obrys przestałby być
+     wymogiem i ten blok opisywałby problem, którego nie ma. */
+  const plamaWszedzie = POWIERZCHNIE.filter((p) => role[p]).every(
+    (p) => kontrast(role[ROLA_WYPELNIENIA_CTA], role[p]) >= PROG_FOKUS
+  );
+  if (plamaWszedzie) {
+    ostrzezenia.push(
+      `R-CTA-OBRYS: wypełnienie --${ROLA_WYPELNIENIA_CTA} przechodzi próg ${PROG_FOKUS}:1 na KAŻDEJ ` +
+        `powierzchni — obrys przestał być wymogiem dostępności i wymaga ponownej decyzji`
     );
   }
 }

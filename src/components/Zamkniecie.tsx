@@ -23,8 +23,13 @@ export function Zamkniecie({
   ctaHref,
   zdaniePo,
 }: Props) {
+  /* ⚠ TON ZDJĘTY (ADR-066). Sekcja zamykająca była ciemną wyspą na
+     ciemnym korpusie; we wzorcu finalnym jest JASNA — zmierzone w kolumnie
+     wzorca: blok „Zacznij prowadzić kontakty…" leży na tle jasnym, a jedyne
+     ciemne miejsca to pasek, stopka, karty filarów i blok wzrostu.
+     Bez atrybutu sekcja bierze korpus. */
   return (
-    <section className={styles.sekcja} data-ton="ciemny">
+    <section className={styles.sekcja}>
       <div className={styles.wnetrze}>
         {zdaniePrzed === undefined ? null : (
           <p className={styles.zdanieProwadzace}>{zdaniePrzed}</p>
