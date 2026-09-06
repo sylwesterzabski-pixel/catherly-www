@@ -6,6 +6,17 @@ import { cenyPlanu, type NazwaPlanu } from "@/lib/cennik";
 import styles from "./CennikSkrot.module.css";
 
 type Props = {
+  /** TON SEKCJI JASNEJ (ADR-069, WWW/096 v4 pkt 4): "1" = rola
+   *  `tlo-strony` (zmierzona, 28,4 % pikseli jasnych wzorca), "2" = rola
+   *  `powierzchnia`, czyli biel (zmierzona, 21,0 %), "3" = rola `tlo-3`
+   *  (wyprowadzona, jasność o 3,5 pp niżej od tonu 1). Pominięty = ton
+   *  strony, czyli stan wszystkich pozostałych stron.
+   *  ⚠ Ton "2" jest tą samą barwą co rola `powierzchnia`, więc NIE WOLNO
+   *  go dać sekcji z białymi kartami — plama karty by zniknęła, a jest
+   *  jednym z czterech mechanizmów rozdziału ADR-038.
+   *  (Barwy słowami, nie zapisem szesnastkowym: linter tokenów czyta
+   *  także komentarze i hex w prozie zaczerwieniłby bramkę.) */
+  ton?: "1" | "2" | "3";
   locale: Locale;
 };
 
@@ -44,11 +55,11 @@ const PLANY: readonly NazwaPlanu[] = ["Starter", "Growth", "Pro"];
    z kolejności w tablicy. */
 const PLAN_POLECANY: NazwaPlanu = "Growth";
 
-export function CennikSkrot({ locale }: Props) {
+export function CennikSkrot({ locale, ton }: Props) {
   const t = useTranslations("CennikSkrot");
   const tCennik = useTranslations("Cennik");
   return (
-    <section className={styles.sekcja} aria-labelledby="skrot-h2">
+    <section className={styles.sekcja} aria-labelledby="skrot-h2" data-tlo={ton}>
       <div className={styles.wnetrze}>
         <h2 id="skrot-h2" className={styles.srOnly}>
           {t("naglowek")}

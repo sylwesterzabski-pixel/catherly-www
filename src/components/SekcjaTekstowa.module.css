@@ -99,29 +99,57 @@
   margin-block-start: 1.25rem;
 }
 
-/* KADR SEKCJI (ADR-067, zlecenie WWW/094 krok 2).
-   Zmierzone w kolumnie odniesienia: obudowa laptopa zajmuje x 162–1481
-   z 1536, czyli 85,9 % szerokości kolumny — po przeliczeniu ×0,9375
-   daje 1237 px przy kadrze 1440. Najbliższy szczebel to
-   `kontener-filaru` (1200 px), rozjazd 37 px = 3 %. Zapisuję rozjazd
-   zamiast dokładać szczebel, którego użyłoby jedno miejsce.
+/* KADR SEKCJI — DWIE KOLUMNY (ADR-069, WWW/096 v4 pkt 3).
 
-   ⚠ BEZ RAMKI I BEZ TŁA — kadr jest renderem z przezroczystym otoczeniem
-   i wzorzec stawia go wprost na korpusie. Ramka dorysowałaby krawędź,
-   której wzorzec nie ma, a tło zrobiłoby z renderu prostokąt. */
-.kadr {
+   ┌── zmierzone w kolumnie odniesienia (pas 1536) ── ×0,9375 → 1440 ──┐
+   │ mockup „pamięć"   x 878–1416 · y 700–1020        x 823–1328       │
+   │ szerokość         538 px = 35,0 % pasa           504 px           │
+   │ nagłówek i proza  x 137–759                      x 128–712        │
+   └───────────────────────────────────────────────────────────────────┘
+
+   Z tego wychodzi podział kolumn 47 : 35 z odstępem — czyli po
+   normalizacji do siatki **58 : 42**, ta sama proporcja, którą hero
+   dostało w ADR-067 z tego samego powodu (miara nagłówka w trzech
+   językach). Trzymam jedną proporcję dla obu bloków dwukolumnowych,
+   zamiast dwóch bliskich sobie liczb — druga byłaby różnicą, której
+   nikt nie umie potem uzasadnić.
+
+   ⚠ PONIŻEJ PROGU KOLUMNY WRACAJĄ DO JEDNEJ, kadr idzie POD prozę.
+   Wzorzec kadru wąskiego nie pokazuje; to przeniesienie zachowania,
+   nie pomiar.
+
+   ⚠ BEZ RAMKI I BEZ TŁA — bitmapa ma zdjęte tło (wariant `-alfa`),
+   więc render leży wprost na tonie sekcji, a cień daje `drop-shadow`
+   z tokena `cien.mockup`, którego alfa (0,09) jest zmierzona na
+   oryginale. Ramka dorysowałaby krawędź, której wzorzec nie ma. */
+.uklad {
   max-inline-size: var(--wymiar-kontener-filaru);
-  margin: var(--wymiar-odstep-sekcji-male) auto 0;
-  padding-inline: var(--wymiar-wciecie-tresci-male);
+  margin-inline: auto;
+}
+
+.uklad .wnetrze {
+  margin-inline: 0;
+}
+
+.kadr {
+  margin-block-start: var(--wymiar-odstep-sekcji-male);
 }
 
 .kadr img {
   inline-size: 100%;
   block-size: auto;
+  filter: drop-shadow(var(--cien-mockup));
 }
 
 @media (min-width: 48.0625rem) {
+  .uklad {
+    display: grid;
+    grid-template-columns: 58fr 42fr;
+    gap: var(--wymiar-odstep-8);
+    align-items: center;
+  }
+
   .kadr {
-    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+    margin-block-start: 0;
   }
 }

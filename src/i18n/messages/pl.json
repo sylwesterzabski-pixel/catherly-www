@@ -426,5 +426,17 @@
     "macbookTelefon": "Laptop z otwartym dziennym planem działania i telefon obok, z pustym ekranem.",
     "rano": "Kobieta przy biurku pije z kubka i patrzy w ekran laptopa.",
     "wieczorem": "Para siedzi na sofie i razem patrzy w ekran laptopa."
+  },
+  "Wrapped": {
+    "podpis": "dane przykładowe",
+    "tygodnieEtykieta": "Tygodnie",
+    "tygodnie": "14, 17, 15, 19, 22, 20, 24, 27",
+    "ostatni": "T8",
+    "rozmowyEtykieta": "Rozmowy",
+    "rozmowy": "158",
+    "noweKontaktyEtykieta": "Nowe kontakty",
+    "noweKontakty": "31",
+    "zamowieniaEtykieta": "Zamówienia",
+    "zamowienia": "11"
   }
 }

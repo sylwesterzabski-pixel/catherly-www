@@ -327,32 +327,37 @@
 
 @media (min-width: 90rem) {
   .uklad {
-    /* PROPORCJA 1 : 2 — zmierzone 293:619 przy 1024 i 379:789 przy 1440,
-       czyli tekst zajmuje jedną trzecią, media dwie trzecie.
-       ⚠ WZORZEC PRZEŁĄCZA SIĘ NA 1024, MY NA 1440 — w paśmie 1024–1439
-       mamy więc kolumny równe tam, gdzie wzorzec ma już 1 : 2. To ta sama
-       znana różnica progów układu co przy siatce kart (ADR-049: „nasze
-       zostają 48rem/90rem"), zapisana, nie zasypana.
+    /* ⚠ 50 : 50 OD 1440, NIE 1 : 2 — DECYZJA WŁAŚCICIELA (WWW/096 v4
+       pkt 1, werdykt z piętnastu zrzutów). Zdejmuje to proporcję
+       zmierzoną na POPRZEDNIM wzorcu (Proactiv, ADR-055: 293 : 619 przy
+       1024 i 379 : 789 przy 1440, siatka trzykolumnowa z odstępem 32).
 
-       ⚠ TRZY KOLUMNY, NIE `1fr 2fr` — I TA RÓŻNICA JEST WIDOCZNA W LICZBACH.
-       Wzorzec ma siatkę TRZYKOLUMNOWĄ z odstępem 32 px, w której tekst
-       zajmuje jedną kolumnę, a media dwie RAZEM Z ODSTĘPEM MIĘDZY NIMI:
-       (1200 − 2 × 32) / 3 = 378,67 na kolumnę, więc media mają
-       2 × 378,67 + 32 = 789,33. Zapis `1fr 2fr` z jednym odstępem daje
-       389,33 i 778,67 — dziesięć pikseli obok. Pierwsza wersja tego bloku
-       miała właśnie `1fr 2fr` i zmierzone 389 : 779 obaliło ją od razu. */
-    grid-template-columns: repeat(3, 1fr);
-    /* 32 px — odstęp kolumn wzorca od progu. */
+       Stary zapis zostawiam poniżej w całości, bo był rzetelny i jego
+       arytmetyka nadal jest prawdziwa — nieaktualne jest ŹRÓDŁO, nie
+       rachunek. Kto będzie kiedyś wracał do proporcji 1 : 2, ma tu
+       gotowy powód, dla którego `1fr 2fr` NIE jest tym samym co trzy
+       równe kolumny:
+
+         „TRZY KOLUMNY, NIE `1fr 2fr` — I TA RÓŻNICA JEST WIDOCZNA
+          W LICZBACH. Wzorzec ma siatkę TRZYKOLUMNOWĄ z odstępem 32 px,
+          w której tekst zajmuje jedną kolumnę, a media dwie RAZEM
+          Z ODSTĘPEM MIĘDZY NIMI: (1200 − 2 × 32) / 3 = 378,67 na
+          kolumnę, więc media mają 2 × 378,67 + 32 = 789,33. Zapis
+          `1fr 2fr` z jednym odstępem daje 389,33 i 778,67 — dziesięć
+          pikseli obok. Pierwsza wersja tego bloku miała właśnie
+          `1fr 2fr` i zmierzone 389 : 779 obaliło ją od razu."
+
+       Dziś obowiązuje 50 : 50 na KAŻDYM kadrze powyżej progu układu,
+       czyli ten blok nie przestawia już siatki — zostaje wyłącznie po
+       to, żeby powiększyć odstęp kolumn do zmierzonych 32 px. */
     gap: var(--wymiar-odstep-7);
   }
 
-  .tekst {
-    grid-column: span 1;
-  }
-
-  .obraz {
-    grid-column: span 2;
-  }
+  /* ⚠ `grid-column: span 1` / `span 2` ZDJĘTE razem z siatką
+     trzykolumnową — bez niej rozpinałyby kolumny na siatce
+     dwukolumnowej i wywracały układ (obraz zająłby obie kolumny,
+     tekst spadłby pod niego). Martwa deklaracja nie zostaje: tutaj
+     nie byłaby martwa, tylko szkodliwa. */
 
   /* ⚠ TEKST NA PEŁNEJ MIERZE, GDY SLOT ZWINIĘTY. Bez tego kolumna tekstu
      zostaje przy jednej trzeciej siatki, a dwie trzecie stoją puste —

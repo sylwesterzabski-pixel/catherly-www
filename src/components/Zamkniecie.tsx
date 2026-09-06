@@ -1,6 +1,17 @@
 import styles from "./Zamkniecie.module.css";
 
 type Props = {
+  /** TON SEKCJI JASNEJ (ADR-069, WWW/096 v4 pkt 4): "1" = rola
+   *  `tlo-strony` (zmierzona, 28,4 % pikseli jasnych wzorca), "2" = rola
+   *  `powierzchnia`, czyli biel (zmierzona, 21,0 %), "3" = rola `tlo-3`
+   *  (wyprowadzona, jasność o 3,5 pp niżej od tonu 1). Pominięty = ton
+   *  strony, czyli stan wszystkich pozostałych stron.
+   *  ⚠ Ton "2" jest tą samą barwą co rola `powierzchnia`, więc NIE WOLNO
+   *  go dać sekcji z białymi kartami — plama karty by zniknęła, a jest
+   *  jednym z czterech mechanizmów rozdziału ADR-038.
+   *  (Barwy słowami, nie zapisem szesnastkowym: linter tokenów czyta
+   *  także komentarze i hex w prozie zaczerwieniłby bramkę.) */
+  ton?: "1" | "2" | "3";
   /** Nagłówek sekcji (ADR-067). Opcjonalny — `/cennik` go nie ma. */
   naglowek?: string;
   /** Identyfikator nagłówka dla `aria-labelledby` sekcji. */
@@ -28,6 +39,7 @@ export function Zamkniecie({
   ctaEtykieta,
   ctaHref,
   zdaniePo,
+  ton,
 }: Props) {
   /* ⚠ TON ZDJĘTY (ADR-066). Sekcja zamykająca była ciemną wyspą na
      ciemnym korpusie; we wzorcu finalnym jest JASNA — zmierzone w kolumnie
@@ -35,7 +47,7 @@ export function Zamkniecie({
      ciemne miejsca to pasek, stopka, karty filarów i blok wzrostu.
      Bez atrybutu sekcja bierze korpus. */
   return (
-    <section className={styles.sekcja} aria-labelledby={idNaglowka}>
+    <section className={styles.sekcja} aria-labelledby={idNaglowka} data-tlo={ton}>
       <div className={styles.wnetrze}>
         {/* ⚠ NAGŁÓWEK WCHODZI (ADR-067, WWW/093 krok 3). Wzorzec finalny
             zamyka stronę zdaniem „Zacznij prowadzić kontakty i wyniki

@@ -1,0 +1,163 @@
+/* KARTA „TWÓJ WRAPPED" — wzór `8-wrapped.png` (ADR-069, WWW/096 v4 pkt 5).
+
+   Karta stoi WEWNĄTRZ bloku „wzrost", czyli na klamrze grafitowej, więc
+   wszystkie role rozwiązują się tu przez `[data-ton="ciemny"]`. Nie ma
+   tu ani jednej wartości barwnej — jest to warunek, nie oszczędność:
+   karta na klamrze i ta sama karta postawiona kiedyś na korpusie jasnym
+   mają wyglądać poprawnie bez zmiany tego pliku.
+
+   Wzór rysuje kartę jaśniejszą od tła bloku i obrysowaną cienką kreską.
+   U nas tło bloku i tło karty to ta sama rola (`grafit-klamr`
+   przemapowana), więc rozdział niesie WYŁĄCZNIE kreska — i dlatego
+   bierze `kreska` (na klamrze: `kreska-na-klamrze`), której próg
+   rozdziału ADR-038 wynosi 1,30 i jest sprawdzany parą w strażniku
+   tokenów. */
+.karta {
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: var(--wymiar-promien-sredni);
+  padding: var(--wymiar-odstep-8);
+  text-align: start;
+  max-inline-size: var(--wymiar-miara-akapitu-wzorca);
+  margin-inline: auto;
+}
+
+.tytul {
+  font-size: var(--tekst-h2-male);
+  line-height: var(--interlinia-naglowek-male);
+  font-weight: var(--waga-naglowek);
+  margin: 0;
+}
+
+.podtytul {
+  color: var(--kolor-rola-tekst-drugorzedny);
+  font-size: var(--tekst-s);
+  margin: var(--wymiar-odstep-2) 0 var(--wymiar-odstep-6);
+}
+
+.wykres {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+.siatka {
+  stroke: var(--kolor-rola-kreska);
+  stroke-width: 0.5;
+}
+
+.os,
+.etykietaOsi {
+  fill: var(--kolor-rola-tekst-drugorzedny);
+  /* ⚠ ROZMIARU PISMA NIE MA W TYM PLIKU I TO JEST POPRAWKA BŁĘDU
+     Z TEGO SAMEGO BATCHU. Stało tu `font-size: 7` — bez jednostki.
+     W SVG atrybut prezentacyjny `font-size` przyjmuje liczbę bez
+     jednostki, ale WŁAŚCIWOŚĆ CSS o tej samej nazwie jej nie przyjmuje:
+     deklaracja jest nieważna i przeglądarka ją odrzuca. Skutek był
+     widoczny na zrzucie — etykiety osi urosły do domyślnych 16 jednostek
+     viewBoxa, czyli po przeskalowaniu karty do wielkości nagłówka.
+     Rozmiar przeniesiony do atrybutu `fontSize` w `KartaWrapped.tsx`,
+     gdzie jest ważny. Zapisane, bo pomyłka jest cicha: nieważna
+     deklaracja nie zapala ani lintera, ani bramki — widać ją dopiero
+     na obrazie. */
+  font-family: inherit;
+}
+
+.os {
+  text-anchor: end;
+}
+
+.etykietaOsi {
+  text-anchor: middle;
+}
+
+/* Słupki zwykłe biorą kreskę mocną — na klamrze rozwiązuje się ona na
+   `tekst-2-na-klamrze`, czyli szarość wzoru. Ostatni słupek bierze
+   `interakcja`, bo wzór wyróżnia nim tydzień bieżący; ta sama rola,
+   którą na klamrze niesie plama CTA, i ta sama, którą strażnik tokenów
+   sprawdza parą `interakcja × grafit-klamr` (3,0). */
+.slupek {
+  fill: var(--kolor-rola-kreska-mocna);
+}
+
+.slupekOstatni {
+  fill: var(--kolor-rola-interakcja);
+}
+
+.krzywa {
+  fill: none;
+  stroke: var(--kolor-rola-akcent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.punkt {
+  fill: var(--kolor-rola-akcent);
+}
+
+/* Seria liczbowa w postaci czytelnej — nośnik treści dla czytnika
+   ekranu i dla kadru bez rysunku. Drobna, bo powtarza to, co widać. */
+.seria {
+  color: var(--kolor-rola-tekst-drugorzedny);
+  font-size: var(--tekst-xs);
+  margin: var(--wymiar-odstep-5) 0 0;
+}
+
+.seriaEtykieta {
+  font-weight: var(--waga-etykieta);
+}
+
+/* ⚠ TRZY KOLUMNY DOPIERO OD PROGU UKŁADU — POPRAWKA ZŁAPANA PRZEZ
+   ZAMIATANIE SZEROKOŚCI, nie przez oko. Przy 320 px trzy równe kolumny
+   nie mieszczą się w karcie: zmierzone przepełnienie poziome **8 px**,
+   trzy elementy poza kadrem (`li` i dwa `span` podsumowania). Kadr
+   320 px jest poniżej naszej bazy 390, ale zamiatanie sprawdza go
+   i słusznie — to najwęższy realny telefon.
+   Poniżej progu podsumowanie idzie w jednej kolumnie. */
+.podsumowanie {
+  list-style: none;
+  margin: var(--wymiar-odstep-6) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--wymiar-odstep-5);
+  text-align: center;
+}
+
+.wartosc {
+  display: block;
+  font-size: var(--tekst-h2-male);
+  line-height: var(--interlinia-naglowek-male);
+  font-weight: var(--waga-naglowek);
+}
+
+.etykieta {
+  display: block;
+  color: var(--kolor-rola-tekst-drugorzedny);
+  font-size: var(--tekst-xs);
+}
+
+/* ⚠ PODPIS NIE JEST DROBNYM DRUKIEM I NIE WOLNO GO ZROBIĆ NIEWIDOCZNYM.
+   To jedyna rzecz, która odróżnia tę kartę od twierdzenia o produkcie —
+   warunek zawężający kategorii `dane-przykladowe` w liczniku treści.
+   Stąd rola tekstu drugorzędnego (6,17:1 na najciemniejszym tonie
+   jasnym, na klamrze więcej), a nie wygaszona. */
+.podpis {
+  color: var(--kolor-rola-tekst-drugorzedny);
+  font-size: var(--tekst-xs);
+  margin: var(--wymiar-odstep-5) 0 0;
+  text-align: center;
+}
+
+@media (min-width: 48.0625rem) {
+  .podsumowanie {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .tytul {
+    font-size: var(--tekst-h2-srednie);
+  }
+
+  .wartosc {
+    font-size: var(--tekst-h2-srednie);
+  }
+}

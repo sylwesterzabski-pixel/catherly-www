@@ -33,7 +33,9 @@ type Props = {
  * a krok 3 tego samego zlecenia rodzaj ze strony głównej ZDEJMUJE —
  * wciągnięcie go tutaj dokładałoby to, co obok usuwamy.
  *
- * ⚠ TRZECI ADRES JEST INNY NIŻ DWA PIERWSZE i to nie jest niedoróbka.
+ * ⚠ DO 2026-09-06 TRZECI ADRES BYŁ INNY NIŻ DWA PIERWSZE — dziś
+ * wszystkie trzy są bezwzględne (patrz komentarz przy `SCIEZKI`),
+ * ale ZASADA, dla której się różniły, obowiązuje bez zmian:
  * Ból podróży SAMA i LIDERKA strona główna nazywa u siebie (S3 i filar
  * 3), więc ich drogi są kotwicami. Bólu podróży STRUKTURA na głównej
  * NIE MA — jedyne zdanie o wąskim gardle decyzji żyje na `/dla-kogo`,
@@ -62,9 +64,23 @@ export function PasSciezek({ locale }: Props) {
   const t = useTranslations("DlaKogo");
   const tNawigacja = useTranslations("Nawigacja");
 
+  /* ⚠ WSZYSTKIE TRZY ADRESY SĄ BEZWZGLĘDNE OD 2026-09-06 (ADR-069,
+     WWW/096 v4) — dwa pierwsze były kotwicami bez ścieżki i działały
+     wyłącznie dopóty, dopóki pas stał na stronie głównej.
+
+     Pas zszedł z głównej na `/dla-kogo` razem z sekcją „problem"
+     i kotwica `#filar-3-h2` przestała mieć cel: filar 3 („Zespół")
+     został na głównej. Bramka kotwic złapała to jako trzy martwe
+     odnośniki — po jednym na język.
+
+     ⚠ TO NIE ZMIENIA ZASADY, KTÓRĄ TE ADRESY NIOSĄ, i dlatego zostaje
+     ona wypisana niżej bez zmian: każdy odnośnik prowadzi TAM, GDZIE
+     DANY BÓL JEST NAZWANY. Zmienia się to, że miejsce nazwania i
+     miejsce pasa przestały być tą samą stroną — a kotwica bez ścieżki
+     milcząco zakładała, że są. */
   const SCIEZKI = [
-    { klucz: "s1_h2", adres: "#problem-h2" },
-    { klucz: "s2_h2", adres: "#filar-3-h2" },
+    { klucz: "s1_h2", adres: `${adresWJezyku(locale, "/dla-kogo")}#problem-h2` },
+    { klucz: "s2_h2", adres: `${adresWJezyku(locale, "/")}#filar-3-h2` },
     {
       klucz: "s3_h2",
       adres: `${adresWJezyku(locale, "/dla-kogo")}#prowadzisz-strukture`,

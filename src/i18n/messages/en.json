@@ -426,5 +426,17 @@
     "macbookTelefon": "A laptop showing the daily plan of action, and a phone beside it with a blank screen.",
     "rano": "A woman at a desk drinks from a cup and looks at a laptop screen.",
     "wieczorem": "A couple sits on a sofa looking at a laptop screen together."
+  },
+  "Wrapped": {
+    "podpis": "sample data",
+    "tygodnieEtykieta": "Weeks",
+    "tygodnie": "14, 17, 15, 19, 22, 20, 24, 27",
+    "ostatni": "T8",
+    "rozmowyEtykieta": "Conversations",
+    "rozmowy": "158",
+    "noweKontaktyEtykieta": "New contacts",
+    "noweKontakty": "31",
+    "zamowieniaEtykieta": "Orders",
+    "zamowienia": "11"
   }
 }

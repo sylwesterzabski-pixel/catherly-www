@@ -148,7 +148,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 36;
+/* 36 → 37 (ADR-069, WWW/096 v4 pkt 4): doszła `tlo-3`, trzeci ton sekcji
+   jasnej. Literał zostaje literałem — jego zmiana MA BYĆ DECYZJĄ, a nie
+   iść za zbiorem: rola barwna dołożona bez ADR-a to dokładnie ten dryf,
+   który ta liczba ma zatrzymać. */
+const LICZBA_ROL = 37;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
@@ -178,6 +182,13 @@ const PARY = [
      warstwa już nie realizuje. */
   ["kreska-mocna",        "powierzchnia", 3.0, "obrys pola formularza"],
   ["fokus",               "tlo-strony",   3.0, "obwódka fokusu na tle strony"],
+  /* TRZECI TON SEKCJI (ADR-069) — te same cztery pytania co dla tła strony,
+     bo `tlo-3` jest tłem sekcji, nie ozdobą: nosi prozę, nagłówki, akcent
+     w nagłówku i obwódkę fokusu. Progi identyczne z parami `tlo-strony`. */
+  ["tekst-podstawowy",    "tlo-3",        4.5, "tekst czytany na trzecim tonie sekcji"],
+  ["tekst-drugorzedny",   "tlo-3",        4.5, "tekst drugorzędny na trzecim tonie sekcji"],
+  ["akcent",              "tlo-3",        4.5, "fragment nagłówka w akcencie na trzecim tonie"],
+  ["fokus",               "tlo-3",        3.0, "obwódka fokusu na trzecim tonie sekcji"],
   /* KORPUS JASNY (ADR-049). Role weszły bez użycia — decyzja
      właściciela WWW/074 pkt 1g — ale pary wchodzą OD RAZU. Rola bez
      pary jest w zbiorze i poza sprawdzaniem, czyli dokładnie furtką,
@@ -385,6 +396,7 @@ for (const s of ["stan-sukces", "stan-ostrzezenie", "stan-blad"]) {
    nie ma odpowiedzi wyprowadzalnej z samej wartości barwy. */
 const POWIERZCHNIE = [
   "tlo-strony",
+  "tlo-3",
   "powierzchnia",
   "powierzchnia-2",
   "powierzchnia-akcentowa",

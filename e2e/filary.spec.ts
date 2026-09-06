@@ -35,13 +35,21 @@ const PRZYPADKI = [
    Wyprowadzenie jej ze zbioru kluczy (`Object.keys(Filary)`) zdjęłoby
    właśnie tę własność — czwarty filar wróciłby na główną bez decyzji
    i bez czerwieni. Zostaje wypisana. */
-/* ⚠ `filar4` NIE STOI TU JAKO STAŁA — i to jest poprawka z tego samego
-   batcha. Wpisałem go najpierw jako `const FILAR_NA_PODSTRONIE`, żeby
-   nazwać rzecz zdjętą z listy; nazwa bez ani jednego użycia jest martwą
-   deklaracją (klasa T56) i `eslint --max-warnings=0` zapalił się na niej
-   słusznie. Informacja zostaje, nośnikiem jest komentarz, nie kod:
-   filar „Wyniki" sprawdza się na `/funkcje/wyniki`, nie tutaj. */
-const KLUCZE_FILAROW = ["filar1", "filar2", "filar3"] as const;
+/* ⚠ CZTERY FILARY NA GŁÓWNEJ — DECYZJA WŁAŚCICIELA (ADR-069,
+   WWW/096 v4 pkt 1, werdykt z piętnastu zrzutów). Historia tej listy
+   jest jej własnym ostrzeżeniem i dlatego zostaje wypisana w całości:
+   · do WWW/094 — cztery,
+   · WWW/094 — trzy, bo filar „Wyniki" oddał swój nagłówek blokowi
+     „wzrost" i strona miałaby dwa identyczne `h2`,
+   · WWW/096 v4 — znowu cztery, a kolizja nagłówków rozwiązana od
+     drugiej strony: blok „wzrost" bierze `FunkcjeWyniki.mod2_nazwa`.
+   Dwie zmiany w dwie doby, w przeciwnych kierunkach — i obie były
+   decyzją, nie dryfem. Właśnie dlatego ta lista jest WYPISANA.
+
+   ⚠ NIE WYPROWADZAĆ JEJ Z `Object.keys(Filary)`: czerpana ze zbioru
+   przepuściłaby piąty filar na główną bez ani jednej czerwieni, a to
+   jest rzecz, o której rozstrzyga właściciel. */
+const KLUCZE_FILAROW = ["filar1", "filar2", "filar3", "filar4"] as const;
 
 // BARWA CZERPANA ZE ŹRÓDŁA, NIE PRZEPISANA (WWW/056 pkt 2, ADR-043).
 // Literał `rgb(...)` przepisany z ręki starzeje się przy każdej zmianie
@@ -65,26 +73,33 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   }) => {
     await page.goto(adres);
 
-    // Struktura nagłówków treści: 1×h1 (hero) + 11×h2 w main
-    // (S3 problem + S4 definicja + 3 filary + S9 sr-only + S10 rytm
-    // + BLOK WZROSTU + S11 sr-only + S12 sr-only + S13 zamknięcie);
-    // nagłówki sekcji stopki poza main.
-    //
-    // ⚠ LICZBA NIE DRGNĘŁA, A SKŁAD SIĘ ZMIENIŁ (ADR-067, WWW/094):
-    // ubył czwarty filar, doszedł blok „wzrost". Zapisuję to, bo zielona
-    // liczba przy zmienionym składzie wygląda jak brak zmiany — a tym,
-    // co naprawdę pilnuje kolejności, jest `zlozenie.spec.ts`.
-    //
-    // ⚠ 10 → 11 (ADR-067, WWW/093). Sekcja zamykająca DOSTAŁA nagłówek,
-    // którego wzorzec finalny wymaga w tym miejscu — dawny werdykt panelu
-    // („S13 bez h2") dotyczył zdania prowadzącego NAD przyciskiem i nadal
-    // obowiązuje; nagłówek sekcji to inna rzecz.
-    //
-    // ⚠ TA LICZBA JEST MECHANIZMEM, NIE DRYFEM: koduje SKŁAD strony, więc
-    // jej zmiana ma być decyzją i ma zapalać czerwień, gdy ktoś doda albo
-    // zdejmie sekcję bez rozstrzygnięcia. Nie wyprowadzać jej ze zbioru.
+    /* STRUKTURA NAGŁÓWKÓW TREŚCI: 1×h1 (hero) + 9×h2 w main —
+       definicja („pamięć") + CZTERY filary + rytm dnia + blok „wzrost"
+       + cennik w skrócie + zamknięcie. Nagłówki stopki są poza `main`.
+
+       ⚠ 11 → 9 (ADR-069, WWW/096 v4) i to jest przeliczenie SKŁADU,
+       nie poprawka liczby. Ubyły trzy nagłówki: „problem" (sekcja
+       przeniesiona na `/dla-kogo`), „dbanie o siebie" (sekcja zdjęta)
+       i „sześć obaw" (sekcja przeniesiona na `/cennik`). Doszedł jeden:
+       czwarty filar wrócił. 11 − 3 + 1 = 9.
+
+       ⚠ POPRZEDNIE BRZMIENIE ZOSTAWIAM JAKO ŚLAD, bo niosło ostrzeżenie,
+       które nadal obowiązuje: „LICZBA NIE DRGNĘŁA, A SKŁAD SIĘ ZMIENIŁ
+       (WWW/094): ubył czwarty filar, doszedł blok «wzrost». Zapisuję to,
+       bo zielona liczba przy zmienionym składzie wygląda jak brak zmiany
+       — a tym, co naprawdę pilnuje kolejności, jest zlozenie.spec.ts."
+       Tym razem liczba drgnęła, ale ostrzeżenie zostaje w mocy.
+
+       ⚠ RZĄD TRZECH KART GRAFITOWYCH NIE DOKŁADA NAGŁÓWKA — niesie
+       `aria-label`, a tytuły kart są akapitami. Gdyby dostał `h2`,
+       ta liczba zapali i słusznie: to byłaby zmiana zarysu dokumentu.
+
+       ⚠ TA LICZBA JEST MECHANIZMEM, NIE DRYFEM: koduje SKŁAD strony,
+       więc jej zmiana ma być decyzją i ma zapalać czerwień, gdy ktoś
+       doda albo zdejmie sekcję bez rozstrzygnięcia. Nie wyprowadzać
+       jej ze zbioru — czerpana z DOM-u zgadzałaby się zawsze. */
     await expect(page.locator("h1")).toHaveCount(1);
-    await expect(page.locator("main h2")).toHaveCount(11);
+    await expect(page.locator("main h2")).toHaveCount(9);
 
     for (const klucz of KLUCZE_FILAROW) {
       const filar = komunikaty.Filary[klucz];
@@ -104,19 +119,24 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
       }
     }
 
-    // S9: treść widoczna, H2 sr-only obecny dla czytników,
-    // ale wizualnie ukryty (ramka ≤ 2 px — clip-path, nie display:none).
+    /* ⚠ SEKCJA S9 „DBANIE O SIEBIE" ZDJĘTA Z GŁÓWNEJ (ADR-069,
+       WWW/096 v4 pkt 1). Stała tu jej asercja: treść widoczna, `h2`
+       sr-only obecny dla czytników i wizualnie ukryty (ramka ≤ 2 px,
+       czyli clip-path, nie display:none). Komponent `DbanieOSiebie`
+       NIE ZOSTAŁ skasowany — zszedł ze składu strony.
+
+       ⚠ NIE MA DOKĄD PRZENIEŚĆ TEGO STRAŻNIKA, bo sekcja nie ma dziś
+       drugiego miejsca — i to jest realny UBYTEK POKRYCIA, który
+       zgłaszam zamiast zasypać: własność „sr-only h2 jest w drzewie
+       dostępności, ale ma ramkę ≤ 2 px" nie jest dziś sprawdzana
+       nigdzie. Pozycja rejestru T77.
+
+       ⚠ ASERCJA NEGATYWNA ZOSTAJE — jedyna rzecz, jaką da się tu
+       uczciwie sprawdzić: że sekcja naprawdę zeszła i nie wróciła. */
     await expect(
       page.getByText(komunikaty.DbanieOSiebie.tresc, { exact: true }),
-    ).toBeVisible();
-    const h2Ukryty = page.getByRole("heading", {
-      name: komunikaty.DbanieOSiebie.naglowek,
-      exact: true,
-    });
-    await expect(h2Ukryty).toHaveCount(1);
-    const ramka = await h2Ukryty.boundingBox();
-    expect(ramka, "sr-only H2 ma ramkę (nie display:none)").not.toBeNull();
-    expect(ramka!.width, "sr-only H2 wizualnie ukryty").toBeLessThanOrEqual(2);
+      "sekcja dbanie o siebie zeszła z głównej",
+    ).toHaveCount(0);
   });
 }
 
@@ -284,7 +304,10 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     expect(html, "konkret filaru 4 w HTML bez JS").toContain(
       komunikaty.Filary.filar4.konkret3,
     );
-    expect(html, "treść S9 w HTML bez JS").toContain(
+    /* ⚠ TREŚCI S9 W TYM HTML JUŻ NIE MA — sekcja zeszła ze składu
+       (ADR-069). Zamiast asercji pozytywnej stoi negatywna, żeby
+       powrót sekcji bez decyzji dał czerwień. */
+    expect(html, "treść S9 nie stoi już w HTML głównej").not.toContain(
       komunikaty.DbanieOSiebie.tresc,
     );
   });

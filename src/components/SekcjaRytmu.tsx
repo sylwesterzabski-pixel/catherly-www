@@ -12,6 +12,17 @@ type Krok = {
 };
 
 type Props = {
+  /** TON SEKCJI JASNEJ (ADR-069, WWW/096 v4 pkt 4): "1" = rola
+   *  `tlo-strony` (zmierzona, 28,4 % pikseli jasnych wzorca), "2" = rola
+   *  `powierzchnia`, czyli biel (zmierzona, 21,0 %), "3" = rola `tlo-3`
+   *  (wyprowadzona, jasność o 3,5 pp niżej od tonu 1). Pominięty = ton
+   *  strony, czyli stan wszystkich pozostałych stron.
+   *  ⚠ Ton "2" jest tą samą barwą co rola `powierzchnia`, więc NIE WOLNO
+   *  go dać sekcji z białymi kartami — plama karty by zniknęła, a jest
+   *  jednym z czterech mechanizmów rozdziału ADR-038.
+   *  (Barwy słowami, nie zapisem szesnastkowym: linter tokenów czyta
+   *  także komentarze i hex w prozie zaczerwieniłby bramkę.) */
+  ton?: "1" | "2" | "3";
   /** H2 pochodzi z treści (content/); jeden H1 na stronę. */
   naglowek: string;
   /** Identyfikator H2 — cel aria-labelledby sekcji. */
@@ -35,9 +46,14 @@ type Props = {
  * jawnie: Safari/VoiceOver zdejmuje semantykę listy przy
  * list-style: none. Zero JS, zero ruchu.
  */
-export function SekcjaRytmu({ naglowek, idNaglowka, kroki, kropka }: Props) {
+export function SekcjaRytmu({ naglowek, idNaglowka, kroki, kropka, ton }: Props) {
   return (
-    <section className={styles.sekcja} aria-labelledby={idNaglowka} data-ton="jasny">
+    <section
+      className={styles.sekcja}
+      aria-labelledby={idNaglowka}
+      data-ton="jasny"
+      data-tlo={ton}
+    >
       {/* Nośnik ducha USUNIĘTY 2026-08-26 razem z blokiem eksperymentu
           przezroczystości (ADR-031, zadanie 2 zlecenia WWW/038-bis).
           Zapowiedź „znika razem z blokiem eksperymentu" z komentarza

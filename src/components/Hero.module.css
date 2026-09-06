@@ -52,13 +52,22 @@
   margin-block-start: calc(-1 * var(--wymiar-pas-naglowka));
   padding-block: var(--wymiar-odstep-sekcji-male) 0;
   padding-inline: var(--wymiar-wciecie-tresci-male);
-  text-align: center;
-  /* PROPORCJA HERO WOBEC KADRU (pomiar 1j): wzorzec trzyma 1,33×
-     wysokości okna na wąskim kadrze i 1,83× na szerokim, przez
-     `min-height` — nie przez treść. Bez tego hero kurczy się do
-     wysokości swoich dzieci i traci oddech, który u wzorca jest
-     głównym środkiem wyrazu. */
-  min-block-size: var(--wymiar-hero-male);
+  /* ⚠ DO LEWEJ, NIE NA ŚRODEK (ADR-069, WWW/096 v4 pkt 3). Wzorzec
+     finalny kładzie cały blok hero przy lewej krawędzi kontenera:
+     zmierzone x 137–748 przy pasie 1536, czyli x 128–701 po
+     przeliczeniu na 1440 — dokładnie to samo wcięcie, co nagłówek
+     sekcji „pamięć" niżej (x 137). Wyśrodkowanie było własnością
+     poprzedniego wzorca. */
+  text-align: start;
+  /* ⚠ MINIMUM WYSOKOŚCI ZDJĘTE (ADR-069, WWW/096 v4 pkt 1 i 3).
+     Stało tu `min-block-size: var(--wymiar-hero-male)`, a niżej
+     `--wymiar-hero-duze`; proporcje 1,33× i 1,83× wysokości okna
+     pochodziły z pomiaru POPRZEDNIEGO wzorca i opisywały hero,
+     w którym coś jest — tam dolną połowę zajmował kadr.
+     U nas kadr stoi OBOK tekstu, nie pod nim, więc minimum trzymało
+     samą próżnię: zmierzone przy 1440 — sekcja 1524 px przy treści
+     589 px, czyli 935 px pustki. To jest „pusty blok po hero"
+     z werdyktu właściciela; nie był osobną sekcją, tylko tym. */
 }
 
 .wnetrze {
@@ -141,57 +150,22 @@
   font-weight: var(--waga-etykieta);
 }
 
-/* ═══ POŚWIATA HERO — KLASTER WZORCA (ADR-052, pomiar 1b) ═══
-   Wzorzec kładzie TRZY nakładające się elipsy, wszystkie obrócone
-   o −45°, wyłącznie przy LEWEJ krawędzi. Tutaj te trzy elipsy są
-   ZŁOŻONE W JEDNYM elemencie jako trzy warstwy `background-image` —
-   wynik ten sam, o dwa węzły mniej w drzewie. Odnotowane, żeby nikt
-   nie szukał trzeciego pseudoelementu.
+/* ⚠ POŚWIATA HERO USUNIĘTA (ADR-069, WWW/096 v4 pkt 3) — trzy
+   nałożone elipsy w `.kolumny::before`, zmierzone na wzorcu React Bits
+   (ADR-052) i przeniesione w `WWW/059`. Wzorzec FINALNY jej nie ma:
+   jego hero stoi na płaskim tle strony, a rolę „światła" pełni wtopiona
+   maską fotografia. Zlecenie żąda hero bez poświaty wprost.
 
-   ⚠ JEDNOSTRONNOŚĆ JEST POMIAREM, NIE OSZCZĘDNOŚCIĄ. Skan całej
-   strony wzorca pokazał podniesione tło wyłącznie w pasie x 0–440;
-   prawy margines nie drgnął ani razu. Symetryczna poświata wyglądałaby
-   „porządniej" i byłaby niezgodna z tym, co zmierzono.
-
-   ⚠ AMPLITUDA MA BYĆ NIEPOZORNA: u wzorca tło rośnie najwyżej o 15
-   stopni sRGB (kontrast 1,12:1). Podbicie alfy „żeby było widać"
-   zniszczyłoby własność, dla której ten klaster istnieje. */
-.kolumny::before {
-  content: "";
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  inline-size: var(--glow-rozmiar-duzy);
-  block-size: var(--glow-rozmiar-duzy);
-  z-index: -2;
-  pointer-events: none;
-  translate: -30% -34%;
-  rotate: var(--glow-obrot);
-  background-image:
-    radial-gradient(
-      68.54% 68.72% at 55.02% 31.46%,
-      var(--glow-barwa-rdzen) 0%,
-      var(--glow-barwa-posrednia) 50%,
-      var(--glow-barwa-skraj) 80%
-    ),
-    radial-gradient(
-      50% 50% at 38% 46%,
-      var(--glow-barwa-rdzen) 0%,
-      var(--glow-barwa-posrednia) 50%,
-      var(--glow-barwa-skraj) 80%
-    ),
-    radial-gradient(
-      50% 50% at 62% 26%,
-      var(--glow-barwa-posrednia) 0%,
-      var(--glow-barwa-skraj) 80%
-    );
-}
+   ⚠ ZOSTAJE TU ŚLAD, BO POMIAR BYŁ PRAWDZIWY: tamten wzorzec naprawdę
+   miał podniesione tło w pasie x 0–440, jednostronnie, o najwyżej 15
+   stopni sRGB. Zmieniło się źródło wzorca, nie rzetelność pomiaru —
+   i tego rozróżnienia nie wolno zgubić, bo inaczej następna sesja
+   uzna tamte liczby za błędne i przeliczy je drugi raz. */
 
 @media (min-width: 48.0625rem) {
   .hero {
     padding-block: var(--wymiar-odstep-sekcji) 0;
     padding-inline: var(--wymiar-wciecie-tresci-srednie);
-    min-block-size: var(--wymiar-hero-duze);
   }
 }
 
@@ -220,55 +194,11 @@
      to osobna zmiana z własnym pomiarem, nie skutek uboczny tej. */
 }
 
-/* DUCH — dekoracja tła hero (R2, zlecenie WWW/047).
-   Leży POD treścią (`z-index: -1`) i nie łapie wskaźnika. Alfa 6% —
-   przy tej wartości napis jest fakturą tła, a nie drugim nagłówkiem.
-
-   ⚠ HISTORIA TEGO AKAPITU W DWÓCH KROKACH — oba zostawione, bo sam
-   akapit jest przykładem tego, jak komentarz przeżywa rzecz, którą
-   opisuje.
-   (1) WWW/051, 2026-08-27: stało tu „Takiego pliku nie mamy,
-   a wytworzenie go to decyzja o materiale obrazowym" — i zdanie
-   przestało być prawdziwe, gdy plik przyszedł falą 2 i wszedł jako
-   `.kolumny::before` wyłącznie od 90rem.
-   (2) WWW/072, 2026-09-02: ta warstwa właśnie ZESZŁA (ADR-048) i zdanie
-   z kroku 1 znów przestało być prawdziwe — tym razem w drugą stronę.
-
-   Stan obowiązujący: duch jest JEDYNĄ dekoracją hero na KAŻDYM kadrze,
-   nie tylko poniżej 90rem. Jest napisem, nie obrazem, i przy 6% alfy
-   nie konkuruje z tłem — a od zdjęcia fali 2 nie ma z czym konkurować.
-
-   ⚠ NAPRAWA ZWISU PO ADR-038 (2026-08-26). Do tej daty stało tu
-   `--kolor-rola-tekst-na-inwersji` — rolę usunięto razem z całą warstwą
-   inwersji, a odwołanie zostało. Nieistniejąca zmienna unieważnia całe
-   `color-mix`, więc `color` spadał na wartość dziedziczoną: duch
-   renderował się PEŁNĄ BIELĄ na 256 px zamiast 6% alfy. Zmierzone przed
-   naprawą: kolor wyliczony = biel nieprzezroczysta, zmienna pusta.
-   (Liczby zapisane słowami rozmyślnie — linter tokenów czyta także
-   komentarze i zapis funkcyjny barwy zaczerwieniłby bramkę.)
-
-   Czego to NIE złapało i dlatego przeżyło push: strażnik tokenów czyta
-   WARTOŚCI ról, nie ich UŻYCIA; axe widzi biel na ciemnym jako kontrast
-   wzorowy. Zapaliła to dopiero sonda rastrowa. */
-.duch {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: 0;
-  z-index: -1;
-  translate: 0 -50%;
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-  font-size: clamp(5rem, 22vw, 16rem);
-  font-weight: var(--waga-mocna);
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  color: color-mix(in srgb, var(--kolor-rola-tekst-podstawowy) 6%, transparent);
-}
-
-.duch::before {
-  content: "Catherly";
-}
+/* ⚠ DUCH USUNIĘTY (ADR-069, WWW/096 v4 pkt 3) — ok. 60 linii reguł
+   i komentarza. Napis „Catherly" w 6 % alfy stał za treścią hero i był
+   ELEMENTEM LCP strony (T55): najcięższym malowaniem była dekoracja
+   z `aria-hidden`. Wzorzec finalny nie ma jej w ogóle. Zdjęty razem
+   z `min-block-size` hero, bo obie rzeczy trzymały tę samą pustkę. */
 
 /* ═══ HERO DWUKOLUMNOWE (ADR-067, WWW/093/2 krok 3) ═══════════════════
    Wzorzec finalny: tekst po lewej, po prawej kadr bohaterki wtopiony
@@ -298,11 +228,55 @@
   display: block;
   inline-size: 100%;
   block-size: auto;
-  mask-image: radial-gradient(
-    ellipse 74% 82% at 52% 44%,
-    black 46%,
-    transparent 96%
-  );
+  /* ⚠ WTOPIENIE DWIEMA PROSTYMI, NIE ELIPSĄ — I TO JEST POPRAWKA
+     ZROBIONA NA OBRAZIE, NIE W GŁOWIE (ADR-069, WWW/096 v4 pkt 3).
+
+     Poprzednio stała tu elipsa `86% 92% at 50% 44%` z przejściem
+     28 % → 100 %. Warunek zlecenia („wtopienie ≥ 25 % szerokości")
+     był arytmetycznie spełniony, a na zrzucie kadr NADAL miał twardą
+     krawędź — i rachunek pokazuje dlaczego: przy elipsie o promieniu
+     86 % i środku w 50 % skrajny lewy piksel leży w 0,58 promienia,
+     czyli w połowie strefy przejścia, więc ma jeszcze ok. 58 %
+     krycia. Elipsa gaśnie do zera dopiero POZA kadrem.
+
+     Wzorzec nie wtapia kadru dookoła. Zmierzone: fotografia zajmuje
+     x 847–1535 z 1536, czyli DOCHODZI DO PRAWEJ KRAWĘDZI, i gaśnie
+     wyłącznie w lewo (w stronę kolumny tekstu) oraz w dół. Góra i
+     prawa strona są pełne.
+
+     Stąd trzy proste zamiast elipsy, złożone przecięciem:
+     · w prawo — przezroczyste na 0 %, pełne od 30 % szerokości,
+       czyli strefa wtopienia ma 30 % szerokości kadru (warunek ≥ 25 %
+       spełniony na tej samej mierze, o którą pyta zlecenie);
+     · w górę — przezroczyste na 0 %, pełne od 25 % wysokości (dół);
+     · w dół — przezroczyste na 0 %, pełne od 12 % wysokości (góra);
+     · w lewo — przezroczyste na 0 %, pełne od 8 % szerokości (prawa
+       krawędź). Ta czwarta jest RÓŻNICĄ WOBEC WZORCA, nie jego
+       odtworzeniem: u wzorca kadr dochodzi do krawędzi strony i nie
+       ma prawej krawędzi do wygaszenia. U nas kończy się w kontenerze,
+       więc bez tej prostej zostawia pionową kreskę w środku strony.
+       Wąsko (8 %), bo to zabieg maskujący, nie kompozycyjny — powód
+       i wycofana próba spadu opisane niżej, przy progu układu.
+     `mask-composite: intersect` bierze CZĘŚĆ WSPÓLNĄ, więc narożniki
+     gasną podwójnie.
+
+     ⚠ TRZECIA PROSTA (GÓRA) WESZŁA PO OBEJRZENIU ZRZUTU, nie z planu:
+     przy dwóch prostych górna krawędź fotografii zostawała twarda
+     i widoczna jako pozioma kreska pod paskiem nawigacji. U wzorca
+     tej kreski nie ma, bo tam kadr wchodzi POD pasek i nie ma własnej
+     górnej krawędzi w widocznym obszarze. U nas zaczyna się niżej,
+     więc krawędź trzeba wygasić. Wąsko (12 %), żeby nie zjeść twarzy.
+
+     Maska słowami kluczowymi, nie zapisem funkcyjnym barwy: w masce
+     liczy się wyłącznie alfa, a linter tokenów (słusznie) nie
+     odróżnia barwy w masce od barwy spoza palety. */
+  mask-image:
+    linear-gradient(to right, transparent 0%, black 30%),
+    linear-gradient(to top, transparent 0%, black 25%),
+    linear-gradient(to bottom, transparent 0%, black 12%),
+    linear-gradient(to left, transparent 0%, black 8%);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
 }
 
 /* TELEFON — nakłada się na dolny prawy narożnik kadru, jak we wzorcu.
@@ -326,13 +300,33 @@
   inline-size: 42%;
   block-size: auto;
   pointer-events: none;
-  mask-image: radial-gradient(
-    ellipse 62% 70% at 50% 50%,
-    black 58%,
-    transparent 100%
-  );
+  /* ⚠ MASKA ZDJĘTA, BO TŁO ZDJĘTE W PLIKU (ADR-069, WWW/096 v4 pkt 3).
+     Stała tu ciasna elipsa wygaszająca kremowy prostokąt, który bitmapa
+     `2c-iphone-L.avif` niosła wokół telefonu. Wariant `-alfa` ma to tło
+     usunięte zalewem z czterech narożników (próg 40, przeciek zmierzony
+     przy 140), więc maska nie ma już czego gasić — a gasiłaby wtedy sam
+     korpus telefonu. Cień rysuje CSS, nie bitmapa. */
+  filter: drop-shadow(var(--cien-mockup));
 }
 
+/* ⚠ SPADU NA KRAWĘDŹ STRONY NIE MA — PRÓBOWANY I WYCOFANY W TYM SAMYM
+   BATCHU (ADR-069, WWW/096 v4 pkt 3). Zapisuję próbę, bo wygląda ona
+   na oczywistą i następna sesja sięgnie po nią pierwszą.
+
+   Wzorzec ma kadr dochodzący do krawędzi strony (zmierzone: x 847–1535
+   przy pasie 1536). Odtworzenie tego przez `margin-inline-end:
+   calc(50% - 50vw)` na kolumnie mediów DZIAŁA GEOMETRYCZNIE i psuje
+   układ: procent w marginesie liczy się od szerokości OBSZARU SIATKI,
+   więc wartość wychodzi mocno ujemna, pudełko kolumny rośnie o tę
+   różnicę, a obraz ma `inline-size: 100%` — czyli rośnie razem z nim.
+   Zmierzone na zrzucie: hero urosło ponad dwukrotnie, a fotografia
+   zajęła większość kadru.
+
+   Zamiast tego prawa krawędź jest WTAPIANA czwartą prostą w masce
+   (patrz `.bohaterka`). Różnica wobec wzorca zostaje i jest zapisana:
+   u wzorca kadr dochodzi do krawędzi, u nas gaśnie przed nią.
+   Poprawne odtworzenie spadu wymaga rozpięcia SIATKI, nie elementu —
+   to osobna zmiana układu hero i osobna decyzja. */
 @media (min-width: 48.0625rem) {
   .kolumny {
     display: grid;

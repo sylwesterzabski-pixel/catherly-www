@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import styles from "./BlokWzrostu.module.css";
 
 type Props = {
@@ -7,6 +9,9 @@ type Props = {
   idNaglowka: string;
   /** Zdanie pod nagłówkiem — z `Filary.filar4.korzysc`. */
   zdanie: string;
+  /** Karta „Twój Wrapped" (ADR-069). Pominięta = blok bez karty, czyli
+   *  stan, w którym blok wszedł w `WWW/094`, gdy danych nie było. */
+  children?: ReactNode;
 };
 
 /**
@@ -19,15 +24,17 @@ type Props = {
  * Zlecenie `WWW/090` oznaczało ten nagłówek jako NOWY; przeszukanie 345
  * kluczy pokazało, że istnieje znak w znak, więc niczego nie dopisuję.
  *
- * ⚠ CZEGO TU NIE MA: karty „Twój Wrapped". Wzorzec stawia w tym bloku
- * wykres ośmiu tygodni z trzema liczbami podsumowania. Zlecenie żąda,
- * żeby dane szły WYŁĄCZNIE z `content/` — a tych liczb w `content/` nie
- * ma i dopisanie ich jest osobną robotą: jedenaście liczb w warstwie
- * treści wymaga wpisów w `content/liczby-w-tresci.json` z kategorią
- * i pokryciem, w trzech językach. Blok wchodzi bez karty, zamiast wejść
- * z liczbami bez pokrycia.
+ * ⚠ KARTA „TWÓJ WRAPPED" WESZŁA W `WWW/096 v4` — a przez dwa zlecenia
+ * jej tu NIE BYŁO i ten ślad zostaje, bo mówi, jak się takie rzeczy
+ * domyka. `WWW/094` żądało karty z danymi „wyłącznie z content/";
+ * przeszukanie z kontrolą pozytywną pokazało, że serii ośmiu tygodni
+ * w `content/` nie ma, więc blok wszedł BEZ karty i z pozycją T72
+ * rejestru — zamiast wejść z jedenastoma liczbami bez pokrycia.
+ * Warunek zamknięcia brzmiał: najpierw rozstrzygnij, CZYM te liczby
+ * są. `WWW/096 v4` rozstrzygnęło (dana przykładowa) i dopiero wtedy
+ * karta mogła powstać. Kolejność była treścią, nie zwłoką.
  */
-export function BlokWzrostu({ naglowek, idNaglowka, zdanie }: Props) {
+export function BlokWzrostu({ naglowek, idNaglowka, zdanie, children }: Props) {
   return (
     <section
       className={styles.sekcja}
@@ -39,6 +46,9 @@ export function BlokWzrostu({ naglowek, idNaglowka, zdanie }: Props) {
           {naglowek}
         </h2>
         <p className={styles.zdanie}>{zdanie}</p>
+        {children === undefined ? null : (
+          <div className={styles.karta}>{children}</div>
+        )}
       </div>
     </section>
   );

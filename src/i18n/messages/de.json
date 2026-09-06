@@ -426,5 +426,17 @@
     "macbookTelefon": "Ein Laptop mit dem geöffneten Tagesplan und daneben ein Telefon mit leerem Bildschirm.",
     "rano": "Eine Frau am Schreibtisch trinkt aus einer Tasse und schaut auf einen Laptop.",
     "wieczorem": "Ein Paar sitzt auf dem Sofa und schaut gemeinsam auf einen Laptop."
+  },
+  "Wrapped": {
+    "podpis": "Beispieldaten",
+    "tygodnieEtykieta": "Wochen",
+    "tygodnie": "14, 17, 15, 19, 22, 20, 24, 27",
+    "ostatni": "T8",
+    "rozmowyEtykieta": "Gespräche",
+    "rozmowy": "158",
+    "noweKontaktyEtykieta": "Neue Kontakte",
+    "noweKontakty": "31",
+    "zamowieniaEtykieta": "Bestellungen",
+    "zamowienia": "11"
   }
 }

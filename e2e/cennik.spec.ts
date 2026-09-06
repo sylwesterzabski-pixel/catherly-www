@@ -52,6 +52,7 @@ const PLANY = ["Starter", "Growth", "Pro"] as const;
 
 for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   const c = komunikaty.Cennik;
+  const o = komunikaty.Obawy;
 
   test(`cennik (${jezyk}): treść, karty równorzędne, CTA, FAQ, potwierdzenia na ${adres}`, async ({
     page,
@@ -92,12 +93,50 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
        celujący w konkretne miejsce — i to jest zrobione tutaj, a nie
        podniesienie liczby na pięć. */
     const faq = page.locator("main details");
-    await expect(faq).toHaveCount(4);
+    /* ⚠ 4 → 10 (ADR-069, WWW/096 v4). Sześć obaw przeniesiono z głównej
+       POD PLANY tej strony, więc `main` niesie teraz DWA bloki pytań
+       i odpowiedzi: sześć obaw o produkcie i cztery pytania o umowę.
+       Liczba jest sumą dwóch decyzji, nie jednego zbioru — i właśnie
+       dlatego zostaje literałem: jej zmiana ma być rozstrzygnięciem.
+
+       ⚠ SZÓSTKA OBAW MA WŁASNĄ, OSOBNĄ ASERCJĘ NIŻEJ i nie wolno jej
+       zwinąć do tej sumy. Powód jest w decyzji O-7: „sześć" jest
+       związane w jeden pakiet z treścią, `STRATEGIA.md` pkt 24 i
+       `Obawy.naglowek` („Sześć" → „Siedem" ×3 języki) — „jednym
+       pakietem albo wcale". Suma 10 zgadzałaby się także przy siedmiu
+       obawach i trzech pytaniach cennikowych. */
+    await expect(faq).toHaveCount(10);
     await expect(
       page.getByText(c.faq.o1, { exact: true }),
     ).not.toBeVisible();
     await page.getByText(c.faq.p1, { exact: true }).click();
     await expect(page.getByText(c.faq.o1, { exact: true })).toBeVisible();
+
+    /* ══ SZEŚĆ OBAW — STRAŻNIK PRZENIESIONY Z `e2e/zlozenie.spec.ts`
+       (ADR-069, WWW/096 v4). Zlecenie żąda tego wprost: „strażnik
+       toHaveCount za nimi". Przeniesiony w całości, nie przepisany —
+       razem z powodem, dla którego szóstka jest literałem.
+
+       SZÓSTKA JEST MECHANIZMEM, NIE DEFEKTEM — nie wyprowadzać jej
+       z pliku. Zbiór źródłowy istnieje (`Obawy.p*` liczy dziś 6)
+       i właśnie dlatego pokusa jest realna, ale liczba czerpana ze
+       źródła przepuściłaby siódmą parę BEZ POZOSTAŁYCH TRZECH CZŁONÓW
+       pakietu: decyzja O-7 wiąże treść, tę asercję, `STRATEGIA.md`
+       pkt 24 i `Obawy.naglowek` — „jednym pakietem albo wcale"
+       (`docs/redakcja/LISTA-WYKONAWCZA-R2.md:30`). Czerwień tego
+       literału jest sygnałem, że ktoś rusza rzecz wymagającą pakietu,
+       i ma nim zostać. */
+    const obawy = page.locator('section[aria-labelledby="obawy-h2"]');
+    await expect(obawy).toHaveCount(1);
+    await expect(obawy.locator("details")).toHaveCount(6);
+    for (const numer of [1, 2, 3, 4, 5, 6] as const) {
+      await expect(
+        obawy.getByText(o[`p${numer}`], { exact: true }),
+      ).toBeVisible();
+    }
+    await expect(obawy.getByText(o.o1, { exact: true })).not.toBeVisible();
+    await obawy.getByText(o.p1, { exact: true }).click();
+    await expect(obawy.getByText(o.o1, { exact: true })).toBeVisible();
 
     // Potwierdzenia ×3 (K9). Selektor zawężony do <main>: od
     // przeglądu role="list" (Etap D) jawną rolę mają też listy

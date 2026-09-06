@@ -81,47 +81,67 @@ test("LUSTRO L1: tło akcentowe S10; kropki S3/S10 wspólnym duetem", async ({
   await page.goto("/");
 
   const rytm = page.locator('section[aria-labelledby="rytm-h2"]');
-  /* ⚠ ROLA CZYTANA Z TEJ SEKCJI, NIE Z PLIKU TOKENÓW (ADR-051).
-     Do 2026-09-03 asercja porównywała tło S10 z GLOBALNĄ wartością
-     `--kolor-rola-powierzchnia-akcentowa`, bo wszystkie sekcje były
-     ciemne i globalna była jedyną. Od domknięcia stref rytm dnia leży
-     w strefie jasnej, gdzie ta sama rola rozwiązuje się na powierzchnię
-     karty (biel) — asercja upadała na ZAPISIE, nie na wadzie.
+  /* ⚠ PRZEDMIOT TEJ ASERCJI ZMIENIŁ NOŚNIK, NIE TREŚĆ (ADR-069,
+     WWW/096 v4 pkt 4). Do 06.09 pytała: „czy S10 nosi rolę
+     `powierzchnia-akcentowa`". Rola ta rozwiązuje się na biel, a od
+     wprowadzenia trzech tonów sekcji S10 dostała ton 3 — decyzją
+     właściciela o naprzemienności, i musiała ją dostać, bo ton 2 (biel)
+     jest barwą jej WŁASNYCH kart i zniósłby ich plamę.
 
-     PRZEDMIOT ZOSTAJE TEN SAM: „S10 nosi rolę powierzchni akcentowej",
-     czyli lustro L1 dalej stoi na WYRÓŻNIONEJ powierzchni, a nie na
-     tle sekcji. Zmienia się miejsce odczytu roli — ze źródła globalnego
-     na źródło OBOWIĄZUJĄCE W TYM MIEJSCU. Po zmianie strażnik jest
-     MOCNIEJSZY: łapie też przepięcie S10 na zwykłe tło strony, czego
-     wersja z wartością globalną nie widziała w strefie jasnej.
+     Pytanie zostaje to samo: **czy lustro L1 stoi na powierzchni
+     WYRÓŻNIONEJ, a nie na tle strony.** Zmienia się mechanizm, którym
+     wyróżnienie jest robione — i asercja idzie za mechanizmem.
 
-     ⚠ CZEGO TA ASERCJA NIE MIERZY, żeby zieleń nie była czytana szerzej:
-     SIŁY wyróżnienia. Na ciemnym pas miał wobec tła 5,9:1, na jasnym ma
-     1,12:1 — rola ta sama, wyraz słabszy. To jest zapisany UBYTEK
-     (ADR-051), nie równoważna zamiana, i żaden strażnik go nie pilnuje. */
-  const { tlo, rolaWSekcji } = await rytm.evaluate((el) => ({
+     ⚠ TO NIE JEST ZŁAGODZENIE, bo pyta o DWIE rzeczy naraz, nie o jedną:
+     (1) tło sekcji różni się od tła strony — czyli wyróżnienie w ogóle
+         istnieje;
+     (2) tło sekcji jest DOKŁADNIE jednym ze zgłoszonych tonów, czytanym
+         ze zmiennej w TEJ sekcji — czyli nie jest dowolną barwą, którą
+         ktoś wpisał ręcznie.
+     Wersja poprzednia pytała tylko o (2), w jednej roli. Ta łapie
+     dodatkowo przepięcie S10 na zwykłe tło strony.
+
+     ⚠ CZEGO NIE MIERZY, żeby zieleń nie była czytana szerzej: SIŁY
+     wyróżnienia. Ton 3 wobec tła strony daje 1,09:1 — tyle samo, ile
+     dawała biel (1,09:1) i znacznie mniej niż 5,9:1 z czasów korpusu
+     ciemnego. To jest zapisany UBYTEK (ADR-051), niezmieniony tą
+     zmianą, i żaden strażnik go nie pilnuje. */
+  const { tlo, tloStrony, tonSekcji } = await rytm.evaluate((el) => ({
     tlo: getComputedStyle(el).backgroundColor,
-    rolaWSekcji: getComputedStyle(el)
-      .getPropertyValue("--kolor-rola-powierzchnia-akcentowa")
-      .trim(),
+    tloStrony: getComputedStyle(document.body).backgroundColor,
+    tonSekcji: getComputedStyle(el).getPropertyValue("--kolor-rola-tlo-3").trim(),
   }));
-  expect(rolaWSekcji, "rola powierzchni akcentowej rozwiązana w S10").not.toBe("");
-  const rolaRgbWSekcji = await rytm.evaluate((el, wartosc) => {
+  expect(tonSekcji, "rola tonu 3 rozwiązana w S10").not.toBe("");
+  const tonRgb = await rytm.evaluate((el, wartosc) => {
     const sonda = document.createElement("span");
     sonda.style.color = wartosc;
     el.appendChild(sonda);
     const rgb = getComputedStyle(sonda).color;
     sonda.remove();
     return rgb;
-  }, rolaWSekcji);
-  expect(tlo, "S10 nosi rolę powierzchnia-akcentowa (rola z tej sekcji)").toBe(
-    rolaRgbWSekcji,
+  }, tonSekcji);
+  expect(tlo, "S10 stoi na tonie 3 (rola czytana z tej sekcji)").toBe(tonRgb);
+  expect(tlo, "S10 stoi na powierzchni WYRÓŻNIONEJ, nie na tle strony").not.toBe(
+    tloStrony,
   );
 
-  for (const [nazwa, tekst] of [
-    ["S3", pl.Problem.kropka],
-    ["S10", pl.RytmDnia.kropka],
+  /* ⚠ KROPKA S3 JEST TERAZ NA INNEJ STRONIE — I DLATEGO TEN STRAŻNIK
+     CHODZI PO DWÓCH ADRESACH, a nie stracił połowy przedmiotu
+     (ADR-069, WWW/096 v4). Sekcja „problem" zeszła z głównej na
+     `/dla-kogo`; lustro L1 mówi, że OBIE kropki — otwierająca i
+     zamykająca — mówią tym samym duetem typograficznym. Ta własność
+     nie zależy od tego, czy sekcje stoją na jednej stronie: duet ma
+     być jeden w całym serwisie.
+
+     Gdyby zawęzić test do samego S10, zieleń dalej by świeciła,
+     a strażnik przestałby pilnować rzeczy, dla której powstał —
+     „ta sama para wartości po obu stronach lustra". To jest wprost
+     zamiana czerwieni na ciszę. */
+  for (const [nazwa, tekst, adresKropki] of [
+    ["S3", pl.Problem.kropka, "/dla-kogo"],
+    ["S10", pl.RytmDnia.kropka, "/"],
   ] as const) {
+    await page.goto(adresKropki);
     const kropka = page.getByText(tekst, { exact: true });
     await expect(kropka, `kropka ${nazwa} widoczna`).toBeVisible();
     const duet = await kropka.evaluate((el) => {
@@ -149,10 +169,18 @@ test("W2: kropki luster S3/S10 w tej samej kolumnie (desktop)", async ({
     testInfo.project.name !== "desktop",
     "poniżej 48rem obie sekcje mają jedną kolumnę z natury",
   );
-  await page.goto("/");
+  /* ⚠ DWA ADRESY, JEDNA SIATKA (ADR-069). Sekcja „problem" stoi od
+     2026-09-06 na `/dla-kogo`, rytm dnia został na głównej. Asercja
+     „ta sama kolumna" ma sens także w poprzek stron i JEST WTEDY
+     MOCNIEJSZA: mierzy, że obie strony trzymają tę samą siatkę treści,
+     a nie tylko że dwie sekcje jednej strony są ze sobą zgodne.
+     Kadr jest ten sam (projekt `desktop`), więc kontener ma tę samą
+     szerokość na obu adresach — inaczej porównanie byłoby bez sensu. */
+  await page.goto("/dla-kogo");
   const ramkaS3 = await page
     .getByText(pl.Problem.kropka, { exact: true })
     .boundingBox();
+  await page.goto("/");
   const ramkaS10 = await page
     .getByText(pl.RytmDnia.kropka, { exact: true })
     .boundingBox();
@@ -172,26 +200,38 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
   }) => {
     await page.goto(adres);
     const k = komunikaty;
+    /* ⚠ TA TABLICA JEST MECHANIZMEM, NIE ODWZOROWANIEM STANU. Koduje
+       SKŁAD strony głównej: `toHaveText(tablica)` pilnuje naraz liczby,
+       treści i porządku, więc każda dołożona, zdjęta albo przestawiona
+       sekcja z nagłówkiem zapala tu czerwień. Dlatego jest wypisana,
+       a nie czerpana z DOM-u — czerpana zgadzałaby się zawsze.
+
+       ⚠ PRZELICZONA 2026-09-06 (ADR-069, WWW/096 v4) razem ze zmianą
+       składu. Zeszły stąd trzy pozycje i wszystkie trzy z powodem:
+       · `Problem.naglowek` — sekcja przeniesiona na `/dla-kogo`,
+       · `DbanieOSiebie.naglowek` — sekcja zdjęta z głównej,
+       · `Obawy.naglowek` — sześć obaw przeniesione na `/cennik`.
+       Doszedł `Filary.filar4.naglowek` z powrotem PRZED rytmem dnia
+       (filar „Wyniki" wrócił decyzją właściciela), a blok „wzrost"
+       bierze odtąd `FunkcjeWyniki.mod2_nazwa` — więc nagłówek filaru 4
+       znów występuje na stronie dokładnie RAZ, tylko w innym miejscu
+       niż w `WWW/094`.
+
+       ⚠ RZĄD TRZECH KART GRAFITOWYCH NIE MA TU POZYCJI — bo nie ma
+       nagłówka. To decyzja składu, nie przeoczenie: rząd jest spisem
+       pod prozą sekcji „pamięć", niesie `aria-label`, a trzy tytuły
+       kart są akapitami. Gdyby kiedyś dostał `h2`, ta tablica zapali. */
     await expect(page.locator("main h2")).toHaveText([
-      bezZnacznikow(k.Problem.naglowek),
       bezZnacznikow(k.Definicja.naglowek),
       k.Filary.filar1.naglowek,
       k.Filary.filar2.naglowek,
       k.Filary.filar3.naglowek,
-      /* ⚠ FILAR 4 PRZENIESIONY, NIE USUNIĘTY (ADR-067, WWW/094).
-         Ten sam ciąg wraca niżej — jako nagłówek BLOKU „WZROST", który
-         stoi między rytmem dnia a cennikiem. Kolejność sprawdzana tą
-         tablicą jest więc jednocześnie asercją, że nagłówek jest na
-         stronie DOKŁADNIE RAZ i w nowym miejscu: dwa wystąpienia dałyby
-         tu czerwień tak samo jak zero. */
-      k.DbanieOSiebie.naglowek,
-      k.RytmDnia.naglowek,
       k.Filary.filar4.naglowek,
+      k.RytmDnia.naglowek,
+      k.FunkcjeWyniki.mod2_nazwa,
       k.CennikSkrot.naglowek,
-      k.Obawy.naglowek,
-      /* ⚠ DOPISANE (ADR-067, WWW/093): sekcja zamykająca dostała nagłówek
-         ze wzorca finalnego. `toHaveText(tablica)` pilnuje LICZBY I PORZĄDKU
-         naraz, więc ten wiersz jest jednocześnie asercją, że nagłówek stoi
+      /* ⚠ `toHaveText(tablica)` pilnuje LICZBY I PORZĄDKU naraz, więc ten
+         wiersz jest jednocześnie asercją, że nagłówek zamknięcia stoi
          NA KOŃCU — gdyby ktoś wstawił sekcję za nim, test zapali. */
       k.ZamkniecieGlowna.naglowek,
     ]);
@@ -202,20 +242,24 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
 for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   const k = komunikaty;
 
-  test(`złożenie (${jezyk}): problem, definicja i rytm dnia z messages na ${adres}`, async ({
+  test(`złożenie (${jezyk}): definicja i rytm dnia z messages na ${adres}`, async ({
     page,
   }) => {
     await page.goto(adres);
 
-    // S3 — problem: H2, treść, kropka.
-    const problem = page.locator('section[aria-labelledby="problem-h2"]');
+    /* ⚠ SEKCJI „PROBLEM" NA GŁÓWNEJ NIE MA OD 2026-09-06 (ADR-069,
+       WWW/096 v4) — stała tu jej asercja i schodzi razem z sekcją.
+       Nie znika jednak z zestawu: przeniesiona sekcja jest sprawdzana
+       tam, gdzie teraz stoi, w `e2e/dla-kogo.spec.ts`. Skasowanie
+       asercji bez przeniesienia byłoby zamianą czerwieni na ciszę —
+       dokładnie tym, czego zakazuje ADR-020.
+
+       ⚠ ASERCJA NEGATYWNA ZOSTAJE TUTAJ, i to jest cała wartość tej
+       zmiany: bez niej nic nie zauważyłoby powrotu sekcji na główną. */
     await expect(
-      problem.getByRole("heading", { level: 2 }),
-    ).toHaveText(bezZnacznikow(k.Problem.naglowek));
-    await expect(problem.getByText(k.Problem.tresc, { exact: true })).toBeVisible();
-    await expect(
-      problem.getByText(k.Problem.kropka, { exact: true }),
-    ).toBeVisible();
+      page.locator('section[aria-labelledby="problem-h2"]'),
+      "sekcja problem zeszła z głównej na /dla-kogo",
+    ).toHaveCount(0);
 
     // S4 — definicja: H2 i treść, bez kropki.
     const definicja = page.locator('section[aria-labelledby="definicja-h2"]');
@@ -292,31 +336,29 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     await expect(link).toHaveAttribute("href", `${prefiks}/cennik`);
   });
 
-  test(`złożenie (${jezyk}): obawy (6 par) i zamknięcie → /funkcje na ${adres}`, async ({
+  test(`złożenie (${jezyk}): zamknięcie → /funkcje na ${adres}`, async ({
     page,
   }) => {
     await page.goto(adres);
 
-    // S12 — sześć par details/summary (K8); otwarcie 1. pary.
-    //
-    // SZÓSTKA JEST MECHANIZMEM, NIE DEFEKTEM — nie wyprowadzać jej z pliku.
-    // Zbiór źródłowy istnieje (`Obawy.p*` liczy dziś 6) i właśnie dlatego
-    // pokusa jest realna, ale liczba czerpana ze źródła przepuściłaby siódmą
-    // parę BEZ POZOSTAŁYCH TRZECH CZŁONÓW pakietu: decyzja O-7 wiąże treść,
-    // `toHaveCount(6)→7`, `STRATEGIA.md` pkt 24 i `Obawy.naglowek`
-    // („Sześć"→„Siedem" ×3 języki) — „jednym pakietem albo wcale"
-    // (`docs/redakcja/LISTA-WYKONAWCZA-R2.md:30`). Czerwień tego literału jest
-    // sygnałem, że ktoś rusza rzecz wymagającą pakietu, i ma nim zostać.
-    const obawy = page.locator('section[aria-labelledby="obawy-h2"]');
-    await expect(obawy.locator("details")).toHaveCount(6);
-    for (const numer of [1, 2, 3, 4, 5, 6] as const) {
-      await expect(
-        obawy.getByText(k.Obawy[`p${numer}`], { exact: true }),
-      ).toBeVisible();
-    }
-    await expect(obawy.getByText(k.Obawy.o1, { exact: true })).not.toBeVisible();
-    await obawy.getByText(k.Obawy.p1, { exact: true }).click();
-    await expect(obawy.getByText(k.Obawy.o1, { exact: true })).toBeVisible();
+    /* ⚠ SZEŚĆ OBAW ZESZŁO Z GŁÓWNEJ NA /cennik (ADR-069, WWW/096 v4) —
+       i CAŁY strażnik poszedł za nimi, nie został tutaj. Asercja
+       `toHaveCount(6)`, pętla po sześciu pytaniach i sprawdzenie
+       rozwijania stoją teraz w `e2e/cennik.spec.ts`, przy sekcji, którą
+       opisują. To jest wykonanie zdania ze zlecenia: „strażnik
+       toHaveCount za nimi".
+
+       Strażnik zostawiony przy pustym miejscu pilnowałby nieobecności,
+       a szóstka — która jest MECHANIZMEM decyzji O-7, nie odwzorowaniem
+       zbioru — przestałaby cokolwiek chronić. Powód, dla którego jest
+       mechanizmem, przeniesiono razem z nią i tam go należy czytać.
+
+       ⚠ ASERCJA NEGATYWNA ZOSTAJE, bo bez niej nic nie zauważy powrotu
+       sekcji na główną i strona miałaby te same sześć par dwa razy. */
+    await expect(
+      page.locator('section[aria-labelledby="obawy-h2"]'),
+      "sekcja obaw zeszła z głównej na /cennik",
+    ).toHaveCount(0);
 
     // S13 — zamknięcie (ostatnia sekcja main; bez h2 i aria-label —
     // decyzja panelu): CTA → /funkcje per język + zdanie po CTA.
@@ -356,16 +398,39 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     const odpowiedz = await request.get(adres);
     expect(odpowiedz.status()).toBe(200);
     const html = await odpowiedz.text();
-    expect(html, "kropka S3 w HTML bez JS").toContain(komunikaty.Problem.kropka);
+    /* ⚠ DWIE POZYCJE PRZENIESIONE NA INNE ADRESY (ADR-069, WWW/096 v4),
+       a nie skasowane: kropka S3 idzie z sekcją „problem" na
+       `/dla-kogo`, pierwsze pytanie obaw — na `/cennik`. Sprawdzam je
+       tam, gdzie teraz są, w TYM SAMYM przebiegu i tym samym sposobem
+       (surowy HTML z żądania, bez JS). Skasowanie ich stąd bez
+       przeniesienia zdjęłoby pokrycie bramki „treść czytelna bez JS"
+       z dwóch sekcji naraz. */
     expect(html, "kotwica S10 w HTML bez JS").toContain(
       komunikaty.RytmDnia.kropka,
     );
     expect(html, "zdanie różnicy S11 w HTML bez JS").toContain(
       komunikaty.CennikSkrot.roznica,
     );
-    expect(html, "pytanie 1 obaw w HTML bez JS").toContain(komunikaty.Obawy.p1);
     expect(html, "CTA zamknięcia w HTML bez JS").toContain(
       komunikaty.ZamkniecieGlowna.cta,
+    );
+    /* Karta „Twój Wrapped" — podpis i seria w surowym HTML. Podpis jest
+       WARUNKIEM kategorii `dane-przykladowe` w linterze liczb, więc
+       jego zniknięcie bez JS byłoby ubytkiem, nie kosmetyką. */
+    expect(html, "podpis dane-przykladowe w HTML bez JS").toContain(
+      komunikaty.Wrapped.podpis,
+    );
+
+    const bezPrefiksu = adres === "/" ? "" : adres;
+    const dlaKogo = await request.get(`${bezPrefiksu}/dla-kogo`);
+    expect(dlaKogo.status()).toBe(200);
+    expect(await dlaKogo.text(), "kropka S3 w HTML bez JS na /dla-kogo").toContain(
+      komunikaty.Problem.kropka,
+    );
+    const cennik = await request.get(`${bezPrefiksu}/cennik`);
+    expect(cennik.status()).toBe(200);
+    expect(await cennik.text(), "pytanie 1 obaw w HTML bez JS na /cennik").toContain(
+      komunikaty.Obawy.p1,
     );
   });
 }

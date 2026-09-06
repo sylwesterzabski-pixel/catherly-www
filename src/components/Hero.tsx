@@ -57,12 +57,14 @@ export function Hero({ locale }: Props) {
     <section className={styles.hero} aria-labelledby="hero-h1">
       <div className={styles.wnetrze}>
         <div className={styles.kolumny}>
-          {/* DUCH — wielki napis dekoracyjny za treścią hero (R2).
-              `aria-hidden` i pusty dla drzewa tekstu: napis rysuje
-              `content` z CSS, więc nie wchodzi do treści, nie dubluje
-              nazwy marki dla czytnika i nie da się go wyszukać jako
-              tekstu. */}
-          <span className={styles.duch} aria-hidden="true" />
+          {/* ⚠ DUCH USUNIĘTY (ADR-069, WWW/096 v4 pkt 3). Stał tu
+              dekoracyjny napis „Catherly" w 6 % alfy, 990 × 205 px,
+              i był ELEMENTEM LCP strony (pozycja T55 rejestru) — czyli
+              najcięższym malowaniem hero była rzecz, której nikt nie
+              miał przeczytać. Wzorzec finalny nie ma go w ogóle.
+              Zdejmuję razem z pustką, którą trzymało `min-block-size`:
+              zmierzone przed zmianą — sekcja 1524 px przy treści 589 px,
+              czyli 935 px próżni pod tekstem. */}
           <div className={`${styles.tekst} ruch-stagger`}>
             <h1 id="hero-h1" className={styles.naglowek}>
               {t("naglowek")}
@@ -105,7 +107,7 @@ export function Hero({ locale }: Props) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className={styles.telefon}
-              src="/obrazy/wzorzec-2026-09-06/2c-iphone-L.avif"
+              src="/obrazy/wzorzec-2026-09-06/2c-iphone-L-alfa.avif"
               alt={tWzorzec("telefon")}
               width={900}
               height={1117}

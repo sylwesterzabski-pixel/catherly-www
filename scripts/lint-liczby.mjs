@@ -153,6 +153,28 @@ const LICZEBNIKI = {
 };
 
 const KATEGORIE = {
+  /* ⚠ DOŁOŻONA 2026-09-06 (WWW/096 v4, ADR-069). Karta „Twój Wrapped"
+     w bloku „wzrost": osiem słupków tygodniowych i trzy liczby
+     podsumowania. To NIE są wartości pomiarowe i nie wolno ich brać za
+     takie — pokazują KSZTAŁT ekranu produktu, nie wynik żadnej
+     klientki. Wartość zmierzona idzie do `content/facts.json`
+     i wchodzi zmienną; ta kategoria istnieje dokładnie po to, żeby
+     dana przykładowa NIGDY nie mogła tamtą drogą pójść.
+
+     ⚠ WARUNEK ZAWĘŻAJĄCY, bez którego kategoria staje się furtką:
+     liczbie z tej kategorii wolno stać WYŁĄCZNIE tam, gdzie w tym
+     samym bloku widocznym dla czytającego stoi podpis `Wrapped.podpis`
+     („dane przykładowe" · „sample data" · „Beispieldaten"). Podpis jest
+     w TREŚCI, nie w rysunku SVG — rysunek bywa wyłączony, zastąpiony
+     albo nieczytany przez czytnik ekranu, a wtedy liczby zostałyby bez
+     zastrzeżenia. Kategoria bez tego warunku pozwalałaby wpisać
+     dowolną liczbę na stronę pod pretekstem „to tylko przykład".
+
+     ⚠ KATEGORIA STOI W KODZIE, NIE W PLIKU DANYCH — z tego samego
+     powodu co `godzina-scenariusza` wyżej: lista dozwolonych kategorii
+     jest DECYZJĄ i jej rozszerzenie ma kosztować zmianę kodu. */
+  "dane-przykladowe":
+    "liczba jest DANĄ PRZYKŁADOWĄ w karcie produktu, oznaczoną w treści podpisem „dane przykładowe” — nie pomiarem i nie obietnicą",
   "cecha-funkcji":
     "liczba jest cechą funkcji zapisaną w content/tabela-obietnic.md (decyzja D-D16)",
   "nazwa-wlasna": "liczba jest częścią nazwy własnej programu lub funkcji",

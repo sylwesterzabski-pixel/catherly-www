@@ -49,8 +49,13 @@ const CELE: Array<[string, string, string]> = [
      Zostawienie tych wierszy dawałoby czerwień na BRAKU ELEMENTU, czyli
      strażnik meldowałby wadę tam, gdzie zapadła decyzja. */
   ["linia granicy", "/funkcje/zespol", 'p[class*="_granica__"]'],
-  ["FAQ — odpowiedź", "/", 'main details [class*="odpowiedz"]'],
-  ["FAQ — znacznik", "/", "main details summary"],
+  /* ⚠ ADRES ZMIENIONY „/" → „/cennik" (ADR-069, WWW/096 v4): sekcja
+     sześciu obaw zeszła z głównej na cennik razem ze swoim strażnikiem.
+     Rodzina ruchu idzie za sekcją — zostawiona przy „/" mierzyłaby
+     element, którego tam nie ma, i padała na BRAKU CELU, czyli
+     komunikatem o wadzie, której nie ma. */
+  ["FAQ — odpowiedź", "/cennik", 'main details [class*="odpowiedz"]'],
+  ["FAQ — znacznik", "/cennik", "main details summary"],
   /* R6 — cień karty pod wskaźnikiem (ADR-048). Dopisane razem
      z rodziną ruchu, nie po niej: kinetyka bez celu w tej tablicy jest
      kinetyką NIEPILNOWANĄ, a wtedy osłona `reduce` trzyma się wyłącznie

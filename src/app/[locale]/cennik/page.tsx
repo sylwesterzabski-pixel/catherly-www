@@ -31,6 +31,7 @@ export default async function StronaCennik({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Cennik");
+  const tObawy = await getTranslations("Obawy");
   const tZamkniecie = await getTranslations("ZamkniecieCennik");
 
   return (
@@ -45,6 +46,48 @@ export default async function StronaCennik({ params }: Props) {
         </section>
 
         <SekcjaPlanow locale={locale as Locale} />
+
+        {/* ══ SZEŚĆ OBAW PRZENIESIONYCH Z GŁÓWNEJ (ADR-069, WWW/096 v4) ══
+            Stoją POD PLANAMI, przed tabelą porównawczą i przed FAQ
+            cennikowym — bo to tutaj czytająca podejmuje decyzję i tutaj
+            obawa ma znaczenie, a nie na stronie głównej, gdzie dopiero
+            poznaje produkt.
+
+            ⚠ DECYZJA O-7 ZDJĘTA (WWW/091, delegacja właściciela).
+            Do niej sześć obaw było związane w jeden pakiet z
+            `toHaveCount(6)`, punktem 24 STRATEGII i `Obawy.naglowek`
+            („Sześć") — „jednym pakietem albo wcale". Przeniesienie ich
+            samo w sobie nie łamie pakietu, bo LICZBA SIĘ NIE ZMIENIA:
+            dalej jest ich sześć, dalej pilnuje tego ten sam strażnik,
+            zmienia się wyłącznie strona. Strażnik przeniesiony razem
+            z nimi — inaczej pilnowałby pustego miejsca.
+
+            ⚠ TO JEST KROK 3 ZLECENIA `WWW/091`, KTÓRY WTEDY NIE ZSZEDŁ.
+            Dlaczego — ADR-069 §1. Krótko: `WWW/091` zdjęło decyzję O-7,
+            ale jego krok 3 był mapowaniem treści, a samo przeniesienie
+            nie dostało własnego kroku w żadnym z trzech kolejnych zleceń.
+            Nic tego nie wykryło, bo strażnik pilnował sekcji, która
+            wciąż stała tam, gdzie stała.
+
+            ⚠ NA TEJ STRONIE SĄ TERAZ DWA BLOKI PYTAŃ I ODPOWIEDZI i to
+            jest zamierzone, nie przeoczenie: sześć obaw dotyczy PRODUKTU
+            („czy to dla mnie"), cztery pytania niżej dotyczą UMOWY
+            (płatność, rezygnacja, dane). Mają różne nagłówki i różne
+            klucze; scalenie ich zrobiłoby listę dziesięciu pytań bez
+            widocznego podziału. */}
+        <Faq
+          naglowek={tObawy("naglowek")}
+          idNaglowka="obawy-h2"
+          pary={[
+            { pytanie: tObawy("p1"), odpowiedz: tObawy("o1") },
+            { pytanie: tObawy("p2"), odpowiedz: tObawy("o2") },
+            { pytanie: tObawy("p3"), odpowiedz: tObawy("o3") },
+            { pytanie: tObawy("p4"), odpowiedz: tObawy("o4") },
+            { pytanie: tObawy("p5"), odpowiedz: tObawy("o5") },
+            { pytanie: tObawy("p6"), odpowiedz: tObawy("o6") },
+          ]}
+        />
+
         <TabelaPorownawcza />
         <Faq
           naglowek={t("faqNaglowek")}

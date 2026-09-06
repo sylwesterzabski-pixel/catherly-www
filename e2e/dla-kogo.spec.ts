@@ -296,9 +296,22 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
   }) => {
     await page.goto(adres);
     await expect(page.locator("h1")).toHaveText(k.naglowek);
-    await expect(page.locator("main h2")).toHaveText(
-      SCIEZKI.map((sciezka) => k[`${sciezka.klucz}_h2`]),
-    );
+    /* ⚠ NAGŁÓWEK SEKCJI „PROBLEM" STOI TU OD 2026-09-06 (ADR-069,
+       WWW/096 v4) — PRZED trzema ścieżkami. Sekcja zeszła ze strony
+       głównej na tę podstronę razem z kluczami `Problem.*`; klucze
+       nie zostały przepisane, zmieniło się miejsce renderowania.
+
+       Kolejność jest treścią, nie porządkiem: „problem" nazywa rzecz,
+       którą czytająca ma w sobie rozpoznać, a trzy ścieżki są
+       odpowiedzią. Dlatego stoi na początku, przed spisem.
+
+       `toHaveText(tablica)` pilnuje naraz liczby, treści i porządku,
+       więc ten wiersz jest jednocześnie asercją, że problem stoi
+       PIERWSZY i że nie zdublował się z głównej. */
+    await expect(page.locator("main h2")).toHaveText([
+      bezZnacznikow(komunikaty.Problem.naglowek),
+      ...SCIEZKI.map((sciezka) => k[`${sciezka.klucz}_h2`]),
+    ]);
 
     for (const sciezka of SCIEZKI) {
       const sekcja = page.locator(
@@ -427,10 +440,17 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
 }
 
 // (g) T7 — hierarchia nagłówków.
-test("dla kogo: 1×h1 i 3×h2 (hierarchia bez przeskoków)", async ({ page }) => {
+test("dla kogo: 1×h1 i 4×h2 (hierarchia bez przeskoków)", async ({ page }) => {
   await page.goto("/dla-kogo");
   await expect(page.locator("h1")).toHaveCount(1);
-  await expect(page.locator("main h2")).toHaveCount(3);
+  /* ⚠ 3 → 4 (ADR-069, WWW/096 v4): sekcja „problem" zeszła ze strony
+     głównej na tę podstronę i wnosi czwarty `h2`. Liczba jest
+     MECHANIZMEM składu tej podstrony — trzy ścieżki plus problem —
+     więc jej zmiana ma być decyzją i ma zapalać czerwień, gdy ktoś
+     doda albo zdejmie sekcję bez rozstrzygnięcia. Nie wyprowadzać jej
+     z `SCIEZKI.length`: czerpana ze zbioru ścieżek przepuściłaby
+     dołożenie dowolnej sekcji spoza tego zbioru. */
+  await expect(page.locator("main h2")).toHaveCount(4);
   await expect(page.locator("main h3")).toHaveCount(0);
 });
 

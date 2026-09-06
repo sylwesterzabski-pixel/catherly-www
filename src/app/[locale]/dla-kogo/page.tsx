@@ -4,7 +4,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { NaglowekPodstrony } from "@/components/NaglowekPodstrony";
 import { Nawigacja } from "@/components/Nawigacja";
+import { PasSciezek } from "@/components/PasSciezek";
 import { SciezkaRozpoznania } from "@/components/SciezkaRozpoznania";
+import { SekcjaTekstowa } from "@/components/SekcjaTekstowa";
 import { SpisTresci } from "@/components/SpisTresci";
 import { Zamkniecie } from "@/components/Zamkniecie";
 import { routing } from "@/i18n/routing";
@@ -98,6 +100,7 @@ export default async function StronaDlaKogo({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("DlaKogo");
+  const tProblem = await getTranslations("Problem");
 
   // Znaczniki rich → linki. Budowane raz na klucz; komponent ścieżki
   // dostaje gotowy ReactNode i nie interpretuje treści.
@@ -122,6 +125,42 @@ export default async function StronaDlaKogo({ params }: Props) {
         {/* S2 — nagłówek podstrony; id="podstrona-h1" na sztywno
             w komponencie. BEZ okruszków (D-D2a). */}
         <NaglowekPodstrony naglowek={t("naglowek")} zdanie={t("zdanie")} />
+
+        {/* ══ PRZENIESIONE Z GŁÓWNEJ 2026-09-06 (ADR-069, WWW/096 v4) ══
+            Sekcja „problem" i trzy karty ścieżek stały na stronie
+            głównej od Etapu F. Zlecenie zdejmuje je stamtąd i kieruje
+            TUTAJ — bo obie mówią o rozpoznaniu siebie w opisie, a to
+            jest temat tej podstrony, nie strony głównej.
+
+            ⚠ KLUCZE BEZ ZMIAN — `Problem.*` i wszystko, co czyta
+            `PasSciezek`. Nie przepisano ani jednego ciągu; zmieniło się
+            wyłącznie miejsce, w którym się renderują. Gdyby treść
+            przeniesiono przez skopiowanie do kluczy tej podstrony,
+            ta sama proza miałaby dwa źródła i rozjechałaby się przy
+            pierwszej poprawce.
+
+            ⚠ KOLEJNOŚĆ: problem STOI PRZED spisem ścieżek. Sekcja
+            nazywa rzecz, którą czytająca ma w sobie rozpoznać; spis
+            i trzy ścieżki są odpowiedzią. Odwrotna kolejność dawałaby
+            spis treści przed tematem, którego dotyczy. */}
+        <SekcjaTekstowa
+          naglowek={tProblem.rich("naglowek", {
+            akcent: (tresc) => (
+              <span className="akcent-naglowka">{tresc}</span>
+            ),
+          })}
+          idNaglowka="problem-h2"
+          kropka={tProblem("kropka")}
+        >
+          <p>{tProblem("tresc")}</p>
+        </SekcjaTekstowa>
+
+        {/* Trzy karty ścieżek — te same, które prowadziły z głównej.
+            ⚠ NIE WSZYSTKIE prowadzą na tę stronę: „budujesz zespół"
+            wskazuje filar 3 na głównej, bo tam ten ból jest nazwany.
+            Zasada pasa brzmi „prowadź tam, gdzie ból jest nazwany",
+            a nie „prowadź lokalnie" — szczegóły w komponencie. */}
+        <PasSciezek locale={locale as Locale} />
         {/* S3 — spis treści: pozycje to H2 ścieżek VERBATIM, bez
             osobnych kluczy (rozstrzygnięcie 6: numer znaczyłby
             kolejność, której treść nie stawia). */}

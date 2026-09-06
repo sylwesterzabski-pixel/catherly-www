@@ -34,6 +34,48 @@ const WSPOLNE = {
   focusable: false,
 };
 
+/**
+ * Trzy ikony RZĘDU KART GRAFITOWYCH — przerysowane z tego samego wzoru
+ * co sześć niżej (ADR-069, WWW/096 v4). Wzorzec stawia nad każdą kartą
+ * rzędu jedną ikonę liniową: samolocik (pozyskiwanie), okno z wierszami
+ * (treści), dwie sylwetki (zespół). Ta sama siatka 24 × 24, ta sama
+ * grubość kreski i te same zakończenia co w `IKONY` — bo to jeden język
+ * rysunkowy, a nie dwa przypadkiem podobne.
+ *
+ * ⚠ STOJĄ W OSOBNEJ MAPIE, NIE DOPISANE DO `IKONY`. Tamta mapa ma
+ * kontrakt: „kolejność i identyfikatory jak w KARTY w KartyFunkcji.tsx".
+ * Dopisanie trzech pozycji zerwałoby ten kontrakt po cichu — a jest on
+ * jedyną rzeczą, która trzyma ikonę przy właściwym kafelku.
+ */
+export const IKONY_RZEDU: Record<string, React.ReactElement> = {
+  /* Samolocik — kierunek, pierwszy kontakt. */
+  pozyskiwanie: (
+    <svg {...WSPOLNE}>
+      <path d="M21.4 2.6L2.6 9.9l7.2 3.1 3.1 7.2z" />
+      <path d="M9.8 13L21.4 2.6" />
+    </svg>
+  ),
+  /* Okno z wierszami — gotowy szablon treści. */
+  tresci: (
+    <svg {...WSPOLNE}>
+      <rect x="2.8" y="4.2" width="18.4" height="15.6" rx="2" />
+      <path d="M2.8 8.6h18.4" />
+      <path d="M6.2 12.4h5.4M6.2 15.8h8.6" />
+      <circle cx="5.6" cy="6.4" r="0.6" />
+      <circle cx="8" cy="6.4" r="0.6" />
+    </svg>
+  ),
+  /* Dwie sylwetki — zespół. */
+  zespol: (
+    <svg {...WSPOLNE}>
+      <circle cx="9.2" cy="7.8" r="3.4" />
+      <path d="M2.8 20.2c0-3.5 2.9-6.4 6.4-6.4s6.4 2.9 6.4 6.4" />
+      <path d="M16 4.9a3.4 3.4 0 0 1 0 5.9" />
+      <path d="M17.6 14.2c2.1.7 3.6 2.7 3.6 5" />
+    </svg>
+  ),
+};
+
 /** Kolejność i identyfikatory jak w `KARTY` w `KartyFunkcji.tsx`. */
 export const IKONY: Record<string, React.ReactElement> = {
   /* DMO — podkładka z listą odhaczonych pozycji. */

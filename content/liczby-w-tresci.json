@@ -369,6 +369,117 @@
       ],
       "pokrycie": "design/wzorzec-2026-09-06/glowna.png — chipy na kadrach sekcji dnia niosą te same godziny (odczytane z obrazu: „Wykonane: 8:30”, „Spotkanie: 14:00”, „Podsumowanie: 20:00”); brzmienia polskie podane wprost w zleceniu WWW/093 z mandatu koordynatora (delegacja właściciela z WWW/091).",
       "uzasadnienie": "Godzina jest elementem scenariusza dnia, nie obietnicą. Sekcja nazywa się „Jak wygląda twój dzień z Catherly” i pokazuje trzy pory; chip przypina do pory konkretną godzinę tak, jak wzorzec. Nie wynika z niej żadne twierdzenie o produkcie — ani że plan powstaje o 8:30, ani że spotkania są o 14:00."
+    },
+    "Wrapped.tygodnie": {
+      "liczby": {
+        "pl": [
+          "14",
+          "15",
+          "17",
+          "19",
+          "20",
+          "22",
+          "24",
+          "27"
+        ],
+        "en": [
+          "14",
+          "15",
+          "17",
+          "19",
+          "20",
+          "22",
+          "24",
+          "27"
+        ],
+        "de": [
+          "14",
+          "15",
+          "17",
+          "19",
+          "20",
+          "22",
+          "24",
+          "27"
+        ]
+      },
+      "kategorie": [
+        "dane-przykladowe"
+      ],
+      "pokrycie": "design/obrazy-robocze/wzorzec-2026-09-06/8-wrapped.png — wzór rysunkowy karty „Twój Wrapped” z manifestu bitmap (SHA-256 `cf2f6ebb12e35303`). Wartości podane WPROST w zleceniu WWW/096 v4 pkt 5, z mandatu koordynatora; wykonawca ich nie wymyślił i nie odczytał z obrazu. Warunek zamknięcia pozycji T72 rejestru brzmiał: „jeśli mają być przykładem, potrzebują wpisu w content/liczby-w-tresci.json z nową kategorią i podpisu «dane przykładowe» widocznego przy wykresie w trzech językach” — ten wpis jest jego wykonaniem.",
+      "uzasadnienie": "Karta pokazuje KSZTAŁT ekranu „Twój Wrapped”, a nie wynik jakiejkolwiek klientki. Liczba nie jest ani pomiarem (wtedy content/facts.json i interpolacja zmienną), ani obietnicą (wtedy w ogóle nie wolno jej postawić). Zastrzeżenie niesie podpis `Wrapped.podpis` stojący w TREŚCI karty w trzech językach — nie w rysunku SVG, bo rysunku czytnik ekranu nie przeczyta, a wtedy liczby zostałyby bez zastrzeżenia."
+    },
+    "Wrapped.rozmowy": {
+      "liczby": {
+        "pl": [
+          "158"
+        ],
+        "en": [
+          "158"
+        ],
+        "de": [
+          "158"
+        ]
+      },
+      "kategorie": [
+        "dane-przykladowe"
+      ],
+      "pokrycie": "design/obrazy-robocze/wzorzec-2026-09-06/8-wrapped.png — wzór rysunkowy karty „Twój Wrapped” z manifestu bitmap (SHA-256 `cf2f6ebb12e35303`). Wartości podane WPROST w zleceniu WWW/096 v4 pkt 5, z mandatu koordynatora; wykonawca ich nie wymyślił i nie odczytał z obrazu. Warunek zamknięcia pozycji T72 rejestru brzmiał: „jeśli mają być przykładem, potrzebują wpisu w content/liczby-w-tresci.json z nową kategorią i podpisu «dane przykładowe» widocznego przy wykresie w trzech językach” — ten wpis jest jego wykonaniem.",
+      "uzasadnienie": "Karta pokazuje KSZTAŁT ekranu „Twój Wrapped”, a nie wynik jakiejkolwiek klientki. Liczba nie jest ani pomiarem (wtedy content/facts.json i interpolacja zmienną), ani obietnicą (wtedy w ogóle nie wolno jej postawić). Zastrzeżenie niesie podpis `Wrapped.podpis` stojący w TREŚCI karty w trzech językach — nie w rysunku SVG, bo rysunku czytnik ekranu nie przeczyta, a wtedy liczby zostałyby bez zastrzeżenia."
+    },
+    "Wrapped.noweKontakty": {
+      "liczby": {
+        "pl": [
+          "31"
+        ],
+        "en": [
+          "31"
+        ],
+        "de": [
+          "31"
+        ]
+      },
+      "kategorie": [
+        "dane-przykladowe"
+      ],
+      "pokrycie": "design/obrazy-robocze/wzorzec-2026-09-06/8-wrapped.png — wzór rysunkowy karty „Twój Wrapped” z manifestu bitmap (SHA-256 `cf2f6ebb12e35303`). Wartości podane WPROST w zleceniu WWW/096 v4 pkt 5, z mandatu koordynatora; wykonawca ich nie wymyślił i nie odczytał z obrazu. Warunek zamknięcia pozycji T72 rejestru brzmiał: „jeśli mają być przykładem, potrzebują wpisu w content/liczby-w-tresci.json z nową kategorią i podpisu «dane przykładowe» widocznego przy wykresie w trzech językach” — ten wpis jest jego wykonaniem.",
+      "uzasadnienie": "Karta pokazuje KSZTAŁT ekranu „Twój Wrapped”, a nie wynik jakiejkolwiek klientki. Liczba nie jest ani pomiarem (wtedy content/facts.json i interpolacja zmienną), ani obietnicą (wtedy w ogóle nie wolno jej postawić). Zastrzeżenie niesie podpis `Wrapped.podpis` stojący w TREŚCI karty w trzech językach — nie w rysunku SVG, bo rysunku czytnik ekranu nie przeczyta, a wtedy liczby zostałyby bez zastrzeżenia."
+    },
+    "Wrapped.zamowienia": {
+      "liczby": {
+        "pl": [
+          "11"
+        ],
+        "en": [
+          "11"
+        ],
+        "de": [
+          "11"
+        ]
+      },
+      "kategorie": [
+        "dane-przykladowe"
+      ],
+      "pokrycie": "design/obrazy-robocze/wzorzec-2026-09-06/8-wrapped.png — wzór rysunkowy karty „Twój Wrapped” z manifestu bitmap (SHA-256 `cf2f6ebb12e35303`). Wartości podane WPROST w zleceniu WWW/096 v4 pkt 5, z mandatu koordynatora; wykonawca ich nie wymyślił i nie odczytał z obrazu. Warunek zamknięcia pozycji T72 rejestru brzmiał: „jeśli mają być przykładem, potrzebują wpisu w content/liczby-w-tresci.json z nową kategorią i podpisu «dane przykładowe» widocznego przy wykresie w trzech językach” — ten wpis jest jego wykonaniem.",
+      "uzasadnienie": "Karta pokazuje KSZTAŁT ekranu „Twój Wrapped”, a nie wynik jakiejkolwiek klientki. Liczba nie jest ani pomiarem (wtedy content/facts.json i interpolacja zmienną), ani obietnicą (wtedy w ogóle nie wolno jej postawić). Zastrzeżenie niesie podpis `Wrapped.podpis` stojący w TREŚCI karty w trzech językach — nie w rysunku SVG, bo rysunku czytnik ekranu nie przeczyta, a wtedy liczby zostałyby bez zastrzeżenia."
+    },
+    "Wrapped.ostatni": {
+      "liczby": {
+        "pl": [
+          "8"
+        ],
+        "en": [
+          "8"
+        ],
+        "de": [
+          "8"
+        ]
+      },
+      "kategorie": [
+        "dane-przykladowe"
+      ],
+      "pokrycie": "design/obrazy-robocze/wzorzec-2026-09-06/8-wrapped.png — wzór rysunkowy karty „Twój Wrapped” z manifestu bitmap (SHA-256 `cf2f6ebb12e35303`). Wartości podane WPROST w zleceniu WWW/096 v4 pkt 5, z mandatu koordynatora; wykonawca ich nie wymyślił i nie odczytał z obrazu. Warunek zamknięcia pozycji T72 rejestru brzmiał: „jeśli mają być przykładem, potrzebują wpisu w content/liczby-w-tresci.json z nową kategorią i podpisu «dane przykładowe» widocznego przy wykresie w trzech językach” — ten wpis jest jego wykonaniem.",
+      "uzasadnienie": "Karta pokazuje KSZTAŁT ekranu „Twój Wrapped”, a nie wynik jakiejkolwiek klientki. Liczba nie jest ani pomiarem (wtedy content/facts.json i interpolacja zmienną), ani obietnicą (wtedy w ogóle nie wolno jej postawić). Zastrzeżenie niesie podpis `Wrapped.podpis` stojący w TREŚCI karty w trzech językach — nie w rysunku SVG, bo rysunku czytnik ekranu nie przeczyta, a wtedy liczby zostałyby bez zastrzeżenia."
     }
   }
 }

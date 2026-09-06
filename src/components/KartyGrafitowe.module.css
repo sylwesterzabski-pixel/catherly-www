@@ -1,0 +1,114 @@
+/* RZĄD TRZECH KART GRAFITOWYCH — wszystkie miary z pomiaru kolumny
+   odniesienia (ADR-069, WWW/096 v4 pkt 1), przeliczone ×0,9375 z pasa
+   1536 na kadr 1440.
+
+   ┌── zmierzone (pas 1536) ──── przeliczone (kadr 1440) ── szczebel ──┐
+   │ karta      430 · 432 · 430   403 px                  1fr × 3      │
+   │ odstęp     37                 35 px                  odstep-7 32  │
+   │ promień    27                 25 px                  promien-     │
+   │                                                        sredni 24  │
+   │ wcięcie ↔  38 / 39            36 px                  odstep-8 40  │
+   │ wcięcie ↑  52                 49 px                  odstep-8 40  │
+   │ wcięcie ↓  48                 45 px                  odstep-8 40  │
+   │ ikona      99 wys.            93 px                  2.5rem glif  │
+   │ rząd x     137–1508           128–1414                            │
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ ROZJAZDY ZAPISANE, NIE ZAOKRĄGLONE PO CICHU: odstęp 35 → 32 (Δ 3),
+   promień 25 → 24 (Δ 1), wcięcia 36–49 → 40 (Δ 4–9). Nowych szczebli
+   drabiny nie dokładam — użyłaby ich jedna sekcja, a każdy szczebel
+   trzeba potem utrzymać w trzech kadrach.
+
+   ⚠ TA SEKCJA NIE MA NAGŁÓWKA i to jest zgodne ze wzorcem: rząd stoi
+   bezpośrednio pod prozą sekcji „pamięć" i jest jej rozwinięciem, nie
+   osobnym tematem. Dlatego niesie `aria-label`, nie `aria-labelledby` —
+   region bez nazwy zniknąłby czytnikowi z listy punktów orientacyjnych. */
+.sekcja {
+  padding-block: var(--wymiar-odstep-sekcji-male);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
+}
+
+.wnetrze {
+  max-inline-size: var(--wymiar-kontener-filaru);
+  margin-inline: auto;
+}
+
+.rzad {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--wymiar-odstep-7);
+}
+
+.karta {
+  background: var(--kolor-rola-grafit-klamr);
+  border-radius: var(--wymiar-promien-sredni);
+  padding: var(--wymiar-odstep-8);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ikona bierze rolę tekstu karty przez `currentColor` — patrz nagłówek
+   `IkonyKafelkow.tsx`. Nie ma tu ani jednej wartości barwnej. */
+.ikona {
+  display: block;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  margin-block-end: var(--wymiar-odstep-6);
+}
+
+.ikona svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.tytul {
+  font-size: var(--tekst-h2-male);
+  line-height: var(--interlinia-naglowek-male);
+  letter-spacing: var(--tracking-naglowek-sekcji-male);
+  font-weight: var(--waga-naglowek);
+  margin: 0;
+}
+
+/* ⚠ TYTUŁ KARTY JEST `<p>`, NIE NAGŁÓWKIEM — decyzja o zarysie
+   dokumentu, nie o wyglądzie. Rząd nie ma własnego `h2`, więc trzy `h3`
+   pod nim wisiałyby bez rodzica i łamały hierarchię nagłówków; a `h2`
+   dałoby trzy nowe pozycje w zarysie strony dla rzeczy, które są
+   spisem, nie sekcjami. Ten sam wybór, co przy kafelkach funkcji. */
+.zdanie {
+  color: var(--kolor-rola-tekst-drugorzedny);
+  margin: var(--wymiar-odstep-5) 0 0;
+  flex-grow: 1;
+}
+
+.dalej {
+  margin-block-start: var(--wymiar-odstep-6);
+  color: var(--kolor-rola-link-aktywny);
+  font-weight: var(--waga-etykieta);
+  align-self: start;
+}
+
+@media (min-width: 48.0625rem) {
+  .sekcja {
+    padding-block: var(--wymiar-odstep-sekcji);
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+  }
+
+  /* Trzy równe kolumny — wzorzec ma 430 · 432 · 430, czyli równe
+     w granicach błędu pomiaru krawędzi (2 px na 430). */
+  .rzad {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .tytul {
+    font-size: var(--tekst-h2-srednie);
+    letter-spacing: var(--tracking-naglowek-sekcji-srednie);
+  }
+}
+
+@media (min-width: 90rem) {
+  .sekcja {
+    padding-inline: var(--wymiar-wciecie-tresci);
+  }
+}

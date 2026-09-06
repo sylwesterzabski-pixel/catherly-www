@@ -4,6 +4,7 @@
 
 :root {
   --kolor-tlo: #f5f5f7; /** Tło strony — wartość wzorca ze zlecenia WWW/050-FINAL (ADR-038). Zastępuje krem #f0efe8 z ADR-032. JEDYNE miejsce definicji tła: bramka kontraktu czyta kolor.tlo.value. */
+  --kolor-rola-tlo-3: #ebebef; /** TRZECI TON SEKCJI JASNEJ — JEDYNY WYPROWADZONY Z TRZECH (ADR-069, WWW/096 v4 pkt 4). Wzorzec finalny niesie DWA tony jasne i oba są ZMIERZONE: #f5f5f7 (28,4 % pikseli jasnych) = nasze `tlo-strony`, oraz #ffffff (21,0 %) = nasza `powierzchnia`. Trzeciego wzorzec NIE MA. Ten jest wyprowadzony: ten sam odcień (240°) i to samo nasycenie (11,1 %) co `tlo-strony`, jasność w DÓŁ o ΔL = 3,5 pp — dokładnie o tyle, ile dzieli dwa tony zmierzone. Kontrasty na nim (pomiar 2026-09-06): tekst-podstawowy 16,12:1 · tekst-drugorzedny 6,17:1 · akcent 4,89:1 — wszystkie ponad AA. ⚠ NIE DOKŁADAM TRZECH NOWYCH RÓL, choć zlecenie mówi o „trzech tonach w tokenach": dwa z nich JUŻ SĄ rolami o dokładnie tych wartościach. Trzecia rola o wartości `tlo-strony` byłaby duplikatem, czyli drugim źródłem tej samej prawdy — a to jest wada, przed którą broni zakaz 10. */
   --kolor-rola-powierzchnia: #ffffff; /** Karty i panele — najczęstsza powierzchnia wzorca (56 wystąpień). Zmierzone: ×tekst-podstawowy 18,48:1 · ×tekst-drugorzedny 10,79:1. ⚠ ×tło strony 1,09:1 — wzorzec NIE OBRYSOWUJE kart i rozdziela je KOMPOZYCJĄ; patrz ADR-038, mechanizm trzeci. */
   --kolor-rola-powierzchnia-2: #f5f5f7; /** Powierzchnia podniesiona / pasy sekcyjne (6 wystąpień). Zmierzone: ×tekst-drugorzedny 9,44:1. */
   --kolor-rola-powierzchnia-akcentowa: #ffffff; /** Najjaśniejsza powierzchnia wzorca (3 wystąpienia) — separator i pole wyróżnione. ⚠ Przypisanie do S10 jest TYMCZASOWE: wzorzec nie ma odpowiednika lustra L1, więc rozstrzygnięcie zapada w KROKU 2 pomiarem konkretnej sekcji (rozstrzygnięcie właściciela, WWW/054 pkt 1). */
@@ -316,18 +317,8 @@
   --wymiar-promien-pigulki: 3.125rem;
   --wymiar-prog-ukladu: 48rem; /** Próg przełączenia układów mobile→desktop (ADR-028). WYŁĄCZNIE DOKUMENTACYJNY: @media nie czyta var() — wartość powielona literalnie w media queries modułów; zmiana wymaga ADR i sync wszystkich @media. */
   --wymiar-kontener-waski: 80rem; /** Kontener węższy = 1280 px (POMIAR 0.3, 3 wystąpienia). */
-  /**
-   * Padding sekcji = 160 px (POMIAR 0.3, wariant dominujący). Potwierdzony niezależnie na Proactivie (WWW/073, punkt 1g): 160 px jest tam rytmem sekcji NAJWYŻSZEGO poziomu, 5 wystąpień. Dwa źródła, jedna liczba.
-   * 
-   * ⚠ OD ADR-049 MA PRÓG — patrz `odstep-sekcji-male`. Do 2026-09-03 ta wartość obowiązywała na KAŻDEJ szerokości; pomiar Proactiva pokazał progowanie 160 → 80.
-   */
-  --wymiar-odstep-sekcji: 10rem;
-  /**
-   * Padding sekcji = 80 px na kadrze wąskim (ADR-049, pomiar Proactiva WWW/073 punkt 1g: `py-20 sm:py-40`, czyli 160 px od progu i 80 px poniżej; zmierzone na obu kadrach).
-   * 
-   * ⚠ NASZA SKALA NIE ZNAŁA PROGOWANIA ODSTĘPU SEKCJI — i to była luka, nie decyzja. Progowane były dotąd wyłącznie wcięcia (`wciecie-naglowka-*`, `wciecie-tresci-*`), więc wzorzec do naśladowania istniał, tylko nie został użyty dla odstępu pionowego. Skutek na kadrze 390 px: sekcje oddychały tak samo jak przy 1440, przez co strona miała 13 ekranów wysokości (zmierzone, WWW/073 krok 3).
-   */
-  --wymiar-odstep-sekcji-male: 5rem;
+  --wymiar-odstep-sekcji: 7.5rem; /** ODSTĘP MIĘDZY SEKCJAMI — POŁOWA WARTOŚCI ZMIERZONEJ, bo u nas składa się z dwóch przylegających `padding-block` (ADR-069, WWW/096 v4 pkt 2). Zmierzone w kolumnie odniesienia 2026-09-06: pięć odstępów międzysekcyjnych 252 · 173 · 334 · 255 · 141 px przy pasie 1536, czyli po przeliczeniu ×0,9375 na kadr 1440: 236 · 162 · 313 · 239 · 132 px. Mediana 236, wartość najbliższa 239. Biorę 120 px na stronę → 240 px między sekcjami. ⚠ WARUNEK ZLECENIA „żaden odstęp > wartość wzorca" JEST SPEŁNIONY Z ZAPASEM: nasz największy odstęp to 240, największy zmierzony u wzorca 313. Poprzednio stało 10rem = 160 px na stronę, czyli 320 px między sekcjami — o 7 px WIĘCEJ niż największy odstęp wzorca i o 84 px więcej niż jego mediana. */
+  --wymiar-odstep-sekcji-male: 3.75rem; /** Odstęp sekcji na kadrze wąskim — połowa wartości z kadru szerokiego, proporcja zachowana przy przeliczeniu skali (ADR-069). Wzorzec kadru wąskiego nie pokazuje, więc to jest PRZENIESIENIE PROPORCJI, nie pomiar: 3,75rem daje 120 px między sekcjami wobec 240 px na kadrze szerokim, tak jak poprzednio 5rem dawało 160 wobec 320. */
   --wymiar-odstep-1: 0.25rem; /** Siatka odstępów = 4 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
   --wymiar-odstep-2: 0.5rem; /** Siatka odstępów = 8 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
   --wymiar-odstep-3: 0.625rem; /** Siatka odstępów = 10 px (POMIAR 0.3). Skala wzorca idzie co 4 px; siedem stopni pokrywa wszystkie zmierzone gapy. */
@@ -442,6 +433,7 @@
    * ⚠ BARWA SUROWA STOI TU CELOWO: `design/tokens.json` jest źródłem prawdy o wartościach wizualnych, więc surowa barwa należy właśnie tutaj — tak samo jak przy `kolor.rola.tlo-przezroczyste`. Wpisanie cienia do `kolor.rola` ruszyłoby licznik ról, czyli osobną decyzję.
    */
   --cien-karta: rgba(248, 248, 248, 0.06) 0.125rem 0.25rem 1rem 0 inset;
+  --cien-mockup: 0 0.25rem 0.75rem rgba(15, 15, 15, 0.09); /** CIEŃ POD MOCKUPEM URZĄDZENIA — argument dla `filter: drop-shadow()` (ADR-069, WWW/096 v4 pkt 3). Bitmapy mockupów mają zdjęte tło zalewem z narożników, a razem z tłem znikł ich WŁASNY cień: był w granicach progu zalewu, więc wpadł do maski. Ten token go odtwarza. ALFA ZMIERZONA NA ORYGINALE, nie dobrana: pas pod dolną krawędzią przedmiotu (granica z maski alfa, y = 923 w pliku 1600 × 1195) jest ciemniejszy od barwy narożnika najwyżej o 21,4 stopnia sRGB przy tle 243, czyli alfa 0,088 — stąd 0,09. Zasięg zmierzony: 7 px, czyli 0,6 % wysokości kadru — cień KONTAKTOWY, nie rozlany. Rozmycie 0,75rem przy przesunięciu 0,25rem odpowiada temu zasięgowi po przeskalowaniu kadru do docelowych 504 px szerokości. ⚠ BARWA SUROWA STOI TU CELOWO, tak samo jak przy `cien.karta`: `design/tokens.json` jest źródłem prawdy o wartościach wizualnych. Wpisanie jej do `kolor.rola` ruszyłoby licznik ról, czyli osobną decyzję — a to nie jest rola barwna, tylko gotowy argument cienia. ⚠ TO NIE ŁAMIE ZDANIA „cień NIE JEST w systemie" (ADR-048): tamto mówi o KARTACH, których spoczynek ma być płaski, i dalej obowiązuje. Mockup nie jest kartą — jest fotografią przedmiotu, a przedmiot leżący na płaszczyźnie rzuca cień także u wzorca. */
   --alfa-plyta: 0.30; /** Płyta karty szklanej — najwyższy próg. Wzorzec: 21 kart, `rgba(40,40,40,0.30)`. */
   --alfa-obrys-mocny: 0.20; /** Obrys kafla i kropki statusu. Wzorzec: 14 kafli `2px solid rgba(255,255,255,0.20)` + 9 kropek `1px`. */
   --alfa-obrys: 0.10; /** Obrys karty szklanej — DOMINANTA obrysów wzorca: 21 wystąpień `1px solid rgba(255,255,255,0.10)`. Krawędzie robi u wzorca BIEL przy niskiej alfie, nigdy barwa. */

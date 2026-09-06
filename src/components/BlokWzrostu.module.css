@@ -63,3 +63,10 @@
     padding-inline: var(--wymiar-wciecie-tresci);
   }
 }
+
+/* Karta „Twój Wrapped" pod zdaniem bloku (ADR-069, WWW/096 v4 pkt 5).
+   Odstęp ze szczebla sekcji małej — wzór stawia kartę wyraźnie niżej
+   niż zdanie, ale bliżej niż następną sekcję. */
+.karta {
+  margin-block-start: var(--wymiar-odstep-sekcji-male);
+}

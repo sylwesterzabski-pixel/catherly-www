@@ -55,13 +55,23 @@ const KARTY = [
   { id: "swiadectwo", tytul: "FunkcjeWyniki.mod5_nazwa", opis: "Filary.filar4.konkret3" },
 ] as const;
 
-export function KartyFunkcji() {
+type Props = {
+  /** TON SEKCJI JASNEJ (ADR-069, WWW/096 v4 pkt 4): "1" = tło strony
+   *  `tlo-strony` (zmierzona, 28,4 % wzorca), "2" = rola `powierzchnia`,
+   *  czyli biel (zmierzona, 21,0 %), "3" = rola `tlo-3` (wyprowadzona,
+   *  jasność o 3,5 pp niżej). Barwy słowami — linter czyta komentarze.
+   *  ⚠ Ton "2" jest tą samą barwą co rola `powierzchnia`, którą mają
+   *  kafelki tej sekcji — dlatego akurat jej dać go NIE WOLNO. */
+  ton?: "1" | "2" | "3";
+};
+
+export function KartyFunkcji({ ton }: Props) {
   /* Jedno wywołanie na cały katalog komunikatów — klucze niosą pełną
      ścieżkę, więc nie ma potrzeby sześciu przestrzeni nazw. */
   const t = useTranslations();
 
   return (
-    <div className={styles.sekcja} data-ton="jasny">
+    <div className={styles.sekcja} data-ton="jasny" data-tlo={ton}>
       <div className={styles.wnetrze}>
         {/* role="list" JAWNIE — CSS zdejmuje punktory, a Safari
             z VoiceOver odbiera wtedy liście semantykę (ten sam powód

@@ -1247,3 +1247,38 @@ a[class*="_cta__"] {
     }
   }
 }
+
+/* ═══ TRZY TONY SEKCJI JASNYCH (ADR-069, zlecenie WWW/096 v4 pkt 4) ═══
+   Decyzja właściciela z przeglądu piętnastu zrzutów: sekcje jasne mają
+   iść naprzemiennie, żeby korpus strony nie był jedną płaszczyzną.
+
+   Ton bierze się z atrybutu `data-tlo` ustawianego PRZEZ STRONĘ, nie
+   przez komponent — bo o kolejność tonów pyta się składu strony, a nie
+   sekcji. Ten sam komponent stoi na kilku stronach i tam tonu nie ma.
+
+   ⚠ TON 1 NIE MA TU REGUŁY I TO JEST CELOWE: jest równy tłu strony,
+   więc reguła malowałaby barwę, która i tak tam jest. Atrybut
+   `data-tlo="1"` zostaje w znaczniku jako DEKLARACJA — czytający skład
+   widzi wtedy pełną sekwencję tonów, a nie dziury w niej. */
+/* ⚠ SELEKTOR NIESIE NAZWĘ ELEMENTU I TO NIE JEST OZDOBA SKŁADNI.
+   Samo `[data-tlo="3"]` ma swoistość (0,1,0) — dokładnie tyle, co klasa
+   modułu CSS sekcji. Przy remisie wygrywa późniejszy w arkuszu, a moduły
+   komponentów wchodzą PO tym pliku, więc sekcja z własnym `background`
+   (np. „dzień", która ma `powierzchnia-akcentowa`) zjadała ton.
+   Zmierzone przed poprawką: `SekcjaRytmu` z `data-tlo="3"` renderowała
+   się bielą. `section[...]` / `div[...]` daje (0,1,1) i wygrywa.
+
+   Dwie nazwy elementów, bo tyle ich jest wśród sekcji strony głównej:
+   `KartyFunkcji` jest `div`-em (nie ma własnego nagłówka), reszta to
+   `section`. Gwiazdki nie używam rozmyślnie — chcę, żeby dołożenie tonu
+   do trzeciego rodzaju elementu wymagało tu zmiany i przeczytania tego
+   komentarza. */
+section[data-tlo="2"],
+div[data-tlo="2"] {
+  background: var(--kolor-rola-powierzchnia);
+}
+
+section[data-tlo="3"],
+div[data-tlo="3"] {
+  background: var(--kolor-rola-tlo-3);
+}
