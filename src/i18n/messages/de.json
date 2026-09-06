@@ -419,5 +419,12 @@
     "filar3": "Frauen unterhalten sich am Tisch bei Tassen Kaffee.",
     "filar4": "Eine Frau schreibt am Schreibtisch in ein Notizbuch; eine Lampe und ein Fenster in der Dämmerung.",
     "dbanie": "Eine Frau hält eine Tasse und blickt aus dem Fenster."
+  },
+  "ObrazyWzorzec": {
+    "bohaterka": "Eine Frau geht lächelnd die Straße entlang und hält ein Telefon.",
+    "telefon": "Ein Telefon schräg gestellt, der Bildschirm leer.",
+    "macbookTelefon": "Ein Laptop und ein Telefon nebeneinander, mit leeren Bildschirmen.",
+    "rano": "Eine Frau am Schreibtisch trinkt aus einer Tasse und schaut auf einen Laptop.",
+    "wieczorem": "Ein Paar sitzt auf dem Sofa und schaut gemeinsam auf einen Laptop."
   }
 }

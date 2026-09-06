@@ -173,3 +173,124 @@ obrazy o różnej długości.
   nie weszło: to przebudowa dwóch tras, a nie krok treściowy, i wymaga
   własnego przebiegu.
 - **Tłumaczeń EN/DE** — są implementacyjne i czekają na sędziów.
+
+---
+
+# Uzupełnienie z `WWW/093/2` — bitmapy weszły (2026-09-06)
+
+Zlecenie `WWW/093/2` dosłało **pełne nazwy plików**. Pozycja **T70 zamknięta**.
+
+## 7. Pobranie i tożsamość — 11/11
+
+| | |
+| --- | --- |
+| kadrów na stronę | **9/9 sum zgodnych, 9/9 wymiarów zgodnych** |
+| wzorów rysunkowych | **2/2 zgodne** |
+| manifest | `docs/obrazy/MANIFEST-WZORZEC-2026-09-06.md` |
+
+**Optymalizacja wg praktyki zmierzonej, nie wymyślonej:** repozytorium **nie
+ma `.gitattributes`** (czyli nie używa LFS) ani wpisu obrazowego
+w `.gitignore`, a ADR-061 zapisał wprost, że PNG-i źródłowe zostają poza
+historią. Stąd: dziewięć AVIF-ów w `public/` (**44 509 kB → 200 kB, −99,6 %**),
+PNG-i usunięte, sumy w manifeście. Wzory 7 i 8 **zostają PNG-ami**, bo są
+materiałem rysunkowym — ta sama rola co zrzuty `z6`.
+
+⚠ **TWARZE — warunek kanonu sprawdzony, nie założony.** Kadry 1, 4, 5 i 6
+pokazują twarze; są **generowane** (Higgsfield) i objęte **imiennym akceptem
+właściciela** z tabeli dostawy. Oba warunki `CLAUDE.md` spełnione.
+
+## 8. Hero przebudowane na dwie kolumny
+
+| | |
+| --- | --- |
+| układ | tekst po lewej, kolumna medialna po prawej (od progu 48,0625rem) |
+| bohaterka | wtopiona **maską**, bez ramki |
+| telefon | kadr 2c, **ekran pusty** |
+| hero/vp @1440 | **1,693** — bez zmian |
+
+⚠ **RAMA I PARALLAX Z ADR-063/064 ZESZŁY Z TEGO SLOTU — odwrócenie mojej
+własnej decyzji sprzed dwóch dni.** Tamta rama (promień 32, kreska strefy)
+powstała dla kadru POZIOMEGO pod tekstem; wzorzec finalny daje kadr PIONOWY
+obok tekstu i wtapia go po obrysie. Rama i wtopienie wykluczają się
+mechanicznie — to samo zdanie stoi w ADR-063 jako powód zdjęcia maski, dziś
+czytane w drugą stronę. Reguły `.kadr` i animacja `kadrHeroParallax` są
+**martwe i tak oznaczone** w arkuszu (zero odwołań do `styles.kadr`).
+
+### ⚠ Proporcja kolumn 58 : 42, a nie wzorcowe 47 : 53
+
+Pomiar wzorca daje 47 : 53. Przy tej proporcji nasza kolumna tekstu ma
+531 px i H1 mieści się w trzech wierszach **po polsku**, a po angielsku
+i niemiecku łamie się na **cztery** — zapala strażnika `hero: H1 ≤ 3 linie`.
+
+**Próg zmierzony, nie dobrany:**
+
+| szerokość kolumny | pl | en | de |
+| --- | --- | --- | --- |
+| 531 (wzorcowe 47 %) | 3 | **4** | **4** |
+| 560 | 3 | 3 | **4** |
+| 620 | 3 | 3 | **4** |
+| **650** | **3** | **3** | **3** |
+
+650 z dostępnych 1130 px to **58 %**. Wzorzec tego problemu nie ma, bo jest
+jednojęzyczny; nasza strona ma parytet ×3 jako bramkę. Kanon zna tę różnicę
+pod nazwą „miary DE +18 %" — tu wyszło **+22 %**.
+
+### ⚠ Telefon dostał własną maskę — usterka wychwycona z OBRAZU
+
+Bitmapa 2c niesie **własne kremowe tło**, które na naszej stronie rysowało
+widoczny prostokąt wokół telefonu. Widać to było dopiero na zrzucie, nie
+w kodzie. Maska ciaśniejsza niż przy bohaterce (62 % × 70 %), bo przedmiot
+jest wąski i wysoki — szersza wygaszałaby korpus telefonu zamiast tła.
+
+## 9. Kadr 5 NIEOSADZONY — i to jest wykonanie reguły, nie pominięcie
+
+Kadr `5-w-ciagu-dnia` pokazuje laptop z **pulpitem i wykresem**. Kanon
+rozstrzyga takie obrazy pytaniem wprost: *czy odwiedzająca, patrząc na ten
+obraz, mogłaby uznać, że tak wygląda aplikacja?* Jeśli tak — obowiązuje
+Playwright, nie generator. Zlecenie samo oznacza ten kadr jako
+**warunkowy**, z decyzją właściciela otwartą. Plik jest pobrany,
+zweryfikowany i zoptymalizowany; **nie wchodzi do slotu**.
+
+## 10. ⚠ LCP: przesłanka zlecenia obalona pomiarem
+
+Zlecenie zakłada „bohaterka = kandydat na LCP" i każe dać jej
+`priority`/`preload`. **Zmierzone, mediana z pięciu przebiegów:**
+
+| | wynik |
+| --- | --- |
+| LCP | **220 ms** (220 · 220 · 220 · 224 · 220), rozrzut **1,02×** |
+| **element LCP** | **`SPAN.Hero_duch__…`** — dekoracyjny napis, nie bohaterka |
+
+To **potwierdzenie pozycji T55**, nie nowe odkrycie: elementem LCP strony
+głównej jest napis-duch o kryciu 6 %, i był nim także wtedy, gdy w hero stały
+zrzuty. `fetchPriority="high"` na bohaterce zostaje (nie szkodzi i jest
+poprawne dla największego obrazu hero), ale **nie celuje w element LCP** —
+i tak to zapisuję, zamiast raportować „priorytet ustawiony" jako spełnienie
+wymagania, którego pomiar nie potwierdza.
+
+## 11. Bramki i pomiary po tym batchu
+
+| | wynik |
+| --- | --- |
+| komplet e2e (4 kadry) | **1376 passed · 12 skipped · 0 failed** |
+| tokeny · liczby · parytet · deklaracje · linki · kotwice · No-JS | ZIELONE |
+| sweep 320→2560, świeże wejście | **11/11 czyste** na obu trasach |
+| **T68** | jasne **79,0 %** wobec 70,9 % wzorca |
+| **nakładka całości** | **27,7 %** (przed batchem 30,1 %) |
+| LCP mediana z 5 | **220 ms**, rozrzut 1,02× |
+| podróże @390 | 10 678 px = 12,65 ekranu |
+
+⚠ Jesteśmy teraz **jaśniejsi od wzorca** (79,0 wobec 70,9 %), bo trzy karty
+filarów i blok wzrostu wciąż nie są grafitowe — to reszta kroku 3, nie regres.
+
+## 12. Czego to uzupełnienie NIE zrobiło
+
+- **Sekcja „pamięć"** z kadrem 3 i ekranem MacBooka — sekcja nie ma dziś
+  slotu obrazowego; dołożenie go to nowy komponent.
+- **Sloty dnia** (kadry 4 i 6) i **chipy** — `SekcjaRytmu` nie ma slotów
+  obrazowych; trzy nowe klucze `RytmDnia.krok*Chip` czekają nieużyte.
+- **Sześć ikon SVG** przerysowanych z wzoru 7 — wzór jest w repozytorium.
+- **Karta Wrapped SVG** z wzoru 8 — dane są w zleceniu, wzór w repozytorium.
+- **Odpięcie `tymczasowe`** — hero już ich nie używa, ale `DbanieOSiebie`
+  i cztery sloty filarów wciąż tak; odpięcie ma sens razem z wejściem
+  pozostałych kadrów.

@@ -51,7 +51,7 @@ type Props = {
  */
 export function Hero({ locale }: Props) {
   const t = useTranslations("Hero");
-  const tObrazy = useTranslations("ObrazyTymczasowe");
+  const tWzorzec = useTranslations("ObrazyWzorzec");
 
   return (
     <section className={styles.hero} aria-labelledby="hero-h1">
@@ -63,7 +63,7 @@ export function Hero({ locale }: Props) {
               nazwy marki dla czytnika i nie da się go wyszukać jako
               tekstu. */}
           <span className={styles.duch} aria-hidden="true" />
-          <div className="ruch-stagger">
+          <div className={`${styles.tekst} ruch-stagger`}>
             <h1 id="hero-h1" className={styles.naglowek}>
               {t("naglowek")}
             </h1>
@@ -75,41 +75,43 @@ export function Hero({ locale }: Props) {
               pozycje={[t("potwierdzenieUE"), t("potwierdzenieRezygnacja")]}
               klasa={styles.potwierdzenia}
             />
-            {/* SLOT-FOTO-HERO — miejsce na duży kadr fotograficzny
-                (ADR-048, rozstrzygnięcia 2 i 3). Podmiana polega na
-                wstawieniu TUTAJ <picture>/<img>; `aspect-ratio` jest już
-                zarezerwowane w arkuszu, więc układ nie skoczy.
+          </div>
+          {/* ═══ KOLUMNA MEDIALNA (ADR-067, WWW/093/2 krok 3) ═══
+              Wzorzec finalny stawia po prawej kadr bohaterki WTOPIONY
+              w tło po obrysie — bez ramki — a na nim duży telefon.
 
-                `aria-hidden` — slot nie niesie dziś żadnej treści, więc
-                nie ma go w drzewie dostępności. Wraz z kadrem wchodzi
-                `alt` i to oznaczenie ZNIKA: obraz informacyjny musi być
-                widoczny dla czytnika.
-
-                Slot hero jest JEDYNYM bez ramki, promienia i cienia —
-                wtapia się w tło maską, tak jak wzorzec (decyzja
-                właściciela, WWW/072 pkt 3). Dlatego nie nazywa się
-                `obraz`: klasa `[class*="_obraz__"]` jest lokatorem
-                strażnika rozdziału kart, a ten slot kartą nie jest
-                i celowo nie spełnia żadnego z mechanizmów rozdziału. */}
-            <div className={styles.kadr}>
-                {/* TYMCZASOWE-DO-PODMIANY (ADR-061, zlecenie WWW/086).
-                    Kadr wypełnia slot na czas, w którym docelowej
-                    fotografii jeszcze nie ma; podmiana polega na
-                    WYMIANIE PLIKU pod tą samą ścieżką, bez zmiany kodu.
-                    Surowy <img>, nie next/image — ta sama przyczyna co
-                    przy dostawie Z6: optymalizator przekodowuje plik na
-                    żądanie, więc na produkcji szłyby inne bajty niż te,
-                    których sumę zapisano w ADR-ze. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/obrazy/tymczasowe/hero.avif"
-                alt={tObrazy("hero")}
-                width={1536}
-                height={2048}
-                fetchPriority="high"
-                decoding="async"
-              />
-            </div>
+              ⚠ RAMA I PARALLAX Z ADR-063/064 SCHODZĄ Z TEGO SLOTU, i to
+              jest odwrócenie mojej własnej decyzji sprzed dwóch dni.
+              Tamta rama powstała, gdy kadr był POZIOMY i stał POD tekstem;
+              wzorzec finalny daje kadr PIONOWY OBOK tekstu i wtapia go
+              maską. Rama i wtopienie wykluczają się mechanicznie — maska
+              wygasza obrys przy narożnikach (zapisane już w ADR-063). */}
+          <div className={styles.media}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={styles.bohaterka}
+              src="/obrazy/wzorzec-2026-09-06/1-bohaterka.avif"
+              alt={tWzorzec("bohaterka")}
+              width={1200}
+              height={1489}
+              fetchPriority="high"
+              decoding="async"
+            />
+            {/* TELEFON — ramka z bitmapy wzorca. EKRAN ZOSTAJE PUSTY:
+                decyzja właściciela A/C jest otwarta, a wciśnięcie kadru
+                desktopowego 2048×1280 w ekran pionowy byłoby pokazaniem
+                aplikacji, której tak nie widać — kadr jest DOWODEM, nie
+                mockupem (zakaz zlecenia i sens reguły z kanonu). */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={styles.telefon}
+              src="/obrazy/wzorzec-2026-09-06/2c-iphone-L.avif"
+              alt={tWzorzec("telefon")}
+              width={900}
+              height={1117}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </div>
       </div>

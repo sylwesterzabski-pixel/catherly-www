@@ -127,6 +127,29 @@
   font-weight: var(--waga-etykieta);
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   ⚠ REGUŁY `.kadr` PONIŻEJ SĄ MARTWE OD ADR-067 (WWW/093/2) — I TO JEST
+   OZNACZENIE, NIE PRZEOCZENIE.
+
+   Slot `.kadr` zniknął ze znacznika przy przebudowie hero na dwie kolumny:
+   kadr poziomy pod tekstem ustąpił kolumnie medialnej z bohaterką i
+   telefonem (`.media`, `.bohaterka`, `.telefon`). Zmierzone: `styles.kadr`
+   ma w `Hero.tsx` ZERO odwołań.
+
+   Zostawiam je oznaczone, zamiast usunąć w tym samym przebiegu, w którym
+   przebudowałem hero — usunięcie stu kilkudziesięciu linii z komentarzami
+   nie jest zmianą, którą wolno robić „przy okazji" innej zmiany, a
+   martwa reguła OZNACZONA nie wprowadza w błąd, w przeciwieństwie do
+   martwej reguły milczącej (klasa T56).
+
+   ⚠ RAZEM Z NIMI MARTWY JEST PARALLAX Z ADR-063 — animacja
+   `kadrHeroParallax` celuje w `.kadr img`, którego nie ma. Wtopienie
+   maską wróciło (`.bohaterka`), rama i parallax odeszły.
+
+   Warunek zamknięcia: osobny przebieg porządkowy, razem z decyzją, czy
+   parallax ma wrócić na nowy slot.
+   ══════════════════════════════════════════════════════════════════════ */
+
 /* SLOT-FOTO-HERO — miejsce na duży kadr fotograficzny (ADR-048).
    Zastąpił mockup DMO zdjęty 2026-09-02 (decyzja właściciela WWW/072
    pkt 1). Odstęp 80 px pod drobnymi zostaje bez zmiany — zmierzony
@@ -395,5 +418,96 @@
 @supports selector(:has(*)) {
   .hero:has(.kadr:empty) {
     min-block-size: auto;
+  }
+}
+
+/* ═══ HERO DWUKOLUMNOWE (ADR-067, WWW/093/2 krok 3) ═══════════════════
+   Wzorzec finalny: tekst po lewej, po prawej kadr bohaterki wtopiony
+   w tło i duży telefon na nim. Poniżej progu układu kolumny wracają do
+   jednej — kadr idzie pod tekst, tak jak dotąd. */
+.tekst {
+  display: block;
+}
+
+.media {
+  position: relative;
+  margin-block-start: var(--wymiar-odstep-7);
+}
+
+/* ⚠ WTOPIENIE MASKĄ, BEZ RAMKI — i to jest ODWRÓCENIE decyzji z ADR-063,
+   zapisane, bo powstało dwa dni wcześniej. Tamta rama (promień 32,
+   kreska strefy) powstała dla kadru POZIOMEGO stojącego POD tekstem;
+   wzorzec finalny daje kadr PIONOWY OBOK tekstu i wtapia go po obrysie.
+   Rama i wtopienie wykluczają się mechanicznie: maska wygasza także
+   obrys przy narożnikach — to samo zdanie stoi w ADR-063 jako powód
+   zdjęcia maski, dziś czytane w drugą stronę.
+
+   Maska słowami kluczowymi, nie zapisem funkcyjnym barwy: w masce liczy
+   się wyłącznie alfa, a linter tokenów (słusznie) nie odróżnia barwy
+   w masce od barwy spoza palety. */
+.bohaterka {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  mask-image: radial-gradient(
+    ellipse 74% 82% at 52% 44%,
+    black 46%,
+    transparent 96%
+  );
+}
+
+/* TELEFON — nakłada się na dolny prawy narożnik kadru, jak we wzorcu.
+   `pointer-events: none`, bo to obraz dekoracyjny nad obrazem: nie ma
+   pod nim niczego klikalnego, ale nie ma też powodu, żeby przechwytywał
+   wskaźnik. */
+/* ⚠ TELEFON DOSTAJE WŁASNĄ MASKĘ — bo bitmapa niesie SWOJE TŁO.
+   Zmierzone na pliku: kadr 2c ma jednolite tło kremowe, jaśniejsze i
+   cieplejsze od naszego tła strony, więc rysuje wokół telefonu widoczny
+   prostokąt.
+   Pierwsza wersja bez maski pokazała ten prostokąt na zrzucie — usterka
+   wychwycona z OBRAZU, nie z kodu.
+
+   Maska jest CIAŚNIEJSZA niż przy bohaterce (ellipsa 62% × 70%), bo
+   przedmiot jest wąski i wysoki: szersza wygaszałaby korpus telefonu
+   zamiast jego tła. */
+.telefon {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  inline-size: 42%;
+  block-size: auto;
+  pointer-events: none;
+  mask-image: radial-gradient(
+    ellipse 62% 70% at 50% 50%,
+    black 58%,
+    transparent 100%
+  );
+}
+
+@media (min-width: 48.0625rem) {
+  .kolumny {
+    display: grid;
+    /* ⚠ 58 : 42, NIE 47 : 53 JAK U WZORCA — i jest to RÓŻNICA
+       LICENCJONOWANA, nie odstępstwo z niedbałości.
+
+       Pomiar wzorca daje 47 : 53 (blok tekstu x 131–780, kadr x 840–1536
+       z 1536). Przy tej proporcji kolumna tekstu ma u nas 531 px i H1
+       mieści się w trzech wierszach PO POLSKU, a po angielsku i niemiecku
+       łamie się na CZTERY — zapala strażnika `hero: H1 ≤ 3 linie`.
+
+       Próg zmierzony, nie dobrany: przy 531 px trzy języki dają 3 / 4 / 4
+       wiersze, przy 560 — 3 / 3 / 4, a dopiero przy **650 px** wszystkie
+       trzy schodzą do trzech. 650 z dostępnych 1130 px to 58 %.
+
+       Wzorzec tego problemu nie ma, bo jest jednojęzyczny. Nasza strona
+       ma parytet ×3 jako bramkę blokującą, a kanon zna tę różnicę pod
+       nazwą „miary DE +18 %" — tutaj wyszło +22 %. */
+    grid-template-columns: 58fr 42fr;
+    gap: var(--wymiar-odstep-8);
+    align-items: center;
+  }
+
+  .media {
+    margin-block-start: 0;
   }
 }

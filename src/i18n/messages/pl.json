@@ -419,5 +419,12 @@
     "filar3": "Kobiety rozmawiają przy stole nad filiżankami kawy.",
     "filar4": "Kobieta pisze w notatniku przy biurku; lampa i okno o zmierzchu.",
     "dbanie": "Kobieta z kubkiem w dłoniach patrzy przez okno."
+  },
+  "ObrazyWzorzec": {
+    "bohaterka": "Kobieta idzie ulicą, uśmiecha się i trzyma telefon w dłoni.",
+    "telefon": "Telefon ustawiony pod kątem, z pustym ekranem.",
+    "macbookTelefon": "Laptop i telefon obok siebie, z pustymi ekranami.",
+    "rano": "Kobieta przy biurku pije z kubka i patrzy w ekran laptopa.",
+    "wieczorem": "Para siedzi na sofie i razem patrzy w ekran laptopa."
   }
 }
