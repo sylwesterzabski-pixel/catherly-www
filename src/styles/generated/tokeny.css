@@ -11,12 +11,12 @@
   --kolor-rola-tekst-drugorzedny: #c5c6c5; /** NAJCZĘSTSZA rola tekstowa wzorca — 116 wystąpień, czyli proza serwisu. Zmierzone: ×tło 11,71:1 · ×powierzchnia 10,79:1 · ×powierzchnia-2 9,44:1. */
   --kolor-rola-kreska: #393938; /** Separator tam, gdzie wzorzec go MA. ⚠ NIE służy do obrysowywania kart: wzorzec nie obrysowuje ich wcale (zmierzone: zero obramowań i zero cienkich pasów na całej stronie). Ta sama wartość co powierzchnia-akcentowa — kolizja NIE ZACHODZI, bo role nie spotykają się na jednym elemencie (rozstrzygnięcie WWW/054 pkt 1). */
   --kolor-rola-kreska-mocna: #c5c6c5; /** Obrys pól formularza — próg 3:1 z WCAG 1.4.11 obowiązuje. Zmierzone: ×powierzchnia 10,79:1. Wzorzec nie ma zaprojektowanych kontrolek formularza (jego obramowania to domyślne `2px inset` przeglądarki), więc wartość bierze się z jego palety, nie z jego kontrolek. */
-  --kolor-rola-akcent: #a0e00d; /** Limonka — 23 wystąpienia (16 jako TEKST, 7 jako tło). Zmierzone: ×tło 12,58:1 · ×powierzchnia 11,58:1. R-AKCENT-01 nie ma tu zastosowania w dawnym brzmieniu: wzorzec używa akcentu jako tekstu i przy 12,58:1 jest to bezpieczne. */
-  --kolor-rola-interakcja: #a0e00d; /** Wypełnienie CTA. ⚠ RÓWNE --akcent i tak jest we WZORCU — patrz uwaga o R-AKCENT-02 w ADR-038. Zmierzone: ×tło 12,58:1 (1.4.11 z zapasem). */
-  --kolor-rola-interakcja-aktywna: #a5e219; /** Hover CTA — jaśniejszy wariant limonki. Zmierzone: ×tekst-na-interakcji 10,47:1. */
+  --kolor-rola-akcent: #bee741; /** Limonka — 23 wystąpienia (16 jako TEKST, 7 jako tło). Zmierzone: ×tło 12,58:1 · ×powierzchnia 11,58:1. R-AKCENT-01 nie ma tu zastosowania w dawnym brzmieniu: wzorzec używa akcentu jako tekstu i przy 12,58:1 jest to bezpieczne. */
+  --kolor-rola-interakcja: #bee741; /** Wypełnienie CTA. ⚠ RÓWNE --akcent i tak jest we WZORCU — patrz uwaga o R-AKCENT-02 w ADR-038. Zmierzone: ×tło 12,58:1 (1.4.11 z zapasem). */
+  --kolor-rola-interakcja-aktywna: #c3e94d; /** Hover CTA — jaśniejszy wariant limonki. Zmierzone: ×tekst-na-interakcji 10,47:1. */
   --kolor-rola-tekst-na-interakcji: #231f20; /** Etykieta na limonce. Zmierzone: ×interakcja 10,22:1 · ×interakcja-aktywna 10,47:1. */
   --kolor-rola-link: #ffffff; /** Link w prozie. */
-  --kolor-rola-link-aktywny: #a0e00d; /** Hover linku — dopiero tu wchodzi limonka. Zmierzone: ×tło 12,58:1. */
+  --kolor-rola-link-aktywny: #bee741; /** Hover linku — dopiero tu wchodzi limonka. Zmierzone: ×tło 12,58:1. */
   --kolor-rola-fokus: #ffffff; /** WARTOŚĆ NASZA, NIE PRZENIESIONA — wzorzec barwy fokusu NIE DEKLARUJE WCALE (decyzja koordynatora, WWW/052 pkt 3). ⚠ SPROSTOWANIE LICZBY, KTÓRA WESZŁA DO TEJ DECYZJI: uzasadniając biały fokus podałem „10,22:1 wobec limonkowego CTA" — to było BŁĘDNE. 10,22:1 to kontrast ETYKIETY (--tekst-na-interakcji) na CTA, nie fokusu. Biały fokus wobec limonki ma **1,60:1**, czyli daleko poniżej 3:1 z WCAG 1.4.11. WYBÓR MIMO TO ZOSTAJE WAŻNY, ale z innego powodu, niż podałem: obwódka pada na TŁO STRONY dzięki `outline-offset`, a tam biel ma **20,07:1**. To dokładnie ten sam mechanizm, który uzasadniał fokus w palecie kancelaria (tam para fokus×interakcja miała 1,55:1) — i dokładnie dlatego odsunięcie jest obowiązkowe, a nie ozdobne. Gdyby ktoś kiedyś zdjął `outline-offset`, obwódka na limonkowym CTA stanie się niewidoczna; pilnuje tego e2e/kontrast-stanow.spec.ts, nie ten komentarz. */
   --kolor-rola-stan-sukces: #3e8e5d; /** WARTOŚĆ NASZA, FUNKCJONALNA, SPOZA WZORCA (decyzja właściciela, WWW/054 pkt 2: szablon nie ma stanów, bo jest makietą; nasz produkt je MA). Odcień rodziny zachowany (H=143°), jasność podniesiona do progu. Zmierzone: ×powierzchnia 4,60:1 · ×tło 5,00:1. Poprzednio #2f6b46 — 2,91:1 na karcie, czyli poniżej progu. */
   --kolor-rola-stan-ostrzezenie: #ae7117; /** WARTOŚĆ NASZA, FUNKCJONALNA, SPOZA WZORCA. Odcień zachowany (H=36°). Zmierzone: ×powierzchnia 4,55:1 · ×tło 4,94:1. Poprzednio #8a5a12 — 3,13:1. */
@@ -48,13 +48,13 @@
    *   · **fokus (biel) na jasnym = 1,12:1** (próg 3:1). Obwódka fokusu znika. Mechanizm `outline-offset`, który ratuje ją na ciemnym (biel na tle 20,07:1), tutaj nie pomaga — bo TŁO też jest jasne.
    * Dopóki te dwie pozycje nie mają rozstrzygnięcia (obwódka CTA? inny akcent na jasnym? ciemniejsza powierzchnia jasna?), sekcja jasna nie może powstać.
    */
-  --kolor-rola-powierzchnia-jasna: #f5f5f5;
+  --kolor-rola-powierzchnia-jasna: #f5f5f7;
   /**
    * ⚠ WARTOŚĆ PRZESZCZEPIONA Z R (ADR-062, zlecenie WWW/088 krok 2). Poprzednio `#151515` z §8.2. Wzorzec R niesie `--foreground: #0a0a0a` w trybie jasnym; `getComputedStyle` na żywej stronie dał `rgb(10,10,10)` — te same dwie niezależne metody co przy `powierzchnia-jasna`.
    * 
    * Zmierzone po zmianie: ×`powierzchnia-jasna` **18,16:1** (było 16,31:1), ×`powierzchnia-karty-na-jasnym` **19,80:1** (było 18,26:1). Para wchodzi do PARY w strażniku tokenów, więc nie jest rolą bez sprawdzenia.
    */
-  --kolor-rola-tekst-na-jasnym: #0a0a0a;
+  --kolor-rola-tekst-na-jasnym: #0f0f0f;
   /**
    * Tekst drugorzędny na korpusie jasnym (ADR-049). WARTOŚĆ NASZA, NIE PRZENIESIONA — §8.2 podaje dla tej roli `#8b8b8b`, ale tamta liczba opisuje tekst drugorzędny na tle CIEMNYM. Sprawdzone: `#8b8b8b` na `#f2f2f2` daje **3,04:1**, czyli poniżej progu 4,5:1 dla prozy. Przeniesienie jej wprost byłoby wzięciem wartości z innej roli tylko dlatego, że nazwa się zgadza.
    * 
@@ -121,6 +121,16 @@
    * ⚠ PRZENIESIENIE WARTOŚCI WZORCA POGŁĘBIŁOBY WADĘ, nie naprawiło — to przypadek, w którym wierność pomiarowi jest błędem, bo warunek brzegowy jest inny. Zostaje rozmycie i zostaje ślad przezroczystości; znika prześwit.
    */
   --kolor-rola-tlo-przezroczyste: rgba(7, 8, 6, 0.92);
+  /**
+   * ⚠ NOWA ROLA — GRAFIT KLAMR (ADR-065, zlecenie WWW/090 krok 2). Powierzchnia pasa nawigacji, stopki, kart filarów i bloku wzrostu we wzorcu finalnym z 06.09.2026.
+   * 
+   * POMIAR Z PIKSELI, nie z opisu: `design/wzorzec-2026-09-06/glowna.png` (SHA-256 `daa34f99…`, 1536 × 2752). Reguła: mediana z kwadratu 9 × 9 px, dodatkowo dominanta w wierszu. Sześć niezależnych miejsc dało `#2e2f31` (pasek nawigacji, dwa punkty), `#2d2e30` (karta filaru), `#2f3032` (blok wzrostu), `#2f2f32` (stopka) — rozrzut jednego stopnia na kanał, dominanta wiersza nawigacji `#2e2f31` × 485 próbek. Przyjęta wartość to dominanta.
+   * 
+   * ⚠ DLACZEGO NOWA ROLA, A NIE `powierzchnia`. Nasza `powierzchnia` (#131412) jest o wiele ciemniejsza i pełni inną funkcję — jest płytą karty NA ciemnym tle strony. Grafit klamr leży na tle JASNYM i jest ramą kompozycji: pasek u góry, stopka u dołu, wyspy pośrodku. Wpisanie go do istniejącej roli zmieniłoby wszystkie karty na ciemnym korpusie, których wzorzec nie dotyczy.
+   * 
+   * Zmierzone kontrasty: `tekst-podstawowy` (biel) na tej powierzchni **13,40:1**, `interakcja` (limonka wzorca) **9,38:1**. Obie pary wchodzą do PAR w strażniku, więc rola nie wchodzi do zbioru bez sprawdzenia.
+   */
+  --kolor-rola-grafit-klamr: #2e2f31;
   /**
    * ⚠ PRZESZCZEP Z R ODRZUCONY — PONIŻEJ PROGU ADR-038 (ADR-062, WWW/088 krok 2). R niesie `--border: #e5e5e5`; na białej karcie daje to **1,26:1**, a wobec tła sekcji **1,16:1** — obie poniżej progu 1,30, na którym stoi mechanizm KRESKI z ADR-038. Nasza wartość daje 1,59:1 wobec karty i 1,46:1 wobec nowego tła sekcji.
    * 

@@ -148,11 +148,11 @@ const ostrzezenia = [];
    po co istnieje. Czerwień na tej liczbie jest sygnałem „ktoś rusza
    rzecz wymagającą ADR-a", a nie usterką do wyciszenia.
    ─────────────────────────────────────────────────────────────── */
-const LICZBA_ROL = 30;
+const LICZBA_ROL = 31;
 const nazwyRol = Object.keys(role);
 if (nazwyRol.length !== LICZBA_ROL) {
   bledy.push(
-    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-053 wylicza ${LICZBA_ROL}. ` +
+    `KOMPLETNOŚĆ: odczytano ${nazwyRol.length} ról o wartości barwnej, ADR-065 wylicza ${LICZBA_ROL}. ` +
       `Odczytane: ${nazwyRol.sort().join(", ")}. ` +
       `Zmiana liczby ról wymaga ADR-a — jeśli decyzja zapadła, zmień LICZBA_ROL razem z nim.`
   );
@@ -193,6 +193,13 @@ const PARY = [
      wyglądałoby na decyzję, a byłoby przeoczeniem. */
   ["kreska-na-jasnym", "powierzchnia-jasna", 1.3, "obrys karty na tle sekcji jasnej (próg ADR-038)"],
   ["kreska-na-jasnym", "powierzchnia-karty-na-jasnym", 1.3, "obrys karty wobec jej własnego wypełnienia (próg ADR-038)"],
+  /* GRAFIT KLAMR (ADR-065, wzorzec finalny 06.09.2026) — powierzchnia
+     pasa nawigacji, stopki, kart filarów i bloku wzrostu. Rola wchodzi
+     RAZEM ze swoimi parami, nie przed nimi: rola bez pary jest w zbiorze
+     i poza sprawdzaniem, czyli dokładnie furtką, przed którą broni
+     sprawdzenie 0. */
+  ["tekst-podstawowy", "grafit-klamr", 4.5, "biały tekst na klamrze grafitowej"],
+  ["interakcja",       "grafit-klamr", 3.0, "plama limonki na klamrze grafitowej"],
 ];
 
 /* ─── WYŁĄCZENIA Z PAR — Z WŁASNYM LICZNIKIEM ──────────────────
@@ -364,6 +371,9 @@ const POWIERZCHNIE = [
   "powierzchnia-2",
   "powierzchnia-akcentowa",
   "powierzchnia-jasna",
+  /* ADR-065 — klamra grafitowa NIESIE TEKST, więc jest powierzchnią
+     w rozumieniu R-AKCENT-01 i R-AKCENT-02(b), nie tylko tłem ozdobnym. */
+  "grafit-klamr",
 ];
 const PROG_AKCENT_TEKST = 4.5;
 const PROG_FOKUS = 3.0;
