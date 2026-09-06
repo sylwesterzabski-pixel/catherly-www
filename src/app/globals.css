@@ -239,11 +239,15 @@
    w serwisie. Dwa progi, dwie decyzje — zapisane, żeby nikt ich potem
    nie „ujednolicił". */
 @media (min-width: 80rem) {
-  :is(h1) {
-    font-size: var(--tekst-h1);
-    letter-spacing: var(--tracking-naglowek);
-  }
-
+  /* ⚠ H1 WYSZŁO Z TEGO BLOKU NA 90rem (ADR-070, WWW/097/2) — i to nie
+     jest „ujednolicenie progów", przed którym ostrzega akapit wyżej.
+     Tamten akapit stwierdzał, że pełna skala pisma MIEŚCI SIĘ już przy
+     1280 — i to było prawdą przy H1 = 52 px. Po podniesieniu H1 do 60 px
+     (pomiar wzorca v2) przestało być: sonda po trzech językach daje przy
+     1280 px wynik 3/3/4 wiersze, czyli niemiecki nagłówek łamie się na
+     cztery i zapala strażnika „H1 ≤ 3 linie".
+     Zmieniła się przesłanka, nie zasada. H2 zostaje przy 80rem — jego
+     ciągi są krótsze i mieszczą się bez zmian. */
   :is(h2) {
     font-size: var(--tekst-h2);
     letter-spacing: var(--tracking-naglowek-sekcji);
@@ -1281,4 +1285,11 @@ div[data-tlo="2"] {
 section[data-tlo="3"],
 div[data-tlo="3"] {
   background: var(--kolor-rola-tlo-3);
+}
+
+@media (min-width: 90rem) {
+  :is(h1) {
+    font-size: var(--tekst-h1);
+    letter-spacing: var(--tracking-naglowek);
+  }
 }

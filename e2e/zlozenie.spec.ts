@@ -588,3 +588,109 @@ test("R-AKCENT-03: znaczniki akcentu w parytecie ×3 i tylko w miejscach z decyz
     expect(pary[klucz], `${klucz}: ta sama liczba par we wszystkich trzech językach`).toBe(3);
   }
 });
+
+/* ═══════════════════════════════════════════════════════════════════════
+   NAGŁÓWEK SEKCJI „PAMIĘĆ" NIE DZIELI WYRAZÓW (ADR-070, WWW/097/2 krok 3)
+
+   Zlecenie żąda dowodu, nie deklaracji: „brak dzielenia słów ×3 języki
+   na 1440/1190/390". Test chodzi po WSZYSTKICH projektach Playwrighta,
+   więc te trzy kadry są pokryte przez samą konfigurację.
+
+   Pilnuje TRZECH rzeczy naraz i każda łapie inny sposób, w jaki dzielenie
+   mogłoby wrócić:
+     · `hyphens` wyliczony = `manual` — czyli globalna reguła nagłówków
+       (`hyphens: auto`, ADR-044) jest tu przykryta. Sama ta asercja nie
+       wystarcza: `auto` bez wzorców dla języka też nie dzieli, więc
+       zieleń mogłaby być przypadkowa;
+     · zero miękkich dywizów (U+00AD) w treści — `manual` dzieli WYŁĄCZNIE
+       na nich, więc ich brak zamyka drugą drogę;
+     · żadna linia nie kończy się w środku wyrazu — mierzone geometrycznie
+       przez `Range` znak po znaku, nie zakładane z dwóch poprzednich.
+   Trzecia asercja jest tą, która naprawdę mierzy skutek; dwie pierwsze
+   mówią, DLACZEGO skutek zachodzi, i dzięki temu czerwień wskazuje
+   przyczynę zamiast samego objawu. */
+for (const { adres, jezyk } of PRZYPADKI) {
+  test(`pamięć (${jezyk}): nagłówek bez dzielenia wyrazów na ${adres}`, async ({
+    page,
+  }) => {
+    await page.goto(adres);
+    const h2 = page.locator("#definicja-h2");
+    await expect(h2).toBeVisible();
+
+    const wynik = await h2.evaluate((el) => {
+      const styl = getComputedStyle(el);
+      const tekst = el.textContent ?? "";
+
+      /* Podział na linie mierzony geometrycznie: dla każdego znaku biorę
+         prostokąt zakresu i wykrywam zmianę współrzędnej pionowej. Znak
+         stojący TUŻ PRZED zmianą jest ostatnim znakiem linii. */
+      const wezel = el.firstChild && el.firstChild.nodeType === 3
+        ? el.firstChild
+        : (el.querySelector("span")?.firstChild ?? el.firstChild);
+      const zakres = document.createRange();
+      const ostatnieZnaki: string[] = [];
+      let poprzedniY: number | null = null;
+      let poprzedniZnak = "";
+      const pelny = el.innerText;
+      for (const w of el.childNodes) {
+        if (w.nodeType !== 3 && !(w as Element).firstChild) continue;
+      }
+      const tekstowe: Text[] = [];
+      const chodz = (n: Node) => {
+        if (n.nodeType === 3) tekstowe.push(n as Text);
+        else n.childNodes.forEach(chodz);
+      };
+      chodz(el);
+      for (const t of tekstowe) {
+        for (let i = 0; i < t.length; i += 1) {
+          zakres.setStart(t, i);
+          zakres.setEnd(t, i + 1);
+          const r = zakres.getBoundingClientRect();
+          if (r.width === 0 && r.height === 0) continue;
+          if (poprzedniY !== null && Math.abs(r.top - poprzedniY) > 2) {
+            ostatnieZnaki.push(poprzedniZnak);
+          }
+          poprzedniY = r.top;
+          poprzedniZnak = t.data[i];
+        }
+      }
+      void wezel;
+      void pelny;
+      return {
+        hyphens: styl.hyphens,
+        miekkieDywizy: (tekst.match(/­/g) ?? []).length,
+        ostatnieZnaki,
+        tekst,
+      };
+    });
+
+    expect(wynik.hyphens, "nagłówek ma hyphens: manual").toBe("manual");
+    expect(
+      wynik.miekkieDywizy,
+      "zero miękkich dywizów U+00AD w treści nagłówka",
+    ).toBe(0);
+    /* KONTROLA POZYTYWNA SONDY: jeśli nagłówek łamie się na więcej niż
+       jedną linię, sonda MUSI znaleźć co najmniej jeden znak kończący
+       linię. Zero znalezionych przy wielu liniach znaczyłoby, że sonda
+       nic nie mierzy — i wtedy trzecia asercja przechodziłaby zawsze. */
+    const linie = await h2.evaluate(
+      (el) =>
+        Math.round(
+          el.getBoundingClientRect().height /
+            parseFloat(getComputedStyle(el).lineHeight),
+        ),
+    );
+    if (linie > 1) {
+      expect(
+        wynik.ostatnieZnaki.length,
+        "sonda widzi granice linii (kontrola pozytywna)",
+      ).toBeGreaterThan(0);
+    }
+    for (const znak of wynik.ostatnieZnaki) {
+      expect(
+        /[\s­-]/.test(znak),
+        `linia kończy się na „${znak}" — to podział W ŚRODKU WYRAZU`,
+      ).toBe(true);
+    }
+  });
+}

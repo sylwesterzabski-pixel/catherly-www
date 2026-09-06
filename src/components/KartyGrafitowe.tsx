@@ -62,6 +62,22 @@ export function KartyGrafitowe({ karty, aria }: Props) {
               <p className={styles.zdanie}>{k.zdanie}</p>
               <a className={styles.dalej} href={k.adres}>
                 {k.etykieta}
+                {/* Chevron — rysunek, nie znak: glifu nie ma w subsecie
+                    (sprawdzone, patrz komentarz w arkuszu). `aria-hidden`,
+                    bo to strzałka kierunku, a nie treść linku. */}
+                <svg
+                  className={styles.chevron}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  focusable={false}
+                >
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
               </a>
             </li>
           ))}

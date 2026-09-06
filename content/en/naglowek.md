@@ -29,6 +29,14 @@ See how it works
 
 ---
 
+## Wezwanie wtórne (link obok przycisku)
+
+See the features
+
+**Leads to:** `/funkcje`. Added 2026-09-06 (WWW/097/2, ADR-070). ⚠ PROVISIONAL WORDING — the order routed EN/DE labels to the judges; parity is a blocking gate, so the executor supplied them. Register entry T75.
+
+---
+
 ## Stałe sekcji
 
 Potwierdzenia pod hero (panel po Z4, 2026-08-09):

@@ -30,6 +30,14 @@ Sieh dir an, wie es funktioniert
 
 ---
 
+## Wezwanie wtórne (link obok przycisku)
+
+Funktionen ansehen
+
+**Führt zu:** `/funkcje`. Ergänzt am 06.09.2026 (WWW/097/2, ADR-070). ⚠ VORLÄUFIGE FORMULIERUNG — die EN/DE-Beschriftungen gehen laut Auftrag an die Prüfer; die Parität ist ein blockierendes Tor, deshalb hat der Ausführende sie eingesetzt. Registerposition T75.
+
+---
+
 ## Stałe sekcji
 
 Potwierdzenia pod hero (panel po Z4, 2026-08-09):

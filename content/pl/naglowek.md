@@ -34,6 +34,14 @@ darmowego dostępu.
 
 ---
 
+## Wezwanie wtórne (link obok przycisku)
+
+Zobacz funkcje
+
+**Prowadzi do:** `/funkcje`. Dodane 2026-09-06 (zlecenie WWW/097/2, ADR-070): wzorzec v2 stawia obok pigułki drugi, tekstowy link. Brzmienie polskie podane wprost w zleceniu z mandatu koordynatora — wykonawca go nie wymyślił.
+
+---
+
 ## Stałe sekcji (poza konkursem)
 
 Potwierdzenia pod hero (panel po Z4, 2026-08-09):

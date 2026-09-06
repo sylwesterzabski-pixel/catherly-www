@@ -114,3 +114,33 @@ Dwie identyczne liczby przy dwóch różnych obszarach ujawniły ślepotę sondy
 Po przepuszczeniu przez bufor: ekran **250,2 · 250,2 · 250,2**, pas obok
 **243,1 · 242,2 · 238,0**, środek ekranu **254,3 · 254,3 · 254,3**. Dopiero
 rozdzielone liczby dowodzą, że prostokąt trafia w ekran.
+
+## Wzorzec v2 (zlecenie `WWW/097/2`, KROK 0)
+
+| plik | źródło | wymiar | SHA-256 | status |
+| --- | --- | --- | --- | --- |
+| `design/wzorzec/glowna-v2-2026-09-06.png` | zrzut od właściciela, „Zrzut ekranu 2026-09-6 o 21.30.37.png" | 906 × 902 | `450f61a4b51eda277d14a836d5aeff4f4bb43e1cac1f048142413d8f7ee86d70` | **wzorzec v2, zrzut, proporcje wiążące, piksele nie** |
+
+**Tożsamość sprawdzona przed zapisem**, nie po: suma i wymiar podane w zleceniu
+zgodziły się co do znaku (prefiks `450f61a4b51eda27`, 906 × 902). Plik skopiowany
+bez przekodowania — suma po kopii jest ta sama.
+
+⚠ **PROPORCJE WIĄŻĄCE, PIKSELE NIE.** v2 jest zrzutem o szerokości 906 px, a nie
+renderem przy znanej szerokości okna. Wolno z niego odczytywać wszystko, co jest
+**ułamkiem szerokości**: wysokości sekcji, bboxy, szerokości kolumn, wcięcia,
+odstępy, proporcje wewnątrz elementów. Nie wolno odczytywać wartości
+bezwzględnych w pikselach — to ta sama granica, którą v1 ma zapisaną jako **T66**.
+
+⚠ **v1 ZOSTAJE I NIE JEST BŁĘDNA.** `design/wzorzec-2026-09-06/glowna.png`
+(1536 × 2752) to **kolaż dwukolumnowy**: pas górny 1536 px niesie nawigację
+i hero, a wszystko poniżej stoi w dwóch kolumnach po 768. v2 jest **jedną
+kolumną 906 px bez nawigacji**. Dlatego liczby zmierzone na v1 i na v2 nie
+przekładają się wprost — i dlatego pomiar w `WWW/097` rozjechał się z pasmem
+koordynatora o 1,6–14,2 pp na ośmiu pozycjach. **To nie był błąd żadnej ze
+stron: obie mierzyły rzetelnie, na dwóch różnych plikach.** Po podstawieniu v2
+te same pozycje schodzą do 0,0–1,4 pp.
+
+⚠ **DWA KATALOGI WZORCA — zgłaszam, nie rozstrzygam.** v1 leży w
+`design/wzorzec-2026-09-06/`, v2 — zgodnie z literą zlecenia — w
+`design/wzorzec/`. To dwa miejsca na tę samą rzecz; scalenie jest jedną
+operacją, ale nie należy do wykonawcy.

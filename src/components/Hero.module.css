@@ -59,6 +59,18 @@
      sekcji „pamięć" niżej (x 137). Wyśrodkowanie było własnością
      poprzedniego wzorca. */
   text-align: start;
+  /* ⚠ KONTEKST DLA WARSTWY MEDIÓW (ADR-070, WWW/097/2 krok 2) — fotografia
+     jest warstwą absolutną rozpiętą na całą wysokość hero, więc musi mieć
+     względem czego się rozpiąć. `isolation` trzyma ją pod treścią bez
+     wchodzenia w ujemne `z-index`, które wypadałyby POD tłem sekcji. */
+  position: relative;
+  isolation: isolate;
+  /* ⚠ MINIMUM WYSOKOŚCI WRACA — ale z pokryciem, którego poprzednio nie
+     miało. W `WWW/096` zdjąłem je, bo trzymało 935 px próżni przy treści
+     589 px. Teraz H1 ma 76 px zamiast 52, rząd CTA jest dwuelementowy,
+     a fotografia rozpina się na całą wysokość sekcji — minimum domyka
+     kompozycję, zamiast rozpychać pustkę. Wartość z pomiaru v2. */
+  min-block-size: var(--wymiar-hero-wzorca);
   /* ⚠ MINIMUM WYSOKOŚCI ZDJĘTE (ADR-069, WWW/096 v4 pkt 1 i 3).
      Stało tu `min-block-size: var(--wymiar-hero-male)`, a niżej
      `--wymiar-hero-duze`; proporcje 1,33× i 1,83× wysokości okna
@@ -74,9 +86,14 @@
   margin-inline: auto;
 }
 
+/* ⚠ `position: relative` I `overflow: clip` ZDJĘTE (ADR-070, WWW/097/2).
+   Obie służyły warstwie dekoracyjnej i kadrowi stojącemu WEWNĄTRZ siatki.
+   Dziś fotografia jest warstwą absolutną rozpiętą wobec CAŁEJ SEKCJI —
+   a spozycjonowana `.kolumny` przechwytywała jej blok zawierający i
+   obcinała spad. Zmierzone przed zdjęciem: warstwa kończyła się na
+   95,35 % zamiast 100,00 %, a jej góra na y 120 zamiast 0. */
 .kolumny {
-  position: relative;
-  overflow: clip;
+  display: block;
 }
 
 .naglowek {
@@ -89,6 +106,17 @@
      wnioskiem, że miara i tak jest BEZCZYNNA, bo ogranicza kolumna.
      Teraz jest to jawne. */
   text-wrap: balance;
+  /* ⚠ INTERLINIA I WAGA Z POMIARU v2 (ADR-070, WWW/097/2). Wzorzec ściska
+     wiersze H1 mocniej niż nagłówki sekcji: odstęp wierszy 51–52 px przy
+     tuszu 48 px na szerokości 906, czyli 1,09 wobec globalnych 1,2.
+     Waga zmierzona grubością laski: H1 daje 0,125 wysokości tuszu przy
+     akapicie 0,100 i nagłówku sekcji 0,108 — czyli ok. 600, nie 800.
+     To jest wprost potwierdzenie oczekiwania ze zlecenia. */
+  line-height: var(--interlinia-naglowek-hero);
+  font-weight: var(--waga-wyrozniona);
+  /* Miara bloku z pomiaru v2 — patrz token. Bez niej H1 przy 76 px łamie
+     się na cztery wiersze zamiast trzech (zmierzone na zrzucie). */
+  max-inline-size: var(--wymiar-miara-h1-wzorca);
   /* 24 px nad H1 (pomiar 1j) — razem z odstępem sekcji daje zmierzone
      pozycje y=184 (1440) i y=104 (390). */
   margin-block-start: var(--wymiar-odstep-6);
@@ -96,19 +124,45 @@
 
 .podtytul {
   color: var(--kolor-rola-tekst-drugorzedny);
-  font-size: var(--tekst-s);
+  /* 1,7 % szerokości wzorca v2 — patrz token `tekst.akapit-wzorca`. */
+  font-size: var(--tekst-akapit-wzorca);
   font-weight: var(--waga-tekst);
   /* 590 px — wartość STAŁA wzorca, nie miara w `ch` ani procent.
      Zmierzona jako 590 przy 1600, 1440, 1280, 1024 i 810; przy 768
      i 390 zwęża ją kolumna. `margin-inline: auto` daje wyśrodkowanie. */
   max-width: var(--wymiar-miara-leadu);
-  margin: 1rem auto 0;
+  /* ⚠ `auto` PO BOKACH ZDJĘTE (ADR-070, WWW/097/2 krok 2). Wzorzec v2
+     kładzie akapit BEZ WCIĘCIA — jego lewa krawędź stoi dokładnie tam,
+     co lewa krawędź H1 (x 4,64 % obie). Wyśrodkowanie bloku było
+     własnością hero wyśrodkowanego; po przejściu na `text-align: start`
+     zostawiało akapit odsunięty o 71 px od nagłówka. Zmierzone na
+     zrzucie: akapit zaczynał się na x 138 przy H1 na x 67. */
+  margin: 1rem 0 0;
+}
+
+/* RZĄD DWÓCH DRÓG (ADR-070, WWW/097/2 krok 2) — pigułka i link tekstowy
+   obok siebie, jak we wzorcu v2. `align-items: center` wyrównuje je po
+   środku wysokości pigułki, bo link nie ma własnego pola. */
+.rzadCta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--wymiar-odstep-6);
+  margin-block-start: 2.75rem;
+}
+
+/* Link wtórny bierze rolę tekstu, nie akcentu: we wzorcu v2 jest CIEMNY
+   z podkreśleniem, a nie limonkowy. Limonka jest tam zarezerwowana dla
+   pigułki i dla linków na kartach grafitowych. */
+.ctaWtorne {
+  color: var(--kolor-rola-tekst-podstawowy);
+  font-size: var(--tekst-xs);
+  font-weight: var(--waga-etykieta);
 }
 
 .cta {
   display: inline-grid;
   place-content: center;
-  margin-block-start: 2.75rem;
   padding-inline: 1.5rem;
   min-block-size: 2.9rem;
   background: var(--kolor-rola-interakcja);
@@ -145,7 +199,8 @@
 
 .potwierdzenia {
   margin-block-start: 2rem;
-  justify-content: center;
+  /* Do lewej, nie na środek — jak cała kolumna hero we wzorcu v2. */
+  justify-content: start;
   font-size: var(--tekst-xs);
   font-weight: var(--waga-etykieta);
 }
@@ -165,15 +220,13 @@
 @media (min-width: 48.0625rem) {
   .hero {
     padding-block: var(--wymiar-odstep-sekcji) 0;
-    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+    padding-inline: var(--wymiar-wciecie-wzorca);
   }
 }
 
 @media (min-width: 90rem) {
   .hero {
-    padding-inline: var(--wymiar-wciecie-tresci);
-    position: relative;
-    isolation: isolate;
+    padding-inline: var(--wymiar-wciecie-wzorca);
   }
 
   /* ⚠ TŁO DEKORACYJNE FALI 2 ZDJĘTE 2026-09-02 (ADR-048).
@@ -200,99 +253,61 @@
    z `aria-hidden`. Wzorzec finalny nie ma jej w ogóle. Zdjęty razem
    z `min-block-size` hero, bo obie rzeczy trzymały tę samą pustkę. */
 
-/* ═══ HERO DWUKOLUMNOWE (ADR-067, WWW/093/2 krok 3) ═══════════════════
-   Wzorzec finalny: tekst po lewej, po prawej kadr bohaterki wtopiony
-   w tło i duży telefon na nim. Poniżej progu układu kolumny wracają do
-   jednej — kadr idzie pod tekst, tak jak dotąd. */
-.tekst {
-  display: block;
-}
+/* ═══ WARSTWA MEDIÓW — ABSOLUTNA, NIE KOLUMNA SIATKI ═══════════════════
+   (ADR-070, zlecenie WWW/097/2 krok 2)
 
+   ┌── zmierzone na v2 (906 px) ───── przeliczone na kadr 1440 ─────────┐
+   │ zdjęcie x        47,9 → 100 %     690 → 1440 px                    │
+   │ zdjęcie y        0 → 100 % hero   cała wysokość sekcji             │
+   │ prawa krawędź    100,00 %         spad na krawędź kontenera        │
+   │ strefa wtopienia od 47,9 (alfa 0) do ~57 (alfa 1)                  │
+   └────────────────────────────────────────────────────────────────────┘
+
+   ⚠ DLACZEGO ABSOLUTNA, A NIE KOLUMNA. Wzorzec rozpina fotografię na całą
+   wysokość hero i wypuszcza ją na prawą krawędź. Kolumna siatki nie umie
+   ani jednego, ani drugiego: jej wysokość bierze się z treści, a wyjście
+   poza trakt wymaga ujemnego marginesu — a ten, zmierzone w `WWW/096`,
+   rozszerza pudełko kolumny i obraz ze `100%` idzie za nim (hero wyszło
+   wtedy ponad dwukrotnie wyższe). Warstwa absolutna nie dotyka traktów,
+   więc **siatka zostaje nietknięta**, tak jak żąda zlecenie.
+
+   ⚠ PONIŻEJ PROGU UKŁADU WARSTWA WRACA DO TOKU. Na kadrze wąskim kolumny
+   są jedną kolumną i fotografia stoi POD tekstem — absolutne pozycjonowanie
+   położyłoby ją na nim. Wzorzec kadru wąskiego nie pokazuje; to jest
+   przeniesienie zachowania, nie pomiar. */
 .media {
   position: relative;
   margin-block-start: var(--wymiar-odstep-7);
 }
 
-/* ⚠ WTOPIENIE MASKĄ, BEZ RAMKI — i to jest ODWRÓCENIE decyzji z ADR-063,
-   zapisane, bo powstało dwa dni wcześniej. Tamta rama (promień 32,
-   kreska strefy) powstała dla kadru POZIOMEGO stojącego POD tekstem;
-   wzorzec finalny daje kadr PIONOWY OBOK tekstu i wtapia go po obrysie.
-   Rama i wtopienie wykluczają się mechanicznie: maska wygasza także
-   obrys przy narożnikach — to samo zdanie stoi w ADR-063 jako powód
-   zdjęcia maski, dziś czytane w drugą stronę.
+/* ⚠ WTOPIENIE JEDNĄ PROSTĄ, W JEDNĄ STRONĘ. Wzorzec v2 gasi fotografię
+   WYŁĄCZNIE w lewo, w stronę kolumny tekstu; góra, prawa i dół są pełne
+   — dół dlatego, że kończy go granica sekcji, a nie krawędź obrazu.
+   Zmierzone progiem bezwzględnym nad szumem tła (szum 1,09): pierwsze
+   odchylenie od tła na x 46,6–48,7 % wobec 47,9 % z pasma koordynatora,
+   Δ 0,78–1,32 pp — w paśmie 1,5.
+
+   Poprzednio stały tu CZTERY proste (lewo, dół, góra, prawo). Trzy z nich
+   schodzą: były zabiegiem maskującym brak spadu na krawędź, a nie
+   odtworzeniem wzorca — i sam komentarz przy nich to mówił.
 
    Maska słowami kluczowymi, nie zapisem funkcyjnym barwy: w masce liczy
-   się wyłącznie alfa, a linter tokenów (słusznie) nie odróżnia barwy
-   w masce od barwy spoza palety. */
+   się wyłącznie alfa, a linter tokenów nie odróżnia barwy w masce od
+   barwy spoza palety. */
 .bohaterka {
   display: block;
   inline-size: 100%;
   block-size: auto;
-  /* ⚠ WTOPIENIE DWIEMA PROSTYMI, NIE ELIPSĄ — I TO JEST POPRAWKA
-     ZROBIONA NA OBRAZIE, NIE W GŁOWIE (ADR-069, WWW/096 v4 pkt 3).
-
-     Poprzednio stała tu elipsa `86% 92% at 50% 44%` z przejściem
-     28 % → 100 %. Warunek zlecenia („wtopienie ≥ 25 % szerokości")
-     był arytmetycznie spełniony, a na zrzucie kadr NADAL miał twardą
-     krawędź — i rachunek pokazuje dlaczego: przy elipsie o promieniu
-     86 % i środku w 50 % skrajny lewy piksel leży w 0,58 promienia,
-     czyli w połowie strefy przejścia, więc ma jeszcze ok. 58 %
-     krycia. Elipsa gaśnie do zera dopiero POZA kadrem.
-
-     Wzorzec nie wtapia kadru dookoła. Zmierzone: fotografia zajmuje
-     x 847–1535 z 1536, czyli DOCHODZI DO PRAWEJ KRAWĘDZI, i gaśnie
-     wyłącznie w lewo (w stronę kolumny tekstu) oraz w dół. Góra i
-     prawa strona są pełne.
-
-     Stąd trzy proste zamiast elipsy, złożone przecięciem:
-     · w prawo — przezroczyste na 0 %, pełne od 30 % szerokości,
-       czyli strefa wtopienia ma 30 % szerokości kadru (warunek ≥ 25 %
-       spełniony na tej samej mierze, o którą pyta zlecenie);
-     · w górę — przezroczyste na 0 %, pełne od 25 % wysokości (dół);
-     · w dół — przezroczyste na 0 %, pełne od 12 % wysokości (góra);
-     · w lewo — przezroczyste na 0 %, pełne od 8 % szerokości (prawa
-       krawędź). Ta czwarta jest RÓŻNICĄ WOBEC WZORCA, nie jego
-       odtworzeniem: u wzorca kadr dochodzi do krawędzi strony i nie
-       ma prawej krawędzi do wygaszenia. U nas kończy się w kontenerze,
-       więc bez tej prostej zostawia pionową kreskę w środku strony.
-       Wąsko (8 %), bo to zabieg maskujący, nie kompozycyjny — powód
-       i wycofana próba spadu opisane niżej, przy progu układu.
-     `mask-composite: intersect` bierze CZĘŚĆ WSPÓLNĄ, więc narożniki
-     gasną podwójnie.
-
-     ⚠ TRZECIA PROSTA (GÓRA) WESZŁA PO OBEJRZENIU ZRZUTU, nie z planu:
-     przy dwóch prostych górna krawędź fotografii zostawała twarda
-     i widoczna jako pozioma kreska pod paskiem nawigacji. U wzorca
-     tej kreski nie ma, bo tam kadr wchodzi POD pasek i nie ma własnej
-     górnej krawędzi w widocznym obszarze. U nas zaczyna się niżej,
-     więc krawędź trzeba wygasić. Wąsko (12 %), żeby nie zjeść twarzy.
-
-     Maska słowami kluczowymi, nie zapisem funkcyjnym barwy: w masce
-     liczy się wyłącznie alfa, a linter tokenów (słusznie) nie
-     odróżnia barwy w masce od barwy spoza palety. */
-  mask-image:
-    linear-gradient(to right, transparent 0%, black 30%),
-    linear-gradient(to top, transparent 0%, black 25%),
-    linear-gradient(to bottom, transparent 0%, black 12%),
-    linear-gradient(to left, transparent 0%, black 8%);
-  mask-composite: intersect;
-  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0%, black 17.5%);
 }
 
-/* TELEFON — nakłada się na dolny prawy narożnik kadru, jak we wzorcu.
-   `pointer-events: none`, bo to obraz dekoracyjny nad obrazem: nie ma
-   pod nim niczego klikalnego, ale nie ma też powodu, żeby przechwytywał
-   wskaźnik. */
-/* ⚠ TELEFON DOSTAJE WŁASNĄ MASKĘ — bo bitmapa niesie SWOJE TŁO.
-   Zmierzone na pliku: kadr 2c ma jednolite tło kremowe, jaśniejsze i
-   cieplejsze od naszego tła strony, więc rysuje wokół telefonu widoczny
-   prostokąt.
-   Pierwsza wersja bez maski pokazała ten prostokąt na zrzucie — usterka
-   wychwycona z OBRAZU, nie z kodu.
-
-   Maska jest CIAŚNIEJSZA niż przy bohaterce (ellipsa 62% × 70%), bo
-   przedmiot jest wąski i wysoki: szersza wygaszałaby korpus telefonu
-   zamiast jego tła. */
+/* TELEFON — bitmapa 2d ze ZDJĘTYM TŁEM, ekran pusty.
+   ⚠ 2d, NIE 2c i NIE lustro CSS. Zlecenie żąda kadru obróconego w prawo;
+   `scaleX(-1)` na 2c dałoby telefon w lustrzanym odbiciu, czyli przycisk
+   głośności po złej stronie i logo odwrócone — pozorna oszczędność, która
+   psuje przedmiot. Wariant `-alfa` ma tło zdjęte zalewem z narożników
+   (próg 40, przeciek zmierzony przy 140), więc nie potrzebuje maski,
+   a cień daje `drop-shadow` z tokena o alfie zmierzonej na oryginale. */
 .telefon {
   position: absolute;
   inset-block-end: 0;
@@ -300,12 +315,6 @@
   inline-size: 42%;
   block-size: auto;
   pointer-events: none;
-  /* ⚠ MASKA ZDJĘTA, BO TŁO ZDJĘTE W PLIKU (ADR-069, WWW/096 v4 pkt 3).
-     Stała tu ciasna elipsa wygaszająca kremowy prostokąt, który bitmapa
-     `2c-iphone-L.avif` niosła wokół telefonu. Wariant `-alfa` ma to tło
-     usunięte zalewem z czterech narożników (próg 40, przeciek zmierzony
-     przy 140), więc maska nie ma już czego gasić — a gasiłaby wtedy sam
-     korpus telefonu. Cień rysuje CSS, nie bitmapa. */
   filter: drop-shadow(var(--cien-mockup));
 }
 
@@ -350,7 +359,42 @@
     align-items: center;
   }
 
+  /* ⚠ OD PROGU UKŁADU WARSTWA JEST ABSOLUTNA I ROZPINA SIĘ NA CAŁĄ
+     WYSOKOŚĆ HERO. `inline-size` to 52,1 % — dopełnienie zmierzonych
+     47,9 %, od których wzorzec zaczyna fotografię. `inset-inline-end: 0`
+     wobec sekcji, nie wobec kontenera treści, więc kadr dochodzi do
+     krawędzi tak jak we wzorcu; `padding-inline` sekcji tego nie tnie,
+     bo warstwa jest pozycjonowana wobec pudełka OBRAMOWANIA. */
   .media {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: 52.1%;
     margin-block-start: 0;
+    z-index: -1;
+  }
+
+  .bohaterka {
+    block-size: 100%;
+    object-fit: cover;
+    /* Kadrowanie w stronę GÓRY obrazu — twarz ma zostać w kadrze przy
+       każdej wysokości hero. Przy `50% 50%` przycięcie zjadałoby ją od
+       góry, bo źródło jest wyraźnie wyższe niż warstwa. */
+    object-position: 50% 22%;
+  }
+
+  /* Telefon liczony od warstwy, nie od kadru: obecny bbox 199 px przy
+     kadrze 1440 (13,8 % okna) × 1,5 = 299 px, czyli 39,9 % warstwy
+     o szerokości 52,1 % × 1440 = 750 px. Obie liczby podane w zwrotce. */
+  .telefon {
+    inline-size: 39.9%;
+  }
+
+  /* Kolumna tekstu nie dzieli już traktu z mediami — siatka zostaje
+     dwutraktowa, ale prawy trakt jest pusty i służy wyłącznie temu,
+     żeby proza nie wchodziła pod fotografię. */
+  .tekst {
+    position: relative;
+    z-index: 1;
   }
 }

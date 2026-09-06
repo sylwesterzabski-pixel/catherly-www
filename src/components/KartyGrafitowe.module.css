@@ -23,13 +23,20 @@
    bezpośrednio pod prozą sekcji „pamięć" i jest jej rozwinięciem, nie
    osobnym tematem. Dlatego niesie `aria-label`, nie `aria-labelledby` —
    region bez nazwy zniknąłby czytnikowi z listy punktów orientacyjnych. */
+/* ⚠ BEZ ODSTĘPU OD GÓRY (ADR-070, WWW/097/2 krok 4). Odstęp między
+   sekcją „pamięć" a rzędem kart niesie DOLNE wcięcie tamtej sekcji —
+   zmierzone na v2: 62 px z 906, czyli 6,84 %. Gdyby rząd dokładał
+   jeszcze swoje, odstęp byłby sumą dwóch i rozjechałby się z pomiarem.
+   Dolne wcięcie zostaje globalne do czasu partii 2. */
 .sekcja {
-  padding-block: var(--wymiar-odstep-sekcji-male);
-  padding-inline: var(--wymiar-wciecie-tresci-male);
+  padding-block: 0 var(--wymiar-odstep-sekcji-male);
+  padding-inline: var(--wymiar-wciecie-wzorca);
 }
 
+/* ⚠ KONTENER ZDJĘTY (ADR-070): wzorzec v2 rozpina rząd kart na całą
+   szerokość między wcięciami 4,64 % i 4,30 %, a nie w kontenerze 1200.
+   Zmierzone: karty x 42–867 z 906. */
 .wnetrze {
-  max-inline-size: var(--wymiar-kontener-filaru);
   margin-inline: auto;
 }
 
@@ -38,7 +45,9 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: var(--wymiar-odstep-7);
+  /* 1,3 % szerokości wzorca v2; `odstep-5` daje 1,11 % — Δ 0,19 pp.
+     Nowego szczebla nie dokładam dla dwóch pikseli. */
+  gap: var(--wymiar-odstep-5);
 }
 
 .karta {
@@ -50,11 +59,12 @@
 }
 
 /* Ikona bierze rolę tekstu karty przez `currentColor` — patrz nagłówek
-   `IkonyKafelkow.tsx`. Nie ma tu ani jednej wartości barwnej. */
+   `IkonyKafelkow.tsx`. Nie ma tu ani jednej wartości barwnej.
+   Rozmiar: 3,5 % szerokości wzorca v2 — patrz token `ikona-karty-rzedu`. */
 .ikona {
   display: block;
-  inline-size: 2.5rem;
-  block-size: 2.5rem;
+  inline-size: var(--wymiar-ikona-karty-rzedu);
+  block-size: var(--wymiar-ikona-karty-rzedu);
   margin-block-end: var(--wymiar-odstep-6);
 }
 
@@ -64,7 +74,9 @@
 }
 
 .tytul {
-  font-size: var(--tekst-h2-male);
+  /* 1,7 % szerokości wzorca v2 (pasmo koordynatora); pomiar tuszu daje
+     1,10 % — Δ 0,60 pp, w paśmie. */
+  font-size: var(--tekst-karta-rzedu-tytul);
   line-height: var(--interlinia-naglowek-male);
   letter-spacing: var(--tracking-naglowek-sekcji-male);
   font-weight: var(--waga-naglowek);
@@ -82,33 +94,56 @@
   flex-grow: 1;
 }
 
+/* ⚠ CHEVRON JEST RYSUNKIEM, NIE ZNAKIEM — i to jest wynik sprawdzenia,
+   nie wybór. Wzorzec v2 kończy link strzałką kątową. Odczyt subsetów
+   (`fontTools`, `public/fonts/*.woff2`): `›` U+203A **BRAK** w obu
+   krojach, `❯` U+276F BRAK, `⟩` U+27E9 BRAK. Obecne są `→` U+2192,
+   `>` U+003E i `»` U+00BB — żaden nie jest tym kształtem. Znak spoza
+   subsetu renderuje się z kroju zastępczego, czyli innym rysunkiem na
+   każdym urządzeniu. Inline SVG dziedziczy barwę przez `currentColor`
+   i nie zależy od kroju. */
 .dalej {
   margin-block-start: var(--wymiar-odstep-6);
   color: var(--kolor-rola-link-aktywny);
   font-weight: var(--waga-etykieta);
   align-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wymiar-odstep-2);
+}
+
+.chevron {
+  inline-size: 0.75em;
+  block-size: 0.75em;
+  flex: none;
 }
 
 @media (min-width: 48.0625rem) {
   .sekcja {
-    padding-block: var(--wymiar-odstep-sekcji);
-    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+    padding-block: 0 var(--wymiar-odstep-sekcji);
   }
 
-  /* Trzy równe kolumny — wzorzec ma 430 · 432 · 430, czyli równe
-     w granicach błędu pomiaru krawędzi (2 px na 430). */
+  /* ⚠ TRZY KOLUMNY NIERÓWNE — I TO JEST GŁÓWNA RÓŻNICA WZORCA v2 WOBEC
+     v1. Kolaż v1 miał trzy karty RÓWNE (216 / 217 / 216 px z 768);
+     zrzut v2 daje 22,74 / 43,16 / 22,74 % szerokości — karta środkowa
+     jest niemal dwukrotnie szersza. Pasmo koordynatora: 23 / 42,5 / 23,
+     czyli Δ 0,26 / 0,66 / 0,26 pp. Biorę wartości pasma.
+
+     ⚠ TO NIE JEST POPRAWKA BŁĘDU POMIARU v1. Obie liczby są prawdziwe
+     na swoich plikach; v1 jest kolażem dwukolumnowym, v2 jedną kolumną.
+     Rozjazd 14,2 pp w `WWW/097` wziął się stąd, że pasmo koordynatora
+     opisywało v2, a pomiar okna szedł po v1. */
   .rzad {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 23fr 42.5fr 23fr;
   }
 
   .tytul {
-    font-size: var(--tekst-h2-srednie);
+    font-size: var(--tekst-karta-rzedu-tytul);
     letter-spacing: var(--tracking-naglowek-sekcji-srednie);
   }
 }
 
-@media (min-width: 90rem) {
-  .sekcja {
-    padding-inline: var(--wymiar-wciecie-tresci);
-  }
-}
+/* ⚠ BLOK 90rem PUSTY I DLATEGO GO NIE MA. Przestawiał wcięcie boczne na
+   `wciecie-tresci` (135 px); od pomiaru v2 wcięcie jest jedno na wszystkich
+   kadrach — `wciecie-wzorca` (67 px). Zostawiona reguła nadpisywałaby je
+   akurat na kadrze, dla którego pomiar powstał. */

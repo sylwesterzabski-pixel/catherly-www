@@ -129,10 +129,22 @@ export default async function StronaGlowna({ params }: Props) {
             laptopa i telefonu z ZDJĘTYM TŁEM, z ekranem laptopa
             wypełnionym zrzutem Playwrighta (ADR-067, ADR-069). */}
         <SekcjaTekstowa
+          /* ⚠ AKCENT W TYM NAGŁÓWKU WYPADA (ADR-070, WWW/097/2 krok 3) —
+             i to jest POMIAR, nie decyzja estetyczna. Sonda na wzorcu v2:
+             w prostokącie nagłówka „Catherly to pamięć twojej sprzedaży"
+             jest ZERO pikseli zielonych, przy kontroli pozytywnej w tym
+             samym przebiegu — pigułka CTA hero 85,7 % zielonych, link na
+             karcie grafitowej 15,2 %. Wzorzec maluje ten nagłówek jednym
+             kolorem.
+
+             ⚠ ZNACZNIK `<akcent>` ZOSTAJE W KLUCZU i dalej jest
+             konsumowany przez `t.rich` — zmienia się tylko to, że span
+             nie bierze klasy akcentu. Wyrzucenie znacznika z treści
+             zapaliłoby strażnika parytetu znaczników (R-AKCENT-03), a on
+             pilnuje rzeczy niezależnej od tego, jak fragment malujemy:
+             że podział frazy jest ten sam w trzech językach. */
           naglowek={tDefinicja.rich("naglowek", {
-            akcent: (tresc) => (
-              <span className="akcent-naglowka">{tresc}</span>
-            ),
+            akcent: (tresc) => <span>{tresc}</span>,
           })}
           idNaglowka="definicja-h2"
           ton="2"

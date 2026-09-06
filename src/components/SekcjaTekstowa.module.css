@@ -122,8 +122,45 @@
    więc render leży wprost na tonie sekcji, a cień daje `drop-shadow`
    z tokena `cien.mockup`, którego alfa (0,09) jest zmierzona na
    oryginale. Ramka dorysowałaby krawędź, której wzorzec nie ma. */
+/* ⚠ SEKCJA „PAMIĘĆ" MA WŁASNE, NIESYMETRYCZNE ODSTĘPY Z POMIARU v2
+   (ADR-070, WWW/097/2 krok 3): 43 px nad nagłówkiem i 62 px pod prozą
+   przy szerokości 906, czyli 4,75 % i 6,84 % — po przeliczeniu na kadr
+   1440: 68 px i 99 px. Niesymetryczność jest we wzorcu; zrównanie „bo
+   porządniej" byłoby ujednoliceniem różnicy zmierzonej.
+
+   Reguła celuje w `.uklad`, czyli w wariant Z KADREM — a ten na całej
+   stronie ma dziś jedno wystąpienie: sekcję „pamięć". Pozostałe sekcje
+   tekstowe trzymają odstęp globalny i przelicza je partia 2. */
+.sekcja:has(.uklad) {
+  padding-block: var(--wymiar-odstep-pamieci-gora) var(--wymiar-odstep-pamieci-dol);
+  padding-inline: var(--wymiar-wciecie-wzorca);
+}
+
+/* ⚠ NAGŁÓWEK BEZ DZIELENIA WYRAZÓW (ADR-070, WWW/097/2 krok 3).
+   Globalna reguła dla nagłówków ma `hyphens: auto` — weszła w ADR-044,
+   żeby długie polskie słowo nie wychodziło poza kadr 320 px, i tam
+   zostaje. Tutaj wzorzec v2 pokazuje nagłówek w DWÓCH wierszach bez ani
+   jednego dywizu, a dzielenie nazwy produktu czyta się jak literówka.
+   `manual` znaczy: łam tylko tam, gdzie w treści stoi miękki dywiz —
+   a w `content/` nie stoi ani jeden. Strażnik pilnuje obu warunków. */
+.uklad h2 {
+  hyphens: manual;
+  text-wrap: balance;
+}
+
+/* Akapit sekcji „pamięć" — ta sama miara co podtytuł hero (1,7 %
+   szerokości wzorca v2). Reguła celuje w wariant z kadrem, więc nie
+   rusza pozostałych sekcji tekstowych. */
+.uklad .wnetrze p {
+  font-size: var(--tekst-akapit-wzorca);
+}
+
+/* ⚠ KONTENER 1200 ZDJĘTY (ADR-070, WWW/097/2 krok 3). Wzorzec v2 rozpina
+   sekcję „pamięć" między wcięciami bocznymi, a nie w kontenerze treści:
+   proza zaczyna się na 4,64 %, mockup kończy na 94,04 %. Przy kontenerze
+   1200 mockup dostawał trakt 42 % z 1200 = 504 px zamiast zmierzonych
+   715 px — zmierzone na zrzucie: x 57,85 → 91,67 % zamiast 44,37 → 94,04 %. */
 .uklad {
-  max-inline-size: var(--wymiar-kontener-filaru);
   margin-inline: auto;
 }
 
@@ -142,14 +179,24 @@
 }
 
 @media (min-width: 48.0625rem) {
+  /* ⚠ TRAKTY Z POMIARU v2, NIE 58 : 42. Zmierzone: proza x 4,64 → ok. 40 %,
+     mockup x 44,37 → 94,04 % szerokości. Po odjęciu wcięć bocznych
+     (4,64 % i 4,30 %) i odstępu daje to 44 : 55 wewnątrz pola treści.
+     Poprzednie 58 : 42 pochodziło z hero i było przeniesione „bo pasuje" —
+     wzorzec daje tu inny podział, bo mockup jest szerszy niż proza. */
   .uklad {
     display: grid;
-    grid-template-columns: 58fr 42fr;
-    gap: var(--wymiar-odstep-8);
+    grid-template-columns: 44fr 55fr;
+    gap: var(--wymiar-odstep-6);
     align-items: center;
   }
 
   .kadr {
     margin-block-start: 0;
+    /* Szerokość mockupu z pomiaru v2 — patrz token `mockup-pamieci`.
+       Wysokość wychodzi z proporcji pliku; osobnej liczby na nią NIE
+       biorę, bo pasmo koordynatora rozjeżdża się tam o 6,07 pp. */
+    max-inline-size: var(--wymiar-mockup-pamieci);
+    justify-self: end;
   }
 }

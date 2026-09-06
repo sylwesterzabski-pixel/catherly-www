@@ -55,6 +55,46 @@ export function Hero({ locale }: Props) {
 
   return (
     <section className={styles.hero} aria-labelledby="hero-h1">
+      {/* ⚠ WARSTWA ABSOLUTNA, NIE KOLUMNA SIATKI (ADR-070, WWW/097/2
+          krok 2). Wzorzec v2 rozpina fotografię na CAŁĄ wysokość hero
+          (y 0 → 100 %) i wypuszcza ją na prawą krawędź — zmierzone:
+          x 47,9 → 100 %, prawa krawędź dokładnie 100,00 %.
+          Kolumna siatki tego nie umie: jej wysokość bierze się z treści,
+          a szerokość z traktu.
+
+          ⚠ SIATKA ZOSTAJE NIETKNIĘTA — i to jest wymóg zlecenia, nie
+          wygoda. W `WWW/096` próbowałem tego samego przez ujemny margines
+          NA ELEMENCIE SIATKI: procent w marginesie liczy się od szerokości
+          obszaru siatki, pudełko rosło, a obraz ze `100%` szedł za nim —
+          hero wyszło ponad dwukrotnie wyższe. Warstwa absolutna nie dotyka
+          traktów, więc kolumna tekstu zostaje tam, gdzie była. */}
+      <div className={styles.media} aria-hidden="false">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className={styles.bohaterka}
+          src="/obrazy/wzorzec-2026-09-06/1-bohaterka.avif"
+          alt={tWzorzec("bohaterka")}
+          width={1200}
+          height={1489}
+          fetchPriority="high"
+          decoding="async"
+        />
+        {/* TELEFON — ramka z bitmapy wzorca. EKRAN ZOSTAJE PUSTY:
+            decyzja właściciela A/C jest otwarta, a wciśnięcie kadru
+            desktopowego 2048×1280 w ekran pionowy byłoby pokazaniem
+            aplikacji, której tak nie widać — kadr jest DOWODEM, nie
+            mockupem (zakaz zlecenia i sens reguły z kanonu). */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className={styles.telefon}
+          src="/obrazy/wzorzec-2026-09-06/2d-iphone-P-alfa.avif"
+          alt={tWzorzec("telefon")}
+          width={900}
+          height={1117}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
       <div className={styles.wnetrze}>
         <div className={styles.kolumny}>
           {/* ⚠ DUCH USUNIĘTY (ADR-069, WWW/096 v4 pkt 3). Stał tu
@@ -70,9 +110,21 @@ export function Hero({ locale }: Props) {
               {t("naglowek")}
             </h1>
             <p className={styles.podtytul}>{t("podtytul")}</p>
-            <a className={styles.cta} href={adresWJezyku(locale, "/funkcje")}>
-              {t("cta")}
-            </a>
+            {/* ⚠ RZĄD DWÓCH DRÓG, NIE JEDNEJ (ADR-070, WWW/097/2 krok 2).
+                Wzorzec v2 stawia obok pigułki CTA drugi, TEKSTOWY link.
+                Klucz `Hero.ctaWtorne` powstał w tym batchu, bo go NIE BYŁO:
+                przeszukanie 354 kluczy ×3 języki w `WWW/097` dało zero
+                trafień na ciąg „Zobacz funkcje" i to był jeden z trzech
+                warunków STOP tamtego zlecenia. Brzmienia EN i DE napisał
+                wykonawca — pozycja T75 rejestru, jak przy karcie Wrapped. */}
+            <div className={styles.rzadCta}>
+              <a className={styles.cta} href={adresWJezyku(locale, "/funkcje")}>
+                {t("cta")}
+              </a>
+              <a className={styles.ctaWtorne} href={adresWJezyku(locale, "/funkcje")}>
+                {t("ctaWtorne")}
+              </a>
+            </div>
             <PasekPotwierdzen
               pozycje={[t("potwierdzenieUE"), t("potwierdzenieRezygnacja")]}
               klasa={styles.potwierdzenia}
@@ -88,33 +140,6 @@ export function Hero({ locale }: Props) {
               wzorzec finalny daje kadr PIONOWY OBOK tekstu i wtapia go
               maską. Rama i wtopienie wykluczają się mechanicznie — maska
               wygasza obrys przy narożnikach (zapisane już w ADR-063). */}
-          <div className={styles.media}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className={styles.bohaterka}
-              src="/obrazy/wzorzec-2026-09-06/1-bohaterka.avif"
-              alt={tWzorzec("bohaterka")}
-              width={1200}
-              height={1489}
-              fetchPriority="high"
-              decoding="async"
-            />
-            {/* TELEFON — ramka z bitmapy wzorca. EKRAN ZOSTAJE PUSTY:
-                decyzja właściciela A/C jest otwarta, a wciśnięcie kadru
-                desktopowego 2048×1280 w ekran pionowy byłoby pokazaniem
-                aplikacji, której tak nie widać — kadr jest DOWODEM, nie
-                mockupem (zakaz zlecenia i sens reguły z kanonu). */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className={styles.telefon}
-              src="/obrazy/wzorzec-2026-09-06/2c-iphone-L-alfa.avif"
-              alt={tWzorzec("telefon")}
-              width={900}
-              height={1117}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
         </div>
       </div>
     </section>
