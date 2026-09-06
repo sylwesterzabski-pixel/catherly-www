@@ -178,9 +178,15 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
       k.Filary.filar1.naglowek,
       k.Filary.filar2.naglowek,
       k.Filary.filar3.naglowek,
-      k.Filary.filar4.naglowek,
+      /* ⚠ FILAR 4 PRZENIESIONY, NIE USUNIĘTY (ADR-067, WWW/094).
+         Ten sam ciąg wraca niżej — jako nagłówek BLOKU „WZROST", który
+         stoi między rytmem dnia a cennikiem. Kolejność sprawdzana tą
+         tablicą jest więc jednocześnie asercją, że nagłówek jest na
+         stronie DOKŁADNIE RAZ i w nowym miejscu: dwa wystąpienia dałyby
+         tu czerwień tak samo jak zero. */
       k.DbanieOSiebie.naglowek,
       k.RytmDnia.naglowek,
+      k.Filary.filar4.naglowek,
       k.CennikSkrot.naglowek,
       k.Obawy.naglowek,
       /* ⚠ DOPISANE (ADR-067, WWW/093): sekcja zamykająca dostała nagłówek

@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { BlokWzrostu } from "@/components/BlokWzrostu";
 import { CennikSkrot } from "@/components/CennikSkrot";
 import { DbanieOSiebie } from "@/components/DbanieOSiebie";
 import { Faq } from "@/components/Faq";
@@ -38,7 +39,18 @@ const FILARY = [
   { klucz: "filar1", id: "filar-1-h2", kadr: "filar-1-pozyskiwanie", blok: "blok1Link", sciezka: "/funkcje/pozyskiwanie" },
   { klucz: "filar2", id: "filar-2-h2", kadr: "filar-2-tresci", blok: "blok2Link", sciezka: "/funkcje/tresci" },
   { klucz: "filar3", id: "filar-3-h2", kadr: "filar-3-zespol", blok: "blok3Link", sciezka: "/funkcje/zespol" },
-  { klucz: "filar4", id: "filar-4-h2", kadr: "filar-4-wyniki", blok: "blok4Link", sciezka: "/funkcje/wyniki" },
+  /* ⚠ FILAR „WYNIKI" ZDJĘTY Z GŁÓWNEJ (ADR-067, WWW/094 krok 1).
+     Nie jest to usunięcie treści: jego nagłówek i zdanie niesie odtąd
+     BLOK „WZROST" niżej, a pełna sekcja stoi na `/funkcje/wyniki` —
+     tak rozstrzygnęło zlecenie WWW/093 („Wyniki: sekcja filaru zostaje
+     na /funkcje/wyniki") i decyzja właściciela o TRZECH filarach na
+     głównej (WWW/091).
+
+     Powód techniczny, gdyby ktoś chciał go przywrócić bez zdejmowania
+     bloku wzrostu: oba używają `Filary.filar4.naglowek`, więc strona
+     miałaby DWA IDENTYCZNE H2 — złamany zarys dokumentu i strażnik
+     kolejności nagłówków wskazujący na dwie różne sekcje tym samym
+     ciągiem. */
 ] as const;
 
 export function generateStaticParams() {
@@ -58,6 +70,7 @@ export default async function StronaGlowna({ params }: Props) {
   const tProblem = await getTranslations("Problem");
   const tDefinicja = await getTranslations("Definicja");
   const tRytm = await getTranslations("RytmDnia");
+  const tWzorzec = await getTranslations("ObrazyWzorzec");
   const tObawy = await getTranslations("Obawy");
   const tZamkniecie = await getTranslations("ZamkniecieGlowna");
   const tIndeks = await getTranslations("FunkcjeIndeks");
@@ -101,6 +114,25 @@ export default async function StronaGlowna({ params }: Props) {
             ),
           })}
           idNaglowka="definicja-h2"
+          /* KADR „PAMIĘĆ" (ADR-067, zlecenie WWW/094 krok 2). Render
+             laptopa i telefonu z manifestu bitmap, z EKRANEM LAPTOPA
+             wypełnionym zrzutem `z6-filar-1-dmo.png` — realnym kadrem
+             Playwrighta z bazy demo (raport pochodzenia w
+             design/obrazy-robocze/z6/). Ekran telefonu zostaje PUSTY:
+             decyzja właściciela [A/C] jeszcze nie zapadła, a wciśnięcie
+             kadru desktopowego 2048×1280 w ekran pionowy jest zakazane
+             wprost — kadr jest dowodem, nie mockupem.
+             Obudowa laptopa i telefonu to warstwa (b) kanonu, dekoracja;
+             zrzut na ekranie to warstwa (a), dowód. Rozdział jest tu
+             widoczny w samym pliku: dekoracja pochodzi z manifestu,
+             dowód z pipeline'u zrzutów, a suma złożenia stoi
+             w docs/obrazy/MANIFEST-WZORZEC-2026-09-06.md. */
+          kadr={{
+            zrodlo: "/obrazy/wzorzec-2026-09-06/3-macbook-iphone-ekran.avif",
+            alt: tWzorzec("macbookTelefon"),
+            szerokosc: 1600,
+            wysokosc: 1195,
+          }}
         >
           <p>{tDefinicja("tresc")}</p>
         </SekcjaTekstowa>
@@ -171,11 +203,44 @@ export default async function StronaGlowna({ params }: Props) {
           naglowek={tRytm("naglowek")}
           idNaglowka="rytm-h2"
           kroki={[
-            { nazwa: tRytm("krok1Nazwa"), tresc: tRytm("krok1Tresc") },
-            { nazwa: tRytm("krok2Nazwa"), tresc: tRytm("krok2Tresc") },
-            { nazwa: tRytm("krok3Nazwa"), tresc: tRytm("krok3Tresc") },
+            {
+              nazwa: tRytm("krok1Nazwa"),
+              tresc: tRytm("krok1Tresc"),
+              chip: tRytm("krok1Chip"),
+              kadr: "/obrazy/wzorzec-2026-09-06/4-rano.avif",
+              kadrAlt: tWzorzec("rano"),
+            },
+            {
+              /* ⚠ SLOT BEZ KADRU — DECYZJA WŁAŚCICIELA OTWARTA (ADR-067).
+                 Kadr 5 z dostawy pokazuje laptop z pulpitem i wykresem,
+                 czyli obraz, o którym odwiedzająca może pomyśleć „tak
+                 wygląda aplikacja”; kanon żąda wtedy zrzutu z Playwrighta,
+                 a zlecenie oznacza ten kadr jako warunkowy. Slot zostaje
+                 WIDOCZNY z ramką i chipem, żeby sekwencja trzech pór dnia
+                 się nie rozpadła; wejście kadru to podmiana jednej linii. */
+              nazwa: tRytm("krok2Nazwa"),
+              tresc: tRytm("krok2Tresc"),
+              chip: tRytm("krok2Chip"),
+            },
+            {
+              nazwa: tRytm("krok3Nazwa"),
+              tresc: tRytm("krok3Tresc"),
+              chip: tRytm("krok3Chip"),
+              kadr: "/obrazy/wzorzec-2026-09-06/6-wieczorem.avif",
+              kadrAlt: tWzorzec("wieczorem"),
+            },
           ]}
           kropka={tRytm("kropka")}
+        />
+
+        {/* ⚠ BLOK „WZROST" — trzecia wyspa klamry grafitowej (ADR-067,
+            WWW/094 krok 1). Stoi między rytmem dnia a cennikiem, tak jak
+            w kolumnie wzorca. Treść w całości istniejąca: nagłówek
+            i zdanie filaru „Wyniki", wskazane mapowaniem z WWW/093. */}
+        <BlokWzrostu
+          naglowek={t("filar4.naglowek")}
+          idNaglowka="wzrost-h2"
+          zdanie={t("filar4.korzysc")}
         />
 
         {/* S11 — cennik w skrócie (K10; ceny z migawki). */}

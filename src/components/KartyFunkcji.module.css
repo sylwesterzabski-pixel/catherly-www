@@ -104,12 +104,27 @@
    slotu przesunąłby się w dniu, w którym ikony wejdą, i wtedy trzeba by
    mierzyć drugi raz. Tło slotu to powierzchnia pomocnicza — ta sama
    relacja, którą u wzorca ma pudełko ikony wobec płyty karty. */
+/* ⚠ PUDEŁKO POD IKONĄ ZNIKA (ADR-067, WWW/094 krok 4) — i jest to pomiar
+   wzorca, nie uproszczenie. Slot był kwadratem 64 px z własnym tłem,
+   zarezerwowanym pod ikonę, której nie było (ADR-053). Kafelki wzorca
+   finalnego niosą ikonę LINIOWĄ WPROST NA PŁYCIE karty, bez podkładki —
+   sprawdzone na wzorze 7 i na kolumnie wzorca. Podkładka rysowałaby
+   drugi prostokąt w prostokącie.
+
+   Rozmiar zostaje 64 px, bo tyle rezerwował slot i zmiana byłaby skokiem
+   układu; sam rysunek zajmuje 40 px, reszta to oddech. */
 .slotIkony {
   inline-size: var(--wymiar-pudelko-ikony);
   block-size: var(--wymiar-pudelko-ikony);
-  border-radius: var(--wymiar-promien);
-  background: var(--kolor-rola-powierzchnia-2);
   margin-block-end: var(--wymiar-odstep-5);
+  display: grid;
+  place-items: start;
+  color: var(--kolor-rola-tekst-podstawowy);
+}
+
+.slotIkony svg {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
 }
 
 .tytul {

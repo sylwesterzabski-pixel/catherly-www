@@ -23,7 +23,25 @@ const PRZYPADKI = [
   { adres: "/de", jezyk: "de", komunikaty: de },
 ] as const;
 
-const KLUCZE_FILAROW = ["filar1", "filar2", "filar3", "filar4"] as const;
+/* ⚠ TRZY FILARY NA GŁÓWNEJ, NIE CZTERY (ADR-067, WWW/094 krok 1) —
+   i jest to DECYZJA WŁAŚCICIELA (WWW/091), nie zawężenie strażnika.
+
+   Filar „Wyniki" zszedł z głównej: jego nagłówek i zdanie niesie odtąd
+   BLOK „WZROST", a pełna sekcja stoi na `/funkcje/wyniki`. Gdyby zostały
+   oba, strona miałaby dwa identyczne `h2` — bo blok wzrostu używa
+   dokładnie `Filary.filar4.naglowek`.
+
+   ⚠ TA LISTA JEST MECHANIZMEM: koduje, ile filarów stoi na głównej.
+   Wyprowadzenie jej ze zbioru kluczy (`Object.keys(Filary)`) zdjęłoby
+   właśnie tę własność — czwarty filar wróciłby na główną bez decyzji
+   i bez czerwieni. Zostaje wypisana. */
+/* ⚠ `filar4` NIE STOI TU JAKO STAŁA — i to jest poprawka z tego samego
+   batcha. Wpisałem go najpierw jako `const FILAR_NA_PODSTRONIE`, żeby
+   nazwać rzecz zdjętą z listy; nazwa bez ani jednego użycia jest martwą
+   deklaracją (klasa T56) i `eslint --max-warnings=0` zapalił się na niej
+   słusznie. Informacja zostaje, nośnikiem jest komentarz, nie kod:
+   filar „Wyniki" sprawdza się na `/funkcje/wyniki`, nie tutaj. */
+const KLUCZE_FILAROW = ["filar1", "filar2", "filar3"] as const;
 
 // BARWA CZERPANA ZE ŹRÓDŁA, NIE PRZEPISANA (WWW/056 pkt 2, ADR-043).
 // Literał `rgb(...)` przepisany z ręki starzeje się przy każdej zmianie
@@ -48,9 +66,14 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     await page.goto(adres);
 
     // Struktura nagłówków treści: 1×h1 (hero) + 11×h2 w main
-    // (S3 problem + S4 definicja + 4 filary + S9 sr-only + S10 rytm
-    // + S11 sr-only + S12 sr-only + S13 zamknięcie); nagłówki sekcji
-    // stopki poza main.
+    // (S3 problem + S4 definicja + 3 filary + S9 sr-only + S10 rytm
+    // + BLOK WZROSTU + S11 sr-only + S12 sr-only + S13 zamknięcie);
+    // nagłówki sekcji stopki poza main.
+    //
+    // ⚠ LICZBA NIE DRGNĘŁA, A SKŁAD SIĘ ZMIENIŁ (ADR-067, WWW/094):
+    // ubył czwarty filar, doszedł blok „wzrost". Zapisuję to, bo zielona
+    // liczba przy zmienionym składzie wygląda jak brak zmiany — a tym,
+    // co naprawdę pilnuje kolejności, jest `zlozenie.spec.ts`.
     //
     // ⚠ 10 → 11 (ADR-067, WWW/093). Sekcja zamykająca DOSTAŁA nagłówek,
     // którego wzorzec finalny wymaga w tym miejscu — dawny werdykt panelu
@@ -122,7 +145,10 @@ test("K4: tekst po LEWEJ na wszystkich filarach; DOM zawsze tekst przed obrazem"
      ⚠ CO ZOSTAJE BEZ ZMIAN: kolejność w DOM. Tekst ma stać przed obrazem
      w toku dokumentu — to jest własność czytana przez czytniki ekranu
      i przez kadr wąski, niezależna od tego, którą stroną leży kolumna. */
-  const KLUCZE = ["filar1", "filar2", "filar3", "filar4"] as const;
+  /* ⚠ TRZY, NIE CZTERY (ADR-067, WWW/094) — filar „Wyniki" zszedł
+     z głównej decyzją właściciela; patrz komentarz przy KLUCZE_FILAROW.
+     Lista wypisana, nie czerpana ze zbioru, z tego samego powodu. */
+  const KLUCZE = KLUCZE_FILAROW;
 
   for (const klucz of KLUCZE) {
     const sekcja = page.locator("section", {

@@ -19,6 +19,16 @@ type Props = {
   kropka?: string;
   /** Akapity prozy (elementy <p>). */
   children?: ReactNode;
+  /** KADR POD PROZĄ (ADR-067, zlecenie WWW/094 krok 2) — pojedynczy
+   *  plik pod stałą ścieżką, bez rejestru srcset, ten sam kształt, jakim
+   *  `Filar` niesie kadry tymczasowe. Pominięty = sekcja bez kadru,
+   *  czyli stan wszystkich pozostałych sekcji tekstowych. */
+  kadr?: {
+    zrodlo: string;
+    alt: string;
+    szerokosc: number;
+    wysokosc: number;
+  };
 };
 
 /**
@@ -32,6 +42,7 @@ export function SekcjaTekstowa({
   idNaglowka,
   kropka,
   children,
+  kadr,
 }: Props) {
   const klasy =
     wariant === "akcentowa"
@@ -46,6 +57,24 @@ export function SekcjaTekstowa({
           <p className={styles.kropka}>{kropka}</p>
         )}
       </div>
+      {/* ⚠ KADR POZA `.wnetrze` — CELOWO. Wnętrze sekcji tekstowej trzyma
+          miarę czytelną prozy (ok. 65 znaków); kadr ma we wzorcu 85,9 %
+          szerokości kolumny, czyli 1237 px przy 1440. Wstawiony do
+          wnętrza dostałby miarę akapitu i skurczył się do jednej trzeciej
+          zmierzonej szerokości. */}
+      {kadr === undefined ? null : (
+        <div className={styles.kadr}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={kadr.zrodlo}
+            alt={kadr.alt}
+            width={kadr.szerokosc}
+            height={kadr.wysokosc}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      )}
     </section>
   );
 }

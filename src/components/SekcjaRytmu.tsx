@@ -3,6 +3,12 @@ import styles from "./SekcjaRytmu.module.css";
 type Krok = {
   nazwa: string;
   tresc: string;
+  /** Etykieta na kadrze — chip ze wzorca finalnego (ADR-067). */
+  chip: string;
+  /** Kadr pory dnia; brak = slot pusty z ramką (patrz komentarz niżej). */
+  kadr?: string;
+  /** Tekst alternatywny kadru. Wymagany razem z kadrem. */
+  kadrAlt?: string;
 };
 
 type Props = {
@@ -42,9 +48,28 @@ export function SekcjaRytmu({ naglowek, idNaglowka, kroki, kropka }: Props) {
       <div className={styles.wnetrze}>
         <h2 id={idNaglowka}>{naglowek}</h2>
         <ul className={styles.kroki} role="list">
-          {kroki.map(({ nazwa, tresc }) => (
+          {kroki.map(({ nazwa, tresc, chip, kadr, kadrAlt }) => (
             <li key={nazwa}>
               <span className={styles.nazwa}>{nazwa}</span>
+              {/* ⚠ SLOT KADRU Z CHIPEM (ADR-067, WWW/094 krok 3).
+                  Chip jest HTML-em NA kadrze, nie częścią bitmapy —
+                  dzięki temu tłumaczy się razem z resztą strony i czyta
+                  go czytnik ekranu. Wzorzec ma go wypalonego w obrazie;
+                  u nas nie może być, bo mamy parytet ×3.
+
+                  ⚠ SLOT BEZ KADRU ZOSTAJE WIDOCZNY — ramka i chip, bez
+                  obrazu. To jedyne miejsce na stronie, gdzie pusty slot
+                  NIE zwija się przez `:empty` (ADR-060), i jest to
+                  decyzja zlecenia: trzy pory dnia są sekwencją, więc
+                  zniknięcie środkowej złamałoby rytm bardziej niż jej
+                  pustka. Pozycja rejestru czeka na kadr. */}
+              <div className={styles.kadr}>
+                {kadr === undefined ? null : (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={kadr} alt={kadrAlt} width={1200} height={805} loading="lazy" decoding="async" />
+                )}
+                <span className={styles.chip}>{chip}</span>
+              </div>
               <p>{tresc}</p>
             </li>
           ))}

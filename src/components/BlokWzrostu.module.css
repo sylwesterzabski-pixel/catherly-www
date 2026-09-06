@@ -1,0 +1,65 @@
+/* Blok „wzrost" — wyspa klamry grafitowej (ADR-067, WWW/094 krok 1).
+
+   Proporcja z pomiaru wzorca: blok zajmuje w kolumnie kolażu 687 × 391 px
+   przy kontenerze 768, czyli h/w ≈ 0,509 i szerokość ≈ 89 % kontenera —
+   te same dwie liczby, które niesie reszta kompozycji (wcięcie 8,7 %).
+   Promień z pomiaru: 10–11 px na dwóch niezależnych kształtach grafitowych,
+   czyli szczebel „mały" naszej drabiny. */
+.sekcja {
+  padding-block: var(--wymiar-odstep-sekcji-male);
+  padding-inline: var(--wymiar-wciecie-tresci-male);
+}
+
+.wnetrze {
+  max-inline-size: var(--wymiar-kontener-waski);
+  margin-inline: auto;
+  background: var(--kolor-rola-grafit-klamr);
+  border-radius: var(--wymiar-promien-maly);
+  padding: var(--wymiar-odstep-sekcji-male) var(--wymiar-odstep-7);
+  text-align: center;
+}
+
+/* Nagłówek bierze skalę nagłówka sekcji z ADR-064 i miarę nagłówka
+   wzorca (1024 px), więc łamie się w dwa wiersze przy 1440 — tak jak
+   we wzorcu finalnym. */
+.naglowek {
+  font-size: var(--tekst-h2-male);
+  line-height: var(--interlinia-naglowek-male);
+  letter-spacing: var(--tracking-naglowek-sekcji-male);
+  font-weight: var(--waga-naglowek);
+  max-inline-size: var(--wymiar-miara-naglowka-wzorca);
+  margin: 0 auto;
+  text-wrap: balance;
+}
+
+.zdanie {
+  color: var(--kolor-rola-tekst-drugorzedny);
+  max-inline-size: var(--wymiar-miara-akapitu-wzorca);
+  margin: var(--wymiar-odstep-5) auto 0;
+}
+
+@media (min-width: 48.0625rem) {
+  .sekcja {
+    padding-block: var(--wymiar-odstep-sekcji);
+    padding-inline: var(--wymiar-wciecie-tresci-srednie);
+  }
+
+  .naglowek {
+    font-size: var(--tekst-h2-srednie);
+    letter-spacing: var(--tracking-naglowek-sekcji-srednie);
+  }
+}
+
+@media (min-width: 80rem) {
+  .naglowek {
+    font-size: var(--tekst-h2);
+    line-height: var(--interlinia-naglowek-sekcji);
+    letter-spacing: var(--tracking-naglowek-sekcji);
+  }
+}
+
+@media (min-width: 90rem) {
+  .sekcja {
+    padding-inline: var(--wymiar-wciecie-tresci);
+  }
+}

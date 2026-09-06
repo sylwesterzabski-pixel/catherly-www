@@ -119,3 +119,43 @@
     gap: var(--wymiar-odstep-5);
   }
 }
+
+/* ═══ KADRY PÓR DNIA I CHIPY (ADR-067, WWW/094 krok 3) ═══════════════
+   Wzorzec finalny daje każdej porze kadr w proporcji zbliżonej do 3:2
+   z etykietą godziny w lewym dolnym rogu. Proporcja rezerwowana przez
+   `aspect-ratio`, żeby slot bez obrazu zajmował dokładnie tyle samo co
+   slot z obrazem — inaczej wejście kadru przesuwałoby układ. */
+.kadr {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  margin-block: var(--wymiar-odstep-5);
+  border: 0.0625rem solid var(--kolor-rola-kreska);
+  border-radius: var(--wymiar-promien-sredni);
+  overflow: hidden;
+  background: var(--kolor-rola-powierzchnia);
+}
+
+.kadr img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* CHIP — etykieta godziny na kadrze. Plama bierze `powierzchnia`
+   (biel na korpusie jasnym), bo ma leżeć NA zdjęciu i musi się od niego
+   odciąć niezależnie od tego, co na zdjęciu jest; sama barwa tekstu
+   idzie za rolą tekstu, więc kontrast liczy się w obrębie chipa,
+   nie wobec fotografii pod nim. */
+.chip {
+  position: absolute;
+  inset-block-end: var(--wymiar-odstep-5);
+  inset-inline-start: var(--wymiar-odstep-5);
+  background: var(--kolor-rola-powierzchnia);
+  color: var(--kolor-rola-tekst-podstawowy);
+  border-radius: var(--wymiar-promien);
+  padding: var(--wymiar-odstep-2) var(--wymiar-odstep-4);
+  font-size: var(--tekst-xs);
+  font-weight: var(--waga-etykieta);
+  white-space: nowrap;
+}

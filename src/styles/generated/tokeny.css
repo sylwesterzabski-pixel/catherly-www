@@ -479,14 +479,6 @@
   --ruch-przesuniecie-wejscia: 2.5rem; /** Przesunięcie pionowe wejścia dla KART — 40 px. POMIAR R (WWW/089 krok 1b): `translateY` 40 → 0 na kartach bento, opinii i cennika, trzy rodziny, ta sama liczba. */
   --ruch-przesuniecie-wejscia-tekstu: 1.25rem; /** Przesunięcie pionowe wejścia dla BLOKÓW TEKSTU — 20 px. POMIAR R (WWW/089 krok 1b): `translateY` 20 → 0 na bloku nagłówka sekcji. ⚠ ROZRÓŻNIENIE JEST POMIAREM, NIE UPODOBANIEM: karty jadą 40 px, tekst 20 px, a nagłówek sekcji i wiersze listy nie jadą wcale (samo krycie). Trzy rodziny, trzy zachowania. */
   /**
-   * ⚠ WARTOŚĆ NASZA, NIE PRZESZCZEPIONA — I TO JEST NAJWAŻNIEJSZE ZDANIE PRZY TYM TOKENIE (ADR-063, WWW/089). Karta szablonu React Bits reklamuje „Parallax hero with CTA"; POMIARU TEGO PARALLAXU NIE DA SIĘ WYKONAĆ, BO GO NIE MA.
-   * 
-   * Sprawdzone trzema drogami w jednym batchu, na kadrach 1440 i 390: (1) `transform` wszystkich 597 elementów w pięciu pozycjach przewijania — jedyny ruch to pas logo w poziomie; (2) offset obrazu WEWNĄTRZ ramy hero w czterech pozycjach — stały, 1 px; (3) `background-position` — stałe. **Kontrola pozytywna zapaliła w każdej z trzech**: wstrzyknięty element z `animation-timeline: scroll()` przesuwał się 0 → 23,4 → 46,8 px, więc zero jest własnością wzorca, nie sondy.
-   * 
-   * Z tego wynika, że współczynnika parallaxu NIE MA SKĄD WZIĄĆ. Zakres 3% jest wyborem wykonawcy pod jawnym poleceniem zlecenia, dobranym tak, żeby ruch był zauważalny dopiero przy porównaniu, a nie odczuwalny jako przesuwanie się strony. Nie wolno go cytować jako miary React Bits.
-   */
-  --ruch-zasieg-parallaxu-hero: 3%;
-  /**
    * Czas pełnego cyklu pasa przesuwnego. WYLICZONY Z DROGI I TEMPA, nie dobrany: maszt polski ma 2480,8 px (zmierzone 04.09.2026 na żywej stronie), droga jednego cyklu to połowa masztu plus odstęp kopii = 1264,4 px, a tempo wzorca to 50,0 px/s — czyli 1264,4 / 50 = 25,29 s.
    * 
    * ⚠ TEMPO WZORCA ZMIERZONE, NIE PRZEPISANE: jego maszt ma 1312 px i przesuwa się o −100% własnej szerokości w 26,24 s, czyli dokładnie 50,0 px/s. Poprzednie 16,86 s stało na tempie 75 px/s z POMIARU 0.4/0.7 — innego wzorca.

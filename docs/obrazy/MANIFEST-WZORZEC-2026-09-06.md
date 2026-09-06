@@ -70,3 +70,47 @@ liczbę po cichu — kto policzy homografię z surowego narożnika, dostanie sko
 - **Ekrany telefonów** zostają puste — decyzja A/C otwarta, a kadr desktopowy
   2048×1280 nie wchodzi w ekran pionowy (zakaz zlecenia i sens kanonu: kadr jest
   dowodem, nie mockupem).
+
+## Złożenie ekranu MacBooka (ADR-067, zlecenie `WWW/094` krok 2)
+
+| plik | powstał z | wymiar | waga | SHA-256 (16) |
+| --- | --- | --- | --- | --- |
+| `3-macbook-iphone-ekran.avif` | `3-macbook-iphone.avif` + `public/obrazy/aplikacja/z6-filar-1-dmo.png` | 1600 × 1195 | 18 kB | `5a3da96fdc4bc8e9` |
+
+**Plik źródłowy zostaje nietknięty** — złożenie jest osobnym plikiem, więc
+suma `f26a5713edd517ce` z tabeli wyżej dalej opisuje to, co zostało pobrane.
+Gdyby złożenie nadpisywało oryginał, manifest twierdziłby o nim coś, co
+przestało być prawdą, i nikt nie miałby jak tego zauważyć.
+
+**Metoda — maska bieli, nie prostokąt.** Zrzut wchodzi w prostokąt ekranu
+`x 519–1835 · y 450–1268` (współrzędne źródła 2400 × 1792, po przeskalowaniu
+×0,6667 na 1600 → `x 346 · y 300 · 877 × 545`), ale **tylko tam, gdzie
+oryginał jest niemal czystą bielą** (każdy kanał > 235). Powód jest widoczny
+w samym obrazie: telefon stoi PRZED prawym dolnym rogiem ekranu laptopa, więc
+wklejenie pełnego prostokąta przykryłoby telefon. Maska pokryła **89,2 %**
+prostokąta.
+
+**Ekran telefonu wykluczony z maski** — `42 312 px` wyciętych po narożnikach
+telefonu z tabeli wyżej. Ekran telefonu jest tak samo biały jak ekran
+laptopa, więc sama próba bieli zaliczyłaby go do maski i zrzut odłożyłby się
+także na nim. Zlecenie żąda ekranu telefonu **pustego** (decyzja właściciela
+[A/C] nie zapadła), a kanon zakazuje wciskania kadru desktopowego 2048 × 1280
+w ekran pionowy: kadr jest dowodem, nie mockupem.
+
+**Rozdział warstw kanonu jest tu widoczny w jednym pliku.** Obudowa laptopa
+i telefonu to warstwa **(b)**, dekoracja — render z manifestu. Zrzut na
+ekranie to warstwa **(a)**, dowód — kadr Playwrighta z bazy efemerycznej
+`catherly_zrzuty`, konto `demo@fboos.local`, commit aplikacji
+`e35ad8ceefbed065d196c0342891f9f1fe56d2bd`, raport pochodzenia
+w `design/obrazy-robocze/z6/RAPORT-POCHODZENIA-e35ad8ce.md`. Warstwa (a) nie
+jest tu bajt w bajt, bo została przeskalowana do prostokąta ekranu — to ta
+sama operacja, którą wykonuje pipeline wariantów, i dlatego suma złożenia
+stoi w tabeli wyżej.
+
+**Kontrola pozytywna prostokąta, w tym samym przebiegu.** Sonda mierząca
+średnie kanałów w prostokącie ekranu dała najpierw **tę samą liczbę** dla
+ekranu i dla pasa obok niego — bo `sharp().stats()` czyta wejście, nie potok.
+Dwie identyczne liczby przy dwóch różnych obszarach ujawniły ślepotę sondy.
+Po przepuszczeniu przez bufor: ekran **250,2 · 250,2 · 250,2**, pas obok
+**243,1 · 242,2 · 238,0**, środek ekranu **254,3 · 254,3 · 254,3**. Dopiero
+rozdzielone liczby dowodzą, że prostokąt trafia w ekran.

@@ -98,7 +98,16 @@ export function Filar({
   link,
 }: Props) {
   return (
-    <section className={styles.filar} aria-labelledby={idNaglowka} data-ton="jasny">
+    <section
+      className={styles.filar}
+      aria-labelledby={idNaglowka}
+      /* ⚠ GRAFIT, NIE JASNY (ADR-067, WWW/094 krok 1) — powierzchnia
+         karty przemapowuje KAŻDĄ rolę tekstu i granicy na wariant
+         `*-na-klamrze`. Sam atrybut jest tu całym mechanizmem: żaden
+         moduł filaru nie wypisuje barwy, więc zmiana tonu przestawia
+         nagłówek, zdanie, listę, ::marker i link jednym słowem. */
+      data-ton="ciemny"
+    >
       <div className={styles.wnetrze}>
         {/* ⚠ NAPRZEMIENNOŚCI NIE MA — POMIAR, NIE PRZYZWYCZAJENIE
             (ADR-055). Do 04.09 filary szły zebrą L-P-L-P i prop

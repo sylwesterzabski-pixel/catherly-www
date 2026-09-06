@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 
+import { IKONY } from "./IkonyKafelkow";
 import styles from "./KartyFunkcji.module.css";
 
 /**
@@ -75,7 +76,14 @@ export function KartyFunkcji() {
                   bo pudełko nie niesie treści: bez tego czytnik napotyka
                   element bez nazwy w środku listy. Wypełnienie slotu to
                   osobna decyzja i osobne zlecenie. */}
-              <div className={styles.slotIkony} aria-hidden="true" />
+              {/* ⚠ SLOT NIOSĄCY IKONĘ (ADR-067, WWW/094 krok 4). Do dziś
+                  był pusty i zwijał się przez `:empty` (ADR-060); teraz
+                  niesie SVG przerysowany z wzoru 7. Reguła `:empty`
+                  ZOSTAJE — kafelek bez ikony w mapie nadal zwinie slot
+                  zamiast zostawić puste pudełko. */}
+              <div className={styles.slotIkony} aria-hidden="true">
+                {IKONY[k.id]}
+              </div>
               <p className={styles.tytul}>{t(k.tytul)}</p>
               <p className={styles.opis}>{t(k.opis)}</p>
             </li>

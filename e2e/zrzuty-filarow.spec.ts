@@ -53,7 +53,15 @@ const PRZYPADKI = [
   { adres: "/de", jezyk: "de", komunikaty: de },
 ] as const;
 
-const KLUCZE_FILAROW = ["filar1", "filar2", "filar3", "filar4"] as const;
+/* ⚠ TRZY FILARY NA GŁÓWNEJ (ADR-067, WWW/094 krok 1). Filar „Wyniki"
+   zszedł z głównej decyzją właściciela; jego nagłówek niesie blok
+   „wzrost", a pełna sekcja stoi na `/funkcje/wyniki`. Ten strażnik pyta
+   o BRAK ZRZUTU APLIKACJI w sekcjach filarów GŁÓWNEJ — na podstronie
+   pyta o to jego własny przypadek.
+
+   ⚠ LISTA WYPISANA, NIE CZERPANA ZE ZBIORU: gdyby szła z `Object.keys`,
+   czwarty filar wróciłby na główną bez decyzji i bez czerwieni. */
+const KLUCZE_FILAROW = ["filar1", "filar2", "filar3"] as const;
 
 const KORZEN = join(__dirname, "..");
 

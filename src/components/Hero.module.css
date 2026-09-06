@@ -120,145 +120,25 @@
   color: var(--kolor-rola-tekst-na-interakcji);
 }
 
+/* ⚠ RAMA HERO I PARALLAX KADRU — ODWOŁANE (ADR-068, 2026-09-06).
+   Stało tu ok. 190 linii: slot `.kadr` z ramką i promieniem, jego stan
+   pusty, warunek `:has(.kadr:empty)` znoszący minimum wysokości oraz
+   parallax `kadrHeroParallax` na osi `scroll(root block)` w trzech
+   warstwach zabezpieczenia. Wszystko celowało w element, którego od
+   przebudowy hero na dwie kolumny nie ma w znaczniku.
+
+   Usunięte dopiero teraz i dopiero z decyzją: sonda na wyrenderowanej
+   stronie naliczyła `[class*="Hero_kadr__"]` = 0 przy kontroli
+   pozytywnej `[class*="Hero_bohaterka__"]` = 1 i 32 elementach
+   z jakąkolwiek animacją, a ADR-068 rozstrzyga, że ani rama, ani
+   parallax nie wracają. Kolejność jest treścią, nie porządkiem:
+   oznaczenie → dowód → decyzja → usunięcie. */
+
 .potwierdzenia {
   margin-block-start: 2rem;
   justify-content: center;
   font-size: var(--tekst-xs);
   font-weight: var(--waga-etykieta);
-}
-
-/* ══════════════════════════════════════════════════════════════════════
-   ⚠ REGUŁY `.kadr` PONIŻEJ SĄ MARTWE OD ADR-067 (WWW/093/2) — I TO JEST
-   OZNACZENIE, NIE PRZEOCZENIE.
-
-   Slot `.kadr` zniknął ze znacznika przy przebudowie hero na dwie kolumny:
-   kadr poziomy pod tekstem ustąpił kolumnie medialnej z bohaterką i
-   telefonem (`.media`, `.bohaterka`, `.telefon`). Zmierzone: `styles.kadr`
-   ma w `Hero.tsx` ZERO odwołań.
-
-   Zostawiam je oznaczone, zamiast usunąć w tym samym przebiegu, w którym
-   przebudowałem hero — usunięcie stu kilkudziesięciu linii z komentarzami
-   nie jest zmianą, którą wolno robić „przy okazji" innej zmiany, a
-   martwa reguła OZNACZONA nie wprowadza w błąd, w przeciwieństwie do
-   martwej reguły milczącej (klasa T56).
-
-   ⚠ RAZEM Z NIMI MARTWY JEST PARALLAX Z ADR-063 — animacja
-   `kadrHeroParallax` celuje w `.kadr img`, którego nie ma. Wtopienie
-   maską wróciło (`.bohaterka`), rama i parallax odeszły.
-
-   Warunek zamknięcia: osobny przebieg porządkowy, razem z decyzją, czy
-   parallax ma wrócić na nowy slot.
-   ══════════════════════════════════════════════════════════════════════ */
-
-/* SLOT-FOTO-HERO — miejsce na duży kadr fotograficzny (ADR-048).
-   Zastąpił mockup DMO zdjęty 2026-09-02 (decyzja właściciela WWW/072
-   pkt 1). Odstęp 80 px pod drobnymi zostaje bez zmiany — zmierzony
-   wcześniej i nie ma powodu, żeby zmiana materiału go ruszała.
-
-   ⚠ PROPORCJA 16/9, NIE 16/10 JAK PRZY FILARACH. Filary trzymają
-   16/10, bo tyle rezerwowała ich ramka i zmiana byłaby dokładnie tym
-   skokiem układu, przed którym broni rezerwa. Hero nie miało wcześniej
-   rezerwy niezależnej od pliku (wymiar brał się z atrybutów zrzutu
-   2048×1280), więc tutaj proporcję USTALAMY, a nie zmieniamy —
-   i ustalamy ją na kadr fotograficzny, nie na zrzut ekranu.
-
-   ⚠ BEZ RAMKI, PROMIENIA I CIENIA — decyzja właściciela (WWW/072
-   pkt 3): hero ma się WTAPIAĆ w tło nierównomiernie, nie stać
-   w oprawie. Stąd maska zamiast krawędzi. Reszta slotów oprawę
-   zachowuje; ten jeden jej nie ma i to jest różnica licencjonowana,
-   nie niedokończenie. */
-.kadr {
-  margin-block-start: 5rem;
-  aspect-ratio: 16 / 9;
-  /* Wypełnienie tymczasowe do czasu dostawy kadru: gradient WYŁĄCZNIE
-     z ról palety, żeby slot nie był dziurą, a jednocześnie nie udawał
-     obrazu. Barwa jednolita zostaje w `background-color` — gradient
-     rysuje `background-image`, więc podmiana na <img> zakryje oba. */
-  background-color: var(--kolor-rola-powierzchnia);
-  background-image: linear-gradient(
-    155deg,
-    var(--kolor-rola-powierzchnia) 0%,
-    var(--kolor-rola-tlo-strony) 100%
-  );
-  /* ⚠ RAMA WCHODZI, MASKA SCHODZI — I JEST TO ODWRÓCENIE WCZEŚNIEJSZEJ
-     DECYZJI, WIĘC ZOSTAWIAM PO NIEJ ŚLAD (ADR-063, zlecenie WWW/089
-     krok 2). Stało tu wtopienie maską eliptyczną, a komentarz przy
-     slocie w `Hero.tsx` mówił, że kadr hero jest JEDYNYM bez ramki,
-     promienia i cienia, bo „wtapia się w tło, tak jak wzorzec"
-     (decyzja właściciela, WWW/072 pkt 3).
-
-     Nowe zlecenie żąda kadru W ZAOKRĄGLONEJ RAMIE i to je zastępuje.
-     Maska schodzi, bo rama i wtopienie wykluczają się mechanicznie:
-     `mask-image` wygasza także obrys, więc rama byłaby narysowana
-     i zaraz zjedzona przy narożnikach — dokładnie ten rodzaj wady,
-     który wygląda na błąd renderowania, a jest sprzecznością reguł.
-
-     Promień 32 px z czwartego szczebla drabiny R (ADR-062 wyliczył go
-     i świadomie pominął, bo nie miał wtedy konsumenta; ten kadr nim
-     jest). ⚠ R DAJE SWOJEJ RAMIE HERO 16 px — patrz komentarz przy
-     `wymiar.promien-duzy`; 32 px to decyzja zlecenia, nie pomiar
-     tamtej ramy. Kreska bierze rolę STREFY, więc rama jest poprawna
-     w obu tonach bez osobnej wartości. */
-  border: 0.0625rem solid var(--kolor-rola-kreska);
-  border-radius: var(--wymiar-promien-duzy);
-  overflow: hidden;
-}
-
-.kadr img {
-  display: block;
-  inline-size: 100%;
-  block-size: 100%;
-  object-fit: cover;
-}
-
-/* ═══ PARALLAX KADRU HERO — CSS-ONLY, BEZ JEDNEJ LINII JS ═══
-   (ADR-063, zlecenie WWW/089 krok 2)
-
-   ⚠ TEN RUCH JEST NASZ, NIE PRZESZCZEPIONY. Karta szablonu React Bits
-   reklamuje „Parallax hero with CTA"; pomiar w kroku 1a pokazał, że
-   TAKIEGO RUCHU TAM NIE MA — ani w `transform` (597 elementów, pięć
-   pozycji przewijania), ani w offsecie obrazu wewnątrz ramy (cztery
-   pozycje), ani w `background-position`. Kontrola pozytywna zapaliła
-   w każdej z trzech sond, więc zero jest własnością wzorca. Zakres
-   ruchu pochodzi z tokena, którego komentarz mówi wprost, że jest
-   wyborem wykonawcy — nie wolno go cytować jako miary wzorca.
-
-   TRZY WARSTWY ZABEZPIECZENIA, KAŻDA Z INNEGO POWODU:
-   · `@supports` — bez obsługi osi czasu przewijania nie ma animacji
-     ANI powiększenia obrazu, więc stan zastany zostaje bajt w bajt.
-     Brak ruchu jest tu FALLBACKIEM, nie defektem (kanon).
-   · `prefers-reduced-motion` — przy `reduce` blok się nie stosuje,
-     czyli zero transformacji, nie transformacja spowolniona.
-   · powiększenie obrazu żyje WEWNĄTRZ tych samych warunków. Gdyby
-     stało na zewnątrz, przeglądarka bez obsługi osi czasu pokazałaby
-     obraz przesunięty w górę i nieruchomy — czyli kadrowanie zepsute
-     po cichu u tego, kto ruchu i tak nie zobaczy. */
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .kadr img {
-      /* Obraz wyższy od ramy o podwojony zakres ruchu i cofnięty o
-         połowę nadmiaru — dzięki temu przy skrajnych położeniach
-         animacji krawędź obrazu nigdy nie wjeżdża w kadr. */
-      block-size: calc(100% + 2 * var(--ruch-zasieg-parallaxu-hero));
-      position: relative;
-      inset-block-start: calc(-1 * var(--ruch-zasieg-parallaxu-hero));
-      animation: kadrHeroParallax linear both;
-      animation-timeline: scroll(root block);
-      /* Zakres liczony od początku dokumentu do miejsca, w którym hero
-         schodzi z ekranu — dalej ruch nie ma widza. */
-      animation-range: 0 100vh;
-    }
-  }
-}
-
-@keyframes kadrHeroParallax {
-  from {
-    transform: translateY(calc(-1 * var(--ruch-zasieg-parallaxu-hero)));
-  }
-
-  to {
-    transform: translateY(var(--ruch-zasieg-parallaxu-hero));
-  }
 }
 
 /* ═══ POŚWIATA HERO — KLASTER WZORCA (ADR-052, pomiar 1b) ═══
@@ -388,37 +268,6 @@
 
 .duch::before {
   content: "Catherly";
-}
-
-/* ⚠ SLOT ZWIJA SIĘ, GDY NIE MA CZYM GO WYPEŁNIĆ (ADR-059).
-   Decyzja właściciela: „życie bez zdjęć" — dopóki fotografii nie ma,
-   strona ma się domykać na treści, a nie pokazywać pustych prostokątów.
-   MECHANIKA SLOTU ZOSTAJE W CAŁOŚCI: proporcja, gradient, promień,
-   obrys i rezerwa CLS czekają nietknięte; znika wyłącznie STAN PUSTY.
-
-   `:empty` jest tu narzędziem właściwym, bo pyta o to, co naprawdę
-   rozstrzyga — czy w ramce cokolwiek jest. Warunek na propie w JS
-   trzeba by powtórzyć w czterech komponentach i w każdym można go
-   zapomnieć; selektor pyta DOM, więc w dniu, w którym kadr wejdzie,
-   ramka wróci sama, bez ani jednej zmiany w kodzie. */
-.kadr:empty {
-  display: none;
-}
-
-/* ⚠ MINIMUM WYSOKOŚCI OBOWIĄZUJE TYLKO ZE SLOTEM NIOSĄCYM OBRAZ
-   (ADR-060, zlecenie WWW/085 pkt 1a). Proporcje 1,78× i 1,33× viewportu
-   pochodzą z pomiaru wzorca (ADR-052) i opisują hero, W KTÓRYM COŚ JEST:
-   tam dolną połowę zajmuje kadr. U nas kadru nie ma, więc minimum
-   trzymało PUSTKĘ — zmierzone przy 1190: sekcja 1600 px przy treści
-   394 px, czyli 1206 px próżni; przy 390 — 549 px.
-
-   Warunek pyta o ten sam fakt co `:empty` przy samym slocie, więc oba
-   wchodzą i schodzą razem. W dniu, w którym kadr wejdzie, minimum wraca
-   samo i proporcja wzorca znowu obowiązuje. */
-@supports selector(:has(*)) {
-  .hero:has(.kadr:empty) {
-    min-block-size: auto;
-  }
 }
 
 /* ═══ HERO DWUKOLUMNOWE (ADR-067, WWW/093/2 krok 3) ═══════════════════

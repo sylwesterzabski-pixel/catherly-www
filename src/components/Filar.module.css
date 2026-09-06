@@ -81,6 +81,37 @@
   padding-inline: var(--wymiar-wciecie-tresci-srednie);
 }
 
+/* ┌── KARTA GRAFITOWA (ADR-067, zlecenie WWW/094 krok 1) ──────────────┐
+   │ Do 06.09 filar był sekcją na korpusie jasnym. Wzorzec finalny     │
+   │ stawia w tym miejscu KARTY GRAFITOWE i to jest pomiar, nie gust:  │
+   │ w kolumnie odniesienia pas y 1045–1501 niesie trzy prostokąty     │
+   │ o barwie mediany RGB 46 · 47 · 50 — czyli nasz `grafit-klamr`     │
+   │ z różnicą JEDNEGO stopnia w kanale niebieskim (próg zlecenia      │
+   │ WWW/090: barwa własna zostaje przy Δ ≤ 10 w kanale).              │
+   ├── zmierzone w kolumnie 1536 px ─── przeliczone ×0,9375 na 1440 ───┤
+   │ szerokość karty   430 · 432 · 430          403 px                 │
+   │ odstęp między     37 · 37                   35 px → `odstep-7` 32 │
+   │ promień           27                        25 px → `promien-     │
+   │                                                  sredni` 24       │
+   │ wcięcie boczne    38 / 39                   36 px → `odstep-8` 40 │
+   │ wcięcie górne     52                        49 px → `odstep-8` 40 │
+   │ wcięcie dolne     48                        45 px → `odstep-8` 40 │
+   └───────────────────────────────────────────────────────────────────┘
+
+   ⚠ RÓŻNICE ZAPISANE, NIE ZAOKRĄGLONE PO CICHU. Wcięcia wzorca (36–49)
+   nie mają szczebla w naszej drabinie; najbliższy to `odstep-8` = 40 px
+   i biorę go dla wszystkich trzech, bo rozjazd 4–9 px jest mniejszy niż
+   koszt trzech nowych szczebli, których nikt poza tą kartą nie użyje.
+   Promień 25 → 24 (Δ 1). Odstęp 35 → 32 (Δ 3).
+
+   ⚠ TRZECH KART W RZĘDZIE NIE ROBIĘ — i to jest odczyt zlecenia, nie
+   przeoczenie wzorca. Wzorzec ustawia karty obok siebie i nie daje im
+   slotu na zdjęcie; nasze filary slot mają, a KROK 2 tego samego
+   zlecenia mówi wprost, żeby kadry `filar-*.avif` odpinać dopiero, gdy
+   ich sloty poniosą co innego. Rząd trzech kart usunąłby te sloty
+   w kroku 1 i unieważnił krok 2. Zmienia się więc POWIERZCHNIA filaru,
+   nie jego układ — dokładnie tyle, ile brzmi „3 karty filarów na
+   grafit". */
 .wnetrze {
   /* KONTENER BLOKU FEATURE — 1200 px, zamknięty (patrz nagłówek).
      Rachunek zgodności przy 1440: wcięcie 40 zostawia 1360, kontener
@@ -89,6 +120,9 @@
      lewą krawędź bloku wzorca. */
   max-inline-size: var(--wymiar-kontener-filaru);
   margin-inline: auto;
+  background: var(--kolor-rola-grafit-klamr);
+  border-radius: var(--wymiar-promien-sredni);
+  padding: var(--wymiar-odstep-8);
 }
 
 .naglowek {
