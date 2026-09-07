@@ -21,7 +21,7 @@
     "wkrotce": "(folgt in Kürze)"
   },
   "Hero": {
-    "naglowek": "Du sprichst mit Menschen – Catherly führt deine Kontakte und Ergebnisse.",
+    "naglowek": "Du sprichst mit Menschen\nCatherly <akcent>führt deine Kontakte und Ergebnisse.</akcent>",
     "podtytul": "Catherly ist ein System für deinen eigenen Direktvertrieb – Kontakte, Inhalte, Team und Ergebnisse an einem Ort.",
     "cta": "Sieh dir an, wie es funktioniert",
     "ctaWtorne": "Funktionen ansehen",
@@ -426,7 +426,12 @@
     "telefon": "Ein Telefon schräg gestellt, der Bildschirm leer.",
     "macbookTelefon": "Ein Laptop mit dem geöffneten Tagesplan und daneben ein Telefon mit leerem Bildschirm.",
     "rano": "Eine Frau am Schreibtisch trinkt aus einer Tasse und schaut auf einen Laptop.",
-    "wieczorem": "Ein Paar sitzt auf dem Sofa und schaut gemeinsam auf einen Laptop."
+    "wieczorem": "Ein Paar sitzt auf dem Sofa und schaut gemeinsam auf einen Laptop.",
+    "filar1": "Eine Frau telefoniert neben einem aufgeschlagenen Notizbuch, daneben eine Tasse.",
+    "filar2": "Eine Frau tippt am Schreibtisch auf einem Laptop, ihr Telefon liegt mit dem Display nach unten.",
+    "filar3": "Eine Frau telefoniert lächelnd, die Hand am Gesicht; ein Notizbuch auf dem Tisch.",
+    "filar4": "Ein Mann sitzt abends mit einem Laptop im Sessel, daneben eine Lampe.",
+    "wCiaguDnia": "Eine Frau trinkt Kaffee in einer Küche."
   },
   "Wrapped": {
     "podpis": "Beispieldaten",

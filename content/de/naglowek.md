@@ -8,9 +8,25 @@ Protokół: docs/faza-2/panel-adaptacja-de.md.
 
 ## H1
 
-Du sprichst mit Menschen – Catherly führt deine Kontakte und Ergebnisse.
+Du sprichst mit Menschen
+Catherly führt deine Kontakte und Ergebnisse.
 
-**72 znaki.**
+
+**70 znaków.**
+
+⚠ **ZMIENIONE 06.09.2026 — decyzja właściciela (zlecenie WWW/098 v2 pkt 3a
+i cztery kolejne rozstrzygnięcia tej samej doby).** Poprzednie brzmienie:
+„Du sprichst mit Menschen – Catherly führt deine Kontakte und Ergebnisse.”. Zmiany: półpauza WYPADA, nagłówek łamie się na dwa wiersze po
+pierwszej frazie, kropka na końcu zostaje.
+
+Fraza „führt deine Kontakte und Ergebnisse.” niesie znacznik `<akcent>` i renderuje się w roli tekstu
+drugorzędnego — jaśniej niż reszta nagłówka. Znacznik jest nośnikiem
+podziału, nie treścią, więc licznik wyżej go nie liczy.
+
+Droga decyzji, zapisana w całości, bo cztery kroki tej samej doby idą
+w różne strony: pigułka w limonce przycisku → limonka roli akcentu →
+limonka przycisku jako TEKST (zmierzone 1,31:1, `axe` czerwony na
+dziewięciu przypadkach) → obecny stan, bez limonki w nagłówku.
 
 ## Podtytuł
 

@@ -203,7 +203,15 @@ if (!OSADZONE) {
            „zero zrzutów" i strażnik zapalał się na stanie zamierzonym.
 
            Rozróżnienie idzie po ŹRÓDLE, nie po liczbie: zrzuty leżą pod
-           ścieżką z rejestru pipeline'u, fotografie pod `/obrazy/tymczasowe/`.
+           ścieżką z rejestru pipeline'u, fotografie pod
+           `/obrazy/tymczasowe/` ALBO `/obrazy/wzorzec-2026-09-06/`.
+
+           ⚠ DRUGA ŚCIEŻKA DOSZŁA 2026-09-07 (ADR-071, WWW/098 v2 krok 2):
+           kadry tymczasowe ustąpiły bitmapom z dostawy i wszystkie cztery
+           sloty niosą teraz pliki z katalogu wzorca. Lista jest WYPISANA,
+           nie czerpana ze zbioru katalogów — inaczej dowolny nowy katalog
+           obrazów zaliczałby się jako „fotografia" bez decyzji, a to jest
+           dokładnie ta granica, której ten strażnik pilnuje.
            Asercja jest przez to MOCNIEJSZA — łapie zrzut nawet wtedy, gdy
            obok niego stoi inny obraz, czego wersja licząca do zera nie
            umiała. Zakaz „zero zrzutów aplikacji" (WWW/072, rozszerzony
@@ -221,7 +229,10 @@ if (!OSADZONE) {
            z altem. Trzeciego stanu nie ma — a pusta ramka z altem albo
            kadr bez altu byłyby wadą dostępności. */
         const puste = await sekcja.locator("[aria-hidden='true']").count();
-        const zKadrem = zrodla.filter((s) => s.includes("/obrazy/tymczasowe/")).length;
+        const KATALOGI_FOTOGRAFII = ["/obrazy/tymczasowe/", "/obrazy/wzorzec-2026-09-06/"];
+        const zKadrem = zrodla.filter((s) =>
+          KATALOGI_FOTOGRAFII.some((k) => s.includes(k)),
+        ).length;
         expect(
           puste + zKadrem,
           `${klucz}: dokładnie jeden slot (pusty ${puste} + z kadrem ${zKadrem})`,

@@ -9,10 +9,26 @@ inwentarzu (rozliczenia → wyniki). Protokół: docs/faza-2/panel-naglowek.md.
 
 ## H1
 
-Rozmawiasz z ludźmi — Catherly prowadzi kontakty i wyniki.
+Rozmawiasz z ludźmi
+Catherly prowadzi kontakty i wyniki.
 
-**62 znaki. Pokrycie:** kontakty (Formularz+CRM+Kalendarz+DMO — DZIAŁA);
+
+**56 znaków. Pokrycie:** kontakty (Formularz+CRM+Kalendarz+DMO — DZIAŁA);
 wyniki (Pulpit+Magic Wrapped+Świadectwo — DZIAŁA).
+
+⚠ **ZMIENIONE 06.09.2026 — decyzja właściciela (zlecenie WWW/098 v2 pkt 3a
+i cztery kolejne rozstrzygnięcia tej samej doby).** Poprzednie brzmienie:
+„Rozmawiasz z ludźmi — Catherly prowadzi kontakty i wyniki.”. Zmiany: półpauza WYPADA, nagłówek łamie się na dwa wiersze po
+pierwszej frazie, kropka na końcu zostaje.
+
+Fraza „prowadzi kontakty i wyniki.” niesie znacznik `<akcent>` i renderuje się w roli tekstu
+drugorzędnego — jaśniej niż reszta nagłówka. Znacznik jest nośnikiem
+podziału, nie treścią, więc licznik wyżej go nie liczy.
+
+Droga decyzji, zapisana w całości, bo cztery kroki tej samej doby idą
+w różne strony: pigułka w limonce przycisku → limonka roli akcentu →
+limonka przycisku jako TEKST (zmierzone 1,31:1, `axe` czerwony na
+dziewięciu przypadkach) → obecny stan, bez limonki w nagłówku.
 
 ## Podtytuł
 

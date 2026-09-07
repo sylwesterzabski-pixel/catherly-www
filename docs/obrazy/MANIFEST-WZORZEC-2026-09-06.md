@@ -144,3 +144,44 @@ te same pozycje schodzą do 0,0–1,4 pp.
 `design/wzorzec-2026-09-06/`, v2 — zgodnie z literą zlecenia — w
 `design/wzorzec/`. To dwa miejsca na tę samą rzecz; scalenie jest jedną
 operacją, ale nie należy do wykonawcy.
+
+## Dostawa 2026-09-07 — zdjęcia filarów i dnia (zlecenie `WWW/098 v2`, KROK 1)
+
+| nr | plik AVIF | wymiar | waga | SHA-256 PNG (16) | SHA-256 AVIF (16) | slot |
+| --- | --- | --- | --- | --- | --- | --- |
+| 15a | `15a-telefon-notes.avif` | 1600 × 1067 | 50 kB | `be1a38531ac5709c` | `bc20ecbdd5b55459` | filar 1 — „Rano widzisz, do kogo się odezwać." |
+| 16 | `16-laptop-biurko.avif` | 1600 × 1067 | 53 kB | `d9dbc65bbba3c75f` | `8b026f83556ac99d` | filar 2 — „Piszesz. Tarcza sprawdza. Pieczęć potwierdza." |
+| 15b | `15b-telefon-usmiech.avif` | 1600 × 1067 | 42 kB | `9c1fddaea0c2dafc` | `3928d579df67bdec` | filar 3 — „Nowa osoba wie, co robić od pierwszego dnia" |
+| 6b | `6b-wieczor-fotel.avif` | 1600 × 1067 | 51 kB | `3e7ae173e8b40823` | `50c69939a1bf53c4` | filar 4 — „Widzisz wzrost nawet po trudnym dniu" |
+| 4b | `4b-kawa-kuchnia.avif` | 1200 × 805 | 51 kB | `cff7a27367b32801` | `960a208de7c3fe57` | dzień, slot 2 — „Zaglądasz do bazy kontaktów…" |
+
+**Sumy sprawdzone PRZED zapisem, nie po.** Wszystkie pięć PNG-ów przyszło
+w wymiarze 2528 × 1696 i wszystkie pięć sum szesnastoznakowych zgodziło się
+z tabelą zlecenia co do znaku. Gdyby którakolwiek nie zgodziła się, plik
+miał zostać odrzucony — dlatego pobranie i weryfikacja idą w jednym
+przebiegu, a zapis do repozytorium dopiero po nim.
+
+**Wymiary docelowe z PRAKTYKI REPO, nie z gustu:** sloty filarów niosą
+1600 × 1067 (tyle mają kadry tymczasowe, które zastąpiły, i tyle deklaruje
+znacznik), slot dnia — 1200 × 805 (tyle mają `4-rano` i `6-wieczorem`).
+Przy slocie ok. 600 px na kadrze 1440 daje to zapas ×2,7 i ×2,9, czyli
+ponad wymagane ×2 DPR. Oryginały PNG **zostają poza historią**, tak jak
+przy poprzednich dostawach; sumy wyżej są jedynym ich śladem po tej stronie.
+
+⚠ **TWARZE — WSZYSTKIE PIĘĆ KADRÓW JE NIOSĄ i to jest zgodne z regułą, nie
+wyjątek od niej.** Kanon dopuszcza twarze **wyłącznie generowane** (osoby
+nieistniejące) i żąda, żeby **każdy kadr był zatwierdzony IMIENNIE**.
+Oba warunki są tu spełnione: pliki pochodzą z Higgsfielda, a zlecenie
+wymienia je **po pełnej nazwie i sumie**, przypisując każdy do konkretnego
+slotu — to jest zatwierdzenie imienne, per kadr. Zdjęcia realnych osób
+pozostają zakazane bez zmian.
+
+⚠ **KADR 6b JEST PIERWSZYM MĘŻCZYZNĄ W CAŁYM ZBIORZE.** Odnotowuję, bo
+dziewięć wcześniejszych kadrów przedstawiało kobiety, a zmiana składu
+osobowego materiału jest decyzją redakcyjną, nie techniczną — i została
+podjęta przez zlecenie, nie przez wykonawcę.
+
+**Alt-y z OGLĄDU PLIKU, nie z podpowiedzi zlecenia** — i dwa się różnią:
+zlecenie proponowało dla 15a „z kawą w dłoni", a na obrazie dłoń spoczywa
+przy filiżance, nie trzyma jej; dla 15b — „gest otwartej dłoni", a widać
+dłoń przy twarzy. Oba brzmienia poprawione zgodnie z tym, co widać.

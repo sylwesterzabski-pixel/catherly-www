@@ -79,22 +79,30 @@ export function Hero({ locale }: Props) {
           fetchPriority="high"
           decoding="async"
         />
-        {/* TELEFON — ramka z bitmapy wzorca. EKRAN ZOSTAJE PUSTY:
-            decyzja właściciela A/C jest otwarta, a wciśnięcie kadru
-            desktopowego 2048×1280 w ekran pionowy byłoby pokazaniem
-            aplikacji, której tak nie widać — kadr jest DOWODEM, nie
-            mockupem (zakaz zlecenia i sens reguły z kanonu). */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className={styles.telefon}
-          src="/obrazy/wzorzec-2026-09-06/2d-iphone-P-alfa.avif"
-          alt={tWzorzec("telefon")}
-          width={900}
-          height={1117}
-          loading="lazy"
-          decoding="async"
-        />
       </div>
+      {/* ⚠ TELEFON JEST RODZEŃSTWEM WARSTWY MEDIÓW, NIE JEJ DZIECKIEM
+          (ADR-071, WWW/098 v2 pkt 3d). Warstwa mediów ma `z-index: -1`,
+          żeby fotografia szła pod treść; telefon ma WYSTAWAĆ pod hero
+          i leżeć NAD sekcją „pamięć", więc potrzebuje dodatniego
+          z-indeksu. Dziecko warstwy nie mogłoby mieć obu naraz.
+
+          ⚠ HERO NIE DOSTAJE `overflow: hidden` — i to jest wymóg, nie
+          przeoczenie: dolna ćwiartka mockupu ma wychodzić poza sekcję. */}
+      {/* TELEFON — ramka z bitmapy wzorca. EKRAN ZOSTAJE PUSTY:
+          decyzja właściciela A/C jest otwarta, a wciśnięcie kadru
+          desktopowego 2048×1280 w ekran pionowy byłoby pokazaniem
+          aplikacji, której tak nie widać — kadr jest DOWODEM, nie
+          mockupem (zakaz zlecenia i sens reguły z kanonu). */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        className={styles.telefon}
+        src="/obrazy/wzorzec-2026-09-06/2d-iphone-P-alfa.avif"
+        alt={tWzorzec("telefon")}
+        width={900}
+        height={1117}
+        loading="lazy"
+        decoding="async"
+      />
       <div className={styles.wnetrze}>
         <div className={styles.kolumny}>
           {/* ⚠ DUCH USUNIĘTY (ADR-069, WWW/096 v4 pkt 3). Stał tu
@@ -106,8 +114,41 @@ export function Hero({ locale }: Props) {
               zmierzone przed zmianą — sekcja 1524 px przy treści 589 px,
               czyli 935 px próżni pod tekstem. */}
           <div className={`${styles.tekst} ruch-stagger`}>
+            {/* ⚠ „CATHERLY" W BARWIE, NIE W PIGUŁCE — ZAKAZ ZDJĘTY IMIENNIE
+                PRZEZ WŁAŚCICIELA (2026-09-06, w trakcie WWW/098 v2):
+                „zmień tylko kolor napisu «Catherly» na kolor limonki jaki
+                występuje w przycisku, a nie rób przycisku z tego napisu".
+                Zlecenie warunkowało to dokładnie tak — „limonkowy tekst bez
+                tła ZAKAZANY bez imiennego zdjęcia zakazu" — i zdjęcie
+                nastąpiło.
+
+                ⚠ BARWA JEST ROLĄ `interakcja` — DOKŁADNIE TĄ SAMĄ, KTÓRĄ
+                NIESIE TŁO PIGUŁKI PRZYCISKU. Polecenie właściciela,
+                powtórzone po przedstawieniu pomiaru. Limonka przycisku
+                (rola `interakcja`) jako TEKST na tle hero daje **1,31:1** —
+                poniżej progu 3,0 dla dużego tekstu i 4,5 dla prozy, czyli
+                axe zapala `color-contrast`, a axe jest bramką blokującą.
+                Zmierzone także na pozostałych tonach: biel 1,43:1, ton 3
+                1,20:1 — żaden nie ratuje. Rola `akcent` to ta sama limonka
+                przystosowana do jasnych teł: odcień 78° wobec 75°,
+                kontrast **5,34:1**. Wybór między nimi przedstawiono
+                właścicielowi z liczbami; wskazał `akcent`.
+
+                ⚠ NAGŁÓWEK ŁAMIE SIĘ ZNAKIEM NOWEJ LINII Z TREŚCI, nie
+                znacznikiem `<br>`: podział jest własnością tekstu, więc
+                należy do `content/`, a nie do znacznika. Honoruje go
+                `white-space: pre-line` w arkuszu.
+
+                ⚠ NAGŁÓWEK ŁAMIE SIĘ ZNAKIEM NOWEJ LINII Z TREŚCI, nie
+                znacznikiem `<br>`: podział jest własnością tekstu, więc
+                należy do `content/`, a nie do znacznika. Honoruje go
+                `white-space: pre-line` w arkuszu. */}
             <h1 id="hero-h1" className={styles.naglowek}>
-              {t("naglowek")}
+              {t.rich("naglowek", {
+                akcent: (tresc) => (
+                  <span className={styles.akcentHero}>{tresc}</span>
+                ),
+              })}
             </h1>
             <p className={styles.podtytul}>{t("podtytul")}</p>
             {/* ⚠ RZĄD DWÓCH DRÓG, NIE JEDNEJ (ADR-070, WWW/097/2 krok 2).

@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { bezZnacznikow } from "./pomoc/tekst";
 
 import { otworzMenuJesliZwiniete } from "./pomoc/menu";
 
@@ -247,10 +248,19 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     ).toBeVisible();
     await expect(stopka.locator("a")).toHaveCount(LICZBA_LINKOW_STOPKI);
 
-    // Hero (K2) w main#tresc: H1 z messages — parytet szczegółowy
-    // (podtytuł, CTA, potwierdzenia): e2e/hero.spec.ts.
-    await expect(page.locator("main#tresc h1")).toHaveText(
-      komunikaty.Hero.naglowek,
-    );
+    /* Hero (K2) w main#tresc: H1 z messages — parytet szczegółowy
+       (podtytuł, CTA, potwierdzenia): e2e/hero.spec.ts.
+
+       ⚠ PORÓWNANIE PO SŁOWACH (ADR-071, WWW/098 v2). Klucz niesie od
+       2026-09-06 znacznik `<akcent>` wokół frazy jaśniejszej oraz znak
+       nowej linii wymuszający łamanie po pierwszej frazie; wyrenderowany
+       tekst nie ma ani jednego, ani drugiego. Zdejmuję znaczniki i
+       normalizuję białe znaki PO OBU stronach, więc zmiana jednej litery
+       dalej daje czerwień. */
+    const znorm = (s: string) => bezZnacznikow(s).replace(/\s+/g, " ").trim();
+    expect(
+      znorm(await page.locator("main#tresc h1").innerText()),
+      "H1 z messages",
+    ).toBe(znorm(komunikaty.Hero.naglowek));
   });
 }

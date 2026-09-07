@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { test, expect } from "@playwright/test";
+import { bezZnacznikow } from "./pomoc/tekst";
 
 import { rolaRgb } from "./pomoc/role";
 
@@ -59,7 +60,20 @@ for (const { adres, jezyk, prefiks, komunikaty } of PRZYPADKI) {
     // Jedyny h1 strony = H1 hero (kontrakt K2: element LCP).
     const h1 = page.locator("h1");
     await expect(h1).toHaveCount(1);
-    await expect(h1).toHaveText(komunikaty.Hero.naglowek);
+    /* ⚠ PORÓWNANIE PO SŁOWACH, NIE PO ZAPISIE (ADR-071, WWW/098 v2 pkt 3a
+       i 3b). Klucz `Hero.naglowek` niesie od 2026-09-06 dwie rzeczy, których
+       nie ma w wyrenderowanym tekście: znacznik `<akcent>` wokół frazy
+       „prowadzi kontakty i wyniki." (nośnik podziału, nie treść — tak samo
+       jak w `Problem` i `Definicja`) oraz ZNAK NOWEJ LINII po pierwszej
+       frazie, który przeglądarka zamienia na złamanie wiersza.
+       `bezZnacznikow` zdejmuje znaczniki, a normalizacja białych znaków
+       sprowadza łamanie do spacji — po obu stronach tak samo, więc zmiana
+       JEDNEJ LITERY dalej daje czerwień. Przedmiot asercji zostaje ten sam:
+       „H1 niesie dokładnie tę treść z messages". */
+    const znorm = (s: string) => bezZnacznikow(s).replace(/\s+/g, " ").trim();
+    expect(znorm(await h1.innerText()), "H1 znak w znak z messages").toBe(
+      znorm(komunikaty.Hero.naglowek),
+    );
 
     // Sekcja hero opisana nagłówkiem (aria-labelledby → h1).
     const hero = page.locator('section[aria-labelledby="hero-h1"]');
@@ -160,7 +174,16 @@ for (const { adres, jezyk, komunikaty } of PRZYPADKI) {
     const odpowiedz = await request.get(adres);
     expect(odpowiedz.status()).toBe(200);
     const html = await odpowiedz.text();
-    expect(html, "H1 w HTML bez JS").toContain(komunikaty.Hero.naglowek);
+    /* Bez JS porównuję PIERWSZĄ FRAZĘ nagłówka — całość niesie w HTML
+       znacznik `<span>` w miejscu akcentu, więc ciąg nie jest spójny.
+       Fraza przed złamaniem jest spójna i wystarcza: jej brak znaczy, że
+       nagłówka nie ma w surowym HTML, a o to pyta bramka „treść czytelna
+       bez JS". Druga fraza sprawdzana osobno, tak samo spójna. */
+    const [fraza1, fraza2] = bezZnacznikow(komunikaty.Hero.naglowek).split("\n");
+    expect(html, "H1 (fraza 1) w HTML bez JS").toContain(fraza1.trim());
+    expect(html, "H1 (fraza 2) w HTML bez JS").toContain(
+      fraza2.replace(/^Catherly\s+/, "").trim(),
+    );
     expect(html, "potwierdzenia w HTML bez JS").toContain(
       komunikaty.Hero.potwierdzenieUE,
     );
@@ -219,7 +242,15 @@ test("treść hero: messages znak w znak z content/*/naglowek.md", () => {
       join(__dirname, "..", "content", jezyk, "naglowek.md"),
       "utf8",
     ).replace(/\s+/g, " ");
-    for (const [pole, tresc] of Object.entries(komunikaty.Hero)) {
+    for (const [pole, wartosc] of Object.entries(komunikaty.Hero)) {
+      /* ⚠ ZNACZNIKI I ŁAMANIE ZDEJMOWANE PO STRONIE MESSAGES, białe znaki
+         po obu (ADR-071, WWW/098 v2). `Hero.naglowek` niesie od 2026-09-06
+         znacznik `<akcent>` i wymuszone łamanie wiersza — ani jedno, ani
+         drugie nie jest treścią, więc w `content/` ich nie ma. Bez tej
+         normalizacji strażnik padał na ZAPISIE, nie na rozjeździe treści.
+         Przedmiot asercji zostaje ten sam: litery, pauzy i interpunkcja
+         muszą być identyczne — zmiana JEDNEJ litery dalej daje czerwień. */
+      const tresc = bezZnacznikow(wartosc).replace(/\s+/g, " ").trim();
       expect(
         zrodlo,
         `content/${jezyk}/naglowek.md zawiera treść pola „${pole}"`,

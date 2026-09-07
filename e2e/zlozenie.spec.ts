@@ -558,7 +558,13 @@ test("R-AKCENT-03: znaczniki akcentu w parytecie ×3 i tylko w miejscach z decyz
      NIEOBECNY ŚWIADOMIE: granica frazowa istniała we wszystkich trzech
      językach, ale akcent ma na powierzchni akcentowej 2,94:1 przy progu
      3:1 — zabrakło kontrastu, nie języka (ADR-033). */
-  const Z_AKCENTEM = ["Problem", "Definicja"] as const;
+  /* ⚠ `Hero` DOSZŁO 2026-09-07 (ADR-071, WWW/098 v2 pkt 3a/3b). Nagłówek
+     otwierający niesie odtąd znacznik wokół frazy „prowadzi kontakty
+     i wyniki." — fragment malowany rolą tekstu drugorzędnego, po czterech
+     kolejnych rozstrzygnięciach właściciela tej samej doby (pigułka →
+     limonka akcentu → limonka przycisku → jaśniejszy tekst). Lista jest
+     WYPISANA: znacznik w kluczu, którego tu nie ma, dalej zapala. */
+  const Z_AKCENTEM = ["Problem", "Definicja", "Hero"] as const;
   const BEZ_AKCENTU = ["RytmDnia", "CennikSkrot", "Obawy", "DbanieOSiebie"] as const;
 
   const pary: Record<string, number> = {};

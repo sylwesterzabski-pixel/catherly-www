@@ -114,6 +114,21 @@
      To jest wprost potwierdzenie oczekiwania ze zlecenia. */
   line-height: var(--interlinia-naglowek-hero);
   font-weight: var(--waga-wyrozniona);
+  /* ⚠ ŁAMANIE Z TREŚCI (ADR-071, WWW/098 v2 pkt 3a). Klucz niesie znak
+     nowej linii po pierwszym wierszu; `pre-line` go honoruje, a spacje
+     zwija tak samo jak `normal`, więc reszta łamania dalej należy do
+     przeglądarki. `<br>` w treści byłby znacznikiem prezentacji w
+     miejscu, gdzie decyduje redakcja. */
+  white-space: pre-line;
+  /* ⚠ BEZ DZIELENIA WYRAZÓW — USTERKA Z TEGO SAMEGO BATCHU, WYCHWYCONA
+     ZE ZRZUTU. Globalna reguła nagłówków ma `hyphens: auto` (ADR-044,
+     dla polskiego słowa nieszczącego się na kadrze 320 px) i tam
+     zostaje. Tutaj wymuszone łamanie po pierwszej frazie (pkt 3a
+     zlecenia) wydłużyło wiersz drugi na tyle, że przeglądarka podzieliła
+     „kontakty" na „kontak-ty" — w nagłówku otwierającym stronę.
+     `manual` łamie wyłącznie na miękkim dywizie, a w treści nie ma ani
+     jednego, więc wiersz przechodzi w całości na następny. */
+  hyphens: manual;
   /* Miara bloku z pomiaru v2 — patrz token. Bez niej H1 przy 76 px łamie
      się na cztery wiersze zamiast trzech (zmierzone na zrzucie). */
   max-inline-size: var(--wymiar-miara-h1-wzorca);
@@ -121,6 +136,62 @@
      pozycje y=184 (1440) i y=104 (390). */
   margin-block-start: var(--wymiar-odstep-6);
 }
+
+/* ⚠ „CATHERLY" W LIMONCE PRZYCISKU — ROLA `interakcja` JAKO BARWA TEKSTU
+   (ADR-071, WWW/098 v2 pkt 3b; polecenie właściciela z 2026-09-06,
+   podtrzymane po przedstawieniu pomiaru).
+
+   Historia tej jednej deklaracji w trzech krokach, bo bez niej następna
+   sesja „naprawi" ją z powrotem:
+   1. Zlecenie żądało PIGUŁKI: plama `interakcja`, tekst
+      `tekst-na-interakcji`, kontrast 11,41:1 — i zakazywało limonkowego
+      tekstu bez tła „bez imiennego zdjęcia zakazu przez właściciela".
+   2. Właściciel zdjął zakaz: „zmień tylko kolor napisu, a nie rób
+      przycisku z tego napisu". Przedstawiłem trzy warianty z liczbami;
+      wskazał rolę `akcent` — oliwkową limonkę palety jasnej, 5,34:1.
+   3. Właściciel poprawił wybór: „zrób 1:1 taki jak tło pigułki przycisku,
+      a nie jakiś ciemny zielony". Obowiązuje ten trzeci stan.
+
+   ⚠ CO TA DEKLARACJA KOSZTUJE — ZMIERZONE, NIE PRZYPUSZCZONE:
+   limonka `interakcja` jako tekst na tle hero daje **1,31:1**; na bieli
+   1,43:1; na tonie trzecim 1,20:1. Próg WCAG AA dla tekstu dużego to
+   3,0, dla prozy 4,5. Żaden ton strony tego nie ratuje, więc `axe`
+   zgłasza `color-contrast` i bramka dostępności jest CZERWONA.
+   Nie jest to więc kompromis ani wariant — to świadome przyjęcie
+   czerwieni na wyraźne, powtórzone polecenie właściciela.
+   Wykonawca nie może tego stanu ani obejść (zakaz 2), ani osłabić
+   strażnika (zakaz 3); może wyłącznie wykonać i zaraportować. */
+/* ⚠ CZTERY DECYZJE WŁAŚCICIELA W JEDNEJ DOBIE, WSZYSTKIE O TEJ SAMEJ
+   LINII — zapisuję je w kolejności, bo bez tego następna sesja cofnie
+   którąś z nich „naprawiając" pozostałe (ADR-071, 2026-09-06):
+   1. Zlecenie `WWW/098 v2` pkt 3b: „Catherly" jako PIGUŁKA — plama roli
+      `interakcja`, tekst `tekst-na-interakcji`, kontrast 11,41:1.
+   2. Właściciel: „zmień tylko kolor napisu, a nie rób przycisku" —
+      zakaz limonkowego tekstu zdjęty imiennie; wybrana rola `akcent`.
+   3. Właściciel: „zrób 1:1 taki jak tło pigułki przycisku" — rola
+      `interakcja` jako barwa tekstu. **Zmierzone: 1,31:1, `axe` zgłasza
+      `color-contrast`, dziewięć przypadków.** Dodany i zaraz cofnięty
+      obrys w barwie tekstu nagłówka; obrys NIE zmieniał werdyktu, bo
+      WCAG liczy kontrast z `color`, a `-webkit-text-stroke` do rachunku
+      nie wchodzi.
+   4. Właściciel: „kolor Catherly zrób tak jak napis «Rozmawiasz
+      z ludźmi», a tekst «prowadzi kontakty i wyniki» zrób trochę
+      jaśniejszy". **Stan obowiązujący.**
+
+   Skutek dla bramki jest tu rzeczą główną: krok 4 zdejmuje limonkę
+   z nagłówka w całości, więc `color-contrast` gaśnie sam — nie przez
+   osłabienie strażnika, tylko przez zmianę przedmiotu. Słowo „Catherly"
+   nie ma już własnej klasy i dziedziczy `tekst-podstawowy` po `h1`,
+   dokładnie jak wiersz pierwszy.
+
+   Jaśniejsza część bierze `tekst-drugorzedny` — tę samą rolę, którą
+   niesie podtytuł hero. Kontrast na tle hero: **6,74:1**, czyli ponad AA
+   dla prozy, a nie tylko dla dużego tekstu. „Trochę jaśniejszy" ma tu
+   pokrycie w istniejącej roli i nie wymaga nowej wartości. */
+.akcentHero {
+  color: var(--kolor-rola-tekst-drugorzedny);
+}
+
 
 .podtytul {
   color: var(--kolor-rola-tekst-drugorzedny);
@@ -301,21 +372,72 @@
   mask-image: linear-gradient(to right, transparent 0%, black 17.5%);
 }
 
-/* TELEFON — bitmapa 2d ze ZDJĘTYM TŁEM, ekran pusty.
-   ⚠ 2d, NIE 2c i NIE lustro CSS. Zlecenie żąda kadru obróconego w prawo;
-   `scaleX(-1)` na 2c dałoby telefon w lustrzanym odbiciu, czyli przycisk
-   głośności po złej stronie i logo odwrócone — pozorna oszczędność, która
-   psuje przedmiot. Wariant `-alfa` ma tło zdjęte zalewem z narożników
-   (próg 40, przeciek zmierzony przy 140), więc nie potrzebuje maski,
-   a cień daje `drop-shadow` z tokena o alfie zmierzonej na oryginale. */
+/* ═══ TELEFON — WYSTAJE, PŁYWA, NIE ZASŁANIA ═══════════════════════════
+   (ADR-071, zlecenie WWW/098 v2 pkt 3d)
+
+   ⚠ 2d, NIE 2c I NIE LUSTRO CSS. Zlecenie żąda kadru obróconego w prawo;
+   `scaleX(-1)` na 2c dałoby telefon w odbiciu — przycisk głośności po
+   złej stronie i logo odwrócone. Pozorna oszczędność psująca przedmiot.
+   Wariant `-alfa` ma tło zdjęte zalewem z narożników (próg 40, przeciek
+   zmierzony przy 140), więc maski nie potrzebuje; cień daje `drop-shadow`
+   z tokena o alfie zmierzonej na oryginale.
+
+   ⚠ SZEROKOŚĆ NIE JEST MNOŻONA PONOWNIE. `WWW/097/2` przeskalowało bbox
+   199 × 247 → 299 × 371 (×1,5); zlecenie mówi wprost „skala już ×1,5 —
+   NIE mnożyć ponownie". Token `telefon-hero` niesie dokładnie te 299 px
+   jako procent kadru, bo telefon liczy się teraz od SEKCJI, nie od
+   warstwy mediów, z której wyszedł.
+
+   ⚠ DOLNA ĆWIARTKA WYSTAJE POD HERO. `translate: 0 25%` — procent
+   w `translate` liczy się od WŁASNEJ wysokości elementu, więc ćwiartka
+   to dokładnie ćwiartka mockupu, niezależnie od wysokości sekcji.
+   Gdyby zamiast tego użyć `inset-block-end: -25%`, procent liczyłby się
+   od wysokości hero i przy zmianie sekcji wystawałoby co innego. */
 .telefon {
   position: absolute;
   inset-block-end: 0;
   inset-inline-end: 0;
-  inline-size: 42%;
+  inline-size: var(--wymiar-telefon-hero);
   block-size: auto;
   pointer-events: none;
+  z-index: 2;
+  translate: 0 25%;
   filter: drop-shadow(var(--cien-mockup));
+}
+
+/* ⚠ RUCH W TRZECH WARSTWACH ZABEZPIECZENIA, KAŻDA Z INNEGO POWODU —
+   ten sam układ, którym szedł parallax z ADR-063, i z tego samego
+   rachunku:
+   · `@supports` — bez obsługi osi czasu przewijania nie ma ANI ruchu,
+     ANI przesunięcia bazowego innego niż spoczynkowe. Firefox dostaje
+     telefon nieruchomy, wystający tak samo. To jest FALLBACK, nie defekt;
+   · `prefers-reduced-motion: reduce` — blok się nie stosuje, czyli ZERO
+     transformacji, a nie transformacja spowolniona;
+   · przesunięcie bazowe 25 % powtórzone w obu klatkach, żeby wejście
+     animacji nie skokło. Gdyby klatki niosły samo ±zasięg, telefon
+     wskoczyłby na starcie o ćwiartkę wysokości w górę — czyli CLS
+     w miejscu, w którym ruch miał być niezauważalny.
+
+   Oś: `scroll(root block)` — postęp od początku dokumentu do jego końca.
+   Zakres zawężony do pierwszego ekranu: dalej ruch nie ma widza. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .telefon {
+      animation: telefonPlywa ease-in-out both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+  }
+}
+
+@keyframes telefonPlywa {
+  from {
+    translate: 0 calc(25% - var(--ruch-zasieg-telefonu-hero));
+  }
+
+  to {
+    translate: 0 calc(25% + var(--ruch-zasieg-telefonu-hero));
+  }
 }
 
 /* ⚠ SPADU NA KRAWĘDŹ STRONY NIE MA — PRÓBOWANY I WYCOFANY W TYM SAMYM
@@ -381,13 +503,6 @@
        każdej wysokości hero. Przy `50% 50%` przycięcie zjadałoby ją od
        góry, bo źródło jest wyraźnie wyższe niż warstwa. */
     object-position: 50% 22%;
-  }
-
-  /* Telefon liczony od warstwy, nie od kadru: obecny bbox 199 px przy
-     kadrze 1440 (13,8 % okna) × 1,5 = 299 px, czyli 39,9 % warstwy
-     o szerokości 52,1 % × 1440 = 750 px. Obie liczby podane w zwrotce. */
-  .telefon {
-    inline-size: 39.9%;
   }
 
   /* Kolumna tekstu nie dzieli już traktu z mediami — siatka zostaje

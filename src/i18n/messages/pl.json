@@ -21,7 +21,7 @@
     "wkrotce": "(wkrótce)"
   },
   "Hero": {
-    "naglowek": "Rozmawiasz z ludźmi — Catherly prowadzi kontakty i wyniki.",
+    "naglowek": "Rozmawiasz z ludźmi\nCatherly <akcent>prowadzi kontakty i wyniki.</akcent>",
     "podtytul": "Catherly to system do własnej sprzedaży bezpośredniej — kontakty, treści, zespół i wyniki w jednym miejscu.",
     "cta": "Sprawdź, jak działa",
     "ctaWtorne": "Zobacz funkcje",
@@ -426,7 +426,12 @@
     "telefon": "Telefon ustawiony pod kątem, z pustym ekranem.",
     "macbookTelefon": "Laptop z otwartym dziennym planem działania i telefon obok, z pustym ekranem.",
     "rano": "Kobieta przy biurku pije z kubka i patrzy w ekran laptopa.",
-    "wieczorem": "Para siedzi na sofie i razem patrzy w ekran laptopa."
+    "wieczorem": "Para siedzi na sofie i razem patrzy w ekran laptopa.",
+    "filar1": "Kobieta rozmawia przez telefon przy otwartym notesie, obok filiżanka.",
+    "filar2": "Kobieta pisze na laptopie przy biurku, telefon leży ekranem w dół.",
+    "filar3": "Kobieta rozmawia przez telefon z uśmiechem, z dłonią przy twarzy; notes na stole.",
+    "filar4": "Mężczyzna wieczorem w fotelu z laptopem, przy zapalonej lampie.",
+    "wCiaguDnia": "Kobieta pije kawę w kuchni."
   },
   "Wrapped": {
     "podpis": "dane przykładowe",

@@ -28,6 +28,17 @@ type Props = {
     etykieta: string;
     adres: string;
   };
+  /** LUSTRO (ADR-071, WWW/098 v2 pkt 4b): `true` = zdjęcie po LEWEJ,
+   *  tekst po prawej. WYŁĄCZNIE wizualnie — kolejność w DOM zostaje
+   *  „tekst przed obrazem" na każdym filarze, bo to ona jest czytana
+   *  przez czytniki ekranu i przez kadr wąski. Poniżej progu układu
+   *  lustro nie działa: tam wszystkie cztery mają tekst nad zdjęciem. */
+  lustro?: boolean;
+  /** TON SEKCJI (ADR-071, WWW/098 v2 pkt 4c): pominięty = klamra
+   *  grafitowa, jak dotąd. `"2"` albo `"3"` = korpus jasny, a role
+   *  tekstu, ::marker i linku przemapowują się automatycznie przez
+   *  `data-ton`/`data-tlo` — komponent nie wypisuje ani jednej barwy. */
+  tlo?: "1" | "2" | "3";
   /** Zrzut Z6 przypisany filarowi: prefiks plików z rejestru
    *  (design/pipeline-obrazow.json) + alt z messages ×3 języki.
    *  Pominięty = filar pokazuje pustą ramkę (patrz nagłówek). */
@@ -89,6 +100,8 @@ type Props = {
  * drugi raz — a to właśnie ta weryfikacja była kosztem tego etapu.
  */
 export function Filar({
+  lustro,
+  tlo,
   naglowek,
   idNaglowka,
   korzysc,
@@ -99,14 +112,17 @@ export function Filar({
 }: Props) {
   return (
     <section
-      className={styles.filar}
+      className={lustro ? `${styles.filar} ${styles.lustro}` : styles.filar}
       aria-labelledby={idNaglowka}
-      /* ⚠ GRAFIT, NIE JASNY (ADR-067, WWW/094 krok 1) — powierzchnia
-         karty przemapowuje KAŻDĄ rolę tekstu i granicy na wariant
-         `*-na-klamrze`. Sam atrybut jest tu całym mechanizmem: żaden
-         moduł filaru nie wypisuje barwy, więc zmiana tonu przestawia
-         nagłówek, zdanie, listę, ::marker i link jednym słowem. */
-      data-ton="ciemny"
+      data-tlo={tlo}
+      /* ⚠ TON WARUNKOWY (ADR-071, WWW/098 v2 pkt 4c). Filary 1 i 2
+         zostają na klamrze grafitowej, 3 i 4 idą na korpus jasny.
+         Atrybut jest tu CAŁYM mechanizmem: żaden moduł filaru nie
+         wypisuje barwy, więc zmiana tonu przestawia nagłówek, zdanie,
+         listę, `::marker` i link jednym słowem — a `::marker` i link
+         schodzą wtedy z limonki na `akcent-na-jasnym`, bo limonka ma
+         na jasnym 1,43:1 i tekstu nieść nie może. */
+      data-ton={tlo === undefined ? "ciemny" : "jasny"}
     >
       <div className={styles.wnetrze}>
         {/* ⚠ NAPRZEMIENNOŚCI NIE MA — POMIAR, NIE PRZYZWYCZAJENIE

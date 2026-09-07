@@ -21,7 +21,7 @@
     "wkrotce": "(coming soon)"
   },
   "Hero": {
-    "naglowek": "You do the talking — Catherly keeps track of contacts and results.",
+    "naglowek": "You do the talking\nCatherly <akcent>keeps track of contacts and results.</akcent>",
     "podtytul": "Catherly is a system for running your own direct selling — contacts, content, team, and results in one place.",
     "cta": "See how it works",
     "ctaWtorne": "See the features",
@@ -426,7 +426,12 @@
     "telefon": "A phone at an angle, its screen blank.",
     "macbookTelefon": "A laptop showing the daily plan of action, and a phone beside it with a blank screen.",
     "rano": "A woman at a desk drinks from a cup and looks at a laptop screen.",
-    "wieczorem": "A couple sits on a sofa looking at a laptop screen together."
+    "wieczorem": "A couple sits on a sofa looking at a laptop screen together.",
+    "filar1": "A woman on the phone beside an open notebook, a cup next to her.",
+    "filar2": "A woman typing on a laptop at a desk, her phone lying face down.",
+    "filar3": "A woman on the phone, smiling, hand near her face; a notebook on the table.",
+    "filar4": "A man in an armchair in the evening with a laptop, a lamp lit beside him.",
+    "wCiaguDnia": "A woman drinking coffee in a kitchen."
   },
   "Wrapped": {
     "podpis": "sample data",

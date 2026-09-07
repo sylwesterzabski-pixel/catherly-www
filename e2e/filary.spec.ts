@@ -150,6 +150,13 @@ test("K4: tekst po LEWEJ na wszystkich filarach; DOM zawsze tekst przed obrazem"
      CZTERY jego bloki feature mają tekst po lewej, na każdym kadrze;
      zebra była naszym przyzwyczajeniem z wzorca `WWW/050-FINAL`.
 
+     ⚠ LUSTRO WRÓCIŁO 2026-09-07 (ADR-071, WWW/098 v2 pkt 4b) — DECYZJĄ
+     WŁAŚCICIELA, nie pomiarem. Nie unieważnia to pomiaru z ADR-055:
+     tamten wzorzec naprawdę nie miał zebry i nadal jej nie ma. Zmienił
+     się mandat, nie fakt. Asercja idzie za mandatem: filary 1 i 3 mają
+     tekst po LEWEJ, filary 2 i 4 — po PRAWEJ; wzór jest WYPISANY, bo
+     jego zmiana ma być decyzją, nie skutkiem dołożenia piątego filaru.
+
      Poprzednia asercja czytała `order` obrazu i wymagała wzoru 0-1-0-1.
      Nowa NIE czyta `order` — czyta POŁOŻENIE, czyli rzecz, o którą
      naprawdę chodzi. Jest przez to MOCNIEJSZA: łapie każdy sposób
@@ -165,10 +172,17 @@ test("K4: tekst po LEWEJ na wszystkich filarach; DOM zawsze tekst przed obrazem"
      ⚠ CO ZOSTAJE BEZ ZMIAN: kolejność w DOM. Tekst ma stać przed obrazem
      w toku dokumentu — to jest własność czytana przez czytniki ekranu
      i przez kadr wąski, niezależna od tego, którą stroną leży kolumna. */
-  /* ⚠ TRZY, NIE CZTERY (ADR-067, WWW/094) — filar „Wyniki" zszedł
-     z głównej decyzją właściciela; patrz komentarz przy KLUCZE_FILAROW.
-     Lista wypisana, nie czerpana ze zbioru, z tego samego powodu. */
   const KLUCZE = KLUCZE_FILAROW;
+  /* Wzór lustra: `false` = tekst po lewej, `true` = tekst po PRAWEJ.
+     Wypisany, nie liczony z parzystości indeksu — parzystość zgadzałaby
+     się sama także po dołożeniu filaru, a wtedy nikt by nie zauważył,
+     że nowy wpadł w lustro bez rozstrzygnięcia. */
+  const LUSTRO: Record<string, boolean> = {
+    filar1: false,
+    filar2: true,
+    filar3: false,
+    filar4: true,
+  };
 
   for (const klucz of KLUCZE) {
     const sekcja = page.locator("section", {
@@ -221,9 +235,20 @@ test("K4: tekst po LEWEJ na wszystkich filarach; DOM zawsze tekst przed obrazem"
       expect(rt!.y, `${testInfo.project.name} (${klucz}): tekst nad obrazem`).toBeLessThan(ro!.y);
     } else {
       expect(displayUkladu, `${testInfo.project.name} (${klucz}): siatka`).toBe("grid");
-      /* ⚠ POŁOŻENIE, NIE `order`: lewa krawędź tekstu musi leżeć na lewo
-         od lewej krawędzi obrazu — na KAŻDYM z czterech filarów. */
-      expect(rt!.x, `${testInfo.project.name} (${klucz}): tekst po LEWEJ`).toBeLessThan(ro!.x);
+      /* ⚠ POŁOŻENIE, NIE `order` — asercja czyta rzecz, o którą chodzi,
+         więc łapie każdy sposób odwrócenia kolumn (order, direction,
+         kolejność w znaczniku, `grid-column`), a nie jeden mechanizm. */
+      if (LUSTRO[klucz]) {
+        expect(
+          rt!.x,
+          `${testInfo.project.name} (${klucz}): tekst po PRAWEJ (lustro)`,
+        ).toBeGreaterThan(ro!.x);
+      } else {
+        expect(
+          rt!.x,
+          `${testInfo.project.name} (${klucz}): tekst po LEWEJ`,
+        ).toBeLessThan(ro!.x);
+      }
     }
   }
 });

@@ -184,11 +184,33 @@
      (4,64 % i 4,30 %) i odstępu daje to 44 : 55 wewnątrz pola treści.
      Poprzednie 58 : 42 pochodziło z hero i było przeniesione „bo pasuje" —
      wzorzec daje tu inny podział, bo mockup jest szerszy niż proza. */
+  /* ⚠ LUSTRO SEKCJI „PAMIĘĆ" — polecenie właściciela z 2026-09-07:
+     „odbij lustrzanie mockup laptopa z tekstem". Mockup idzie na LEWO,
+     proza na prawo.
+
+     ⚠ TRAKTY ZAMIENIONE MIEJSCAMI, NIE TYLKO `order`. Zmierzone proporcje
+     zostają te same — 55 dla mockupu, 44 dla prozy — ale skoro mockup
+     stoi teraz w pierwszym trakcie, to pierwszy trakt musi być tym
+     szerszym. Samo `order: -1` przy siatce `44fr 55fr` dałoby mockupowi
+     44, a prozie 55, czyli odwróciłoby także szerokości — a odbicie ma
+     zmienić stronę, nie miary.
+
+     ⚠ KOLEJNOŚĆ W DOM BEZ ZMIAN: proza dalej stoi przed kadrem w toku
+     dokumentu, więc czytnik ekranu i kadr wąski czytają je tak jak
+     dotąd. To ta sama zasada, którą filary mają w `Filar.module.css`.
+
+     ⚠ REGUŁA W BLOKU PROGOWYM: poniżej progu kolumny są jedną kolumną
+     i `order` przestawiłby kadr NAD prozę, czyli odwrócił to, co ma
+     zostać nietknięte. */
   .uklad {
     display: grid;
-    grid-template-columns: 44fr 55fr;
+    grid-template-columns: 55fr 44fr;
     gap: var(--wymiar-odstep-6);
     align-items: center;
+  }
+
+  .uklad .kadr {
+    order: -1;
   }
 
   .kadr {

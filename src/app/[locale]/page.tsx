@@ -63,18 +63,17 @@ import { OSADZENIE_NA_GLOWNEJ, zrzutFilaru } from "@/obrazy/zrzuty";
    „wzrost" bierze odtąd `FunkcjeWyniki.mod2_nazwa` („Twój Wrapped"),
    a nie `Filary.filar4.naglowek`.
 
-   ⚠ CZWARTY SLOT NIESIE `dbanie-o-siebie`, NIE `filar-4-wyniki` — tak
-   brzmi zlecenie (pkt 6: „filar-1…3 + dbanie (jako filar 4)"), a nie
-   jest to oczywiste, więc zapisuję. Sekcja „dbanie o siebie" zeszła
-   z głównej, jej fotografia zostawała bez miejsca; zlecenie oddaje ją
-   czwartemu filarowi. Skutek uboczny zgłoszony w zwrotce: to
-   `filar-4-wyniki.avif` zostaje bez osadzenia, czyli pozycja T73
-   rejestru NIE zamyka się, tylko zmienia przedmiot. */
+   ⚠ KADRY TYMCZASOWE ODPIĘTE (ADR-071, WWW/098 v2 krok 2). Do 06.09
+   sloty niosły `public/obrazy/tymczasowe/filar-1…3` i `dbanie-o-siebie`;
+   dziś niosą bitmapy z dostawy, sprawdzone sumą przed zapisem. Pliki
+   tymczasowe ZOSTAJĄ NA DYSKU — zlecenie zakazuje kasowania, a lista
+   odpiętych idzie do zwrotki. **Pozycja T73 zamknięta:** żaden kadr
+   tymczasowy nie jest już osadzony, więc nie ma osieroconego. */
 const FILARY = [
-  { klucz: "filar1", id: "filar-1-h2", kadr: "filar-1-pozyskiwanie", blok: "blok1Link", sciezka: "/funkcje/pozyskiwanie" },
-  { klucz: "filar2", id: "filar-2-h2", kadr: "filar-2-tresci", blok: "blok2Link", sciezka: "/funkcje/tresci" },
-  { klucz: "filar3", id: "filar-3-h2", kadr: "filar-3-zespol", blok: "blok3Link", sciezka: "/funkcje/zespol" },
-  { klucz: "filar4", id: "filar-4-h2", kadr: "dbanie-o-siebie", blok: "blok4Link", sciezka: "/funkcje/wyniki" },
+  { klucz: "filar1", id: "filar-1-h2", kadr: "15a-telefon-notes", alt: "filar1", blok: "blok1Link", sciezka: "/funkcje/pozyskiwanie", lustro: false, tlo: undefined },
+  { klucz: "filar2", id: "filar-2-h2", kadr: "16-laptop-biurko", alt: "filar2", blok: "blok2Link", sciezka: "/funkcje/tresci", lustro: true, tlo: undefined },
+  { klucz: "filar3", id: "filar-3-h2", kadr: "15b-telefon-usmiech", alt: "filar3", blok: "blok3Link", sciezka: "/funkcje/zespol", lustro: false, tlo: "3" },
+  { klucz: "filar4", id: "filar-4-h2", kadr: "6b-wieczor-fotel", alt: "filar4", blok: "blok4Link", sciezka: "/funkcje/wyniki", lustro: true, tlo: "2" },
 ] as const;
 
 /* RZĄD TRZECH KART GRAFITOWYCH — mapa karta → klucze (ADR-069).
@@ -100,7 +99,6 @@ export default async function StronaGlowna({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("Filary");
   const tObrazy = await getTranslations("ObrazyFilarow");
-  const tObrazyTymczasowe = await getTranslations("ObrazyTymczasowe");
   const tDefinicja = await getTranslations("Definicja");
   const tRytm = await getTranslations("RytmDnia");
   const tWzorzec = await getTranslations("ObrazyWzorzec");
@@ -149,16 +147,23 @@ export default async function StronaGlowna({ params }: Props) {
           idNaglowka="definicja-h2"
           ton="2"
           /* KADR „PAMIĘĆ" (ADR-067 §krok 2, przeskalowany w ADR-069).
-             Warstwa (b) kanonu — obudowa urządzeń — pochodzi z manifestu
-             bitmap; warstwa (a) — zrzut na ekranie laptopa — z bazy demo
-             przez Playwrighta. Ekran telefonu zostaje PUSTY: decyzja
-             właściciela [A/C] nie zapadła, a kadru desktopowego
-             2048 × 1280 nie wolno wcisnąć w ekran pionowy.
+             ⚠ EKRAN LAPTOPA BIAŁY — ZRZUT ZDJĘTY (ADR-071, WWW/098 v2
+             pkt 3e, decyzja właściciela „na razie"). Do 06.09 slot niósł
+             `3-macbook-iphone-ekran-alfa.avif`, czyli obudowę z wklejonym
+             zrzutem Playwrighta `z6-filar-1-dmo`. Teraz niesie
+             `3-macbook-iphone-alfa.avif` — tę samą obudowę z ekranem
+             pustym. Plik ze zrzutem ZOSTAJE w repozytorium nieużyty;
+             zlecenie zakazuje kasowania, a jego powrót to podmiana
+             jednej linii.
+             Kadr jest przez to w całości warstwą (b) kanonu — dekoracją.
+             Ekran telefonu też pusty: decyzja właściciela [A/C] nie
+             zapadła, a kadru desktopowego nie wolno wcisnąć w ekran
+             pionowy.
              Wariant `-alfa` ma zdjęte tło (zalew z czterech narożników,
              próg 40 przy przecieku zmierzonym na 140), więc kadr kładzie
              się na dowolnym tonie sekcji, a cień rysuje CSS. */
           kadr={{
-            zrodlo: "/obrazy/wzorzec-2026-09-06/3-macbook-iphone-ekran-alfa.avif",
+            zrodlo: "/obrazy/wzorzec-2026-09-06/3-macbook-iphone-alfa.avif",
             alt: tWzorzec("macbookTelefon"),
             szerokosc: 1600,
             wysokosc: 1195,
@@ -183,9 +188,11 @@ export default async function StronaGlowna({ params }: Props) {
           }
         />
 
-        {FILARY.map(({ klucz, id, kadr, blok, sciezka }) => (
+        {FILARY.map(({ klucz, id, kadr, alt, blok, sciezka, lustro, tlo }) => (
           <Filar
             key={klucz}
+            lustro={lustro}
+            tlo={tlo}
             idNaglowka={id}
             naglowek={t(`${klucz}.naglowek`)}
             korzysc={t(`${klucz}.korzysc`)}
@@ -207,10 +214,8 @@ export default async function StronaGlowna({ params }: Props) {
                wypełnia slot filaru do czasu bitmap 15–18 z osobnego
                zlecenia. Podmiana = wymiana pliku, bez zmiany kodu. */
             kadr={{
-              zrodlo: `/obrazy/tymczasowe/${kadr}.avif`,
-              alt: tObrazyTymczasowe(
-                kadr === "dbanie-o-siebie" ? "dbanie" : `filar${klucz.slice(-1)}`,
-              ),
+              zrodlo: `/obrazy/wzorzec-2026-09-06/${kadr}.avif`,
+              alt: tWzorzec(alt),
               szerokosc: 1600,
               wysokosc: 1067,
             }}
@@ -236,16 +241,18 @@ export default async function StronaGlowna({ params }: Props) {
               kadrAlt: tWzorzec("rano"),
             },
             {
-              /* ⚠ SLOT BEZ KADRU — DECYZJA WŁAŚCICIELA OTWARTA (T71).
-                 Kadr 5 z dostawy pokazuje laptop z pulpitem i wykresem,
-                 czyli obraz, o którym odwiedzająca może pomyśleć „tak
-                 wygląda aplikacja”; kanon żąda wtedy zrzutu z Playwrighta,
-                 a manifest oznacza ten kadr jako warunkowy. Slot zostaje
-                 WIDOCZNY z ramką i chipem, żeby sekwencja trzech pór dnia
-                 się nie rozpadła; wejście kadru to podmiana jednej linii. */
+              /* ⚠ SLOT NAPEŁNIONY — T71 ZAMKNIĘTE (ADR-071, WWW/098 v2).
+                 Stał tu pusty slot z ramką i chipem, bo kadr `5-w-ciagu-dnia`
+                 z poprzedniej dostawy pokazywał laptop z pulpitem i wykresem,
+                 czyli przechodził próbę kanonu („czy odwiedzająca mogłaby
+                 uznać, że tak wygląda aplikacja?") na TAK. Nowy kadr `4b`
+                 pokazuje kobietę z kawą w kuchni — żadnego ekranu, więc
+                 pytanie w ogóle nie powstaje. Strażnik żółty schodzi. */
               nazwa: tRytm("krok2Nazwa"),
               tresc: tRytm("krok2Tresc"),
               chip: tRytm("krok2Chip"),
+              kadr: "/obrazy/wzorzec-2026-09-06/4b-kawa-kuchnia.avif",
+              kadrAlt: tWzorzec("wCiaguDnia"),
             },
             {
               nazwa: tRytm("krok3Nazwa"),
