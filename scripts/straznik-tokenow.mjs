@@ -583,33 +583,32 @@ const zbierz = (dir) => {
 };
 try { zbierz(KATALOG_CSS); } catch { /* katalog może nie istnieć w innym układzie repo */ }
 
-/* KONTEKST SELEKTORA, NIE SAMA LINIA — naprawa defektu wykrytego przy
-   pierwszym przebiegu tego strażnika (2026-08-26).
+/* SKAN LINIOWY — i tylko liniowy, bo oba skany, które zostały, mieszczą
+   się w jednej deklaracji: hex z usuniętej palety i `font-weight: 100`.
 
-   Wersja z paczki sprawdzała wyjątek `::marker` w TEJ SAMEJ linii, co
-   deklaracja `color`. W tym repozytorium reguły są łamane na wiele linii:
+   Do 2026-10-04 pętla pamiętała ostatni selektor otwierający blok
+   i składała `kontekst = selektor + linia`. Ta maszyneria miała jednego
+   odbiorcę — skan „akcent jako kolor tekstu", który musiał widzieć
+   wyjątek `::marker` stojący w INNEJ linii niż deklaracja `color`:
 
-       .konkrety li::marker {      ← tu stoi ::marker
+       .konkrety li::marker {               ← tu stoi ::marker
          color: var(--kolor-rola-akcent);   ← a tu deklaracja
 
-   więc wyjątek nigdy się nie trafiał i strażnik zgłaszał trzy fałszywe
-   naruszenia R-AKCENT-01 na regułach, które tę regułę SPEŁNIAJĄ. To jest
-   klasa „grep czyta liniami": fraza złamana na dwie przestaje istnieć dla
-   narzędzia, które ogląda linię naraz. Dlatego niżej pamiętany jest
-   ostatni selektor otwierający blok. */
+   Skan zniknął w 30e76c9 (2026-08-26, WWW/055), bo ADR-039 zamienił
+   zakaz barwy na warunek kontrastowy wyżej — a kontekst został po nim
+   BEZ ODBIORCY. `kontekst` nie był już czytany przez nic, więc ESLint
+   zapalał `no-unused-vars`, a bramka `Bramka: ESLint` stała czerwona od
+   tego samego commita (zmierzone: `git log -S "const kontekst"`
+   i diff 30e76c9, który usuwa oba użycia i zostawia przypisanie).
+
+   Lekcja, dla której kontekst powstał, nie ginie z kodem: „grep czyta
+   liniami — fraza złamana na dwie przestaje istnieć dla narzędzia, które
+   ogląda linię naraz" stoi w CLAUDE.md (ZERO Z JEDNEJ POSTACI NIE JEST
+   ZEREM BYTU). Gdyby wróciła reguła łamana przez wiele linii, kontekst
+   trzeba odtworzyć — sam wzorzec liniowy byłby wtedy ślepy. */
 for (const p of plikiCss) {
   const tresc = readFileSync(p, "utf8").split("\n");
-  let selektor = "";
   tresc.forEach((linia, i) => {
-    const otwarcie = linia.match(/^([^{}]*)\{\s*$/);
-    if (otwarcie) selektor = otwarcie[1].trim();
-    else if (/^\s*\}/.test(linia)) selektor = "";
-
-    const kontekst = `${selektor}\n${linia}`;
-    /* Skan „akcent jako kolor tekstu" USUNIĘTY (ADR-039): zakaz barwy
-       ustąpił warunkowi kontrastowemu wyżej. Zostaje skan powrotów —
-       limonki z usuniętej palety i wagi 100 — bo te dwie rzeczy nie są
-       kwestią kontrastu, tylko zamkniętych decyzji. */
     if (/#a3e635|#c7f04a|#d4f55c/i.test(linia)) {
       bledy.push(`LIMONKA: ${p}:${i + 1} — kolor z usuniętej palety`);
     }
