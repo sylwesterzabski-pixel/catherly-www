@@ -142,8 +142,11 @@ const MIN_DLUGOSC_MARKERA = 12;
  *
  * Czego tu wziąć NIE WOLNO: surowej wartości klucza. `Hero.naglowek` jest
  * szablonem rich-text i komponent renderuje go przez `t.rich`
- * (src/components/Hero.tsx:146) — znacznik `<akcent>` zostaje w HTML-u
- * **zastąpiony** realnym `<span class="…">`, a `\n` rozcina tekst na dwa
+ * (src/components/Hero.tsx:146–147 — `<h1 id="hero-h1">` i stojące pod nim
+ * wywołanie `t.rich("naglowek", …)`; adres sprawdzony odczytem 2026-10-04,
+ * poprzednio stało tu samo `:146`, czyli linia wyłącznie `<h1>`) — znacznik
+ * `<akcent>` zostaje w HTML-u **zastąpiony** realnym `<span class="…">`,
+ * a `\n` rozcina tekst na dwa
  * węzły. Surowa wartość nie jest więc podciągiem wyrenderowanej strony
  * i być nim nie może. Od 46c8688 (07.09.2026), kiedy do tej wartości
  * weszły znacznik i znak nowej linii, marker był **niespełnialny**:
@@ -154,6 +157,17 @@ const MIN_DLUGOSC_MARKERA = 12;
  * każdym znaczniku i na każdym `\n` daje fragmenty, które w HTML-u stoją
  * nieprzerwanie. Brany jest najdłuższy, bo im dłuższy fragment, tym
  * mniejsza szansa, że obca strona ma go przypadkiem u siebie.
+ *
+ * ⚠ GRANICA TEGO ROZUMOWANIA, NAZWANA 2026-10-04 (poz. T92 rejestru
+ * warunków powrotu): długość jest PRZYBLIŻENIEM swoistości, nie jej
+ * sprawdzeniem. Próg niżej pilnuje DŁUGOŚCI; o tym, czy najdłuższy
+ * przebieg jest swoisty dla Catherly, decyduje treść hero — czyli Figma,
+ * nie ten plik. Fraza ogólna dłuższa od progu przeszłaby bez jednego
+ * sygnału, a kontrola pozytywna tego strażnika (imitacja ściany
+ * logowania) tej własności NIE mierzy, bo markera nie zawiera wcale.
+ * Dziedzina tego markera brzmi więc: „odpowiedź cytuje nasze zdanie
+ * hero", a nie „odpowiedź jest stroną Catherly" — o wdrożeniu właściwego
+ * wydania orzeka dopiero para marker + prowieniencja.
  *
  * Odrzucane są przebiegi z którymkolwiek z pięciu znaków, które React
  * ucieka w tekście (`& < > " '`): porównanie idzie po surowym HTML-u, więc

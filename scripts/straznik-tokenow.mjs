@@ -598,8 +598,23 @@ try { zbierz(KATALOG_CSS); } catch { /* katalog może nie istnieć w innym ukła
    zakaz barwy na warunek kontrastowy wyżej — a kontekst został po nim
    BEZ ODBIORCY. `kontekst` nie był już czytany przez nic, więc ESLint
    zapalał `no-unused-vars`, a bramka `Bramka: ESLint` stała czerwona od
-   tego samego commita (zmierzone: `git log -S "const kontekst"`
-   i diff 30e76c9, który usuwa oba użycia i zostawia przypisanie).
+   tego samego commita. Zmierzone dwoma poleceniami, nie jednym:
+   `git log --oneline -S 'kontekst' -- scripts/straznik-tokenow.mjs`
+   wypisuje 58a14c1 (wprowadził zmienną, wtedy jeszcze z odbiorcą),
+   a22b440, 30e76c9 i 456909d (ta naprawa), a `git show 30e76c9 --
+   scripts/straznik-tokenow.mjs` pokazuje, że tamten commit USUNĄŁ dwie
+   linie z tym słowem i nie dodał ani jednej — czyli zabrał odbiorcę
+   i zostawił przypisanie.
+
+   ⚠ Poprzednie brzmienie cytowało tu pickaxe po DEKLARACJI zmiennej
+   (`-S` z ciągiem `const` i jej nazwą) i to cytowanie UNIEWAŻNIAŁO SAMO
+   SIEBIE: literał wszedł razem z komentarzem do pliku, więc pickaxe
+   wskazywał odtąd tylko commit wprowadzający, a nie ten, który defekt
+   stworzył. Dowód mieszkający w pilnowanym pliku zmienia własny wynik —
+   dlatego stoi tu `git show` na nazwanym commicie, odporny na to
+   sprzężenie, i dlatego lista wyżej jest o jeden commit dłuższa od
+   chwili, w której ten komentarz wszedł do repozytorium (sprostowane
+   2026-10-04 po kontroli adwersaryjnej).
 
    Lekcja, dla której kontekst powstał, nie ginie z kodem: „grep czyta
    liniami — fraza złamana na dwie przestaje istnieć dla narzędzia, które
