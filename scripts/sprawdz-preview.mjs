@@ -22,8 +22,8 @@
  *
  * Działa dopiero para: brak przekierowania (redirect: manual) plus
  * markery, których logowanie wyprodukować nie może — atrybut językowy
- * dokumentu, identyfikator H1 hero i dosłowny nagłówek z komunikatów
- * (źródło prawdy: src/i18n/messages/pl.json).
+ * dokumentu, identyfikator H1 hero i dosłowny FRAGMENT nagłówka
+ * z komunikatów (źródło prawdy: src/i18n/messages/pl.json).
  *
  * ── (2) Ta strona, ale NIE TEN COMMIT ─────────────────────────────
  * Adres w LHCI_BAZA jest stały, wdrożenie pod nim — nie. Bramka rusza
@@ -118,14 +118,69 @@ if (!OCZEKIWANY && !RECZNY) {
 const SEKRET = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 const naglowki = SEKRET ? { "x-vercel-protection-bypass": SEKRET } : {};
 
-const NAGLOWEK_H1 = JSON.parse(
+const SZABLON_H1 = JSON.parse(
   readFileSync(new URL("../src/i18n/messages/pl.json", import.meta.url), "utf8"),
 ).Hero.naglowek;
+
+/**
+ * Minimalna długość trzeciego markera. **Ta liczba jest MECHANIZMEM, nie
+ * parametrem do dostrojenia** — jej obniżenie osłabia strażnika, więc jej
+ * zmiana ma być decyzją, nie dopasowaniem do nowej treści hero.
+ *
+ * Wzięta z pomiaru, nie z wyczucia: najdłuższym przebiegiem tekstowym
+ * szablonu może zostać sama nazwa marki („Catherly", 8 znaków), a ekran
+ * logowania Vercela zawiera ją **dwa razy**, bo adres preview siedzi
+ * u niego w parametrze `next=` (zmierzone 2026-08-14, patrz nagłówek tego
+ * pliku). Marker krótszy od tego progu byłby więc markerem, który ściana
+ * logowania spełnia — czyli zielenią bez pokrycia.
+ */
+const MIN_DLUGOSC_MARKERA = 12;
+
+/**
+ * Trzeci marker: DOSŁOWNY FRAGMENT tekstu nagłówka hero, wyłuskany
+ * z komunikatów.
+ *
+ * Czego tu wziąć NIE WOLNO: surowej wartości klucza. `Hero.naglowek` jest
+ * szablonem rich-text i komponent renderuje go przez `t.rich`
+ * (src/components/Hero.tsx:146) — znacznik `<akcent>` zostaje w HTML-u
+ * **zastąpiony** realnym `<span class="…">`, a `\n` rozcina tekst na dwa
+ * węzły. Surowa wartość nie jest więc podciągiem wyrenderowanej strony
+ * i być nim nie może. Od 46c8688 (07.09.2026), kiedy do tej wartości
+ * weszły znacznik i znak nowej linii, marker był **niespełnialny**:
+ * bramka wydajności stała czerwona z komunikatem „odpowiedź nie jest
+ * stroną Catherly" na stronie, która Catherly była.
+ *
+ * Marker powstaje więc z PRZEBIEGÓW TEKSTOWYCH szablonu — rozcięcie na
+ * każdym znaczniku i na każdym `\n` daje fragmenty, które w HTML-u stoją
+ * nieprzerwanie. Brany jest najdłuższy, bo im dłuższy fragment, tym
+ * mniejsza szansa, że obca strona ma go przypadkiem u siebie.
+ *
+ * Odrzucane są przebiegi z którymkolwiek z pięciu znaków, które React
+ * ucieka w tekście (`& < > " '`): porównanie idzie po surowym HTML-u, więc
+ * fragment wolny od nich jest po obu stronach identyczny i nie trzeba
+ * zgadywać, którą postać ucieczki wybrała bieżąca wersja Reacta. Fragment
+ * z takim znakiem byłby cichym powrotem tego samego defektu.
+ */
+const FRAGMENT_H1 = SZABLON_H1.split(/<[^>]+>|\n/)
+  .map((przebieg) => przebieg.trim())
+  .filter((przebieg) => przebieg && !/[&<>"']/.test(przebieg))
+  .sort((a, b) => b.length - a.length)[0];
+
+if (!FRAGMENT_H1 || FRAGMENT_H1.length < MIN_DLUGOSC_MARKERA) {
+  blad(
+    "nie da się zbudować markera treści z komunikatów",
+    `Najdłuższy przebieg tekstowy klucza Hero.naglowek: ` +
+      `${JSON.stringify(FRAGMENT_H1 || "")} (${(FRAGMENT_H1 || "").length} zn.),\n` +
+      `  próg ${MIN_DLUGOSC_MARKERA} zn. Strażnik woli upaść tutaj, niż przyjąć marker,\n` +
+      "  który spełnia też ekran logowania Vercela. Naprawa jest decyzją\n" +
+      "  o treści hero albo o progu — nie o wyłączeniu markera.",
+  );
+}
 
 const MARKERY = [
   ["atrybut językowy dokumentu", '<html lang="pl"'],
   ["identyfikator H1 hero", 'id="hero-h1"'],
-  ["nagłówek H1 z komunikatów", NAGLOWEK_H1],
+  ["fragment nagłówka H1 z komunikatów", FRAGMENT_H1],
 ];
 
 /** Statusy, które w trakcie wdrażania są przejściowe — warto poczekać. */
@@ -135,6 +190,11 @@ console.log(`Cel pomiaru: ${BAZA}`);
 console.log(
   `Obejście ochrony preview: ${SEKRET ? "sekret obecny" : "BRAK SEKRETU"}`,
 );
+// Marker treści wypisany JAWNIE: przy czerwieni z 2026-10-04 komunikat
+// mówił tylko „bez markerów: nagłówek H1 z komunikatów", więc ustalenie,
+// czego strażnik właściwie szukał, wymagało odczytu kodu i historii gita.
+// Fragment w logu zamienia to w jedną linijkę do przeczytania.
+console.log(`Marker treści: ${JSON.stringify(FRAGMENT_H1)}`);
 console.log(
   RECZNY
     ? "Prowieniencja: NIE SPRAWDZANA (--reczny) — to diagnostyka, nie dowód."
