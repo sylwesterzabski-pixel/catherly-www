@@ -600,21 +600,36 @@ try { zbierz(KATALOG_CSS); } catch { /* katalog może nie istnieć w innym ukła
    zapalał `no-unused-vars`, a bramka `Bramka: ESLint` stała czerwona od
    tego samego commita. Zmierzone dwoma poleceniami, nie jednym:
    `git log --oneline -S 'kontekst' -- scripts/straznik-tokenow.mjs`
-   wypisuje 58a14c1 (wprowadził zmienną, wtedy jeszcze z odbiorcą),
-   a22b440, 30e76c9 i 456909d (ta naprawa), a `git show 30e76c9 --
-   scripts/straznik-tokenow.mjs` pokazuje, że tamten commit USUNĄŁ dwie
-   linie z tym słowem i nie dodał ani jednej — czyli zabrał odbiorcę
-   i zostawił przypisanie.
+   wypisuje historię tego defektu — 58a14c1 (wprowadził zmienną, wtedy
+   jeszcze z odbiorcą), a22b440, 30e76c9 i 456909d (ta naprawa) — a
+   `git show 30e76c9 -- scripts/straznik-tokenow.mjs` pokazuje, że tamten
+   commit USUNĄŁ dwie linie z tym słowem i nie dodał ani jednej, czyli
+   zabrał odbiorcę i zostawił przypisanie. ROZSTRZYGA `git show` NA
+   NAZWANYM COMMICIE; lista `-S` jest tylko wskazówką, bo szukane słowo
+   stoi także w tym komentarzu i jego kolejne redakcje mogą się do tej
+   listy dopisywać.
 
-   ⚠ Poprzednie brzmienie cytowało tu pickaxe po DEKLARACJI zmiennej
-   (`-S` z ciągiem `const` i jej nazwą) i to cytowanie UNIEWAŻNIAŁO SAMO
-   SIEBIE: literał wszedł razem z komentarzem do pliku, więc pickaxe
-   wskazywał odtąd tylko commit wprowadzający, a nie ten, który defekt
-   stworzył. Dowód mieszkający w pilnowanym pliku zmienia własny wynik —
-   dlatego stoi tu `git show` na nazwanym commicie, odporny na to
-   sprzężenie, i dlatego lista wyżej jest o jeden commit dłuższa od
-   chwili, w której ten komentarz wszedł do repozytorium (sprostowane
-   2026-10-04 po kontroli adwersaryjnej).
+   ⚠ DWA POPRZEDNIE BRZMIENIA TEGO AKAPITU BYŁY WADLIWE i oba zostają
+   nazwane, bo należą do dwóch różnych klas.
+   (1) Do 2026-10-04 stało tu cytowanie pickaxe po DEKLARACJI zmiennej
+   (`-S` z ciągiem `const` i jej nazwą). To cytowanie UNIEWAŻNIAŁO SAMO
+   SIEBIE: literał wszedł razem z komentarzem do pilnowanego pliku, więc
+   polecenie wskazywało odtąd commit wprowadzający, a nie ten, który
+   defekt stworzył. Dowód mieszkający w pilnowanym pliku zmienia własny
+   wynik — i dlatego rozstrzyga `git show`.
+   (2) Pierwsza korekta (c955217) zapowiadała, że „lista wyżej jest
+   o jeden commit dłuższa od chwili, w której ten komentarz wszedł do
+   repozytorium". PROGNOZA PODANA SKŁADNIĄ ODCZYTU — obalona pomiarem po
+   jej własnym commicie: lista `-S` ma nadal CZTERY pozycje, bo `-S`
+   liczy ZMIANĘ LICZBY wystąpień, a c955217 jedno wystąpienie usunął
+   i jedno dodał (zmierzone: 6 wystąpień w pliku przed i 6 po). Commit
+   tej korekty wypisuje dopiero `git log --oneline -G 'kontekst' --
+   scripts/straznik-tokenow.mjs`, które patrzy na ZMIENIONE LINIE, a nie
+   na liczebność: tam `c955217` stoi i lista miała pięć pozycji w chwili
+   pomiaru (2026-10-04, przed tą korektą; każda następna redakcja tego
+   komentarza ją wydłuża — i to jest właśnie powód, dla którego
+   rozstrzyga `git show`, a nie długość listy). Zdanie o zachowaniu
+   narzędzia staje się pomiarem dopiero po uruchomieniu narzędzia.
 
    Lekcja, dla której kontekst powstał, nie ginie z kodem: „grep czyta
    liniami — fraza złamana na dwie przestaje istnieć dla narzędzia, które
