@@ -699,6 +699,18 @@ wartości nigdy**.
 zgody**, który obowiązuje nadal, a nie stan kolejki; stan przelicza się
 poleceniem z rozdziału 0.
 
+⚠ **I TO ZDANIE ZESTARZAŁO SIĘ W CIĄGU TEJ SAMEJ SESJI — NIE USUWAM GO, BO
+DLA SWOJEJ CHWILI JEST PRAWDZIWE.** Odczyt `0 0` powstał **przed** commitami
+`WWW/101`; od pierwszego z nich kolejka znów nie jest pusta. Liczby tu nie
+wpisuję — to pole samostarzejące się tej samej klasy co wiersze „HEAD
+lokalny", „Niewypchnięte" i „Drzewo robocze" w tabeli wyżej, a commit nie
+może zawierać własnego skrótu, więc każda wartość byłaby nieprawdą najpóźniej
+w chwili zapisu. **Jedyna dopuszczalna postać to polecenie:**
+`git log --oneline origin/faza-4/podstrony..HEAD`. Co z tego **nie** zależy od
+stanu kolejki: **zgody na push nie ma** — zlecenie `WWW/101` kończy się
+zdaniem „Push — tylko za osobną zgodą" i nie wylicza ani jednego skrótu,
+więc zakaz 1 obowiązuje w całości.
+
 Commity czekają na **wyliczoną zgodę właściciela na push**, wypychane **jawnym refspec ze skrótem**. Ostatnia zgoda
 (2026-08-23) obejmowała dokładnie dwanaście skrótów — `e8b3b73 · 6383580 ·
 7848900 · 97399c8 · 2599c88 · 8f15c60 · ec8d763 · bd27f6a · 85fed58 · 1a57256 ·
@@ -817,6 +829,46 @@ z T2 w Fazie 6, a **Wydajność** jest jedyną, w której pracę po stronie stro
 da się dziś zacząć — i jej pierwszym krokiem jest **rozrzut, nie mediana**,
 bo przy pozornym marginesie na pięciu trasach każdy pojedynczy pomiar
 „po naprawie" będzie anegdotą z datą.
+
+### 1.2 BEZPIECZEŃSTWO STRONY — ZMIERZONE 2026-10-07, RAPORT W OSOBNYM PLIKU
+
+**Plik:** `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md` (`WWW/101` krok 2).
+**Pozycja rejestru: `T93`** — tam stoi warunek powrotu. Tutaj tylko tyle,
+żeby nowa sesja wiedziała, **że ten pomiar istnieje i czego nie obejmuje**;
+dwunastu luk nie przepisuję, bo dwie listy tej samej rzeczy rozjadą się przy
+pierwszej naprawie (zakaz 10).
+
+| co | stan |
+|---|---|
+| Zakres pomiaru | build lokalny (`next start`) + konfiguracja repozytorium, drzewo `42c84ab` |
+| Wynik | **12 pozycji: 🔴 3 · 🟠 4 · 🟡 5** |
+| Nagłówki bezpieczeństwa | **zero z dziewięciu** na pięciu trasach (200 · 307 · 404), przy kontroli pozytywnej `x-catherly-wydanie` obecnym we wszystkich pięciu |
+| Formularze | **nie istnieją** — 0 `<form>`, 0 `action=`, 0 `<button>`; dwa `<input>` to przyciski radiowe przełącznika okresu w cenniku, więc pytania o walidację, limit tempa i CAPTCHA **nie mają dziś przedmiotu**, co jest brakiem przedmiotu, nie zielenią |
+| Skrypty i domeny obce | **zero** — 0 analityki, 0 `src="http`, 0 `href="http`, czcionki własne; CSP może być wąska |
+| Zależności | `npm audit --omit=dev` 2026-10-07: **1 krytyczna + 3 wysokie**, `fixAvailable` dla wszystkich czterech, droga wyjścia to `next@15.5.27` |
+| Obietnice wobec aplikacji | strona nie obiecuje nic, czego aplikacja nie ma, **ale połowa jedynej twierdzącej obietnicy** („Dane przechowywane w UE") stoi na **niesprawdzonym** — regionu bazy i Storage wsad `APP-064` nie podaje; pozycja ADR-018 |
+
+⚠ **KALIBRACJA — BEZ NIEJ TE TRZY CZERWIENIE CZYTA SIĘ O STOPIEŃ ZA GROŹNIE.**
+`vercel.json:4-6` wyłącza wdrożenia z `main`, produkcji nie ma (ADR-030,
+Faza 7), więc **dziś nic z tej listy nie jest wystawione odwiedzającej**;
+waga mówi o skutku **po** wdrożeniu produkcyjnym, a termin to „przed Fazą 7",
+nie „natychmiast". Jedyny wyjątek, który nie czeka: `/_next/image` odpowiada
+**200** na własny AVIF (sonda, nie odczyt dokumentacji), a `next` 15.5.23
+mieści się w zakresie podatnym advisory krytycznego dotyczącego **dokładnie
+tego punktu końcowego i dokładnie AVIF** — przy zerze użyć `next/image`
+w całym `src/`.
+
+**Czego raport NIE mierzy** (poza dziedziną nie ma werdyktu, jest milczenie):
+zachowania na Vercelu — zakaz 6 odcina pomiar na preview; stanu panelu
+Vercela; produkcji, bo jej nie ma; regionu bazy i Storage; skutku
+proponowanych napraw, bo żadnej nie wykonano; pozostałych **32 plików HTML**
+buildu, bo przeszukano `pl.html`.
+
+**Kroki właściciela** (Vercel: Bot Protection w trybie obserwacji, limit
+tempa na `/_next/image*`, Attack Challenge Mode tylko w trakcie ataku,
+Deployment Protection bez zmian, pomiar HSTS platformy, decyzja o
+`security.txt`) stoją w §5 raportu — **żadnego nie wolno wykonać z tej
+strony**.
 
 ---
 
@@ -4305,6 +4357,39 @@ liczba zamiast pomiaru:**
   zawiniło** — i to jest właściwa treść tej pułapki: przy „illegal argument"
   sprawdzasz, **czym naprawdę jest argument**, zanim zaczniesz podejrzewać
   polecenie.
+- **KONTROLA POZYTYWNA Z WYPEŁNIACZA NIE JEST KONTROLĄ — `gitleaks` WAŻY
+  ENTROPIĘ, NIE KSZTAŁT** (2026-10-07, `WWW/101`). Wzorzec do sprawdzenia
+  skanera zbudowałem z ciągów o **zerowej** entropii: `sk_test_` + 24 razy
+  `A`, `AKIA` + 16 razy `D`, PEM z powtarzanym wypełniaczem. Wynik:
+  `no leaks found`, wyjście **0** — i to zero przeczytałbym jako „skaner
+  działa, repozytorium czyste". Przebudowany wzorzec z wartościami o realnej
+  entropii (`python3 -c 'import secrets…'`, wartości nigdy nie trafiają do
+  dokumentu) daje **4 ustalenia** i wyjście **1**: `private-key` 5,911 ·
+  `github-pat` 4,703 · `aws-access-token` 3,822 · `stripe-access-token`
+  4,734. **Mechanizm zmierzony, nie wywnioskowany** — jeden przebieg
+  `gitleaks dir` na dwóch plikach o **identycznym kształcie** `sk_test_`
+  + 24 znaki, różniących się wyłącznie entropią treści: wypełniacz
+  **nie wykryty**, losowy **wykryty** jako `stripe-access-token` z polem
+  `Entropy` 4,625 w raporcie. To kanoniczne „zero bez kontroli pozytywnej
+  jest zerem narzędzia" **o szczebel głębiej**: kontrolą pozytywną miał być
+  wzorzec, a sam wzorzec okazał się zerem narzędzia. Praktycznie: **wzorzec
+  do skanera sekretów musi mieć entropię sekretu, nie jego szyk.**
+- **SKRÓT COMMITA NAPISANY Z PAMIĘCI JEST ODWOŁANIEM DO STANU, KTÓRY NIGDY
+  NIE ISTNIAŁ** (2026-10-07, `WWW/101` krok 2). Do tabeli liczników w rozdz.
+  15.2 wpisałem `7afb8c2` jako commit niosący stan „91 wierszy" —
+  **skrótu nie ma w tym repozytorium**: `git cat-file -t 7afb8c2` → *fatal:
+  Not a valid object name*, przy kontroli pozytywnej w tym samym przebiegu
+  (`git cat-file -t c955217` → `commit`). Prawdziwy skrót daje odczyt:
+  `git log -S'| T92 |' -- docs/PRZEKAZANIE-SESJI.md` → **`c955217`**, a stan
+  91 / 85 / 83 + 8 przeliczyłem z `git show` na **trzech** commitach
+  (`c955217`, `42c84ab`, `5f348a8`) — wszędzie ten sam. Złapane **przed
+  commitem**, bo liczniki przeliczam ze źródła, a przy źródle trzeba podać
+  polecenie. Kanon zna wariant droższy — amend i rebase zostawiają skrót
+  widmo po stanie, który **istniał** — ten jest tańszy i gorszy: widmo bez
+  żadnego zdarzenia za sobą, **a wygląda identycznie**, bo siedem znaków
+  hex wygląda jak siedem znaków hex. Reguła: **skrót wchodzi do dokumentu
+  wyłącznie z wyjścia polecenia, które go wypisało**, nigdy z ręki — i daje
+  się to sprawdzić jednym `git cat-file -t`.
 
 ---
 
@@ -4342,6 +4427,15 @@ liczba zamiast pomiaru:**
   po stronie aplikacji (4.7). Nie jest źródłem reguł wiążących i nie ma nim
   być — reguły są w `CLAUDE.md` i w 30 ADR-ach, briefing tylko je streszcza
   i wskazuje. Jeśli kiedykolwiek się z nimi rozejdzie, obowiązują tamte
+- `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md` — **NOWY KATALOG I NOWY
+  PLIK 2026-10-07** (`WWW/101` krok 2), 433 linie: pomiar nagłówków,
+  formularzy, skryptów obcych, przekierowań i zależności na buildzie
+  lokalnym i w konfiguracji repozytorium, **12 pozycji 🔴 3 · 🟠 4 · 🟡 5**,
+  kroki właściciela w §5 i osiem **niepomiarów** w §6. **Nie jest źródłem
+  reguł** — szczebel 7; warunek powrotu stoi w rejestrze jako **T93**, a nie
+  tutaj, i dwunastu luk nie ma w żadnym drugim miejscu (zakaz 10). Raport
+  **niczego nie naprawia** — zlecenie dało tryb „tylko odczyt"; `git diff
+  --stat` tego commita rusza wyłącznie `docs/`
 
 **Czytane, nośne, nietknięte**
 - `scripts/sprawdz-preview.mjs` — strażnik startowy, tylko `/`
@@ -4596,7 +4690,7 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe — **91 WIERSZY PRZY 85 RÓŻNYCH NUMERACH** (policzone ze źródła 2026-10-04 przy korekcie po kontroli adwersaryjnej: **83 otwarte + 8 przekreślonych** „ZAMKNIĘTE"; sześć numerów — T68, T69, T70, T71, T72, T73 — ma po **dwa** wiersze: opis pozycji i osobny wiersz zamknięcia, i stąd 91 wierszy przy 85 numerach. Bez wiersza stoi **siedem** numerów — **T44, T45, T46, T47, T48, T49, T50** — i te siedem **mają** wiersz w rejestrze, `rejestr-warunkow-powrotu.md`)
+### 15.2 Pozycje techniczne i procesowe — **92 WIERSZE PRZY 86 RÓŻNYCH NUMERACH** (przeliczone ze źródła **2026-10-07 przy dopisaniu T93**, z kontrolą pozytywną metody — T1, T42 i T93 znajdowane tym samym wyrażeniem: **84 otwarte + 8 przekreślonych** „ZAMKNIĘTE"; sześć numerów — T68, T69, T70, T71, T72, T73 — ma po **dwa** wiersze: opis pozycji i osobny wiersz zamknięcia, i stąd 92 wiersze przy 86 numerach. Bez wiersza stoi **siedem** numerów — **T44, T45, T46, T47, T48, T49, T50** — i te siedem **mają** wiersz w rejestrze, `rejestr-warunkow-powrotu.md`. Poprzednie brzmienie, policzone 2026-10-04 po kontroli adwersaryjnej: ~~91 wierszy przy 85 numerach, 83 otwarte + 8 przekreślonych~~ — zestarzało się o jeden wiersz, czyli dokładnie tyle, ile wynosi edycja)
 
 ⚠ **TEN NAGŁÓWEK JEST TRZECIM BRZMIENIEM, A DRUGIE BYŁO MOJE — SPROSTOWANE
 2026-10-04 PO KONTROLI ADWERSARYJNEJ.** Oba poprzednie zostają widoczne
@@ -4642,7 +4736,8 @@ przeliczane, nie przepisywane:
 | `46c8688` (wejście zlecenia) | 80 | 72 + 8 | 74 | z commita |
 | po dopisaniu T87–T88 | 87 | 79 + 8 | 81 | z drzewa roboczego, stan już nieistniejący |
 | `7c139af` (commit trzeci, T89–T91) | 90 | 82 + 8 | 84 | z commita |
-| ta korekta (T92) | **91** | **83 + 8** | **85** | z tego drzewa, rodzic `7c139af` |
+| korekta `WWW/100` (T92) | 91 | 83 + 8 | 85 | z commita `c955217` (`git log -S'\| T92 \|'`), ten sam wynik na `42c84ab` i `5f348a8` |
+| `WWW/101` krok 2 (T93) | **92** | **84 + 8** | **86** | z tego drzewa, rodzic `5f348a8` |
 
 ⚠ **Stempel uczciwy, nie pozorny.** Dwa z czterech stanów stoją w commitach
 i każdy może je odtworzyć; stan czwarty jest w drzewie roboczym, bo commit
@@ -4768,8 +4863,9 @@ zbiorem" (T47) i co licznik przepisywany ręką zamiast liczony ze źródła.
 | T88 | **w repozytorium stoi żywy błąd typów, którego nie widzi żaden mechanizm** — `npx tsc --noEmit` kończy się kodem 2 na `e2e/zlozenie.spec.ts(640,24)`: `innerText` na `Element`. Błąd **zastany** (ten sam jeden błąd na worktree `46c8688` w tym samym przebiegu), `next build` exit 0 dwa razy, spec przechodzi w CI (`bramki.yml:348`). Pytanie zerowe odpowiedziane odczytem konfiguracji: ani `tsc`, ani `typecheck`, ani `--noEmit` nie występują w CI, haku ani `package.json` — **nie ma strażnika do zmutowania**. Domknięcie dwuczłonowe: najpierw bramka z dowodem mutacji, potem linia 640 |
 | T89 | **`next build` mutuje śledzony `tsconfig.json`, a jedna taka mutacja jest już zacommitowana** — dwa buildy tej doby (`WWW_DIST=.next-baza` w worktree, `.next-teraz` w drzewie roboczym) zostawiły plik w stanie ` M` (Next dopisuje `<WWW_DIST>/types/**/*.ts` do `include`); oba przywrócone i sprawdzone. W `HEAD` stoi `.next-pomiar/types/**/*.ts` z commitu `e3e6f6a` — katalog ignorowany (`.gitignore:13`), więc wpis wskazuje miejsce, którego u nikogo nie ma. Klasa „defekt kopii utrwalany przy odtwarzaniu" od strony **narzędzia**: zmianę podkłada mechanizm, a wygląda jak czyjaś decyzja |
 | T90 | **komunikat trzech bramek podaje nazwę zmiennej zamiast katalogu, w którym szukał** — `✗ Brak zbudowanej strony (${KATALOG_BUDOWANIA}/server/app)` wypisane **dosłownie**, bo ciąg stoi w cudzysłowie podwójnym (`check-linki.mjs:57`, `check-kotwice.mjs:35`, `check-nojs.mjs:24`). Zachowanie bramek jest poprawne — kontrola pozytywna w tym samym przebiegu: z `WWW_DIST=.next-baza` exit 0 i liczby identyczne z drzewem roboczym. Koszt zmierzony na sobie: te trzy czerwienie przeczytałem najpierw jako różnicę `46c8688`↔`HEAD`, czyli jedna runda pomiaru. Przy domyślnym `.next` defekt jest niewidoczny — dlatego przeżył pięć tygodni |
-| T91 | **skorowidz ogniw pomija sześć kolejnych pozycji (T53–T58), a licznik pod nim jest prawdziwy** — tabela pozycji niesie 92 numery, skorowidz 86 wierszy (stan tego drzewa; w `7c139af` było 91 i 85 — obie liczby przeliczane przy każdej edycji którejkolwiek z tabel); zamknięcie tego nie wyjaśnia (11 z 12 zamkniętych wiersz ma). Licznik czerpie zbiór z tabeli, której pilnuje, więc **wiersza, którego w niej nie ma, nie widzi** — zgadza się bezbłędnie i przy każdym przeliczeniu, także gdy brakuje sześciu; wykrywaczem jest dopiero porównanie z drugą tabelą, zrobione 2026-10-04 po raz pierwszy. Licznik dostał **zadeklarowaną dziedzinę**, wiersze nie — przypisanie ogniw cudzym ustaleniom to robota spoza zlecenia (zakaz 8) |
+| T91 | **skorowidz ogniw pomija sześć kolejnych pozycji (T53–T58), a licznik pod nim jest prawdziwy** — tabela pozycji niesie **93** numery, skorowidz **87** wierszy (stan tego drzewa, przeliczony 2026-10-07 przy dopisaniu T93; ~~92 i 86~~ to stan `5f348a8`, a w `7c139af` — 91 i 85: obie liczby przeliczane przy każdej edycji którejkolwiek z tabel, i to brzmienie zestarzało się już trzy razy); zamknięcie tego nie wyjaśnia (11 z 12 zamkniętych wiersz ma). Licznik czerpie zbiór z tabeli, której pilnuje, więc **wiersza, którego w niej nie ma, nie widzi** — zgadza się bezbłędnie i przy każdym przeliczeniu, także gdy brakuje sześciu; wykrywaczem jest dopiero porównanie z drugą tabelą, zrobione 2026-10-04 po raz pierwszy. Licznik dostał **zadeklarowaną dziedzinę**, wiersze nie — przypisanie ogniw cudzym ustaleniom to robota spoza zlecenia (zakaz 8) |
 | T92 | **próg długości markera preview pilnuje DŁUGOŚCI, a chronioną własnością jest SWOISTOŚĆ** — granica **własnej** zmiany z `6926ee6`, nie defekt zastany: marker to najdłuższy przebieg tekstowy `Hero.naglowek` (`scripts/sprawdz-preview.mjs:164–167`), a jedynym sprawdzeniem jest `MIN_DLUGOSC_MARKERA = 12` (`:137`). Zmierzone 2026-10-04: surowa wartość 73 zn., przebiegi **19 · 8 · 27**, wybrany „prowadzi kontakty i wyniki." — 27 zn. O swoistości nie decyduje nic w bramce, decyduje treść hero (Figma): fraza ogólna dłuższa od progu przeszłaby. Kontrola pozytywna z tamtego commita (imitacja ściany logowania, 197 B) markera **nie zawiera wcale**, więc tej własności nie mierzy — pytanie 3 kanonu („czy upada wyłącznie wtedy, kiedy trzeba") zostaje bez dowodu, zapisane jako luka |
+| T93 | **strona nie wysyła ani jednego nagłówka bezpieczeństwa, a punkt końcowy optymalizatora obrazów żyje, choć w kodzie nie ma ani jednego `next/image`** — zmierzone 2026-10-07 na `42c84ab` (`WWW/101` krok 2), raport `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md`, **12 pozycji: 🔴 3 · 🟠 4 · 🟡 5**; dwunastu luk **tutaj nie przepisuję** (zakaz 10 — dwie listy tej samej rzeczy rozjadą się przy pierwszej naprawie). Pięć tras (200 · 307 · 404) × dziewięć nazw nagłówków — **zero obecnych**, przy kontroli pozytywnej `x-catherly-wydanie` we wszystkich pięciu; `/_next/image` odpowiada **200** na własny AVIF przy zerze użyć `next/image` w `src/`. Kalibracja: `vercel.json:4-6` wyłącza wdrożenia z `main`, produkcji nie ma (ADR-030, Faza 7), więc **dziś nic z tej listy nie jest wystawione odwiedzającej** — waga mówi o skutku po wdrożeniu. Warunek zamknięcia jest **trzyczęściowy**: nagłówki przed `rewrite` logowania Fazy 5, CSP wyłącznie po przebiegu `Report-Only` (build niesie **20 skryptów inline bez `src`** i **0 `nonce`**), B2 zamykane **ponownym pomiarem**, bo `images: { unoptimized: true }` jest dziś przewidywaniem |
 
 ---
 
