@@ -870,6 +870,15 @@ Deployment Protection bez zmian, pomiar HSTS platformy, decyzja o
 `security.txt`) stoją w §5 raportu — **żadnego nie wolno wykonać z tej
 strony**.
 
+⚠ **JEDNA POZYCJA RAPORTU ZOSTAŁA PO NIM SPROSTOWANA — §4, DOWÓD, ŻE NIE
+PISAŁEM W `fbo-os`.** Oparłem go na czubku tamtej gałęzi (`HEAD 8660df53`)
+i na liczbie zmian w jej drzewie roboczym (16); jedno i drugie ruszyło się
+o 18:52 tego samego dnia, bo w tamtym repozytorium pracowała druga sesja.
+Dowód stoi teraz na **relacjach**, których cudza praca nie unieważnia
+(przodek, obecność obiektu, czubek gałęzi wsadu) — szczegóły i reguła
+przenośna w rozdz. 9. **Dwanaście pozycji pomiaru bezpieczeństwa korekta
+nie rusza**; dotyczy tabeli „czyste w zmierzonej warstwie", nie tabeli luk.
+
 ---
 
 ## 2. Zasady bezwzględne — obowiązują bez pytania
@@ -4391,6 +4400,36 @@ liczba zamiast pomiaru:**
   wyłącznie z wyjścia polecenia, które go wypisało**, nigdy z ręki — i daje
   się to sprawdzić jednym `git cat-file -t`.
 
+- ⚠ **DOWÓD NIEINGERENCJI W CUDZE REPOZYTORIUM, OPARTY NA CZUBKU JEGO
+  GAŁĘZI, ZESTARZAŁ SIĘ W TEJ SAMEJ DOBIE — I STARZEJE SIĘ W STRONĘ, KTÓRA
+  OBCIĄŻA PISZĄCEGO** (`WWW/101`, kontrola adwersaryjna 2026-10-07 19:25).
+  Do raportu bezpieczeństwa (§4) wpisałem „`fbo-os` nietknięte: **60 refów
+  przed i po**, `HEAD 8660df53` **bez zmian**". Było prawdziwe przy pomiarze
+  i **przestało być prawdziwe o 18:52 tego samego dnia**, czyli przed moim
+  własnym commitem: w tamtym repozytorium pracowała druga sesja i dołożyła
+  dwa commity (`565edfc8` 18:52:56, `0218e4eb` 18:57:05), więc dziś `HEAD`
+  tamtej gałęzi to `0218e4eb`, a `git status --porcelain` daje **8** zmian,
+  nie 16. **Dlaczego to jest gorsze niż zwykłe przeterminowanie liczby:**
+  zdanie miało dowodzić, że **ja tam nie pisałem** — a dowód zbudowany
+  z czubka cudzej gałęzi rozpada się dokładnie wtedy, gdy ktoś inny
+  legalnie pracuje, i rozpada się w stronę oskarżenia. Czytelnik mierzący
+  nazajutrz widzi inny czubek i inną liczbę zmian, i **nie ma z czego
+  odróżnić cudzego commita od mojego zapisu**: oba wyglądają jak „stan się
+  ruszył, choć napisano, że nie". Postać odporna, przepisana po pomiarze:
+  **relacje, nie czubki** — `8660df53` jest **przodkiem** `0218e4eb`
+  (`git merge-base --is-ancestor` → 0), czyli historia została przedłużona,
+  a nie przepisana; liczba refów **60** przed i po; obiekt wsadu
+  `0a5678c3` tam **nieobecny** przy kontroli pozytywnej w tym samym
+  przebiegu; czubek gałęzi wsadu nieruszony
+  (`git ls-remote origin refs/heads/claude/app-064` → `0a5678c3960c…`).
+  Reguła przenośna: **tożsamość, której nie kontroluję, nie może być
+  nośnikiem mojego dowodu — dowód stawia się na relacji między stanami,
+  bo relacja nie starzeje się od cudzej pracy.** To ta sama rodzina co
+  „tożsamości artefaktu nie wpisuje się w zlecenie z wyprzedzeniem"
+  (kanon), tylko po stronie **sprawozdania**, nie zlecenia. Korekta
+  w `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md` §4, **bez zamazania
+  śladu** — oba brzmienia zostają widoczne.
+
 ---
 
 ## 10. Gdzie co leży
@@ -4435,7 +4474,14 @@ liczba zamiast pomiaru:**
   reguł** — szczebel 7; warunek powrotu stoi w rejestrze jako **T93**, a nie
   tutaj, i dwunastu luk nie ma w żadnym drugim miejscu (zakaz 10). Raport
   **niczego nie naprawia** — zlecenie dało tryb „tylko odczyt"; `git diff
-  --stat` tego commita rusza wyłącznie `docs/`
+  --stat` tego commita rusza wyłącznie `docs/`. ⚠ **§4 niesie korektę
+  własnego dowodu nieingerencji w `fbo-os`**, dopisaną po kontroli
+  adwersaryjnej 2026-10-07 19:25 (rozdz. 9) — oba brzmienia widoczne.
+  **Liczba 433 jest po korekcie ta sama i to nie jest zbieg okoliczności,
+  tylko ślepota tego licznika:** korekta wymieniła jeden wiersz tabeli na
+  jeden wiersz, a licznik linii jest na taką wymianę niezmienniczy —
+  dokładnie jak suma 87 była niezmiennicza na przesunięcie wiersza między
+  kubełkami rejestru. Licznik linii **nie jest** strażnikiem treści
 
 **Czytane, nośne, nietknięte**
 - `scripts/sprawdz-preview.mjs` — strażnik startowy, tylko `/`
