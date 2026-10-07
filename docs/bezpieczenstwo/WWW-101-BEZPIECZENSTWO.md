@@ -41,11 +41,11 @@ tabelą kontrolę pozytywną przyrządu.
 | --- | --- | --- | --- | --- | --- | --- |
 | **B1** | 🔴 | **Brak Content-Security-Policy w jakiejkolwiek postaci** — także bez `Report-Only` | `next.config.ts:64-71` (jedyny nagłówek to `x-catherly-wydanie`), `vercel.json:1-8` (brak klucza `headers`), `src/middleware.ts` (nie ustawia żadnego nagłówka) | Pierwszy skrypt, który trafi na stronę nie z naszej ręki — z pomyłki w kodzie, z zależności, z przyszłego `rewrite` do aplikacji — wykonuje się bez żadnego ograniczenia źródła, bo przeglądarka nie dostaje polityki, którą mogłaby go zatrzymać. | `headers()` w `next.config.ts`: `Content-Security-Policy-Report-Only` **najpierw** (zebrać zgłoszenia), potem egzekwowana. Mierzona przeszkoda: build daje **20 skryptów wbudowanych bez `src`** i **0 atrybutów `nonce`** w `pl.html`, więc `script-src 'self'` bez `'unsafe-inline'` albo bez nonce **zabije stronę** — i to jest przyczyna, dla której ta luka jest 🔴, a nie jednolinijkowa. | **nie** (nagłówek nie renderuje się), ale błędna CSP **gasi arkusz i czcionki** — stąd obowiązkowa kolejność Report-Only → pomiar → egzekucja |
 | **B2** | 🔴 | **`/_next/image` żyje, przyjmuje żądania i transkoduje AVIF — a strona nie używa `next/image` ani razu.** Advisory `GHSA-2xp9-vwfh-vxw4` dotyczy dokładnie tego punktu końcowego i dokładnie plików AVIF | `next.config.ts:59-72` — **brak klucza `images`** w całym pliku (`grep -c images next.config.ts` = 0) | Najszersza powierzchnia ataku w całym serwisie — dekoder obrazów uruchamiany żądaniem HTTP — stoi otwarta po to, żeby obsłużyć komponenty, których w kodzie nie ma ani jednego. | Dwuczłonowo: `next@15.5.27` (poprawka istnieje — niżej `B3`) **oraz** `images: { unoptimized: true }` w `next.config.ts`. ⚠ **Skutek drugiego członu jest przewidywaniem, nie pomiarem** — po zmianie trzeba powtórzyć sondowanie z §2.2 i pokazać, że własny AVIF przestał dawać 200. | **nie** — `<Image` 0 wystąpień w `src/`, `import … from "next/image"` 0 wystąpień, obrazy renderuje 17 surowych `<img>` (świadomie, ADR o prowieniencji bajtów); wyłączenie optymalizatora nie dotyka ani jednego renderowanego obrazu |
-| **B3** | 🔴 | **`next` 15.5.23 — advisory krytyczne, poprawka dostępna** (`npm audit --omit=dev`: 1 krytyczna + 3 wysokie, razem 4) | `package.json:39` → `"next": "^15.5.23"`; `package-lock.json` → zainstalowane **15.5.23** | Zakres podatny advisory to `9.3.4-canary.0 – 16.3.0-preview.10`, więc wersja na tej gałęzi mieści się w nim w całości, a jedno z dwóch advisory krytycznych opisuje zdalne wykonanie kodu przez ten sam punkt końcowy obrazów, który `B2` mierzy jako żywy. | `next@15.5.27` — **ta sama wersja, którą repozytorium aplikacji już niesie** (`package.json:182` wsadu), więc podniesienie nie wprowadza do organizacji nowej wersji frameworka, tylko dogania istniejącą. Podnosi też `B7` (audyt: `fixAvailable: true` dla wszystkich czterech). | **nie dla kodu strony** — zmiana nie dotyka `src/`; ale podniesienie wersji frameworka **wymaga porównania pikselowego** przed przyjęciem, bo render jest po stronie Next.js |
+| **B3** | 🔴 | **`next` 15.5.23 — advisory krytyczne, poprawka dostępna** (`npm audit --omit=dev`: 1 krytyczna + 3 wysokie, razem 4) | `package.json:39` → `"next": "^15.5.23"`; `package-lock.json` → zainstalowane **15.5.23** | Zakres podatny advisory to `9.3.4-canary.0 – 16.3.0-preview.10`, więc wersja na tej gałęzi mieści się w nim w całości, a jedno z dwóch advisory krytycznych opisuje zdalne wykonanie kodu przez ten sam punkt końcowy obrazów, który `B2` mierzy jako żywy. | `next@15.5.27` — **ta sama wersja, którą repozytorium aplikacji już niesie** (`package.json:182` wsadu), więc podniesienie nie wprowadza do organizacji nowej wersji frameworka, tylko dogania istniejącą. Podnosi też `B7` (audyt: `fixAvailable: true` dla wszystkich czterech). ⚠ **TO ZDANIE ZOSTAŁO OBALONE POMIAREM po podniesieniu — `WWW/102` KROK 1, §8.2 (audyt PO, 2026-10-07 20:20 CEST): podniesienie `next` zamknęło advisory WŁASNE `next`, a `B7` zostawiło otwarte w całości. Zostaje widoczne jako ślad przewidywania, nie jako ustalenie.** | **nie dla kodu strony** — zmiana nie dotyka `src/`; ale podniesienie wersji frameworka **wymaga porównania pikselowego** przed przyjęciem, bo render jest po stronie Next.js |
 | **B4** | 🟠 | Brak `X-Frame-Options` i brak `frame-ancestors` w CSP | `next.config.ts:64-71`, `vercel.json:1-8` | Stronę da się zagnieździć w obcej ramce i podać za cudzą ofertę albo nakleić na nią warstwę przechwytującą kliknięcia. | `X-Frame-Options: DENY` **i** `frame-ancestors 'none'` w CSP (dwa mechanizmy, bo starsze przeglądarki czytają tylko pierwszy). Aplikacja ma `DENY` — wsad `next.config.mjs:47-62`. | **nie** |
 | **B5** | 🟠 | Brak `X-Content-Type-Options: nosniff` | `next.config.ts:64-71` | Przeglądarka zgaduje typ treści przy odpowiedziach, których typu nie rozpozna, i może wykonać jako skrypt coś, co miało być plikiem. | `X-Content-Type-Options: nosniff`. Aplikacja go ma — wsad `next.config.mjs:47-62`. | **nie** |
 | **B6** | 🟠 | Brak `Referrer-Policy` | `next.config.ts:64-71` | Wyjście z naszej strony niesie do obcego serwera pełny adres strony, z której odwiedzająca wyszła — a plan Fazy 5 wprowadza `rewrite` tras logowania do aplikacji (`next.config.ts:61-63`, ADR-005), czyli dokładnie ruch, przy którym to zaczyna znaczyć. | `Referrer-Policy: strict-origin-when-cross-origin` — identycznie jak aplikacja (wsad `next.config.mjs:47-62`). | **nie** |
-| **B7** | 🟠 | Trzy zależności produkcyjne z advisory **wysokim**: `postcss` 8.4.31, `source-map-js` 1.2.1, `sharp` 0.35.3 | `package-lock.json` (wszystkie trzy są zależnościami przechodnimi `next`) | Żadna z trzech nie ma w tym serwisie drogi wejścia od odwiedzającej — nie przyjmujemy ani CSS, ani wgrywanych obrazów — więc ryzyko siedzi w łańcuchu budowania, a nie w przeglądarce; advisory jednak nie znika od tego, że droga jest wąska. | Podniesienie `next` (`B3`) — audyt podaje `fixAvailable: true` dla każdej z czterech pozycji. | **nie** (jak `B3`) |
+| **B7** | 🟠 | Trzy zależności produkcyjne z advisory **wysokim**: `postcss` 8.4.31, `source-map-js` 1.2.1, `sharp` 0.35.3 ⚠ **(ta ostatnia liczba jest z ZŁEGO WĘZŁA — sprostowanie i powód w §8.3; audyt `--omit=dev` flaguje `node_modules/next/node_modules/sharp@0.34.5`)** | `package-lock.json` (wszystkie trzy są zależnościami przechodnimi `next`) | Żadna z trzech nie ma w tym serwisie drogi wejścia od odwiedzającej — nie przyjmujemy ani CSS, ani wgrywanych obrazów — więc ryzyko siedzi w łańcuchu budowania, a nie w przeglądarce; advisory jednak nie znika od tego, że droga jest wąska. | Podniesienie `next` (`B3`) — audyt podaje `fixAvailable: true` dla każdej z czterech pozycji. ⚠ **OBALONE pomiarem — §8.2.** Po `next@15.5.27` wszystkie trzy advisory tej pozycji stoją nietknięte, a `postcss` proponuje już wyłącznie `next@16.4.0` (`isSemVerMajor: true`), czyli wyjście POZA major. `B7` zostaje **otwarte**; `WWW/102` go nie obejmuje (zakaz 8). | **nie** (jak `B3`) |
 | **B8** | 🟡 | Brak `Strict-Transport-Security` na buildzie lokalnym | `next.config.ts:64-71` | Pierwsze wejście pod `http://` nie zostaje przez przeglądarkę zapamiętane jako „tylko HTTPS", więc kolejne da się zepchnąć na połączenie nieszyfrowane. | `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` **tylko na produkcji**, jak w aplikacji (wsad `next.config.mjs:47-62`, tam pod warunkiem środowiska). ⚠ **Czy platforma dokłada własny HSTS na swoich domenach — NIESPRAWDZONE**, i to jest granica pomiaru, nie wniosek: zakaz 6 nie pozwala drukować nagłówków odpowiedzi z preview, a produkcji nie ma (`vercel.json:4-6`). Pomiar należy do właściciela — §5 krok 5. | **nie** |
 | **B9** | 🟡 | Brak `Permissions-Policy` | `next.config.ts:64-71` | Strona nie odbiera kamerze, mikrofonowi ani lokalizacji dostępu, którego sama nigdy nie używa, więc skrypt wstrzyknięty w przyszłości zastanie te możliwości otwarte. | `Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()` — **ostrzej niż aplikacja**, która trzyma `microphone=(self)`, bo strona marketingowa nie ma do mikrofonu żadnego zastosowania. | **nie** |
 | **B10** | 🟡 | Brak `Cross-Origin-Opener-Policy` i `Cross-Origin-Resource-Policy` | `next.config.ts:64-71` | Okno otwarte z naszej strony zachowuje do niej uchwyt, a nasze zasoby wolno wciągać z obcych dokumentów. | `COOP: same-origin`, `CORP: same-origin`. Mierzony koszt tej luki jest dziś najniższy z całej tabeli: build daje **0 odesłań `target="_blank"`** i **0 adresów zewnętrznych**. W aplikacji ta sama para jest **również nieobecna** — zmierzone wprost w `next.config.mjs` wsadu: `Cross-Origin-Opener` 0 wystąpień, `Cross-Origin-Resource` 0, przy kontroli pozytywnej `X-Frame-Options` 1; wsad opisuje to jako własną **pozycję L40**. Czyli luka wspólna, nie asymetria. | **nie** |
@@ -54,6 +54,13 @@ tabelą kontrolę pozytywną przyrządu.
 
 **Rozkład: 🔴 3 · 🟠 4 · 🟡 5 = 12 pozycji.** Liczby policzone z wierszy
 tabeli powyżej przy tej edycji, nie przepisane.
+
+**Ten rozkład opisuje stan `42c84ab` i nie jest przepisywany przy
+zamykaniu pozycji** — dokument z zadeklarowanym zakresem się nie starzeje.
+Co z tej tabeli zamknęło zlecenie `WWW/102`, czym to zmierzono i czego ten
+pomiar nie widzi — **wyłącznie §8**, z własnym nagłówkiem zakresu i własną
+datą. Wiersze powyżej dostają przy obalonych zdaniach adnotację ⚠ z
+odesłaniem, nigdy podmianę treści.
 
 ---
 
@@ -200,15 +207,34 @@ umiarkowanych, zero niskich.
 | --- | --- | --- | --- | --- |
 | `next` | **15.5.23** | **krytyczna** | `9.3.4-canary.0 – 16.3.0-preview.10` | `GHSA-p293-qw3h-jr36` (CVSS 9,0 — RCE bez uwierzytelnienia na serwerach **Windows**; nasze wdrożenie nie jest windowsowe) · `GHSA-2xp9-vwfh-vxw4` (**RCE bez uwierzytelnienia w Image Optimization API przy plikach AVIF** — patrz `B2`) |
 | `postcss` | 8.4.31 | wysoka | `<=8.5.22` | `GHSA-6g55-p6wh-862q` (7,5) · `GHSA-r28c-9q8g-f849` (7,5) · `GHSA-fxqj-rqcc-2cmp` · `GHSA-qx2v-qp2m-jg93` (6,1) |
-| `sharp` | 0.35.3 | wysoka | `<=0.35.5-rc.1` | `GHSA-f88m-g3jw-g9cj` (libvips) · `GHSA-rgj7-g3m4-5g8c` (libheif) · `GHSA-wq5f-xc86-pv6w` (librsvg) |
+| `sharp` | 0.35.3 ⚠ **ZŁY WĘZEŁ — zmierzony audytowany węzeł to `node_modules/next/node_modules/sharp@0.34.5`; 0.35.3 to węzeł deweloperski. Sprostowanie: §8.3** | wysoka | `<=0.35.5-rc.1` | `GHSA-f88m-g3jw-g9cj` (libvips) · `GHSA-rgj7-g3m4-5g8c` (libheif) · `GHSA-wq5f-xc86-pv6w` (librsvg) |
 | `source-map-js` | 1.2.1 | wysoka | `1.0.0 – 1.2.1` | `GHSA-68fv-2mgg-jv7q` (7,5 — zablokowanie pętli zdarzeń) |
 
 `fixAvailable: true` dla wszystkich czterech; droga wyjścia to jedno
 podniesienie — `next@15.5.27`.
 
+⚠ **ZDANIE POWYŻEJ ZOSTAŁO OBALONE POMIAREM — `WWW/102` KROK 1, §8.2.**
+Podniesienie wykonane, audyt powtórzony: zamknęło **dwa advisory własne
+`next`**, a `postcss`, `sharp` i `source-map-js` zostały nietknięte i
+proponują już wyłącznie `next@16.4.0` (`isSemVerMajor: true`) albo niosą
+`fixAvailable: true` bez wskazanej wersji. Zostaje widoczne jako ślad:
+było **przewidywaniem podanym składnią odczytu**, a przewidywania od
+odczytów nie da się odróżnić po formie.
+
 **Korekta wobec własnej wcześniejszej notatki tej sesji, bez zamazania
 śladu:** zapisałem `sharp@0.34.5`; odczyt `package-lock.json` daje
 **0.35.3**. Obie liczby zostają widoczne, obowiązuje zmierzona.
+
+⚠ **TA „KOREKTA" BYŁA SAMA BŁĘDNA — sprostowanie w §8.3, oba zapisy
+zostają.** Odczytałem węzeł `node_modules/sharp` (**deweloperski**,
+0.35.3), a audyt z flagą `--omit=dev` flaguje węzeł
+`node_modules/next/node_modules/sharp` (**produkcyjny**, 0.34.5 —
+`nodes: ["node_modules/next/node_modules/sharp"]` w obu przebiegach).
+Obie liczby są prawdziwe dla dwóch różnych węzłów jednego drzewa; dla
+**tego** audytu obowiązuje **0.34.5**, czyli notatka pierwotna, nie moja
+poprawka. Klasa: **„zero z jednej postaci nie jest zerem bytu"**
+przeniesiona na wersję — jeden pakiet, dwa węzły, dwie prawdziwe liczby,
+a pytanie brzmiało „który węzeł mierzy TO narzędzie".
 
 ### 2.6. Nagłówek `x-catherly-wydanie` — różnica licencjonowana, nie defekt
 
@@ -431,3 +457,212 @@ nie trafił do wyjścia.
 
 **Zlecenie `WWW/101` KROK 2 zabrania napraw.** Żadna pozycja z §1 nie
 została w tym commicie zamknięta; dokument dotyka wyłącznie `docs/`.
+
+---
+
+## 8. WWW/102 KROK 1 — `B3` zamknięte podniesieniem (inne zlecenie, własny zakres)
+
+Rozdziały 1–7 powstały pod zleceniem `WWW/101`, które **zabraniało
+napraw**. Ten rozdział powstał pod zleceniem **`WWW/102`**, które naprawy
+nakazuje — i dlatego niesie **własny nagłówek zakresu**, a nie dopisek do
+nagłówka na górze pliku. Gdyby liczby z poniższych pomiarów schowały się
+pod datą „17:59–18:20", cała górna tabela zaczęłaby kłamać o godzinie
+własnego pomiaru.
+
+| co | wartość |
+| --- | --- |
+| Zlecenie | `WWW/102`, KROK 1 — „`next` 15.5.23 → 15.5.27 (+ powiązane w obrębie majora); `npm audit --omit=dev` przed/po z datą; build, testy, e2e" |
+| Repozytorium | `sylwesterzabski-pixel/catherly-www`, gałąź `faza-4/podstrony` |
+| Stan drzewa w chwili pomiarów | `HEAD` = `7817580f37561c76323d4f72ad57d598ef05f593` = czubek zdalnej (`git ls-remote origin faza-4/podstrony`), `git status --porcelain` = dokładnie dwa pliki: ` M package.json`, ` M package-lock.json` |
+| Data pomiarów | **2026-10-07**, 19:54 – 20:55 CEST |
+| Przedmiot | wyłącznie wersja frameworka i jej skutki: audyt, build, testy, bramki, **wygląd pikselowy** |
+| Czego ten rozdział **nie** robi | nie dotyka `src/`, `content/`, `design/tokens.json`; nie zamyka `B1`, `B2`, `B4`–`B12`; nie włącza żadnego nagłówka ani CSP (to KROK 2 i 3 tego zlecenia); **nie pushuje** — zgody na push dla `WWW/102` nie ma |
+
+### 8.1. Co zostało zmienione — dwa pliki, zero linii kodu strony
+
+| plik | przed | po |
+| --- | --- | --- |
+| `package.json` → `dependencies.next` | `^15.5.23` | `^15.5.27` |
+| `package.json` → `devDependencies["eslint-config-next"]` | `^15.5.23` | `^15.5.27` |
+| `package-lock.json` → `node_modules/next` | `15.5.23` | `15.5.27` |
+
+**Węzeł, który się NIE ruszył, a wygląda, jakby powinien:**
+`node_modules/next/node_modules/sharp` stoi na **0.34.5 przed i po**
+(odczyt `package-lock.json` w obu stanach plus `require` z dysku). To nie
+drobiazg porządkowy — to **przyczyna** tego, że `B7` zostało otwarte
+(§8.2): podniesienie `next` w obrębie majora nie przesuwa przypiętego
+`sharp`.
+
+### 8.2. Audyt przed i po — mierzony WĘZŁEM I `via`, nie podsumowaniem
+
+Dwa przebiegi `npm audit --omit=dev --json`, oba z datą:
+**PRZED 2026-10-07 19:54 CEST**, **PO 2026-10-07 20:20 CEST** (odczyt
+powtórzony 20:36:33 CEST, bez zmiany). `metadata.dependencies` identyczne
+w obu: `prod 41 · dev 731 · optional 116 · peer 1 · total 830` — czyli
+porównuję to samo drzewo, a nie dwa różne.
+
+| | PRZED (15.5.23) | PO (15.5.27) |
+| --- | --- | --- |
+| `metadata.vulnerabilities` | `moderate 0 · high 3 · critical 1 · total 4` | `moderate 1 · high 3 · critical 0 · **total 4**` |
+| `next` — advisory **własne** | **2**: `1193677` (`GHSA-p293-qw3h-jr36`, CVSS 9,0, RCE bez uwierzytelnienia na Windows) · `1193733` (`GHSA-2xp9-vwfh-vxw4`, **RCE w Image Optimization API przy AVIF** — punkt końcowy, który `B2` mierzy jako żywy) | **0** |
+| `next` — `via` (co się przez niego propaguje) | `["postcss", "sharp"]` | `["postcss"]` |
+| `next` — waga | **krytyczna** | **umiarkowana** (wyłącznie jako skutek `postcss`) |
+| `next` — `fixAvailable` | `true` | `{"name":"next","version":"16.4.0","isSemVerMajor":true}` |
+| `postcss` — własne | 4 (`1117015`, `1124252`, `1130709`, `1139510`) | **te same 4, nietknięte**; `fixAvailable` już tylko `next@16.4.0`, major |
+| `sharp` — własne, węzeł `node_modules/next/node_modules/sharp` | 3 (`1124066` libvips, `1193725` libheif, `1241331` librsvg) | **te same 3, nietknięte**, `fixAvailable: true` |
+| `source-map-js` — własne | 1 (`1241209`, 7,5 — zablokowanie pętli zdarzeń) | **nietknięte**, `fixAvailable: true` |
+
+**PUŁAPKA CZYTELNIKA, ZAPISANA JAKO PUŁAPKA: `total` STOI NA 4 PRZED I PO,
+A TREŚĆ ZMIENIŁA SIĘ CAŁKOWICIE.** Kto porówna same podsumowania, odczyta
+„podniesienie nic nie dało" — i będzie to wniosek **fałszywy**: zniknęły
+**oba advisory własne `next`**, w tym to o zdalnym wykonaniu kodu przez
+optymalizator obrazów. Liczba 4 trzyma się, bo `next` nie wypadł z listy —
+**został w niej jako SKUTEK `postcss`**, z zerem advisory własnych.
+Jedyne pole, które to rozróżnia, to `via` (obiekt = advisory **tego**
+pakietu, ciąg = advisory przeniesione **przez** niego) i `nodes`.
+**Metoda, nie anegdota:** audyt porównuje się po `nodes` i `via`, nigdy po
+`metadata.vulnerabilities`; podsumowanie jest sumą dwóch różnych rzeczy
+i przy tej parze przebiegów **nie odróżnia naprawy od jej braku**.
+
+**Co z tego wynika dla zakresu zlecenia.** `WWW/102` KROK 1 mówi
+„+ powiązane **w obrębie majora**". Po podniesieniu jedyna droga, jaką
+audyt proponuje dla `postcss` (i dla `next` jako jego skutku), to
+`next@16.4.0` z `isSemVerMajor: true` — czyli **poza** literę zlecenia.
+`sharp` i `source-map-js` niosą `fixAvailable: true`, ale należą do `B7`,
+którego to zlecenie nie obejmuje: **zgłoszone, nie naprawione** (zakaz 8).
+
+**Status `B3`: ZAMKNIĘTE** w dziedzinie „advisory własne `next`" —
+2 → 0. Poza tą dziedziną ten rozdział nie orzeka nic.
+
+### 8.3. Sprostowanie wersji `sharp` — dwa węzły, dwie prawdziwe liczby
+
+| węzeł w drzewie | wersja | widzi go `--omit=dev`? |
+| --- | --- | --- |
+| `node_modules/next/node_modules/sharp` | **0.34.5** | **TAK** — to jego podaje `nodes` w obu przebiegach audytu |
+| `node_modules/sharp` | 0.35.3 | nie — `devDependencies.sharp: ^0.35.3`, `dependencies.sharp` nie istnieje |
+
+Sprawdzone trzema odczytami w jednym przebiegu: `package-lock.json`
+w stanie bieżącym, `git show 42c84ab:package-lock.json` (stan z nagłówka
+`WWW/101`) i `require` z dysku. **Wszystkie trzy dają tę samą parę** —
+czyli błąd nie powstał przy podniesieniu, tylko przy pierwszym zapisie
+w §2.5: dla audytu `--omit=dev` wpisano tam wersję węzła
+**deweloperskiego**.
+
+Ślad zostaje w trzech miejscach naraz (§1 `B7`, §2.5 tabela, §2.5
+„korekta"), bo wszystkie trzy niosły tę samą pomyłkę, a **sprostowanie
+jednego wystąpienia nie domyka klasy** — domyka ją przeliczenie zdań tej
+samej formy.
+
+### 8.4. Bezpiecznik wyglądu — werdykt, jego dziedzina i jego ślepota
+
+Zasada zlecenia: *„ZERO zmian widocznych — wygląd ustala Figma; po każdym
+kroku porównanie pikselowe; różnica > 0 → cofnij krok, STOP."*
+
+**Przyrząd.** Dwa stanowiska naraz, każde z własnym `node_modules`:
+wzorzec z osobnego worktree na `7817580` (`next 15.5.23`, `WWW_DIST=.next-baza`,
+port 3100) i kandydat (`next 15.5.27`, `WWW_DIST=.next-kandydat`, port
+3200). Zrzuty Playwrightem na `sharp` **z istniejących `devDependencies`** —
+bezpiecznik nie wnosi żadnej nowej zależności.
+
+**Zbiór zrzutów liczony ze źródła dwa razy niezależnie, nie przepisany:**
+z rejestru `src/i18n/sciezki.ts` (`MAPA_STOPKI` + `WYLACZONE_Z_MAPY` +
+`PRERENDEROWANE_BEZ_ADRESU`) i z drzewa `src/app/[locale]/**/page.tsx`;
+rozjazd między wyprowadzeniami **kończy przebieg**, żeby „60 zrzutów" nie
+mogło znaczyć „60 zrzutów złego podzbioru". Catch-all `[...sciezka]`
+pominięty **z odczytu, nie z wygody**: middleware przepisuje każdą ścieżkę
+spoza rejestru na `/[locale]/nie-znaleziono`, więc jest nieosiągalny.
+**10 tras × 3 języki (pl/en/de) × 2 kadry (1440/390) = 60.**
+
+| pomiar (2026-10-07) | wynik | co z tego wynika |
+| --- | --- | --- |
+| **wzorzec vs kandydat**, 20:55 CEST | **0 różnych pikseli / 249 691 830 porównanych**, 60/60 plików, exit 0 | różnicy nie ma w dziedzinie, którą ten przyrząd widzi |
+| **podłoga szumu** — ten sam binarny serwer wzorca, dwa niezależne przebiegi | 0 / 249 691 830, exit 0 | zero powyżej **nie** jest zerem przypadkowym: sam przyrząd nie generuje szumu |
+| **kontrola pozytywna w tym samym przebiegu** — jeden piksel podmieniony ręcznie | **1 piksel** w `1440--pl--_korzen.png`, `(700,500)`, `maxDelta 1`, exit 1 | przyrząd wykrywa **różnicę 1/255 na jednym z 249 mln pikseli**; zero jest zerem narzędzia **patrzącego**, nie milczącego |
+
+**ŚLEPOTA NAZWANA PRZY WERDYKCIE, NIE POD NIM.** Harness wymusza
+`reducedMotion: "reduce"` (bo inaczej animacja daje różnicę niepochodzącą
+od zmiany w kodzie). Odczyt zagnieżdżenia nawiasów w `src/app/globals.css`
+pokazuje, że **cała warstwa poświaty** —
+`[data-ton="ciemny"]:where(section)::after` w linii **906** — leży wewnątrz
+`@media (prefers-reduced-motion: no-preference)` otwartego w linii **785**
+(kontrola pozytywna metody: `:root` w linii 105 otwiera sam siebie, głębia 0).
+Nie chodzi więc o samą animację `ruch-oddech` (linia 917), lecz o to, że
+**pod tym harnessem ta warstwa w ogóle nie istnieje**. Zero różnic nie
+mówi o niej nic. To zarazem odpowiedź na pozycję rejestru **T87**, która
+przewidywała na stronie głównej niedeterminizm: przewidywanie nie
+zmaterializowało się **z przyczyny mechanicznej odczytanej z konfiguracji**,
+nie dzięki szczęściu.
+
+**Ślepota domknięta drugim przyrządem, nie zapewnieniem.** Arkusz
+niosący `ruch-oddech` to w obu buildach `4bda5517d931cce7.css`,
+**11 077 B**, `sha256` (pierwsze 16 znaków) **`8760a8f2f44b0e0f`** —
+bajt w bajt identyczny. Kontrola pozytywna przyrządu: `grep` widzi
+`ruch-oddech` **2×** w `src/app/globals.css`, czyli nie szuka na oślep.
+
+**Czego porównanie pikselowe NIE mierzy** (zapisane, żeby nikt nie wziął
+zera za więcej, niż ono znaczy): nagłówków HTTP, DOM, atrybutów
+dostępności, zachowania pod `hover`/`focus`/klawiaturą, kadrów innych niż
+1440 i 390, oraz — jak wyżej — wszystkiego, co istnieje tylko przy
+`prefers-reduced-motion: no-preference`.
+
+### 8.5. Build, testy, bramki — z kodami wyjścia i kontrolą negatywną czerwieni
+
+| sprawdzenie | wynik |
+| --- | --- |
+| `npm run lint` (`eslint . --max-warnings=0`) | exit **0** |
+| `WWW_DIST=.next-kandydat npm run build` | exit **0**, `▲ Next.js 15.5.27`, `✓ Generating static pages (33/33)` (wzorzec: te same 33/33 na `15.5.23`) |
+| `npm run test:e2e` | **1388 passed · 12 skipped**, 1400 testów / 5 workerów, exit **0**, 1,6 min |
+
+Bramki przeliczone **ponownie 2026-10-07 20:54 CEST**, kody wyjścia
+odczytane z `$?`, nie z treści logu:
+
+| bramka | exit | uwaga |
+| --- | --- | --- |
+| `bramka:tokeny` · `:liczby` · `:parytet` · `:linki` · `:kotwice` · `:nojs` | **0** | zielone |
+| `bramka:deklaracje` | **0** | ⚠ **zieleń ZAPADKI, nie zieleń stanu** — własne wyjście bramki pisze: `naruszeń teraz 2 · próg (baseline) 2 · ZIELONA — nie jest gorzej niż było` i wprost ostrzega „CISZA — NIE ZIELEŃ: 2 rozjazdów NADAL STOI" (`T44`). Cytowanie tego jako „deklaracje poprawne" byłoby werdyktem poza dziedziną |
+| `bramka:kontrakt` | **1** | **czerwona** |
+| `bramka:nieodwracalne` | **1** | **czerwona** |
+
+**KONTROLA NEGATYWNA DLA OBU CZERWIENI, W TYM SAMYM PRZEBIEGU I NA TYM
+SAMYM COMMICIE:** oba skrypty dają exit 1 również **w worktree wzorca na
+`next 15.5.23`**. Podniesienie **nie jest ich przyczyną** — i tylko ta
+kontrola pozwala to powiedzieć; sama czerwień po zmianie nie odróżnia
+„zepsute przez zmianę" od „zepsute przedtem".
+
+- `bramka:kontrakt` — ADR-042, stan przechodni; **własne wyjście skryptu
+  zabrania obejścia**: „NIE wyłączać, NIE podnosić progu". Zakaz 3.
+- `bramka:nieodwracalne` — `scripts/check-audyt.mjs` wymaga pliku `.md`
+  w `docs/audyt/` zawierającego **bieżący skrót `HEAD`**; `ls docs/audyt/`
+  daje dokładnie jeden plik: `README.md`. Bramka jest więc czerwona
+  **planowo** (rejestr: `T2`, `T83`) i nie da się jej zazielenić bez
+  zlecenia na audyt nieodwracalnych.
+
+**Czerwień uzasadniona też jest czerwienią** (ADR-020). Oba te wyniki
+raportuję jako czerwone, nie jako „znane".
+
+### 8.6. Co po KROKU 1 zostaje otwarte
+
+| pozycja | stan po tym kroku |
+| --- | --- |
+| `B3` | **zamknięte** — w dziedzinie z §8.2 |
+| `B7` | **otwarte w całości** — `postcss` (4), `sharp` (3), `source-map-js` (1); droga wyjścia, jaką podaje audyt, wychodzi poza major, czyli poza literę zlecenia |
+| `B2` | otwarte — KROK 2 tego zlecenia |
+| `B1`, `B4`, `B5`, `B6`, `B8`, `B9`, `B12` | otwarte — KROK 3 tego zlecenia (CSP wyłącznie jako `Report-Only`, przełączenie na egzekwowaną ma być **propozycją bez wykonania**) |
+| `B10` (COOP/CORP), `B11` (`security.txt`) | **otwarte i POZA zleceniem `WWW/102`** — zlecenie ich nie wymienia; zapisane tutaj wprost, żeby zamknięcie kroków 1–3 nie zostało przeczytane jako zamknięcie §1 |
+
+### 8.7. Ślad narzędziowy KROKU 1 — gdzie przyrząd był ślepy
+
+| przyrząd | ślepota | jak złapana | poprawka |
+| --- | --- | --- | --- |
+| `metadata.vulnerabilities` z `npm audit` | `total 4` przed i po — **wygląda jak brak zmiany**, a zmieniło się wszystko w treści | porównanie po `nodes`/`via` w tym samym przebiegu | werdykt stawiany wyłącznie na advisory własnych pakietu, nigdy na podsumowaniu |
+| odczyt `node_modules/sharp` | zły węzeł drzewa — wersja prawdziwa, pakiet prawdziwy, **audyt mierzy inny węzeł** | pole `nodes` w JSON-ie audytu wskazuje `node_modules/next/node_modules/sharp` | §8.3; pytanie „**który węzeł mierzy TO narzędzie**" zadawane przed zapisem wersji |
+| porównanie pikselowe z `reducedMotion: "reduce"` | warstwa istniejąca tylko przy `no-preference` **nie trafia do żadnego zrzutu** | odczyt zagnieżdżenia `@media` w `globals.css` (785 → 906) z kontrolą pozytywną na `:root` | domknięcie drugim przyrządem: `sha256` arkusza niosącego tę warstwę |
+| `tr '}' '}\n'` przy liczeniu reguł CSS | `tr` odwzorowuje znak na znak — drugi znak w zbiorze docelowym jest **ignorowany**, plik został jednolinijkowy, a `diff` orzekł `1c1` | `wc -l` na wyniku dał 1 | dzielenie fragmentów w Node, nie `tr` |
+| `$(find …)` bez cudzysłowów | ścieżka repozytorium zawiera spację → rozbicie na słowa → `shasum: /Users/sylwesterzabski/Documents/FBO: No such file` i przebieg w limicie czasu | komunikat błędu wskazał ucięty prefiks ścieżki | `find … -print0 \| while IFS= read -r -d '' f` |
+
+**Czego KROK 1 nie zmierzył, choć kusi tak przeczytać:** nie sprawdzono
+zachowania na wdrożeniu (preview ani produkcji — `vercel.json:4-6`), nie
+mierzono wydajności (`bramka:pomiar` nie była uruchamiana), nie sprawdzono
+nagłówków odpowiedzi (to KROK 3), a cały bezpiecznik wyglądu **żyje poza
+repozytorium** — w katalogu sesji, więc nikt nie powtórzy go z samego
+repozytorium. Zapisane jako pozycja rejestru **T94**.
