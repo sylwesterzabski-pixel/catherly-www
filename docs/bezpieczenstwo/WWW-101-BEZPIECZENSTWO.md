@@ -666,3 +666,169 @@ mierzono wydajności (`bramka:pomiar` nie była uruchamiana), nie sprawdzono
 nagłówków odpowiedzi (to KROK 3), a cały bezpiecznik wyglądu **żyje poza
 repozytorium** — w katalogu sesji, więc nikt nie powtórzy go z samego
 repozytorium. Zapisane jako pozycja rejestru **T94**.
+
+## 9. WWW/102 KROK 2 — `B2` zamknięte wyłączeniem optymalizatora obrazów
+
+Zlecenie `WWW/102` KROK 2, dosłownie: *„wyłączenie optymalizatora obrazów,
+skoro `src/` nie używa `next/image` (`images.unoptimized` albo równoważne) —
+`/_next/image` ma przestać odpowiadać 200 (sonda przed/po)"*.
+
+Zmiana to **jedna linia konfiguracji** plus komentarz, który mówi, czego ta
+linia **nie** znaczy. Ani jednego pliku `src/`, `design/tokens.json` ani
+`content/`.
+
+### 9.1. Pytanie zerowe przed wszystkimi innymi
+
+**CZY TA RZECZ W OGÓLE ISTNIEJE** — i odpowiedział na to **odczyt
+konfiguracji**, nie mutacja (ADR-018). W `next.config.ts` **nie było klucza
+`images` w żadnej postaci**: 0 trafień `images`, 0 trafień `unoptimized`,
+przy kontroli pozytywnej `distDir` → 1 i `headers` → 1 w tym samym
+przebiegu. Gdyby klucz już stał, zmiana byłaby nadpisaniem cudzej decyzji
+bez ADR-u, a nie wyłączeniem zdolności.
+
+### 9.2. Przesłanka zlecenia ZMIERZONA, NIE PRZYJĘTA
+
+Zlecenie podaje powód („`src/` nie używa `next/image`") jako fakt. **Fakt
+podany w zleceniu jest dla wykonawcy hipotezą do pomiaru, nie przesłanką do
+użycia** — tym bardziej że pierwszy odruchowy pomiar ten powód **zdawał się
+obalać**:
+
+| pomiar | wynik | kontrola pozytywna w tym samym przebiegu |
+| --- | --- | --- |
+| `import … from "next/image"` w `src/` | **0** | `next-intl` → **25 plików** |
+| element `<Image` w `src/` | **0** | `<section` → **25 linii** |
+| ciąg `next/image` w `src/` | **3 trafienia** | — |
+
+Trzecie trafienie było alarmem — i **fałszywym**. Trzy wystąpienia to
+**komentarze mówiące, dlaczego stoi tam surowy `<img>`**:
+`DbanieOSiebie.tsx:34`, `ModulFunkcji.tsx:74`, `Filar.tsx:185`. Alarm
+„przesłanka zlecenia jest FAŁSZYWA" postawiłem **przed odczytaniem tych
+trzech linii** i wycofałem po odczytaniu. Zapisane, bo klasa jest
+przenośna: **`grep -l` mówi, w których plikach ciąg jest, a nie czym tam
+jest** — a różnica między użyciem i komentarzem o nieużywaniu jest tu
+różnicą między „zlecenie się myli" i „zlecenie ma rację".
+
+Powód unikania zapisany w tamtych komentarzach jest z tą zmianą **zgodny**:
+optymalizator przekodowuje plik na żądanie, więc szłyby inne bajty niż te,
+których sumy stoją w ADR-ach.
+
+### 9.3. Sonda przed i po — i co dokładnie znaczą jej kody
+
+Przyrząd: `sonda-optymalizator.mjs`, trzy klasy żądań w jednym przebiegu.
+**POMIAR** — żądania poprawne (muszą dać 200, gdy optymalizator żyje).
+**KSZTAŁT** — żądania wadliwe (muszą dać 4xx; to one dowodzą, że 200 z
+POMIARU pochodzi od *walidującego* optymalizatora, a nie od czegokolwiek pod
+tym adresem). **STATYK** — plik wprost z `public/` i korzeń strony; to
+kontrola żywości serwera, bez której każde 4xx byłoby objawem martwego
+stojaka, nie wyłączonego punktu końcowego.
+
+| stojak | `next.config.ts` | `BUILD_ID` | exit | POMIAR | KSZTAŁT | STATYK |
+| --- | --- | --- | --- | --- | --- | --- |
+| kandydat :3200 | **ze zmianą** | `OJ3DLkCIsUF3qFUp3IDXy` | **11** | 0/2 → **404** | 5/5 → 404 | 2/2 → **200** |
+| kandydat :3200 | **BEZ zmiany (mutacja)** | `7QBvxwPLV4LDIlbzCh2eF` | **10** | **2/2 → 200** | 5/5 → **400** | 2/2 → 200 |
+| kandydat :3200 | **ze zmianą (powrót)** | `TIvoYeMUX1Npg7sm_ZpQD` | **11** | 0/2 → 404 | 5/5 → 404 | 2/2 → 200 |
+| baza 7817580 :3100 | bez klucza, `next` 15.5.23 | — | **10** | 2/2 → 200 | 5/5 → 400 | 2/2 → 200 |
+
+**Werdykt: `/_next/image` przestał odpowiadać 200** — dokładnie to, czego
+żądał KROK 2.
+
+**Mutacja z kontrolą nałożenia, nie samo „po zmianie".** Ciąg **11 → 10 →
+11** na tym samym stojaku, z **trzema różnymi `BUILD_ID`**, odizolowuje
+przyczynę do **tej jednej linii**: zdjęcie jej wraca optymalizator do życia,
+dołożenie znów go gasi. Trzy różne `BUILD_ID` są tu drugą połową dowodu —
+bez nich ten sam wynik dałby stojak serwujący **stary katalog budowania**,
+czyli pomiar nieaktualnych bajtów przy aktualnym pliku konfiguracji.
+
+**Przesunięcie 400 → 404 w kolumnie KSZTAŁT jest osobnym śladem i mówi
+więcej niż sam werdykt.** Przy żywym optymalizatorze wadliwe żądania dostają
+**400** — to on je **waliduje i odrzuca**. Po zmianie dostają **404**, tak
+samo jak żądania poprawne: **trasy nie ma wcale**. Czyli `unoptimized: true`
+nie „zaostrza walidacji" i nie „wyłącza przekodowania zostawiając punkt
+końcowy" — **usuwa powierzchnię**. Tego rozróżnienia sam kod wyjścia 11 nie
+niesie.
+
+**Kontrola negatywna:** baza `7817580` odpowiadała **10** w **każdym** z tych
+przebiegów, na tym samym otoczeniu i tym samym przyrządem. Zmiana jest
+przyczyną, nie zbieg okoliczności z aktualizacją `next` z KROKU 1.
+
+### 9.4. Bezpiecznik wyglądu — zero z kontrolą pozytywną
+
+Zrzuty kandydata po KROKU 2 wobec zrzutów bazowych z `7817580`
+(10 tras × PL/EN/DE × 1440/390 = 60), trzy przebiegi komparatora
+**w jednym przejściu**:
+
+| przebieg | pliki | z różnicą | różnych pikseli | porównanych pikseli |
+| --- | --- | --- | --- | --- |
+| **pomiar właściwy** `A-baza` vs `C-krok2` | 60 | **0** | **0** | 249 691 830 |
+| **podłoga szumu** `C-krok2` vs `C-krok2` | 60 | 0 | 0 | 249 691 830 |
+| **kontrola pozytywna** (1 px, delta 1) | 60 | **1** | **1** | 249 691 830 |
+
+Kontrola pozytywna wstrzyknęła **najmniejszą możliwą różnicę** — jeden
+piksel o delcie 1 — i komparator wskazał ją z nazwą pliku i współrzędną
+(`1440--de--_korzen.png`, 0,0). **Zero z wiersza pierwszego jest więc
+wynikiem, nie milczeniem przyrządu.** Zrzuty: 60/60 zapisanych, 0 błędów,
+statusy `{"200": 54, "404": 6}` — sześć czterysta-czwórek to trasa
+`nie-znaleziono` w sześciu wariantach, czyli **zachowanie zamierzone**
+(`src/middleware.ts` przepisuje nieistniejące ścieżki ze statusem 404).
+
+### 9.5. Build i bramki — kody wyjścia, dwie czerwienie z kontrolą negatywną
+
+`WWW_DIST=.next-kandydat npm run build` → **exit 0**, `▲ Next.js 15.5.27`,
+`✓ Generating static pages (33/33)`, `ƒ Middleware 46.5 kB`.
+
+| bramka | kandydat | baza 7817580 (ten sam przebieg) |
+| --- | --- | --- |
+| `kontrakt` | **exit 1** | **exit 1** |
+| `tokeny`, `deklaracje`, `parytet`, `liczby`, `linki`, `kotwice`, `nojs` | exit 0 | — |
+| `nieodwracalne` | **exit 1** | **exit 1** |
+
+Obie czerwienie są **zastane**, nie wprowadzone tym krokiem, i obie
+zmierzone po obu stronach w jednym przebiegu: `kontrakt` daje **ten sam
+komunikat co do znaku** (`deltaE(#f5f5f7, #F7F3EA) = 5.8 > 5`, ADR-022,
+poz. **T74**), a `nieodwracalne` zgłasza brak raportu audytu **dla sha
+własnego drzewa** — `6c12783e5c8b…` u kandydata i `7817580f3756…` w bazie,
+co samo dowodzi, że każda bramka liczyła swój tree, a nie cudzy
+(poz. **T83**). Osłabianie bramek to zakaz 3; **czerwień uzasadniona też
+jest czerwienią** (ADR-020).
+
+### 9.6. Dziedzina tego werdyktu i jego ślepota
+
+**Werdykt obowiązuje w swojej zadeklarowanej dziedzinie — poza nią jest
+milczenie, nie zieleń.**
+
+- **Dziedzina: build lokalny, `next start`.** Zachowania na Vercelu
+  **nie zmierzono** — tam optymalizator jest usługą platformy (§6 i §2.2
+  tego raportu mówią to samo o pomiarze sprzed zmiany). Odczyt konfiguracji
+  mówi, że `images.unoptimized` obowiązuje też tam; **odczyt to nie pomiar**
+  i tak ma być czytany.
+- **Czego ta zmiana NIE robi z wydajnością.** Nie wolno jej czytać jako
+  „obrazy są nieoptymalizowane, więc strona zwolni": pliki w `public/` są
+  już przygotowane wariantami (AVIF/WebP, szerokość w nazwie) i serwowane
+  wprost przez `<img>` w `<picture>`, więc optymalizator **nie brał udziału
+  w ich wydaniu ani przed tą zmianą**. Zdanie to jest odczytem kodu, nie
+  pomiarem wydajności — `bramka:pomiar` **nie była uruchamiana**.
+- **Czego nie dotyczy.** Nagłówki bezpieczeństwa i CSP to KROK 3 — po tym
+  kroku `headers()` nadal niesie **wyłącznie** `x-catherly-wydanie`.
+- **Przyrządy leżą poza repozytorium** (sonda, zrzuty, komparator) —
+  pozycja rejestru **T94**, niezmieniona i przez ten krok **poszerzona**
+  o sondę `/_next/image`.
+
+### 9.7. Ślad narzędziowy KROKU 2 — gdzie przyrząd był ślepy
+
+| przyrząd | ślepota | jak złapana | poprawka |
+| --- | --- | --- | --- |
+| `ls -la src/middleware.* middleware.*` | zsh przy **dwóch wzorcach** i jednym bez dopasowania **przerywa całe polecenie** — „no matches found: `middleware.*`" — więc *nieobecność* była zerem mojego polecenia, nie bytu; ogłosiłem „nie ma middleware", a plik jest | banner builda `ƒ Middleware 46.5 kB` **zaprzeczył** mojemu ustaleniu | `git ls-files \| grep -i middleware` → `src/middleware.ts`, kontrola pozytywna: 6 plików z `i18n` w nazwie |
+| `sonda-optymalizator.mjs` wywołana numerem portu | pierwszy argument to **adres bazowy**, nie port → `Failed to parse URL`; wszystkie trzy klasy żądań zerowe | **sonda sama odmówiła werdyktu** — exit 3 „NIEROZSTRZYGNIĘTE", bo kontrola STATYK nie dała 200 | `node sonda-optymalizator.mjs http://localhost:3200`; **to jedyny przypadek w tej sesji, w którym zero narzędzia złapał sam przyrząd, nie człowiek** — i tylko dlatego, że miał kontrolę żywości |
+| `grep -l 'next/image' src/` | mówi, **w których plikach ciąg jest**, nie **czym tam jest** — trzy komentarze o nieużywaniu wyglądają identycznie jak trzy użycia | odczyt trzech linii **przed** postawieniem wniosku | wniosek o użyciu stawiany na `import`/`<Image`, nie na samym ciągu (§9.2) |
+| kod wyjścia sondy jako całość dowodu | `11` mówi „nie odpowiada 200" i **milczy o tym, czy trasa jeszcze istnieje** | odczyt kolumny KSZTAŁT: 400 → 404 | werdykt czytany z **tabeli kodów**, nie z samego exit (§9.3) |
+| `$?` po potoku i po `$(…)` | kod wyjścia należy do **ostatniej wykonanej rzeczy**, nie do polecenia, które mnie interesuje — raz dało fałszywe „exit sondy: 0" | sprzeczność z treścią logu | każdy pomiar do pliku, `kod=$?` **osobną instrukcją** |
+
+### 9.8. Co po KROKU 2 zostaje otwarte
+
+| pozycja | stan po tym kroku |
+| --- | --- |
+| `B3` | **zamknięte** — KROK 1, w dziedzinie z §8.2 |
+| `B2` | **zamknięte** — ten krok, w dziedzinie z §9.6 |
+| `B7` | **otwarte w całości** — droga wyjścia wychodzi poza major, czyli poza literę zlecenia |
+| `B1`, `B4`, `B5`, `B6`, `B8`, `B9`, `B12` | otwarte — KROK 3 (CSP **wyłącznie** `Report-Only`; przełączenie na egzekwowaną ma być **propozycją bez wykonania**) |
+| `B10` (COOP/CORP), `B11` (`security.txt`) | **otwarte i POZA zleceniem `WWW/102`** — zlecenie ich nie wymienia |

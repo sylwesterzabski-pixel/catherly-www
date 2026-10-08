@@ -56,8 +56,41 @@ const WYDANIE =
  */
 const KATALOG_BUDOWANIA = process.env.WWW_DIST || ".next";
 
+/**
+ * B2 — OPTYMALIZATOR OBRAZÓW WYŁĄCZONY, BO NIE MA KTO GO UŻYWAĆ
+ * (zlecenie WWW/102 KROK 2).
+ *
+ * Co to wyłącza: punkt końcowy `/_next/image`, który do tej zmiany
+ * odpowiadał 200 na dowolne żądanie spełniające walidację — zmierzone
+ * sondą, nie przypuszczone (2026-10-08: POMIAR 2/2 → 200, KSZTAŁT 5/5 →
+ * 4xx, czyli 200 pochodziło od DZIAŁAJĄCEGO optymalizatora, a nie od
+ * czegokolwiek innego pod tym adresem).
+ *
+ * Dlaczego wolno to wyłączyć — PRZESŁANKA ZMIERZONA, NIE PRZYJĘTA
+ * ZE ZLECENIA: `src/` nie używa `next/image` w żadnej postaci. Zero
+ * importów `next/image` i zero elementów `<Image`, oba z kontrolą
+ * pozytywną w tym samym przebiegu (`next-intl` → 25 plików, `<section`
+ * → 25 linii), więc to zero jest wynikiem, nie milczeniem narzędzia.
+ * Trzy trafienia ciągu `next/image` w `src/` są KOMENTARZAMI mówiącymi,
+ * dlaczego stoi tam surowy `<img>`: DbanieOSiebie.tsx:34,
+ * ModulFunkcji.tsx:74, Filar.tsx:185.
+ *
+ * Czyli ta zmiana nie zdejmuje żadnej używanej zdolności — zdejmuje
+ * powierzchnię, której kod strony świadomie unika. Powód unikania
+ * zapisany w tamtych komentarzach jest z tą zmianą ZGODNY: optymalizator
+ * przekodowuje plik na żądanie, więc na produkcji szłyby inne bajty niż
+ * te, których sumy stoją w ADR-ach.
+ *
+ * ⚠ CZEGO TEN PRZEŁĄCZNIK NIE ZNACZY: nie jest ustawieniem
+ * kosmetycznym i nie wolno go czytać jako „obrazy są nieoptymalizowane,
+ * więc strona zwolni". Pliki w `public/` są już przygotowane wariantami
+ * (AVIF/WebP, szerokości w nazwie) i serwowane wprost przez `<img>`
+ * z `<picture>` — optymalizator nie brał udziału w ich wydaniu ani przed
+ * tą zmianą. Werdykt o skutku stawia SONDA `/_next/image`, nie to zdanie.
+ */
 const nextConfig: NextConfig = {
   distDir: KATALOG_BUDOWANIA,
+  images: { unoptimized: true },
   // Generowanie statyczne per strona (ADR-007). Świadomie BEZ `output: "export"`:
   // Faza 5 wymaga rewrites tras logowania/rejestracji do aplikacji (ADR-005),
   // a rewrites nie działają przy pełnym eksporcie statycznym.
