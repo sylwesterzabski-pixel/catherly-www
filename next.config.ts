@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { NAGLOWKI_BEZPIECZENSTWA } from "./src/naglowki-bezpieczenstwa";
 
 /**
  * Prowieniencja wydania (ADR-018) — z jakiego commita pochodzi to, co
@@ -94,11 +95,34 @@ const nextConfig: NextConfig = {
   // Generowanie statyczne per strona (ADR-007). Świadomie BEZ `output: "export"`:
   // Faza 5 wymaga rewrites tras logowania/rejestracji do aplikacji (ADR-005),
   // a rewrites nie działają przy pełnym eksporcie statycznym.
+  /**
+   * JEDNO MIEJSCE NAGŁÓWKÓW (zlecenie WWW/102 KROK 3).
+   *
+   * `source: "/:sciezka*"` obejmuje każdą trasę — zmierzone sondą na 30
+   * adresach (10 tras × pl/en/de), łącznie z `/nie-znaleziono`, które
+   * oddaje 404. Strona 404 też jest oddawana odwiedzającej, więc komplet
+   * nagłówków obowiązuje tam tak samo jak na 200.
+   *
+   * Lista nagłówków bezpieczeństwa NIE STOI TUTAJ, tylko w
+   * `src/naglowki-bezpieczenstwa.ts` — bo czyta ją także strażnik
+   * `e2e/naglowki-bezpieczenstwa.spec.ts`. Kopia listy w strażniku byłaby
+   * drugim źródłem prawdy i rozjechałaby się przy pierwszej zmianie
+   * (zakaz 10). Powody każdej wartości — w tamtym pliku, razem z pomiarami,
+   * z których wyszły.
+   *
+   * `x-catherly-wydanie` zostaje PIERWSZY i osobno: to mechanizm
+   * prowieniencji opisany wyżej, czyta go `scripts/sprawdz-preview.mjs`,
+   * i nie jest nagłówkiem bezpieczeństwa — nie wchodzi do listy, której
+   * pilnuje strażnik kompletu.
+   */
   async headers() {
     return [
       {
         source: "/:sciezka*",
-        headers: [{ key: "x-catherly-wydanie", value: WYDANIE }],
+        headers: [
+          { key: "x-catherly-wydanie", value: WYDANIE },
+          ...NAGLOWKI_BEZPIECZENSTWA,
+        ],
       },
     ];
   },

@@ -46,8 +46,16 @@ rozstrzygnięcie 5).
    **„Dziesięć zakazów"**, który mówi, czego nie wolno ZLECIĆ — wiążący także
    dla zleceń właściciela (T34) — oraz rozdział **„Hierarchia źródeł reguł"**.
 2. **Ten dokument, w całości.**
-3. `docs/faza-2/rejestr-warunkow-powrotu.md` — 24 pozycje treści + **55** pozycji technicznych
-   **T1–T55** + **skorowidz ogniw** (T39). T54 dopisane 2026-09-01 (`WWW/064`): luka
+3. `docs/faza-2/rejestr-warunkow-powrotu.md` — **24** pozycje treści
+   + **98** pozycji technicznych **T1–T98**, bez luk (przeliczone ze źródła
+   2026-10-09, `WWW/102` KROK 3; kontrola negatywna w tym samym przebiegu,
+   `HEAD` `f823b7b`: **96** pozycji, T1–T96) + **skorowidz ogniw** (T39).
+   ~~Poprzednie brzmienie: „**55** pozycji technicznych **T1–T55**"~~ —
+   ten licznik zestarzał się **w miejscu o 43 pozycje**, bo stał w rozdziale,
+   którego nikt nie przeliczał przy dopisywaniu wierszy do tabeli; wychwycony
+   2026-10-09 przeglądem klasy, nie przy edycji tabeli (rozdz. 9).
+   **Dwie pozycje z września, zostawione jako ślad tamtego stanu:**
+   T54 dopisane 2026-09-01 (`WWW/064`): luka
    `pnpm install --ignore-scripts` → hook nieaktywny. **T55 dopisane 2026-09-02**
    (`WWW/072`): model kosztu LCP w `pipeline-obrazow.json` nieaktualny — elementem
    LCP „/" jest dekoracja `aria-hidden` o kryciu 6%, a nie zrzuty; zdjęcie czterech
@@ -682,7 +690,7 @@ o pięciu plikach, więc pozycja pozostaje otwarta.
 | `origin/main` | `0896219` — j.w. |
 | Niewypchnięte | **liczby nie wpisuję** — pole samostarzejące się, rośnie przy każdym commicie łącznie z tym, który je poprawia, a commit nie może zawierać własnego skrótu. Jedyna dopuszczalna postać to polecenie: `git log --oneline origin/faza-4/podstrony..HEAD`. Najstarszy w pakiecie: `e8b3b73` (2026-08-19, osiągalny), najmłodszy — zawsze `HEAD`. Migawki liczby **celowo tu nie ma**: wpisana 2026-08-20 wartość „9" przeżyła dwa commity i wprowadzała w błąd dokładnie w miejscu, w którym błąd kosztuje push bez zgody |
 | Drzewo robocze | **wartości nie wpisuję — `git status --porcelain`.** Pole samostarzejące się tej samej klasy co „HEAD lokalny" i „Niewypchnięte", tylko gorszej: zmienia je **każda** edycja, nie tylko commit, a wpisane „czyste" jest nieprawdą przez cały czas pracy. Wychwycone 2026-10-04 w `WWW/100`, gdzie zlecenie wchodzi **po jednej naprawie na commit** — po pierwszym i drugim commicie w drzewie z konieczności leżą pliki kroków następnych, więc stare „czyste" kłamałoby w dwóch commitach z trzech |
-| **STAN PRACY** | ▶ **`WWW/102` W TOKU 2026-10-07/08 — KROKI 1 (B3) i 2 (B2) ZAMKNIĘTE, KROK 3 (NAGŁÓWKI + CSP `Report-Only`) PRZED SOBĄ, ZERO ZMIAN WIDOCZNYCH.** Rola: IMPLEMENTACJA, gałąź `faza-4/podstrony`, baza `7817580`. **Krok 1:** `next` i `eslint-config-next` **15.5.23 → ^15.5.27** (`package.json` + `package-lock.json`, dwa pliki, w obrębie majora). `npm audit --omit=dev` **przed i po, z datą**: `total` **4 przed i 4 po**, a treść zmieniła się całkowicie — dwa advisory `next` (2 nodes) zniknęły, zostały dwa `sharp`/`libvips` **z drzewa deweloperskiego**, które `--omit=dev` i tak raportuje; **B3 zamknięte w dziedzinie advisory własnych `next`: 2 → 0**. Build, lint, testy jednostkowe i e2e wykonane; dziewięć bramek z odczytanymi kodami wyjścia, **dwie czerwone świadomie** (`kontrakt` — `deltaE 5,8 > 5,0`, czeka na Figmę; `nieodwracalne` — niespełnialne strukturalnie, T83), obie z kontrolą negatywną z bazowego worktree na 15.5.23, czyli czerwień **zastana, nie wprowadzona**. **Bezpiecznik wyglądu:** 10 tras × PL/EN/DE × 1440/390 = **60 zrzutów** na dwóch stojakach (baza `7817580` z własnym `node_modules` na :3100, kandydat na :3200), **0 różnic / 249 691 830 porównanych pikseli**, podłoga szumu 0, kontrola pozytywna 1 px delta 1. Raport: `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md` rozdz. 8. **Krok 2 (B2) — ZAMKNIĘTY 2026-10-08, zlecenie `WWW/102-W`:** `next.config.ts` dostał `images: { unoptimized: true }` — **jedna linia plus komentarz mówiący, czego ta linia NIE znaczy**; ani jednego pliku `src/`, `design/tokens.json` ani `content/`. **Pytanie zerowe odpowiedziane ODCZYTEM KONFIGURACJI, nie mutacją:** klucza `images` nie było w `next.config.ts` w żadnej postaci — 0 trafień przy kontroli pozytywnej `distDir` → 1 i `headers` → 1 w tym samym przebiegu. **Przesłanka zlecenia ZMIERZONA, NIE PRZYJĘTA:** 0 importów `next/image` i 0 elementów `<Image` w `src/`, kontrola pozytywna `next-intl` → 25 plików i `<section` → 25 linii; trzy trafienia ciągu `next/image` to **komentarze o nieużywaniu** (`DbanieOSiebie.tsx:34`, `ModulFunkcji.tsx:74`, `Filar.tsx:185`) — alarm „przesłanka zlecenia FAŁSZYWA” postawiłem **przed** odczytaniem tych trzech linii i wycofałem po odczytaniu. **Sonda `/_next/image` przed i po, z MUTACJĄ I KONTROLĄ NAŁOŻENIA: exit 11 → 10 → 11** na tym samym stojaku i **trzech różnych `BUILD_ID`** (`OJ3DLkCI…`, `7QBvxwPL…`, `TIvoYeMU…` — bez tego ten sam wynik dałby stojak serwujący stary katalog budowania), przy bazie `7817580` na :3100 **exit 10 w KAŻDYM przebiegu** i STATYK 2/2 → 200 wszędzie (serwer żyje i `public/` serwuje, więc 404 jest punktu końcowego, nie martwego stojaka). **KSZTAŁT przesunął się 400 → 404 i to osobny ślad:** `unoptimized` nie zaostrza walidacji, **usuwa trasę** — czego sam kod wyjścia nie niesie. Bezpiecznik wyglądu powtórzony na 60 zrzutach: **0 różnic / 249 691 830 pikseli**, podłoga szumu 0, kontrola pozytywna 1 px delta 1 wskazana z plikiem i współrzędną (`1440--de--_korzen.png`, 0,0). Build **exit 0** (`33/33` stron, `ƒ Middleware 46.5 kB`), dziewięć bramek, **te same dwie czerwone** — z kontrolą negatywną z bazowego worktree **w tym samym przebiegu**, gdzie `nieodwracalne` zgłasza brak audytu **dla sha własnego drzewa** (`6c12783e5c8b…` kontra `7817580f3756…`), co samo dowodzi, że każda bramka liczyła swój tree. `tsconfig.json` zmutowany **przez build** (T89) przywrócony przed commitem — sha `0293d2ec…` po obu stronach. Raport: **rozdz. 9**. **Przyrząd leży POZA repozytorium — poz. T94**, a bezpiecznik jest **ślepy na przedmiot T87** (poświata żyje wyłącznie w bloku `prefers-reduced-motion: no-preference`, a zrzuty idą z `reducedMotion: "reduce"` — zmierzone liczeniem nawiasów w `src/app/globals.css`: blok otwiera się w **785**, zamyka w **1079**, warstwy w **906** i **923** są wewnątrz). **Skan sekretów ze STANDARDU — wykonany, z kontrolą pozytywną w tym samym przebiegu:** zakres pięciu plików commita 1 → **0 znalezisk**, kontrola pozytywna **4/4 rodziny** (klucz prywatny, token GitHuba, token AWS, klucz Stripe'a) — ale dopiero **po naprawie alfabetu wzorca**: reguła `aws-access-token` czyta `[A-Z2-7]{16}` (base32, odczytane `strings` wprost z binarki), a mój generator sypał z `[A-Z0-9]`, więc kontrola **milczała na jednej rodzinie z czterech i nie mówiła tego o sobie** (rozdz. 9). ⚠ **A samo narzędzie nie jest narzędziem tego repozytorium — poz. T96:** `gitleaks` 8.28.0 to binarka 21 258 274 B w katalogu sesji, nieobecna w `git ls-files`, `package.json`, `.githooks/pre-commit` i `.github/` (każde zero z kontrolą pozytywną). **Trzy nowe pozycje rejestru w tym kroku: T94, T95, T96** — wszystkie to **granice pomiaru i defekty zastane**, żaden nie naprawiany w kodzie (zakaz 8); liczniki rejestru przeliczone ze źródła po dopisaniu T96: **96 pozycji / 90 wierszy skorowidza / 174 wiersze globalnie**, kontrola negatywna na `HEAD` `7817580` w tym samym przebiegu **93 / 87 / 168**. **BEZ PUSHU** — zlecenie `WWW/102` kończy się „Push — tylko za osobną zgodą. STOP" i nie wylicza ani jednego skrótu (zakaz 1); kolejkę przelicz, nie przepisuj: `git log --oneline origin/faza-4/podstrony..HEAD`. **Do zrobienia w tym zleceniu:** krok 2 — wyłączenie optymalizatora obrazów (`images.unoptimized`), sonda `/_next/image` przed i po; krok 3 — HSTS, X-Frame-Options + `frame-ancestors 'none'`, Referrer-Policy, Permissions-Policy, X-Content-Type-Options z `next.config.ts headers()`, CSP **najpierw `Report-Only`**, przełączenie na egzekwowaną wyłącznie jako **propozycja, bez wykonania**. ⚠ **Rozjazd zgłoszony, nie rozstrzygnięty:** zlecenie żąda pierwszej linii `WYKONANO — WWW · 102 · <sha>`, a jednocześnie zakazuje pushu — `sha` z `git ls-remote` pozostanie więc `7817580` i **tej pracy nie niesie**. Poprzednio: ▶ **`WWW/100` WYKONANE 2026-10-04 — cztery czerwone zadania CI (T74), ZERO zmian widocznych dla odwiedzającej; **pięć** commitów (⚠ **STAN ZMIERZONY 2026-10-07, `WWW/101` KROK 1a — TE PIĘĆ JUŻ NIE CZEKA NA PUSH.** `git ls-remote origin faza-4/podstrony` → `42c84aba8eed8d76cb180ea134d053ac4c21cf7a`; `git rev-parse HEAD` → **ten sam obiekt**; `git rev-list --left-right --count origin/faza-4/podstrony...HEAD` → **`0 0`**. Zdalna niesie wszystkie pięć, niewypchniętych jest **zero**. Zdanie „**BEZ PUSHU**" niżej było prawdziwe **w chwili wykonania `WWW/100`** i zostaje widoczne jako **ślad, nie jako stan** — korekta bez zamazania śladu. Liczbę nadal **przelicza się poleceniem, nie przepisuje**: to pole jest samostarzejące się i ten dopisek też się zestarzeje, gdy powstanie pierwszy nowy commit) — trzy po jednej naprawie na commit, czwarty i piąty to **KOREKTY PO KONTROLI** (wyłącznie dokumentacja i komentarze: dwanaście rozjazdów zgłoszonych przez kontroler tylko-do-odczytu w czwartym, a w piątym **jeden rozjazd wprowadzony przez czwarty** — prognoza o zachowaniu `git log -S` podana składnią odczytu, obalona pomiarem po jej własnym commicie, rozdz. 9; zero zmian w zachowaniu bramek, zero w renderze, stare brzmienia zostawione widoczne; liczbę przelicz, nie przepisuj — `git log --oneline origin/faza-4/podstrony..HEAD`).** **BEZ PUSHU** (zlecenie nie niesie zgody wyliczonej ze skrótami — zakaz 1). **KROK 1 — cztery przyczyny zmierzone Z LOGU przebiegu `37040695453` (02.10, `46c8688`), nie z domysłu; dwie naprawione:** ESLint w `456909d`, Wydajność w `6926ee6`. Kontrakt tokenów dostał podstawione odniesienie w commicie trzecim i **świeci dalej, ale właściwym powodem** — `deltaE 5,8 > 5,0`, czyli „czeka na Figmę"; Nieodwracalne jest **niespełnialne strukturalnie** (T83). Pełne adresy i dowody w wierszu „Bramki CI na gałęzi" wyżej. ⚠ **Najważniejsze ustalenie tego zlecenia:** zadanie wydajności padało **przed pomiarem**, więc **na tej gałęzi nie istnieje ANI JEDNA liczba wydajności** — T33 (próg LCP) wyglądał na wyjaśnienie tej czerwieni i nim nie był. **KROK 2 — bramki lokalne, przed i po w tym samym przebiegu; liczby PRZELICZONE PO WZNOWIENIU SESJI 2026-10-04 wieczorem, bo pierwsza para była skażona (powód przy bezpieczniku niżej):** `npx eslint . --max-warnings=0` **exit 1 → exit 0** (jedno ostrzeżenie `608:11` → zero linii wyjścia), kontrola negatywna z worktree na `46c8688` w tym samym przebiegu; `tokeny` · `liczby` · `parytet` · `deklaracje` **exit 0, wyjście BAJT W BAJT identyczne** po obu stronach; `linki` **31 artefaktów**, `kotwice` **279 linków z fragmentem**, `nojs` **30 stron czytelnych bez JS** — te same liczby po obu stronach; `kontrakt` **exit 1 na deltaE 5,8** — czerwień zamierzona; `nieodwracalne` **exit 1 po obu stronach**, a różnica wyjścia to **dokładnie jedna linia: skrót HEAD** (T83 — bramka nie reaguje na tę pracę, tylko nazywa inny commit); `npx tsc --noEmit` **exit 2, wyjście identyczne co do bajtu** przed i po (T88, błąd zastany); **pełny Playwright DWA RAZY, każdy na swoim serwerze: `46c8688` na 3200 → 1388 passed / 12 skipped / 1400 total / 1,6 min / exit 0; drzewo bieżące na 3201 → 1388 / 12 / 1400 / 1,7 min / exit 0.** **BEZPIECZNIK WYGLĄDU — 60 z 60 zrzutów BAJT W BAJT identycznych, `SUMA PIKSELI RÓŻNYCH: 0`, `TRAS Z RÓŻNICĄ > 0 PIKSELI: 0`** (10 tras × 3 języki × 2 szerokości: 1440 i 390; odniesienie **zbudowane w osobnym worktree z `46c8688`**, oba serwery żywe w jednym przebiegu — 3200 i 3201). ⚠ **Ślad poprzedniego brzmienia, zgodnie z „korekta bez zamazania śladu": do wznowienia stało tu „57 z 60", a trzy różnice tłumaczono dwustanowym renderem `/`.** Tamta liczba była prawdziwa dla tamtej pary zrzutów — i **tamta para była wadliwa u podstawy**: zrzuty „przed" powstały z **DRZEWA ROBOCZEGO** o 17:41, nie z czystego `46c8688`, i wyprzedzały założenie worktree o 48 minut. Po przebudowaniu odniesienia **z commitu** nie ma ani jednej różnicy. **T87 zostaje w rejestrze i nadal jest prawdą**, a dowodzi jej kontrola szumu w tym samym przebiegu: dwa zrzuty **tego samego, nieruszonego serwera** dały **59/60**, z `en--_glowna--390.png` różnym na **13 417 z 5 047 770 pikseli (0,2658 %), maks. odchylenie kanału 2/255** — czyli przyrząd **nie jest ślepy**, a zero wyżej jest wynikiem, nie jego milczeniem. **HTML korzenia: 69 003 B ↔ 69 003 B, ale RÓŻNY** — 74 bloki różnic i **wszystkie są tożsamością builda** (`buildId`, nazwy `/_next/static/**`, numery modułów webpacka); po znormalizowaniu tych trzech rzeczy **68 636 ↔ 68 636, IDENTYCZNY**, przy kontroli pozytywnej (jedno słowo treści podmienione → **WYKRYTA**). **Arkusze CSS: 11 plików ↔ 9, a mimo to 58 040 B ↔ 58 040 B i 414 ↔ 414 fragmentów, wielozbiór fragmentów IDENTYCZNY** (kontrola pozytywna: jedna cyfra w barwie → WYKRYTA) — **build nie jest bajtowo odtwarzalny między katalogami**: reguły te same, różni się pakowanie. **Czego ta praca NIE dotknęła — i jest to pomiar, nie zapewnienie:** ani jednego pliku `src/`, `design/tokens.json` ani `content/`; zmiany leżą w `scripts/` (dwa strażniki), `design/kontrakt-aplikacji.json` (odniesienie POMIARU, nie token) i w dokumentacji. Skutek uboczny tego zakresu: **hak `axe-precommit` nie uruchomił się ani razu**, bo odpala się tylko przy plikach `src/` w indeksie — zapisuję to jako granicę pomiaru, nie jako zieleń dostępności. ⚠ **SPROSTOWANIE, ZOSTAWIONE WIDOCZNE: stało tu „port 3000 nietknięty — sprawdzony `lsof -ti:3000` i zaraportowany; własny serwer pomiarowy stał na 3100", a drugi człon był NIEPRAWDZIWY.** Zmierzone po wznowieniu 2026-10-04: na porcie 3000 stoi **PID 45920 uruchomiony `Sun Oct 4 17:40:10`, rodzic `npm start` (PID 45906), katalog roboczy = to repozytorium**, a log `serwer-przed.log` z 17:40 niesie `Local: http://localhost:3000` — to serwer **tej właśnie pracy**, nie właściciela, i zrzuty „przed" szły na 3000, bo `zrzuty.mjs` ma w domyśle `127.0.0.1:3000`. **Czego to sprostowanie NIE znaczy:** nikt niczego nie zabił ani nie przeniósł — przypisanie portu się udało, więc port był wolny, a zakaz 7 (sprawdź `lsof` i **raportuj**) jest dochowany; jedyną nieprawdą było zdanie o tym, gdzie stał nasz serwer. Po wznowieniu pomiar poszedł na **3200 i 3201**, z dala od 3000 i 3100; **żaden z czterech procesów nie został zatrzymany** (zlecenie: niczego nie kasować). **Jedenaście pozycji rejestru: T74 sprostowane, T82–T91 nowe** (defekty ZASTANE, znalezione przy szukaniu przyczyn, żaden nie naprawiany — zakaz 8). **Poprzednio:** ▶ **`WWW/098 v2` WYKONANE 2026-09-07 — ADR-071; partia 1a, wszystkie cztery kroki + cztery zmiany właściciela w trakcie.** **BEZ PUSHU** (zlecenie warunkuje go słowem właściciela w czacie koordynatora; słowa nie ma). **Bitmapy 5/5 sum zgodnych** przed zapisem, wszystkie 2528 × 1696 → AVIF 1600 × 1067 (filary) i 1200 × 805 (dzień). Sloty: filar 1 ← 15a, 2 ← 16, 3 ← 15b, 4 ← 6b, dzień slot 2 ← 4b. **T71 i T73 ZAMKNIĘTE**; odpięte i zostawione na dysku: `filar-1-pozyskiwanie` · `filar-2-tresci` · `filar-3-zespol` · `filar-4-wyniki` · `dbanie-o-siebie`. **Hero:** nagłówek dwuwierszowy bez półpauzy ×3 z pokryciem w `content/`, nowy klucz `Hero.ctaWtorne`, MacBook z ekranem białym, telefon `2d-alfa` **374 × 464** (×1,25 poleceniem właściciela; łącznie ×1,875 wobec `WWW/096`) wystający **99 px** pod hero i pływający na `ScrollTimeline` ±17 px bez JS — **wszystkie przecięcia zerowe** (twarz, dłoń z telefonem, kolumna „pamięci", CTA), **CLS 0,0043 @1440 · 0,0000 @390**. **Filary:** spad tła **100,0 % okna na 1440/1190/390** bez paska poziomego, lustro 1·3 tekst lewo / 2·4 tekst prawo (DOM nietknięty), filar 3 → ton 3, filar 4 → ton 2. **Sekcja „pamięć" odbita** (trakty 55 : 44, nie samo `order`). **Pomiary przed/po na DWÓCH serwerach w jednym przebiegu** (baza `b214adb` w osobnym drzewie na 3101, stan po zmianie na 3100, kontrola pozytywna rozdziału): jasne @1440 **60,0 → 60,9 %**, @390 **55,4 → 59,6 %**, nakładka @1440 **37,0 → 35,3 %**, @390 **40,3 → 37,8 %**, wysokość **8 619 → 8 233 px** — wszystkie cztery w stronę wzorca. **Napis „Catherly" przeszedł CZTERY rozstrzygnięcia właściciela tej samej doby** (pigułka → limonka akcentu → limonka przycisku, zmierzone **1,31:1 i `axe` czerwony na dziewięciu przypadkach** → barwa tekstu z jaśniejszą resztą wiersza); czerwień zgasła przez zmianę przedmiotu, nie progu — T81. Zapadka deklaracji **3 → 2** z zapisem cichej pułapki (T80). Bramki lokalne: e2e **1388 passed / 0 failed**, axe **120**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone. **Poprzednio:** ▶ **`WWW/097/2` WYKONANE 2026-09-06 — ADR-070; partia 1 z 4 kroków, wszystkie.** **BEZ PUSHU** (zlecenie nie niesie zgody wyliczonej ze skrótami). **Wzorzec v2 w repo**: `design/wzorzec/glowna-v2-2026-09-06.png`, 906 × 902, SHA `450f61a4b51eda27…` — tożsamość sprawdzona PRZED zapisem, zgodna. **v2 jest JEDNĄ KOLUMNĄ bez nawigacji, v1 kolażem dwukolumnowym — i to wyjaśnia wszystkie osiem rozjazdów z `WWW/097`:** obie strony mierzyły rzetelnie, na dwóch różnych plikach. Po podstawieniu v2 te same pozycje schodzą do 0,00–1,40 pp. Wykonane: hero w proporcjach v2 (wysokość Δ **0,03 pp**, zdjęcie jako warstwa absolutna x **47,92→100,00 %**, iPhone `2d-alfa` dokładnie ×1,5 = 299 × 371), sekcja „pamięć" (trakty 44 : 55, H2 jednym kolorem, `hyphens: manual` + strażnik z mutacją), rząd kart (**23 / 42,5 / 23 %**, Δ 0,01 / 0,00 / 0,01 pp, chevron inline SVG bo glifu nie ma w subsecie). **Jedna pozycja ZATRZYMANA zgodnie z warunkiem zlecenia: wysokość mockupu 24,17 % wobec 18,1 % (Δ 6,07 pp)** — przyczyna zmierzona: proporcja naszego pliku 1,34 wobec 2,05 wzorca (T78). **H1 wszedł jako 60 px (4,17 %), nie 76 px (5,30 %)** — sonda po trzech kadrach i trzech językach pokazała, że 76 px daje po niemiecku 5 wierszy przy strażniku „H1 ≤ 3 linie"; osłabienia bramki nie robię (zakaz 3). Bramki lokalne: e2e **1388 passed / 0 failed**, axe **120**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone, zamiatanie 11/11 ×2. **Poprzednio:** ▶ **`WWW/096 v4` WYKONANE 2026-09-06 — ADR-069; wszystkie sześć punktów.** **BEZ PUSHU** (zlecenie nie niesie zgody wyliczonej ze skrótami). Skład głównej przebudowany: dziesięć sekcji wzorca + cztery filary z decyzji właściciela; **pięć sekcji zeszło z głównej, żadna nie skasowana** (problem i trzy karty → `/dla-kogo`, sześć obaw → `/cennik`, pas przewijany i „dbanie o siebie" zdjęte). Nowy rząd trzech kart grafitowych, karta „Twój Wrapped" w bloku wzrostu (T72 zamknięte), sześć mockupów ze zdjętym tłem (`*-alfa`, próg 40 przy przecieku 140), trzy tony sekcji, hero bez ducha i bez pustki. **Pomiary: wysokość 11 741 → 8 663 px; jasne piksele 76,3 → 62,4 % przy 70,9 % wzorca — a BEZ pasa czterech filarów 69,3 %, czyli 1,6 pp od wzorca; nakładka 30,1 → 36,4 % (POGORSZONA).** Obie metryki wzorcowe pogorszone i przyczyna zmierzona, nie zgadnięta: cztery pełnoszerokościowe sekcje grafitowe to dodatek właściciela, którego wzorzec nie ma. Bramki lokalne: e2e **1376 passed / 0 failed**, axe **120 passed**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone, zamiatanie 11/11 ×2. **Poprzednio:** ▶ **`WWW/094` WYKONANE 2026-09-06 — ADR-068 dopisany; kroki 1, 2, 3 i 4a w całości, krok 4b ZABLOKOWANY (T72).** **BEZ PUSHU** (zlecenie warunkuje go słowem właściciela w czacie koordynatora — słowa nie ma). Wykonane: trzy filary na karty grafitowe (`data-ton="ciemny"`, promień 24, wcięcie 40 — z pomiaru wzorca 27 i 36–49); blok „wzrost" jako trzecia wyspa klamry; slot „pamięć" z kadrem `3-macbook-iphone-ekran.avif` (ekran MacBooka = zrzut Playwrighta `z6-filar-1-dmo`, maska bieli, ekran telefonu wykluczony — 42 312 px); sześć ikon SVG kafelków; sekcja „dzień" ze slotami 1 i 3 i etykietami. **Pomiary: T68 79,0 → 76,3 % jasnych** przy 70,9 % wzorca; **nakładka 27,7 → 30,1 %** — POGORSZONA i raportowana jako pomiar, nie ukryta. Bramki: e2e **1376 passed / 0 failed**, axe **120 passed**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone, zamiatanie 11/11 ×2, podróże 14,67 ekranu. **Poprzednio:** ▶ **`WWW/093/2` WYKONANE W CZĘŚCI 2026-09-06 — ADR-067 uzupełniony; kroki 1 i 2 w całości, krok 3 w części.** **BEZ PUSHU** (zlecenie warunkuje go słowem właściciela w czacie koordynatora). **KROK 1+2 — BITMAPY WESZŁY, T70 ZAMKNIĘTE:** pobrane **11/11 z sumami SHA-256 i wymiarami zgodnymi co do jednego**, manifest w `docs/obrazy/MANIFEST-WZORZEC-2026-09-06.md`. Optymalizacja wg praktyki **zmierzonej, nie wymyślonej** (brak `.gitattributes` → brak LFS; ADR-061 mówi, że PNG-i zostają poza historią): dziewięć AVIF-ów, **44 509 kB → 200 kB (−99,6 %)**, PNG-i usunięte, sumy w manifeście; wzory 7 i 8 zostają PNG-ami jako materiał rysunkowy. ⚠ **TWARZE — warunek kanonu sprawdzony:** kadry generowane (Higgsfield) i objęte imiennym akceptem właściciela. **KROK 3 — HERO PRZEBUDOWANE NA DWIE KOLUMNY:** tekst po lewej, bohaterka wtopiona **maską bez ramki**, telefon z ekranem **pustym** (decyzja A/C otwarta; zakaz wciskania kadru desktopowego w ekran pionowy uszanowany). ⚠ **RAMA I PARALLAX Z ADR-063/064 ZESZŁY** — odwrócenie mojej decyzji sprzed dwóch dni: tamta rama powstała dla kadru POZIOMEGO pod tekstem, wzorzec daje PIONOWY obok tekstu i wtapia go; reguły `.kadr` i `kadrHeroParallax` są martwe i **tak oznaczone**. ⚠ **PROPORCJA KOLUMN 58 : 42, NIE WZORCOWE 47 : 53 — próg zmierzony, nie dobrany:** przy 531 px (47 %) H1 ma 3 wiersze po polsku, ale **4 po angielsku i niemiecku**; dopiero przy **650 px** wszystkie trzy schodzą do trzech. Wzorzec jest jednojęzyczny, my mamy parytet ×3 — kanon zna to jako „miary DE +18 %", tu wyszło +22 %. ⚠ **Usterka wychwycona z OBRAZU, nie z kodu:** bitmapa telefonu niesie własne kremowe tło i rysowała prostokąt wokół telefonu — dostała własną, ciaśniejszą maskę. ⚠ **KADR 5 NIEOSADZONY i jest to WYKONANIE reguły:** pokazuje laptop z pulpitem i wykresem, czyli obraz, o którym odwiedzająca może pomyśleć „tak wygląda aplikacja"; zlecenie samo oznacza go warunkowo. ⚠ **LCP — PRZESŁANKA ZLECENIA OBALONA POMIAREM:** elementem LCP jest **`SPAN.Hero_duch__`**, nie bohaterka (potwierdzenie T55); mediana z pięciu **220 ms**, rozrzut 1,02×. **NAKŁADKA 30,1 → 27,7 %**, najlepszy wynik dotąd; **T68 79,0 %** wobec 70,9 % wzorca — jesteśmy jaśniejsi, bo karty filarów i blok wzrostu wciąż nie są grafitowe. **Komplet e2e 1376 passed · wszystkie bramki zielone · sweep 11/11 · podróże 12,65 ekranu.** ⚠ Linter tokenów złapał mnie **siódmy raz** na hexie w komentarzu CSS. **Czego nie zrobiłem:** sekcja „pamięć" z kadrem 3, sloty dnia z kadrami 4 i 6 wraz z chipami (trzy nowe klucze czekają nieużyte), sześć ikon SVG z wzoru 7, karta Wrapped z wzoru 8, odpięcie `tymczasowe` (hero już ich nie używa, `DbanieOSiebie` i filary tak). Poprzednio: ▶ **`WWW/093` WYKONANE W CZĘŚCI 2026-09-06 — ADR-067; krok 3 w całości, krok 4 w części, KROK 1 ZABLOKOWANY, KROK 2 zmierzony i świadomie niewykonany.** **BEZ PUSHU** — zlecenie warunkuje go słowem właściciela w czacie koordynatora, którego w tej rozmowie nie ma. ⚠ **KROK 1 ZABLOKOWANY: zlecenie podaje nazwy dziewięciu bitmap URWANE po ośmiu znakach UUID i odsyła po pełne do manifestu, którego w repozytorium nie ma** (**T70**, klasa „odesłanie bez treści", druga w dwóch kolejnych zleceniach). Sprawdzone kontrolą pozytywną: **pełny adres z `WWW/090` daje 200, trzy urwane dają 403** — brakuje reszty UUID, nie sieci. Blokada obejmuje też sloty kroku 4, wzór kafelków (bitmapa), wzór karty Wrapped i narożniki ekranów. ⚠ **KROK 2 — pomiar rozdzielił dwie rzeczy, które zlecenie łączy: fala 1 JEST JUŻ ODPIĘTA** (0 osadzeń; podstrony mają to zapisane od ADR-058), a faktycznie osadzona jest rodzina **`tymczasowe`** z ADR-061 (3 osadzenia, 6 plików, 340 kB). **Nie odpinam jej** — bez bitmap zostałaby strona bez ani jednego obrazu, czyli regres w imię kroku, którego nie da się dokończyć; lista ścieżek w zwrotce. **KROK 3 — TREŚĆ.** ⚠ **DWA z „nowych" ciągów JUŻ ISTNIAŁY**: „Catherly to pamięć twojej sprzedaży" = `Definicja.naglowek`, „Widzisz wzrost nawet po trudnym dniu" = `Filary.filar4.naglowek` — sprawdzone przeszukaniem 345 kluczy. **Faktycznie nowe są cztery**, nie sześć: nagłówek zamknięcia i trzy chipy; dopisane w trzech językach (parytet kluczy **349 = 349 = 349**), brzmienia PL z mandatu koordynatora, **EN/DE oznaczone jako tłumaczenia implementacji czekające na sędziów**. **Nowa kategoria rejestru liczb `godzina-scenariusza`** — dołożona do listy dozwolonych **W KODZIE STRAŻNIKA**, nie tylko w pliku danych, bo inaczej kategoria wchodziłaby razem z wpisem, który ma nią uzasadnić. ⚠ Przy pierwszym wpisie pomyliłem kolejność liczb: linter sortuje je **jako ciągi znaków** (`30, 8`), więc rejestr rozjechał się z komunikatem i dał 12 naruszeń zamiast 3. **KROK 4 — nagłówek sekcji zamykającej** (jedyny element niezależny od bitmap); werdykt panelu pkt 25 sprawdzony i **nadal obowiązuje** — dotyczy zdania prowadzącego, nie nagłówka. **Dwa strażniki struktury zapaliły i miały rację:** liczba `h2` 10 → 11 i kolejność `h2` — obie są **mechanizmem** (kodują skład strony), zmienione razem ze zmianą i z powodem w kodzie; trzeci zapalił, bo `content/*` nie niosły nowych brzmień — dopisane ×3. **Komplet e2e 1376 passed · wszystkie bramki zielone · T68 74,9 % wobec 70,9 % wzorca · nakładka 30,1 % · sweep 11/11 · dev na 3000 przez cały batch 200.** **T69 ZAMKNIĘTE** (tabela przyszła). Nowa pozycja: **T70**. Poprzednio: ▶ **`WWW/091` WYKONANE W CZĘŚCI 2026-09-06 — ADR-066; kroki 0, 1 i 2 w całości, KROK 3 ZABLOKOWANY, KROK 4 od niego zależny.** Push `0f88a4d`; CI-diff **bez różnicy** (12 zielonych, 4 czerwone). **KROK 1 — PALETA ODWRÓCONA, T68 ZAMKNIĘTE.** Dwanaście ról bazowych na wartościach jasnych (tło `#f5f5f7`, karta biel, tekst `#0f0f0f`, kreska `#cdcdcd`, akcent `#4f6f06`); **pięć nowych ról klamry** (`tekst-na-klamrze` 13,40:1 · `tekst-2-na-klamrze` 7,82 · `akcent-na-klamrze` 9,38 · `kreska-na-klamrze` 1,83 · `fokus-na-klamrze` 13,40), `LICZBA_ROL` 31 → **36**; trzy stany przyciemnione w HLS z zachowaniem odcienia (6,0:1 na bieli); szkło z ciemnej płyty na jasną (akcent na niej 3,09 → **5,77:1**). ⚠ **`akcent` I `interakcja` ROZESZŁY SIĘ** — pierwsza niesie tekst (na jasnym limonka ma 1,31:1), druga jest wypełnieniem CTA i limonką zostaje. **Strażnik:** dwie pary zdjęte z uzasadnieniem, sześć dodanych, `grafit-klamr` wyjęta z `POWIERZCHNI` (klamra przemapowuje każdą rolę, więc bazowe się na niej nie renderują), **nowa reguła `R-CTA-OBRYS` SUROWSZA od tej, którą zastępuje**: pyta o obrys wobec tła ORAZ wobec wypełnienia, na całej stronie zamiast w strefach. **Dowody mutacyjne dwa, oba zapaliły i wróciły po SHA.** ⚠ **axe znalazł defekt, którego oko nie widziało:** plakietka brała `akcent` jako tło i po odwróceniu dała **2,80:1** — 58 naruszeń; plakietka jest plamą, więc należy do `interakcja`. ⚠ **Przy tej poprawce pomyliłem się i zapisuję to:** podmieniłem razem z nią podkreślenie linku, biorąc `background` o wysokości 1 px za plamę; cofnięte — rozstrzyga funkcja elementu, nie nazwa własności. **Strażnik klawiatury czyta odtąd ton obowiązujący dla elementu, nie jedną wartość — wzmocnienie, nie złagodzenie.** **KONTROLA T68: jasne piksele 48,3 → 74,6 % wobec 70,9 % wzorca; NAKŁADKA CAŁOŚCI 50,2 → 29,8 %** — jedna zmiana mechanizmu ruszyła liczbę o 20,4 punktu, gdy wszystkie przeszczepy form razem ruszyły ją o 0,9. **KROK 2 — ZRZUTY ODZYSKANE:** cztery kadry 2048×1280 z commita `6168ec7` do `public/obrazy/aplikacja/`, **cztery z czterech sum SHA-256 zgodne z manifestem**; pochodzenie Playwright + baza efemeryczna + konto demo, czyli powrót jest WYKONANIEM reguły kanonu, nie wyjątkiem od niej. ⚠ **`e35ad8ce` nie jest commitem tego repozytorium** — to skrót repozytorium aplikacji z nazwy raportu; polecenie ze zlecenia nie mogło zadziałać. **KROK 3 ZABLOKOWANY — brakuje PRZEDMIOTU, nie czasu: „tabeli koordynatora" nie ma ani w zleceniu, ani w repozytorium** (**T69**, klasa „odesłanie bez treści"). Bez niej nie ma mapowania treści na sekcje, brzmień trzech chipów i zdania CTA ani liczb do karty Wrapped. **Komplet e2e 1376 passed · axe 120 · 36 ról · dev na 3000 przez cały batch 200.** Poprzednio: ▶ **`WWW/090` KROK 3 v2 WYKONANY W CZĘŚCI 2026-09-06 — ADR-064; 3a i 3b w całości, 3c w części.** Push `0dfc33b` wykonany. **3a:** `design/wzorzec-2026-09-06/glowna-kolumna.png`, **1536 × 7900**, SHA-256 `d518a9df…`, szew ustalony pomiarem na **y = 1036**. **3b — skala przeliczona, nie podmieniona:** kotwica proza 26 px odstępu wierszy; stosunki zmierzone na OBU końcach kolażu (szeroki 2,43 i 1,93; wąski 1,96 i 1,50) → **H1 96 → 52 · 72 → 44 · 48 → 36; H2 48 → 40 · 36 → 34 · 30 → 28**, tracking przeliczony sześciokrotnie dla zachowania stosunku `em`. ⚠ **`clamp()` NIE wszedł** — ADR-041 odrzucił go z pomiaru, a stosunki działają na progach; rozjazd ze zleceniem zgłoszony, nie wykonany po cichu. **3c:** pasek nawigacji i stopka na **klamrę grafitową** (rola `grafit-klamr` dostała konsumenta, więc warunkowe odstępstwo od ADR-048 zamknięte); pasek pełnej szerokości, kant, przy krawędzi. ⚠ **POŁOWA ZMIANY BYŁA GORSZA OD ŻADNEJ i wykrył to pomiar:** sama barwa pogorszyła nakładkę pasa 27,7 → **32,4 %**, dopiero pełna szerokość cofnęła do 31,6 %. ⚠ **USTALENIE NAJWAŻNIEJSZE — T68: WZORZEC JEST STRONĄ JASNĄ (70,9 % jasnych pikseli), NASZA JEST POŁOWICZNA (47,4 %).** Dokładna odwrotność mechanizmu: u wzorca jasne tło z klamrami grafitowymi, u nas ciemne tło ze strefami jasnymi. **Dopóki to się nie odwróci, nakładka całości stoi na 50,2 % niezależnie od tego, ile form przeniesiemy.** Nie odwracam — to decyzja palety (dziesięć ról korpusu ciemnego + odwrócenie sensu `data-ton`), nie krok batcha. **Czego 3c nie zrobiło i dlaczego:** sekcje „pamięć" i „wzrost" — **brak treści** w `content/` (zakaz 9, parytet ×3); ekrany w ramach urządzeń — **przesłanka fałszywa**, „zrzuty fali 1" nie istnieją (fala 1 to fotografie, sprawdzone; zrzutów aplikacji nie ma, zdjęła je decyzja `WWW/072` i `WWW/083`); trzy karty zamiast czterech filarów — decyzja o treści; zdjęcie czterech sekcji z głównej — obawy związane decyzją O-7 „jednym pakietem albo wcale". **Komplet e2e 1376 passed · bramki zielone · dev na 3000 przez cały batch 200.** Nowa pozycja: **T68**. Poprzednio: ▶ **`WWW/090` WYKONANE W CZĘŚCI 2026-09-06 (rola IMPLEMENTACJA) — ADR-065; KROK 3 NIE ZACZĘTY, patrz niżej.** Push `e3e6f6a`+`4b51fd9` wykonany (zakres imienny), CI-diff **bez różnicy**. **KROK 1 — wzorzec w repo i pomiar z pikseli:** `design/wzorzec-2026-09-06/glowna.png`, 1536 × 2752, SHA-256 `daa34f99…`. ⚠ **WZORZEC JEST KOLAŻEM DWUKOLUMNOWYM** (stopka zajmuje prawą połowę obrazu; proza ma różny udział w kontenerze: 1,99 % przy 1536 wobec 2,86–3,26 % przy 768) — **rozmiary pisma i szerokości kontenera są z niego NIEPRZENOŚNE** (**T66**). Przenośne i zmierzone: grafit klamr **`#2e2f31`** (6 miejsc), tło **`#f5f5f7`**, karta **biel**, kreska **`#dadbdd` 1 px** (3 profile), tekst **`#0f0f0f`**, limonka **`#bee741`** (3 próbki); pasek 1536 × 117, CTA 238 × 60 promień 12, trzy karty **218 × 263 odstęp 16** (3 × 218 + 2 × 16 = 686 = kontener co do piksela), kafelki 210 odstęp 15, wcięcie **8,5–8,9 % kontenera**. **KROK 2 — tokeny:** przyjęte tło jasne, tekst na jasnym i **limonka** (Δ > 10 w DWÓCH kanałach: R +30, B +52 — reguła zlecenia każe wtedy przyjąć pomiar); **nowa 31. rola `grafit-klamr`** z dwiema parami w strażniku; **odrzucona kreska wzorca** — `#dadbdd` daje wobec tła sekcji **1,27:1** przy progu 1,30 z ADR-038 (nasza `#cdcdcd` daje 1,46). **Wszystkie pary dotknięte zmianą limonki poprawiły się:** etykieta na limonce 10,22 → **11,41:1**, limonka na tle ciemnym 12,58 → **14,04:1**. ⚠ **`grafit-klamr` wchodzi BEZ KONSUMENTA** — jego konsumentem jest krok 3; jeśli krok 3 nie wejdzie, rola ma zniknąć razem z nim. ⚠ **KROK 3 (przebudowa głównej na 10 sekcji) NIE ZACZĘTY** — pięć rzeczy nie istnieje dziś wcale (maskowany kadr bohaterki + rama iPhone'a, ramy MacBooka, sloty dnia z chipami, sześć kafelków z ikonami SVG, karta „Wrapped" jako SVG), a cztery sekcje trzeba zdjąć z głównej na podstrony. **Nie zacząłem, zamiast zrobić połowę:** strona z trzema sekcjami wzorca i czterema starymi nie jest postępem, tylko stanem, którego żadna bramka nie odróżni od skończonego. Punkt odniesienia dla kroku 3: **nakładka pasa górnego 27,7 %** średniej różnicy kanału przy 1440. **Komplet e2e 1376 passed · axe 120 passed · 31 ról · dev na 3000 przez cały batch 200.** Nowe pozycje: **T66, T67**. Poprzednio: ▶ **`WWW/089` WYKONANE 2026-09-05 (rola IMPLEMENTACJA) — batch widoczny, ADR-063.** Push `0b49a06` wykonany (zakres imienny, jawny refspec); CI-diff **bez różnicy** wobec `33973185777`. **KROK 0b — L-OPS-04** osobnym commitem: `distDir` ze zmiennej `WWW_DIST`, domyślnie `.next`; dowód izolacji dev↔build zmierzony (200 przed i po, `.next` mtime bez zmiany, `BUILD_ID` tylko w `.next-pomiar`), kontrola pozytywna zmiennej zapaliła. **Mechanizm był zbudowany do połowy i wykrył to POMIAR:** cztery skrypty miały `.next` na sztywno, przez co „Linki" i „No-JS" zapaliły się z powodu niezwiązanego z kodem — domknięte. **KROK 1 — pomiar wzorca:** rama hero `1024 × 577`, promień **16 px**; cztery rodziny wejść (karty 40 px · tekst 20 px · sam zanik 367 ms · słowo po słowie 67 ms), krzywa **`cubic-bezier(0.215, 0.61, 0.355, 1)` dopasowana liczbowo** (RMS 0,0083 wobec 0,0332 dla poprzedniej rodziny), odstęp **100 ms**, próg odsłonięcia **98,2 % wysokości okna**; hover **tylko w nawigacji**, 150 ms — karty i CTA mają `transition: 0s`; bento **2 kolumny 403/605, odstęp 16, pierwsza karta `span 2`**. **KROK 2:** rama kadru hero — promień **32 px** (czwarty szczebel drabiny R dostał wreszcie konsumenta), kreska roli strefy, maska eliptyczna schodzi; parallax CSS-only **33,3 px @1440** i **0 px przy `reduced-motion`**; hero **1600 → 1524 px = 1,693 vp**, dokładnie proporcja sekcji hero R; tekst nad kadrem bez nachodzeń, zapas 293/293/350 px. **KROK 3:** warstwa ruchu przestrojona z Proactiva na React Bits — zmierzone po zmianie karty **Δty 40 → 0**, tekst **20 → 0**, przy `reduced-motion` **zero zmian**, ukrytych **0**. **TRZY USTALENIA OBALAJĄCE PREMISY:** (1) **React Bits NIE MA parallaxu w hero**, choć jego karta go reklamuje — trzy niezależne drogi pomiaru, kontrola pozytywna w każdej (**T63**); (2) rama hero R ma **16 px, nie 32** — 32 to u niego karty bento; (3) **„hero 0,73 vp" było MOJĄ nieprecyzyjną etykietą** ze zwrotki `WWW/087-R` — sonda trafiała w blok tekstu, a sekcja hero R ma 1,693 vp i zawiera ramę. **Zanikania R nie da się przenieść na oś `view()`** bez JS albo bez złamania bramki dostępności (128 naruszeń przy pierwszym podejściu, ADR-047) — wierność pomiarowi ustępuje warunkowi brzegowemu. **Komplet e2e 1376 passed · axe 120 passed · dev właściciela na 3000 przez cały batch 200.** Nowe pozycje rejestru: **T63–T65**. Poprzednio: ▶ **`WWW/088` WYKONANE 2026-09-05 (rola IMPLEMENTACJA), BEZ PUSHU — przeszczep miar React Bits SaaS, ADR-062.** Cztery kroki plus dołożony przez właściciela krok 0.5. **Przyjęte:** tło korpusu jasnego `#f2f2f2`→`#f5f5f5`, tekst mocny `#151515`→`#0a0a0a`, drabina promieni 4·8·12 → **12·16·24** (pigułka 50 bez zmian), rodzina `karta-cennik` (promień **16**, szerokość **320**), interlinia prozy 1,8 → **1,625 = 26 px** plus zdjęcie czterech literałów `line-height: 1.6`. **ODRZUCONE POMIAREM, nie preferencją:** tekst przygaszony R (`#737373` daje **4,35:1**, próg zlecenia 4,5) i kreska R (`#e5e5e5` daje **1,26:1** na karcie, próg ADR-038 1,30) — obie liczby z `scripts/kontrast.mjs`, obie potwierdzone tym, że **axe na R znajduje 30 węzłów `color-contrast` serious**. **Akcent zostaje nasz** i mutacja zamieniła tę decyzję właściciela w liczbę: akcent R na naszym jasnym korpusie daje **1,52:1**. **TRZY PREMISY ZLECENIA OBALONE POMIAREM** i zgłoszone zamiast rozstrzygania po cichu: nasza drabina promieni to 4·8·12·50 (nie 6·8·12·16 — to Proactiv), interlinia prozy była **dwiema wartościami naraz** (28,8 i 25,6), lead **już był** 18/28. **`R-TYPO-03` W TYM REPOZYTORIUM NIE ISTNIEJE** — 0 trafień przy kontroli pozytywnej `R-AKCENT` 28; pozycja **T59**, dowód mutacyjny dostała w zamian bramka parytetu, jako zamiennik zgłoszony jako zamiennik. **Przy okazji wyszedł defekt, którego nikt nie szukał:** karty cennika na głównej były przy 810 px **nierówne** (203 · 261 · 203), bo `1fr` ma minimum `min-content`; po zmianie 222 · 222 · 222. **Trzy dowody mutacyjne**, każdy z powrotem po sumie SHA. **Komplet e2e 1376 passed / 12 skipped / 0 failed · axe 120 passed · 30 ról bez zmiany.** Nowe pozycje rejestru: **T59–T62**. Poprzednio: ⏸ **SPOCZYNEK — WZORZEC UNIEWAŻNIONY (decyzja właściciela 26.08.2026).** Nowy wzorzec = publikacja właściciela z Framera; do jej nadejścia nie ma pracy do wykonania. **WWW/063 nie istnieje** (numer unieważniony, nigdy nie wysłany). Strona główna w gałęzi ma 9 sekcji zbudowanych wg _poprzedniego_ wzorca — całość czeka na ocenę pod nowym. Historia prac poniżej. ▶ **KROK 2 z `WWW/050-FINAL` DOMKNIĘTY — wszystkie dziewięć sekcji strony głównej przebudowane na wzorzec (`WWW/057`–`WWW/060`).** 2.1 nawigacja (pigułka, hamburger bez JS), 2.2 hero (wyśrodkowane, mockup Z6), 2.3 sześć kart (zero nowej treści — cytaty z kluczy), 2.4 filary, 2.5 pas możliwości, 2.6 cennik z plakietką, 2.7 **opinie ŚWIADOMIE POMINIĘTE** (T53 — prawdziwych cytatów nie ma, a nasze odpowiedzi w tej roli byłyby pseudo-dowodem), 2.8 finał i stopka, 2.9 ruch. **Zgodność zmierzona co do piksela** dla nawigacji, hero, kart, filarów i cennika; pas −75,0 px/s przy R² 1,0; wejście 330,9/247,7 ms wobec 334,9/251,0 wzorca. **Pełny e2e 672 passed / 4 skipped / 0 failed, axe 60/60.** Artefakty odbioru: 6 zrzutów i 4 nagrania (pary desktop i mobile) poza repozytorium. Poprzednio: **KROK 2 W TOKU (`WWW/056` pkt 3), pomiary 0.4 i 0.7 wykonane — i OBALIŁY TRZY USTALENIA, na których stały ADR-040 i ADR-041** (ADR-044). (1) **Role krojów były ODWROTNE**: wzorzec niesie Interem 257 elementów tekstu, w tym wszystkie H1 i H2; Satoshi występuje na DWÓCH elementach po 12 px — to plakietka. Preload wskazywał plik, którego element LCP nie używa; przepięty na Inter. (2) **Tracking JEST progowy** (−1 / −1,6 / −3 px), ani stały w px, ani w em. (3) **H2 nie idzie za H1 w ŻADNEJ z trzech własności** — rozmiar ×0,63 wobec ×0,49, interlinia 1,40 wobec 1,20, tracking −0,6 wobec −1. Po korekcie **skala zgodna ze wzorcem co do piksela na sześciu szerokościach**. Jedno dodanie spoza wzorca: `overflow-wrap`+`hyphens` na nagłówkach, bo polskie słowa przy 38 px łamały **reflow na 320 px** (2 px i 8 px nadmiaru; wzorzec tego nie ma, bo składa po angielsku). **Menu mobilne wzorca zmierzone**: nagłówek 80 px, pigułka o promieniu 50 px, tło półprzezroczyste z rozmyciem, wcięcie 20/40/120 px; otwarcie panelu **177,2 ms**, obrót kresek hamburgera **392,8 ms**, zanik środkowej **610 ms**; ruchu ciągłego na starcie ZERO (kontrola negatywna na obu kadrach). Poprzednio: **KROK 1 z `WWW/050-FINAL` DOMKNIĘTY — 1.1, 1.2 i 1.3 (2026-08-26, rola IMPLEMENTACJA), push czeka na zgodę.** KROK 1.3 (ADR-041): skala nagłówków idzie **PROGAMI 70/53/34 px, nie `clamp()`** — to różnica konstrukcyjna, bo `clamp()` produkuje rozmiary pośrednie, których wzorzec nigdy nie pokazuje. Zmierzone po wdrożeniu na sześciu szerokościach: **zgodność co do piksela na wszystkich trzech zakresach**. Tracking −3 px zapisany jako `-0.1875rem` (`rem` liczy się od korzenia, więc zachowuje się jak px — poprzednie `-0.02em` dawało przy 70 px −1,4 px zamiast −3). **Trzy nadpisania komponentowe zdjęte** — tokeny `--tekst-h1*` istniały i **nikt ich nie czytał**, H1 brał rozmiar z `clamp()` wpisanego wprost w `Hero`, `NaglowekPodstrony` i `cennik`. Geometria wzorca w tokenach (kontener 90rem, kolumna prozy 50rem, siatka odstępów, promienie). **Skutek uboczny wyłapany dopiero testami:** interlinia prozy 1,6 → 1,80 podniosła sticky nagłówek 80,59 → 87,797 px, zapas `scroll-padding` zszedł do **0,20 px** i pękł **na zaokrągleniu przewijania**, nie na wysokości; przeliczone 5.5 → **5.75rem** na powtórzonym rozrzucie 42 kombinacji. `6rem` odrzucone — siadłoby na pułapie 96 px, czyli ta sama pomyłka w drugą stronę. **Pełny e2e 668 passed / 4 skipped / 0 failed.** Poprzednio: **KROK 1.2 z `WWW/050-FINAL` wykonany (2026-08-26, rola IMPLEMENTACJA), push czeka na zgodę.** Kroje wzorca self-hostowane (ADR-040): **Satoshi Medium** statyczny 500 w nagłówkach (17,3 kB) + **Inter** zmienny `wght` w prozie (39,8 kB) — **razem 57,1 kB przy budżecie 120 kB**. Oba pobrane z **własnych źródeł** (fontshare.com i `google/fonts`), nie z CDN wzorca; licencje odczytane **z tabel `name` plików**. Onest usunięty. **Trzy rzeczy warte zapamiętania:** (1) oś `opsz` w Interze przypięta do 16 — wolna kosztowała **20,1 kB** za zakres, którego nikt nie rusza; (2) podzbiór `Inter` z KROKU 0 **nie zawierał polskich cudzysłowów** `’ “ ” „` ani `←` — był zbudowany pod zestaw wzorca, nie nasz, i wszedłby cicho; (3) `U+2713 ✓` włączony świadomie, więc **T14 przestaje dotyczyć warstwy kroju** — zmierzone na renderze, znak składa Inter. `size-adjust` **zmierzony** (102,0% i 107,4%), nie założony jak w ADR-031. **Pełny e2e 668 passed / 4 skipped / 0 failed.** Poprzednio: **`WWW/055` wykonane (2026-08-26, rola IMPLEMENTACJA), push czeka na zgodę.** R-AKCENT-01 i R-AKCENT-02 przepisane z **zakazu barwy na warunek kontrastowy** (ADR-039); rozdzielność trójki usunięta, mechanizm `outline-offset` **dostał strażnika, którego NIE BYŁO** (pytanie zerowe: zero asercji na ten ciąg w całym `e2e/`). **Przy okazji znaleziono i naprawiono ZWIS PO ADR-038 wprowadzony przeze mnie w KROKU 1.1 i już wypchnięty:** `Hero.module.css` odwoływał się do usuniętej roli `--kolor-rola-tekst-na-inwersji`, przez co dekoracja „duch" renderowała się **pełną bielą na 256 px** zamiast 6% alfy — obwódka fokusu CTA miała na niej **1:1**. **Pełny e2e: 668 passed, 4 skipped, ZERO upadków** (przed naprawą 7 upadków). **`bramka:kontrakt` CZERWONA i wymaga decyzji właściciela — ΔE szwu strona↔aplikacja wynosi 93,92 przy progu 5,0**; szczegóły niżej. Poprzednio: ⏸ **`WWW/047` wykonane, push czeka na zgodę** (2026-08-26, rola IMPLEMENTACJA). Warstwa ruchu CSS-only (R1–R5) + **nowa bramka `e2e/ruch.spec.ts`**: do tej doby kanon „ruch zawsze z prefers-reduced-motion" był **napisem bez mechanizmu**, bo serwis nie miał ani jednej animacji. Teraz ma mechanizm i kontrolę pozytywną. **Pełny e2e 636 → 658 passed, zero upadków; CLS z ruchem 0,00000.** Poprzednio: `WWW/045` — wykonane w części (2026-08-26, rola IMPLEMENTACJA). Fala 1 kadrów: 10 pobranych i sprawdzonych, 8 osadzonych na czterech podstronach funkcji, 2 hero do `public/obrazy/rezerwa/`, manifest w `docs/design/`. **Kadry na kartach filarów strony głównej NIE WESZŁY i to jest ROZSTRZYGNIĘTE** (`WWW/046`, 2026-08-26): decyzja właściciela z 2026-08-16 **potwierdzona** — Z6 zostają, kadry generowane nie wchodzą na główną. Punkt zlecenia `WWW/045` był **błędem koordynatora**; klasa nazwana i zapisana w rozdz. 9 („zlecenie dysponujące slotem bez pomiaru jego zawartości"). Poprzednio: `WWW/042` (2026-08-26, rola IMPLEMENTACJA). Ostatnia pozycja otwarta zamknięta: hover złotego CTA przemapowany na `#6e5220` (ADR-034, 26. rola), etykieta kremowa ma na nim **6,30:1** zamiast 2,07:1. **Pełny zestaw e2e: 636 passed, zero upadków, zero nieoznaczalnych.** **26 ról — decyzja, nie dryf; PRZYJĘTE przez właściciela (`WWW/043`, 2026-08-26): literał `LICZBA_ROL` w strażniku zostaje mechanizmem, więc jego czerwień jest sygnałem „ktoś rusza rzecz wymagającą ADR-a", a nie usterką do wyciszenia.** Poprzednio: `WWW/041` (2026-08-26, rola IMPLEMENTACJA). Trzy pozycje otwarte z `WWW/040` zamknięte: reguła kart jest dwumechanizmowa (ADR-033), sonda mierzy tło z renderu (**48 nieoznaczalnych → ZERO**), akcent w nagłówku wszedł jako R-AKCENT-03 w dwóch z trzech pozycji. **Otwarta jedna, ODSŁONIĘTA przez naprawę pomiaru:** etykieta CTA w stanie hover ma **2,07:1 przy progu 4,5:1** (`interakcja-aktywna` mapowana w tonach ciemnych na złoto JASNE, etykieta zostaje kremowa). Czerwień **stoi świadomie** — zlecenie mówi, żeby nie łatać sceny w tym kroku. Poprzednio: `WWW/040` (2026-08-26, rola IMPLEMENTACJA). Paleta „natura" (ADR-032, 25 ról + tony `data-ton`) na zatwierdzonej makiecie. **Bramka `kontrast-stanow` czerwona — 48 testów, wszystkie „NIEOZNACZALNE" przez poświatę, ZERO „poniżej progu"; axe zielony.** Karty odcinają się 1,08:1 przy progu 1,30, którego przy tym tle nie da się osiągnąć żadną powierzchnią. Nagłówki dwukolorowe niewykonane — wymagają podziału redakcyjnego w trzech językach. Szczegóły: ADR-032 „Konsekwencje". Poprzednio: `WWW/038-bis` (kancelaria), 9 commitów wypchniętych `aff7947..2c49b57`. Wdrożona paleta „kancelaria" i krój Onest, zadania 1–6 z korektami K1–K6; zadania 7–14 poza zakresem. **Commity NIE SĄ WYPCHNIĘTE** — zlecenie mówi „push jawnym refspec", ale nie wymienia skrótów, a te powstały dopiero w trakcie; zakaz 1 wymaga zgody wyliczonej co do commita, więc lista czeka na zgodę (rozdz. 4.29). Poprzednio: ▶ spoczynek uchylony na import toru 9 (`WWW/022`–`WWW/025`, 2026-08-24); wcześniej ⏸ SPOCZYNEK (`WWW/018`) |
+| **STAN PRACY** | ▶ **`WWW/102` — KROKI 1 (B3), 2 (B2) i 3 (NAGŁÓWKI) ZAMKNIĘTE 2026-10-07/09, ZERO ZMIAN WIDOCZNYCH, CAŁY KROK 3 W JEDNYM COMMICIE LOKALNYM (sześć plików razem), NIC NIE WYPCHNIĘTE — push czeka na zgodę wyliczoną co do skrótu (zakaz 1). CSP STOI W `Report-Only` I TAK ZOSTAJE: PROPOZYCJA PRZEŁĄCZENIA NA EGZEKWOWANĄ JEST **WSTRZYMANA**, BO WARUNEK ZLECENIA „zero naruszeń" JEST MIERZALNIE NIESPEŁNIONY — 476 naruszeń, 0/30 czystych stron.** (~~„KROKI 1 i 2 ZAMKNIĘTE, KROK 3 PRZED SOBĄ"~~ — stan sprzed tego commita; ~~„ZAMKNIĘTE 2026-10-07/08"~~ — praca dokumentacyjna kroku 3 szła jeszcze 2026-10-09.) **Doba 2026-10-09 to w całości liczniki, nie kod:** klasa „licznik przeliczany ze źródła przy każdej edycji" wyszła poza rejestr i poza jeden rozdział — przeliczone ze źródła, **każdy z kontrolą negatywną `HEAD` `f823b7b` w tym samym przebiegu**, **37 miejsc — 19 w rejestrze i 18 w tym pliku**: w rejestrze dziewięć liczników pozycji i dziesięć liczników zadań `bramki.yml`, tutaj osiem liczników pozycji (rozdz. 0, 6, 9 ×2, 10, adnotacja i tabela stanów w 15.2, całe 17.1), osiem liczników zadań i dwa miejsca dołożone dopiero przebiegiem liczącym **zdania** (wyzwalacz CI w rozdz. 4, wiersz T41 w 15.2). (~~„dziewięć liczników rejestru i osiem miejsc w tym pliku"~~ — tyle dał przebieg liczący **wiersze**; jednostką przeglądu jest **zdanie**, bo wiersz z datowanym pomiarem przewozi na sobie zdania bez daty — rozdz. 9.) **17.1 niosło cztery liczniki z czasu piętnastu zadań — nagłówek, listę nazw, „sześć z nich potrzebuje build" i „trzynaście pozostałych" — stojące OBOK własnego, poprawnego zdania „Od 2026-08-24 zadań jest 16"**; rozjazd jest identyczny na `HEAD`, więc nie powstał w KROKU 3, a jego poprawienie jest **wejściem poza literę zlecenia** (zakaz 8; opis klasy w rozdz. 9). Rola: IMPLEMENTACJA, gałąź `faza-4/podstrony`, baza `7817580`. **Krok 1:** `next` i `eslint-config-next` **15.5.23 → ^15.5.27** (`package.json` + `package-lock.json`, dwa pliki, w obrębie majora). `npm audit --omit=dev` **przed i po, z datą**: `total` **4 przed i 4 po**, a treść zmieniła się całkowicie — dwa advisory `next` (2 nodes) zniknęły, zostały dwa `sharp`/`libvips` **z drzewa deweloperskiego**, które `--omit=dev` i tak raportuje; **B3 zamknięte w dziedzinie advisory własnych `next`: 2 → 0**. Build, lint, testy jednostkowe i e2e wykonane; dziewięć bramek z odczytanymi kodami wyjścia, **dwie czerwone świadomie** (`kontrakt` — `deltaE 5,8 > 5,0`, czeka na Figmę; `nieodwracalne` — niespełnialne strukturalnie, T83), obie z kontrolą negatywną z bazowego worktree na 15.5.23, czyli czerwień **zastana, nie wprowadzona**. **Bezpiecznik wyglądu:** 10 tras × PL/EN/DE × 1440/390 = **60 zrzutów** na dwóch stojakach (baza `7817580` z własnym `node_modules` na :3100, kandydat na :3200), **0 różnic / 249 691 830 porównanych pikseli**, podłoga szumu 0, kontrola pozytywna 1 px delta 1. Raport: `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md` rozdz. 8. **Krok 2 (B2) — ZAMKNIĘTY 2026-10-08, zlecenie `WWW/102-W`:** `next.config.ts` dostał `images: { unoptimized: true }` — **jedna linia plus komentarz mówiący, czego ta linia NIE znaczy**; ani jednego pliku `src/`, `design/tokens.json` ani `content/`. **Pytanie zerowe odpowiedziane ODCZYTEM KONFIGURACJI, nie mutacją:** klucza `images` nie było w `next.config.ts` w żadnej postaci — 0 trafień przy kontroli pozytywnej `distDir` → 1 i `headers` → 1 w tym samym przebiegu. **Przesłanka zlecenia ZMIERZONA, NIE PRZYJĘTA:** 0 importów `next/image` i 0 elementów `<Image` w `src/`, kontrola pozytywna `next-intl` → 25 plików i `<section` → 25 linii; trzy trafienia ciągu `next/image` to **komentarze o nieużywaniu** (`DbanieOSiebie.tsx:34`, `ModulFunkcji.tsx:74`, `Filar.tsx:185`) — alarm „przesłanka zlecenia FAŁSZYWA” postawiłem **przed** odczytaniem tych trzech linii i wycofałem po odczytaniu. **Sonda `/_next/image` przed i po, z MUTACJĄ I KONTROLĄ NAŁOŻENIA: exit 11 → 10 → 11** na tym samym stojaku i **trzech różnych `BUILD_ID`** (`OJ3DLkCI…`, `7QBvxwPL…`, `TIvoYeMU…` — bez tego ten sam wynik dałby stojak serwujący stary katalog budowania), przy bazie `7817580` na :3100 **exit 10 w KAŻDYM przebiegu** i STATYK 2/2 → 200 wszędzie (serwer żyje i `public/` serwuje, więc 404 jest punktu końcowego, nie martwego stojaka). **KSZTAŁT przesunął się 400 → 404 i to osobny ślad:** `unoptimized` nie zaostrza walidacji, **usuwa trasę** — czego sam kod wyjścia nie niesie. Bezpiecznik wyglądu powtórzony na 60 zrzutach: **0 różnic / 249 691 830 pikseli**, podłoga szumu 0, kontrola pozytywna 1 px delta 1 wskazana z plikiem i współrzędną (`1440--de--_korzen.png`, 0,0). Build **exit 0** (`33/33` stron, `ƒ Middleware 46.5 kB`), dziewięć bramek, **te same dwie czerwone** — z kontrolą negatywną z bazowego worktree **w tym samym przebiegu**, gdzie `nieodwracalne` zgłasza brak audytu **dla sha własnego drzewa** (`6c12783e5c8b…` kontra `7817580f3756…`), co samo dowodzi, że każda bramka liczyła swój tree. `tsconfig.json` zmutowany **przez build** (T89) przywrócony przed commitem — sha `0293d2ec…` po obu stronach. Raport: **rozdz. 9**. **Krok 3 (NAGŁÓWKI) — ZAMKNIĘTY 2026-10-08, zlecenie `WWW/102-W`:** sześć nagłówków z **jednego miejsca** — lista w nowym `src/naglowki-bezpieczenstwa.ts`, wołana przez `next.config.ts` → `headers()` na `source: "/:sciezka*"`; nowy strażnik `e2e/naglowki-bezpieczenstwa.spec.ts`. **Pytanie zerowe odpowiedziane ODCZYTEM KONFIGURACJI, nie mutacją:** klucza `headers` nie było w `next.config.ts` w żadnej postaci, a sonda na **30 adresach** (10 tras × PL/EN/DE) dała **0/30 adresów z kompletem** przed zmianą i **30/30** po — sonda trzyma listę wymaganą **niezależnie od repozytorium**, więc nie mierzy samej siebie. **Strażnik jest DWUWARSTWOWY i to nie ozdoba:** warstwa 1 importuje listę (łapie „odpowiedź nie niesie tego, co lista deklaruje"), warstwa 2 asertuje treść zlecenia **literałami pisanymi ręcznie** (łapie „osłabiono samą listę"). **Cztery cykle mutacji, każdy na osobnym `BUILD_ID`** — pięć różnych identyfikatorów w całym kroku, bo nagłówki wchodzą do `routes-manifest.json` przy BUDOWANIU i bez nowego `BUILD_ID` ten sam wynik dałby stojak serwujący stary katalog: M1 usunięcie jednego nagłówka → sonda 21, strażnik 2 czerwone; M2 wyjęcie całego `headers()` → **6 czerwonych**; M3 **osłabienie samej listy** (`frame-ancestors 'none'` → `'self'`) → warstwa 1 **ZIELONA**, warstwa 2 **CZERWONA**, czyli druga warstwa złapała to, na co pierwsza jest ślepa z konstrukcji; M4 powrót → wszystko zielone. **CSP: `Content-Security-Policy-Report-Only`, ścisła, bez `unsafe-inline` i bez `unsafe-eval`** — i tu stoi **granica kroku, zmierzona**: pomiar w przeglądarce dał **476 zdarzeń `securitypolicyviolation` i 476 komunikatów konsoli**, wszystkie na `script-src-elem`, **30/30 tras dotkniętych, 0/30 stron czystych**, przy kontroli pozytywnej 30/30 i negatywnej 30/30 **w tym samym przebiegu**; liczba zgadza się co do jednego ze statycznym spisem 476 skryptów inline RSC. Dlatego **propozycji przełączenia na egzekwowaną NIE SKŁADAM**: warunek zlecenia („zero naruszeń na wszystkich trasach e2e") jest niespełniony, `'unsafe-inline'` zlecenie zakazuje wprost i zamieniłby czerwień na ciszę, a nonce wymaga rezygnacji z SSG (ADR-007) — decyzja spoza tego kroku. **Pełny e2e:** 1436 testów, **1424 passed / 12 skipped / 0 failed**, 1,6 min; nowy strażnik **36× zielony** wewnątrz własnego zestawu repozytorium. **Dziesięć bramek z `bramki.yml`, kandydat i baza w JEDNYM przebiegu:** 8 zielonych po obu stronach, **te same dwie czerwone z identyczną przyczyną** (`kontrakt` — deltaE 5,8 > 5, T74; `nieodwracalne` — brak raportu audytu, T83), czyli **zero regresji przypisywalnych krokowi 3**; rodzina bramek preview/pomiar jest poza zasięgiem lokalnym i jest **zadeklarowana, nie pominięta po cichu**. Bezpiecznik wyglądu powtórzony: **0 różnic / 249 691 830 pikseli**, podłoga szumu 0 z dwóch przebiegów, kontrola pozytywna **dokładnie 1 piksel** (`1440--pl--cennik.png` px(720,1984), 245,245,247 → 10,10,8, maxDelta 239). **Trzy rozejścia z rozdz. 1 raportu są świadome, nie przeoczone:** HSTS bez `includeSubDomains`/`preload`; brak `interest-cohort` — uzasadnienie stoi na ODCZYCIE, nie na pomiarze w tym kroku, i tak jest oznaczone; COOP/CORP nietknięte, bo zlecenie ich nie nazywa. **ADR-018 pytanie 3 („czy upada wyłącznie wtedy, kiedy trzeba") nadal bez dowodu** — zapisane jako luka, z dowodem częściowym (M1 2 czerwone, M2 6, M3 2 z 9). Raport: `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md` **§10**, jedenaście podrozdziałów. **Z tego kroku wyszły dwie rzeczy do rejestru: T97** (`/favicon.ico` → **500** na obu stojakach, zero plików ikony w repo, 500 odróżnione od 404 pomiarem) i **dopisek do T94** (przyrządów poza repozytorium jest teraz dziesięć, a werdyktów stojących wyłącznie na nich — **sześć, nie jeden**). **Przyrząd leży POZA repozytorium — poz. T94**, a bezpiecznik jest **ślepy na przedmiot T87** (poświata żyje wyłącznie w bloku `prefers-reduced-motion: no-preference`, a zrzuty idą z `reducedMotion: "reduce"` — zmierzone liczeniem nawiasów w `src/app/globals.css`: blok otwiera się w **785**, zamyka w **1079**, warstwy w **906** i **923** są wewnątrz). **Skan sekretów ze STANDARDU — wykonany, z kontrolą pozytywną w tym samym przebiegu:** zakres pięciu plików commita 1 → **0 znalezisk**, kontrola pozytywna **4/4 rodziny** (klucz prywatny, token GitHuba, token AWS, klucz Stripe'a) — ale dopiero **po naprawie alfabetu wzorca**: reguła `aws-access-token` czyta `[A-Z2-7]{16}` (base32, odczytane `strings` wprost z binarki), a mój generator sypał z `[A-Z0-9]`, więc kontrola **milczała na jednej rodzinie z czterech i nie mówiła tego o sobie** (rozdz. 9). ⚠ **A samo narzędzie nie jest narzędziem tego repozytorium — poz. T96:** `gitleaks` 8.28.0 to binarka 21 258 274 B w katalogu sesji, nieobecna w `git ls-files`, `package.json`, `.githooks/pre-commit` i `.github/` (każde zero z kontrolą pozytywną). **Trzy nowe pozycje rejestru w tym kroku: T94, T95, T96** — wszystkie to **granice pomiaru i defekty zastane**, żaden nie naprawiany w kodzie (zakaz 8); liczniki rejestru przeliczone ze źródła po dopisaniu T96: **96 pozycji / 90 wierszy skorowidza / 174 wiersze globalnie**, kontrola negatywna na `HEAD` `7817580` w tym samym przebiegu **93 / 87 / 168**. **BEZ PUSHU** — zlecenie `WWW/102` kończy się „Push — tylko za osobną zgodą. STOP" i nie wylicza ani jednego skrótu (zakaz 1); kolejkę przelicz, nie przepisuj: `git log --oneline origin/faza-4/podstrony..HEAD`. **Do zrobienia w tym zleceniu:** krok 2 — wyłączenie optymalizatora obrazów (`images.unoptimized`), sonda `/_next/image` przed i po; krok 3 — HSTS, X-Frame-Options + `frame-ancestors 'none'`, Referrer-Policy, Permissions-Policy, X-Content-Type-Options z `next.config.ts headers()`, CSP **najpierw `Report-Only`**, przełączenie na egzekwowaną wyłącznie jako **propozycja, bez wykonania**. ⚠ **Rozjazd zgłoszony, nie rozstrzygnięty:** zlecenie żąda pierwszej linii `WYKONANO — WWW · 102 · <sha>`, a jednocześnie zakazuje pushu — `sha` z `git ls-remote` pozostanie więc `7817580` i **tej pracy nie niesie**. Poprzednio: ▶ **`WWW/100` WYKONANE 2026-10-04 — cztery czerwone zadania CI (T74), ZERO zmian widocznych dla odwiedzającej; **pięć** commitów (⚠ **STAN ZMIERZONY 2026-10-07, `WWW/101` KROK 1a — TE PIĘĆ JUŻ NIE CZEKA NA PUSH.** `git ls-remote origin faza-4/podstrony` → `42c84aba8eed8d76cb180ea134d053ac4c21cf7a`; `git rev-parse HEAD` → **ten sam obiekt**; `git rev-list --left-right --count origin/faza-4/podstrony...HEAD` → **`0 0`**. Zdalna niesie wszystkie pięć, niewypchniętych jest **zero**. Zdanie „**BEZ PUSHU**" niżej było prawdziwe **w chwili wykonania `WWW/100`** i zostaje widoczne jako **ślad, nie jako stan** — korekta bez zamazania śladu. Liczbę nadal **przelicza się poleceniem, nie przepisuje**: to pole jest samostarzejące się i ten dopisek też się zestarzeje, gdy powstanie pierwszy nowy commit) — trzy po jednej naprawie na commit, czwarty i piąty to **KOREKTY PO KONTROLI** (wyłącznie dokumentacja i komentarze: dwanaście rozjazdów zgłoszonych przez kontroler tylko-do-odczytu w czwartym, a w piątym **jeden rozjazd wprowadzony przez czwarty** — prognoza o zachowaniu `git log -S` podana składnią odczytu, obalona pomiarem po jej własnym commicie, rozdz. 9; zero zmian w zachowaniu bramek, zero w renderze, stare brzmienia zostawione widoczne; liczbę przelicz, nie przepisuj — `git log --oneline origin/faza-4/podstrony..HEAD`).** **BEZ PUSHU** (zlecenie nie niesie zgody wyliczonej ze skrótami — zakaz 1). **KROK 1 — cztery przyczyny zmierzone Z LOGU przebiegu `37040695453` (02.10, `46c8688`), nie z domysłu; dwie naprawione:** ESLint w `456909d`, Wydajność w `6926ee6`. Kontrakt tokenów dostał podstawione odniesienie w commicie trzecim i **świeci dalej, ale właściwym powodem** — `deltaE 5,8 > 5,0`, czyli „czeka na Figmę"; Nieodwracalne jest **niespełnialne strukturalnie** (T83). Pełne adresy i dowody w wierszu „Bramki CI na gałęzi" wyżej. ⚠ **Najważniejsze ustalenie tego zlecenia:** zadanie wydajności padało **przed pomiarem**, więc **na tej gałęzi nie istnieje ANI JEDNA liczba wydajności** — T33 (próg LCP) wyglądał na wyjaśnienie tej czerwieni i nim nie był. **KROK 2 — bramki lokalne, przed i po w tym samym przebiegu; liczby PRZELICZONE PO WZNOWIENIU SESJI 2026-10-04 wieczorem, bo pierwsza para była skażona (powód przy bezpieczniku niżej):** `npx eslint . --max-warnings=0` **exit 1 → exit 0** (jedno ostrzeżenie `608:11` → zero linii wyjścia), kontrola negatywna z worktree na `46c8688` w tym samym przebiegu; `tokeny` · `liczby` · `parytet` · `deklaracje` **exit 0, wyjście BAJT W BAJT identyczne** po obu stronach; `linki` **31 artefaktów**, `kotwice` **279 linków z fragmentem**, `nojs` **30 stron czytelnych bez JS** — te same liczby po obu stronach; `kontrakt` **exit 1 na deltaE 5,8** — czerwień zamierzona; `nieodwracalne` **exit 1 po obu stronach**, a różnica wyjścia to **dokładnie jedna linia: skrót HEAD** (T83 — bramka nie reaguje na tę pracę, tylko nazywa inny commit); `npx tsc --noEmit` **exit 2, wyjście identyczne co do bajtu** przed i po (T88, błąd zastany); **pełny Playwright DWA RAZY, każdy na swoim serwerze: `46c8688` na 3200 → 1388 passed / 12 skipped / 1400 total / 1,6 min / exit 0; drzewo bieżące na 3201 → 1388 / 12 / 1400 / 1,7 min / exit 0.** **BEZPIECZNIK WYGLĄDU — 60 z 60 zrzutów BAJT W BAJT identycznych, `SUMA PIKSELI RÓŻNYCH: 0`, `TRAS Z RÓŻNICĄ > 0 PIKSELI: 0`** (10 tras × 3 języki × 2 szerokości: 1440 i 390; odniesienie **zbudowane w osobnym worktree z `46c8688`**, oba serwery żywe w jednym przebiegu — 3200 i 3201). ⚠ **Ślad poprzedniego brzmienia, zgodnie z „korekta bez zamazania śladu": do wznowienia stało tu „57 z 60", a trzy różnice tłumaczono dwustanowym renderem `/`.** Tamta liczba była prawdziwa dla tamtej pary zrzutów — i **tamta para była wadliwa u podstawy**: zrzuty „przed" powstały z **DRZEWA ROBOCZEGO** o 17:41, nie z czystego `46c8688`, i wyprzedzały założenie worktree o 48 minut. Po przebudowaniu odniesienia **z commitu** nie ma ani jednej różnicy. **T87 zostaje w rejestrze i nadal jest prawdą**, a dowodzi jej kontrola szumu w tym samym przebiegu: dwa zrzuty **tego samego, nieruszonego serwera** dały **59/60**, z `en--_glowna--390.png` różnym na **13 417 z 5 047 770 pikseli (0,2658 %), maks. odchylenie kanału 2/255** — czyli przyrząd **nie jest ślepy**, a zero wyżej jest wynikiem, nie jego milczeniem. **HTML korzenia: 69 003 B ↔ 69 003 B, ale RÓŻNY** — 74 bloki różnic i **wszystkie są tożsamością builda** (`buildId`, nazwy `/_next/static/**`, numery modułów webpacka); po znormalizowaniu tych trzech rzeczy **68 636 ↔ 68 636, IDENTYCZNY**, przy kontroli pozytywnej (jedno słowo treści podmienione → **WYKRYTA**). **Arkusze CSS: 11 plików ↔ 9, a mimo to 58 040 B ↔ 58 040 B i 414 ↔ 414 fragmentów, wielozbiór fragmentów IDENTYCZNY** (kontrola pozytywna: jedna cyfra w barwie → WYKRYTA) — **build nie jest bajtowo odtwarzalny między katalogami**: reguły te same, różni się pakowanie. **Czego ta praca NIE dotknęła — i jest to pomiar, nie zapewnienie:** ani jednego pliku `src/`, `design/tokens.json` ani `content/`; zmiany leżą w `scripts/` (dwa strażniki), `design/kontrakt-aplikacji.json` (odniesienie POMIARU, nie token) i w dokumentacji. Skutek uboczny tego zakresu: **hak `axe-precommit` nie uruchomił się ani razu**, bo odpala się tylko przy plikach `src/` w indeksie — zapisuję to jako granicę pomiaru, nie jako zieleń dostępności. ⚠ **SPROSTOWANIE, ZOSTAWIONE WIDOCZNE: stało tu „port 3000 nietknięty — sprawdzony `lsof -ti:3000` i zaraportowany; własny serwer pomiarowy stał na 3100", a drugi człon był NIEPRAWDZIWY.** Zmierzone po wznowieniu 2026-10-04: na porcie 3000 stoi **PID 45920 uruchomiony `Sun Oct 4 17:40:10`, rodzic `npm start` (PID 45906), katalog roboczy = to repozytorium**, a log `serwer-przed.log` z 17:40 niesie `Local: http://localhost:3000` — to serwer **tej właśnie pracy**, nie właściciela, i zrzuty „przed" szły na 3000, bo `zrzuty.mjs` ma w domyśle `127.0.0.1:3000`. **Czego to sprostowanie NIE znaczy:** nikt niczego nie zabił ani nie przeniósł — przypisanie portu się udało, więc port był wolny, a zakaz 7 (sprawdź `lsof` i **raportuj**) jest dochowany; jedyną nieprawdą było zdanie o tym, gdzie stał nasz serwer. Po wznowieniu pomiar poszedł na **3200 i 3201**, z dala od 3000 i 3100; **żaden z czterech procesów nie został zatrzymany** (zlecenie: niczego nie kasować). **Jedenaście pozycji rejestru: T74 sprostowane, T82–T91 nowe** (defekty ZASTANE, znalezione przy szukaniu przyczyn, żaden nie naprawiany — zakaz 8). **Poprzednio:** ▶ **`WWW/098 v2` WYKONANE 2026-09-07 — ADR-071; partia 1a, wszystkie cztery kroki + cztery zmiany właściciela w trakcie.** **BEZ PUSHU** (zlecenie warunkuje go słowem właściciela w czacie koordynatora; słowa nie ma). **Bitmapy 5/5 sum zgodnych** przed zapisem, wszystkie 2528 × 1696 → AVIF 1600 × 1067 (filary) i 1200 × 805 (dzień). Sloty: filar 1 ← 15a, 2 ← 16, 3 ← 15b, 4 ← 6b, dzień slot 2 ← 4b. **T71 i T73 ZAMKNIĘTE**; odpięte i zostawione na dysku: `filar-1-pozyskiwanie` · `filar-2-tresci` · `filar-3-zespol` · `filar-4-wyniki` · `dbanie-o-siebie`. **Hero:** nagłówek dwuwierszowy bez półpauzy ×3 z pokryciem w `content/`, nowy klucz `Hero.ctaWtorne`, MacBook z ekranem białym, telefon `2d-alfa` **374 × 464** (×1,25 poleceniem właściciela; łącznie ×1,875 wobec `WWW/096`) wystający **99 px** pod hero i pływający na `ScrollTimeline` ±17 px bez JS — **wszystkie przecięcia zerowe** (twarz, dłoń z telefonem, kolumna „pamięci", CTA), **CLS 0,0043 @1440 · 0,0000 @390**. **Filary:** spad tła **100,0 % okna na 1440/1190/390** bez paska poziomego, lustro 1·3 tekst lewo / 2·4 tekst prawo (DOM nietknięty), filar 3 → ton 3, filar 4 → ton 2. **Sekcja „pamięć" odbita** (trakty 55 : 44, nie samo `order`). **Pomiary przed/po na DWÓCH serwerach w jednym przebiegu** (baza `b214adb` w osobnym drzewie na 3101, stan po zmianie na 3100, kontrola pozytywna rozdziału): jasne @1440 **60,0 → 60,9 %**, @390 **55,4 → 59,6 %**, nakładka @1440 **37,0 → 35,3 %**, @390 **40,3 → 37,8 %**, wysokość **8 619 → 8 233 px** — wszystkie cztery w stronę wzorca. **Napis „Catherly" przeszedł CZTERY rozstrzygnięcia właściciela tej samej doby** (pigułka → limonka akcentu → limonka przycisku, zmierzone **1,31:1 i `axe` czerwony na dziewięciu przypadkach** → barwa tekstu z jaśniejszą resztą wiersza); czerwień zgasła przez zmianę przedmiotu, nie progu — T81. Zapadka deklaracji **3 → 2** z zapisem cichej pułapki (T80). Bramki lokalne: e2e **1388 passed / 0 failed**, axe **120**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone. **Poprzednio:** ▶ **`WWW/097/2` WYKONANE 2026-09-06 — ADR-070; partia 1 z 4 kroków, wszystkie.** **BEZ PUSHU** (zlecenie nie niesie zgody wyliczonej ze skrótami). **Wzorzec v2 w repo**: `design/wzorzec/glowna-v2-2026-09-06.png`, 906 × 902, SHA `450f61a4b51eda27…` — tożsamość sprawdzona PRZED zapisem, zgodna. **v2 jest JEDNĄ KOLUMNĄ bez nawigacji, v1 kolażem dwukolumnowym — i to wyjaśnia wszystkie osiem rozjazdów z `WWW/097`:** obie strony mierzyły rzetelnie, na dwóch różnych plikach. Po podstawieniu v2 te same pozycje schodzą do 0,00–1,40 pp. Wykonane: hero w proporcjach v2 (wysokość Δ **0,03 pp**, zdjęcie jako warstwa absolutna x **47,92→100,00 %**, iPhone `2d-alfa` dokładnie ×1,5 = 299 × 371), sekcja „pamięć" (trakty 44 : 55, H2 jednym kolorem, `hyphens: manual` + strażnik z mutacją), rząd kart (**23 / 42,5 / 23 %**, Δ 0,01 / 0,00 / 0,01 pp, chevron inline SVG bo glifu nie ma w subsecie). **Jedna pozycja ZATRZYMANA zgodnie z warunkiem zlecenia: wysokość mockupu 24,17 % wobec 18,1 % (Δ 6,07 pp)** — przyczyna zmierzona: proporcja naszego pliku 1,34 wobec 2,05 wzorca (T78). **H1 wszedł jako 60 px (4,17 %), nie 76 px (5,30 %)** — sonda po trzech kadrach i trzech językach pokazała, że 76 px daje po niemiecku 5 wierszy przy strażniku „H1 ≤ 3 linie"; osłabienia bramki nie robię (zakaz 3). Bramki lokalne: e2e **1388 passed / 0 failed**, axe **120**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone, zamiatanie 11/11 ×2. **Poprzednio:** ▶ **`WWW/096 v4` WYKONANE 2026-09-06 — ADR-069; wszystkie sześć punktów.** **BEZ PUSHU** (zlecenie nie niesie zgody wyliczonej ze skrótami). Skład głównej przebudowany: dziesięć sekcji wzorca + cztery filary z decyzji właściciela; **pięć sekcji zeszło z głównej, żadna nie skasowana** (problem i trzy karty → `/dla-kogo`, sześć obaw → `/cennik`, pas przewijany i „dbanie o siebie" zdjęte). Nowy rząd trzech kart grafitowych, karta „Twój Wrapped" w bloku wzrostu (T72 zamknięte), sześć mockupów ze zdjętym tłem (`*-alfa`, próg 40 przy przecieku 140), trzy tony sekcji, hero bez ducha i bez pustki. **Pomiary: wysokość 11 741 → 8 663 px; jasne piksele 76,3 → 62,4 % przy 70,9 % wzorca — a BEZ pasa czterech filarów 69,3 %, czyli 1,6 pp od wzorca; nakładka 30,1 → 36,4 % (POGORSZONA).** Obie metryki wzorcowe pogorszone i przyczyna zmierzona, nie zgadnięta: cztery pełnoszerokościowe sekcje grafitowe to dodatek właściciela, którego wzorzec nie ma. Bramki lokalne: e2e **1376 passed / 0 failed**, axe **120 passed**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone, zamiatanie 11/11 ×2. **Poprzednio:** ▶ **`WWW/094` WYKONANE 2026-09-06 — ADR-068 dopisany; kroki 1, 2, 3 i 4a w całości, krok 4b ZABLOKOWANY (T72).** **BEZ PUSHU** (zlecenie warunkuje go słowem właściciela w czacie koordynatora — słowa nie ma). Wykonane: trzy filary na karty grafitowe (`data-ton="ciemny"`, promień 24, wcięcie 40 — z pomiaru wzorca 27 i 36–49); blok „wzrost" jako trzecia wyspa klamry; slot „pamięć" z kadrem `3-macbook-iphone-ekran.avif` (ekran MacBooka = zrzut Playwrighta `z6-filar-1-dmo`, maska bieli, ekran telefonu wykluczony — 42 312 px); sześć ikon SVG kafelków; sekcja „dzień" ze slotami 1 i 3 i etykietami. **Pomiary: T68 79,0 → 76,3 % jasnych** przy 70,9 % wzorca; **nakładka 27,7 → 30,1 %** — POGORSZONA i raportowana jako pomiar, nie ukryta. Bramki: e2e **1376 passed / 0 failed**, axe **120 passed**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone, zamiatanie 11/11 ×2, podróże 14,67 ekranu. **Poprzednio:** ▶ **`WWW/093/2` WYKONANE W CZĘŚCI 2026-09-06 — ADR-067 uzupełniony; kroki 1 i 2 w całości, krok 3 w części.** **BEZ PUSHU** (zlecenie warunkuje go słowem właściciela w czacie koordynatora). **KROK 1+2 — BITMAPY WESZŁY, T70 ZAMKNIĘTE:** pobrane **11/11 z sumami SHA-256 i wymiarami zgodnymi co do jednego**, manifest w `docs/obrazy/MANIFEST-WZORZEC-2026-09-06.md`. Optymalizacja wg praktyki **zmierzonej, nie wymyślonej** (brak `.gitattributes` → brak LFS; ADR-061 mówi, że PNG-i zostają poza historią): dziewięć AVIF-ów, **44 509 kB → 200 kB (−99,6 %)**, PNG-i usunięte, sumy w manifeście; wzory 7 i 8 zostają PNG-ami jako materiał rysunkowy. ⚠ **TWARZE — warunek kanonu sprawdzony:** kadry generowane (Higgsfield) i objęte imiennym akceptem właściciela. **KROK 3 — HERO PRZEBUDOWANE NA DWIE KOLUMNY:** tekst po lewej, bohaterka wtopiona **maską bez ramki**, telefon z ekranem **pustym** (decyzja A/C otwarta; zakaz wciskania kadru desktopowego w ekran pionowy uszanowany). ⚠ **RAMA I PARALLAX Z ADR-063/064 ZESZŁY** — odwrócenie mojej decyzji sprzed dwóch dni: tamta rama powstała dla kadru POZIOMEGO pod tekstem, wzorzec daje PIONOWY obok tekstu i wtapia go; reguły `.kadr` i `kadrHeroParallax` są martwe i **tak oznaczone**. ⚠ **PROPORCJA KOLUMN 58 : 42, NIE WZORCOWE 47 : 53 — próg zmierzony, nie dobrany:** przy 531 px (47 %) H1 ma 3 wiersze po polsku, ale **4 po angielsku i niemiecku**; dopiero przy **650 px** wszystkie trzy schodzą do trzech. Wzorzec jest jednojęzyczny, my mamy parytet ×3 — kanon zna to jako „miary DE +18 %", tu wyszło +22 %. ⚠ **Usterka wychwycona z OBRAZU, nie z kodu:** bitmapa telefonu niesie własne kremowe tło i rysowała prostokąt wokół telefonu — dostała własną, ciaśniejszą maskę. ⚠ **KADR 5 NIEOSADZONY i jest to WYKONANIE reguły:** pokazuje laptop z pulpitem i wykresem, czyli obraz, o którym odwiedzająca może pomyśleć „tak wygląda aplikacja"; zlecenie samo oznacza go warunkowo. ⚠ **LCP — PRZESŁANKA ZLECENIA OBALONA POMIAREM:** elementem LCP jest **`SPAN.Hero_duch__`**, nie bohaterka (potwierdzenie T55); mediana z pięciu **220 ms**, rozrzut 1,02×. **NAKŁADKA 30,1 → 27,7 %**, najlepszy wynik dotąd; **T68 79,0 %** wobec 70,9 % wzorca — jesteśmy jaśniejsi, bo karty filarów i blok wzrostu wciąż nie są grafitowe. **Komplet e2e 1376 passed · wszystkie bramki zielone · sweep 11/11 · podróże 12,65 ekranu.** ⚠ Linter tokenów złapał mnie **siódmy raz** na hexie w komentarzu CSS. **Czego nie zrobiłem:** sekcja „pamięć" z kadrem 3, sloty dnia z kadrami 4 i 6 wraz z chipami (trzy nowe klucze czekają nieużyte), sześć ikon SVG z wzoru 7, karta Wrapped z wzoru 8, odpięcie `tymczasowe` (hero już ich nie używa, `DbanieOSiebie` i filary tak). Poprzednio: ▶ **`WWW/093` WYKONANE W CZĘŚCI 2026-09-06 — ADR-067; krok 3 w całości, krok 4 w części, KROK 1 ZABLOKOWANY, KROK 2 zmierzony i świadomie niewykonany.** **BEZ PUSHU** — zlecenie warunkuje go słowem właściciela w czacie koordynatora, którego w tej rozmowie nie ma. ⚠ **KROK 1 ZABLOKOWANY: zlecenie podaje nazwy dziewięciu bitmap URWANE po ośmiu znakach UUID i odsyła po pełne do manifestu, którego w repozytorium nie ma** (**T70**, klasa „odesłanie bez treści", druga w dwóch kolejnych zleceniach). Sprawdzone kontrolą pozytywną: **pełny adres z `WWW/090` daje 200, trzy urwane dają 403** — brakuje reszty UUID, nie sieci. Blokada obejmuje też sloty kroku 4, wzór kafelków (bitmapa), wzór karty Wrapped i narożniki ekranów. ⚠ **KROK 2 — pomiar rozdzielił dwie rzeczy, które zlecenie łączy: fala 1 JEST JUŻ ODPIĘTA** (0 osadzeń; podstrony mają to zapisane od ADR-058), a faktycznie osadzona jest rodzina **`tymczasowe`** z ADR-061 (3 osadzenia, 6 plików, 340 kB). **Nie odpinam jej** — bez bitmap zostałaby strona bez ani jednego obrazu, czyli regres w imię kroku, którego nie da się dokończyć; lista ścieżek w zwrotce. **KROK 3 — TREŚĆ.** ⚠ **DWA z „nowych" ciągów JUŻ ISTNIAŁY**: „Catherly to pamięć twojej sprzedaży" = `Definicja.naglowek`, „Widzisz wzrost nawet po trudnym dniu" = `Filary.filar4.naglowek` — sprawdzone przeszukaniem 345 kluczy. **Faktycznie nowe są cztery**, nie sześć: nagłówek zamknięcia i trzy chipy; dopisane w trzech językach (parytet kluczy **349 = 349 = 349**), brzmienia PL z mandatu koordynatora, **EN/DE oznaczone jako tłumaczenia implementacji czekające na sędziów**. **Nowa kategoria rejestru liczb `godzina-scenariusza`** — dołożona do listy dozwolonych **W KODZIE STRAŻNIKA**, nie tylko w pliku danych, bo inaczej kategoria wchodziłaby razem z wpisem, który ma nią uzasadnić. ⚠ Przy pierwszym wpisie pomyliłem kolejność liczb: linter sortuje je **jako ciągi znaków** (`30, 8`), więc rejestr rozjechał się z komunikatem i dał 12 naruszeń zamiast 3. **KROK 4 — nagłówek sekcji zamykającej** (jedyny element niezależny od bitmap); werdykt panelu pkt 25 sprawdzony i **nadal obowiązuje** — dotyczy zdania prowadzącego, nie nagłówka. **Dwa strażniki struktury zapaliły i miały rację:** liczba `h2` 10 → 11 i kolejność `h2` — obie są **mechanizmem** (kodują skład strony), zmienione razem ze zmianą i z powodem w kodzie; trzeci zapalił, bo `content/*` nie niosły nowych brzmień — dopisane ×3. **Komplet e2e 1376 passed · wszystkie bramki zielone · T68 74,9 % wobec 70,9 % wzorca · nakładka 30,1 % · sweep 11/11 · dev na 3000 przez cały batch 200.** **T69 ZAMKNIĘTE** (tabela przyszła). Nowa pozycja: **T70**. Poprzednio: ▶ **`WWW/091` WYKONANE W CZĘŚCI 2026-09-06 — ADR-066; kroki 0, 1 i 2 w całości, KROK 3 ZABLOKOWANY, KROK 4 od niego zależny.** Push `0f88a4d`; CI-diff **bez różnicy** (12 zielonych, 4 czerwone). **KROK 1 — PALETA ODWRÓCONA, T68 ZAMKNIĘTE.** Dwanaście ról bazowych na wartościach jasnych (tło `#f5f5f7`, karta biel, tekst `#0f0f0f`, kreska `#cdcdcd`, akcent `#4f6f06`); **pięć nowych ról klamry** (`tekst-na-klamrze` 13,40:1 · `tekst-2-na-klamrze` 7,82 · `akcent-na-klamrze` 9,38 · `kreska-na-klamrze` 1,83 · `fokus-na-klamrze` 13,40), `LICZBA_ROL` 31 → **36**; trzy stany przyciemnione w HLS z zachowaniem odcienia (6,0:1 na bieli); szkło z ciemnej płyty na jasną (akcent na niej 3,09 → **5,77:1**). ⚠ **`akcent` I `interakcja` ROZESZŁY SIĘ** — pierwsza niesie tekst (na jasnym limonka ma 1,31:1), druga jest wypełnieniem CTA i limonką zostaje. **Strażnik:** dwie pary zdjęte z uzasadnieniem, sześć dodanych, `grafit-klamr` wyjęta z `POWIERZCHNI` (klamra przemapowuje każdą rolę, więc bazowe się na niej nie renderują), **nowa reguła `R-CTA-OBRYS` SUROWSZA od tej, którą zastępuje**: pyta o obrys wobec tła ORAZ wobec wypełnienia, na całej stronie zamiast w strefach. **Dowody mutacyjne dwa, oba zapaliły i wróciły po SHA.** ⚠ **axe znalazł defekt, którego oko nie widziało:** plakietka brała `akcent` jako tło i po odwróceniu dała **2,80:1** — 58 naruszeń; plakietka jest plamą, więc należy do `interakcja`. ⚠ **Przy tej poprawce pomyliłem się i zapisuję to:** podmieniłem razem z nią podkreślenie linku, biorąc `background` o wysokości 1 px za plamę; cofnięte — rozstrzyga funkcja elementu, nie nazwa własności. **Strażnik klawiatury czyta odtąd ton obowiązujący dla elementu, nie jedną wartość — wzmocnienie, nie złagodzenie.** **KONTROLA T68: jasne piksele 48,3 → 74,6 % wobec 70,9 % wzorca; NAKŁADKA CAŁOŚCI 50,2 → 29,8 %** — jedna zmiana mechanizmu ruszyła liczbę o 20,4 punktu, gdy wszystkie przeszczepy form razem ruszyły ją o 0,9. **KROK 2 — ZRZUTY ODZYSKANE:** cztery kadry 2048×1280 z commita `6168ec7` do `public/obrazy/aplikacja/`, **cztery z czterech sum SHA-256 zgodne z manifestem**; pochodzenie Playwright + baza efemeryczna + konto demo, czyli powrót jest WYKONANIEM reguły kanonu, nie wyjątkiem od niej. ⚠ **`e35ad8ce` nie jest commitem tego repozytorium** — to skrót repozytorium aplikacji z nazwy raportu; polecenie ze zlecenia nie mogło zadziałać. **KROK 3 ZABLOKOWANY — brakuje PRZEDMIOTU, nie czasu: „tabeli koordynatora" nie ma ani w zleceniu, ani w repozytorium** (**T69**, klasa „odesłanie bez treści"). Bez niej nie ma mapowania treści na sekcje, brzmień trzech chipów i zdania CTA ani liczb do karty Wrapped. **Komplet e2e 1376 passed · axe 120 · 36 ról · dev na 3000 przez cały batch 200.** Poprzednio: ▶ **`WWW/090` KROK 3 v2 WYKONANY W CZĘŚCI 2026-09-06 — ADR-064; 3a i 3b w całości, 3c w części.** Push `0dfc33b` wykonany. **3a:** `design/wzorzec-2026-09-06/glowna-kolumna.png`, **1536 × 7900**, SHA-256 `d518a9df…`, szew ustalony pomiarem na **y = 1036**. **3b — skala przeliczona, nie podmieniona:** kotwica proza 26 px odstępu wierszy; stosunki zmierzone na OBU końcach kolażu (szeroki 2,43 i 1,93; wąski 1,96 i 1,50) → **H1 96 → 52 · 72 → 44 · 48 → 36; H2 48 → 40 · 36 → 34 · 30 → 28**, tracking przeliczony sześciokrotnie dla zachowania stosunku `em`. ⚠ **`clamp()` NIE wszedł** — ADR-041 odrzucił go z pomiaru, a stosunki działają na progach; rozjazd ze zleceniem zgłoszony, nie wykonany po cichu. **3c:** pasek nawigacji i stopka na **klamrę grafitową** (rola `grafit-klamr` dostała konsumenta, więc warunkowe odstępstwo od ADR-048 zamknięte); pasek pełnej szerokości, kant, przy krawędzi. ⚠ **POŁOWA ZMIANY BYŁA GORSZA OD ŻADNEJ i wykrył to pomiar:** sama barwa pogorszyła nakładkę pasa 27,7 → **32,4 %**, dopiero pełna szerokość cofnęła do 31,6 %. ⚠ **USTALENIE NAJWAŻNIEJSZE — T68: WZORZEC JEST STRONĄ JASNĄ (70,9 % jasnych pikseli), NASZA JEST POŁOWICZNA (47,4 %).** Dokładna odwrotność mechanizmu: u wzorca jasne tło z klamrami grafitowymi, u nas ciemne tło ze strefami jasnymi. **Dopóki to się nie odwróci, nakładka całości stoi na 50,2 % niezależnie od tego, ile form przeniesiemy.** Nie odwracam — to decyzja palety (dziesięć ról korpusu ciemnego + odwrócenie sensu `data-ton`), nie krok batcha. **Czego 3c nie zrobiło i dlaczego:** sekcje „pamięć" i „wzrost" — **brak treści** w `content/` (zakaz 9, parytet ×3); ekrany w ramach urządzeń — **przesłanka fałszywa**, „zrzuty fali 1" nie istnieją (fala 1 to fotografie, sprawdzone; zrzutów aplikacji nie ma, zdjęła je decyzja `WWW/072` i `WWW/083`); trzy karty zamiast czterech filarów — decyzja o treści; zdjęcie czterech sekcji z głównej — obawy związane decyzją O-7 „jednym pakietem albo wcale". **Komplet e2e 1376 passed · bramki zielone · dev na 3000 przez cały batch 200.** Nowa pozycja: **T68**. Poprzednio: ▶ **`WWW/090` WYKONANE W CZĘŚCI 2026-09-06 (rola IMPLEMENTACJA) — ADR-065; KROK 3 NIE ZACZĘTY, patrz niżej.** Push `e3e6f6a`+`4b51fd9` wykonany (zakres imienny), CI-diff **bez różnicy**. **KROK 1 — wzorzec w repo i pomiar z pikseli:** `design/wzorzec-2026-09-06/glowna.png`, 1536 × 2752, SHA-256 `daa34f99…`. ⚠ **WZORZEC JEST KOLAŻEM DWUKOLUMNOWYM** (stopka zajmuje prawą połowę obrazu; proza ma różny udział w kontenerze: 1,99 % przy 1536 wobec 2,86–3,26 % przy 768) — **rozmiary pisma i szerokości kontenera są z niego NIEPRZENOŚNE** (**T66**). Przenośne i zmierzone: grafit klamr **`#2e2f31`** (6 miejsc), tło **`#f5f5f7`**, karta **biel**, kreska **`#dadbdd` 1 px** (3 profile), tekst **`#0f0f0f`**, limonka **`#bee741`** (3 próbki); pasek 1536 × 117, CTA 238 × 60 promień 12, trzy karty **218 × 263 odstęp 16** (3 × 218 + 2 × 16 = 686 = kontener co do piksela), kafelki 210 odstęp 15, wcięcie **8,5–8,9 % kontenera**. **KROK 2 — tokeny:** przyjęte tło jasne, tekst na jasnym i **limonka** (Δ > 10 w DWÓCH kanałach: R +30, B +52 — reguła zlecenia każe wtedy przyjąć pomiar); **nowa 31. rola `grafit-klamr`** z dwiema parami w strażniku; **odrzucona kreska wzorca** — `#dadbdd` daje wobec tła sekcji **1,27:1** przy progu 1,30 z ADR-038 (nasza `#cdcdcd` daje 1,46). **Wszystkie pary dotknięte zmianą limonki poprawiły się:** etykieta na limonce 10,22 → **11,41:1**, limonka na tle ciemnym 12,58 → **14,04:1**. ⚠ **`grafit-klamr` wchodzi BEZ KONSUMENTA** — jego konsumentem jest krok 3; jeśli krok 3 nie wejdzie, rola ma zniknąć razem z nim. ⚠ **KROK 3 (przebudowa głównej na 10 sekcji) NIE ZACZĘTY** — pięć rzeczy nie istnieje dziś wcale (maskowany kadr bohaterki + rama iPhone'a, ramy MacBooka, sloty dnia z chipami, sześć kafelków z ikonami SVG, karta „Wrapped" jako SVG), a cztery sekcje trzeba zdjąć z głównej na podstrony. **Nie zacząłem, zamiast zrobić połowę:** strona z trzema sekcjami wzorca i czterema starymi nie jest postępem, tylko stanem, którego żadna bramka nie odróżni od skończonego. Punkt odniesienia dla kroku 3: **nakładka pasa górnego 27,7 %** średniej różnicy kanału przy 1440. **Komplet e2e 1376 passed · axe 120 passed · 31 ról · dev na 3000 przez cały batch 200.** Nowe pozycje: **T66, T67**. Poprzednio: ▶ **`WWW/089` WYKONANE 2026-09-05 (rola IMPLEMENTACJA) — batch widoczny, ADR-063.** Push `0b49a06` wykonany (zakres imienny, jawny refspec); CI-diff **bez różnicy** wobec `33973185777`. **KROK 0b — L-OPS-04** osobnym commitem: `distDir` ze zmiennej `WWW_DIST`, domyślnie `.next`; dowód izolacji dev↔build zmierzony (200 przed i po, `.next` mtime bez zmiany, `BUILD_ID` tylko w `.next-pomiar`), kontrola pozytywna zmiennej zapaliła. **Mechanizm był zbudowany do połowy i wykrył to POMIAR:** cztery skrypty miały `.next` na sztywno, przez co „Linki" i „No-JS" zapaliły się z powodu niezwiązanego z kodem — domknięte. **KROK 1 — pomiar wzorca:** rama hero `1024 × 577`, promień **16 px**; cztery rodziny wejść (karty 40 px · tekst 20 px · sam zanik 367 ms · słowo po słowie 67 ms), krzywa **`cubic-bezier(0.215, 0.61, 0.355, 1)` dopasowana liczbowo** (RMS 0,0083 wobec 0,0332 dla poprzedniej rodziny), odstęp **100 ms**, próg odsłonięcia **98,2 % wysokości okna**; hover **tylko w nawigacji**, 150 ms — karty i CTA mają `transition: 0s`; bento **2 kolumny 403/605, odstęp 16, pierwsza karta `span 2`**. **KROK 2:** rama kadru hero — promień **32 px** (czwarty szczebel drabiny R dostał wreszcie konsumenta), kreska roli strefy, maska eliptyczna schodzi; parallax CSS-only **33,3 px @1440** i **0 px przy `reduced-motion`**; hero **1600 → 1524 px = 1,693 vp**, dokładnie proporcja sekcji hero R; tekst nad kadrem bez nachodzeń, zapas 293/293/350 px. **KROK 3:** warstwa ruchu przestrojona z Proactiva na React Bits — zmierzone po zmianie karty **Δty 40 → 0**, tekst **20 → 0**, przy `reduced-motion` **zero zmian**, ukrytych **0**. **TRZY USTALENIA OBALAJĄCE PREMISY:** (1) **React Bits NIE MA parallaxu w hero**, choć jego karta go reklamuje — trzy niezależne drogi pomiaru, kontrola pozytywna w każdej (**T63**); (2) rama hero R ma **16 px, nie 32** — 32 to u niego karty bento; (3) **„hero 0,73 vp" było MOJĄ nieprecyzyjną etykietą** ze zwrotki `WWW/087-R` — sonda trafiała w blok tekstu, a sekcja hero R ma 1,693 vp i zawiera ramę. **Zanikania R nie da się przenieść na oś `view()`** bez JS albo bez złamania bramki dostępności (128 naruszeń przy pierwszym podejściu, ADR-047) — wierność pomiarowi ustępuje warunkowi brzegowemu. **Komplet e2e 1376 passed · axe 120 passed · dev właściciela na 3000 przez cały batch 200.** Nowe pozycje rejestru: **T63–T65**. Poprzednio: ▶ **`WWW/088` WYKONANE 2026-09-05 (rola IMPLEMENTACJA), BEZ PUSHU — przeszczep miar React Bits SaaS, ADR-062.** Cztery kroki plus dołożony przez właściciela krok 0.5. **Przyjęte:** tło korpusu jasnego `#f2f2f2`→`#f5f5f5`, tekst mocny `#151515`→`#0a0a0a`, drabina promieni 4·8·12 → **12·16·24** (pigułka 50 bez zmian), rodzina `karta-cennik` (promień **16**, szerokość **320**), interlinia prozy 1,8 → **1,625 = 26 px** plus zdjęcie czterech literałów `line-height: 1.6`. **ODRZUCONE POMIAREM, nie preferencją:** tekst przygaszony R (`#737373` daje **4,35:1**, próg zlecenia 4,5) i kreska R (`#e5e5e5` daje **1,26:1** na karcie, próg ADR-038 1,30) — obie liczby z `scripts/kontrast.mjs`, obie potwierdzone tym, że **axe na R znajduje 30 węzłów `color-contrast` serious**. **Akcent zostaje nasz** i mutacja zamieniła tę decyzję właściciela w liczbę: akcent R na naszym jasnym korpusie daje **1,52:1**. **TRZY PREMISY ZLECENIA OBALONE POMIAREM** i zgłoszone zamiast rozstrzygania po cichu: nasza drabina promieni to 4·8·12·50 (nie 6·8·12·16 — to Proactiv), interlinia prozy była **dwiema wartościami naraz** (28,8 i 25,6), lead **już był** 18/28. **`R-TYPO-03` W TYM REPOZYTORIUM NIE ISTNIEJE** — 0 trafień przy kontroli pozytywnej `R-AKCENT` 28; pozycja **T59**, dowód mutacyjny dostała w zamian bramka parytetu, jako zamiennik zgłoszony jako zamiennik. **Przy okazji wyszedł defekt, którego nikt nie szukał:** karty cennika na głównej były przy 810 px **nierówne** (203 · 261 · 203), bo `1fr` ma minimum `min-content`; po zmianie 222 · 222 · 222. **Trzy dowody mutacyjne**, każdy z powrotem po sumie SHA. **Komplet e2e 1376 passed / 12 skipped / 0 failed · axe 120 passed · 30 ról bez zmiany.** Nowe pozycje rejestru: **T59–T62**. Poprzednio: ⏸ **SPOCZYNEK — WZORZEC UNIEWAŻNIONY (decyzja właściciela 26.08.2026).** Nowy wzorzec = publikacja właściciela z Framera; do jej nadejścia nie ma pracy do wykonania. **WWW/063 nie istnieje** (numer unieważniony, nigdy nie wysłany). Strona główna w gałęzi ma 9 sekcji zbudowanych wg _poprzedniego_ wzorca — całość czeka na ocenę pod nowym. Historia prac poniżej. ▶ **KROK 2 z `WWW/050-FINAL` DOMKNIĘTY — wszystkie dziewięć sekcji strony głównej przebudowane na wzorzec (`WWW/057`–`WWW/060`).** 2.1 nawigacja (pigułka, hamburger bez JS), 2.2 hero (wyśrodkowane, mockup Z6), 2.3 sześć kart (zero nowej treści — cytaty z kluczy), 2.4 filary, 2.5 pas możliwości, 2.6 cennik z plakietką, 2.7 **opinie ŚWIADOMIE POMINIĘTE** (T53 — prawdziwych cytatów nie ma, a nasze odpowiedzi w tej roli byłyby pseudo-dowodem), 2.8 finał i stopka, 2.9 ruch. **Zgodność zmierzona co do piksela** dla nawigacji, hero, kart, filarów i cennika; pas −75,0 px/s przy R² 1,0; wejście 330,9/247,7 ms wobec 334,9/251,0 wzorca. **Pełny e2e 672 passed / 4 skipped / 0 failed, axe 60/60.** Artefakty odbioru: 6 zrzutów i 4 nagrania (pary desktop i mobile) poza repozytorium. Poprzednio: **KROK 2 W TOKU (`WWW/056` pkt 3), pomiary 0.4 i 0.7 wykonane — i OBALIŁY TRZY USTALENIA, na których stały ADR-040 i ADR-041** (ADR-044). (1) **Role krojów były ODWROTNE**: wzorzec niesie Interem 257 elementów tekstu, w tym wszystkie H1 i H2; Satoshi występuje na DWÓCH elementach po 12 px — to plakietka. Preload wskazywał plik, którego element LCP nie używa; przepięty na Inter. (2) **Tracking JEST progowy** (−1 / −1,6 / −3 px), ani stały w px, ani w em. (3) **H2 nie idzie za H1 w ŻADNEJ z trzech własności** — rozmiar ×0,63 wobec ×0,49, interlinia 1,40 wobec 1,20, tracking −0,6 wobec −1. Po korekcie **skala zgodna ze wzorcem co do piksela na sześciu szerokościach**. Jedno dodanie spoza wzorca: `overflow-wrap`+`hyphens` na nagłówkach, bo polskie słowa przy 38 px łamały **reflow na 320 px** (2 px i 8 px nadmiaru; wzorzec tego nie ma, bo składa po angielsku). **Menu mobilne wzorca zmierzone**: nagłówek 80 px, pigułka o promieniu 50 px, tło półprzezroczyste z rozmyciem, wcięcie 20/40/120 px; otwarcie panelu **177,2 ms**, obrót kresek hamburgera **392,8 ms**, zanik środkowej **610 ms**; ruchu ciągłego na starcie ZERO (kontrola negatywna na obu kadrach). Poprzednio: **KROK 1 z `WWW/050-FINAL` DOMKNIĘTY — 1.1, 1.2 i 1.3 (2026-08-26, rola IMPLEMENTACJA), push czeka na zgodę.** KROK 1.3 (ADR-041): skala nagłówków idzie **PROGAMI 70/53/34 px, nie `clamp()`** — to różnica konstrukcyjna, bo `clamp()` produkuje rozmiary pośrednie, których wzorzec nigdy nie pokazuje. Zmierzone po wdrożeniu na sześciu szerokościach: **zgodność co do piksela na wszystkich trzech zakresach**. Tracking −3 px zapisany jako `-0.1875rem` (`rem` liczy się od korzenia, więc zachowuje się jak px — poprzednie `-0.02em` dawało przy 70 px −1,4 px zamiast −3). **Trzy nadpisania komponentowe zdjęte** — tokeny `--tekst-h1*` istniały i **nikt ich nie czytał**, H1 brał rozmiar z `clamp()` wpisanego wprost w `Hero`, `NaglowekPodstrony` i `cennik`. Geometria wzorca w tokenach (kontener 90rem, kolumna prozy 50rem, siatka odstępów, promienie). **Skutek uboczny wyłapany dopiero testami:** interlinia prozy 1,6 → 1,80 podniosła sticky nagłówek 80,59 → 87,797 px, zapas `scroll-padding` zszedł do **0,20 px** i pękł **na zaokrągleniu przewijania**, nie na wysokości; przeliczone 5.5 → **5.75rem** na powtórzonym rozrzucie 42 kombinacji. `6rem` odrzucone — siadłoby na pułapie 96 px, czyli ta sama pomyłka w drugą stronę. **Pełny e2e 668 passed / 4 skipped / 0 failed.** Poprzednio: **KROK 1.2 z `WWW/050-FINAL` wykonany (2026-08-26, rola IMPLEMENTACJA), push czeka na zgodę.** Kroje wzorca self-hostowane (ADR-040): **Satoshi Medium** statyczny 500 w nagłówkach (17,3 kB) + **Inter** zmienny `wght` w prozie (39,8 kB) — **razem 57,1 kB przy budżecie 120 kB**. Oba pobrane z **własnych źródeł** (fontshare.com i `google/fonts`), nie z CDN wzorca; licencje odczytane **z tabel `name` plików**. Onest usunięty. **Trzy rzeczy warte zapamiętania:** (1) oś `opsz` w Interze przypięta do 16 — wolna kosztowała **20,1 kB** za zakres, którego nikt nie rusza; (2) podzbiór `Inter` z KROKU 0 **nie zawierał polskich cudzysłowów** `’ “ ” „` ani `←` — był zbudowany pod zestaw wzorca, nie nasz, i wszedłby cicho; (3) `U+2713 ✓` włączony świadomie, więc **T14 przestaje dotyczyć warstwy kroju** — zmierzone na renderze, znak składa Inter. `size-adjust` **zmierzony** (102,0% i 107,4%), nie założony jak w ADR-031. **Pełny e2e 668 passed / 4 skipped / 0 failed.** Poprzednio: **`WWW/055` wykonane (2026-08-26, rola IMPLEMENTACJA), push czeka na zgodę.** R-AKCENT-01 i R-AKCENT-02 przepisane z **zakazu barwy na warunek kontrastowy** (ADR-039); rozdzielność trójki usunięta, mechanizm `outline-offset` **dostał strażnika, którego NIE BYŁO** (pytanie zerowe: zero asercji na ten ciąg w całym `e2e/`). **Przy okazji znaleziono i naprawiono ZWIS PO ADR-038 wprowadzony przeze mnie w KROKU 1.1 i już wypchnięty:** `Hero.module.css` odwoływał się do usuniętej roli `--kolor-rola-tekst-na-inwersji`, przez co dekoracja „duch" renderowała się **pełną bielą na 256 px** zamiast 6% alfy — obwódka fokusu CTA miała na niej **1:1**. **Pełny e2e: 668 passed, 4 skipped, ZERO upadków** (przed naprawą 7 upadków). **`bramka:kontrakt` CZERWONA i wymaga decyzji właściciela — ΔE szwu strona↔aplikacja wynosi 93,92 przy progu 5,0**; szczegóły niżej. Poprzednio: ⏸ **`WWW/047` wykonane, push czeka na zgodę** (2026-08-26, rola IMPLEMENTACJA). Warstwa ruchu CSS-only (R1–R5) + **nowa bramka `e2e/ruch.spec.ts`**: do tej doby kanon „ruch zawsze z prefers-reduced-motion" był **napisem bez mechanizmu**, bo serwis nie miał ani jednej animacji. Teraz ma mechanizm i kontrolę pozytywną. **Pełny e2e 636 → 658 passed, zero upadków; CLS z ruchem 0,00000.** Poprzednio: `WWW/045` — wykonane w części (2026-08-26, rola IMPLEMENTACJA). Fala 1 kadrów: 10 pobranych i sprawdzonych, 8 osadzonych na czterech podstronach funkcji, 2 hero do `public/obrazy/rezerwa/`, manifest w `docs/design/`. **Kadry na kartach filarów strony głównej NIE WESZŁY i to jest ROZSTRZYGNIĘTE** (`WWW/046`, 2026-08-26): decyzja właściciela z 2026-08-16 **potwierdzona** — Z6 zostają, kadry generowane nie wchodzą na główną. Punkt zlecenia `WWW/045` był **błędem koordynatora**; klasa nazwana i zapisana w rozdz. 9 („zlecenie dysponujące slotem bez pomiaru jego zawartości"). Poprzednio: `WWW/042` (2026-08-26, rola IMPLEMENTACJA). Ostatnia pozycja otwarta zamknięta: hover złotego CTA przemapowany na `#6e5220` (ADR-034, 26. rola), etykieta kremowa ma na nim **6,30:1** zamiast 2,07:1. **Pełny zestaw e2e: 636 passed, zero upadków, zero nieoznaczalnych.** **26 ról — decyzja, nie dryf; PRZYJĘTE przez właściciela (`WWW/043`, 2026-08-26): literał `LICZBA_ROL` w strażniku zostaje mechanizmem, więc jego czerwień jest sygnałem „ktoś rusza rzecz wymagającą ADR-a", a nie usterką do wyciszenia.** Poprzednio: `WWW/041` (2026-08-26, rola IMPLEMENTACJA). Trzy pozycje otwarte z `WWW/040` zamknięte: reguła kart jest dwumechanizmowa (ADR-033), sonda mierzy tło z renderu (**48 nieoznaczalnych → ZERO**), akcent w nagłówku wszedł jako R-AKCENT-03 w dwóch z trzech pozycji. **Otwarta jedna, ODSŁONIĘTA przez naprawę pomiaru:** etykieta CTA w stanie hover ma **2,07:1 przy progu 4,5:1** (`interakcja-aktywna` mapowana w tonach ciemnych na złoto JASNE, etykieta zostaje kremowa). Czerwień **stoi świadomie** — zlecenie mówi, żeby nie łatać sceny w tym kroku. Poprzednio: `WWW/040` (2026-08-26, rola IMPLEMENTACJA). Paleta „natura" (ADR-032, 25 ról + tony `data-ton`) na zatwierdzonej makiecie. **Bramka `kontrast-stanow` czerwona — 48 testów, wszystkie „NIEOZNACZALNE" przez poświatę, ZERO „poniżej progu"; axe zielony.** Karty odcinają się 1,08:1 przy progu 1,30, którego przy tym tle nie da się osiągnąć żadną powierzchnią. Nagłówki dwukolorowe niewykonane — wymagają podziału redakcyjnego w trzech językach. Szczegóły: ADR-032 „Konsekwencje". Poprzednio: `WWW/038-bis` (kancelaria), 9 commitów wypchniętych `aff7947..2c49b57`. Wdrożona paleta „kancelaria" i krój Onest, zadania 1–6 z korektami K1–K6; zadania 7–14 poza zakresem. **Commity NIE SĄ WYPCHNIĘTE** — zlecenie mówi „push jawnym refspec", ale nie wymienia skrótów, a te powstały dopiero w trakcie; zakaz 1 wymaga zgody wyliczonej co do commita, więc lista czeka na zgodę (rozdz. 4.29). Poprzednio: ▶ spoczynek uchylony na import toru 9 (`WWW/022`–`WWW/025`, 2026-08-24); wcześniej ⏸ SPOCZYNEK (`WWW/018`) |
 | **Bramki CI na gałęzi** | ⚠ **TEN WIERSZ MÓWI O POMIARZE LOKALNYM, NIE O WERDYKCIE CI — I DO 2026-09-06 TEGO NIE DEKLAROWAŁ.** Werdykt CI na tej gałęzi jest **CZERWONY** i był czerwony w każdym dostępnym przebiegu od co najmniej 2026-08-26: padają cztery zadania — **ESLint**, **Kontrakt tokenów**, **Nieodwracalne (raport audytu dla commita)**, **Wydajność** — a dwanaście przechodzi. Pozycja **T74** rejestru; sprawdzasz to poleceniem `gh run list --branch faza-4/podstrony`, nie lekturą tego wiersza. **Stan po `WWW/100` (2026-10-04) — wszystkie cztery przyczyny ZMIERZONE; naprawy wchodzą PO JEDNEJ NA COMMIT i ten wiersz rośnie razem z nimi, więc czytaj go jako stan TEGO commita, nie całego zlecenia:** **(1) ESLint** — `no-unused-vars` w `scripts/straznik-tokenow.mjs:608:11`, naprawione w **`456909d`** (stempel wstawiony w commicie trzecim; pisząc ten akapit w commicie pierwszym nie dało się podać skrótu, bo commit nie może zawierać własnego) przez usunięcie maszynerii kontekstu selektora, która po ADR-039 nie ma odbiorcy; werdykt strażnika przed i po **identyczny co do bajtu**, mutacja (hex zdjętej palety + `font-weight: 100`) zapala OBIE wersje. **(2) Kontrakt tokenów** — przyczyna NIE była w strażniku: `design/kontrakt-aplikacji.json` trzymał `strona_tlo_odniesienia` = `#070806` z palety ciemnej (26.08), gdy ADR-066 (`35d59cc`, 06.09) zrobił stronę jasną `#f5f5f7`; sprawdzenie tożsamości odniesienia zapala się PIERWSZE, więc **maskowało prawdziwy werdykt przez cztery tygodnie**. **Odniesienie podstawione W TYM COMMICIE** — `#f5f5f7`, z notą o ADR-066 (`35d59cc`, przodek sprawdzony) i datą pomiaru wpisanymi w sam plik. Po podstawieniu bramka świeci **właściwym powodem**: `deltaE 5,8 > 5,0`, a nie „odniesienie nie zgadza się z tokenem" — i **świecić ma**: zamknie ją albo `szew_logowania.tlo` po stronie aplikacji, albo zmiana palety strony („czeka na Figmę"); podniesienie progu to zakaz 3. Czerwień trwa od 26.08, ale **mechanizm zmienił się 06.09** i to jest nowy fakt. **(3) Nieodwracalne** — decyzja właściciela (14.08, **T2**, powrót w Fazie 6), a dodatkowo bramka jest **niespełnialna strukturalnie** (**T83**). **(4) Wydajność** — **przyczyna zmierzona, naprawa w `6926ee6`** (jak wyżej: skrót dało się dopisać dopiero w commicie następnym). Zadanie padało **przed pomiarem**, na kroku `npm run bramka:preview` (`scripts/sprawdz-preview.mjs`): „odpowiedź nie jest stroną Catherly — HTTP 200, 69003 B, ale bez markerów: nagłówek H1 z komunikatów", wyjście 1. Log przebiegu **nie leży w repozytorium** — odtwarza się poleceniem `gh run view 37040695453 --log-failed` (przebieg z 02.10 na `46c8688`, jedyny z tej doby). Przyczyna: trzeci marker brał **surową** wartość `Hero.naglowek` z `src/i18n/messages/pl.json`, a ta od `46c8688` niesie `<akcent>` i złamanie wiersza i jest składana przez `t.rich` (`src/components/Hero.tsx:146`) — **jako podciąg HTML była niespełnialna**, więc strażnik odrzucał własną stronę. Naprawa: marker składany z **najdłuższego ciągłego przebiegu tekstu** szablonu (po zdjęciu znaczników i złamań), próg `MIN_DLUGOSC_MARKERA = 12` z powodem wypisanym w kodzie, i **głośny upadek**, gdy żaden przebieg progu nie osiąga — strażnik ma wtedy powiedzieć „nie umiem zbudować markera", a nie milczeć. **Dowód w jednym przebiegu, ten sam serwer i ten sam build:** stary strażnik → czerwień z komunikatem **identycznym co do słowa** z CI i **tym samym 69003 B**; nowy → `✔ 3/3 markerów obecnych`, wyjście 0. **Kontrola pozytywna w tym samym przebiegu:** imitacja ściany logowania (HTTP 200, „Catherly" ×2, `<html lang="pl">`, `id="hero-h1"`, 197 B) → nowy strażnik **czerwony, wyjście 1**, czyli nadal odrzuca dokładnie to, dla czego markery istnieją. ⚠ **`T33` (próg) i `T85` zostają NIETKNIĘTE: do pomiaru nigdy nie doszło**, więc żadna liczba wydajności z tej gałęzi nie istnieje i **nie wiadomo**, czy po tej naprawie zadanie zazieleni się, czy upadnie na progu LCP — rozstrzygnie pierwszy przebieg CI, nie to zdanie. **Pozycje rejestru dla tych czterech przyczyn są W TYM COMMICIE** (w commitach pierwszym i drugim ich NIE BYŁO i oba mówiły to wprost, zamiast odsyłać do numerów, których nikt by nie znalazł): **T74** niesie sprostowanie adresu i stan czterech przyczyn, **T82** kontrakt tokenów ze zdarzeniem konsumującym, które już zaszło, **T83** niespełnialność bramki „Nieodwracalne", **T84** kolejność markery-przed-proweniencją w strażniku preview, **T85** siedem z dziesięciu tras i tylko PL pod pomiarem, **T86** komentarz przy `kolor.tlo` opisujący paletę zdjętą 06.09, **T87** podłoga szumu bezpiecznika wyglądu, **T88** żywy błąd typów bez strażnika. **T74 istniało wcześniej i dostaje sprostowanie; T82–T88 to pozycje NOWE opisujące defekty ZASTANE** — wyszły przy szukaniu przyczyn czterech czerwieni, nie z nich. **Po wznowieniu sesji doszły trzy dalsze, też ZASTANE, ale z innego źródła — nie z czterech czerwieni, a ze stanowiska pomiarowego kroku 2:** **T89** mutacja śledzonego `tsconfig.json` przy każdym `next build` (jedna taka mutacja stoi już w `HEAD` od `e3e6f6a`), **T90** komunikat trzech bramek podający nazwę zmiennej zamiast katalogu — widoczny tylko przy niedomyślnym `WWW_DIST`, czyli dokładnie tam, gdzie pułapka z `WWW/089` niżej w tym wierszu już stoi, **T91** skorowidz ogniw bez sześciu kolejnych pozycji (T53–T58) przy liczniku, który tego nie widzi, bo czerpie zbiór z tabeli, której pilnuje. **Żadnego z nich nie naprawiam (zakaz 8)** — zapisuję z pomiarem i adresem. **Poprzednio: stan po `WWW/094` (2026-09-06, POMIAR LOKALNY, budowanie do `.next-pomiar`, serwowanie na 3100):** e2e **1376 passed / 0 failed**, axe **120 passed**, tokeny · liczby · parytet · deklaracje · linki · kotwice · no-JS zielone; **`npm run lint` CZERWONY z przyczyny zastanej** (⚠ **SPROSTOWANE 2026-10-04:** stało tu `straznik-tokenow.mjs:596`, commit `58a14c1` — **oba adresy fałszywe i oba zostawiam widoczne**. Naruszenie stoi w `608:11`, a commitem, w którym defekt powstał, jest `30e76c9` (`WWW/055`, ADR-039) — `58a14c1` tylko **wprowadził** zmienną, która wtedy miała jeszcze odbiorcę. Lekcja przenośna: `git log -S` wskazuje commit WPROWADZAJĄCY, a defekt „zmienna bez odbiorcy" powstaje w commicie, który **usuwa odbiorcę**; „czerwień od 26.08" obroniło się tylko dlatego, że oba commity są z tego samego dnia) — naprawione w `WWW/100`. **Poprzednio:** **Stan po `WWW/089` (2026-09-05, pomiar lokalny, budowanie do `.next-pomiar`, serwowanie na 3100):** komplet e2e **1376 passed / 12 skipped / 0 failed** w czterech projektach, **axe 120 passed**, `tokeny` · `liczby` · `parytet` · `deklaracje` ZIELONE, **`linki` · `kotwice` · `nojs` ZIELONE po domknięciu L-OPS-04** na skryptach. ⚠ **PUŁAPKA WARTA ZAPAMIĘTANIA: te trzy bramki czytają katalog budowania, więc bez `WWW_DIST` po budowaniu pomiarowym czerwienieją z powodu NIEZWIĄZANEGO Z KODEM.** Polecenie: `WWW_DIST=.next-pomiar npm run bramka:linki`. `kontrakt` CZERWONA — czerwień zastana, nietknięta. Ostatni przebieg CI: `33983997108` (`0b49a06`), **12 zielonych i 4 czerwone, bez różnicy** wobec `33973185777`. Poprzednio: **Stan po `WWW/088` (2026-09-05, pomiar lokalny na budowaniu produkcyjnym, port 3100):** komplet e2e **1376 passed / 12 skipped / 0 failed** w czterech projektach (`mobile-390`, `desktop`, `desktop-wide`, `wlasciciel-1190`), **axe 120 passed**, strażnik tokenów ZIELONY przy **30 rolach**, `tokeny` · `liczby` · `parytet` · `linki` · `kotwice` · `nojs` · `deklaracje` ZIELONE. **`kontrakt` CZERWONA — ΔE 93,9, zmierzone NA OBU STANACH w tym samym batchu (przed i po), identycznie**; czerwień zastana, nie tknięta. **ESLint** 1 ostrzeżenie zastane (`scripts/straznik-tokenow.mjs:494`, plik nietknięty), zero nowych. **`cennik` czerwona lokalnie wyłącznie z braku `STRIPE_TEST_SECRET_KEY` w środowisku — w CI zielona**, to zależność środowiskowa, nie regres. **Zamiatanie 320→2560 co 32 przy świeżym wejściu: 22/22 czyste na obu trasach**; ze zmianą rozmiaru okna w jednej karcie wychodzi 2 px od 1344 px — pozycja **T61**. Ostatni przebieg CI na gałęzi: `33973185777` (`3c096aa`), **12 zielonych i 4 czerwone, bez różnicy wobec `33920237990`** (`9bfb023`): `ESLint`, `Kontrakt tokenów`, `Nieodwracalne`, `Wydajność`. Poprzednio: **Stan po `WWW/055` (2026-08-26):** `tokeny` **ZIELONA** (`WWW/055` pkt 3 spełniony), `liczby`, `parytet`, `linki`, `kotwice`, `nojs`, `deklaracje` zielone, **pełny e2e 668 passed / 4 skipped / 0 failed** (desktop + mobile-390). **`kontrakt` CZERWONA — DECYZJA ZAPADŁA (`WWW/056` pkt 1, ADR-042): stan przejściowy UZNANY, wymóg ≤ 5,0 zostaje, czerwień świeci z adnotacją „oczekuje na przemalowanie aplikacji”; zamknie ją aktualizacja `szew_logowania.tlo` po stronie właściciela — wartość `#F7F3EA` należy do aplikacji. Kotwica progu przepisana: poprzednia wskazywała na rolę `neutralna-50`, której nie ma od ADR-031, a przeliczenie jej STARĄ METODĄ podniosłoby próg z 5,0 na **21,85** — czyli zakaz 3 wyszedłby Z REGUŁY, nie ze złej woli. Nowa kotwica empiryczna: 4,66 (największy przyjęty) < 5,0 < 6,46 (najmniejszy odrzucony). Adnotacja ma własnego strażnika przeterminowania. Pierwotny opis tej czerwieni:** kontrakt pilnuje **szwu strona → ekran logowania aplikacji** (jedna rodzina ciepłych kremów, ΔE CIE76 ≤ 5,0). Paleta wzorca jest **prawie czarna**, tło logowania po stronie aplikacji to `#F7F3EA`. **ΔE = 93,92 przy progu 5,0** (kancelaria 6,46 · stan pierwotny 4,66 · natura 2,15). Trzy drogi wyjścia i **żadna nie należy do wykonawcy**: (a) aplikacja przenosi ekrany logowania na ciemne; (b) nowy ADR świadomie znosi albo przepisuje wymaganie szwu; (c) tło strony wraca do kremu — cofa `WWW/050-FINAL`. **Bramka była czerwona już w `b4ffc6c`, a moja poprzednia zwrotka podała „pozostałe zielone" — nieprawda z odczytu częściowego** (rozdz. 9). `bramka:cennik` czerwona z braku `STRIPE_TEST_SECRET_KEY` w środowisku — zależność środowiskowa, nie regres. Poprzednio, stan po `WWW/042` (2026-08-26): **`kontrast stanów` ZIELONA — 108 upadków → zero**, `tokeny` (linter + strażnik, 26 ról) zielony, `kontrakt` zielony, pełny e2e 636 passed. Historia tej czerwieni jest pouczająca i dlatego zostaje: po `WWW/041` było **48 testów czerwonych z INNEGO POWODU NIŻ WCZEŚNIEJ.** Do `WWW/041` mówiły „nieoznaczalne” (brak pomiaru); po naprawie sondy mówią **liczbą**: 108 wystąpień jednego defektu — etykieta CTA hover **2,07:1 przy 4,5:1**. To nie jest ta sama czerwień: **poprzednia ZASŁANIAŁA tę**. `tokeny` (linter + strażnik z R-AKCENT-03) zielony. Wcześniej, po `WWW/040`: **`Kontrakt tokenów` WRÓCIŁ NA ZIELONO** — ΔE szwu spadło z 6,46 (kancelaria) do **2,15** (natura) przy nieruszonym progu 5,0; **T51 zamknięte tego samego dnia, w którym powstało**. Doszła natomiast czerwień **`Dostępność`/`kontrast stanów`**: 48 testów, wszystkie z powodem **„nieoznaczalne"** — poświata robi z tła gradient, którego sonda nie umie złożyć, więc odmawia werdyktu dla całej sekcji. **Zero testów zgłasza „poniżej progu", a `axe` jest zielony**, czyli nie ma dowodu na naruszenie kontrastu — jest brak dowodu, że go nie ma. Trzy drogi wyjścia w ADR-032. Poniżej stan dwóch pozostałych, odczyt 2026-08-23: | Odczyt 2026-08-23, **oba dzisiejsze przebiegi tak samo** — `32661737288` (`f2db728`) i `32663550392` (`d7a2fe3`, czyli stan zdalny): **`Nieodwracalne`** — „Brak raportu audytu nieodwracalnych dla commita" (ADR-018 pkt 4; raport jest **per commit**, więc ta czerwień wraca przy KAŻDYM nowym commicie, dopóki audytu nie ma) i **`Wydajność`** — krok `Pomiar`, mediana LCP `/` **1856 ms** przy budżecie 1800 na transporcie HTTP/1.1+gzip; ten sam pomiar daje **1276 ms** na HTTP/2+brotli. Trzynaście pozostałych zielonych w obu przebiegach. **Żadnej z tych czerwieni nie ruszam** — obie są poza zakresem zlecenia (zakaz 8), obie mają swoje pozycje: audyt → ADR-018 pkt 4 i Faza 7, próg → **T33** i kierunek (d)<br><br>⚠ **STAN ZMIERZONY 2026-10-07 (`WWW/101` krok 1b) — CZYTAJ `§ 1.1`, NIE TEN WIERSZ.** Dla dzisiejszego czubka istnieje już **werdykt CI z właściwej dziedziny**: przebieg `37229901154` szedł na `headSha` **`42c84ab…`**, czyli na tym samym obiekcie, co `HEAD` i czubek zdalnej. **Czerwonych jest TRZY, nie cztery — `ESLint` wrócił z `success`** (naprawa `456909d`). Brzmienie „cztery zadania" powyżej **zostaje widoczne jako ślad stanu z 06.09 → 04.10**, nie jako stan dzisiejszy — korekta bez zamazania śladu. Wszystkie cztery bramki, przed i po, z liczbami wydajności i werdyktem marginesu: **rozdz. 1, § 1.1** |
 | PR dla tej gałęzi | **żaden nie istnieje** (`gh pr list --head faza-4/podstrony` → puste) |
 | Backupy repo | ⚠ `/Volumes/Extreme SSD/Catherly-www-ZIP`. **Rozmiar: ~40 MB (odczyt 2026-08-26).** Poprzednia wartość w tym wierszu — „~9 MB każda" — była nieaktualna i **nie niosła daty**, więc zestarzała się w miejscu: dzisiejsze migawki ważą 21–40 MB, z czego ~34 MB to `.git`. Zauważone przy weryfikacji migawki `catherly-www-2026-08-26-1612.zip`, gdzie 41 MB wyglądało na anomalię wobec zapisu, a anomalią nie było. **Liczba zostaje z datą; kto ją cytuje, zabiera datę razem z nią.** **BACKUP NIE DZIEJE SIĘ SAM — haka `Stop` NIE MA** (T42, zmierzone 2026-08-24: zero trafień na `hooks` w czterech plikach konfiguracji). Skutkiem była przerwa **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. **Uruchamiaj `bash scripts/backup.sh` RĘCZNIE po każdym zadaniu i raportuj wynik** — to jedyne działające zabezpieczenie, jakie tu dziś jest. Fałszywe zdanie o automacie **usunięte z `CLAUDE.md` 2026-08-24**; kanon mówi teraz prawdę. **Weryfikuj migawkę ODTWORZENIEM, nie sumą** — rozpakuj, `git log` w odtworzonym repo, skasuj katalog; **T43** pokazuje, po co. **Nazwy ostatniej nie wpisuję**: `ls -t "/Volumes/Extreme SSD/Catherly-www-ZIP" \| head -3` |
@@ -1396,8 +1404,9 @@ z odczytu, nie z lektury zadania:
    wypchnie narzędzia zapewniające czystość.
 4. **„Uruchom sam krok wydajności" jest niewykonalne**: `workflow_dispatch`
    wymaga pliku workflow na gałęzi domyślnej, a `main` (`0896219`) nie ma
-   katalogu `.github`. Jedyny wyzwalacz to push, a ten uruchamia wszystkie 15
-   zadań; `bramka-wydajnosc` ma na dokładkę `needs: build`.
+   katalogu `.github`. Jedyny wyzwalacz to push, a ten uruchamia wszystkie
+   **16** zadań (~~15~~ — ze źródła 2026-10-09, rozdz. 17.1);
+   `bramka-wydajnosc` ma na dokładkę `needs: build`.
 5. **„Push obu commitów" wypchnąłby dziesięć** i nie jest zgodą wyliczoną
    z commitów.
 6. **Wskaźnik „przeczytaj najpierw" koliduje** z blokiem dodanym na górze
@@ -1488,7 +1497,7 @@ pushu mówi, co klient wysłał, a nie co serwer przyjął. Zgoda jest wyczerpan
 | **T35** | zlecenie pod złym adresem **odsyła się**, nie wykonuje w przybliżeniu — w obu kierunkach | **ADR-018 pkt 7** (obowiązuje w obu repozytoriach) | ✔ zamknięte |
 | **T36** | strażnik sprawdza **obecność, nie kształt**, dopóki dostawca kształtu nie gwarantuje kontraktem | `CLAUDE.md`, „Prymat nieodwracalnego", obok zakazu 10 — kanon 9 → **10 klas** | ✔ zamknięte |
 | **D5 / T23** | `fetch-depth: 0` **tylko** w krokach czytających historię, z uzasadnieniem przy każdym | nigdzie — takich kroków jest dziś **zero** | ◐ otwarte do T21 |
-| **D6 / T24** | `timeout-minutes` **20** pomiarowe / **10** pozostałe; krok rozróżniający `cancelled` **wymagany** | `.github/workflows/bramki.yml`, wszystkie 15 zadań | ◐ otwarte: **brak mutacji** |
+| **D6 / T24** | `timeout-minutes` **20** pomiarowe / **10** pozostałe; krok rozróżniający `cancelled` **wymagany** | `.github/workflows/bramki.yml`, wszystkie **16** zadań (~~15~~ — przeliczone ze źródła 2026-10-09, rozdz. 17.1) | ◐ otwarte: **brak mutacji** |
 
 **Dlaczego D5 nie zmieniło ani jednej linii `checkout`.** Przegląd wykonany na
 `f2db728` (osiągalny) pokazał, że w bramkach nie ma dziś kroku czytającego
@@ -1567,7 +1576,8 @@ jednego publicznego przebiegu, w którym wykonałby się krok z warunkiem dokła
 piętnaście kroków się odpali, **wynika z kodu runnera** (`StepsRunner.cs`:
 przy anulowaniu wynik zadania idzie na `Canceled`, a pętla po krokach **nie ma
 `break`**; `CancelledFunction.cs`: `cancelled()` czyta status **ZADANIA**).
-**Wynikanie z kodu to nie jest pomiar.** Te 15 kroków ma dziś status
+**Wynikanie z kodu to nie jest pomiar.** Tych **16** kroków (~~15~~ —
+przeliczone ze źródła 2026-10-09, rozdz. 17.1) ma dziś status
 NIESPRAWDZONE, czyli liczy się jak niedziałające.
 
 **Jedna dziura sprawdzona u siebie i zamknięta:** timeout na poziomie **KROKU**
@@ -1654,7 +1664,8 @@ w **każdym z 15 zadań**: *„Node.js 20 is deprecated… actions/checkout@v4,
 actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4”*
 — cztery akcje celują w Node 20, GitHub wymusza Node 24. Nic dziś nie jest
 zepsute; ryzyko ma **datę wygaśnięcia w cudzych rękach**, a gdy nadejdzie,
-padnie piętnaście zadań naraz, bo `checkout` i `setup-node` są w każdym.
+padnie **szesnaście** zadań naraz (~~piętnaście~~ — ze źródła 2026-10-09),
+bo `checkout` i `setup-node` są w każdym: po **16** wystąpień każde.
 Podwójny przypadek klas już nazwanych: **„raport, którego nikt nie czyta"**
 (ostrzeżenie leżało w logu i wyszło przypadkiem, przy zupełnie innej robocie)
 oraz **„strażnik zerodowany przez zmianę OTOCZENIA"** (bramki zielone, podłoże
@@ -1708,7 +1719,8 @@ która jej nie zawiera.
 **T41 — dopisane, co konkretnie może się zepsuć.** Akcja celująca w Node 20 na
 runnerze z Node 24 może przestać działać **przy dowolnej aktualizacji tej
 akcji, bez zmiany po naszej stronie**. Nie trzeba decyzji GitHuba ani naszego
-commita. Ponieważ `checkout` i `setup-node` stoją w każdym z 15 zadań, **padnie
+commita. Ponieważ `checkout` i `setup-node` stoją w każdym z **16** zadań
+(~~15~~ — ze źródła 2026-10-09, rozdz. 17.1), **padnie
 cała bramka naraz**. Kwalifikacja właściciela: **pozycja przedpremierowa, nie
 higiena** — do checklisty Fazy 7, obok T33.
 
@@ -3032,24 +3044,41 @@ kontra mediana trasy:
 
 ## 6. Stan rejestru warunków powrotu
 
-Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje **T1–T96**, bez luk
-w ciągu (zakres przeliczony **ze źródła** 2026-10-07 przy dopisaniu T96,
-`WWW/102` krok 1; ~~„T1–T95"~~ — zapis sprzed kilkunastu minut, z tego samego
-commita, nieaktualny od T96; ~~„T1–T58"~~ — zapis z 2026-09-04, nieaktualny
-od T59, a wcześniej stało ~~„T1–T49"~~, nieaktualne od T50. **Dwa pierwsze
-starzały się W MIEJSCU, bez upływu czasu i bez tranzytu, i oba przeżyły po
-kilkadziesiąt pozycji; trzeci nie przeżył jednego commita** — to pole wpisane
-wartością jest licznikiem przepisywanym ręcznie, czyli datą, nie liczbą.
-Postać trwała to polecenie:
-`grep -c '^| T[0-9]' docs/faza-2/rejestr-warunkow-powrotu.md` daje **174**
-wiersze w całym pliku — 84 otwarte pozycje plus 90 wierszy skorowidza —
-a zamkniętych pozycji (`^| ~~T`) jest **12**; 84 + 12 = **96**. Kontrola
-negatywna w tym samym przebiegu, na `HEAD` `7817580`: **168 wobec 87**.
-Rozkład ogniw i jego dziedzinę niesie akapit „Rozkład, policzony ze
-skorowidza" w samym rejestrze, nie ten dokument, i tam też stoi **T95**: para
-liczb rozkładu **nie znaczy nic bez nazwy lektury reguły** — dziś **41 · 28**
-przy liście pięciu słów i **43 · 26** przy liście bez „decyzj", obie sumujące
-się do **90**).
+Plik: `docs/faza-2/rejestr-warunkow-powrotu.md`. Pozycje **T1–T98**, bez luk
+w ciągu (zakres przeliczony **ze źródła** 2026-10-09 przy dopisaniu T98,
+`WWW/102` KROK 3 — ciągłość sprawdzona odczytem całego zbioru numerów, nie
+oględzinami: **98** pozycji, maksimum **98**, **zero luk**; ~~„T1–T97"~~ —
+zapis z 2026-10-08, nieaktualny od T98; ~~„T1–T96"~~ — zapis
+z 2026-10-07, nieaktualny od T97; ~~„T1–T95"~~, ~~„T1–T58"~~ — zapis
+z 2026-09-04, nieaktualny od T59, a wcześniej stało ~~„T1–T49"~~, nieaktualne
+od T50. **Dwa pierwsze starzały się W MIEJSCU, bez upływu czasu i bez tranzytu,
+i oba przeżyły po kilkadziesiąt pozycji; trzeci nie przeżył jednego commita** —
+to pole wpisane wartością jest licznikiem przepisywanym ręcznie, czyli datą,
+nie liczbą. Postać trwała to polecenie:
+`grep -c '^| T[0-9]' docs/faza-2/rejestr-warunkow-powrotu.md` daje **178**
+wierszy w całym pliku — 86 otwartych pozycji plus 92 wiersze skorowidza —
+a zamkniętych pozycji (`^| ~~T`) jest **12**; 86 + 12 = **98**. Kontrola
+negatywna w tym samym przebiegu, na `HEAD` `f823b7b`: **174 wobec 90**, czyli
+różnica czterech wierszy pochodzi z dwóch dopisanych pozycji (T97 i T98 mają
+wiersz w obu tabelach), a nie ze zmiany wzorca.
+⚠ **TEN AKAPIT SAM ZESTARZAŁ SIĘ W MIEJSCU O JEDNĄ POZYCJĘ** — napisałem go
+przy dopisaniu T97 i nie przeliczyłem przy T98, choć nagłówek 15.2
+przeliczyłem; wychwycone 2026-10-09 **przeglądem klasy**, nie przy edycji
+tabeli. Cztery liczby były tu nieaktualne naraz: zakres, suma pozycji, para
+`176 / 97` i para rozkładu. Opis w rozdz. 9.
+Rozkład ogniw i jego dziedzinę niesie
+akapit „Rozkład, policzony ze skorowidza" w samym rejestrze, nie ten dokument,
+i tam też stoi **T95**: para liczb rozkładu **nie znaczy nic bez nazwy lektury
+reguły** — 2026-10-09 **43 · 28** przy liście pięciu słów i **45 · 26** przy
+liście bez „decyzj", obie sumujące się do **92** (~~„42 · 28" i „44 · 26",
+suma **91**~~ — stan po T97, przed T98; ~~„41 · 28" i „43 · 26", suma
+**90**~~ — stan sprzed dopisania T97, a zarazem wartość kontroli negatywnej
+na `HEAD` `f823b7b` w przebiegu z 2026-10-09). ⚠ **A TO PRZELICZENIE ZŁAPAŁO
+BŁĄD W MOIM WŁASNYM, DOPIERO NAPISANYM WIERSZU** — druga komórka T97 niosła
+słowa „wskaz" i „zlecen", więc lista słów wrzucała ją do kubełka **drugiego**
+w obu lekturach, wbrew temu, co to zdanie mówi; **suma była na to ślepa**
+(91 przed i po poprawce). Naprawione przeniesieniem frazy do kolumny źródeł,
+tak jak stoi w T94; szczegóły w dopisku pod samym licznikiem w rejestrze.
 Te, które
 dotyczą bieżącej linii pracy:
 
@@ -3085,7 +3114,8 @@ dotyczą bieżącej linii pracy:
   **zero**; pierwszym będzie strażnik T21. Pozycja otwarta.
 - **T24** — `timeout-minutes` (4.5). **Rozstrzygnięte i wdrożone 2026-08-23
   (D6):** 20 min dla pomiarowych, 10 dla pozostałych, plus krok `Przyczyna
-  anulowania` na wszystkich 15 zadaniach. Pozycja otwarta — **brak mutacji**,
+  anulowania` na wszystkich **16** zadaniach (~~15~~ — ze źródła 2026-10-09,
+  rozdz. 17.1). Pozycja otwarta — **brak mutacji**,
   a obecność ustawienia w pliku to NIESPRAWDZONE.
 - **T25** — reguła bieżącej aktualizacji tego pliku **bez strażnika**. Zapisana
   w `CLAUDE.md` i rozdz. 0 na polecenie właściciela 2026-08-20; mechanizmu nie
@@ -3208,11 +3238,15 @@ dotyczą bieżącej linii pracy:
 
 ### 7.2 Decyzje właściciela, na które czeka robota
 
-0h. **OTWARTE PO `WWW/102` KROK 1 (2026-10-07) — TRZY decyzje właściciela
-   i jedna robota, która wymaga osobnego zlecenia.** (Stało tu ~~„dwie
-   decyzje"~~ — trzecia doszła w tym samym commicie, razem z poz. T96.)
-   **KROK 2 (2026-10-08) wszystkie trzy PRZEŻYŁY — żadnej nie rozstrzygałem
-   po cichu po drodze** (zakaz 8); pkt a doszedł jeden przyrząd, niżej.
+0h. **OTWARTE PO `WWW/102` — CZTERY decyzje właściciela; robota kroków 1–3 jest
+   zrobiona, a z kroku 3 doszła decyzja czwarta.** (Stało tu ~~„TRZY decyzje
+   właściciela i jedna robota, która wymaga osobnego zlecenia"~~ — stan po
+   kroku 1; a wcześniej ~~„dwie decyzje"~~.) **KROK 2 (2026-10-08) wszystkie
+   trzy PRZEŻYŁY i KROK 3 (2026-10-08/09) TEŻ — żadnej nie rozstrzygałem po
+   cichu po drodze** (zakaz 8; ~~„KROK 3 (2026-10-08)"~~ — praca dokumentacyjna
+   kroku 3 szła jeszcze 2026-10-09, a **ta doba też nie rozstrzygnęła żadnej
+   z czterech**: poszła w całości na liczniki, rozdz. 9); pkt a doszedł
+   w kroku 2 jeden przyrząd, a w kroku 3 **pięć kolejnych**, niżej.
    a. **GDZIE MA LEŻEĆ BEZPIECZNIK WYGLĄDU — `T94`.** Werdykt „Piksele:
       0 różnic", na którym stoją `WWW/102` i każde kolejne zlecenie
       z klauzulą „ZERO zmian widocznych", pochodzi z czterech plików
@@ -3239,6 +3273,19 @@ dotyczą bieżącej linii pracy:
       zamiast policzyć moje błędy jako „punkt końcowy martwy" — jedyny
       przypadek w tej sesji, w którym zero narzędzia złapał sam przyrząd,
       nie człowiek. Zginie z katalogiem sesji razem z resztą.
+      **KROK 3 (2026-10-08) POSZERZYŁ JĄ PONOWNIE I ZMIENIŁ JEJ WAGĘ:**
+      doszło **pięć kolejnych przyrządów** spoza repozytorium — sonda
+      kompletu nagłówków na 30 adresach (z listą wymaganą **niezależną** od
+      repo, więc nie mierzy samej siebie), statyczny spis CSP, pomiar naruszeń
+      w przeglądarce z kontrolą pozytywną i negatywną, jedna wspólna droga
+      cyklu mutacji i próg wykrywalności komparatora (jeden piksel), plus
+      przebieg dziesięciu bramek na kandydacie i bazie naraz. **Przyrządów
+      jest teraz dziesięć, a werdyktów stojących WYŁĄCZNIE na nich — sześć,
+      nie jeden:** komplet 30/30, 476 naruszeń, cztery cykle mutacji,
+      „piksele: 0 różnic", 8/10 bramek po obu stronach i próg jednego piksela.
+      Żadnego z tych zdań nie da się dziś odtworzyć z samego repozytorium.
+      **Czego to NIE zmienia:** warunek zamknięcia zostaje ten sam, bo
+      przedmiot jest ten sam — rośnie tylko cena wygaśnięcia katalogu sesji.
    b. **KTÓRA LEKTURA REGUŁY PRZYPISANIA OGNIW OBOWIĄZUJE — `T95`.** Rejestr
       niesie regułę w **dwóch niezgodnych postaciach** i stojąca para liczb
       odtwarza się wyłącznie po usunięciu jednego słowa z listy. Wybór
@@ -3267,15 +3314,48 @@ dotyczą bieżącej linii pracy:
       dokłada krok do haka, czyli zmienia zakres sprawdzania (zakaz 3
       w drugą stronę i zakaz 8); droga (2) przepisuje STANDARD zlecenia,
       czyli cudzy dokument.
-   d. **KROKI 2 i 3 TEGO SAMEGO ZLECENIA — robota, nie decyzja**, ale
-      z jednym rozstrzygnięciem na końcu: przełączenie CSP
-      z `Report-Only` na egzekwowaną idzie do właściciela jako
-      **propozycja bez wykonania** (tak mówi zlecenie). Koszt policzony już
-      w `WWW/101`: build niesie **20 skryptów inline bez `src`** i **0**
-      atrybutów `nonce`, a wzorzec z nonce wymusza render dynamiczny, przy
-      LCP już ponad budżetem na trzech trasach. Dwunastu luk
-      bezpieczeństwa **tutaj nie przepisuję** — stoją w
-      `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md` (zakaz 10).
+   d. **CZY WCHODZIMY W DROGĘ DO CSP EGZEKWOWANEJ, SKORO JEJ WARUNEK JEST
+      MIERZALNIE NIESPEŁNIONY — decyzja, nie robota** (przepisane 2026-10-08
+      po kroku 3; stało tu ~~„KROKI 2 i 3 TEGO SAMEGO ZLECENIA — robota, nie
+      decyzja"~~, co było prawdą, dopóki kroków nie wykonano). Kroki 2 i 3 są
+      **zrobione**; została z nich jedna rzecz i jest nią rozstrzygnięcie.
+      Zlecenie warunkuje propozycję przełączenia słowami „zero naruszeń
+      w konsoli na wszystkich trasach e2e" — **pomiar daje 476 naruszeń
+      `script-src-elem` na 30/30 tras, 0/30 stron czystych**, przy kontroli
+      pozytywnej i negatywnej 30/30 w tym samym przebiegu; liczba zgadza się
+      co do jednego ze statycznym spisem 476 skryptów inline RSC. Dlatego
+      **propozycji NIE SKŁADAM** — złożona wyglądałaby jak gotowa do
+      wykonania, a nie jest. ⚠ **Liczba z `WWW/101` była o rząd mniejsza**:
+      stało tu „build niesie **20 skryptów inline bez `src`**", i to nie jest
+      sprzeczność, tylko **inna dziedzina** — tam policzono skrypty w jednym
+      artefakcie HTML, tu zdarzenia w przeglądarce na trzydziestu trasach.
+      Obie liczby zostają widoczne. Trzy drogi i **żadna nie należy do
+      wykonawcy**: (1) `'unsafe-inline'` — **zakazane treścią zlecenia**
+      i zamieniłoby czerwień na ciszę (zakaz 3 w duchu); (2) **nonce** —
+      wymusza render dynamiczny, czyli rezygnację z SSG (**ADR-007**), przy
+      LCP już ponad budżetem na trzech trasach; (3) CSP zostaje
+      w `Report-Only` **świadomie i na stałe**, jako pomiar, nie
+      zabezpieczenie — wtedy trzeba zapisać, że tak jest, bo inaczej następna
+      sesja weźmie obecność nagłówka za ochronę. Dwunastu luk bezpieczeństwa
+      **tutaj nie przepisuję** — stoją w
+      `docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md` (zakaz 10), a pomiar
+      naruszeń i wstrzymana propozycja — w jego **§10.5** i **§10.8**.
+   e. **CZY STRONA MA MIEĆ IKONĘ I DLACZEGO `/favicon.ico` ODDAJE 500,
+      A NIE 404 — `T97`** (doszło 2026-10-08, krok 3). Adres oddaje **500 na
+      kandydacie i 500 na bazie `7817580`**, a plików ikony w repozytorium
+      jest **zero** (kontrola pozytywna `git ls-files public` → 89). To jest
+      **pierwsze żądanie, jakie przeglądarka wysyła sama**, bez kliknięcia,
+      przy każdym wejściu. Dwie części i **każda jest decyzją, nie
+      wykonaniem**: (1) czy ikona ma powstać — to materiał graficzny, czyli
+      kadr zatwierdzany **imiennie** przez właściciela, nie kod; (2) dlaczego
+      500, a nie 404 — osobna diagnoza, bo 500 znaczy, że żądanie **wchodzi
+      w obsługę, która się wywraca**. **Czego nie zmierzyłem i nie udaję, że
+      zmierzyłem:** przyczyny 500 (odczyt śladu wyjątku jest pierwszym krokiem
+      naprawy, a naprawy nikt nie zamawiał) ani zachowania na Vercelu, gdzie
+      platforma może odpowiadać na ten adres sama. **Nie naprawiam przy
+      okazji** (zakaz 8), a granica tego zakazu nie jest tu przekroczona:
+      defekt **nie produkuje nowych wadliwych artefaktów** — oddaje 500
+      i nic nie zapisuje.
 
 0g. **OTWARTE PO `WWW/100` (2026-10-04) — dwie czerwienie CI, których wykonawca
    domknąć NIE MOŻE.** Dopisane tu, bo rozdz. 7 **nie miał ani jednej pozycji
@@ -3454,7 +3534,12 @@ dotyczą bieżącej linii pracy:
    `timeout-minutes: 20` dla pomiarowych, `10` dla pozostałych. Krok
    rozróżniający `cancelled` **wymagany** — bez niego wyparcie przez concurrency
    i przekroczony limit dają identyczny status. W `.github/workflows/bramki.yml`
-   wszystkie **15** zadań ma limit (`bramka-wydajnosc` = 20, reszta = 10) i krok
+   wszystkie **16** zadań mają limit. ~~Poprzednie brzmienie: „wszystkie **15**
+   zadań ma limit (`bramka-wydajnosc` = 20, reszta = 10)"~~ **myliło się w obu
+   liczbach**: ze źródła 2026-10-09 jest **16/16**, a na 20 min stoją **dwa**
+   zadania — `bramka-wydajnosc` i `bramka-pelny-zestaw` (to drugie podniesione
+   2026-08-23) — czyli **14 × 10 + 2 × 20**; kontrola negatywna `HEAD`
+   `f823b7b` w tym samym przebiegu daje to samo (rozdz. 17.1). Krok
    `Przyczyna anulowania` pod `if: cancelled()` wypisujący `::warning`
    z instrukcją odczytu. Pozycja **otwarta — brak mutacji**: obecność
    `timeout-minutes` w pliku to status NIESPRAWDZONE, a niesprawdzone liczy się
@@ -3743,6 +3828,309 @@ to strona ma zimny start i właściwą odpowiedzią jest reguła pesymistyczna, 
 
 Zapisane, żeby nie powtarzać.
 
+- **KLASA LICZNIKA PRZESZŁA PRZEZ OBA DOKUMENTY, A LICZNIK TEGO WPISU
+  ZESTARZAŁ SIĘ DWA RAZY W TRAKCIE JEGO PISANIA** (2026-10-09, `WWW/102`
+  krok 3). Wpis z 2026-10-08 kończył się na ustaleniu „licznik pod tabelą to
+  **klasa zdań**" — i policzyłem tę klasę **w rejestrze**: nota pauzy z tej
+  doby zapisuje **dziewięć** liczników tej samej formy przeliczonych ze
+  źródła w jednym przebiegu. Każde kolejne brzmienie tego wpisu było
+  **prawdziwe w chwili zapisania i nieaktualne w ciągu godziny**; obie
+  poprzednie liczby zostają widoczne, bo w nich jest cała treść wpisu —
+  ~~„osiem kolejnych żywych miejsc, wszystkie poza rejestrem"~~ (przegląd
+  pierwszy) → ~~„szesnaście miejsc w tym pliku"~~ (przegląd po formie) →
+  **policzone na koniec doby: 18 miejsc w tym pliku, 19 w rejestrze, razem
+  37** (rejestr: 9 liczników pozycji + 10 liczników zadań `bramki.yml`).
+  Cztery przypadki są rozstrzygające dla klasy: **(a)** w rozdz. 6 akapit,
+  który **opisuje** starzenie się liczników w miejscu, sam zestarzał się
+  w miejscu o jedną pozycję i niósł **cztery** nieaktualne liczby naraz
+  (zakres, suma pozycji, para `176 / 97`, para rozkładu) — napisany przy T97,
+  nieprzeliczony przy T98, choć nagłówek 15.2 przeliczyłem; **(b)** w 15.2
+  wiersz tabeli stanów opisujący „to drzewo robocze" opisywał drzewo, które
+  **przestało istnieć w chwili dopisania T98** — w tabeli, której nagłówek
+  mówi „PRZELICZANE ZE ŹRÓDŁA PRZY KAŻDEJ EDYCJI"; **(c)** w 17.1 nagłówek
+  „Piętnaście zadań" i lista 15 nazw stały **ponad sześć tygodni** nad zdaniem
+  „Od 2026-08-24 zadań jest 16" — korekta dopisana obok, zdanie poprawiane
+  zostawione, a w tym samym zdaniu, które **dobrze** podaje 16, licznik
+  „trzynaście pozostałych" też był nieaktualny; **(d)** w rejestrze jedno
+  zdanie myliło się **w obu swoich liczbach naraz** („na wszystkich 15
+  zadaniach, `bramka-wydajnosc` = 20, czternaście pozostałych = 10" — zadań
+  jest 16, a rozkład to 14 × 10 + 2 × 20), czyli **poprawienie samej liczby
+  zadań zostawiłoby to zdanie fałszywym**.
+  **JEDNOSTKA PRZEGLĄDU ROZSTRZYGNĘŁA, CO POLICZYŁEM JAKO ZERO.** Pierwszy
+  przegląd klasyfikował **linie** — i zapisałem w tym pliku, że trzy trafienia
+  w rejestrze „to pomiary z datą, zostawione świadomie". **Ten werdykt był
+  fałszywy — i nie z powodu wzorca, a z powodu jednostki**: w jednej komórce
+  T24 stoi **sześć** zdań tej klasy, z czego dwa z datą w samym zdaniu, trzy
+  żywe i bez daty, a jedno datuje się samo przez liczbę towarzyszącą
+  („15 zadań, **0 ×** `timeout-minutes`" może opisywać tylko stan przed
+  wdrożeniem — i dostało to wprost w nawiasie). Linia z datą
+  **przepuszczała własne niedatowane zdania**. Drugi przegląd klasyfikował
+  **zdania** i stąd wzięło się dziesięć miejsc w rejestrze.
+  **Pomiar ze źródła 2026-10-09, z kontrolą negatywną `HEAD` `f823b7b` w tym
+  samym przebiegu, wynik po obu stronach IDENTYCZNY** (czyli rozjazd **nie
+  powstał w tej pracy**): **16** zadań · `timeout-minutes` **16/16** =
+  14 × 10 min + 2 × 20 min (dwudziestki: `bramka-pelny-zestaw`
+  i `bramka-wydajnosc`) · `actions/checkout@` **16** w 16/16 zadaniach ·
+  `actions/setup-node@` **16** w 16/16 · `download-artifact@` **7** ·
+  `upload-artifact@` **2** · krok `if: cancelled()` **16** w 16/16 ·
+  `needs: build` **7** · `fetch-depth` **0** wystąpień. Dwie liczby, które
+  **nie** drgnęły (7 i 2), są tu **kontrolą pozytywną przeglądu**: przebieg
+  poprawiający wszystko w górę nie zostawiłby ich w miejscu.
+  ⚠ **PIERWSZY PRZEBIEG TEGO POMIARU DAŁ 17 ZADAŃ — LICZBA NARZĘDZIA, NIE
+  ŚWIATA.** Wyrażenie na nazwę zadania (`^  [a-z0-9-]+:$`) łapało `push:`
+  z bloku `on:` (`on:` w `:7`, `push:` w `:9`, `jobs:` dopiero w `:48`).
+  Poprawka: cięcie pliku na linii `jobs:` **plus kontrola negatywna metody
+  w tym samym przebiegu** — `assert "push" not in zadania` oraz
+  `assert zadania[0] == "build"`. Złapane **przed** zapisaniem czegokolwiek,
+  więc koszt wyszedł zerowy; przy odwrotnym losie wpisałbym do dwóch
+  dokumentów siedemnastkę z pełnym aparatem dowodowym obok.
+  **Wniosek, którego wpis sprzed doby nie miał: otoczeniem licznika nie jest
+  otoczenie tabeli** — klasa przechodzi przez rozdziały i przez oba dokumenty,
+  a wyciągnął ją **przegląd po formie puszczony celowo**, nie edycja tabeli.
+  ⚠ **Pytanie przed commitem z `CLAUDE.md` („czy zmieniłeś bramkę, trasę albo
+  polecenie `npm`") tego nie wyłapie z zasady**: odpowiedź była **nie**,
+  a sekcja 17.1 i tak była fałszywa od sześciu tygodni — pytanie o **własną
+  zmianę** nie jest pytaniem o **prawdziwość rozdziału**.
+  **ZASIĘG I ŚLEPOTA — ZMIERZONE, NIE ZADEKLAROWANE.** To poprawka do
+  pierwszego brzmienia tego wpisu, które mówiło ~~„pozostałych plików
+  w `docs/` nie przeszukałem"~~, czyli stawiało granicę z przekonania —
+  a „zdanie o własnej niedostępności podlega dowodowi tak samo jak każde
+  inne". Przeszukane **205 plików** (`CLAUDE.md`, `docs/**`, `e2e/**`,
+  `scripts/**`, `.github/**`; `.md`, `.yml`, `.ts`, `.mjs`) wzorcem na
+  liczebność zadań i kroków. **Poza dwoma dokumentami: 38 trafień w 18
+  plikach, z czego po przeczytaniu do tej klasy należą TRZY — i wszystkie
+  trzy są PRAWDZIWE w swoim zadeklarowanym zakresie**:
+  `docs/BRIEFING-MIEDZY-SESJAMI.md:110` i `:175` („15 zadań") pod własnym
+  nagłówkiem „każda liczba niżej pochodzi z odczytu repozytorium i GitHuba
+  **2026-08-20**"; `docs/RAPORT-POWYKONAWCZY-WWW.md:1165` („joby CI **14** —
+  1 build + 13 bramek") pod „**Zakres:** od `0896219` do `3ca12a3`
+  (**2026-08-16**)"; wiersz `docs/faza-2/dowody-wartosci-regul.md:43` niesie
+  datę **2026-08-24** we własnej kolumnie. **I to jest najmocniejsze ustalenie
+  całej doby, bo nie wynika z reguły, którą znałem:** ten sam licznik żyje
+  w repozytorium w **trzech generacjach naraz** — **14** (2026-08-16), **15**
+  (2026-08-20), **16** (2026-10-09) — a zestarzał się **wyłącznie w tych
+  dwóch dokumentach, którym kanon zabrania zadeklarować datę odczytu**, bo
+  mają mówić prawdę **ciągle**: w przekazaniu i w rejestrze. Dokument
+  z zadeklarowanym zakresem nie starzeje się **sam z siebie**; dokument, który
+  ma być wiecznie aktualny, starzeje się **przy każdej cudzej zmianie** —
+  i tylko on wymaga przebiegu liczącego. Z tego samego powodu zostało
+  nietknięte: **cztery** wystąpienia z zadeklarowanym zakresem w tych dwóch
+  dokumentach („Czego nie przeszukałem", „stan 2026-08-24, pozycje T1–T43",
+  wiersz T91 ze stemplem 2026-10-04) i **jedenaście** zdań niosących datę
+  albo numer przebiegu **w samym zdaniu** (`69c2dab` 2026-08-19, odczyt
+  `bramki.yml` 2026-08-23, przebieg `32663550392` na `d7a2fe3`) — a osobno
+  **cztery** zdania, które datę mają dopiero **w zdaniu obok albo w tej samej
+  komórce**; te cztery też zostawiłem, ale zapisuję je jako **słabszą postać**
+  tego samego zabezpieczenia, bo cytat wyjęty z nich pojedynczo nie poniesie
+  już żadnego stempla. **Oddzielenie tych dwóch zbiorów jest częścią
+  przeglądu, nie wyjątkiem od niego.**
+- **ZERO Z `unzip -l | grep -c` BYŁO ZEREM WZORCA, A POKAZAŁA TO WYŁĄCZNIE
+  KONTROLA POZYTYWNA, KTÓRA WYSZŁA RÓWNIE ZEROWA** (2026-10-08, powtórzone
+  pomiarem 2026-10-09). Sprawdzenie standardu „`.env` = 0" w kopii ZIP:
+  wzorzec niósł **prefiks katalogu** (`catherly-www/.env`), którego archiwum
+  nie ma — wpisy są zapisane **bez** prefiksu. Cel dał **0** i kontrola
+  pozytywna (`catherly-www/package.json`) dała **też 0**, i dopiero to
+  odróżniło „wykluczenie działa" od „wzorzec nie pasuje do niczego".
+  Powtórzone 2026-10-09 na `catherly-www-2026-10-08-2222.zip` (**5798**
+  wpisów): postać z prefiksem → cel **0**, kontrola **0**; postać mierząca
+  (`unzip -Z1`, ścieżka bez prefiksu) → `^\.env$` **0**, kontrola
+  `^package\.json$` **1**, `.env` istnieje lokalnie **1**, a wszystkich
+  wpisów z `.env` w nazwie jest **1** i jest to `.env.example` — czyli
+  **tożsamość przedmiotu wypisana obok werdyktu**. Standard trzyma się,
+  ale trzyma się **dlatego, że kontrola pozytywna też dała zero i to
+  zauważyłem**, a nie dlatego, że pierwszy odczyt pokazał 0. Rodzina: „zero
+  bez kontroli pozytywnej jest zerem narzędzia" oraz „złe wywołanie
+  przyrządu wygląda identycznie jak wynik, którego się szuka".
+- **WZORZEC `^| T` ŁAPIE O TRZY WIERSZE WIĘCEJ NIŻ POZYCJE, A BILANS I TAK SIĘ
+  ZGADZA** (2026-10-08, powtórzone 2026-10-09). Licznik pozycji rejestru czyta
+  `^\| T\d`; ten sam wzorzec **bez** `\d` daje **181** zamiast **178**
+  (`HEAD` `f823b7b`: **177** zamiast **174**). Tożsamość trzech nadwyżkowych
+  wierszy, wypisana w przebiegu: `| Trebuchet MS | …` i `| Tahoma | …` —
+  wiersze tabeli krojów — oraz nagłówek `| Trasa | Reprezentant | Zapas |
+  Rozrzut |`. Sedno: **nadwyżka nie psuje bilansu** (86 otwartych + 92 wiersze
+  skorowidza = 178), więc za szeroki wzorzec **przeszedłby kontrolę
+  spójności** — złapało go dopiero **wypisanie tożsamości** nadwyżki, nie
+  suma. Praktycznie: każdy licznik wierszy dokumentu niesie **kontrolę
+  zasięgu** — ten sam wzorzec rozluźniony o jeden znak, z różnicą
+  **wymienioną z nazwy**, w tym samym przebiegu.
+- **`--list` ORZEKA O ZAMIARZE RUNNERA, PRZEBIEG O WYKONANIU — TA SAMA LICZBA
+  Z DWÓCH RÓŻNYCH DZIEDZIN** (odczyt 2026-10-08, przebieg 2026-10-09).
+  `npx playwright test <spec> --list` dał `Total: 36 tests in 1 file`, zgodnie
+  z czterema projektami w `playwright.config.ts` po 9 testów. Odczyt **nie
+  jest przebiegiem** („wynikanie z kodu to nie pomiar"), więc ten sam spec
+  poszedł na stanowisko kandydata (`WWW_BAZA=http://localhost:3200`,
+  `--reporter=line`, RC 0) → **36 passed (1,8 s)**, a w logu każda z czterech
+  nazw projektów pada przy **9** testach — **zliczone z logu**, nie odczytane
+  z konfiguracji — przy kontroli negatywnej nazwą widmo w tym samym
+  przebiegu → **0** trafień. Odczyt **nie jest przekreślony**: był prawdziwy
+  w swojej dziedzinie. ⚠ Dwa pomiary **z jednego źródła** — te same ręce, ta
+  sama maszyna, ten sam runner — mierzą **powtarzalność zjawiska, nie
+  niezależność potwierdzenia**; granica „ta maszyna kontra CI" stoi
+  nietknięta i nieodczytana.
+- **WSPÓLNY `mtime` NIE ODPOWIADA NA PYTANIE, CZY BUILD WIDZIAŁ TREŚĆ**
+  (2026-10-08, `WWW/102` krok 3). Trzy pliki w grze miały ten sam znacznik
+  czasu co katalog buildu i wyglądało to jak dowód, że wydanie kandydata je
+  zawiera. Metadane tego nie rozstrzygają: `mtime` jest zdaniem **o czasie**,
+  a pytanie było **o treść** — „zbudowane z tego" i „dotknięte w tej samej
+  chwili" dają identyczny znacznik. Rozstrzygnęło **ponowne uruchomienie
+  strażnika przeciw stanowisku** :3200, czyli zachowanie, nie metadana.
+  Rodzina „brak dowodu = brak zabezpieczenia", o szczebel niżej niż pytanie
+  zerowe: tu artefakt **istniał**, a niepewne było, **co** w nim jest.
+- **JEDNA TABELA, CZTERY LICZNIKI I WSZYSTKIE CZTERY PRZETERMINOWANE —
+  A TRZECIEGO I CZWARTEGO NIE SZUKAŁEM, BO JUŻ „NAPRAWIŁEM LICZNIK"**
+  (2026-10-08, `WWW/102` krok 3). Przy dopisaniu T97 do skorowidza 15.2
+  przeliczyłem nagłówek sekcji (deklarował **92 · 84 + 8 · 86**, źródło
+  dawało **95 · 87 + 8 · 89** jeszcze przed T97) i uznałem rzecz za
+  zamkniętą. Ta sama tabela niosła jednak **jeszcze trzy** liczby o tej
+  samej własności, wszystkie fałszywe: nagłówek akapitu „ŚLAD **CZTERECH**
+  STANÓW **JEDNEJ DOBY**" nad tabelą stanów, która miała już **pięć**
+  wierszy z **trzech** dób; zdanie „**Dwa z czterech** stanów stoją
+  w commitach … stan czwarty jest w drzewie roboczym" — myliło się i w
+  liczbie, i w położeniu (czwarty stan dostał w międzyczasie commit
+  `c955217`); oraz kontrola pozytywna metody „**92** numery T (T1–T92)"
+  w rejestrze, gdzie po tej samej regule stało **97** numerów (T1–T97 bez
+  luki, zmierzone 2026-10-08 w tym samym przebiegu), a 2026-10-09 — **98**
+  (T1–T98 bez luki, po dopisaniu T98). **Wniosek, którego
+  nie miałem przed tym pomiarem: „licznik pod tabelą" to nie jeden akapit,
+  to KLASA ZDAŃ — i liczy się JE WSZYSTKIE, nie ten, który jest akurat
+  wyróżniony pogrubieniem.** Forma wymuszająca na przyszłość: po edycji
+  tabeli przeszukaj jej otoczenie po **liczebnikach słownych** („czterech",
+  „dwa z", „sześciu") i po cyfrach, a nie po samym nagłówku — bo licznik
+  zapisany słowem nie wygląda jak licznik. Rodzina: „każdy licznik pod
+  tabelą jest liczony ze źródła przy każdej edycji tabeli albo nie ma go
+  wcale" oraz „po sprostowaniu przypadku przelicz wszystkie zdania tej
+  samej formy" — ta druga reguła stała w `CLAUDE.md` i **tego właśnie od
+  mnie wymagała**, a ja sprostowałem jedno wystąpienie i przestałem szukać.
+- **POLSKI CUDZYSŁÓW W ŹRÓDLE `python3` — CZWARTY RAZ, I PIERWSZY RAZ
+  WBREW WŁASNEMU ZAPISOWI SPRZED GODZINY** (2026-10-08, `WWW/102` krok 3).
+  Przeniesienie jednego złamania wiersza w akapicie 15.2: literał
+  z `„87 wierszy (79 otwartych + 8 przekreślonych)"` **zamknął się na
+  prostym `"`** stojącym po polskim zamknięciu cudzysłowu, a `python3`
+  wypisał `SyntaxError: invalid character '„' (U+201E)` ze strzałką
+  wskazującą miejsce **o kilkadziesiąt znaków dalej** niż przyczyna.
+  Naprawa klasy była już wtedy zapisana — **w tym samym rozdziale, wpis
+  wyżej**: polski tekst idzie do pliku `.txt` przez `cat > … <<'TXT'`,
+  a `python3` tylko go **czyta**. Ominąłem ją, bo zmiana była
+  „dwulinijkowa" — i to jest cała treść tego wpisu: **próg, poniżej
+  którego przestaję stosować własną regułę, jest groźniejszy od samej
+  pomyłki**, bo każda pojedyncza pomyłka kosztuje minutę, a zniesiony próg
+  kosztuje tyle razy, ile razy coś jest „małe". Kanoniczne „klasa opisana
+  nie jest klasą unikaną" — tu z odległością jednego ekranu między opisem
+  i powtórzeniem.
+- **HOMOGLIF CYRYLICKI W MOIM WŁASNYM POLSKIM ZDANIU — NIEODRÓŻNIALNY
+  WZROKOWO I WYPADAJĄCY Z KAŻDEGO PRZESZUKANIA PO TYM SŁOWIE** (2026-10-08,
+  `WWW/102` krok 3). Dopisując trzecią komórkę do wiersza T97 wpisałem
+  słowo z **cyrylickim `а` (U+0430)** w miejscu łacińskiego `a` — w zapisie
+  `sięgа`, który **celowo** niesie tu homoglif jako okaz, tak samo jak `а`
+  w cytowanym niżej wyniku skanu. Wygląd jest identyczny w każdym kroju,
+  więc żaden odczyt oka tego nie złapie — a skutek jest gorszy niż
+  literówka: słowo **wypada z `grep` po poprawnej
+  formie**, więc przyszłe przeszukanie rejestru po tym zdaniu zwróci zero
+  i będzie to **zero narzędzia podane jako zero bytu**. Złapał to skan
+  całego pliku po **nazwach Unicode**, nie po wzorcu: `{'Δ': 9, 'а': 1}`,
+  z kontrolą pozytywną w tym samym przebiegu (**11 556** polskich znaków
+  diakrytycznych — gdyby skan nie widział niełacińskich liter, ta liczba
+  byłaby też zerowa). Po naprawie: **0 cyrylicy**, 9 greckich `Δ` zostaje
+  i to jest poprawne (deltaE). Praktycznie: **plik, do którego dopisuję
+  prozę, przechodzi skan po nazwach znaków — nie po wzorcu, bo wzorzec
+  trzeba znać, a homoglifu się nie podejrzewa.**
+- **POLSKI CUDZYSŁÓW W ŹRÓDLE `python3` — TRZECI RAZ TEJ SAMEJ RODZINY
+  W JEDNEJ PRACY, I DOPIERO TERAZ NAPRAWA RODZINY, NIE WYSTĄPIENIA**
+  (2026-10-08, `WWW/102` krok 3). Fraza `„zero naruszeń"` w literale
+  pythona kończy ciąg na **prostym `"` zamykającym polski `„`**, a błąd
+  wychodzi **w zupełnie innym miejscu**: `SyntaxError: invalid character
+  '—' (U+2014)`, czyli wskazuje myślnik kilka wyrazów dalej. Pierwsza
+  naprawa — ucieczki przy konkretnych literałach — **nie zadziałała**, bo
+  fraza była złamana na dwie linie źródła skryptu i ucieczka trafiła
+  w połowę. **Naprawa trwała: żaden tekst polski nie wchodzi już do źródła
+  skryptu.** Teksty idą do plików `.txt` heredokiem `cat > … <<'TXT'`,
+  a python **tylko je czyta**. To zamyka całą rodzinę (cudzysłów, myślnik,
+  apostrof, nawias) zamiast jednego wystąpienia — i tyle samo kosztuje.
+  Rodzina po stronie `node`: ta sama fraza w `.mjs` wywróciła przyrząd
+  pomiaru CSP **przed pierwszym żądaniem**.
+- **HEREDOK NIECYTOWANY WYKONUJE ODWROTNE APOSTROFY W TREŚCI SKRYPTU —
+  I TO JEST CZWARTE WYSTĄPIENIE RODZINY „CUDZE CYTOWANIE ZJADA MÓJ TEKST"
+  W JEDNEJ PRACY** (2026-10-08, `WWW/102` krok 3). Dosłownie minutę po
+  zapisaniu naprawy rodziny (teksty do plików, python tylko czyta)
+  wstawiłem do źródła pythona kotwicę zawierającą ``ls`` w odwrotnych
+  apostrofach — przez heredok **`<<PY`**, czyli niecytowany, bo chciałem
+  podstawić `$S`. Powłoka **wykonała** `ls` w środku mojego literału,
+  podstawiła wynik i python zobaczył ciąg, którego nigdy nie napisałem:
+  `SyntaxError: unterminated string literal`, w linii, która w moim
+  pliku wyglądała poprawnie. **Klasa opisana nie jest klasą unikaną** —
+  zapisałem regułę o cytowaniu i wywróciłem się na jej drugiej połowie
+  w tym samym przebiegu. Rozstrzygnięcie na przyszłość jest jednym
+  zdaniem: **heredok do pythona jest ZAWSZE cytowany (`<<'PY'`),
+  a wszystko, co ma być podstawione, wchodzi ścieżką pliku wpisaną
+  wprost albo czytaną ze środowiska wewnątrz pythona** — nigdy przez
+  interpolację powłoki, bo ta włącza naraz `$`, `` ` `` i `\`.
+- **KLASYFIKATOR CZYTA SŁOWA, NIE SENS — I ŹLE WPISAŁ DOKŁADNIE TEN WIERSZ,
+  KTÓRY SAM NAPISAŁEM MINUTĘ WCZEŚNIEJ; SUMA BYŁA NA TO ŚLEPA**
+  (2026-10-08, `WWW/102` krok 3). Przeliczając „Rozkład policzony ze
+  skorowidza" po dopisaniu **T97** uruchomiłem klasyfikator przepisany
+  z własnej reguły rejestru — lista słów rozstrzygających („rozstrzyg",
+  „wskaz", „kierunek", „decyzj", „zlecen") w drugiej komórce wiersza.
+  Moja własna komórka niosła wyrazy **„wskazało"** i **„zlecenie"**
+  w zdaniu, które mówi rzecz **odwrotną** („przedmiotu nie wskazało
+  zlecenie"), więc wiersz wpadł do kubełka „własny + zewnętrzne wskazanie"
+  w **obu** lekturach: **41 · 29** i **43 · 27**, wbrew treści samego
+  wiersza. **Suma wynosiła 91 przed naprawą i 91 po naprawie, w obu
+  lekturach** — bo przesunięcie wiersza między kubełkami jest dla sumy
+  niewidzialne. **Czwarte wystąpienie tej ślepoty w tym pliku.** Naprawa
+  wzorem T94: fraza przeniesiona do komórki źródeł, ponowny pomiar
+  **42 · 28** i **44 · 26**. Praktycznie: **licznik czerpany ze źródła
+  broni przed starzeniem, nie przed złym wpisem** — a wpis sprawdza się
+  czytając regułę **przed** liczeniem, nie po. Czego ten pomiar NIE
+  dowodzi: sprawdzony został **jeden** wiersz, mój; pozostałych 90 nie
+  przeglądałem pod tym kątem.
+- **ASERCJA TAUTOLOGICZNA WYGLĄDA JAK SPRAWDZENIE I NIE SPRAWDZA NICZEGO**
+  (2026-10-08, `WWW/102` krok 3). W nowym strażniku nagłówków napisałem
+  `expect(TRASY.length * JEZYKI.length).toBe(TRASY.length * 3)` — a
+  `JEZYKI.length` **jest** trzy, więc obie strony są z definicji równe
+  i asercja **nie może zaczerwienić na żadnym wejściu**. Wygląda jak
+  pilnowanie liczby adresów, a jest ozdobą. Złapane przez przeczytanie
+  własnego świeżego kodu, nie przez przebieg — przebieg był zielony
+  i **miał być zielony zawsze**. Zamieniona na domknięcie realnej luki:
+  `expect([...JEZYKI].sort()).toEqual([...routing.locales].sort())`, która
+  czerwieni się, gdy ktoś doda czwarty język w `routing.ts`, a lista
+  pomiaru zostanie przy trzech (`e2e/naglowki-bezpieczenstwa.spec.ts:88`).
+  Praktycznie: **przy każdej asercji z arytmetyką zapytaj, jakie wejście
+  ją zaczerwieni** — jeśli żadne, to nie strażnik.
+- **PRZYRZĄD, KTÓREGO KODY WYJŚCIA ZACHODZĄ NA KODY RUNTIME'U, NIE ODRÓŻNIA
+  NIEWYSTARTOWANIA OD WYNIKU** (2026-10-08, `WWW/102` krok 3). Przyrząd
+  mierzący naruszenia CSP wyszedł **kodem 1** — a to kod `node`
+  z `SyntaxError`, nie werdykt pomiaru: **zadeklarowana dziedzina tego
+  przyrządu to 30/31/3/2** i właśnie dlatego dało się od razu powiedzieć,
+  że pomiar **się nie odbył**, zamiast zapisać „1 = coś poszło nie tak"
+  i zgadywać. Gdyby przyrząd wychodził 0/1 jak większość skryptów,
+  **awaria startu wyglądałaby identycznie jak wynik**. Praktycznie, dwie
+  rzeczy razem: **kody wyjścia własnego przyrządu stawia się poza zakresem
+  runtime'u**, a przed przebiegiem pomiarowym idzie `node --check` — zero
+  kosztu, a odsiewa całą klasę „pomiar, którego nie było".
+- **CZERWIEŃ BRAMKI BYWA ZEREM MOJEGO ŚRODOWISKA, NIE CZERWIENIĄ
+  REPOZYTORIUM** (2026-10-08, `WWW/102` krok 3). `npm run bramka:cennik`
+  pada lokalnie, bo brakuje `STRIPE_TEST_SECRET_KEY` — i pierwszym
+  odruchem było zapisać to jako czerwień do rejestru. **CI tę zmienną
+  podaje**: `.github/workflows/bramki.yml:189` wstrzykuje ją z sekretów do
+  tego właśnie kroku, więc bramka w swoim właściwym otoczeniu nie jest
+  czerwona, a mój przebieg **nie miał czym jej zmierzyć**. To jest zero
+  narzędzia w najgroźniejszej postaci: **wygląda jak defekt produktu
+  i trafiłoby do rejestru jako warunek powrotu**, czyli do dokumentu,
+  który czyta się jak stan repozytorium. Praktycznie: **przed zapisaniem
+  czerwieni przeczytaj, co bramce daje CI** — rodzina „sygnatura czerwieni
+  środowiskowej vs regresji" (niżej w tym rozdziale).
+- **RÓWNE KODY WYJŚCIA W DWÓCH KOLUMNACH NIE DOWODZĄ TEJ SAMEJ PRZYCZYNY**
+  (2026-10-08, `WWW/102` krok 3). Dziesięć bramek przebiegło na kandydacie
+  **i na bazie `7817580`** w jednym przebiegu; po obu stronach **8
+  zielonych i 2 czerwone**, więc tabela kodów sama z siebie wyglądała na
+  dowód braku regresji. **Kody tego nie dowodzą** — dwie czerwienie z tego
+  samego powodu i dwie z różnych powodów dają w tabeli identyczny obraz.
+  Rozstrzygnęło **przeczytanie uzasadnień**: `kontrakt` czerwieni się po
+  obu stronach na `deltaE 5,8 > 5` (T74), `nieodwracalne` po obu stronach
+  na braku raportu audytu (T83) — te same przyczyny, więc czerwień jest
+  **zastana**, nie moja. Praktycznie: **kontrola negatywna na bramkach to
+  porównanie POWODÓW, nie kodów wyjścia**; kod jest skrótem, a skrót
+  z definicji gubi to, o co tu chodzi.
 - **`ls` Z DWOMA WZORCAMI W ZSH PRZERYWA CAŁE POLECENIE, GDY JEDEN NIE MA
   DOPASOWANIA — I TO ZERO NALEŻY DO POLECENIA, NIE DO BYTU** (2026-10-08,
   `WWW/102` krok 2). `ls -la src/middleware.* middleware.*` zwróciło
@@ -3902,11 +4290,11 @@ Zapisane, żeby nie powtarzać.
   — i **zaraz potem** napisałem nagłówek 15.2 „82 wiersze … T1–T91 BEZ T43,
   T44–T50 i T57", w którym 82 jest liczbą wierszy **otwartych** (wszystkich
   było 90), a T43 i T57 wiersz w tej tabeli **mają**, przekreślony. Trzy
-  wielkości tej tabeli — wiersze, różne numery, numery bez wiersza — mają
-  dziś wartości **91 · 85 · 7** i **każda da się nazwać „ile tu jest
-  pozycji"**. Wykonawczo: **nagłówek i licznik niosą NAZWĘ mierzonej
-  wielkości, nie samą liczbę** — „91 wierszy przy 85 różnych numerach",
-  nigdy „91 pozycji".
+  wielkości tej tabeli — wiersze, różne numery, numery bez wiersza — miały
+  2026-10-04 wartości **91 · 85 · 7**, a 2026-10-09 mają **97 · 91 · 7**,
+  i **każda da się nazwać „ile tu jest pozycji"**. Wykonawczo: **nagłówek
+  i licznik niosą NAZWĘ mierzonej wielkości, nie samą liczbę** — „97 wierszy
+  przy 91 różnych numerach", nigdy „97 pozycji".
 - **SUMA ZGADZAŁA SIĘ ZE ŹRÓDŁEM, ROZKŁAD NIE BYŁ ODTWARZALNY — I TO ZGODNOŚĆ
   SUMY KAZAŁA UFAĆ ROZKŁADOWI** (2026-10-04, `WWW/100`, kontrola
   adwersaryjna). Licznik pod skorowidzem ogniw przeliczam ze źródła przy
@@ -4768,7 +5156,8 @@ liczba zamiast pomiaru:**
 - `scripts/reprezentant.mjs` — reguła „przebieg o medianowym LCP"
 - `lighthouserc.cjs` — 7 tras, `numberOfRuns: 5`, progi LCP 1800 / CLS 0,1 /
   TBT 200
-- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T49
+- `docs/faza-2/rejestr-warunkow-powrotu.md` — rejestr T1–T49 (stan odczytu
+  2026-08-26; 2026-10-09 jest T1–T98 — rozdz. 6)
 - `docs/weryfikacja-zewnetrzna/` — **NOWY 2026-08-26**, 34 pliki / 19 MB;
   pakiet do weryfikacji palety i treści w OBCYM narzędziu: struktura 9 tras
   z DOM, teksty ×3 języki, 5 palet z kontrastami, typografia, 26 zrzutów.
@@ -4950,8 +5339,20 @@ nie martwy skrót, lecz **żywy skrót opisany martwym stanem**.
 
 - **Rejestr w pełnym brzmieniu.** Rozdział 6 opisuje szczegółowo pozycje z tej
   linii pracy (T2, T10, T20–T40); rozdział 15 daje **skorowidz wszystkich** —
-  24 pozycji treści i T1–T49 — po jednej linii. To jest wskaźnik, nie zamiennik:
-  sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów i liczb.
+  **24** pozycje treści (15.1) oraz **97 wierszy przy 91 różnych numerach T**
+  (15.2: T1–T98 bez T44–T50, które wiersz **mają** w samym rejestrze) — po
+  jednej linii. Obie liczby przeliczone ze źródła **2026-10-09** przy
+  dopisaniu T98 (`WWW/102` KROK 3), tym samym przebiegiem, który stoi
+  w nagłówku 15.2, z kontrolą negatywną na `HEAD` `f823b7b` w tym samym
+  przebiegu: **95 wierszy przy 89 numerach, czubek T96**. ~~Poprzednie
+  brzmienie: „**96 wierszy przy 90 różnych numerach**, 15.2: T1–T97"~~ —
+  zestarzało się **w miejscu o jeden wiersz**, bo nagłówek 15.2 przeliczyłem
+  przy dopisaniu T98, a tego akapitu nie; wychwycone 2026-10-09 przeglądem
+  klasy. ~~Wcześniej stało „24 pozycji treści i **T1–T49**"~~ — tamten zakres
+  zestarzał się o **48** numerów, bo deklarował go akapit, którego nikt nie
+  przeliczał przy dopisywaniu wierszy do tabeli obok. To jest wskaźnik, nie
+  zamiennik: sam wpis T22 ma w rejestrze kilkanaście tysięcy znaków dowodów
+  i liczb.
   Przed dotknięciem czegokolwiek spoza tej linii: przeczytaj rejestr.
 - **Treść ADR-ów.** Rozdział 16 podaje trzydzieści **tytułów**, żeby dało się
   trafić do właściwego pliku. Wiążąca jest treść w `docs/adr/`.
@@ -5012,7 +5413,35 @@ Zasada wspólna: treść wraca WYŁĄCZNIE po dowodzie wykonaniem.
 
 Poz. **17, 18, 19, 23, 24** składają się na „najbliższe zlecenie Z" = **Z7**.
 
-### 15.2 Pozycje techniczne i procesowe — **92 WIERSZE PRZY 86 RÓŻNYCH NUMERACH** (przeliczone ze źródła **2026-10-07 przy dopisaniu T93**, z kontrolą pozytywną metody — T1, T42 i T93 znajdowane tym samym wyrażeniem: **84 otwarte + 8 przekreślonych** „ZAMKNIĘTE"; sześć numerów — T68, T69, T70, T71, T72, T73 — ma po **dwa** wiersze: opis pozycji i osobny wiersz zamknięcia, i stąd 92 wiersze przy 86 numerach. Bez wiersza stoi **siedem** numerów — **T44, T45, T46, T47, T48, T49, T50** — i te siedem **mają** wiersz w rejestrze, `rejestr-warunkow-powrotu.md`. Poprzednie brzmienie, policzone 2026-10-04 po kontroli adwersaryjnej: ~~91 wierszy przy 85 numerach, 83 otwarte + 8 przekreślonych~~ — zestarzało się o jeden wiersz, czyli dokładnie tyle, ile wynosi edycja)
+### 15.2 Pozycje techniczne i procesowe — **97 WIERSZY PRZY 91 RÓŻNYCH NUMERACH** (przeliczone ze źródła **2026-10-08 przy dopisaniu T98** i powtórzone **2026-10-09** z tym samym wynikiem, `WWW/102` KROK 3, z kontrolą pozytywną metody — T1, T42 i T98 znajdowane tym samym wyrażeniem: **89 otwartych + 8 przekreślonych** „ZAMKNIĘTE"; sześć numerów — T68, T69, T70, T71, T72, T73 — ma po **dwa** wiersze: opis pozycji i osobny wiersz zamknięcia, i stąd 97 wierszy przy 91 numerach. Bez wiersza stoi **siedem** numerów — **T44, T45, T46, T47, T48, T49, T50** — i te siedem **mają** wiersz w rejestrze, `rejestr-warunkow-powrotu.md`. Najwyższy numer w tabeli: **T98**. Kontrola negatywna w tym samym przebiegu — `HEAD` **`f823b7b`** — daje **95 wierszy · 87 otwartych + 8 przekreślonych · 89 numerów, czubek T96**, czyli parę **inną niż pierwsze skreślone brzmienie niżej**, i to jest tu informacja, nie usterka: w `HEAD` nie stoi ani T98, ani T97, więc kontrola cofa **dwa** wiersze, a skreślony licznik opisywał stan po **jednym** z nich. Trzy poprzednie brzmienia, wszystkie zachowane jako ślad: ~~„96 WIERSZY PRZY 90 RÓŻNYCH NUMERACH, 88 otwartych + 8 przekreślonych, czubek T97" (przeliczone 2026-10-08 przy dopisaniu T97 — stan DRZEWA, nigdy nie zacommitowany, i dlatego nieosiągalny spod żadnego skrótu)~~, ~~„92 WIERSZE PRZY 86 RÓŻNYCH NUMERACH, 84 otwarte + 8 przekreślonych" (przeliczone 2026-10-07 przy dopisaniu T93)~~ oraz ~~„91 wierszy przy 85 numerach, 83 otwarte + 8 przekreślonych" (2026-10-04 po kontroli adwersaryjnej)~~ — a to z 2026-10-07 zestarzało się **o trzy wiersze, w miejscu**, i dlaczego, mówi adnotacja zaraz niżej)
+
+⚠ **TEN LICZNIK ZESTARZAŁ SIĘ W MIEJSCU O TRZY WIERSZE — A ZROBIŁY TO MOJE
+WŁASNE EDYCJE Z KROKÓW 1 I 2 TEGO SAMEGO ZLECENIA** (zmierzone 2026-10-08,
+**przed** wstawieniem T97). Pomiar ze źródła na tym drzewie, jeszcze bez
+T97, dał **95 wierszy · 87 otwartych + 8 przekreślonych · 89 numerów**,
+a nagłówek deklarował **92 · 84 + 8 · 86**. Różnica to **dokładnie trzy
+wiersze: T94, T95 i T96**, dopisane w krokach 1 i 2 `WWW/102`
+**bez przeliczenia tego akapitu**. Reguła kanonu — *„każdy licznik pod
+tabelą jest liczony ze źródła przy każdej edycji tabeli albo nie ma go
+wcale"* — obowiązywała wtedy tak samo jak dziś; **złamałem ją trzy razy
+z rzędu, w dokumencie, który tę regułę cytuje**, i wyszło to dopiero przy
+czwartej edycji, bo wtedy pierwszy raz **policzyłem**, zamiast dopisać
+wiersz. Dwa wnioski, które zostają zapisane, a nie naprawione słowem:
+**(1)** licznik czerpany ze źródła broni przed starzeniem **tylko wtedy,
+gdy ktoś go uruchomi** — sam zapis reguły nie jest mechanizmem i to jest
+tu zmierzone, nie przypuszczone; **(2)** stanów pośrednich (po T94/T95
+i po T96) **nie wpisuję do tabeli niżej**, bo ich nie zmierzyłem —
+liczba podana z pamięci byłaby prognozą w składni odczytu.
+
+**Dopisek 2026-10-08, ten sam dzień, dwie edycje później.** Przy **T97** i przy
+**T98** licznik przeliczyłem **w tej samej edycji**, w której doszedł wiersz —
+za każdym razem z kontrolą negatywną na `HEAD` i kontrolą pozytywną metody
+(T1, T42, czubek). Wniosku **(1)** to nie unieważnia, tylko potwierdza
+z drugiej strony: **mechanizmem jest uruchomienie, nie zapis**. Ślad
+pominięcia zostaje wyżej **nieskreślony**, bo dwie zgodne edycje nie są
+dowodem nawyku — są dwiema edycjami. Ta sama klasa wróciła tego samego dnia
+w rejestrze warunków powrotu, w **pięciu** akapitach tej samej formy naraz —
+opis w rozdz. 9.
 
 ⚠ **TEN NAGŁÓWEK JEST TRZECIM BRZMIENIEM, A DRUGIE BYŁO MOJE — SPROSTOWANE
 2026-10-04 PO KONTROLI ADWERSARYJNEJ.** Oba poprzednie zostają widoczne
@@ -5048,10 +5477,15 @@ sesji**. Policzone ze źródła, z kontrolą pozytywną metody (T1, T42 i T51
 znajdowane): w tabeli stały wtedy **43 wiersze** — T1–T42 i T51. **Brakowało
 ośmiu: T43, T44, T45, T46, T47, T48, T49, T50.**
 
-**PRZELICZANE ZE ŹRÓDŁA PRZY KAŻDEJ EDYCJI TABELI — ŚLAD CZTERECH STANÓW
-JEDNEJ DOBY** (`WWW/100`, 2026-10-04). Nagłówek deklarujący zakres **jest
-licznikiem pod tabelą** i starzeje się razem z nią, więc te liczby są
-przeliczane, nie przepisywane:
+**PRZELICZANE ZE ŹRÓDŁA PRZY KAŻDEJ EDYCJI TABELI — ŚLAD SIEDMIU STANÓW
+Z TRZECH DÓB** (policzone ze źródła 2026-10-09, `WWW/102` KROK 3; poprzednio
+**sześciu**, 2026-10-08).
+Nagłówek deklarujący zakres **jest licznikiem pod tabelą** i starzeje się
+razem z nią, więc te liczby są przeliczane, nie przepisywane. Poprzednie
+brzmienie — ~~„ŚLAD CZTERECH STANÓW JEDNEJ DOBY (`WWW/100`,
+2026-10-04)"~~ — **też zestarzało się w miejscu**: doszły dwa wiersze,
+T93 w `WWW/101` i T94–T97 w tym zleceniu, a „jedna doba" przestała być
+prawdą przy pierwszym z nich.
 
 | stan | wiersze | otwarte + przekreślone | różne numery | skąd odczytywalne |
 | --- | --- | --- | --- | --- |
@@ -5060,14 +5494,29 @@ przeliczane, nie przepisywane:
 | `7c139af` (commit trzeci, T89–T91) | 90 | 82 + 8 | 84 | z commita |
 | korekta `WWW/100` (T92) | 91 | 83 + 8 | 85 | z commita `c955217` (`git log -S'\| T92 \|'`), ten sam wynik na `42c84ab` i `5f348a8` |
 | `WWW/101` krok 2 (T93) | **92** | **84 + 8** | **86** | z tego drzewa, rodzic `5f348a8` |
+| `WWW/102` kroki 1–3 (T94–T97) | **96** | **88 + 8** | **90** | stan drzewa roboczego z 2026-10-08, **już nieistniejący** — przestał istnieć w chwili dopisania T98; stany pośrednie po T94/T95 i po T96 **nie były mierzone** |
+| `WWW/102` krok 3, dopisanie T98 | **97** | **89 + 8** | **91** | z tego drzewa, rodzic `f823b7b`; zmierzone 2026-10-08, powtórzone 2026-10-09 |
 
-⚠ **Stempel uczciwy, nie pozorny.** Dwa z czterech stanów stoją w commitach
-i każdy może je odtworzyć; stan czwarty jest w drzewie roboczym, bo commit
-nie może zawierać własnego skrótu, a stan drugi **nie istnieje nigdzie** —
-był pośrednim stanem drzewa przed commitem trzecim i podaję go wyłącznie
-jako ślad przebiegu, nie jako liczbę do sprawdzenia. ~~Poprzednie brzmienie
-podawało „87 wierszy (79 otwartych + 8 przekreślonych)" ze stemplem „HEAD
-`46c8688`" i zakresem „T1–T43 i T51–T88"~~ — **i zestarzało się w tym samym
+⚠ **Stempel uczciwy, nie pozorny — a sam ten akapit był przeterminowany
+dwa razy i jest policzony ponownie 2026-10-09.** **Trzy** z **siedmiu**
+stanów stoją w commitach (`46c8688`, `7c139af`, `c955217`) i każdy może je
+odtworzyć; stan **siódmy** jest tym drzewem roboczym, bo commit nie może
+zawierać własnego skrótu; stany **drugi, piąty i szósty** były pośrednimi
+stanami drzewa i **nie istnieją już nigdzie** — podaję je jako ślad
+przebiegu, nie jako liczby do sprawdzenia. **Stan szósty (96 wierszy)
+przestał istnieć w chwili dopisania T98**, a ten akapit przeżył to o dobę:
+mówił „sześć" i wskazywał szósty stan jako drzewo robocze, choć drzewo
+miało już **97** wierszy — w tabeli, której nagłówek mówi „PRZELICZANE ZE
+ŹRÓDŁA PRZY KAŻDEJ EDYCJI". ~~Brzmienie z 2026-10-08: „**Trzy** z **sześciu**
+… stany piąty i szósty są w drzewie roboczym"~~ — nieaktualne od T98.
+~~Brzmienie sprzed przeliczenia 2026-10-08: „Dwa z czterech stanów stoją
+w commitach … stan czwarty jest w drzewie roboczym"~~ — opisywało tabelę
+**czterowierszową**, a wierszy było już pięć i stan czwarty dostał
+w międzyczasie commit `c955217`, więc zdanie myliło się **i w liczbie,
+i w tym, gdzie leży czwarty stan**.
+~~Poprzednie brzmienie podawało „87 wierszy (79 otwartych + 8
+przekreślonych)" ze stemplem „HEAD `46c8688`" i zakresem
+„T1–T43 i T51–T88"~~ — **i zestarzało się w tym samym
 commicie, w którym je napisałem**, bo tabelę edytowałem potem jeszcze raz
 (T89–T91), a akapitu nie przeliczyłem. To jest **ta sama klasa, którą ten
 akapit opisuje**, popełniona o akapit niżej; stempel wskazywał przy tym
@@ -5078,9 +5527,16 @@ wiersz „ZAMKNIĘTE" — więc „wiersze" i „numery" są tu dwiema różnymi
 liczbami i dlatego kolumna „różne numery" stoi w tabeli wyżej.
 **Brakuje nadal siedmiu: T44, T45, T46, T47, T48, T49, T50** — i tych nie
 uzupełniam, powód niżej. **Kontrola pozytywna metody w tym samym
-przebiegu:** ten sam skrypt liczy w tabeli pozycji rejestru **92** numery T
-(T1–T92), czyli znajduje też te, których tu nie ma — zero w tej liście jest
-więc zerem listy, nie zerem narzędzia.
+przebiegu (2026-10-08):** to samo wyrażenie puszczone na wiersze tabel
+w `docs/faza-2/rejestr-warunkow-powrotu.md` daje **97** różnych numerów T
+— **T1–T97 bez luki**, w tym wszystkie siedem brakujących tutaj
+(T44, T45, T46, T47, T48, T49, T50) — czyli znajduje też te, których tu
+nie ma. Zero w tej liście jest więc zerem listy, nie zerem narzędzia.
+**Powtórzone ze źródła 2026-10-09, po dopisaniu T98:** **98** różnych
+numerów T, **T1–T98 bez luki**, te same siedem brakujących tutaj.
+~~Brzmienie z 2026-10-04: „ten sam skrypt liczy w tabeli pozycji rejestru
+**92** numery T (T1–T92)"~~ — prawdziwe wtedy, a 2026-10-09 mniejsze
+o **sześć** numerów.
 
 **NIE UZUPEŁNIAM ICH — poza zakresem `WWW/038-bis`, a 2026-10-04 poza
 zakresem `WWW/100`** (zakaz 8): te pozycje (wtedy osiem, po zamknięciu T43
@@ -5118,8 +5574,8 @@ zbiorem" (T47) i co licznik przepisywany ręką zamiast liczony ze źródła.
 | T20 | zakres wyjątku lintera **szerszy niż jego dokumentacja** (osłona jest LINIOWA, nie „wyłącznie barwy") | ⚠ znika sam 2026-08-31 |
 | T21 | nic nie pilnuje, że skróty commitów w dokumentacji są osiągalne; 6 wiążących ustaleń konstrukcyjnych | ⚠ **czeka na decyzję** (7.2.4) |
 | T22 | bramka wydajności mierzyła CUDZE wdrożenie + brak `concurrency` | (a)(b)(c) wdrożone, (d) i (b') otwarte — **warunek zamknięcia niespełniony** |
-| T23 | `fetch-depth` — 15 × `checkout` bez niego, klon ma 1 commit | ◐ **rozstrzygnięte 2026-08-23 (D5)** — tylko kroki czytające historię; takich kroków jest dziś **zero**, więc `bramki.yml` bez zmian. Otwarte do T21 (7.2.5) |
-| T24 | brak `timeout-minutes` — 4 zadania anulowane po 6 h 00 min | ◐ **rozstrzygnięte i wdrożone 2026-08-23 (D6)** — 20 min pomiarowe / 10 pozostałe + krok `Przyczyna anulowania` na 15 zadaniach. Otwarte: **brak mutacji** i cienki zapas przy `Pełny zestaw e2e` (7.2.6) |
+| T23 | `fetch-depth` — **16** × `checkout` bez niego, klon ma 1 commit (~~15~~ — tyle było przy pomiarze 2026-08-19; ze źródła 2026-10-09 jest **16**) | ◐ **rozstrzygnięte 2026-08-23 (D5)** — tylko kroki czytające historię; takich kroków jest dziś **zero**, więc `bramki.yml` bez zmian. Otwarte do T21 (7.2.5) |
+| T24 | brak `timeout-minutes` — 4 zadania anulowane po 6 h 00 min | ◐ **rozstrzygnięte i wdrożone 2026-08-23 (D6)** — 20 min pomiarowe / 10 pozostałe + krok `Przyczyna anulowania` na **16** zadaniach (~~15~~ — ze źródła 2026-10-09). Otwarte: **brak mutacji** i cienki zapas przy `Pełny zestaw e2e` (7.2.6) |
 | T25 | reguła „przekazanie aktualizowane na bieżąco" **nie ma strażnika**; wariant naiwny sprawdzałby DOTKNIĘCIE pliku, nie prawdę | ⚠ zapisana, **strażnik czeka na decyzję** (7.2.8) |
 | T26 | liczby w raporcie powykonawczym niosą stempel 1070 linii wyżej, w nagłówku dokumentu pisanego DO CYTOWANIA fragmentami; pozycja niesie też obaloną pierwszą diagnozę — **dokument z zadeklarowanym zakresem się nie starzeje, starzeje się cytat wyjęty bez zakresu**; dopisek 2026-08-23: **adresat też jest częścią zakresu** | ⚠ **czeka na decyzję** (7.2.9), bez implementacji |
 | T27 | zlecenie wskazuje plik, którego w repozytorium adresata NIE MA (`KANON-CATHERLY-STRONA.md`); właściciel: „trzeci raz dziś"; odwrotność klasy T21 — stan nie zaistniał nigdy, więc `merge-base` tego nie złapie | ⚠ zamyka je dopiero zlecenie, które **stanęło** na tym sprawdzeniu |
@@ -5136,7 +5592,7 @@ zbiorem" (T47) i co licznik przepisywany ręką zamiast liczony ze źródła.
 | T38 | proporcja **34 : 4** mówi o przepływie, nie o rzetelności toru; tor 14: **11 z 19 (58%)** sprawdzeń drugą drogą zawęziło albo rozszerzyło ustalenie; typowy kształt błędu to **nadmierny zasięg**, nie zmyślenie | ⚠ **czeka na decyzję** — czy 58% jest własnością przepływu |
 | T39 | **REJESTR LICZY OGNIWA, NIE ŹRÓDŁA** — skorowidz ogniw dla 40 pozycji; pomiar: 30 z 36 wierszy wymieniało właściciela, ale wzmianka ≠ pochodzenie, więc „25 z 34" **nie da się potwierdzić w tej postaci**; dwa ogniwa: T30, T36, T38 · **trzy ogniwa: T37** | ✅ skorowidz w rejestrze; ⚠ kolumna zamiast skorowidza — do decyzji |
 | T40 | ⚠ **JEDYNYM KANAŁEM MIĘDZY TRZEMA OBSZARAMI JEST JEDNA OSOBA I JEDNA WARSTWA DOWODZĄCA** — kanon wspólny w zamierzeniu, rozłączny w praktyce; `CLAUDE.md` tej strony nie zawiera żadnej klasy kanonu aplikacji; kanał ma **jeden punkt awarii** | ⚠ lista różnic gotowa (rozdz. 19), **przeniesienie = decyzja właściciela** |
-| T41 | **cztery akcje CI działają na środowisku, którego nie deklarują** — `checkout@v4`, `setup-node@v4`, `download-artifact@v4`, `upload-artifact@v4` celują w Node 20, a runner wymusza Node 24; ostrzeżenie stoi w **15/15 zadań** każdego przebiegu i nikt go nie czytał, aż wejście do logu w innej sprawie (czasy zadań do T24) je odsłoniło. Nic nie jest dziś zepsute — pozycja opisuje **ryzyko z datą wygaśnięcia w cudzych rękach** | ⚠ **czeka na decyzję** — czy podnosić do `v5` (osobne zadanie, kontrola negatywna) i czy ostrzeżenia DOSTAWCY mają mieć miejsce w interfejsie (to samo pytanie co przy `::warning` z T24 — rozstrzygać raz, dla obu) |
+| T41 | **cztery akcje CI działają na środowisku, którego nie deklarują** — `checkout@v4`, `setup-node@v4`, `download-artifact@v4`, `upload-artifact@v4` celują w Node 20, a runner wymusza Node 24; ostrzeżenie stoi w **16/16 zadań** każdego przebiegu (~~15/15~~ — ze źródła 2026-10-09) i nikt go nie czytał, aż wejście do logu w innej sprawie (czasy zadań do T24) je odsłoniło. Nic nie jest dziś zepsute — pozycja opisuje **ryzyko z datą wygaśnięcia w cudzych rękach** | ⚠ **czeka na decyzję** — czy podnosić do `v5` (osobne zadanie, kontrola negatywna) i czy ostrzeżenia DOSTAWCY mają mieć miejsce w interfejsie (to samo pytanie co przy `::warning` z T24 — rozstrzygać raz, dla obu) |
 | T42 | ⚠ **HAK, KTÓRY MIAŁ ROBIĆ BACKUPY, NIE ISTNIEJE — a `CLAUDE.md:239-241` twierdzi, że istnieje.** Zero trafień na `hooks` w czterech plikach konfiguracji (odczyt 2026-08-24); `backup.sh` nie pada w żadnej. Skutek: przerwa w migawkach **20.08 22:02 → 24.08 08:58**, obejmująca całą pracę z 23.08. Skrypt sprawny — ręcznie kod 0, `unzip -t` bez błędów. Najcięższy przypadek „brak dowodu = brak zabezpieczenia": zabezpieczenie uznane za działające przez 200+ migawek, a cichy brak backupu wygląda jak brak potrzeby backupu | ⚠ **czeka na decyzję** — czy budować hak (i wtedy koniecznie GŁOŚNY przy porażce), i co zrobić ze zdaniem w `CLAUDE.md`, które dopóki haka nie ma, jest fałszem w źródle drugiego szczebla. Do tego czasu: **`bash scripts/backup.sh` ręcznie po każdym zadaniu** |
 | T51 | **bramka `Kontrakt tokenów` czerwona przez decyzję o palecie, nie przez defekt** — ΔE szwu logowania **6,46** przy progu **5,0**; próg NIETKNIĘTY (zakaz 3), naprawa nie należy do wykonawcy. Uboczne: **kotwica progu straciła przedmiot** (odwoływała się do roli `neutralna-50`, której już nie ma) | ⚠ otwarte, czeka na decyzję właściciela — trzy drogi w `design/kontrakt-aplikacji.json` |
 | T52 | **kadry fali 1 wchodzą w okno startowe mimo `loading="lazy"`** — +204 do +226 kB na podstronę, waga w `networkidle` równa wadze po przewinięciu. Ten sam mechanizm co przy Z6, gdzie koszt okazał się kosztem RUND transportu (+153 ms na HTTP/1.1, **+0 ms na HTTP/2 + brotli**) | ⏸ pakiet wydajności razem z D9/LCP — **nie osobno**; pierwszy człon warunku to pomiar na transporcie produkcyjnym |
@@ -5191,6 +5647,8 @@ zbiorem" (T47) i co licznik przepisywany ręką zamiast liczony ze źródła.
 | T94 | **przyrząd, na którym stoi werdykt „Piksele: 0 różnic", nie istnieje w repozytorium — a jego poprzednik z 2026-10-04 już przepadł, więc to nie prognoza, lecz drugie wystąpienie** — zmierzone 2026-10-07 (`WWW/102` krok 1): osiem nazw plików bezpiecznika (`trasy.mjs`, `zrzuty.mjs`, `porownaj.mjs`, `sonda-optymalizator.mjs`, `przed-push.sh` i trzy liczniki rejestru) daje **0** trafień w `git ls-files`, przy kontroli pozytywnej `scripts/check-` → **6**; w `package.json` **0**, przy kontroli `bramka:` → **20**. Żadnej nowej zależności wejście nie wymaga (`@playwright/test` i `sharp` już w `devDependencies`). **Strata jest już zrealizowana, nie przewidywana:** `powtorki.mjs` i `porownaj.py` z kolumny źródła **T87** dają dziś także **0**, więc tamtego pomiaru nie da się ani powtórzyć, ani obalić. Dwa wystąpienia pochodzą z jednego źródła i trzech dób — to **powtarzalność zjawiska, nie niezależność potwierdzenia**. Warunek zamknięcia to rozstrzygnięcie właściciela: wejście bezpiecznika do repo jako pełna bramka (pytanie zerowe, zapłon, mutacja, zadeklarowana dziedzina **plus decyzja, wobec czego porównuje** — dziś bazą jest worktree na nazwanym commicie z własnym `node_modules`, czego commit nie utrwala) albo świadome zostanie na zewnątrz, z konstrukcją w każdym kolejnym zleceniu |
 | T95 | **reguła przypisania kubełków stoi w rejestrze w dwóch niezgodnych postaciach, a stojąca para odtwarza się wyłącznie po usunięciu jednego słowa z listy** — zmierzone 2026-10-07 dwiema lekturami tej samej reguły w jednym przebiegu: lista pięciu słów („rozstrzyg", „wskaz", „kierunek", „decyzj", „zlecen") daje **38 · 28**, ta sama lista bez „decyzj" — **40 · 26**, czyli dokładnie parę stojącą w akapicie rozkładu (liczby na `HEAD` `7817580`; na drzewie po T94/T95 odpowiednio **40 · 28** i **42 · 26**). **Suma jest na tę różnicę ślepa** — 87, a po dopisaniu dwóch wierszy 89, w obu lekturach. Wiersze różnicujące: **dokładnie T82 i T83**, i obie postacie reguły rozchodzą się na nich w **przeciwne strony**, bo akapit końcowy mówi o pochodzeniu **przedmiotu** ze zlecenia, czego lista słów wyrazić nie umie (w obu wierszach stoi to samo słowo). Nie rozstrzygnięte, bo wybór lektury przenosi dwa cudze wiersze między kubełkami (zakaz 8) — ta sama granica, na której `WWW/100` zostawiło T53–T58 (poz. **T91**) |
 | T96 | **`gitleaks`, wpisany do STANDARDU każdego zlecenia, nie jest narzędziem tego repozytorium — cały ten krok stoi na binarce pobranej do katalogu sesji** — zmierzone 2026-10-07 pytaniem zerowym z kontrolą pozytywną przy **każdym** selektorze: `git ls-files` **0** przy `scripts` **26**, `package.json` **0** przy `sharp` **1**, `.githooks/pre-commit` **0**, `.github/` **0** plików przy `workflows` **1**. Narzędzie: **21 258 274 B**, Mach-O arm64, `gitleaks` **8.28.0**, pobrane 2026-10-07 18:43 przez `WWW/101` do katalogu sesji. **Trzecie wystąpienie klasy „przyrząd poza repozytorium"** (poz. T94). Dwie rzeczy zmierzone w tym samym przebiegu: (a) moje pierwsze przeszukanie ogłosiło nieobecność narzędzia, bo objęło `PATH` i cztery ścieżki instalacyjne **bez katalogu sesji**, w którym binarka leżała od sześciu godzin — zero własnego przeszukania, nie zero bytu; (b) **kontrola pozytywna była ślepa na rodzinę `aws-access-token` i nie powiedziała tego o sobie** — reguła czyta `[A-Z2-7]{16}` (base32; prawdziwe identyfikatory AWS nie mają 0, 1, 8, 9), a mój generator dawał `[A-Z0-9]`: trzy niezależne wartości milczały przy **prawidłowej długości, prawidłowym prefiksie i wyższej entropii** niż wzorzec, który zapalił; wartość z `WWW/101` zapaliła trafem losowania. Regexp odczytany **wprost z binarki**, nie z dokumentacji. Po naprawie alfabetu **4/4 rodziny**, zakres pięciu plików commita — **0 znalezisk**. **Warunek zamknięcia — dwa wyjścia, trzeciego nie ma:** (a) `gitleaks` staje się narzędziem repo (przypięta wersja, konfiguracja w repo, krok w haku albo bramce, **z kontrolą pozytywną w tym samym kroku**), albo (b) STANDARD nazywa **własność**, nie narzędzie („skan sekretów z kontrolą pozytywną pokrywającą cztery rodziny"). **Zakaz wniosku odwrotnego, dwa:** skany `WWW/101` i `WWW/102` **nie** były pozorne (ta sama żywa binarka, kontrola zapaliła w tym samym przebiegu) — brakuje zadomowienia narzędzia, nie pomiaru; i **nie** wynika z tego, że repozytorium niesie sekrety |
+| T97 | **`/favicon.ico` oddaje 500 na obu stojakach, a w repozytorium nie ma ani jednego pliku ikony — i nie jest to 404, więc ten adres wchodzi w kod, który się wywraca** — zmierzone 2026-10-08 (`WWW/102` KROK 3). `git ls-files` filtrowane na `favicon` → **0** trafień przy kontroli pozytywnej `git ls-files public` → **89** plików, więc to zero bytu, nie zero przeszukania. Status **500 na kandydacie (`:3200`) i 500 na bazie `7817580` (`:3100`)** — stan **odziedziczony**, nie skutek KROKU 3. Odróżnienie 500 od 404 zmierzone w tym samym przebiegu: `/pl` → **307**, `/` → **200**, adres wymyślony → **404**; **500 znaczy, że żądanie trafia w obsługę, która się wywraca**, a to pierwsze żądanie, jakie przeglądarka wysyła **sama**. Nagłówki ten adres niesie w komplecie (**6/6** na kandydacie, 0/6 na bazie), więc przedmiot KROKU 3 jest tu zamknięty. **Przedmiotu nie wskazało zlecenie** — wyszedł przy sprawdzaniu zasięgu `source: "/:sciezka*"`. Granica pomiaru: **przyczyny 500 nie czytałem** (odczyt śladu wyjątku jest pierwszym krokiem naprawy, a naprawy nikt nie zamawiał) ani zachowania Vercela, który może odpowiadać na ten adres sam. Warunek zamknięcia — **osobne zlecenie, bo obie części są decyzjami**: (a) czy strona ma mieć ikonę (materiał graficzny, kadr zatwierdzany imiennie), (b) dlaczego 500, a nie 404 (defekt obsługi z własną diagnozą). Zakaz 8 nieprzekroczony: defekt **nie produkuje nowych wadliwych artefaktów** — oddaje 500 i nic nie zapisuje |
+| T98 | **nazwa zadania bramki deklaruje DWA projekty, a polecenie pod nią uruchamia CZTERY — i ta sama pomyłka stoi drugi raz, w komentarzu pięć linii niżej** — zmierzone 2026-10-08 (`WWW/102` KROK 3). `bramki.yml:311` niesie `name: "Bramka: Pełny zestaw e2e (każdy spec, oba projekty)"`, a `:316` powtarza „uruchamia każdy spec w **obu** projektach"; pod nimi `:348` stoi `- run: npx playwright test` **bez `--project`**, a `playwright.config.ts` ma **cztery** projekty: `mobile-390` (`:41`), `desktop` (`:50`), `desktop-wide` (`:70`), `wlasciciel-1190` (`:85`). Że runner naprawdę bierze cztery, jest **zmierzone, nie wywnioskowane z konfiguracji** („wynikanie z kodu to nie pomiar"): `--list` na nowym specu → `Total: 36 tests in 1 file`, czyli **9 × 4**; a 2026-10-09 ten sam spec **puszczony** (bez `--list`, `WWW_BAZA=http://localhost:3200`, RC 0) dał **36 passed (1,8 s)** i log wypisał cztery nazwy projektów po **9** testów — zliczone z logu, przy kontroli negatywnej nazwą widmo → **0** trafień. Kontrola pozytywna zasięgu w tym samym przebiegu: ciąg `projekt` → **5** trafień w tym pliku, z czego **2** defektowe i **3** o czymś innym. **Kierunek jest bezpieczny i to jest całe uzasadnienie odroczenia:** zadanie robi **więcej**, niż deklaruje, więc nie ma fałszywej zieleni — jest „zieleń mówiąca mniej, niż jest warta". ⚠ Czego ten pomiar **nie** obejmuje: ani jednego przebiegu CI nie odczytałem (36 pochodzi z pomiaru lokalnego — `--list` 2026-10-08 i przebieg 2026-10-09; CI nadal nieodczytane), ani tego, czy cztery to liczba właściwa. ⚠ Liczby z komentarza (`:329` „4 spece z 17", `:347` „39 testów z 272 na projekt") **nie są tym defektem** — stoją w bloku ze stemplem **2026-08-14**, więc obowiązuje reguła cytatu z zakresem; defektem jest **niestemplowane słowo „oba"**. Warunek zamknięcia — **osobne zlecenie, dwa wyjścia wzajemnie wykluczające się**: (a) nazwa przestaje deklarować liczbę, albo (b) liczba jest decyzją i razem z nią wchodzi strażnik liczący projekty. Kanonicznego pytania „czy jej zmiana ma być decyzją" **nie da się rozstrzygnąć stąd**, bo **żaden strażnik nie czyta liczby z nazwy zadania**. Zakaz 8: KROK 3 nie wymaga `bramki.yml`, a `102-W` pozwala go pisać „tylko jeśli wymaga tego treść 102" — więc pozycja, nie naprawa; granica zakazu 8 nieprzekroczona, defekt **nie produkuje nowych wadliwych artefaktów**. **Zakaz wniosków odwrotnych, w obie strony:** z tej pozycji NIE wynika, że bramka pomija jakikolwiek projekt (pomija **zero** — zmierzone), ani że nowy strażnik nagłówków nie wchodzi do CI (wchodzi, **bez jednej linii YAML**, przez to samo `:348`) |
 
 ---
 
@@ -5311,14 +5769,35 @@ granicą pomiaru, którą trzeba znać, zanim porówna się dwa budowania:**
   **wielozbiór 414 fragmentów reguł identyczny**. Porównanie dwóch budowań
   wymaga więc normalizatora — a normalizator własnej kontroli pozytywnej.
 
-### 17.1 Piętnaście zadań w `.github/workflows/bramki.yml`
+### 17.1 Szesnaście zadań w `bramki.yml` — ze źródła 2026-10-09
 
 `build` · `bramka-kontrakt-tokenow` · `bramka-tokeny-linter` · `bramka-lint` ·
 `bramka-parytet` · `bramka-prawdziwosc` · `bramka-cennik` · `bramka-linki` ·
 `bramka-kotwice` · `bramka-nojs` · `bramka-dostepnosc` · `bramka-e2e` ·
-`bramka-pelny-zestaw` · `bramka-wydajnosc` · `bramka-nieodwracalne`
+`bramka-pelny-zestaw` · `bramka-wydajnosc` · `bramka-deklaracje` ·
+`bramka-nieodwracalne`
 
-Sześć z nich potrzebuje `build`. **`bramka-nieodwracalne` jest planowo czerwona
+⚠ **TEN NAGŁÓWEK I TA LISTA STAŁY PONAD SZEŚĆ TYGODNI NAD ZDANIEM, KTÓRE JE
+POPRAWIAŁO** (wychwycone 2026-10-09 przeglądem klasy liczników, `WWW/102`
+krok 3). Nagłówek deklarował ~~„Piętnaście zadań"~~, a lista wymieniała
+**15** nazw, bez `bramka-deklaracje` — podczas gdy niżej **w tej samej
+sekcji** stoi zdanie „**Od 2026-08-24 zadań jest 16**". Korekta została
+**dopisana obok**, a zdania, które poprawiała, nikt nie ruszył: dwa żywe,
+sprzeczne liczniki w jednej sekcji, a czytelnik, który bierze nazwę sekcji
+albo listę, dostaje **piętnaście** i nie ma powodu czytać dalej.
+Policzone ze źródła 2026-10-09: **16** zadań (nazwy wyżej, w kolejności
+z pliku); **kontrola negatywna w tym samym przebiegu**, `HEAD` `f823b7b` —
+również **16**, czyli rozjazd **nie powstał w KROKU 3** i nie jest skutkiem
+tej pracy. `bramka-deklaracje` weszła commitem `d623c49` (T44).
+**Wejście poza literę zlecenia** — opis klasy w rozdz. 9.
+
+**Siedem** z nich potrzebuje `build` — `bramka-linki`, `bramka-kotwice`,
+`bramka-nojs`, `bramka-dostepnosc`, `bramka-e2e`, `bramka-pelny-zestaw`,
+`bramka-wydajnosc` (policzone ze źródła 2026-10-09 po `needs: build`;
+kontrola negatywna `HEAD` `f823b7b` — ten sam wynik).
+~~Poprzednie brzmienie: „Sześć z nich potrzebuje `build`"~~ — nieaktualne.
+**Czego nie mierzyłem: kiedy doszedł siódmy** — to pomiar stanu, nie historii.
+**`bramka-nieodwracalne` jest planowo czerwona
 (T2) — to nie jest awaria.** Wyzwalacze: `pull_request`, `push` na `main`
 i `faza-*/**`, `workflow_dispatch`.
 
@@ -5331,8 +5810,11 @@ Klucz **nie** z `github.ref` — przy `pull_request` to `refs/pull/N/merge`, wi�
 klucz z `github.ref` rozdzieliłby dwa przebiegi tej samej gałęzi i defekt wróciłby
 w ciszy dokładnie w PR, czyli w chwili merge'u.
 
-**Własność środowiska, której nie widać w pliku:** żaden z 15 kroków
+**Własność środowiska, której nie widać w pliku:** żaden z **16** kroków
 `actions/checkout@v4` nie ustawia `fetch-depth`, więc **klon ma 1 commit** (T23).
+~~Poprzednie brzmienie: „żaden z 15 kroków"~~ — policzone ze źródła
+2026-10-09: **16** wystąpień `uses: actions/checkout@`, po jednym na zadanie;
+kontrola negatywna `HEAD` `f823b7b` daje to samo.
 Od 2026-08-23 jest to stan **wybrany, nie przeoczony**: D5 przesądziło, że
 `fetch-depth: 0` wchodzi wyłącznie do kroków czytających historię, a takich
 kroków w bramkach dziś nie ma. Jedyne wywołanie gita to `git rev-parse HEAD`
@@ -5344,7 +5826,14 @@ przodków. Pierwszym krokiem historycznym będzie strażnik T21.
 **Limity czasu (od 2026-08-23, D6 → T24).** Każde z **16** zadań ma
 `timeout-minutes`: **`bramka-wydajnosc` → 20** i **`bramka-pelny-zestaw` → 20**
 (to drugie podniesione z 10 tego samego dnia, po zgłoszeniu cienkiego zapasu),
-trzynaście pozostałych → **10**. Domyślne 6 h już nie obowiązuje.
+**czternaście** pozostałych → **10**. Policzone ze źródła 2026-10-09:
+`timeout-minutes` obecny w **16/16** zadaniach, rozkład **14 × 10 min
++ 2 × 20 min**; kontrola negatywna `HEAD` `f823b7b` — ten sam wynik, czyli
+ta liczba **nie zmieniła się przez KROK 3**. ~~Poprzednie brzmienie:
+„trzynaście pozostałych"~~ — licznik z czasu, gdy zadań było piętnaście;
+zestarzał się **w miejscu, w tym samym zdaniu**, które **poprawnie** mówi
+„16" — poprawiono sumę i nie przeliczono reszty zdania.
+Domyślne 6 h już nie obowiązuje.
 **Zapas policzony z pomiaru** (2026-08-23, przebiegi `32661737288` / `32663550392`,
 commity `f2db728` / `d7a2fe3`, oba osiągalne): `Wydajność` 8,05 i 7,90 min → **2,48×**;
 `Dostępność` 2,65 min → **3,77×**; `Pełny zestaw e2e` 3,55 min → **5,6×**;
@@ -5424,6 +5913,92 @@ z przeznaczeniem.
 Dictionary). `prepare` ustawia `core.hooksPath .githooks` — dlatego hooki działają
 po `npm ci` i dlatego `--no-verify` jest zakazane. `obrazy:pipeline` jest
 **narzędziem ręcznym, nie bramką** (T19).
+
+### 17.4 Strażnik kompletu nagłówków — gdzie wchodzi do CI (`WWW/102` KROK 3)
+
+`e2e/naglowki-bezpieczenstwa.spec.ts` (nowy, 2026-10-08). **Do CI wchodzi BEZ
+JEDNEJ LINII ZMIANY W `bramki.yml`** — i to jest cała treść tego podrozdziału,
+bo kto szuka nowego strażnika po liście zadań albo po diffie YAML-a, nie
+znajdzie niczego. Mechanizm: `bramka-pelny-zestaw` (`bramki.yml:310-350`)
+uruchamia **nagie `npx playwright test`**, bez listy plików — więc każdy nowy
+spec w `e2e/` jest tam od razu i konstrukcyjnie. W `bramka-e2e` (wyłącznie
+`e2e/sciezka-zakupu.spec.ts`) ani w `bramka-dostepnosc` (cztery nazwane spece)
+**go nie ma**, więc jego werdykt pokazuje się WYŁĄCZNIE w zadaniu **„Bramka:
+Pełny zestaw e2e"** — i tam trzeba szukać jego czerwieni.
+
+**Liczność zmierzona, nie wyliczona** — dwa pomiary w dwóch różnych
+dziedzinach, oba widoczne, żaden przekreślony.
+**(a) Odczyt**, 2026-10-08: `npx playwright test
+e2e/naglowki-bezpieczenstwa.spec.ts --list` → `Total: 36 tests in 1 file`,
+czyli **9 testów × 4 projekty = 36**. Projekty z `playwright.config.ts`:
+`mobile-390` (:41) · `desktop` (:50) · `desktop-wide` (:70) ·
+`wlasciciel-1190` (:85) — cztery linie `name:` jako kontrola po stronie
+źródła.
+**(b) Przebieg**, 2026-10-09: `WWW_BAZA=http://localhost:3200 npx playwright
+test e2e/naglowki-bezpieczenstwa.spec.ts --reporter=line`, RC 0 →
+**36 passed (1,8 s)**; w logu każda z czterech nazw projektów pada przy **9**
+testach, a ta liczba jest **zliczona z logu**, nie odczytana z konfiguracji.
+Kontrola negatywna w tym samym przebiegu: nazwa widmo
+`widmo-projekt-ktorego-nie-ma` → **0** trafień — więc zliczane są nazwy
+obecne, a nie wzorzec dopasowujący się do czegokolwiek.
+
+**Po co drugi pomiar, skoro pierwszy dał tę samą liczbę.** `--list` orzeka
+o tym, co runner **zamierza** wziąć, i jest odczytem konfiguracji przez
+narzędzie — a kanon „wynikanie z kodu to nie pomiar" stawia odczyt **niżej**
+od przebiegu. Przebieg orzeka o tym, co runner **wziął**. Dlatego odczyt (a)
+zostaje **nieprzekreślony**: w swojej zadeklarowanej dziedzinie był i jest
+prawdziwy, a wykreślenie go byłoby zatarciem śladu, nie korektą.
+⚠ **Dwa pomiary, jedno źródło.** Ta sama para rąk, ta sama maszyna, ten sam
+runner — to **powtarzalność zjawiska, nie niezależne potwierdzenie** (kanon
+`CLAUDE.md`). Granica „żadnego przebiegu CI nie odczytałem" **stoi dalej**
+i przebieg jej nie zdjął; zdjął wyłącznie warstwę „konfiguracja kontra
+wykonanie".
+
+**Trzy warstwy, nie jedna.** (1) Spec importuje **jedno źródło** listy —
+`src/naglowki-bezpieczenstwa.ts`, ten sam plik, który czyta `next.config.ts`
+(zakaz 10: kopia listy w strażniku byłaby drugim źródłem prawdy). (2) W tym
+samym specu stoją **literały wpisane ręcznie** z treści zlecenia — i to jest
+mechanizm, nie defekt: ich zmiana ma być **decyzją**, a nie konsekwencją edycji
+listy (kanon: „liczba wpisana ręcznie w strażniku jest defektem albo
+mechanizmem; rozstrzyga jedno pytanie: czy jej zmiana ma być decyzją").
+(3) Trzecia warstwa jest **poza repozytorium** — sonda `sonda-naglowki.mjs`
+w katalogu roboczym sesji, z własną, niezależną listą sześciu nazw; **nie jest
+bramką i do CI nie wchodzi**, więc po zamknięciu sesji zostają dwie.
+
+**Granica werdyktu, wypisana w samym pliku:** orzeka „ODPOWIEDŹ NIESIE TO, CO
+DEKLARUJE LISTA", a **nie** „lista jest słuszna". Zasięg: **30 adresów**
+(10 tras × pl/en/de) czerpanych z `src/i18n/sciezki`, **zero wyłączeń** — w tym
+`/nie-znaleziono`, które oddaje 404 i komplet nagłówków mieć musi, bo stronę
+404 też dostaje odwiedzająca. Kontrola negatywna czytnika idzie **w tym samym
+przebiegu**: `NAGLOWEK_WIDMO` = `x-naglowek-ktorego-nie-ma-nigdzie` musi być
+nieobecny — bez tego zieleń mówiłaby o narzędziu, nie o odpowiedzi.
+
+**Zakaz 6 jest tu w konstrukcji, nie w zaleceniu:** nagłówki czyta się
+wyłącznie po nazwie (`headers()[nazwa]`), a mapy nagłówków spec **nie zrzuca
+nigdzie** — także przy upadku. Dlatego jego czerwień na preview nie ma jak
+wypisać `Set-Cookie`.
+
+⚠ **CZERWIEŃ, KTÓRA NIE JEST WERDYKTEM: NAGŁÓWKI KOMPILUJĄ SIĘ DO
+`routes-manifest.json` PRZY BUDOWANIU.** `next start` czyta gotowy manifest,
+więc zmiana w `next.config.ts` **bez przebudowania** nie dociera do odpowiedzi
+— strażnik pokaże wtedy brak nagłówka, który w kodzie już stoi. Zanim uznasz
+tę czerwień za regres, sprawdź `BUILD_ID` serwowanego katalogu (dla KROKU 3:
+`KPrIj8HrXcKeti45pKmNJ`). Rodzina: „komenda raportuje sukces swojej operacji,
+nie osiągnięcie twojego celu" — build kończy się zerem i mówi prawdę o sobie.
+
+**CSP asertowana jako WYŁĄCZNIE `Report-Only`** (test „CSP jest WYŁĄCZNIE
+w trybie Report-Only (`WWW/102-W`)"): obecny nagłówek
+`content-security-policy-report-only` **i nieobecny**
+`content-security-policy`. Przełączenie na tryb egzekwowany nie przejdzie więc
+po cichu — zapali tego strażnika, i dokładnie tak ma być, dopóki zgody na
+przełączenie nie ma. Liczby, które ją wstrzymują: rozdz. 1 oraz
+`docs/bezpieczenstwo/WWW-101-BEZPIECZENSTWO.md`.
+
+**Defekt zastany przy tej robocie, ŚWIADOMIE NIE NAPRAWIONY** (zakaz 8): nazwa
+zadania w `bramki.yml:311` deklaruje „każdy spec, **oba projekty**", a stojące
+pod nią `npx playwright test` uruchamia **cztery**. Kierunek jest bezpieczny —
+zadanie robi **więcej**, niż deklaruje, więc fałszywej zieleni z tego nie ma —
+dlatego idzie do rejestru jako **T98**, a nie do YAML-a.
 
 ---
 

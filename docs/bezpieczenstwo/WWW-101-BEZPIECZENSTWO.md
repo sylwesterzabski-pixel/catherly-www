@@ -39,18 +39,18 @@ tabelą kontrolę pozytywną przyrządu.
 
 | # | waga | luka | plik:linia | scenariusz (jedno zdanie) | proponowana naprawa | zmienia wygląd |
 | --- | --- | --- | --- | --- | --- | --- |
-| **B1** | 🔴 | **Brak Content-Security-Policy w jakiejkolwiek postaci** — także bez `Report-Only` | `next.config.ts:64-71` (jedyny nagłówek to `x-catherly-wydanie`), `vercel.json:1-8` (brak klucza `headers`), `src/middleware.ts` (nie ustawia żadnego nagłówka) | Pierwszy skrypt, który trafi na stronę nie z naszej ręki — z pomyłki w kodzie, z zależności, z przyszłego `rewrite` do aplikacji — wykonuje się bez żadnego ograniczenia źródła, bo przeglądarka nie dostaje polityki, którą mogłaby go zatrzymać. | `headers()` w `next.config.ts`: `Content-Security-Policy-Report-Only` **najpierw** (zebrać zgłoszenia), potem egzekwowana. Mierzona przeszkoda: build daje **20 skryptów wbudowanych bez `src`** i **0 atrybutów `nonce`** w `pl.html`, więc `script-src 'self'` bez `'unsafe-inline'` albo bez nonce **zabije stronę** — i to jest przyczyna, dla której ta luka jest 🔴, a nie jednolinijkowa. | **nie** (nagłówek nie renderuje się), ale błędna CSP **gasi arkusz i czcionki** — stąd obowiązkowa kolejność Report-Only → pomiar → egzekucja |
+| **B1** | 🔴 | **Brak Content-Security-Policy w jakiejkolwiek postaci** — także bez `Report-Only` | `next.config.ts:64-71` (jedyny nagłówek to `x-catherly-wydanie`), `vercel.json:1-8` (brak klucza `headers`), `src/middleware.ts` (nie ustawia żadnego nagłówka) | Pierwszy skrypt, który trafi na stronę nie z naszej ręki — z pomyłki w kodzie, z zależności, z przyszłego `rewrite` do aplikacji — wykonuje się bez żadnego ograniczenia źródła, bo przeglądarka nie dostaje polityki, którą mogłaby go zatrzymać. | `headers()` w `next.config.ts`: `Content-Security-Policy-Report-Only` **najpierw** (zebrać zgłoszenia), potem egzekwowana. Mierzona przeszkoda: build daje **20 skryptów wbudowanych bez `src`** i **0 atrybutów `nonce`** w `pl.html`, więc `script-src 'self'` bez `'unsafe-inline'` albo bez nonce **zabije stronę** — i to jest przyczyna, dla której ta luka jest 🔴, a nie jednolinijkowa. | **nie** (nagłówek nie renderuje się), ale błędna CSP **gasi arkusz i czcionki** — stąd obowiązkowa kolejność Report-Only → pomiar → egzekucja ⚠ **STAN PO KROKU 3 — §10.5**: CSP postawiona, ale **wyłącznie `Report-Only`**; propozycja trybu wymuszającego **WSTRZYMANA** — zmierzone **476** naruszeń `script-src-elem` na **30/30** tras, **0/30** stron czystych. |
 | **B2** | 🔴 | **`/_next/image` żyje, przyjmuje żądania i transkoduje AVIF — a strona nie używa `next/image` ani razu.** Advisory `GHSA-2xp9-vwfh-vxw4` dotyczy dokładnie tego punktu końcowego i dokładnie plików AVIF | `next.config.ts:59-72` — **brak klucza `images`** w całym pliku (`grep -c images next.config.ts` = 0) | Najszersza powierzchnia ataku w całym serwisie — dekoder obrazów uruchamiany żądaniem HTTP — stoi otwarta po to, żeby obsłużyć komponenty, których w kodzie nie ma ani jednego. | Dwuczłonowo: `next@15.5.27` (poprawka istnieje — niżej `B3`) **oraz** `images: { unoptimized: true }` w `next.config.ts`. ⚠ **Skutek drugiego członu jest przewidywaniem, nie pomiarem** — po zmianie trzeba powtórzyć sondowanie z §2.2 i pokazać, że własny AVIF przestał dawać 200. | **nie** — `<Image` 0 wystąpień w `src/`, `import … from "next/image"` 0 wystąpień, obrazy renderuje 17 surowych `<img>` (świadomie, ADR o prowieniencji bajtów); wyłączenie optymalizatora nie dotyka ani jednego renderowanego obrazu |
 | **B3** | 🔴 | **`next` 15.5.23 — advisory krytyczne, poprawka dostępna** (`npm audit --omit=dev`: 1 krytyczna + 3 wysokie, razem 4) | `package.json:39` → `"next": "^15.5.23"`; `package-lock.json` → zainstalowane **15.5.23** | Zakres podatny advisory to `9.3.4-canary.0 – 16.3.0-preview.10`, więc wersja na tej gałęzi mieści się w nim w całości, a jedno z dwóch advisory krytycznych opisuje zdalne wykonanie kodu przez ten sam punkt końcowy obrazów, który `B2` mierzy jako żywy. | `next@15.5.27` — **ta sama wersja, którą repozytorium aplikacji już niesie** (`package.json:182` wsadu), więc podniesienie nie wprowadza do organizacji nowej wersji frameworka, tylko dogania istniejącą. Podnosi też `B7` (audyt: `fixAvailable: true` dla wszystkich czterech). ⚠ **TO ZDANIE ZOSTAŁO OBALONE POMIAREM po podniesieniu — `WWW/102` KROK 1, §8.2 (audyt PO, 2026-10-07 20:20 CEST): podniesienie `next` zamknęło advisory WŁASNE `next`, a `B7` zostawiło otwarte w całości. Zostaje widoczne jako ślad przewidywania, nie jako ustalenie.** | **nie dla kodu strony** — zmiana nie dotyka `src/`; ale podniesienie wersji frameworka **wymaga porównania pikselowego** przed przyjęciem, bo render jest po stronie Next.js |
-| **B4** | 🟠 | Brak `X-Frame-Options` i brak `frame-ancestors` w CSP | `next.config.ts:64-71`, `vercel.json:1-8` | Stronę da się zagnieździć w obcej ramce i podać za cudzą ofertę albo nakleić na nią warstwę przechwytującą kliknięcia. | `X-Frame-Options: DENY` **i** `frame-ancestors 'none'` w CSP (dwa mechanizmy, bo starsze przeglądarki czytają tylko pierwszy). Aplikacja ma `DENY` — wsad `next.config.mjs:47-62`. | **nie** |
-| **B5** | 🟠 | Brak `X-Content-Type-Options: nosniff` | `next.config.ts:64-71` | Przeglądarka zgaduje typ treści przy odpowiedziach, których typu nie rozpozna, i może wykonać jako skrypt coś, co miało być plikiem. | `X-Content-Type-Options: nosniff`. Aplikacja go ma — wsad `next.config.mjs:47-62`. | **nie** |
-| **B6** | 🟠 | Brak `Referrer-Policy` | `next.config.ts:64-71` | Wyjście z naszej strony niesie do obcego serwera pełny adres strony, z której odwiedzająca wyszła — a plan Fazy 5 wprowadza `rewrite` tras logowania do aplikacji (`next.config.ts:61-63`, ADR-005), czyli dokładnie ruch, przy którym to zaczyna znaczyć. | `Referrer-Policy: strict-origin-when-cross-origin` — identycznie jak aplikacja (wsad `next.config.mjs:47-62`). | **nie** |
+| **B4** | 🟠 | Brak `X-Frame-Options` i brak `frame-ancestors` w CSP | `next.config.ts:64-71`, `vercel.json:1-8` | Stronę da się zagnieździć w obcej ramce i podać za cudzą ofertę albo nakleić na nią warstwę przechwytującą kliknięcia. | `X-Frame-Options: DENY` **i** `frame-ancestors 'none'` w CSP (dwa mechanizmy, bo starsze przeglądarki czytają tylko pierwszy). Aplikacja ma `DENY` — wsad `next.config.mjs:47-62`. | **nie** ⚠ **ZAMKNIĘTE W KROKU 3 — §10.2** (oba mechanizmy: `X-Frame-Options: DENY` i `frame-ancestors 'none'`), w dziedzinie §10.9. |
+| **B5** | 🟠 | Brak `X-Content-Type-Options: nosniff` | `next.config.ts:64-71` | Przeglądarka zgaduje typ treści przy odpowiedziach, których typu nie rozpozna, i może wykonać jako skrypt coś, co miało być plikiem. | `X-Content-Type-Options: nosniff`. Aplikacja go ma — wsad `next.config.mjs:47-62`. | **nie** ⚠ **ZAMKNIĘTE W KROKU 3 — §10.2**, w dziedzinie §10.9. |
+| **B6** | 🟠 | Brak `Referrer-Policy` | `next.config.ts:64-71` | Wyjście z naszej strony niesie do obcego serwera pełny adres strony, z której odwiedzająca wyszła — a plan Fazy 5 wprowadza `rewrite` tras logowania do aplikacji (`next.config.ts:61-63`, ADR-005), czyli dokładnie ruch, przy którym to zaczyna znaczyć. | `Referrer-Policy: strict-origin-when-cross-origin` — identycznie jak aplikacja (wsad `next.config.mjs:47-62`). | **nie** ⚠ **ZAMKNIĘTE W KROKU 3 — §10.2**, w dziedzinie §10.9. |
 | **B7** | 🟠 | Trzy zależności produkcyjne z advisory **wysokim**: `postcss` 8.4.31, `source-map-js` 1.2.1, `sharp` 0.35.3 ⚠ **(ta ostatnia liczba jest z ZŁEGO WĘZŁA — sprostowanie i powód w §8.3; audyt `--omit=dev` flaguje `node_modules/next/node_modules/sharp@0.34.5`)** | `package-lock.json` (wszystkie trzy są zależnościami przechodnimi `next`) | Żadna z trzech nie ma w tym serwisie drogi wejścia od odwiedzającej — nie przyjmujemy ani CSS, ani wgrywanych obrazów — więc ryzyko siedzi w łańcuchu budowania, a nie w przeglądarce; advisory jednak nie znika od tego, że droga jest wąska. | Podniesienie `next` (`B3`) — audyt podaje `fixAvailable: true` dla każdej z czterech pozycji. ⚠ **OBALONE pomiarem — §8.2.** Po `next@15.5.27` wszystkie trzy advisory tej pozycji stoją nietknięte, a `postcss` proponuje już wyłącznie `next@16.4.0` (`isSemVerMajor: true`), czyli wyjście POZA major. `B7` zostaje **otwarte**; `WWW/102` go nie obejmuje (zakaz 8). | **nie** (jak `B3`) |
-| **B8** | 🟡 | Brak `Strict-Transport-Security` na buildzie lokalnym | `next.config.ts:64-71` | Pierwsze wejście pod `http://` nie zostaje przez przeglądarkę zapamiętane jako „tylko HTTPS", więc kolejne da się zepchnąć na połączenie nieszyfrowane. | `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` **tylko na produkcji**, jak w aplikacji (wsad `next.config.mjs:47-62`, tam pod warunkiem środowiska). ⚠ **Czy platforma dokłada własny HSTS na swoich domenach — NIESPRAWDZONE**, i to jest granica pomiaru, nie wniosek: zakaz 6 nie pozwala drukować nagłówków odpowiedzi z preview, a produkcji nie ma (`vercel.json:4-6`). Pomiar należy do właściciela — §5 krok 5. | **nie** |
-| **B9** | 🟡 | Brak `Permissions-Policy` | `next.config.ts:64-71` | Strona nie odbiera kamerze, mikrofonowi ani lokalizacji dostępu, którego sama nigdy nie używa, więc skrypt wstrzyknięty w przyszłości zastanie te możliwości otwarte. | `Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()` — **ostrzej niż aplikacja**, która trzyma `microphone=(self)`, bo strona marketingowa nie ma do mikrofonu żadnego zastosowania. | **nie** |
+| **B8** | 🟡 | Brak `Strict-Transport-Security` na buildzie lokalnym | `next.config.ts:64-71` | Pierwsze wejście pod `http://` nie zostaje przez przeglądarkę zapamiętane jako „tylko HTTPS", więc kolejne da się zepchnąć na połączenie nieszyfrowane. | `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` **tylko na produkcji**, jak w aplikacji (wsad `next.config.mjs:47-62`, tam pod warunkiem środowiska). ⚠ **Czy platforma dokłada własny HSTS na swoich domenach — NIESPRAWDZONE**, i to jest granica pomiaru, nie wniosek: zakaz 6 nie pozwala drukować nagłówków odpowiedzi z preview, a produkcji nie ma (`vercel.json:4-6`). Pomiar należy do właściciela — §5 krok 5. | **nie** ⚠ **WYKONANE INACZEJ NIŻ TA PROPOZYCJA — §10.6**: `max-age=63072000` **bez** `includeSubDomains` i **bez** `preload`. Rozjazd świadomy, powód przy wierszu w §10.6 — nie przeoczenie. |
+| **B9** | 🟡 | Brak `Permissions-Policy` | `next.config.ts:64-71` | Strona nie odbiera kamerze, mikrofonowi ani lokalizacji dostępu, którego sama nigdy nie używa, więc skrypt wstrzyknięty w przyszłości zastanie te możliwości otwarte. | `Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()` — **ostrzej niż aplikacja**, która trzyma `microphone=(self)`, bo strona marketingowa nie ma do mikrofonu żadnego zastosowania. | **nie** ⚠ **WYKONANE INACZEJ NIŻ TA PROPOZYCJA — §10.6**: 15 zdolności odebranych, **bez** `interest-cohort`. Rozjazd świadomy; jego powód opiera się na **odczycie zachowania przeglądarki, nie na pomiarze w tym kroku** — i tak ma być czytany. |
 | **B10** | 🟡 | Brak `Cross-Origin-Opener-Policy` i `Cross-Origin-Resource-Policy` | `next.config.ts:64-71` | Okno otwarte z naszej strony zachowuje do niej uchwyt, a nasze zasoby wolno wciągać z obcych dokumentów. | `COOP: same-origin`, `CORP: same-origin`. Mierzony koszt tej luki jest dziś najniższy z całej tabeli: build daje **0 odesłań `target="_blank"`** i **0 adresów zewnętrznych**. W aplikacji ta sama para jest **również nieobecna** — zmierzone wprost w `next.config.mjs` wsadu: `Cross-Origin-Opener` 0 wystąpień, `Cross-Origin-Resource` 0, przy kontroli pozytywnej `X-Frame-Options` 1; wsad opisuje to jako własną **pozycję L40**. Czyli luka wspólna, nie asymetria. | **nie** |
 | **B11** | 🟡 | Brak `/.well-known/security.txt` | `public/` — pliku nie ma; nie ma też `public/_headers` | Kto znajdzie lukę, nie ma gdzie przeczytać, komu ją zgłosić, więc zgłoszenie albo nie przyjdzie, albo przyjdzie kanałem publicznym. | Plik `public/.well-known/security.txt` wg RFC 9116 z adresem kontaktowym i datą wygaśnięcia. **Decyzja właściciela, nie defekt techniczny** — wymaga adresu, pod którym ktoś naprawdę odpowiada. | **nie** |
-| **B12** | 🟡 | **Asymetria z aplikacją: aplikacja ma zestaw nagłówków, strona nie ma ani jednego** | wsad `next.config.mjs:47-62` wobec `next.config.ts:64-71` | Oba serwisy staną pod jedną marką i prawdopodobnie pod jedną domeną, a mają dwa różne poziomy zabezpieczenia przeglądarkowego — i słabszy jest ten, który odwiedzająca zobaczy pierwszy. | Zamknięcie `B1`, `B4`, `B5`, `B6`, `B8`, `B9` zamyka tę pozycję jako skutek. Wiersz istnieje osobno, bo **różnicę widać tylko z dwóch stron naraz** i żadna pojedyncza naprawa jej nie nazwie. ⚠ Nie kopiować konfiguracji aplikacji wprost: jej CSP jest **Report-Only i z `'unsafe-inline'`** — zmierzone w `next.config.mjs` wsadu: `:56` to `Content-Security-Policy-Report-Only`, a `:22` i `:32` niosą `'unsafe-inline'` w `script-src` i `style-src`; wsad opisuje to jako własną **pozycję L13** („CSP niczego nie blokuje"). Przeniesiona tu dałaby napis zamiast mechanizmu. | **nie** |
+| **B12** | 🟡 | **Asymetria z aplikacją: aplikacja ma zestaw nagłówków, strona nie ma ani jednego** | wsad `next.config.mjs:47-62` wobec `next.config.ts:64-71` | Oba serwisy staną pod jedną marką i prawdopodobnie pod jedną domeną, a mają dwa różne poziomy zabezpieczenia przeglądarkowego — i słabszy jest ten, który odwiedzająca zobaczy pierwszy. | Zamknięcie `B1`, `B4`, `B5`, `B6`, `B8`, `B9` zamyka tę pozycję jako skutek. Wiersz istnieje osobno, bo **różnicę widać tylko z dwóch stron naraz** i żadna pojedyncza naprawa jej nie nazwie. ⚠ Nie kopiować konfiguracji aplikacji wprost: jej CSP jest **Report-Only i z `'unsafe-inline'`** — zmierzone w `next.config.mjs` wsadu: `:56` to `Content-Security-Policy-Report-Only`, a `:22` i `:32` niosą `'unsafe-inline'` w `script-src` i `style-src`; wsad opisuje to jako własną **pozycję L13** („CSP niczego nie blokuje"). Przeniesiona tu dałaby napis zamiast mechanizmu. | **nie** ⚠ **STAN PO KROKU 3 — §10.11**: przedmiot tego wiersza („strona nie ma ani jednego") **zamknięty** — strona ma sześć. Asymetria **trybu** została, ale w drugą stronę niż opisuje wiersz: CSP strony jest **ostrzejsza**, bo bez `'unsafe-inline'`. |
 
 **Rozkład: 🔴 3 · 🟠 4 · 🟡 5 = 12 pozycji.** Liczby policzone z wierszy
 tabeli powyżej przy tej edycji, nie przepisane.
@@ -647,7 +647,7 @@ raportuję jako czerwone, nie jako „znane".
 | `B3` | **zamknięte** — w dziedzinie z §8.2 |
 | `B7` | **otwarte w całości** — `postcss` (4), `sharp` (3), `source-map-js` (1); droga wyjścia, jaką podaje audyt, wychodzi poza major, czyli poza literę zlecenia |
 | `B2` | otwarte — KROK 2 tego zlecenia |
-| `B1`, `B4`, `B5`, `B6`, `B8`, `B9`, `B12` | otwarte — KROK 3 tego zlecenia (CSP wyłącznie jako `Report-Only`, przełączenie na egzekwowaną ma być **propozycją bez wykonania**) |
+| `B1`, `B4`, `B5`, `B6`, `B8`, `B9`, `B12` | otwarte — KROK 3 tego zlecenia (CSP wyłącznie jako `Report-Only`, przełączenie na egzekwowaną ma być **propozycją bez wykonania**) ⚠ **ROZSTRZYGNIĘTE W KROKU 3 — §10.11**: `B4`, `B5`, `B6` zamknięte (§10.2); `B8`, `B9` zamknięte **z rozjazdem** wobec propozycji §1 (§10.6); `B1` zamknięte **wyłącznie** jako `Report-Only`, a propozycja trybu wymuszającego **WSTRZYMANA** z liczbą 476 (§10.5); `B12` zamknięte co do przedmiotu wiersza. |
 | `B10` (COOP/CORP), `B11` (`security.txt`) | **otwarte i POZA zleceniem `WWW/102`** — zlecenie ich nie wymienia; zapisane tutaj wprost, żeby zamknięcie kroków 1–3 nie zostało przeczytane jako zamknięcie §1 |
 
 ### 8.7. Ślad narzędziowy KROKU 1 — gdzie przyrząd był ślepy
@@ -830,5 +830,366 @@ milczenie, nie zieleń.**
 | `B3` | **zamknięte** — KROK 1, w dziedzinie z §8.2 |
 | `B2` | **zamknięte** — ten krok, w dziedzinie z §9.6 |
 | `B7` | **otwarte w całości** — droga wyjścia wychodzi poza major, czyli poza literę zlecenia |
-| `B1`, `B4`, `B5`, `B6`, `B8`, `B9`, `B12` | otwarte — KROK 3 (CSP **wyłącznie** `Report-Only`; przełączenie na egzekwowaną ma być **propozycją bez wykonania**) |
+| `B1`, `B4`, `B5`, `B6`, `B8`, `B9`, `B12` | otwarte — KROK 3 (CSP **wyłącznie** `Report-Only`; przełączenie na egzekwowaną ma być **propozycją bez wykonania**) ⚠ **ROZSTRZYGNIĘTE W KROKU 3 — §10.11**: `B4`, `B5`, `B6` zamknięte (§10.2); `B8`, `B9` zamknięte **z rozjazdem** wobec propozycji §1 (§10.6); `B1` zamknięte **wyłącznie** jako `Report-Only`, a propozycja trybu wymuszającego **WSTRZYMANA** z liczbą 476 (§10.5); `B12` zamknięte co do przedmiotu wiersza. |
 | `B10` (COOP/CORP), `B11` (`security.txt`) | **otwarte i POZA zleceniem `WWW/102`** — zlecenie ich nie wymienia |
+
+---
+
+## 10. WWW/102 KROK 3 — nagłówki z jednego miejsca, CSP **wyłącznie** Report-Only
+
+**Zakres tej sekcji:** zlecenie `WWW/102` KROK 3 wykonane w wariancie
+`102-W`. Pomiary z **2026-10-08**, na drzewie roboczym nad `f823b7b`
+(gałąź `faza-4/podstrony`). Stojak kandydata: `next start -p 3200`,
+`WWW_DIST=.next-kandydat`, `BUILD_ID KPrIj8HrXcKeti45pKmNJ`. Stojak bazowy
+do kontroli: worktree na `7817580`, `:3100`, `WWW_DIST=.next-baza`,
+`BUILD_ID 3yt2LllUgYFHidfOuoqGm`. Port 3000 (PID 45920, praca właściciela)
+**nietknięty** — zakaz 7.
+
+Sekcja ma własny nagłówek zakresu i własną datę, tak jak §8 i §9. Wiersze
+tabeli §1 **nie są przepisywane** — przy zdaniach obalonych albo
+zmienionych dostają adnotację z odesłaniem tutaj.
+
+### 10.1. Pytanie zerowe przed wszystkimi innymi
+
+**CZY TA RZECZ W OGÓLE ISTNIEJE** — odpowiedź z **odczytu konfiguracji**,
+nie z mutacji, bo mechanizmu, którego nie ma, nie da się zmutować
+(ADR-018).
+
+| co odczytane | wynik przed KROKIEM 3 |
+| --- | --- |
+| `next.config.ts` → `headers()` | **jeden** wpis, `x-catherly-wydanie`; zero nagłówków bezpieczeństwa |
+| `vercel.json` → klucz `headers` | **0 wystąpień**, przy kontroli pozytywnej 4 klucze w pliku |
+| `public/_headers` | **pliku nie ma** |
+| `src/middleware.ts` → `.headers.set/append` | **0 wystąpień**, przy kontroli pozytywnej 2 użycia `NextResponse` |
+| sonda na 30 adresach (10 tras × pl/en/de) | **0/30 adresów** z jakimkolwiek nagłówkiem bezpieczeństwa |
+
+Czyli przed tym krokiem zestaw pytań o zachowanie strażnika był wobec
+nieistnienia ślepy i milczałby dokładnie tak samo, jak przy mechanizmie
+sprawnym. Pytanie 0 zostało zadane **pierwsze**.
+
+### 10.2. Jedno miejsce — i dlaczego lista nie stoi w konfiguracji
+
+Zlecenie żąda nagłówków „z jednego miejsca (`next.config` `headers()`)".
+Wykonane jako **jeden wpis `headers()` z jedną listą**, ale lista mieszka
+w osobnym module:
+
+- `src/naglowki-bezpieczenstwa.ts` — **jedyne źródło** nazw i wartości,
+  bez zależności (loader konfiguracji Next wciąga ten plik, zanim istnieje
+  środowisko aplikacji);
+- `next.config.ts:3` — importuje listę i rozwija ją w `headers()` pod
+  `source: "/:sciezka*"`;
+- `e2e/naglowki-bezpieczenstwa.spec.ts:7` — **czyta tę samą listę**.
+
+**Powód rozdzielenia jest regułą, nie wygodą: kopia listy w strażniku
+byłaby drugim źródłem prawdy i rozjechałaby się przy pierwszej zmianie
+(zakaz 10).** Zmierzone, że źródło jest jedno: `grep` po repozytorium daje
+dokładnie **dwóch importerów** (`next.config.ts:3`,
+`e2e/naglowki-bezpieczenstwa.spec.ts:7`) przy kontroli pozytywnej 29
+plików z `next-intl` tym samym poleceniem.
+
+**Co lista niesie — sześć nagłówków:**
+
+| nagłówek | wartość | zamyka |
+| --- | --- | --- |
+| `Strict-Transport-Security` | `max-age=63072000` | `B8` — w dziedzinie z §10.6 |
+| `X-Frame-Options` | `DENY` | `B4` (człon pierwszy) |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | `B6` |
+| `Permissions-Policy` | 15 zdolności odebranych, `nazwa=()` | `B9` — w dziedzinie z §10.6 |
+| `X-Content-Type-Options` | `nosniff` | `B5` |
+| `Content-Security-Policy-Report-Only` | 12 dyrektyw, **bez** `unsafe-inline` i `unsafe-eval` | `B1` **tylko w postaci Report-Only** — §10.5 |
+
+`frame-ancestors 'none'` jest **w CSP** (człon drugi `B4`); zlecenie żąda
+obu mechanizmów, bo starsze przeglądarki czytają tylko `X-Frame-Options`.
+
+`x-catherly-wydanie` **zostaje pierwszy i osobno**: to mechanizm
+prowieniencji czytany przez `scripts/sprawdz-preview.mjs`, nie nagłówek
+bezpieczeństwa — nie wchodzi do listy, której pilnuje strażnik kompletu.
+
+⚠ **PUŁAPKA ZMIERZONA, NIE PRZYPUSZCZONA: nagłówki kompilują się do
+`routes-manifest.json` w czasie BUDOWANIA.** Odczyt
+`.next-kandydat/routes-manifest.json` pokazuje **1 wpis `headers`**,
+`source: "/:sciezka*"`, **7 kluczy** w zapisanej kolejności. Skutek
+wykonawczy: każda zmiana nagłówka wymaga **pełnego przebudowania** —
+restart `next start` jej nie podniesie. Dlatego każdy z czterech cykli
+mutacji niżej budował od nowa i każdy ma **własny, różny `BUILD_ID`**.
+
+### 10.3. Sonda przed i po — komplet na 30 adresach
+
+Sonda `sonda-naglowki.mjs` (przyrząd **poza repozytorium**, lista wymagana
+wpisana w nim **niezależnie** od repo — inaczej mierzyłaby zgodność listy
+z samą sobą).
+
+| | przed | po |
+| --- | --- | --- |
+| kod wyjścia | **21** (braki) | **20** (komplet) |
+| adresów z kompletem 6/6 | 0 / 30 | **30 / 30** |
+| żywotność klasy statyk | 2/2 | 2/2 |
+| kontrola czytnika POZYTYWNA (`x-catherly-wydanie` obecny) | TAK | TAK |
+| kontrola czytnika NEGATYWNA (nagłówek widmo nieobecny) | TAK | TAK |
+| statusy | 200:27 404:3 | 200:27 404:3 |
+
+Po zmianie każdy z sześciu nagłówków jest **SPÓJNY (1 postać)** na
+wszystkich 30 adresach — więc to nie jest „jeden nagłówek wszędzie" ani
+„wszystkie na jednej trasie". Nagłówków poza listą dozwoloną: **11,
+policzone i NIE nazwane**; nagłówków z listy NIGDY odfiltrowanych: **0**
+(zakaz 6 wbudowany w przyrząd — czyta po nazwie, nigdy nie zrzuca).
+
+⚠ Sonda sama zgłasza ograniczenie swojego werdyktu: **3 adresy mają status
+≠ 200** (strona 404 w trzech językach), więc werdykt o nagłówkach jest tam
+częściowy co do przyczyny statusu — nie co do obecności nagłówków, które
+są obecne i na 404 również. Strona 404 też jest oddawana odwiedzającej,
+więc komplet obowiązuje tam tak samo.
+
+**Pokrycie sięga poza te 30 adresów — zmierzone, nie wywnioskowane z kształtu
+`source`.** Trzy adresy spoza zestawu sondy, czytane **po nazwach nagłówków,
+nigdy przez zrzut wartości**:
+
+| adres | status | nagłówków | kolumna kontrolna: baza `7817580` |
+| --- | --- | --- | --- |
+| `/favicon.ico` | **500** | **6 / 6** | **0 / 6** na tym samym adresie |
+| `/pl` | **307** (przekierowanie `localePrefix: "as-needed"`) | **6 / 6** | — |
+| `/` | 200 | 6 / 6 | — |
+
+Dwa wnioski, oba potrzebne. **Pierwszy:** komplet jedzie także na odpowiedzi
+**przekierowującej i błędnej**, nie tylko na 200 — a odpowiedź 500 jest
+odpowiedzią, którą przeglądarka dostaje i interpretuje tak samo jak każdą
+inną. **Drugi, mocniejszy od samego pokrycia:** ten sam adres daje **6/6 na
+kandydacie i 0/6 na bazie**, czyli jest to kontrola kandydat–baza wykonana
+na **jednym** przedmiocie w jednym przebiegu — różnica pochodzi z KROKU 3,
+bo wszystko inne po obu stronach jest wspólne.
+
+⚠ `/favicon.ico` oddaje **500, nie 404**, a w repozytorium nie ma ani jednego
+pliku ikony (**0** trafień przy kontroli pozytywnej **89** plików w `public/`).
+Status **500 na obu stojakach** znaczy, że to stan **odziedziczony**, nie
+skutek tego kroku. Przedmiot nie należy do KROKU 3 i **nie jest tu
+naprawiany** (zakaz 8) — zapisany jako pozycja rejestru **T97**.
+
+### 10.4. Strażnik dwuwarstwowy i trzy mutacje
+
+Strażnik ma **dwie warstwy i to nie jest nadmiar**:
+
+1. **warstwa importu listy** — orzeka „ODPOWIEDŹ NIESIE TO, CO DEKLARUJE
+   LISTA". Jej zadeklarowana ślepota stoi w nagłówku pliku: usunięcie
+   nagłówka ze `src/naglowki-bezpieczenstwa.ts` zmniejszyłoby **obie
+   strony porównania** i zostawiłoby ten test zielony;
+2. **warstwa treści wiążącej** — literały wpisane ręcznie, czytane
+   z odpowiedzi serwera: `frame-ancestors 'none'`, `default-src 'self'`,
+   `object-src 'none'`, brak `unsafe-inline`, brak `unsafe-eval`, brak
+   `preload` i `includeSubDomains` w HSTS, `NAGLOWKI_BEZPIECZENSTWA.length
+   === 6` i posortowana lista szóstki.
+
+**Przy każdej liczbie w strażniku stoi zdanie W KODZIE, po co ona tam
+jest** — bo „liczba wpisana ręcznie w strażniku jest defektem albo
+mechanizmem, rozstrzyga pytanie: czy jej zmiana ma być decyzją".
+Szóstka jest **mechanizmem**: dołożenie siódmego nagłówka bezpieczeństwa
+ma być decyzją, nie efektem ubocznym edycji listy.
+
+**Zapłon na żywo (pytanie 1):** 36 testów, 36 zielonych, cztery projekty
+Playwrighta, 1,8 s.
+
+**Mutacja z kontrolą nałożenia (pytanie 2)** — cztery cykle, **pięć
+różnych `BUILD_ID`**, żaden pomiar nie stał na artefakcie innego:
+
+| mutacja | `BUILD_ID` | sonda | strażnik | co to dowodzi |
+| --- | --- | --- | --- | --- |
+| czysty | `ZlAWX51SpW5QojJzU80K1` | 20, komplet 30/30 | 9 zielonych | punkt odniesienia |
+| **M1** — jeden nagłówek zdjęty z **ODPOWIEDZI**, lista nietknięta | `DjNNd80MclO0lLcius3hw` | **21**, `BRAK 30/30 x-frame-options`, komplet **0/30** | **2 czerwone** / 7 zielonych | czerwienią są dokładnie KOMPLET i jedna-postać |
+| **M2** — cały blok zdjęty | `hJUmDX8DG2EgB57crAcZl` | **21**, `BRAKUJE 6 z 6`, komplet **0/30** | **6 czerwonych** / 3 zielone | trzy zielone to te, które nie dotykają odpowiedzi — **w tym test kontroli czytnika**, co dowodzi, że sześć czerwieni to nieobecność przedmiotu, a nie martwy czytnik |
+| **M3** — `script-src += 'unsafe-inline'`, HSTS `+= '; preload'`, sześć nazw nietkniętych | `fIY4iYFCFNG5WYfRPJk50` | **20**, komplet **30/30 — sonda jest na to osłabienie CAŁKOWICIE ŚLEPA** | **dokładnie 2 czerwone** (`unsafe-*`, HSTS-`preload`), KOMPLET słusznie zielony | **to jest zmierzony dowód, że warstwa druga nie jest ozdobą**: sprawdzanie obecności nie widzi osłabienia treści |
+| odtworzony | `KPrIj8HrXcKeti45pKmNJ` | 20, komplet 30/30 | 9 zielonych | — |
+
+**M1 ma kształt wymuszony, nie wybrany.** Zdjęcie nagłówka z **listy**
+zmniejszyłoby konfigurację i strażnika **razem** i zostałoby zielone — to
+jest właśnie zadeklarowana ślepota warstwy pierwszej. Jedyna mutacja, która
+tę warstwę mierzy, zdejmuje nagłówek z **odpowiedzi** przy liście nietkniętej.
+
+**Odtworzenie sprawdzone dwiema drogami**, bo „`git status` «brak zmian»
+nie jest dowodem przywrócenia" i „`git checkout --` bierze z indeksu, nie
+z `HEAD`": (a) `sha256` wszystkich trzech plików **zgodne** z kopiami
+wzorcowymi spoza repozytorium, (b) ponowny pomiar → sonda 20, strażnik 9/9.
+Kopie wzorcowe były konieczne, bo dwa z trzech plików są **nieśledzone**
+(`git checkout` ich nie odtworzy), a `next.config.ts` jest
+**zmieniony-niezacommitowany** (`git checkout` wytarłby zmianę KROKU 3).
+
+**Pytanie 3 — „czy upada WYŁĄCZNIE wtedy, kiedy trzeba" — nie ma dowodu
+w repertuarze i NIE jest tu zasypane.** Przesłanka częściowa, która
+istnieje: w każdej mutacji czerwieniały tylko te testy, których przedmiot
+się zmienił (M1 2/9, M2 6/9, M3 2/9). To jest **wskazówka, nie dowód** —
+zapisane jako luka, zgodnie z ADR-018.
+
+### 10.5. Naruszenia CSP — **476**, i dlaczego propozycja egzekwowania **JEST WSTRZYMANA**
+
+Zlecenie stawia warunek wprost: *„zero naruszeń w konsoli na wszystkich
+trasach e2e; dopiero wtedy propozycja przełączenia na egzekwowaną (bez
+wykonania)"*. **Warunek jest MIERZALNIE NIESPEŁNIONY.**
+
+Przyrząd: `pomiar-naruszen-csp.mjs` (ósmy przyrząd poza repozytorium),
+Playwright, 30 adresów. Nasłuch wchodzi przez `addInitScript`, **nie** po
+`goto` — naruszenia z parsowania pierwszego HTML-a padają przed
+jakimkolwiek skryptem dołożonym później, a nasłuch założony za późno
+raportowałby zero **nieodróżnialne od braku naruszeń**.
+
+| | wynik |
+| --- | --- |
+| kod wyjścia | **31** (naruszenia obecne) |
+| kontrola POZYTYWNA — nasłuch widzi celowe naruszenie | **30/30 stron** |
+| kontrola NEGATYWNA — czynność dozwolona nie daje zgłoszenia | **30/30 stron** |
+| zdarzeń `securitypolicyviolation` | **476** |
+| komunikatów CSP w **konsoli** | **476** |
+| stron bez żadnego naruszenia | **0 / 30** |
+| rozbicie per dyrektywa | **476 `script-src-elem`**, i nic innego |
+| tras z naruszeniami | **30 / 30** |
+
+**Dwa niezależne kanały dały tę samą liczbę** (zdarzenie DOM i konsola —
+konsola, bo to kanał, który zlecenie nazywa). **Trzeci, niezależny
+przyrząd zgadza się co do jednego:** statyczny spis HTML-a z poprzedniego
+okna dał **476 skryptów wbudowanych bez `src`**. Trzy różne drogi, jedna
+liczba.
+
+**Dlaczego nie wolno tego „naprawić", żeby postawić propozycję:**
+
+- **`'unsafe-inline'`** — zlecenie zakazuje wprost, a niezależnie od tego
+  byłoby to zamienienie czerwieni na ciszę (logika zakazu 3). *Zero
+  kupione osłabieniem miary nie jest zerem.*
+- **nonce** — **wykluczony arytmetyką prerenderu, nie preferencją.** Trzy
+  pomiary: `x-nextjs-prerender=1` na **każdej** trasie włącznie z 404; dwa
+  żądania do `/cennik` dają **identyczną sumę SHA-256 ciała**; na dysku
+  leży **31 plików `.html`**. Jeden zapisany artefakt nie może nieść
+  wartości unikalnej per odpowiedź. Nonce wymagałby **oddania generowania
+  statycznego** (ADR-007) — to jest poza KROKIEM 3 i nie wolno tego zrobić
+  „przy okazji" (zakaz 8).
+- **`report-uri` / `report-to`** — zlecenie nazywa konsolę jako kanał;
+  punkt zbiorczy to zbieranie danych od odwiedzających, czyli decyzja
+  właściciela, nie szczegół wykonawczy.
+
+**Stan pozycji `B1` po tym kroku: zamknięta WYŁĄCZNIE w postaci
+Report-Only.** Polityka jest ścisła (bez `unsafe-*`), działa i zgłasza —
+czyli robi dokładnie to, po co Report-Only istnieje: **pokazała liczbę,
+której nie znaliśmy**. Propozycja trybu wymuszającego **nie jest
+stawiana**, bo postawiona dziś znaczyłaby „zgaś stronę": `script-src
+'self'` w trybie egzekwowanym zatrzymałby **476 skryptów na 30 z 30 tras**.
+
+**Co musiałoby się stać, żeby propozycja miała treść** (zapisane jako
+warunek powrotu, nie jako plan tego zlecenia): rozstrzygnięcie, czy strona
+oddaje prerender w zamian za nonce (ADR-007 — decyzja właściciela), albo
+osobne zlecenie na mechanizm haszowania skryptów wbudowanych w czasie
+budowania. **Żadnej z tych dróg KROK 3 nie obejmuje.**
+
+### 10.6. Trzy rozjazdy z propozycjami z §1 — świadome, nie przeoczone
+
+Tabela §1 proponowała dla trzech pozycji brzmienie, którego **nie
+wykonałem dosłownie**. Rozjazd zgłaszam, nie rozstrzygam po cichu.
+
+| pozycja | propozycja w §1 | wykonane | powód |
+| --- | --- | --- | --- |
+| `B8` | `max-age=31536000; includeSubDomains; preload` | `max-age=63072000`, **bez** obu flag | `preload` jest **nieodwracalny w praktyce**: wpis na listę preload przeglądarek zdejmuje się miesiącami i nie jest pod naszą kontrolą — ADR-018 prymat nieodwracalnego, więc to decyzja właściciela, nie wykonawcy. `includeSubDomains` wymaga **inwentarza poddomen**, którego nie zmierzono; włączone na ślepo zepchnęłoby na HTTPS poddomenę, o której nie wiem. ⚠ `max-age` jest odwracalny **tylko dla tych, którzy wrócą** — kto nie wróci, trzyma stary wpis do wygaśnięcia; to realna granica, nie formalność |
+| `B9` | `camera=(), microphone=(), geolocation=(), interest-cohort=()` | 15 zdolności, **bez** `interest-cohort` | `interest-cohort` nie jest zarejestrowaną zdolnością (FLoC wycofany), a **nazwa nierozpoznana daje ostrzeżenie w konsoli** — a konsola jest w tym kroku **przyrządem pomiarowym** dla CSP. ⚠ **TEGO NIE ZMIERZYŁEM**: że nierozpoznane nazwy dają ostrzeżenie, wiem z odczytu zachowania przeglądarki, nie z przebiegu w tym repozytorium — **odczyt to nie pomiar** i tak ma być czytane. Nie zmierzyłem też, czy wszystkie 15 nazw na mojej liście są rozpoznane |
+| `B10` | COOP `same-origin`, CORP `same-origin` | **nie wykonane** | KROK 3 wymienia pięć nagłówków i CSP; COOP/CORP nie ma na tej liście. Dołożenie ich byłoby wejściem poza literę zlecenia — pozycja zostaje **otwarta** |
+
+### 10.7. Bezpiecznik wyglądu — 0 różnic, z podłogą szumu i kontrolą pozytywną
+
+Zlecenie: *„po każdym kroku porównanie pikselowe; różnica > 0 → cofnij
+krok, STOP"*. 10 tras × 3 języki × 2 kadry (1440/390) = **60 zrzutów**.
+
+| pomiar | zestawy | wynik |
+| --- | --- | --- |
+| **POMIAR** | baza `7817580` vs kandydat KROK 3 | **plików z różnicą 0 · różnych pikseli 0 · porównanych 249 691 830** |
+| **PODŁOGA SZUMU** | baza vs baza, dwa niezależne przebiegi | różnych pikseli **0** — zero nie jest schowane w tolerancji, komparator jest dokładny |
+| **KONTROLA POZYTYWNA** | kandydat vs kandydat z **jednym** przestawionym pikselem | **dokładnie 1 piksel**, `1440--pl--cennik.png`, `px(720,1984)`, `245,245,247 → 10,10,8`, maxDelta 239, kod 1 |
+
+Bez trzeciego wiersza zero z pierwszego byłoby **zerem narzędzia**. Jeden
+piksel, a nie dziesięć, bo mierzony jest **próg wykrywalności**, nie sam
+fakt działania przyrządu.
+
+⚠ **Czego ten bezpiecznik NIE mierzy** — zapisane przy nim: różnicy
+niewidocznej w PNG (nagłówki HTTP, DOM, atrybuty a11y), zachowania pod
+interakcją (hover, focus, klawiatura), i czegokolwiek poniżej progu
+własnego szumu przeglądarki. Nagłówki nie renderują się, więc zero było
+**oczekiwane** — ale oczekiwanie nie jest pomiarem i dlatego pomiar był
+wykonany.
+
+### 10.8. Build, bramki, pełny zestaw e2e — kody wyjścia i kontrola negatywna
+
+**Budowanie** stanu KROKU 3: kod **0**, `✓ Compiled successfully`,
+`✓ Generating static pages (33/33)`, **31 artefaktów `.html`**,
+`BUILD_ID KPrIj8HrXcKeti45pKmNJ`. Tożsamość plików potwierdzona
+`sha256` wobec kopii wzorcowych **przed** uznaniem tego budowania za
+budowanie tego stanu.
+
+**Bramki — lista wzięta z ODCZYTU `.github/workflows/bramki.yml`, nie
+z pamięci. Kandydat i BAZA w jednym przebiegu**, bo czerwień bez drugiej
+kolumny nie odróżnia „zepsułem to teraz" od „było czerwone przedtem":
+
+| bramka | kandydat | baza `7817580` | werdykt |
+| --- | --- | --- | --- |
+| `tokeny`, `parytet`, `liczby`, `linki`, `kotwice`, `nojs`, `deklaracje` | 0 | 0 | **zielone oba** |
+| `cennik` | 0 | 0 | **zielone oba** — po udostępnieniu `STRIPE_TEST_SECRET_KEY`; §10.9 |
+| `kontrakt` | 1 | 1 | **czerwone w obu, identyczna treść** — `deltaE(#f5f5f7, #F7F3EA) = 5,8 > 5` (ADR-022/ADR-042, pozycja **T74**). *Nie wyłączać, nie podnosić progu — zakaz 3* |
+| `nieodwracalne` | 1 | 1 | **czerwone w obu** — brak raportu audytu dla commita (pozycja **T83**); bramka jest wiązana z commitem, więc nazywa `f823b7b…` i `7817580…` — to poprawne zachowanie, nie rozjazd |
+
+**Zero regresji: nie ma ani jednej bramki czerwonej tylko na kandydacie.**
+
+Bramki `preview`, `rozgrzewka`, `tryb-pomiaru`, `pomiar`, `po-pomiarze`,
+`podsumowanie`, `margines` **nie były uruchamiane** — wymagają wdrożenia
+preview na Vercelu, czyli pushu, którego to zlecenie zakazuje. To jest
+**granica pomiaru**, nie przeoczenie.
+
+**Pełny zestaw e2e** (`bramki.yml:348`), stojak :3200,
+`reuseExistingServer` poza CI → przebieg wszedł na mój stojak i **nie
+postawił własnego serwera**: **1436 testów, 1424 zielone, 12 pominiętych,
+0 czerwonych, 1,6 min.** Nowy strażnik nagłówków jest w tym przebiegu
+**36 razy zielony** — czyli pracuje w bramce repozytorium, nie tylko
+w osobnym wywołaniu.
+
+**12 pominiętych nazwanych przedmiotowo, nie samą liczbą:**
+`e2e/hero.spec.ts:216` („H1 ≤ 3 linie na desktopie", 3 języki) i
+`e2e/zlozenie.spec.ts:165` („kropki luster S3/S10") są bramkowane
+viewportem i biegną **wyłącznie** w projekcie `desktop`; 3×3 + 3 = 12.
+Stan sprzed KROKU 3.
+
+### 10.9. Dziedzina tego werdyktu i jego ślepota
+
+**Werdykt obowiązuje w swojej zadeklarowanej dziedzinie — poza nią jest
+milczenie, nie zieleń.**
+
+- **Dziedzina: build lokalny, `next start`, `http://localhost`.**
+  Zachowania na Vercelu **nie zmierzono**.
+- **HSTS jest nad lokalnym `http` BEZCZYNNY.** Przeglądarka ignoruje ten
+  nagłówek poza HTTPS, więc zmierzona jest jego **obecność i postać**, a
+  **nie skutek**. Strażnik zapisuje tę ślepotę w swoim własnym komentarzu.
+  Czy platforma dokłada własny HSTS — nadal **niesprawdzone** (`B8`,
+  zakaz 6 nie pozwala drukować nagłówków z preview).
+- **Spis, z którego wyszły wartości CSP, czytał HTML renderowany przez
+  serwer.** Nie widzi tego, co skrypt doda do DOM po hydratacji.
+  Niezależnym sprawdzeniem tej granicy jest §10.5: **pomiar w przeglądarce
+  zgodził się ze spisem co do jednego (476)** — czyli dla `script-src`
+  ślepota spisu nie zadziałała. Dla pozostałych dyrektyw takiego
+  potwierdzenia **nie ma**.
+- **Pytanie 3 ADR-018 bez dowodu** — §10.4.
+- **Przyrządy leżą poza repozytorium** — pozycja rejestru **T94**,
+  poszerzona tym krokiem o `sonda-naglowki.mjs`, `spis-csp.mjs`,
+  `pomiar-naruszen-csp.mjs`, `cykl-mutacji.sh`, `jeden-piksel.mjs`.
+
+### 10.10. Ślad narzędziowy KROKU 3 — gdzie przyrząd był ślepy
+
+| przyrząd | ślepota | jak złapana | poprawka |
+| --- | --- | --- | --- |
+| moja własna asercja `expect(TRASY.length * JEZYKI.length).toBe(TRASY.length * 3)` | `JEZYKI.length` **JEST** 3, więc asercja **nie sprawdza niczego**, wyglądając na sprawdzenie — czwarty język wpadłby w lukę pokrycia bez jednego sygnału | odczyt tego, co **właśnie napisałem**, przed uruchomieniem | `expect([...JEZYKI].sort()).toEqual([...routing.locales].sort())` — dopisanie języka w `routing.ts` jest teraz czerwienią, a powód stoi w kodzie |
+| `pomiar-naruszen-csp.mjs` — polski cudzysłów `„` zamknięty prostym `"` | przerwał łańcuch znaków; `SyntaxError`, przyrząd nie wystartował | **kod wyjścia 1 — POZA zadeklarowaną dziedziną przyrządu (30/31/3/2)**; gdyby kody się pokrywały, niewystartowanie byłoby nieodróżnialne od pomiaru | proste apostrofy + `node --check` **przed** przebiegiem pomiarowym. **Wniosek klasowy: przyrząd, którego kody wyjścia zachodzą na kody runtime'u, nie odróżnia awarii startu od wyniku** |
+| `import "playwright"` ze skryptu spoza repozytorium | ESM szuka pakietu względem **położenia skryptu**, czyli nad scratchpadem — nie rozwiązałby się | sprawdzenie, jak robią to moje **własne, działające** przyrządy (`zrzuty.mjs:26`, `porownaj.mjs:23`) **przed** uruchomieniem | `createRequire(join(REPO, "package.json"))` — wiąże też pomiar z tą samą wersją Playwrighta, którą mają bramki |
+| `grep -rn … --include=*.ts` w zsh | zsh traktuje `--include=*.ts` jako **glob** i przy braku dopasowania w katalogu **przerywa całe polecenie** — „no matches found" | polecenie nie wypisało nic, a szukany ciąg **jest** w trzech plikach | `--include='*.ts'` w cudzysłowach. **Piąte wystąpienie tej rodziny w tej pracy** — zsh **nie dzieli** nierozcudzysłowionych rozwinięć i **rozwija** wzorce w argumentach |
+| sonda obecności jako całość dowodu | jest **całkowicie ślepa** na osłabienie treści: M3 dodało `'unsafe-inline'` i `preload`, a sonda oddała **komplet 30/30, kod 20** | mutacja M3 z drugą warstwą strażnika obok | werdykt o **treści** wyłącznie z warstwy literałów (§10.4) |
+| `npm run bramka:cennik` bez środowiska | pada na „brak `STRIPE_TEST_SECRET_KEY`" — to **odmowa werdyktu z powodu po mojej stronie**, nie czerwień repozytorium; policzona jako czerwień dałaby trzecią, fałszywą pozycję | identyczna treść czerwieni **po obu stronach** kazała spytać o przyczynę, nie o skutek | `.env` wczytany do podpowłoki, wyjście **zredagowane** wzorcem `sk_/pk_/rk_/whsec_` **przed** odczytem; bramka **zielona** po obu stronach |
+
+### 10.11. Co po KROKU 3 zostaje otwarte
+
+| pozycja | stan po tym kroku |
+| --- | --- |
+| `B3` | **zamknięte** — KROK 1, w dziedzinie §8.2 |
+| `B2` | **zamknięte** — KROK 2, w dziedzinie §9.6 |
+| `B4`, `B5`, `B6` | **zamknięte** — ten krok, w dziedzinie §10.9 |
+| `B8`, `B9` | **zamknięte z rozjazdem wobec propozycji §1** — §10.6; `preload`/`includeSubDomains` i `interest-cohort` **świadomie nieobecne** |
+| `B1` | **zamknięte WYŁĄCZNIE jako Report-Only.** Tryb wymuszający: **propozycja WSTRZYMANA z liczbą 476 na 30/30 tras** — §10.5 |
+| `B12` | **zamknięte co do przedmiotu wiersza** („strona nie ma ani jednego nagłówka") — strona ma sześć, a jej CSP jest **ostrzejsza niż aplikacji**, bo bez `'unsafe-inline'`. ⚠ Obie są `Report-Only`, więc asymetria **trybu** została, tylko w drugą stronę niż opisywał wiersz |
+| `B7` | **otwarte w całości** — droga wyjścia wychodzi poza major |
+| `B10` (COOP/CORP), `B11` (`security.txt`) | **otwarte i POZA zleceniem `WWW/102`** |
